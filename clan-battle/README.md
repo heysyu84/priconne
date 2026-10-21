@@ -7,6 +7,7 @@
 - GitHub 위치: heysyu84/priconne → clan-battle/
 - 라이트 모드와 보스별 원본 시트 색상을 사용합니다.
 - 관리자 코드로 작성 잠금을 해제합니다. 공용 기록은 서버에 저장하며 개인 이월 시간은 각 브라우저에만 저장합니다.
+- 배틀로그의 관리자용 마감 이력에서 마감을 취소할 수 있습니다. 새로고침 뒤에도 사용할 수 있으며 공격 기록을 보존하고 이후 일차, 타수와 이월 연결을 다시 계산합니다.
 - HP는 정수로 계산합니다. 기여도 계산값의 정밀도를 유지하고 화면에만 소수점 둘째 자리까지 표시합니다.
 
 ## 구성
@@ -39,6 +40,7 @@ GitHub Pages만으로 공유 저장 서버를 대체할 수는 없습니다. 서
 
     node scripts/test-exact-hp.mjs
     node scripts/test-workflow.mjs
+    node scripts/test-day-closures.mjs
     node scripts/test-tactics.mjs
     node scripts/test-portraits.mjs
     node scripts/test-guild.mjs

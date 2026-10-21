@@ -6,7 +6,7 @@ const {browserApiClient}=await import('./api-client.mjs?v=20261022-pages10');
 const apiFetch=browserApiClient();
 const Engine=await import('./engine.mjs?v=20261022-pages10');
 const {ensureRoster,syncRoster,memberLabel}=await import('./roster.mjs?v=20261022-pages10');
-const {createWorkflow}=await import('./workflow.mjs?v=20261022-pages10');
+const {createWorkflow}=await import('./workflow.mjs?v=20261022-reopen11');
 const {ensureTactics}=await import('./tactics-model.mjs?v=20261022-pages10');
 const {applySourceData}=await import('./guild-model.mjs?v=20261022-pages10');
 const {createGuildWorkspace}=await import('./guild-workspace.mjs?v=20261022-pages10');

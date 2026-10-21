@@ -1,4 +1,5 @@
 import { makeId, memberLabel, syncRoster, matchMembers, parseDamage } from './roster.mjs?v=20261022-pages10';
+import { dayClosures, cancelDayClosure } from './battle-days.mjs?v=20261022-reopen11';
 
 export function createWorkflow(api) {
   const { getApp, getMonth, setApp, persist, replay, render, notify, navigate, section, nf, escapeHtml: X } = api;
@@ -20,7 +21,7 @@ export function createWorkflow(api) {
   }
   function remember() { state.undo.push(JSON.stringify(app())); if (state.undo.length > 10) state.undo.shift(); }
   function update(focus = null) { closePicker(); state.editing = null; state.restore = focus; render(); }
-  function save(message, focus = null) { syncRoster(app()); replay(month()); if(!draft().beforeId)draft().day=recentDay();persist(); update(focus); if (message) notify(message); }
+  function save(message, focus = null) { syncRoster(app()); replay(month()); draft().day=month().events.find(e=>e.id===draft().beforeId)?.day||recentDay();persist(); update(focus); if (message) notify(message); }
   function undo() {if(!guard())return;
     const snapshot = state.undo.pop();
     if (!snapshot) return notify('취소할 변경이 없습니다.');
@@ -91,7 +92,14 @@ export function createWorkflow(api) {
     prepareMonth();
     return section('배틀로그 편집실', '키보드로 연속 입력하고 표에서 바로 수정합니다.', `<button type="button" class="btn" data-wf="undo" ${state.undo.length&&canEdit() ? '' : 'disabled'}>실행 취소 <kbd>Ctrl Z</kbd></button><button type="button" class="btn" data-action="export">JSON 백업</button>`)
       + bossStrip() + quickView() + `<section class="panel sheet-panel section-spacer"><div class="panel-head"><div><h2>공격 내역 <span class="pill">${month().events.length}건</span></h2><div class="sub" ${canEdit()?'':'hidden'}>표에서 <kbd>←↑↓→</kbd> 이동 · <kbd>Enter / F2</kbd> 수정 · <kbd>Space</kbd> 이월 전환 · <kbd>Esc</kbd> 취소 · HP는 1 단위</div></div><label class="switch small"><input id="wf-details" type="checkbox" ${state.details ? 'checked' : ''}>가산점·메모·기여도 열</label></div>
-      <div class="filterbar"><input id="wf-log-search" aria-label="공격 기록 검색" placeholder="이름 · UID · 순번 · 보스 검색" value="${X(state.query)}"><select id="wf-day-filter" aria-label="공격 일차 필터"><option value="all">전체 일차</option>${Array.from({ length: maxDay() }, (_, i) => `<option value="${i + 1}" ${state.filterDay === String(i + 1) ? 'selected' : ''}>${i + 1}일차</option>`).join('')}</select></div><div id="wf-grid">${gridView()}</div></section>`;
+      ${dayClosuresView()}<div class="filterbar"><input id="wf-log-search" aria-label="공격 기록 검색" placeholder="이름 · UID · 순번 · 보스 검색" value="${X(state.query)}"><select id="wf-day-filter" aria-label="공격 일차 필터"><option value="all">전체 일차</option>${Array.from({ length: maxDay() }, (_, i) => `<option value="${i + 1}" ${state.filterDay === String(i + 1) ? 'selected' : ''}>${i + 1}일차</option>`).join('')}</select></div><div id="wf-grid">${gridView()}</div></section>`;
+  }
+
+  function dayClosuresView() {
+    if (!canEdit()) return '';
+    const closures = dayClosures(month()).filter(b => b.id && b.shift > 0);
+    if (!closures.length) return '';
+    return `<div class="wf-day-closures" role="group" aria-label="일차 마감 관리"><strong>마감 이력</strong><div class="wf-day-closure-list">${closures.reverse().map(b => `<div class="wf-day-closure"><span>${b.day}일차 → ${b.nextDay}일차<small>${b.afterSeq ? `#${X(b.afterSeq)} 이후` : '첫 기록 전'}</small></span><button type="button" class="btn sm" data-wf="reopen-day" data-id="${X(b.id)}" aria-label="${b.day}일차 마감 취소">마감 취소</button></div>`).join('')}</div></div>`;
   }
 
   function closePicker() {
@@ -235,6 +243,17 @@ export function createWorkflow(api) {
   }
 
   function finishDay(afterId=null){if(!guard())return;const row=afterId?month().events.find(e=>e.id===afterId):null,day=row?.day||recentDay();if(day>=maxDay())return notify('마지막 일차입니다.');const seq=row?.seq??Math.max(0,...month().events.map(e=>e.seq));if((month().dayBreaks||[]).some(b=>b.afterSeq===seq))return notify('이미 일차가 나뉜 위치입니다.');if(!confirm(`${day}일차를 마감하고 이후 기록을 ${day+1}일차로 나눌까요?`))return;remember();month().dayBreaks||=[];for(const b of month().dayBreaks)if(b.afterSeq>seq)b.nextDay++;month().dayBreaks.push({id:makeId(),afterSeq:seq,nextDay:day+1});draft().day=day+1;save('일차를 나눴습니다. 이후 입력은 다음 일차로 기록됩니다.',{quick:true});}
+  function reopenDay(id) {
+    if (!guard()) return;
+    const closure = dayClosures(month()).find(b => b.id === id);
+    if (!closure || !(closure.shift > 0)) return notify('이미 취소된 마감입니다.');
+    const following = dayClosures(month()).some(b => b.afterSeq > closure.afterSeq);
+    if (!confirm(`${closure.day}일차 마감을 취소할까요?\n공격 기록은 모두 유지되고 ${closure.nextDay}일차 기록은 ${closure.day}일차로 합쳐집니다.${following ? `\n이후 일차도 ${closure.shift}일씩 앞당겨집니다.` : ''}`)) return;
+    remember();
+    cancelDayClosure(month(), id);
+    state.filterDay = 'all'; state.page = 1;
+    save(`${closure.day}일차 마감을 취소했습니다. 공격 기록은 모두 유지했습니다.`);
+  }
   function prepareMonth() {
     if (state.month !== app().active) {state.inputOpen=false; state.month = app().active; state.query = ''; state.filterDay = 'all'; state.page = 1; state.rosterEdit = null; }
   }
@@ -292,6 +311,7 @@ export function createWorkflow(api) {
     switch (b.dataset.wf) {
       case 'next-day':finishDay();break;
       case 'split-day':finishDay(b.dataset.id);break;
+      case 'reopen-day':reopenDay(b.dataset.id);break;
       case 'focus-quick': focusQuick(); break;
       case 'pick-boss': draft().boss=Number(b.dataset.id);update(state.inputOpen&&canEdit()?{quick:true,field:draft().memberId?'damage':'member'}:null);break;
       case 'undo': undo(); break;
