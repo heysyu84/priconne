@@ -1,0 +1,142 @@
+/* Shared boundaries and compact layouts for the clan sheet. */
+.app,.main,.content,.panel,.grid-2>*{min-width:0}
+.sidebar{grid-template-rows:56px 38px;gap:6px 8px;height:121px;min-height:121px;padding:10px 30px;background:#fffefc;border-bottom:1px solid #e2d9ef}
+.sidebar .logo{width:214px;height:56px;align-self:center}
+.sidebar .clan-wordmark{width:205px;height:58px;object-position:left center}
+.topbar{position:fixed;top:19px;right:30px;height:36px;padding:0;background:transparent;border:0;backdrop-filter:none}
+.table-scroll,.battle-sheet-scroll,.tw-grid-scroll{max-height:none;overflow-x:auto;overflow-y:hidden;overscroll-behavior-x:contain;overscroll-behavior-y:auto;touch-action:pan-x pan-y;max-width:100%;scrollbar-gutter:auto}
+.datatable tbody th{position:static}
+.panel-head{min-width:0;flex-wrap:wrap;gap:10px}
+.panel-head h2,.hero h1{min-width:0;overflow-wrap:anywhere}
+.db-tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:3px;max-width:650px}
+.db-tabs button{min-width:0;white-space:nowrap;padding:10px 8px}
+.guild-roster,.guild-hall{table-layout:fixed;width:100%;min-width:0}
+.guild-roster th,.guild-roster td,.guild-hall th,.guild-hall td{white-space:normal;overflow-wrap:anywhere;padding:10px 8px}
+.guild-roster th:first-child{width:19%}
+.guild-roster th:nth-child(2){width:22%}
+.guild-roster .textbutton{max-width:100%;padding:0;text-align:left;white-space:normal;overflow-wrap:anywhere}
+.guild-roster .uid{font-variant-numeric:tabular-nums}
+.guild-roster .btnbar{gap:4px;flex-wrap:wrap}
+.guild-roster .btn.sm{padding:6px;font-size:10px}
+.guild-hall th:first-child{width:20%}
+.guild-hall th:last-child{width:15%}
+.guild-hall td{text-align:center}
+.guild-hall .medal-count{display:inline-block;padding:4px 6px;white-space:nowrap}
+.dashboard-panel{padding:0}
+.dashboard-controls{padding:14px 16px;margin:0}
+.dashboard-controls .tabset{flex-wrap:nowrap;max-width:100%}
+.dashboard-table{min-width:0;table-layout:fixed;width:100%}
+.dashboard-table th,.dashboard-table td{padding:7px 6px!important;text-align:center;white-space:normal;overflow-wrap:anywhere}
+.dashboard-table thead th{font-size:12px}
+.dashboard-table th:first-child{width:17%;min-width:0}
+.dashboard-table th:nth-last-child(-n+3){width:10%}
+.dashboard-table tbody>tr>th{position:static;min-width:0}
+.dashboard-table .textbutton{white-space:normal;overflow-wrap:anywhere;font-size:12px;padding:0}
+.dashboard-table .attack-slot{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:center;justify-content:center;gap:5px;width:100%;height:42px;min-width:0;padding:5px;border-radius:6px}
+.dashboard-table .boss-chip{padding:4px 0;width:100%;font-size:12px;line-height:1.2;min-width:0}
+.dashboard-count{font-variant-numeric:tabular-nums;font-weight:700}
+.tw-layout{min-width:0;grid-template-columns:245px minmax(0,1fr)}
+.tw-library,.tw-work,.tw-config-fieldset,.tw-config{min-width:0;max-width:100%}
+.tw-library #tw-library-list{display:block;overflow-x:hidden;overscroll-behavior-y:contain}
+.tw-card{min-width:0!important;max-width:100%;width:100%;white-space:normal}
+.tw-card-title,.tw-card small{overflow-wrap:anywhere;word-break:normal}
+.tw-character-slot,.tw-config-fieldset:disabled .tw-character-slot{display:flex;flex-direction:column;align-items:center;gap:6px;min-width:0}
+.tw-character-slot>div,.tw-config-fieldset:disabled .tw-character-slot>div{width:100%;min-width:0;text-align:center}
+.tw-character-slot>div>label{display:none}
+.tw-character-slot input:not([type=file]),.tw-character-slot select{text-align:center;text-align-last:center;width:100%;padding-left:3px!important;padding-right:3px!important}
+.tw-portrait-upload{align-self:center}
+.tw-group-tabs .tw-carry-controls{display:grid;grid-template-columns:auto auto auto;align-items:center;gap:7px 6px;max-width:100%;padding:3px 0}
+.tw-group-tabs .tw-carry-controls .field{display:flex;flex-direction:row;align-items:center;gap:7px;min-width:0;margin:0}
+.tw-group-tabs .tw-carry-controls .field label{margin:0;line-height:35px}
+.tw-group-tabs .tw-carry-controls .field input{box-sizing:border-box;height:35px;margin:0;width:76px}
+.tw-group-tabs .tw-carry-controls>.btn{height:35px;min-height:35px;display:inline-flex;align-items:center;justify-content:center;line-height:1;margin:0;padding:7px 9px}
+.tw-group-tabs .tw-carry-state{grid-column:1/-1;max-width:none;flex-basis:auto;padding:0;line-height:1.5}
+.tw-grid{table-layout:fixed;width:100%;min-width:0;max-width:100%}
+.tw-grid-scroll{overflow-x:hidden}
+.tw-grid th:nth-child(7){padding:3px 5px}
+.tw-grid .tw-text-cell>[data-tw-text]{min-width:0;overflow-wrap:anywhere;word-break:normal}
+.rank-all-scores{min-width:640px}
+.combo-party strong{word-break:normal;overflow-wrap:anywhere}
+.combo-party img,.portrait-missing{max-width:100%}
+
+@media(max-width:1100px){
+  .tw-layout{grid-template-columns:minmax(0,1fr)}
+  .tw-library{position:relative;top:auto;max-height:none;overflow:visible}
+  .tw-library #tw-library-list{display:block;max-height:220px;overflow-y:auto;overflow-x:hidden}
+  .tw-boss-label{display:block}
+}
+@media(min-width:801px) and (max-width:1150px){
+  .sidebar{padding-left:22px;padding-right:22px}
+  .topbar{right:22px}
+  .boss-grid{grid-template-columns:repeat(5,minmax(0,1fr));overflow:visible}
+  .boss-hp>strong{font-size:clamp(14px,1.8vw,20px)}
+}
+@media(max-width:800px){
+  .sidebar{height:64px!important;min-height:64px!important;padding:0 14px!important;display:flex!important;background:#fffefc}
+  .sidebar .logo{height:56px!important;width:175px!important}
+  .sidebar .clan-wordmark{width:170px!important;height:51px!important}
+  .topbar{position:sticky!important;top:64px;right:auto;width:100%;height:46px!important;padding:5px 12px!important;background:#fffefc;border-bottom:1px solid #e2d9ef;z-index:26}
+  .topbar .top-actions{width:100%;gap:5px}
+  .content{padding:17px 12px 90px!important}
+  .hero{flex-wrap:wrap}
+  .boss-grid{display:grid;grid-template-columns:minmax(0,1fr);overflow:visible;gap:9px;padding:0;margin-bottom:15px}
+  .boss-card{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:12px;row-gap:4px;align-items:center;padding:11px 12px 0;min-width:0;overflow:hidden}
+  .boss-card .boss-top{min-height:60px;flex-direction:row;gap:10px;align-items:center;min-width:0}
+  .boss-card .boss-top>div:last-child{min-width:0}
+  .boss-card .boss-art{height:52px;width:52px;border-radius:12px;flex:none}
+  .boss-card .boss-art img{border-radius:11px}
+  .boss-card .boss-name{font-size:12px;margin:4px 0;overflow-wrap:anywhere;word-break:normal}
+  .boss-card .boss-num{font-size:7px;letter-spacing:.5px}
+  .boss-card .boss-hp{margin:0;text-align:right;min-width:0}
+  .boss-card .boss-hp>strong{font-size:clamp(16px,5vw,22px)}
+  .boss-card .boss-hp>span{font-size:9px}
+  .boss-card .boss-track,.boss-card .boss-info,.boss-card .boss-tactic-link{grid-column:1/-1}
+  .boss-card .boss-track{margin-top:5px;height:7px}
+  .boss-card .boss-info{display:flex;justify-content:space-between;margin:1px 0 3px;font-size:9px}
+  .boss-card .boss-tactic-link{display:flex;align-items:center;justify-content:space-between;width:calc(100% + 24px);margin:0 -12px;padding:7px 12px;font-size:10px;line-height:1.2;min-height:0}
+  .battle-boss-strip{display:grid;grid-template-columns:minmax(0,1fr);overflow:visible;gap:7px;padding:0}
+  .battle-boss-strip>button{min-width:0;width:100%;padding:7px 10px;gap:10px}
+  .mini-boss-art{width:37px;height:37px}
+  .mini-boss-data{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:2px 10px;flex:1}
+  .mini-boss-data strong{grid-column:2;grid-row:1/3;font-size:16px}
+  .mini-boss-data small{grid-column:1}
+  .db-tabs{gap:2px;width:100%}
+  .db-tabs button{font-size:10px;padding:9px 2px;letter-spacing:-.5px}
+  .guild-roster th,.guild-roster td,.guild-hall th,.guild-hall td{font-size:10px;padding:9px 4px}
+  .guild-roster th:first-child{width:18%}
+  .guild-roster th:nth-child(2){width:23%}
+  .guild-roster th .textbutton{font-size:11px}
+  .guild-roster .uid{font-size:9px;letter-spacing:-.4px}
+  .guild-roster td small,.member-state{font-size:8px}
+  .guild-hall th:first-child{width:19%}
+  .guild-hall th:last-child{width:16%}
+  .guild-hall .medal-count{padding:3px;font-size:10px}
+  .dashboard-controls{padding:12px 10px;gap:8px}
+  .dashboard-controls .tabset{width:100%;display:flex}
+  .dashboard-controls .tabset button{flex:1;min-width:0;padding:8px 4px;font-size:11px}
+  .dashboard-controls>.pill{font-size:10px}
+  .dashboard-table th,.dashboard-table td{padding:6px 3px!important;font-size:10px}
+  .dashboard-table thead th{font-size:10px;line-height:1.3}
+  .dashboard-table th:first-child{width:19%}
+  .dashboard-table th:nth-last-child(-n+3){width:9%}
+  .dashboard-table .textbutton{font-size:10px}
+  .dashboard-table .attack-slot{height:39px;gap:2px;padding:3px 2px}
+  .dashboard-table .boss-chip{font-size:9px;padding:5px 0;letter-spacing:-.6px;border-radius:4px}
+  .tw-layout{grid-template-columns:minmax(0,1fr)}
+  .tw-grid .tw-text-cell>[data-tw-text]{font-size:14px!important}
+  .tw-group-tabs .tw-carry-controls{grid-template-columns:minmax(0,1fr) auto auto;gap:6px;width:100%;padding:7px 0;border-top:1px solid #ded2e8}
+  .tw-group-tabs .tw-carry-controls .field{gap:5px}
+  .tw-group-tabs .tw-carry-controls .field label{font-size:10px;line-height:1.3;white-space:normal}
+  .tw-group-tabs .tw-carry-controls .field input{width:64px;min-width:64px}
+  .tw-group-tabs .tw-carry-controls>.btn{font-size:10px;padding:7px}
+  .tw-group-tabs .tw-carry-controls kbd{display:none}
+  .tw-character-slot input:not([type=file]){text-align:center;font-size:10px}
+  .tw-boss-banner>div{min-width:0}
+  .tw-boss-banner>div>strong{overflow-wrap:anywhere}
+  .tw-boss-banner .tw-boss-hp strong{font-size:15px}
+  .datatable.profile-boss-stats{min-width:0;table-layout:fixed}
+  .profile-boss-stats th,.profile-boss-stats td{font-size:9px;white-space:normal;overflow-wrap:anywhere;padding:9px 4px}
+  .profile-boss-stats th:first-child{width:13%}
+  .profile-boss-stats th:nth-child(2){width:11%}
+  .profile-boss-stats .boss-chip{font-size:10px;padding:4px}
+}

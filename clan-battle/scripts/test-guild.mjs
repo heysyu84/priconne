@@ -1,0 +1,33 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import {ensureRoster} from '../public/roster.mjs';
+import {applySourceData,tenureMonths,dashboardDay,bossTopStats} from '../public/guild-model.mjs';
+import {replayMonth,contribution} from '../public/engine.mjs';
+const html=fs.readFileSync(new URL('../public/clan-shell.html',import.meta.url),'utf8');
+const seed=JSON.parse(html.match(/<script id="seed-data" type="application\/json">([\s\S]*?)<\/script>/)[1]);
+const source=JSON.parse(fs.readFileSync(new URL('../public/guild-source.json',import.meta.url),'utf8'));
+ensureRoster(seed,seed.rosterSeed);const original=seed.months['2026-09'].events.map(e=>[e.seq,e.day,e.damage,e.bonus,e.after]);
+assert.equal(applySourceData(seed,source),true);const counts={roster:seed.roster.length,history:seed.clanHistory.length,hall:seed.hallOfFame.length};
+for(const r of source.roster){const p=seed.roster.find(p=>r.uid?p.uid===r.uid:p.name===r.name);assert.ok(p,r.name);assert.equal(p.joinedAt,r.joinedMonth);if(p.status==='left')assert.equal(p.leftAt,r.leftMonth);assert.equal(tenureMonths(p,'2026-10'),r.sourceMonths,p.name);}
+assert.equal(counts.history,87);assert.equal(counts.hall,41);assert.equal(seed.months['2026-10'].recommendations.length,18);
+assert.equal(seed.clanHistory.filter(h=>h.memberCount!==null).length,27);assert.equal(seed.clanHistory.filter(h=>h.archiveUrl).length,78);
+const json=JSON.stringify(seed);assert.equal(applySourceData(seed,source),false);assert.equal(JSON.stringify(seed),json);
+const september=seed.months['2026-09'];replayMonth(september);assert.deepEqual(september.events.map(e=>[e.seq,e.day,e.damage,e.bonus,e.after]),original);
+const negative=september.events.filter(e=>Number(e.bonus)<0);assert.equal(negative.length,10);assert.equal(contribution(negative[0],september),2250000);
+assert.equal(tenureMonths({periods:[{joined:'2021-05',left:'2021-05'}]},'2026-10'),1);
+assert.equal(tenureMonths({periods:[{joined:'2021-05',left:'2021-07'},{joined:'2023-01',left:'2023-01'}]},'2026-10'),4);
+assert.equal(tenureMonths({periods:[{joined:'2021-05',left:'2021-07'},{joined:'2021-07',left:'2021-08'}]}),4);
+const month=structuredClone(seed.months['2026-10']);month.events=[];month.dayBreaks=[];month.options.autoContribution=false;
+const memberId=month.memberIds[0];
+for(let i=0;i<6;i++)month.events.push({id:'auto-'+i,seq:i+1,day:1,boss:i%5+1,memberId,member:'자동 검증',carry:i%2===1,damage:0,damageMode:'max',bonus:0});
+replayMonth(month);assert.ok(month.events.every(e=>e.kill));assert.equal(month.events[0].damage,12000000);assert.equal(contribution(month.events[0],month),15750000);assert.equal(contribution(month.events[1],month),15750000);
+const dash=dashboardDay(month,memberId,1);assert.equal(dash.used,3);assert.equal(dash.pending,0);assert.equal(dash.remaining,0);assert.ok(dash.slots.every(s=>s.carry));
+month.dayBreaks.push({id:'d2',afterSeq:6,nextDay:2});month.events.push({id:'next-day',seq:7,day:1,boss:1,memberId,member:'자동 검증',carry:false,damage:1});replayMonth(month);assert.equal(month.events.at(-1).day,2);
+assert.equal(dashboardDay(month,memberId,2).used,1);
+month.events=Array.from({length:12},(_,i)=>({id:'sample'+i,seq:i+1,stage:4,boss:1,damage:10000001+i*10000,actual:10000001+i*10000,memberId:'user'+(i%3),member:'유저'+(i%3)}));
+const top=bossTopStats(month,1);assert.equal(top.samples.length,10);assert.equal(top.mean,10065000);assert.equal(top.corrected,10065000*.95);
+console.log(`PASS: source 128 members, ${counts.history} months, ${counts.hall} hall members, 18 combos, 27 headcounts, tenure/rejoin periods, half-hit +5%, negative transcend bonuses, daily boundaries and 3+3 dashboard`);
+
+month.events=month.events.slice(0,5);const partial=bossTopStats(month,1);assert.equal(partial.samples.length,5);assert.equal(partial.mean,10020000);
+const early=structuredClone(seed.months['2026-10']);early.options.autoContribution=true;early.levels=[{stage:4,start:1,end:999,count:999}];early.options.startStage=4;early.events=Array.from({length:5},(_,i)=>({id:'early'+i,seq:i+1,day:1,boss:1,memberId:'m'+i,member:'검증'+i,damage:10000001+i*10000,carry:false,bonus:0}));early.dayBreaks=[];replayMonth(early);assert.equal(early.bosses[0].contributionSampleCount,5);assert.equal(early.bosses[0].contribution[4],30000000/(10020000*.95));
+console.log('PASS: early-stage contribution uses 5-hit mean before ten samples');

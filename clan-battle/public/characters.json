@@ -1,0 +1,3014 @@
+{
+  "version": 1,
+  "portraitSource": "[2026-10] 냥냥클랜 배틀로그시트.xlsx — 데이터 시트에 내장된 초상화",
+  "variantSource": "https://github.com/PurikoneKrSemi/PurikoneKrSheet/tree/main/images",
+  "characters": [
+    {
+      "id": "sheet-row-302",
+      "name": "게무기",
+      "aliases": [],
+      "portrait": "/images/characters/unit-row-302.png",
+      "byStar": {
+        "3": "/images/characters/sheet-row-302-star-3.png",
+        "4": "/images/characters/sheet-row-302-star-4.png",
+        "5": "/images/characters/sheet-row-302-star-5.png"
+      },
+      "source": {
+        "type": "xlsx-embedded",
+        "sheet": "데이터",
+        "nameCell": "A302",
+        "imageCell": "B302",
+        "anchor": {
+          "row": 301,
+          "column": 1
+        },
+        "media": "xl/media/image1.png",
+        "sha256": "7f4038d548fb3d920ae6b7efdf01a96b378030b0569c775b370f523e85c37020"
+      },
+      "dimensions": [
+        96,
+        96
+      ],
+      "variants": {
+        "3": {
+          "path": "/images/characters/sheet-row-302-star-3.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EA%B2%8C%EB%AC%B4%EA%B8%B03.png",
+          "bytes": 32522,
+          "sha256": "82b4c645d95dfa42a55cd1239e5c4137c2ac27f471218726055ac915b568b8fc"
+        },
+        "4": {
+          "path": "/images/characters/sheet-row-302-star-4.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EA%B2%8C%EB%AC%B4%EA%B8%B04.png",
+          "bytes": 32524,
+          "sha256": "b605f8b49715532152ce22f94384a57c36f61136b7fd8e76e1c4715613ae1659"
+        },
+        "5": {
+          "path": "/images/characters/sheet-row-302-star-5.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EA%B2%8C%EB%AC%B4%EA%B8%B05.png",
+          "bytes": 32636,
+          "sha256": "e0d15f776dd518e16988765bfc8013ff38b5ca83862b69b6cf2d4346a1d1f8f5"
+        }
+      }
+    },
+    {
+      "id": "sheet-row-285",
+      "name": "그레이스",
+      "aliases": [],
+      "portrait": "/images/characters/unit-row-285.png",
+      "byStar": {
+        "3": "/images/characters/sheet-row-285-star-3.png",
+        "4": "/images/characters/sheet-row-285-star-4.png",
+        "5": "/images/characters/sheet-row-285-star-5.png"
+      },
+      "source": {
+        "type": "xlsx-embedded",
+        "sheet": "데이터",
+        "nameCell": "A285",
+        "imageCell": "B285",
+        "anchor": {
+          "row": 284,
+          "column": 1
+        },
+        "media": "xl/media/image315.png",
+        "sha256": "f3e0deaefe5475f878695c1e4c7eab2955a08560266cbddae715f08013229d69"
+      },
+      "dimensions": [
+        96,
+        96
+      ],
+      "variants": {
+        "3": {
+          "path": "/images/characters/sheet-row-285-star-3.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EA%B7%B8%EB%A0%88%EC%9D%B4%EC%8A%A43.png",
+          "bytes": 32205,
+          "sha256": "0e775d8dcf2dd9b3cdf97f837a0a3926892ff70abfd9adc3bddbe3a9912365f9"
+        },
+        "4": {
+          "path": "/images/characters/sheet-row-285-star-4.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EA%B7%B8%EB%A0%88%EC%9D%B4%EC%8A%A44.png",
+          "bytes": 32185,
+          "sha256": "3e540fc8755607a3c8c92079759bbf66274abd68e15b9fca5e0e095cd2bac682"
+        },
+        "5": {
+          "path": "/images/characters/sheet-row-285-star-5.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EA%B7%B8%EB%A0%88%EC%9D%B4%EC%8A%A45.png",
+          "bytes": 32486,
+          "sha256": "e96de3b0b112cef297813db5d4661e831daf6eba5ee7a8617b19b033b018fbf8"
+        }
+      }
+    },
+    {
+      "id": "sheet-row-92",
+      "name": "네네카",
+      "aliases": [],
+      "portrait": "/images/characters/unit-row-092.png",
+      "byStar": {
+        "3": "/images/characters/sheet-row-92-star-3.png",
+        "4": "/images/characters/sheet-row-92-star-4.png",
+        "5": "/images/characters/sheet-row-92-star-5.png"
+      },
+      "source": {
+        "type": "xlsx-embedded",
+        "sheet": "데이터",
+        "nameCell": "A92",
+        "imageCell": "B92",
+        "anchor": {
+          "row": 91,
+          "column": 1
+        },
+        "media": "xl/media/image116.png",
+        "sha256": "becba81410ffab3a074bf31c977dbe204e4da4d8559832a17ca83964a25c3b81"
+      },
+      "dimensions": [
+        96,
+        96
+      ],
+      "variants": {
+        "3": {
+          "path": "/images/characters/sheet-row-92-star-3.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EB%84%A4%EB%84%A4%EC%B9%B43.png",
+          "bytes": 35802,
+          "sha256": "ac481a53b706013b61530ca4a6a0812512cd4acdf4d665d961838decab974219"
+        },
+        "4": {
+          "path": "/images/characters/sheet-row-92-star-4.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EB%84%A4%EB%84%A4%EC%B9%B44.png",
+          "bytes": 35806,
+          "sha256": "4e38aff14c6453f5db2c0ea49baa36180bd3fb1100c663e00eed1de013377a4f"
+        },
+        "5": {
+          "path": "/images/characters/sheet-row-92-star-5.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EB%84%A4%EB%84%A4%EC%B9%B45.png",
+          "bytes": 35950,
+          "sha256": "be24bd51169d145be22cbd05e9a576d8dead175711564bfb24717c1fa30720ba"
+        }
+      }
+    },
+    {
+      "id": "sheet-row-265",
+      "name": "네피네라",
+      "aliases": [],
+      "portrait": "/images/characters/unit-row-265.png",
+      "byStar": {},
+      "source": {
+        "type": "xlsx-embedded",
+        "sheet": "데이터",
+        "nameCell": "A265",
+        "imageCell": "B265",
+        "anchor": {
+          "row": 264,
+          "column": 1
+        },
+        "media": "xl/media/image272.png",
+        "sha256": "420b6ee09eee8bfcbee9c3a9988a99b8569384e174fb52dd2c70dc481c56bbb2"
+      },
+      "dimensions": [
+        96,
+        96
+      ]
+    },
+    {
+      "id": "sheet-row-263",
+      "name": "드마호",
+      "aliases": [],
+      "portrait": "/images/characters/unit-row-263.png",
+      "byStar": {
+        "3": "/images/characters/sheet-row-263-star-3.png",
+        "4": "/images/characters/sheet-row-263-star-4.png",
+        "5": "/images/characters/sheet-row-263-star-5.png"
+      },
+      "source": {
+        "type": "xlsx-embedded",
+        "sheet": "데이터",
+        "nameCell": "A263",
+        "imageCell": "B263",
+        "anchor": {
+          "row": 262,
+          "column": 1
+        },
+        "media": "xl/media/image228.png",
+        "sha256": "49bcc45a9fd6a26e2026bca098554dcca31cd3f7e7f4ad244a38d6668a6620c1"
+      },
+      "dimensions": [
+        96,
+        96
+      ],
+      "variants": {
+        "3": {
+          "path": "/images/characters/sheet-row-263-star-3.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EB%93%9C%EB%A7%88%ED%98%B83.png",
+          "bytes": 34880,
+          "sha256": "e81855d9ae3605eec537efb623064820ae4863cb9902bc8a03235d052507adb6"
+        },
+        "4": {
+          "path": "/images/characters/sheet-row-263-star-4.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EB%93%9C%EB%A7%88%ED%98%B84.png",
+          "bytes": 34871,
+          "sha256": "c5051db8c621c5ddd2b560ab5c4e31273b3178c81e12eab81f594bc055e06596"
+        },
+        "5": {
+          "path": "/images/characters/sheet-row-263-star-5.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EB%93%9C%EB%A7%88%ED%98%B85.png",
+          "bytes": 34967,
+          "sha256": "63efbe998b1578130235fc3c37c2d70eb841ff4ec17af6f26ab26ca14ea6b029"
+        }
+      }
+    },
+    {
+      "id": "sheet-row-125",
+      "name": "라비",
+      "aliases": [],
+      "portrait": "/images/characters/unit-row-125.png",
+      "byStar": {
+        "3": "/images/characters/sheet-row-125-star-3.png",
+        "4": "/images/characters/sheet-row-125-star-4.png",
+        "5": "/images/characters/sheet-row-125-star-5.png"
+      },
+      "source": {
+        "type": "xlsx-embedded",
+        "sheet": "데이터",
+        "nameCell": "A125",
+        "imageCell": "B125",
+        "anchor": {
+          "row": 124,
+          "column": 1
+        },
+        "media": "xl/media/image29.png",
+        "sha256": "8371b65021b650e5b5378205bdccc58ab60b309b763885b5a709386a5fd2b45c"
+      },
+      "dimensions": [
+        96,
+        96
+      ],
+      "variants": {
+        "3": {
+          "path": "/images/characters/sheet-row-125-star-3.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EB%9D%BC%EB%B9%843.png",
+          "bytes": 35225,
+          "sha256": "0f7af156e2be21df1421bd38e0ebed9046699dc629bbfa0d99fccc7c23280bd4"
+        },
+        "4": {
+          "path": "/images/characters/sheet-row-125-star-4.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EB%9D%BC%EB%B9%844.png",
+          "bytes": 35215,
+          "sha256": "3eb3743dfa7762ba912c49a0476aabcde377968982d619ab24599c65cfcd357a"
+        },
+        "5": {
+          "path": "/images/characters/sheet-row-125-star-5.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EB%9D%BC%EB%B9%845.png",
+          "bytes": 35350,
+          "sha256": "d1d89674a61fb1fafd11ee8e53ae939a332b7d8f361cba1c88791a19b3732d63"
+        }
+      }
+    },
+    {
+      "id": "sheet-row-225",
+      "name": "레오리",
+      "aliases": [],
+      "portrait": "/images/characters/unit-row-225.png",
+      "byStar": {
+        "3": "/images/characters/sheet-row-225-star-3.png",
+        "4": "/images/characters/sheet-row-225-star-4.png",
+        "5": "/images/characters/sheet-row-225-star-5.png"
+      },
+      "source": {
+        "type": "xlsx-embedded",
+        "sheet": "데이터",
+        "nameCell": "A225",
+        "imageCell": "B225",
+        "anchor": {
+          "row": 224,
+          "column": 1
+        },
+        "media": "xl/media/image188.png",
+        "sha256": "e1d88f5958f4736b3c10f38f27c7be063c667b58d6a1fff60f34ab39f69df465"
+      },
+      "dimensions": [
+        96,
+        96
+      ],
+      "variants": {
+        "3": {
+          "path": "/images/characters/sheet-row-225-star-3.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EB%A0%88%EC%98%A4%EB%A6%AC3.png",
+          "bytes": 32865,
+          "sha256": "6bd7a63d24d1cda238f687f210cb2cf7f0e0e6c9ceb750ea83d3df33bf2d54f4"
+        },
+        "4": {
+          "path": "/images/characters/sheet-row-225-star-4.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EB%A0%88%EC%98%A4%EB%A6%AC4.png",
+          "bytes": 32855,
+          "sha256": "ac9035f7d34544335ac4c9b3baca779f0b5fcf66c3e421ea6f9dd8d4e3155d9b"
+        },
+        "5": {
+          "path": "/images/characters/sheet-row-225-star-5.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EB%A0%88%EC%98%A4%EB%A6%AC5.png",
+          "bytes": 33013,
+          "sha256": "c608bdf67214666bf20d558cfb722212be9516a6d3dcc7f9e98670882b3329d6"
+        }
+      }
+    },
+    {
+      "id": "sheet-row-299",
+      "name": "루이즈",
+      "aliases": [],
+      "portrait": "/images/characters/unit-row-299.png",
+      "byStar": {},
+      "source": {
+        "type": "xlsx-embedded",
+        "sheet": "데이터",
+        "nameCell": "A299",
+        "imageCell": "B299",
+        "anchor": {
+          "row": 298,
+          "column": 1
+        },
+        "media": "xl/media/image267.png",
+        "sha256": "b98750e0e994929bd72bbdb38cff36d9319fa846aaa98ede23e373933c7cc104"
+      },
+      "dimensions": [
+        96,
+        96
+      ]
+    },
+    {
+      "id": "sheet-row-175",
+      "name": "리리컬",
+      "aliases": [],
+      "portrait": "/images/characters/unit-row-175.png",
+      "byStar": {
+        "3": "/images/characters/sheet-row-175-star-3.png",
+        "4": "/images/characters/sheet-row-175-star-4.png",
+        "5": "/images/characters/sheet-row-175-star-5.png"
+      },
+      "source": {
+        "type": "xlsx-embedded",
+        "sheet": "데이터",
+        "nameCell": "A175",
+        "imageCell": "B175",
+        "anchor": {
+          "row": 174,
+          "column": 1
+        },
+        "media": "xl/media/image18.png",
+        "sha256": "c0ac78ad5b62df90996a59d618c9c4c1b058ad1880ed9a94c7aabae257533814"
+      },
+      "dimensions": [
+        96,
+        96
+      ],
+      "variants": {
+        "3": {
+          "path": "/images/characters/sheet-row-175-star-3.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EB%A6%AC%EB%A6%AC%EC%BB%AC3.png",
+          "bytes": 38296,
+          "sha256": "dc37eacb3b2b64400088ba0d0581f3531679a826c878121c2e7a8f1a748581fa"
+        },
+        "4": {
+          "path": "/images/characters/sheet-row-175-star-4.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EB%A6%AC%EB%A6%AC%EC%BB%AC4.png",
+          "bytes": 38283,
+          "sha256": "3643fbc859eb40423789380a9e4886142541acb84e3263f7776eb2c2e6b385d0"
+        },
+        "5": {
+          "path": "/images/characters/sheet-row-175-star-5.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EB%A6%AC%EB%A6%AC%EC%BB%AC5.png",
+          "bytes": 38414,
+          "sha256": "ab6edc03fcb87fbeaa558534d270e63842618c0d2a5f8e18e4519a42527879f8"
+        }
+      }
+    },
+    {
+      "id": "sheet-row-277",
+      "name": "린드",
+      "aliases": [],
+      "portrait": "/images/characters/unit-row-277.png",
+      "byStar": {
+        "3": "/images/characters/sheet-row-277-star-3.png",
+        "4": "/images/characters/sheet-row-277-star-4.png",
+        "5": "/images/characters/sheet-row-277-star-5.png"
+      },
+      "source": {
+        "type": "xlsx-embedded",
+        "sheet": "데이터",
+        "nameCell": "A277",
+        "imageCell": "B277",
+        "anchor": {
+          "row": 276,
+          "column": 1
+        },
+        "media": "xl/media/image276.png",
+        "sha256": "bbe89d4dfa4365c8e0d59b90b36a2b38cec1bdea5b129cfc95c553c5e29585e5"
+      },
+      "dimensions": [
+        96,
+        96
+      ],
+      "variants": {
+        "3": {
+          "path": "/images/characters/sheet-row-277-star-3.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EB%A6%B0%EB%93%9C3.png",
+          "bytes": 32407,
+          "sha256": "92f007dd6ed921b9cba3c33edcbcc2c9bb7ec170123a4cd900dd14346d325823"
+        },
+        "4": {
+          "path": "/images/characters/sheet-row-277-star-4.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EB%A6%B0%EB%93%9C4.png",
+          "bytes": 32400,
+          "sha256": "21349c0c9e0180fd7854e9047e047b8219f0e73a12ec11dbc04f9c744ee5ad08"
+        },
+        "5": {
+          "path": "/images/characters/sheet-row-277-star-5.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EB%A6%B0%EB%93%9C5.png",
+          "bytes": 32568,
+          "sha256": "5b20d6e9be8021fdfb8efa5391001626fab09e69d1982b59c6e6f1c130106202"
+        }
+      }
+    },
+    {
+      "id": "sheet-row-25",
+      "name": "마코토",
+      "aliases": [],
+      "portrait": "/images/characters/unit-row-025.png",
+      "byStar": {
+        "6": "/images/characters/sheet-row-25-star-6.png"
+      },
+      "source": {
+        "type": "xlsx-embedded",
+        "sheet": "데이터",
+        "nameCell": "A25",
+        "imageCell": "B25",
+        "anchor": {
+          "row": 24,
+          "column": 1
+        },
+        "media": "xl/media/image35.png",
+        "sha256": "412632d307824869cc2c9b3cb128dea81f4e2feca9d2eb72794f54e83295a43c"
+      },
+      "dimensions": [
+        96,
+        96
+      ],
+      "variants": {
+        "6": {
+          "path": "/images/characters/sheet-row-25-star-6.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EB%A7%88%EC%BD%94%ED%86%A06.png",
+          "bytes": 34797,
+          "sha256": "6c834e15949dbae0556ac298b56e77dbb496f2f2b04a424591d6f0c90865cbcf"
+        }
+      }
+    },
+    {
+      "id": "sheet-row-288",
+      "name": "메두사",
+      "aliases": [],
+      "portrait": "/images/characters/unit-row-288.png",
+      "byStar": {
+        "3": "/images/characters/sheet-row-288-star-3.png",
+        "4": "/images/characters/sheet-row-288-star-4.png",
+        "5": "/images/characters/sheet-row-288-star-5.png"
+      },
+      "source": {
+        "type": "xlsx-embedded",
+        "sheet": "데이터",
+        "nameCell": "A288",
+        "imageCell": "B288",
+        "anchor": {
+          "row": 287,
+          "column": 1
+        },
+        "media": "xl/media/image288.png",
+        "sha256": "8d4c57f83acdd18fd2bf5c9d45641615ea366a7f8f9285a0f2b18a7ebfbd5a76"
+      },
+      "dimensions": [
+        96,
+        96
+      ],
+      "variants": {
+        "3": {
+          "path": "/images/characters/sheet-row-288-star-3.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EB%A9%94%EB%91%90%EC%82%AC3.png",
+          "bytes": 33452,
+          "sha256": "b0b5ca02cf31dd766c84d26b4b3901c0026f693143260692d02fe179cd0dafe0"
+        },
+        "4": {
+          "path": "/images/characters/sheet-row-288-star-4.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EB%A9%94%EB%91%90%EC%82%AC4.png",
+          "bytes": 33442,
+          "sha256": "e996e83e74fbfcbe7c07bc0eb145449ebc6c5525950976147d0578a0e73dcf98"
+        },
+        "5": {
+          "path": "/images/characters/sheet-row-288-star-5.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EB%A9%94%EB%91%90%EC%82%AC5.png",
+          "bytes": 33640,
+          "sha256": "bf7de89cf33626229839e8efafb23ec3af85402b75ebd3820062158572432112"
+        }
+      }
+    },
+    {
+      "id": "sheet-row-220",
+      "name": "미소라",
+      "aliases": [],
+      "portrait": "/images/characters/unit-row-220.png",
+      "byStar": {
+        "3": "/images/characters/sheet-row-220-star-3.png",
+        "4": "/images/characters/sheet-row-220-star-4.png",
+        "5": "/images/characters/sheet-row-220-star-5.png"
+      },
+      "source": {
+        "type": "xlsx-embedded",
+        "sheet": "데이터",
+        "nameCell": "A220",
+        "imageCell": "B220",
+        "anchor": {
+          "row": 219,
+          "column": 1
+        },
+        "media": "xl/media/image225.png",
+        "sha256": "60334b3f3582247619cc8c90e65f23a46a24c7742d5845a2b247afa8ed437866"
+      },
+      "dimensions": [
+        96,
+        96
+      ],
+      "variants": {
+        "3": {
+          "path": "/images/characters/sheet-row-220-star-3.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EB%AF%B8%EC%86%8C%EB%9D%BC3.png",
+          "bytes": 34930,
+          "sha256": "d2d6cd27079785bd56ca2520689e42c84555ee102e5b19eaa797531deb09dede"
+        },
+        "4": {
+          "path": "/images/characters/sheet-row-220-star-4.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EB%AF%B8%EC%86%8C%EB%9D%BC4.png",
+          "bytes": 34934,
+          "sha256": "1da9885cff4d42b5e97d26e81933071e312410f590190d56d7a2c3708aa29ffb"
+        },
+        "5": {
+          "path": "/images/characters/sheet-row-220-star-5.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EB%AF%B8%EC%86%8C%EB%9D%BC5.png",
+          "bytes": 35060,
+          "sha256": "35ee570ee9c0733d9c0dc6aeb23c9db0f64aa97a793f0d62376b69a9562bff18"
+        }
+      }
+    },
+    {
+      "id": "sheet-row-298",
+      "name": "바이올렛",
+      "aliases": [],
+      "portrait": "/images/characters/unit-row-298.png",
+      "byStar": {
+        "3": "/images/characters/sheet-row-298-star-3.png",
+        "4": "/images/characters/sheet-row-298-star-4.png",
+        "5": "/images/characters/sheet-row-298-star-5.png"
+      },
+      "source": {
+        "type": "xlsx-embedded",
+        "sheet": "데이터",
+        "nameCell": "A298",
+        "imageCell": "B298",
+        "anchor": {
+          "row": 297,
+          "column": 1
+        },
+        "media": "xl/media/image263.png",
+        "sha256": "ce89927b549ff9c300838d0282289fc1c77e4d41f8bd2288b801093c6ab5a9fb"
+      },
+      "dimensions": [
+        96,
+        96
+      ],
+      "variants": {
+        "3": {
+          "path": "/images/characters/sheet-row-298-star-3.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EB%B0%94%EC%9D%B4%EC%98%AC%EB%A0%9B3.png",
+          "bytes": 31646,
+          "sha256": "8e535abd90f4c8495c976d685de459390174c34b42b7481f6a53ffd1b8e61375"
+        },
+        "4": {
+          "path": "/images/characters/sheet-row-298-star-4.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EB%B0%94%EC%9D%B4%EC%98%AC%EB%A0%9B4.png",
+          "bytes": 31627,
+          "sha256": "b82e39487927af76fbf6410299b7c9712d587f22e5524cf0fd450a5defb7cba9"
+        },
+        "5": {
+          "path": "/images/characters/sheet-row-298-star-5.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EB%B0%94%EC%9D%B4%EC%98%AC%EB%A0%9B5.png",
+          "bytes": 31745,
+          "sha256": "49a43b597e78575d82eade4cac44a59f0772baebd1cbc7a53c5b0117695ca89e"
+        }
+      }
+    },
+    {
+      "id": "sheet-row-193",
+      "name": "밤피",
+      "aliases": [],
+      "portrait": "/images/characters/unit-row-193.png",
+      "byStar": {
+        "3": "/images/characters/sheet-row-193-star-3.png",
+        "4": "/images/characters/sheet-row-193-star-4.png",
+        "5": "/images/characters/sheet-row-193-star-5.png",
+        "6": "/images/characters/sheet-row-193-star-6.png"
+      },
+      "source": {
+        "type": "xlsx-embedded",
+        "sheet": "데이터",
+        "nameCell": "A193",
+        "imageCell": "B193",
+        "anchor": {
+          "row": 192,
+          "column": 1
+        },
+        "media": "xl/media/image231.png",
+        "sha256": "d33da731a1f2be650fb492f64da2ff14680d72e97b5b2f743c82f162f6e9a2ec"
+      },
+      "dimensions": [
+        96,
+        96
+      ],
+      "variants": {
+        "3": {
+          "path": "/images/characters/sheet-row-193-star-3.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EB%B0%A4%ED%94%BC3.png",
+          "bytes": 33493,
+          "sha256": "b88b126a09ec3ce32087e8acd058b67438636c2aa933116ba5c2be9f5ee3704b"
+        },
+        "4": {
+          "path": "/images/characters/sheet-row-193-star-4.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EB%B0%A4%ED%94%BC4.png",
+          "bytes": 33481,
+          "sha256": "6d8ff8a01e22f5d93019cd9e7f4e6a4c24e918b7297d7725454f039092ebf17c"
+        },
+        "5": {
+          "path": "/images/characters/sheet-row-193-star-5.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EB%B0%A4%ED%94%BC5.png",
+          "bytes": 33585,
+          "sha256": "c6a672538a9fa038908f78a8f7bc165f925f768861045e9fa37d143f5820bc44"
+        },
+        "6": {
+          "path": "/images/characters/sheet-row-193-star-6.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EB%B0%A4%ED%94%BC6.png",
+          "bytes": 28551,
+          "sha256": "dc3040bf72e73f443a47b82e25678ac2c81c8b54ca951198e6db0606ea398382"
+        }
+      }
+    },
+    {
+      "id": "sheet-row-262",
+      "name": "봄즈메",
+      "aliases": [],
+      "portrait": "/images/characters/unit-row-262.png",
+      "byStar": {
+        "3": "/images/characters/sheet-row-262-star-3.png",
+        "4": "/images/characters/sheet-row-262-star-4.png",
+        "5": "/images/characters/sheet-row-262-star-5.png"
+      },
+      "source": {
+        "type": "xlsx-embedded",
+        "sheet": "데이터",
+        "nameCell": "A262",
+        "imageCell": "B262",
+        "anchor": {
+          "row": 261,
+          "column": 1
+        },
+        "media": "xl/media/image278.png",
+        "sha256": "3fceb4a410f5f4f85a11b7b786a7fcd30e52a11bd01d80151ff5caf3dda17e87"
+      },
+      "dimensions": [
+        96,
+        96
+      ],
+      "variants": {
+        "3": {
+          "path": "/images/characters/sheet-row-262-star-3.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EB%B4%84%EC%A6%88%EB%A9%943.png",
+          "bytes": 36031,
+          "sha256": "a61cfa8dec8a8fcb80183d2c41742011ab9f5d7e7e6d1b314135d53bbf68965e"
+        },
+        "4": {
+          "path": "/images/characters/sheet-row-262-star-4.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EB%B4%84%EC%A6%88%EB%A9%944.png",
+          "bytes": 36016,
+          "sha256": "30143d9fa6db4dfd22513510135ab51e1f02d6f28d4b6263c0c2fc8a14c8644d"
+        },
+        "5": {
+          "path": "/images/characters/sheet-row-262-star-5.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EB%B4%84%EC%A6%88%EB%A9%945.png",
+          "bytes": 36143,
+          "sha256": "b84ababaa29628e4bd7a1ee36135612bfeeef11895b0b8b0c8e1003facfe1b0f"
+        }
+      }
+    },
+    {
+      "id": "sheet-row-297",
+      "name": "봉황",
+      "aliases": [],
+      "portrait": "/images/characters/unit-row-297.png",
+      "byStar": {
+        "3": "/images/characters/sheet-row-297-star-3.png",
+        "4": "/images/characters/sheet-row-297-star-4.png",
+        "5": "/images/characters/sheet-row-297-star-5.png"
+      },
+      "source": {
+        "type": "xlsx-embedded",
+        "sheet": "데이터",
+        "nameCell": "A297",
+        "imageCell": "B297",
+        "anchor": {
+          "row": 296,
+          "column": 1
+        },
+        "media": "xl/media/image297.png",
+        "sha256": "9334bdc2b2f494107440058425aa55afb82534abef1cefb0f0b60022b5ac3a23"
+      },
+      "dimensions": [
+        96,
+        96
+      ],
+      "variants": {
+        "3": {
+          "path": "/images/characters/sheet-row-297-star-3.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EB%B4%89%ED%99%A93.png",
+          "bytes": 34301,
+          "sha256": "4dd7d8065fcac331d906bf2c95c6661d392f5242a5f8c4c6abad42d0509d2b9e"
+        },
+        "4": {
+          "path": "/images/characters/sheet-row-297-star-4.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EB%B4%89%ED%99%A94.png",
+          "bytes": 34275,
+          "sha256": "131a9b68329a8711f858b715658527600e524b9127d710cce4263b9410010862"
+        },
+        "5": {
+          "path": "/images/characters/sheet-row-297-star-5.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EB%B4%89%ED%99%A95.png",
+          "bytes": 34377,
+          "sha256": "6ca22de49e7c2a6d246aa1937178d6de58823fe124cfa4062d5b182a9c31876a"
+        }
+      }
+    },
+    {
+      "id": "sheet-row-278",
+      "name": "블룸",
+      "aliases": [],
+      "portrait": "/images/characters/unit-row-278.png",
+      "byStar": {
+        "3": "/images/characters/sheet-row-278-star-3.png",
+        "4": "/images/characters/sheet-row-278-star-4.png",
+        "5": "/images/characters/sheet-row-278-star-5.png"
+      },
+      "source": {
+        "type": "xlsx-embedded",
+        "sheet": "데이터",
+        "nameCell": "A278",
+        "imageCell": "B278",
+        "anchor": {
+          "row": 277,
+          "column": 1
+        },
+        "media": "xl/media/image302.png",
+        "sha256": "bd7b6d8899267e03def88162de622f3f807972f0da19fbba6366d2d521f19965"
+      },
+      "dimensions": [
+        96,
+        96
+      ],
+      "variants": {
+        "3": {
+          "path": "/images/characters/sheet-row-278-star-3.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EB%B8%94%EB%A3%B83.png",
+          "bytes": 33113,
+          "sha256": "f58f46b39197109d73db6b928c185eeac4c3441c1c9a73d25a02956228a6da4f"
+        },
+        "4": {
+          "path": "/images/characters/sheet-row-278-star-4.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EB%B8%94%EB%A3%B84.png",
+          "bytes": 33108,
+          "sha256": "777615d430d93c0bb145b0e7fb95ee1a90440364709312165839227443c076ef"
+        },
+        "5": {
+          "path": "/images/characters/sheet-row-278-star-5.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EB%B8%94%EB%A3%B85.png",
+          "bytes": 33265,
+          "sha256": "3216483356b36273b67705c22c3305bb62ef1c55fd03c6c18cfaa66cb644ab5f"
+        }
+      }
+    },
+    {
+      "id": "sheet-row-229",
+      "name": "비카라",
+      "aliases": [],
+      "portrait": "/images/characters/unit-row-229.png",
+      "byStar": {
+        "3": "/images/characters/sheet-row-229-star-3.png",
+        "4": "/images/characters/sheet-row-229-star-4.png",
+        "5": "/images/characters/sheet-row-229-star-5.png"
+      },
+      "source": {
+        "type": "xlsx-embedded",
+        "sheet": "데이터",
+        "nameCell": "A229",
+        "imageCell": "B229",
+        "anchor": {
+          "row": 228,
+          "column": 1
+        },
+        "media": "xl/media/image191.png",
+        "sha256": "fa853b8c487b3c3e56c5f94f50ffbe0c4bcccbf89271a7497d72d78ac08add7b"
+      },
+      "dimensions": [
+        96,
+        96
+      ],
+      "variants": {
+        "3": {
+          "path": "/images/characters/sheet-row-229-star-3.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EB%B9%84%EC%B9%B4%EB%9D%BC3.png",
+          "bytes": 34172,
+          "sha256": "625e01ce52bfd6d22a7330e382836277b09779124782aca53537a73bfff80e78"
+        },
+        "4": {
+          "path": "/images/characters/sheet-row-229-star-4.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EB%B9%84%EC%B9%B4%EB%9D%BC4.png",
+          "bytes": 34178,
+          "sha256": "688713a35fc894e08553c5b2f9e81923f491db1e499cbdfee9809ac9d2ea4285"
+        },
+        "5": {
+          "path": "/images/characters/sheet-row-229-star-5.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EB%B9%84%EC%B9%B4%EB%9D%BC5.png",
+          "bytes": 34299,
+          "sha256": "b00cc252c62e6788e73ad84febaaabb4cfd3503424d62696fe69b9edd7361a9a"
+        }
+      }
+    },
+    {
+      "id": "sheet-row-282",
+      "name": "성라엘",
+      "aliases": [],
+      "portrait": "/images/characters/unit-row-282.png",
+      "byStar": {
+        "3": "/images/characters/sheet-row-282-star-3.png",
+        "4": "/images/characters/sheet-row-282-star-4.png",
+        "5": "/images/characters/sheet-row-282-star-5.png"
+      },
+      "source": {
+        "type": "xlsx-embedded",
+        "sheet": "데이터",
+        "nameCell": "A282",
+        "imageCell": "B282",
+        "anchor": {
+          "row": 281,
+          "column": 1
+        },
+        "media": "xl/media/image307.png",
+        "sha256": "2e5db4a7c9765fa373f8dd776f5cde657c139240fc0f5935eab598e9a7be41fd"
+      },
+      "dimensions": [
+        96,
+        96
+      ],
+      "variants": {
+        "3": {
+          "path": "/images/characters/sheet-row-282-star-3.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%84%B1%EB%9D%BC%EC%97%983.png",
+          "bytes": 31465,
+          "sha256": "3fe50f3eec7c83d61654240175ce268787a1c3580c92e086b07eb67b5297f579"
+        },
+        "4": {
+          "path": "/images/characters/sheet-row-282-star-4.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%84%B1%EB%9D%BC%EC%97%984.png",
+          "bytes": 31459,
+          "sha256": "81afaf8a420104573bfc9c0f3801d0e83973ae082dbfa6c2a7ed4438c45e2340"
+        },
+        "5": {
+          "path": "/images/characters/sheet-row-282-star-5.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%84%B1%EB%9D%BC%EC%97%985.png",
+          "bytes": 31621,
+          "sha256": "e32694cdbccef67a4300a2fc70a5c0483ebd56f487e59a2eb0a767a6675534e3"
+        }
+      }
+    },
+    {
+      "id": "sheet-row-301",
+      "name": "소노",
+      "aliases": [],
+      "portrait": "/images/characters/unit-row-301.png",
+      "byStar": {
+        "3": "/images/characters/sheet-row-301-star-3.png",
+        "4": "/images/characters/sheet-row-301-star-4.png",
+        "5": "/images/characters/sheet-row-301-star-5.png"
+      },
+      "source": {
+        "type": "xlsx-embedded",
+        "sheet": "데이터",
+        "nameCell": "A301",
+        "imageCell": "B301",
+        "anchor": {
+          "row": 300,
+          "column": 1
+        },
+        "media": "xl/media/image268.png",
+        "sha256": "18f4f05576c6a51b6c6513b0e4929126ab11fe5986d79e4303281ea139cacc47"
+      },
+      "dimensions": [
+        96,
+        96
+      ],
+      "variants": {
+        "3": {
+          "path": "/images/characters/sheet-row-301-star-3.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%86%8C%EB%85%B83.png",
+          "bytes": 29620,
+          "sha256": "ea703a5a618570172a3e27f13f54f88e8a5123d1dd28ff5f0ee0e84659691baf"
+        },
+        "4": {
+          "path": "/images/characters/sheet-row-301-star-4.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%86%8C%EB%85%B84.png",
+          "bytes": 29610,
+          "sha256": "a0473f0c4b891f3b927cd28ac856b85066a676aab22ff4417b0129edb299e8d2"
+        },
+        "5": {
+          "path": "/images/characters/sheet-row-301-star-5.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%86%8C%EB%85%B85.png",
+          "bytes": 29686,
+          "sha256": "ee8188dab095e4610a82c9e67409c5cdc59fb051546196ee31e4f77c5610bb88"
+        }
+      }
+    },
+    {
+      "id": "sheet-row-308",
+      "name": "수네모네",
+      "aliases": [],
+      "portrait": "/images/characters/unit-row-308.png",
+      "byStar": {
+        "3": "/images/characters/sheet-row-308-star-3.png",
+        "4": "/images/characters/sheet-row-308-star-4.png",
+        "5": "/images/characters/sheet-row-308-star-5.png"
+      },
+      "source": {
+        "type": "xlsx-embedded",
+        "sheet": "데이터",
+        "nameCell": "A308",
+        "imageCell": "B308",
+        "anchor": {
+          "row": 307,
+          "column": 1
+        },
+        "media": "xl/media/image309.png",
+        "sha256": "b2c1459412d9fbf3cd02889686a5b06e929aea7127c3799909b3c27e3fafdd40"
+      },
+      "dimensions": [
+        96,
+        96
+      ],
+      "variants": {
+        "3": {
+          "path": "/images/characters/sheet-row-308-star-3.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%88%98%EB%84%A4%EB%AA%A8%EB%84%A43.png",
+          "bytes": 31679,
+          "sha256": "14734732adfd86f4dc3bb501266ad77ec44aeaf42e346932e21830e12253990d"
+        },
+        "4": {
+          "path": "/images/characters/sheet-row-308-star-4.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%88%98%EB%84%A4%EB%AA%A8%EB%84%A44.png",
+          "bytes": 31696,
+          "sha256": "e2d7c7c07a74101102796ad5a8b723c88413d228d389552ba6b70306b02cd345"
+        },
+        "5": {
+          "path": "/images/characters/sheet-row-308-star-5.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%88%98%EB%84%A4%EB%AA%A8%EB%84%A45.png",
+          "bytes": 31878,
+          "sha256": "8e57e8cdd6e54ea1dace5db5893b03e3f92f6baeb7f13010fec9f1a06c16d204"
+        }
+      }
+    },
+    {
+      "id": "sheet-row-266",
+      "name": "수네아",
+      "aliases": [],
+      "portrait": "/images/characters/unit-row-266.png",
+      "byStar": {
+        "3": "/images/characters/sheet-row-266-star-3.png",
+        "4": "/images/characters/sheet-row-266-star-4.png",
+        "5": "/images/characters/sheet-row-266-star-5.png"
+      },
+      "source": {
+        "type": "xlsx-embedded",
+        "sheet": "데이터",
+        "nameCell": "A266",
+        "imageCell": "B266",
+        "anchor": {
+          "row": 265,
+          "column": 1
+        },
+        "media": "xl/media/image321.png",
+        "sha256": "6a0eb7d01e55d0bcd1a63f810be95aafed9435ce1720dfd07af927d75ab4ebb6"
+      },
+      "dimensions": [
+        96,
+        96
+      ],
+      "variants": {
+        "3": {
+          "path": "/images/characters/sheet-row-266-star-3.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%88%98%EB%84%A4%EC%95%843.png",
+          "bytes": 36158,
+          "sha256": "2afe419f160ce9b4078fc62d9f896f5501df4bad54c1c785d822c5a823926712"
+        },
+        "4": {
+          "path": "/images/characters/sheet-row-266-star-4.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%88%98%EB%84%A4%EC%95%844.png",
+          "bytes": 36148,
+          "sha256": "fab17c026f698e9c0ba7961b6732019cdd5daf995fa0717152dd901accd20f06"
+        },
+        "5": {
+          "path": "/images/characters/sheet-row-266-star-5.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%88%98%EB%84%A4%EC%95%845.png",
+          "bytes": 36257,
+          "sha256": "ca95872eea27fee8eb534976d203c3619fb9d7fb9b2efac75ea04b362790469b"
+        }
+      }
+    },
+    {
+      "id": "sheet-row-306",
+      "name": "수레시아",
+      "aliases": [],
+      "portrait": "/images/characters/unit-row-306.png",
+      "byStar": {
+        "3": "/images/characters/sheet-row-306-star-3.png",
+        "4": "/images/characters/sheet-row-306-star-4.png",
+        "5": "/images/characters/sheet-row-306-star-5.png"
+      },
+      "source": {
+        "type": "xlsx-embedded",
+        "sheet": "데이터",
+        "nameCell": "A306",
+        "imageCell": "B306",
+        "anchor": {
+          "row": 305,
+          "column": 1
+        },
+        "media": "xl/media/image328.png",
+        "sha256": "b10335407ee3a1c73e77838e9b953244f8dbc3aaee9dcc8100477f29f77955c9"
+      },
+      "dimensions": [
+        96,
+        96
+      ],
+      "variants": {
+        "3": {
+          "path": "/images/characters/sheet-row-306-star-3.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%88%98%EB%A0%88%EC%8B%9C%EC%95%843.png",
+          "bytes": 32148,
+          "sha256": "2a47bd8dbc97b66dbfedc688cb4b6babb94823be959e6bd27ff2ff14bc2e336b"
+        },
+        "4": {
+          "path": "/images/characters/sheet-row-306-star-4.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%88%98%EB%A0%88%EC%8B%9C%EC%95%844.png",
+          "bytes": 32130,
+          "sha256": "f29304db87ae98242b1a89bf291bf03d2fad81a9283922805c8a37224f06eebb"
+        },
+        "5": {
+          "path": "/images/characters/sheet-row-306-star-5.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%88%98%EB%A0%88%EC%8B%9C%EC%95%845.png",
+          "bytes": 32303,
+          "sha256": "eeb4c6f15c45fdfcb0f8047d91655eb9dbed1486b45259528ab5771d6304d3ad"
+        }
+      }
+    },
+    {
+      "id": "sheet-row-119",
+      "name": "수루카",
+      "aliases": [],
+      "portrait": "/images/characters/unit-row-119.png",
+      "byStar": {
+        "3": "/images/characters/sheet-row-119-star-3.png",
+        "4": "/images/characters/sheet-row-119-star-4.png",
+        "5": "/images/characters/sheet-row-119-star-5.png"
+      },
+      "source": {
+        "type": "xlsx-embedded",
+        "sheet": "데이터",
+        "nameCell": "A119",
+        "imageCell": "B119",
+        "anchor": {
+          "row": 118,
+          "column": 1
+        },
+        "media": "xl/media/image83.png",
+        "sha256": "6719e9790e81992afda02a5612afb4931375f8642d4da58b33c75a7d6f7ce00a"
+      },
+      "dimensions": [
+        96,
+        96
+      ],
+      "variants": {
+        "3": {
+          "path": "/images/characters/sheet-row-119-star-3.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%88%98%EB%A3%A8%EC%B9%B43.png",
+          "bytes": 33400,
+          "sha256": "4ac366c89f59f51587070e4176e97005cfc0679e375218f25902d8047c8e6fa4"
+        },
+        "4": {
+          "path": "/images/characters/sheet-row-119-star-4.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%88%98%EB%A3%A8%EC%B9%B44.png",
+          "bytes": 33400,
+          "sha256": "6f40e42c79aad2aa0432c53e8838b5c929dc5091b7e70fe1f9c531d6e63c156d"
+        },
+        "5": {
+          "path": "/images/characters/sheet-row-119-star-5.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%88%98%EB%A3%A8%EC%B9%B45.png",
+          "bytes": 33532,
+          "sha256": "55cdcf0ecee6d85b49a4d5a792350238be0ba00786958cad70e1d891e764fc8a"
+        }
+      }
+    },
+    {
+      "id": "sheet-row-304",
+      "name": "수리스",
+      "aliases": [],
+      "portrait": "/images/characters/unit-row-304.png",
+      "byStar": {
+        "3": "/images/characters/sheet-row-304-star-3.png",
+        "4": "/images/characters/sheet-row-304-star-4.png",
+        "5": "/images/characters/sheet-row-304-star-5.png"
+      },
+      "source": {
+        "type": "xlsx-embedded",
+        "sheet": "데이터",
+        "nameCell": "A304",
+        "imageCell": "B304",
+        "anchor": {
+          "row": 303,
+          "column": 1
+        },
+        "media": "xl/media/image270.png",
+        "sha256": "0c21efa73deb18cdf16a8ed5228c50a6798b89e7bef2e318fd35c82cf7fac80b"
+      },
+      "dimensions": [
+        96,
+        96
+      ],
+      "variants": {
+        "3": {
+          "path": "/images/characters/sheet-row-304-star-3.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%88%98%EB%A6%AC%EC%8A%A43.png",
+          "bytes": 31202,
+          "sha256": "8857d576dc839b38e14f0662c00e18ba918c535740da7a9bb4c8108d2806bd62"
+        },
+        "4": {
+          "path": "/images/characters/sheet-row-304-star-4.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%88%98%EB%A6%AC%EC%8A%A44.png",
+          "bytes": 31193,
+          "sha256": "1239ee73e30ec73e35d34da5002d03ec95f32e4de58368959161915a419ec62e"
+        },
+        "5": {
+          "path": "/images/characters/sheet-row-304-star-5.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%88%98%EB%A6%AC%EC%8A%A45.png",
+          "bytes": 31435,
+          "sha256": "20b90b2e982c0dda96bf49b781c8ac401908cda68523961a36ab949f6255279a"
+        }
+      }
+    },
+    {
+      "id": "sheet-row-307",
+      "name": "수리아",
+      "aliases": [],
+      "portrait": "/images/characters/unit-row-307.png",
+      "byStar": {
+        "3": "/images/characters/sheet-row-307-star-3.png",
+        "4": "/images/characters/sheet-row-307-star-4.png",
+        "5": "/images/characters/sheet-row-307-star-5.png"
+      },
+      "source": {
+        "type": "xlsx-embedded",
+        "sheet": "데이터",
+        "nameCell": "A307",
+        "imageCell": "B307",
+        "anchor": {
+          "row": 306,
+          "column": 1
+        },
+        "media": "xl/media/image271.png",
+        "sha256": "4cd76ec673a095b3ce51085c9cfbc18c64ade9d6f69f7e1d4b7da13ecd070316"
+      },
+      "dimensions": [
+        96,
+        96
+      ],
+      "variants": {
+        "3": {
+          "path": "/images/characters/sheet-row-307-star-3.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%88%98%EB%A6%AC%EC%95%843.png",
+          "bytes": 33240,
+          "sha256": "fc2c0591ad4411af3f6e88db1f412b0d2d35a0faa55249370b468cbdc80b5149"
+        },
+        "4": {
+          "path": "/images/characters/sheet-row-307-star-4.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%88%98%EB%A6%AC%EC%95%844.png",
+          "bytes": 33234,
+          "sha256": "f025556700cab77b01bf37ebe240d05e7dc7d73c91bbdbd0d4009f07d7bcaab1"
+        },
+        "5": {
+          "path": "/images/characters/sheet-row-307-star-5.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%88%98%EB%A6%AC%EC%95%845.png",
+          "bytes": 33406,
+          "sha256": "58748570a9a6dd679c32fbfa4a7d0c369013059640a40849c3db465974516b0c"
+        }
+      }
+    },
+    {
+      "id": "sheet-row-156",
+      "name": "수리코",
+      "aliases": [],
+      "portrait": "/images/characters/unit-row-156.png",
+      "byStar": {
+        "3": "/images/characters/sheet-row-156-star-3.png",
+        "4": "/images/characters/sheet-row-156-star-4.png",
+        "5": "/images/characters/sheet-row-156-star-5.png"
+      },
+      "source": {
+        "type": "xlsx-embedded",
+        "sheet": "데이터",
+        "nameCell": "A156",
+        "imageCell": "B156",
+        "anchor": {
+          "row": 155,
+          "column": 1
+        },
+        "media": "xl/media/image130.png",
+        "sha256": "9dcf06a2eab59cbfb63a656e015f36f91b8175a738f061da0554d955e830bd4a"
+      },
+      "dimensions": [
+        96,
+        96
+      ],
+      "variants": {
+        "3": {
+          "path": "/images/characters/sheet-row-156-star-3.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%88%98%EB%A6%AC%EC%BD%943.png",
+          "bytes": 31085,
+          "sha256": "65a4a67a9639fcb98939e81bbd6bbcdd3dd513a6c61e34966beb4cb8b185abde"
+        },
+        "4": {
+          "path": "/images/characters/sheet-row-156-star-4.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%88%98%EB%A6%AC%EC%BD%944.png",
+          "bytes": 31068,
+          "sha256": "17f3636243048caa4b1ec30481f173413d39c10d8249f67cb2653c2da5ee2c27"
+        },
+        "5": {
+          "path": "/images/characters/sheet-row-156-star-5.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%88%98%EB%A6%AC%EC%BD%945.png",
+          "bytes": 31193,
+          "sha256": "e2c89581ecc6e7d6ffa88c6d0d05ab5e37c69d1749b25dbb756bd9be3f2a9260"
+        }
+      }
+    },
+    {
+      "id": "sheet-row-271",
+      "name": "수마레",
+      "aliases": [],
+      "portrait": "/images/characters/unit-row-271.png",
+      "byStar": {
+        "3": "/images/characters/sheet-row-271-star-3.png",
+        "4": "/images/characters/sheet-row-271-star-4.png",
+        "5": "/images/characters/sheet-row-271-star-5.png"
+      },
+      "source": {
+        "type": "xlsx-embedded",
+        "sheet": "데이터",
+        "nameCell": "A271",
+        "imageCell": "B271",
+        "anchor": {
+          "row": 270,
+          "column": 1
+        },
+        "media": "xl/media/image253.png",
+        "sha256": "d99eac9291211aba05c04c92636588030b980a1e4bd9cf780caff991f71b3f07"
+      },
+      "dimensions": [
+        96,
+        96
+      ],
+      "variants": {
+        "3": {
+          "path": "/images/characters/sheet-row-271-star-3.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%88%98%EB%A7%88%EB%A0%883.png",
+          "bytes": 32862,
+          "sha256": "bf45fa73ea71ac9ffdc8d7df4cb77061706dab8cc36c9b3a48b3196790dd857c"
+        },
+        "4": {
+          "path": "/images/characters/sheet-row-271-star-4.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%88%98%EB%A7%88%EB%A0%884.png",
+          "bytes": 32846,
+          "sha256": "53c35eaf1003a5a78874447757d75955bbe73e5096ce04a0f24edfc8cd361a0a"
+        },
+        "5": {
+          "path": "/images/characters/sheet-row-271-star-5.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%88%98%EB%A7%88%EB%A0%885.png",
+          "bytes": 32978,
+          "sha256": "88c5ccab02017bfb14e655a28540b5233196c587bd28cc32d04b615bc834b741"
+        }
+      }
+    },
+    {
+      "id": "sheet-row-89",
+      "name": "수마호",
+      "aliases": [],
+      "portrait": "/images/characters/unit-row-089.png",
+      "byStar": {
+        "3": "/images/characters/sheet-row-89-star-3.png",
+        "4": "/images/characters/sheet-row-89-star-4.png",
+        "5": "/images/characters/sheet-row-89-star-5.png"
+      },
+      "source": {
+        "type": "xlsx-embedded",
+        "sheet": "데이터",
+        "nameCell": "A89",
+        "imageCell": "B89",
+        "anchor": {
+          "row": 88,
+          "column": 1
+        },
+        "media": "xl/media/image61.png",
+        "sha256": "8e95abf1592a655e9eeea87961e5eb8c509948f3a80860e6afcfe34ed28240fb"
+      },
+      "dimensions": [
+        96,
+        96
+      ],
+      "variants": {
+        "3": {
+          "path": "/images/characters/sheet-row-89-star-3.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%88%98%EB%A7%88%ED%98%B83.png",
+          "bytes": 35373,
+          "sha256": "9991bb4d26d65239e0fda79b86809a339ec69050838010827a12b0c34fa8cf84"
+        },
+        "4": {
+          "path": "/images/characters/sheet-row-89-star-4.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%88%98%EB%A7%88%ED%98%B84.png",
+          "bytes": 35368,
+          "sha256": "47d3568cefda91f9b5fe6246b6691dfe1dc55df8727cc6690641b91907aa3b72"
+        },
+        "5": {
+          "path": "/images/characters/sheet-row-89-star-5.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%88%98%EB%A7%88%ED%98%B85.png",
+          "bytes": 35471,
+          "sha256": "22c3f486bf0dfe1d87f59ccb9d73cf5123ef094f77cd461a12e61600e874f97d"
+        }
+      }
+    },
+    {
+      "id": "sheet-row-269",
+      "name": "수메스",
+      "aliases": [],
+      "portrait": "/images/characters/unit-row-269.png",
+      "byStar": {
+        "3": "/images/characters/sheet-row-269-star-3.png",
+        "4": "/images/characters/sheet-row-269-star-4.png",
+        "5": "/images/characters/sheet-row-269-star-5.png"
+      },
+      "source": {
+        "type": "xlsx-embedded",
+        "sheet": "데이터",
+        "nameCell": "A269",
+        "imageCell": "B269",
+        "anchor": {
+          "row": 268,
+          "column": 1
+        },
+        "media": "xl/media/image234.png",
+        "sha256": "cdb50fe44294ce0eea5fadb686aa21d1878df150677d2f677be87a76f50e776b"
+      },
+      "dimensions": [
+        96,
+        96
+      ],
+      "variants": {
+        "3": {
+          "path": "/images/characters/sheet-row-269-star-3.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%88%98%EB%A9%94%EC%8A%A43.png",
+          "bytes": 34698,
+          "sha256": "172e7aced270f3907f210feae4a080fa0f7d55a7e89e70e23c96974689e49e16"
+        },
+        "4": {
+          "path": "/images/characters/sheet-row-269-star-4.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%88%98%EB%A9%94%EC%8A%A44.png",
+          "bytes": 34678,
+          "sha256": "e736aeb8d5dc37129468d8f1bc9861d74b2f9db42235074b799924b4ffaeb3fa"
+        },
+        "5": {
+          "path": "/images/characters/sheet-row-269-star-5.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%88%98%EB%A9%94%EC%8A%A45.png",
+          "bytes": 34832,
+          "sha256": "d10ec9c6c41e36152213b99ed7b03d36b56284a3393727be92d158455e31c149"
+        }
+      }
+    },
+    {
+      "id": "sheet-row-198",
+      "name": "수미미",
+      "aliases": [],
+      "portrait": "/images/characters/unit-row-198.png",
+      "byStar": {
+        "3": "/images/characters/sheet-row-198-star-3.png",
+        "4": "/images/characters/sheet-row-198-star-4.png",
+        "5": "/images/characters/sheet-row-198-star-5.png"
+      },
+      "source": {
+        "type": "xlsx-embedded",
+        "sheet": "데이터",
+        "nameCell": "A198",
+        "imageCell": "B198",
+        "anchor": {
+          "row": 197,
+          "column": 1
+        },
+        "media": "xl/media/image182.png",
+        "sha256": "053448fb810922e5b6af1b3af2a575e3864748c8cc5efa4b559b66cb7e940a1c"
+      },
+      "dimensions": [
+        96,
+        96
+      ],
+      "variants": {
+        "3": {
+          "path": "/images/characters/sheet-row-198-star-3.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%88%98%EB%AF%B8%EB%AF%B83.png",
+          "bytes": 36467,
+          "sha256": "ab04dde3c09f756633864fb26711e19a45a071a5fd77195e33f6231e4ea93fe0"
+        },
+        "4": {
+          "path": "/images/characters/sheet-row-198-star-4.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%88%98%EB%AF%B8%EB%AF%B84.png",
+          "bytes": 36444,
+          "sha256": "b3732b220c23d72f18be62d972363bee184db4a4df3925fd9858518e35dc9ffc"
+        },
+        "5": {
+          "path": "/images/characters/sheet-row-198-star-5.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%88%98%EB%AF%B8%EB%AF%B85.png",
+          "bytes": 36632,
+          "sha256": "9b441b1039bfa744bf0ec4588292f829a5922fffefe601dd2c5d20e938adf963"
+        }
+      }
+    },
+    {
+      "id": "sheet-row-305",
+      "name": "수셰피",
+      "aliases": [],
+      "portrait": "/images/characters/unit-row-305.png",
+      "byStar": {
+        "3": "/images/characters/sheet-row-305-star-3.png",
+        "4": "/images/characters/sheet-row-305-star-4.png",
+        "5": "/images/characters/sheet-row-305-star-5.png"
+      },
+      "source": {
+        "type": "xlsx-embedded",
+        "sheet": "데이터",
+        "nameCell": "A305",
+        "imageCell": "B305",
+        "anchor": {
+          "row": 304,
+          "column": 1
+        },
+        "media": "xl/media/image3.png",
+        "sha256": "1902920d5fcd19f73e7e4f67ed4602ec3c1ea3113ec1460495e6414e0424884a"
+      },
+      "dimensions": [
+        96,
+        96
+      ],
+      "variants": {
+        "3": {
+          "path": "/images/characters/sheet-row-305-star-3.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%88%98%EC%85%B0%ED%94%BC3.png",
+          "bytes": 33994,
+          "sha256": "6834253be1cf450d7b618e42f1fa708e67aed42060b4d99c809d1287267e4f26"
+        },
+        "4": {
+          "path": "/images/characters/sheet-row-305-star-4.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%88%98%EC%85%B0%ED%94%BC4.png",
+          "bytes": 33978,
+          "sha256": "3ec66799fdbe7711e1fe148e4a1dca9b5752886588018696e80e612f2522bb9f"
+        },
+        "5": {
+          "path": "/images/characters/sheet-row-305-star-5.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%88%98%EC%85%B0%ED%94%BC5.png",
+          "bytes": 34082,
+          "sha256": "12236ecdb4685b1d9f2cb28dc6a52dd77a43eb9a830edec34ce5a73b70bde739"
+        }
+      }
+    },
+    {
+      "id": "sheet-row-267",
+      "name": "수소라",
+      "aliases": [],
+      "portrait": "/images/characters/unit-row-267.png",
+      "byStar": {
+        "3": "/images/characters/sheet-row-267-star-3.png",
+        "4": "/images/characters/sheet-row-267-star-4.png",
+        "5": "/images/characters/sheet-row-267-star-5.png"
+      },
+      "source": {
+        "type": "xlsx-embedded",
+        "sheet": "데이터",
+        "nameCell": "A267",
+        "imageCell": "B267",
+        "anchor": {
+          "row": 266,
+          "column": 1
+        },
+        "media": "xl/media/image273.png",
+        "sha256": "7c04ae38b94a59487554c740afa4ade7cced15bb1cf594616182d4140560d759"
+      },
+      "dimensions": [
+        96,
+        96
+      ],
+      "variants": {
+        "3": {
+          "path": "/images/characters/sheet-row-267-star-3.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%88%98%EC%86%8C%EB%9D%BC3.png",
+          "bytes": 36004,
+          "sha256": "92760c7a8bd15fc8726783b1060a2ee9d4dde57ac2134a6426faab763a84abf0"
+        },
+        "4": {
+          "path": "/images/characters/sheet-row-267-star-4.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%88%98%EC%86%8C%EB%9D%BC4.png",
+          "bytes": 35992,
+          "sha256": "486b1dc966673529d4443bd04a0e0139ab4f908d341ec6e7beab145989d14334"
+        },
+        "5": {
+          "path": "/images/characters/sheet-row-267-star-5.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%88%98%EC%86%8C%EB%9D%BC5.png",
+          "bytes": 36160,
+          "sha256": "49deaf3056bdbbea74b193bf81f497db4c787cd47f815879fcabb9172853a3c4"
+        }
+      }
+    },
+    {
+      "id": "sheet-row-157",
+      "name": "수즈루",
+      "aliases": [],
+      "portrait": "/images/characters/unit-row-157.png",
+      "byStar": {
+        "3": "/images/characters/sheet-row-157-star-3.png",
+        "4": "/images/characters/sheet-row-157-star-4.png",
+        "5": "/images/characters/sheet-row-157-star-5.png"
+      },
+      "source": {
+        "type": "xlsx-embedded",
+        "sheet": "데이터",
+        "nameCell": "A157",
+        "imageCell": "B157",
+        "anchor": {
+          "row": 156,
+          "column": 1
+        },
+        "media": "xl/media/image164.png",
+        "sha256": "5f0defbac65a32114ae9da4bf17f71ab6a77624615385a9b43bf957c9706f205"
+      },
+      "dimensions": [
+        96,
+        96
+      ],
+      "variants": {
+        "3": {
+          "path": "/images/characters/sheet-row-157-star-3.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%88%98%EC%A6%88%EB%A3%A83.png",
+          "bytes": 35985,
+          "sha256": "ada0397d34122e2a5c23f6b7f9a86a8c53044c7e8c24fbfd25c438c9d2271112"
+        },
+        "4": {
+          "path": "/images/characters/sheet-row-157-star-4.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%88%98%EC%A6%88%EB%A3%A84.png",
+          "bytes": 35976,
+          "sha256": "b679b3323852c60219e9663d68f1805d81e77d5c303295d809183337bca573de"
+        },
+        "5": {
+          "path": "/images/characters/sheet-row-157-star-5.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%88%98%EC%A6%88%EB%A3%A85.png",
+          "bytes": 36126,
+          "sha256": "0370a62e989503a5b2b8e354ec890ed317ccc641eed697c9d14a196762b2725f"
+        }
+      }
+    },
+    {
+      "id": "sheet-row-57",
+      "name": "수페코",
+      "aliases": [],
+      "portrait": "/images/characters/unit-row-057.png",
+      "byStar": {
+        "6": "/images/characters/sheet-row-57-star-6.png"
+      },
+      "source": {
+        "type": "xlsx-embedded",
+        "sheet": "데이터",
+        "nameCell": "A57",
+        "imageCell": "B57",
+        "anchor": {
+          "row": 56,
+          "column": 1
+        },
+        "media": "xl/media/image19.png",
+        "sha256": "7bbb73837d1f79a95d7222cd18fc2013c42f0f4e7475623ee27936b23be32ae5"
+      },
+      "dimensions": [
+        96,
+        96
+      ],
+      "variants": {
+        "6": {
+          "path": "/images/characters/sheet-row-57-star-6.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%88%98%ED%8E%98%EC%BD%946.png",
+          "bytes": 36608,
+          "sha256": "f6786a4d8ffd4447a4cbb916e9b33d2a15de3d5e0c77c44fa7dfe7ea4e35fdee"
+        }
+      }
+    },
+    {
+      "id": "sheet-row-10",
+      "name": "스즈메",
+      "aliases": [],
+      "portrait": "/images/characters/unit-row-010.png",
+      "byStar": {
+        "6": "/images/characters/sheet-row-10-star-6.png"
+      },
+      "source": {
+        "type": "xlsx-embedded",
+        "sheet": "데이터",
+        "nameCell": "A10",
+        "imageCell": "B10",
+        "anchor": {
+          "row": 9,
+          "column": 1
+        },
+        "media": "xl/media/image30.png",
+        "sha256": "d11091cfaf97bd43c837b0eaa81278f197546a1c78ad0435e06a06c5907015df"
+      },
+      "dimensions": [
+        96,
+        96
+      ],
+      "variants": {
+        "6": {
+          "path": "/images/characters/sheet-row-10-star-6.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%8A%A4%EC%A6%88%EB%A9%946.png",
+          "bytes": 35433,
+          "sha256": "f02afd89f2e1ac0263842b2e250d4391ff3b22ceaa9cdcd0138e2a07cc1fe48d"
+        }
+      }
+    },
+    {
+      "id": "sheet-row-312",
+      "name": "시나츠",
+      "aliases": [],
+      "portrait": "/images/characters/unit-row-312.png",
+      "byStar": {
+        "3": "/images/characters/sheet-row-312-star-3.png",
+        "4": "/images/characters/sheet-row-312-star-4.png",
+        "5": "/images/characters/sheet-row-312-star-5.png"
+      },
+      "source": {
+        "type": "xlsx-embedded",
+        "sheet": "데이터",
+        "nameCell": "A312",
+        "imageCell": "B312",
+        "anchor": {
+          "row": 311,
+          "column": 1
+        },
+        "media": "xl/media/image326.png",
+        "sha256": "0ca9e1cf02d7ac4d1e44fe1117f91a29bb176ffb201bff5ef8a9c5c95c259c25"
+      },
+      "dimensions": [
+        96,
+        96
+      ],
+      "variants": {
+        "3": {
+          "path": "/images/characters/sheet-row-312-star-3.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%8B%9C%EB%82%98%EC%B8%A03.png",
+          "bytes": 33407,
+          "sha256": "f28508b3b39e1fe64b8c12753d62aeb9b791a00fae689118ebba7ae3a07a2cd8"
+        },
+        "4": {
+          "path": "/images/characters/sheet-row-312-star-4.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%8B%9C%EB%82%98%EC%B8%A04.png",
+          "bytes": 33381,
+          "sha256": "ed2e501db602784c24179573dcb5680b6367a9834154ede60172235e0d3efa48"
+        },
+        "5": {
+          "path": "/images/characters/sheet-row-312-star-5.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%8B%9C%EB%82%98%EC%B8%A05.png",
+          "bytes": 33627,
+          "sha256": "98f1c0f9724414042699c6406899e6c2d4ba66875955e6f0c4dbdcfc961fee54"
+        }
+      }
+    },
+    {
+      "id": "sheet-row-48",
+      "name": "시오리",
+      "aliases": [],
+      "portrait": "/images/characters/unit-row-048.png",
+      "byStar": {
+        "6": "/images/characters/sheet-row-48-star-6.png"
+      },
+      "source": {
+        "type": "xlsx-embedded",
+        "sheet": "데이터",
+        "nameCell": "A48",
+        "imageCell": "B48",
+        "anchor": {
+          "row": 47,
+          "column": 1
+        },
+        "media": "xl/media/image12.png",
+        "sha256": "a5c2de24aee407ffec4a72195a92a7f665763ac651f16ef923749d1682aa6fea"
+      },
+      "dimensions": [
+        96,
+        96
+      ],
+      "variants": {
+        "6": {
+          "path": "/images/characters/sheet-row-48-star-6.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%8B%9C%EC%98%A4%EB%A6%AC6.png",
+          "bytes": 36748,
+          "sha256": "4885f2ee803918dd61fe15d2a9c62c28a9a862ed659ddc3f41365a0a139f93f9"
+        }
+      }
+    },
+    {
+      "id": "sheet-row-147",
+      "name": "신마호",
+      "aliases": [],
+      "portrait": "/images/characters/unit-row-147.png",
+      "byStar": {
+        "3": "/images/characters/sheet-row-147-star-3.png",
+        "5": "/images/characters/sheet-row-147-star-5.png"
+      },
+      "source": {
+        "type": "xlsx-embedded",
+        "sheet": "데이터",
+        "nameCell": "A147",
+        "imageCell": "B147",
+        "anchor": {
+          "row": 146,
+          "column": 1
+        },
+        "media": "xl/media/image173.png",
+        "sha256": "8c5e8be011a6dd383a8d03fe5d13a14eedd0c60fed343a7b01beb7139cc4ee80"
+      },
+      "dimensions": [
+        96,
+        96
+      ],
+      "variants": {
+        "3": {
+          "path": "/images/characters/sheet-row-147-star-3.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%8B%A0%EB%A7%88%ED%98%B83.png",
+          "bytes": 32168,
+          "sha256": "71f07a7c0e2267bfe60367725d9f4f56b6b63d3856804601b4cc391e260301f3"
+        },
+        "5": {
+          "path": "/images/characters/sheet-row-147-star-5.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%8B%A0%EB%A7%88%ED%98%B85.png",
+          "bytes": 32293,
+          "sha256": "fbae65a3dff35685a5270fce0a57f63434adc4de4bcbb8344d1e7e60f818a59d"
+        }
+      }
+    },
+    {
+      "id": "sheet-row-260",
+      "name": "아네모네",
+      "aliases": [],
+      "portrait": "/images/characters/unit-row-260.png",
+      "byStar": {
+        "3": "/images/characters/sheet-row-260-star-3.png",
+        "4": "/images/characters/sheet-row-260-star-4.png",
+        "5": "/images/characters/sheet-row-260-star-5.png"
+      },
+      "source": {
+        "type": "xlsx-embedded",
+        "sheet": "데이터",
+        "nameCell": "A260",
+        "imageCell": "B260",
+        "anchor": {
+          "row": 259,
+          "column": 1
+        },
+        "media": "xl/media/image242.png",
+        "sha256": "f27325d9d72353958b8c2967312884ad0daa1a229ab464af08d4dcbcac7051e4"
+      },
+      "dimensions": [
+        96,
+        96
+      ],
+      "variants": {
+        "3": {
+          "path": "/images/characters/sheet-row-260-star-3.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%95%84%EB%84%A4%EB%AA%A8%EB%84%A43.png",
+          "bytes": 32704,
+          "sha256": "53b1ec8d2653b9808f3caf1316e69b6574e8d349ab88f3a6d274dc8c9c152e91"
+        },
+        "4": {
+          "path": "/images/characters/sheet-row-260-star-4.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%95%84%EB%84%A4%EB%AA%A8%EB%84%A44.png",
+          "bytes": 32688,
+          "sha256": "2450f3a6fcaab5fde20862d7ed9428d6dc869cbb01be1691110bc940ca3f78f5"
+        },
+        "5": {
+          "path": "/images/characters/sheet-row-260-star-5.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%95%84%EB%84%A4%EB%AA%A8%EB%84%A45.png",
+          "bytes": 32811,
+          "sha256": "80416e285ac0dc6777ed9d5a15a958878aeadcd1e2f8675097243426259434d5"
+        }
+      }
+    },
+    {
+      "id": "sheet-row-200",
+      "name": "아메스",
+      "aliases": [],
+      "portrait": "/images/characters/unit-row-200.png",
+      "byStar": {
+        "3": "/images/characters/sheet-row-200-star-3.png",
+        "4": "/images/characters/sheet-row-200-star-4.png",
+        "5": "/images/characters/sheet-row-200-star-5.png"
+      },
+      "source": {
+        "type": "xlsx-embedded",
+        "sheet": "데이터",
+        "nameCell": "A200",
+        "imageCell": "B200",
+        "anchor": {
+          "row": 199,
+          "column": 1
+        },
+        "media": "xl/media/image166.png",
+        "sha256": "a8645f807368cbb2384f3ad4aa4c6b89798b2225a1774b630d3cd3cb31a0985f"
+      },
+      "dimensions": [
+        96,
+        96
+      ],
+      "variants": {
+        "3": {
+          "path": "/images/characters/sheet-row-200-star-3.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%95%84%EB%A9%94%EC%8A%A43.png",
+          "bytes": 35370,
+          "sha256": "2d53edb154914532872ecdc03de424421454f20099c81cf5893c5d16e5176d78"
+        },
+        "4": {
+          "path": "/images/characters/sheet-row-200-star-4.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%95%84%EB%A9%94%EC%8A%A44.png",
+          "bytes": 35354,
+          "sha256": "9075d33c40f400575bdf4d5b3ad68853bad29be0cdcdc45acf9a11fea5de0836"
+        },
+        "5": {
+          "path": "/images/characters/sheet-row-200-star-5.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%95%84%EB%A9%94%EC%8A%A45.png",
+          "bytes": 35523,
+          "sha256": "dd99dca26c7e6c669c09684635503ea5f7d5c8373d224c1f1d7d6324f70bf354"
+        }
+      }
+    },
+    {
+      "id": "sheet-row-30",
+      "name": "아오이",
+      "aliases": [],
+      "portrait": "/images/characters/unit-row-030.png",
+      "byStar": {
+        "6": "/images/characters/sheet-row-30-star-6.png"
+      },
+      "source": {
+        "type": "xlsx-embedded",
+        "sheet": "데이터",
+        "nameCell": "A30",
+        "imageCell": "B30",
+        "anchor": {
+          "row": 29,
+          "column": 1
+        },
+        "media": "xl/media/image2.png",
+        "sha256": "c8389f4d849653534a00fed734ac957e842b96b5b68e9add0f891c18cfd62fb6"
+      },
+      "dimensions": [
+        96,
+        96
+      ],
+      "variants": {
+        "6": {
+          "path": "/images/characters/sheet-row-30-star-6.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%95%84%EC%98%A4%EC%9D%B46.png",
+          "bytes": 35983,
+          "sha256": "792fa718e21e235f5a8b0caad80743dd8ddeeadaecdd0163d885933196126e02"
+        }
+      }
+    },
+    {
+      "id": "sheet-row-310",
+      "name": "아이라",
+      "aliases": [],
+      "portrait": "/images/characters/unit-row-310.png",
+      "byStar": {
+        "3": "/images/characters/sheet-row-310-star-3.png",
+        "4": "/images/characters/sheet-row-310-star-4.png",
+        "5": "/images/characters/sheet-row-310-star-5.png"
+      },
+      "source": {
+        "type": "xlsx-embedded",
+        "sheet": "데이터",
+        "nameCell": "A310",
+        "imageCell": "B310",
+        "anchor": {
+          "row": 309,
+          "column": 1
+        },
+        "media": "xl/media/image314.png",
+        "sha256": "699ee0e73c72c0af09856664f5d15e02e19403c9847050a636f3802bbebcae4c"
+      },
+      "dimensions": [
+        96,
+        96
+      ],
+      "variants": {
+        "3": {
+          "path": "/images/characters/sheet-row-310-star-3.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%95%84%EC%9D%B4%EB%9D%BC3.png",
+          "bytes": 33671,
+          "sha256": "f5f39995cb58592d089c8eabe612c77a5686d92324fdefd9f6b73c13f550cf17"
+        },
+        "4": {
+          "path": "/images/characters/sheet-row-310-star-4.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%95%84%EC%9D%B4%EB%9D%BC4.png",
+          "bytes": 33643,
+          "sha256": "21a65ad67a4850be6120f5eacc7f176adfaa2507cabd78930bbfb90ddece34fd"
+        },
+        "5": {
+          "path": "/images/characters/sheet-row-310-star-5.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%95%84%EC%9D%B4%EB%9D%BC5.png",
+          "bytes": 33730,
+          "sha256": "e85ccfde67eee5af75417c10ab45603f584eccb00a274f2f450698b40e257733"
+        }
+      }
+    },
+    {
+      "id": "sheet-row-290",
+      "name": "알네카",
+      "aliases": [],
+      "portrait": "/images/characters/unit-row-290.png",
+      "byStar": {
+        "3": "/images/characters/sheet-row-290-star-3.png",
+        "4": "/images/characters/sheet-row-290-star-4.png",
+        "5": "/images/characters/sheet-row-290-star-5.png"
+      },
+      "source": {
+        "type": "xlsx-embedded",
+        "sheet": "데이터",
+        "nameCell": "A290",
+        "imageCell": "B290",
+        "anchor": {
+          "row": 289,
+          "column": 1
+        },
+        "media": "xl/media/image290.png",
+        "sha256": "9bdfa4f0c179d27b54bb4706df51ebd97053a4e2a0cff9ebdbfd5b2e9b0f6d8b"
+      },
+      "dimensions": [
+        96,
+        96
+      ],
+      "variants": {
+        "3": {
+          "path": "/images/characters/sheet-row-290-star-3.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%95%8C%EB%84%A4%EC%B9%B43.png",
+          "bytes": 33044,
+          "sha256": "f7884244beefcc7f5e5928613ee4862f49c23b008bcfc7e1512234a14bf88910"
+        },
+        "4": {
+          "path": "/images/characters/sheet-row-290-star-4.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%95%8C%EB%84%A4%EC%B9%B44.png",
+          "bytes": 33025,
+          "sha256": "a0cb7352bb1c361614db079976b9fcc3f9cd420e61534e6a2362597463b5de5f"
+        },
+        "5": {
+          "path": "/images/characters/sheet-row-290-star-5.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%95%8C%EB%84%A4%EC%B9%B45.png",
+          "bytes": 33136,
+          "sha256": "08fb5566873dfd5e127653df8b70a3c3c8508d025b60bfba82062608bca53198"
+        }
+      }
+    },
+    {
+      "id": "sheet-row-289",
+      "name": "알라비",
+      "aliases": [],
+      "portrait": "/images/characters/unit-row-289.png",
+      "byStar": {
+        "3": "/images/characters/sheet-row-289-star-3.png",
+        "4": "/images/characters/sheet-row-289-star-4.png",
+        "5": "/images/characters/sheet-row-289-star-5.png"
+      },
+      "source": {
+        "type": "xlsx-embedded",
+        "sheet": "데이터",
+        "nameCell": "A289",
+        "imageCell": "B289",
+        "anchor": {
+          "row": 288,
+          "column": 1
+        },
+        "media": "xl/media/image251.png",
+        "sha256": "96cf22efe0f1bf6b3ff9d98cdd1704f1ea8065708af924371dfbc9bb9fb0be5c"
+      },
+      "dimensions": [
+        96,
+        96
+      ],
+      "variants": {
+        "3": {
+          "path": "/images/characters/sheet-row-289-star-3.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%95%8C%EB%9D%BC%EB%B9%843.png",
+          "bytes": 33575,
+          "sha256": "877ba91ea7f1a25f65d58cefc502729397e8f1381f7783c48cb4ff9d3ec62a75"
+        },
+        "4": {
+          "path": "/images/characters/sheet-row-289-star-4.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%95%8C%EB%9D%BC%EB%B9%844.png",
+          "bytes": 33558,
+          "sha256": "bb4320b1cf930f55af77b3588123e033c1a294297f080f6b0e7cd244e8cb1a7d"
+        },
+        "5": {
+          "path": "/images/characters/sheet-row-289-star-5.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%95%8C%EB%9D%BC%EB%B9%845.png",
+          "bytes": 33694,
+          "sha256": "fe074429eb1e92b189349602cc767ab0113de673251d2c242030cfda52e5eb9c"
+        }
+      }
+    },
+    {
+      "id": "sheet-row-291",
+      "name": "알리스",
+      "aliases": [],
+      "portrait": "/images/characters/unit-row-291.png",
+      "byStar": {
+        "3": "/images/characters/sheet-row-291-star-3.png",
+        "4": "/images/characters/sheet-row-291-star-4.png",
+        "5": "/images/characters/sheet-row-291-star-5.png"
+      },
+      "source": {
+        "type": "xlsx-embedded",
+        "sheet": "데이터",
+        "nameCell": "A291",
+        "imageCell": "B291",
+        "anchor": {
+          "row": 290,
+          "column": 1
+        },
+        "media": "xl/media/image257.png",
+        "sha256": "e38775cd2c32652f31147b4da0d387d0baf3add2137f1760f0d13b4147af423f"
+      },
+      "dimensions": [
+        96,
+        96
+      ],
+      "variants": {
+        "3": {
+          "path": "/images/characters/sheet-row-291-star-3.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%95%8C%EB%A6%AC%EC%8A%A43.png",
+          "bytes": 33971,
+          "sha256": "8a63e0c6de2f124844cbf0e937c96ee8a97177122d4265ae0a60aae702f4dc50"
+        },
+        "4": {
+          "path": "/images/characters/sheet-row-291-star-4.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%95%8C%EB%A6%AC%EC%8A%A44.png",
+          "bytes": 33957,
+          "sha256": "ea2e58968f8f3980c654c0a5765098ea5ce1139b3aa30b02fa6fda0be3887ca7"
+        },
+        "5": {
+          "path": "/images/characters/sheet-row-291-star-5.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%95%8C%EB%A6%AC%EC%8A%A45.png",
+          "bytes": 34115,
+          "sha256": "caf4c962c04f1cc094d26b8b5cfec12688d483b0449e9316cfd314803aaa01a6"
+        }
+      }
+    },
+    {
+      "id": "sheet-row-276",
+      "name": "알조미",
+      "aliases": [],
+      "portrait": "/images/characters/unit-row-276.png",
+      "byStar": {
+        "3": "/images/characters/sheet-row-276-star-3.png",
+        "4": "/images/characters/sheet-row-276-star-4.png",
+        "5": "/images/characters/sheet-row-276-star-5.png"
+      },
+      "source": {
+        "type": "xlsx-embedded",
+        "sheet": "데이터",
+        "nameCell": "A276",
+        "imageCell": "B276",
+        "anchor": {
+          "row": 275,
+          "column": 1
+        },
+        "media": "xl/media/image256.png",
+        "sha256": "13e48e487c2ffaf9cbdd2a9a82d54e00bd55b51a62492cd563217354e6c3ced5"
+      },
+      "dimensions": [
+        96,
+        96
+      ],
+      "variants": {
+        "3": {
+          "path": "/images/characters/sheet-row-276-star-3.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%95%8C%EC%A1%B0%EB%AF%B83.png",
+          "bytes": 32700,
+          "sha256": "f7a32aa18fb25f898bfddc468b78deac5b76f8aa6840d2ed0214cc716e207aae"
+        },
+        "4": {
+          "path": "/images/characters/sheet-row-276-star-4.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%95%8C%EC%A1%B0%EB%AF%B84.png",
+          "bytes": 32682,
+          "sha256": "64505aa322a221e1a95d0ed412452ee02287e493dcc782ab58f32ee35a6c2302"
+        },
+        "5": {
+          "path": "/images/characters/sheet-row-276-star-5.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%95%8C%EC%A1%B0%EB%AF%B85.png",
+          "bytes": 32876,
+          "sha256": "ef8e836735a72d4dfb0bae20c3a6da374dc540aab08056a960c1ed177cba79d9"
+        }
+      }
+    },
+    {
+      "id": "sheet-row-296",
+      "name": "에로체",
+      "aliases": [],
+      "portrait": "/images/characters/unit-row-296.png",
+      "byStar": {
+        "3": "/images/characters/sheet-row-296-star-3.png",
+        "4": "/images/characters/sheet-row-296-star-4.png",
+        "5": "/images/characters/sheet-row-296-star-5.png"
+      },
+      "source": {
+        "type": "xlsx-embedded",
+        "sheet": "데이터",
+        "nameCell": "A296",
+        "imageCell": "B296",
+        "anchor": {
+          "row": 295,
+          "column": 1
+        },
+        "media": "xl/media/image305.png",
+        "sha256": "f7fdd57983aeb039a891b68bb05b4d064178a0b260c414423fe1e0ea08f14c6e"
+      },
+      "dimensions": [
+        96,
+        96
+      ],
+      "variants": {
+        "3": {
+          "path": "/images/characters/sheet-row-296-star-3.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%97%90%EB%A1%9C%EC%B2%B43.png",
+          "bytes": 36988,
+          "sha256": "2408453005cb3e7135a69af8ebdb739164613cc3e6c6d47298778a8a14561db6"
+        },
+        "4": {
+          "path": "/images/characters/sheet-row-296-star-4.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%97%90%EB%A1%9C%EC%B2%B44.png",
+          "bytes": 36985,
+          "sha256": "187f724157cdd509d7cd7ad0aa1b8ce1123024f7204a7586e91c1a732ab29c05"
+        },
+        "5": {
+          "path": "/images/characters/sheet-row-296-star-5.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%97%90%EB%A1%9C%EC%B2%B45.png",
+          "bytes": 37117,
+          "sha256": "70acda0c49211d630b7fe99d4f194453d83aad7d987d14d9c55af7fb44f544ee"
+        }
+      }
+    },
+    {
+      "id": "sheet-row-255",
+      "name": "에리스",
+      "aliases": [],
+      "portrait": "/images/characters/unit-row-255.png",
+      "byStar": {
+        "3": "/images/characters/sheet-row-255-star-3.png",
+        "4": "/images/characters/sheet-row-255-star-4.png",
+        "5": "/images/characters/sheet-row-255-star-5.png"
+      },
+      "source": {
+        "type": "xlsx-embedded",
+        "sheet": "데이터",
+        "nameCell": "A255",
+        "imageCell": "B255",
+        "anchor": {
+          "row": 254,
+          "column": 1
+        },
+        "media": "xl/media/image301.png",
+        "sha256": "86317d6c596b10fe1d2fa32b3a57197f7a7b3c1e705fa39d3e134004dadd33da"
+      },
+      "dimensions": [
+        96,
+        96
+      ],
+      "variants": {
+        "3": {
+          "path": "/images/characters/sheet-row-255-star-3.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%97%90%EB%A6%AC%EC%8A%A43.png",
+          "bytes": 33544,
+          "sha256": "3046b8e570351fed9213cf2ecaab539abfb1a1bc833c27fd8fa78077614c06c4"
+        },
+        "4": {
+          "path": "/images/characters/sheet-row-255-star-4.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%97%90%EB%A6%AC%EC%8A%A44.png",
+          "bytes": 33550,
+          "sha256": "e0561d3e9003b264558b6ff86e765917bc38ac909e05d5c1744b561d2baf1836"
+        },
+        "5": {
+          "path": "/images/characters/sheet-row-255-star-5.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%97%90%EB%A6%AC%EC%8A%A45.png",
+          "bytes": 33662,
+          "sha256": "b32c46703c94ed4140b4939f8797249ad60d3acb4b3d34fffd16391a394018a9"
+        }
+      }
+    },
+    {
+      "id": "sheet-row-275",
+      "name": "에키드나",
+      "aliases": [],
+      "portrait": "/images/characters/unit-row-275.png",
+      "byStar": {},
+      "source": {
+        "type": "xlsx-embedded",
+        "sheet": "데이터",
+        "nameCell": "A275",
+        "imageCell": "B275",
+        "anchor": {
+          "row": 274,
+          "column": 1
+        },
+        "media": "xl/media/image313.png",
+        "sha256": "188b30bbcfb4425584c2d78e0536ac26badcfa73db02e65386a2964eef73ad48"
+      },
+      "dimensions": [
+        96,
+        96
+      ]
+    },
+    {
+      "id": "sheet-row-79",
+      "name": "오우카",
+      "aliases": [],
+      "portrait": "/images/characters/unit-row-079.png",
+      "byStar": {
+        "3": "/images/characters/sheet-row-79-star-3.png",
+        "4": "/images/characters/sheet-row-79-star-4.png",
+        "5": "/images/characters/sheet-row-79-star-5.png"
+      },
+      "source": {
+        "type": "xlsx-embedded",
+        "sheet": "데이터",
+        "nameCell": "A79",
+        "imageCell": "B79",
+        "anchor": {
+          "row": 78,
+          "column": 1
+        },
+        "media": "xl/media/image47.png",
+        "sha256": "ea85f3b05c31c1dfcf55e229abf2da3be2d63d34638c6ecba047c3137572226a"
+      },
+      "dimensions": [
+        96,
+        96
+      ],
+      "variants": {
+        "3": {
+          "path": "/images/characters/sheet-row-79-star-3.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%98%A4%EC%9A%B0%EC%B9%B43.png",
+          "bytes": 37152,
+          "sha256": "4f63a6560939ff78199e7e6fedc9fae23b174edfa6f3fb642701f33ce3274b80"
+        },
+        "4": {
+          "path": "/images/characters/sheet-row-79-star-4.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%98%A4%EC%9A%B0%EC%B9%B44.png",
+          "bytes": 37139,
+          "sha256": "ecb7f958f8e24dda0d3f33d021e278c291a8b606ca606aa5af606b10d59dd335"
+        },
+        "5": {
+          "path": "/images/characters/sheet-row-79-star-5.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%98%A4%EC%9A%B0%EC%B9%B45.png",
+          "bytes": 37301,
+          "sha256": "c264d1cbc5510cf857dfce37ebbfc7eea99dfb9bfdaba30796449f01c0692a93"
+        }
+      }
+    },
+    {
+      "id": "sheet-row-281",
+      "name": "와카나",
+      "aliases": [],
+      "portrait": "/images/characters/unit-row-281.png",
+      "byStar": {
+        "3": "/images/characters/sheet-row-281-star-3.png",
+        "4": "/images/characters/sheet-row-281-star-4.png",
+        "5": "/images/characters/sheet-row-281-star-5.png"
+      },
+      "source": {
+        "type": "xlsx-embedded",
+        "sheet": "데이터",
+        "nameCell": "A281",
+        "imageCell": "B281",
+        "anchor": {
+          "row": 280,
+          "column": 1
+        },
+        "media": "xl/media/image247.png",
+        "sha256": "4faca49b3a9bc618a922ebebcc26c38ace8e614ab74ea1c54089ffda1f687e6d"
+      },
+      "dimensions": [
+        96,
+        96
+      ],
+      "variants": {
+        "3": {
+          "path": "/images/characters/sheet-row-281-star-3.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%99%80%EC%B9%B4%EB%82%983.png",
+          "bytes": 31290,
+          "sha256": "676134917b2db2b193df79804ea6ace5ff063179f3287fdcc160292125db8f90"
+        },
+        "4": {
+          "path": "/images/characters/sheet-row-281-star-4.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%99%80%EC%B9%B4%EB%82%984.png",
+          "bytes": 31271,
+          "sha256": "38f0a9e27407199f720da5dba2b2387e8f01ddc621f7ec69ef830719c659041b"
+        },
+        "5": {
+          "path": "/images/characters/sheet-row-281-star-5.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%99%80%EC%B9%B4%EB%82%985.png",
+          "bytes": 31451,
+          "sha256": "b613d3c18d9365ad9d728983cc0407c1f0494b6a46a0607bd54537c31e01f25f"
+        }
+      }
+    },
+    {
+      "id": "sheet-row-284",
+      "name": "윈에루",
+      "aliases": [],
+      "portrait": "/images/characters/unit-row-284.png",
+      "byStar": {
+        "3": "/images/characters/sheet-row-284-star-3.png",
+        "4": "/images/characters/sheet-row-284-star-4.png",
+        "5": "/images/characters/sheet-row-284-star-5.png"
+      },
+      "source": {
+        "type": "xlsx-embedded",
+        "sheet": "데이터",
+        "nameCell": "A284",
+        "imageCell": "B284",
+        "anchor": {
+          "row": 283,
+          "column": 1
+        },
+        "media": "xl/media/image261.png",
+        "sha256": "e5609767963a5a6ab44be7e9720d187b273ec21cee220976785b71173c060f23"
+      },
+      "dimensions": [
+        96,
+        96
+      ],
+      "variants": {
+        "3": {
+          "path": "/images/characters/sheet-row-284-star-3.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%9C%88%EC%97%90%EB%A3%A83.png",
+          "bytes": 31920,
+          "sha256": "fb839748928c3ec625575550746e8cc9ee18503b85e6859475f7ee6fc74a9a21"
+        },
+        "4": {
+          "path": "/images/characters/sheet-row-284-star-4.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%9C%88%EC%97%90%EB%A3%A84.png",
+          "bytes": 31912,
+          "sha256": "bacf9b1f214c3268af4f97c55bfc7e4cb3eb71426fe02cc76d482f9164808c9f"
+        },
+        "5": {
+          "path": "/images/characters/sheet-row-284-star-5.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%9C%88%EC%97%90%EB%A3%A85.png",
+          "bytes": 32071,
+          "sha256": "fc5c7957e09542093b108841650cd26d1d0126a9b8c41ad0f06bb8b7e9f7074a"
+        }
+      }
+    },
+    {
+      "id": "sheet-row-256",
+      "name": "윈유니",
+      "aliases": [],
+      "portrait": "/images/characters/unit-row-256.png",
+      "byStar": {
+        "3": "/images/characters/sheet-row-256-star-3.png",
+        "4": "/images/characters/sheet-row-256-star-4.png",
+        "5": "/images/characters/sheet-row-256-star-5.png"
+      },
+      "source": {
+        "type": "xlsx-embedded",
+        "sheet": "데이터",
+        "nameCell": "A256",
+        "imageCell": "B256",
+        "anchor": {
+          "row": 255,
+          "column": 1
+        },
+        "media": "xl/media/image298.png",
+        "sha256": "abdcaa0ed240f97f6b295db1c541c5c1ecd175c57463b1af2c39c5b27164d06c"
+      },
+      "dimensions": [
+        96,
+        96
+      ],
+      "variants": {
+        "3": {
+          "path": "/images/characters/sheet-row-256-star-3.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%9C%88%EC%9C%A0%EB%8B%883.png",
+          "bytes": 33348,
+          "sha256": "adf81d566405a28242f595e31ef7beb8c0e4decb792d1471fcc05955f3d01ccf"
+        },
+        "4": {
+          "path": "/images/characters/sheet-row-256-star-4.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%9C%88%EC%9C%A0%EB%8B%884.png",
+          "bytes": 33347,
+          "sha256": "43b0fbecacc155a01a1df46bbec89bbb11a1493cbf728e55fa199ac111765ddf"
+        },
+        "5": {
+          "path": "/images/characters/sheet-row-256-star-5.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%9C%88%EC%9C%A0%EB%8B%885.png",
+          "bytes": 33465,
+          "sha256": "53a21f7ac4178984b4a95b07ced8270e8b5a273f81963c64da09ec93e7af3849"
+        }
+      }
+    },
+    {
+      "id": "sheet-row-293",
+      "name": "의란파",
+      "aliases": [],
+      "portrait": "/images/characters/unit-row-293.png",
+      "byStar": {
+        "3": "/images/characters/sheet-row-293-star-3.png",
+        "4": "/images/characters/sheet-row-293-star-4.png",
+        "5": "/images/characters/sheet-row-293-star-5.png"
+      },
+      "source": {
+        "type": "xlsx-embedded",
+        "sheet": "데이터",
+        "nameCell": "A293",
+        "imageCell": "B293",
+        "anchor": {
+          "row": 292,
+          "column": 1
+        },
+        "media": "xl/media/image299.png",
+        "sha256": "2084762c2f176a7b5dd1d1dc9d86cd99a522e90810a43961dbc6bd7cae6d0862"
+      },
+      "dimensions": [
+        96,
+        96
+      ],
+      "variants": {
+        "3": {
+          "path": "/images/characters/sheet-row-293-star-3.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%9D%98%EB%9E%80%ED%8C%8C3.png",
+          "bytes": 33896,
+          "sha256": "ab2ff0fc032d665b43c76e010d9a4bd3fc30b3504d7cb4d538e79f0ef95b3135"
+        },
+        "4": {
+          "path": "/images/characters/sheet-row-293-star-4.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%9D%98%EB%9E%80%ED%8C%8C4.png",
+          "bytes": 33888,
+          "sha256": "017e9053bf221cbf41f38b62a7f136d7e47bb1f033ffe0fdd76460c9ae2daf7a"
+        },
+        "5": {
+          "path": "/images/characters/sheet-row-293-star-5.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%9D%98%EB%9E%80%ED%8C%8C5.png",
+          "bytes": 34092,
+          "sha256": "9d341dbeba0c252af03924d9b8ea266556e1caadedf13bd0bf74570c46285cc7"
+        }
+      }
+    },
+    {
+      "id": "sheet-row-294",
+      "name": "의치카",
+      "aliases": [],
+      "portrait": "/images/characters/unit-row-294.png",
+      "byStar": {
+        "3": "/images/characters/sheet-row-294-star-3.png",
+        "4": "/images/characters/sheet-row-294-star-4.png",
+        "5": "/images/characters/sheet-row-294-star-5.png"
+      },
+      "source": {
+        "type": "xlsx-embedded",
+        "sheet": "데이터",
+        "nameCell": "A294",
+        "imageCell": "B294",
+        "anchor": {
+          "row": 293,
+          "column": 1
+        },
+        "media": "xl/media/image293.png",
+        "sha256": "8db1114747b02a4d7d6fe0707d8c55e55f1faa948385ce1f4dcda55f9b9401e6"
+      },
+      "dimensions": [
+        96,
+        96
+      ],
+      "variants": {
+        "3": {
+          "path": "/images/characters/sheet-row-294-star-3.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%9D%98%EC%B9%98%EC%B9%B43.png",
+          "bytes": 33505,
+          "sha256": "e88ad32856b47919be4e2c82e39da4477dc5462148115cfb523bd6f77b66d24a"
+        },
+        "4": {
+          "path": "/images/characters/sheet-row-294-star-4.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%9D%98%EC%B9%98%EC%B9%B44.png",
+          "bytes": 33485,
+          "sha256": "95b577e300c40dc7d9d41954421abb982da1b13acf8f767ccd3bea95407d975f"
+        },
+        "5": {
+          "path": "/images/characters/sheet-row-294-star-5.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%9D%98%EC%B9%98%EC%B9%B45.png",
+          "bytes": 33658,
+          "sha256": "9254b0979b45ac23e4aff31104f6ee48c9184a5ef169016fa6f74eeafdea2e0f"
+        }
+      }
+    },
+    {
+      "id": "sheet-row-300",
+      "name": "이로하",
+      "aliases": [],
+      "portrait": "/images/characters/unit-row-300.png",
+      "byStar": {
+        "3": "/images/characters/sheet-row-300-star-3.png",
+        "4": "/images/characters/sheet-row-300-star-4.png",
+        "5": "/images/characters/sheet-row-300-star-5.png"
+      },
+      "source": {
+        "type": "xlsx-embedded",
+        "sheet": "데이터",
+        "nameCell": "A300",
+        "imageCell": "B300",
+        "anchor": {
+          "row": 299,
+          "column": 1
+        },
+        "media": "xl/media/image306.png",
+        "sha256": "7be6aad9a388ef2c1d5ec210b8ef40d108b4ec39d4e760511c31e5b1bb203f04"
+      },
+      "dimensions": [
+        96,
+        96
+      ],
+      "variants": {
+        "3": {
+          "path": "/images/characters/sheet-row-300-star-3.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%9D%B4%EB%A1%9C%ED%95%983.png",
+          "bytes": 33012,
+          "sha256": "b997b6d475b9d381933f30ea14c7da15172fe2280bde1f3eb739bb3cf14ecfd3"
+        },
+        "4": {
+          "path": "/images/characters/sheet-row-300-star-4.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%9D%B4%EB%A1%9C%ED%95%984.png",
+          "bytes": 33011,
+          "sha256": "243413c1740bfaa60995cc241eb39ecaf6c5a71d4746a9f49273cea4749813d1"
+        },
+        "5": {
+          "path": "/images/characters/sheet-row-300-star-5.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%9D%B4%EB%A1%9C%ED%95%985.png",
+          "bytes": 33108,
+          "sha256": "884db880a12b2e2c1549eadc7be38a44f9b88cad760ced19a3fea0588c01f157"
+        }
+      }
+    },
+    {
+      "id": "sheet-row-259",
+      "name": "커리코",
+      "aliases": [],
+      "portrait": "/images/characters/unit-row-259.png",
+      "byStar": {
+        "3": "/images/characters/sheet-row-259-star-3.png",
+        "4": "/images/characters/sheet-row-259-star-4.png",
+        "5": "/images/characters/sheet-row-259-star-5.png"
+      },
+      "source": {
+        "type": "xlsx-embedded",
+        "sheet": "데이터",
+        "nameCell": "A259",
+        "imageCell": "B259",
+        "anchor": {
+          "row": 258,
+          "column": 1
+        },
+        "media": "xl/media/image258.png",
+        "sha256": "a4a4c6d428f2a11ee069ddb4fc6fafad6fe9232a698dcf59beb7ce0e47134038"
+      },
+      "dimensions": [
+        96,
+        96
+      ],
+      "variants": {
+        "3": {
+          "path": "/images/characters/sheet-row-259-star-3.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%BB%A4%EB%A6%AC%EC%BD%943.png",
+          "bytes": 35468,
+          "sha256": "6ad99bddd8e0fb7eda0b902fbed0ca06f3dea20ffaa5d1f0f540495a8d4f9068"
+        },
+        "4": {
+          "path": "/images/characters/sheet-row-259-star-4.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%BB%A4%EB%A6%AC%EC%BD%944.png",
+          "bytes": 35467,
+          "sha256": "e8d6cfd77c2e66dbd91a02ff7b38148aa58a761f83fad18cfa3d7cb6e90d360b"
+        },
+        "5": {
+          "path": "/images/characters/sheet-row-259-star-5.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%BB%A4%EB%A6%AC%EC%BD%945.png",
+          "bytes": 35640,
+          "sha256": "e391bae24fc17911084320f096d4a347012ea8ccbbf17c5ffa471243d2ccf1f5"
+        }
+      }
+    },
+    {
+      "id": "sheet-row-264",
+      "name": "쿠루루",
+      "aliases": [],
+      "portrait": "/images/characters/unit-row-264.png",
+      "byStar": {
+        "3": "/images/characters/sheet-row-264-star-3.png",
+        "4": "/images/characters/sheet-row-264-star-4.png",
+        "5": "/images/characters/sheet-row-264-star-5.png"
+      },
+      "source": {
+        "type": "xlsx-embedded",
+        "sheet": "데이터",
+        "nameCell": "A264",
+        "imageCell": "B264",
+        "anchor": {
+          "row": 263,
+          "column": 1
+        },
+        "media": "xl/media/image287.png",
+        "sha256": "5ef156b25d1ac663f79744d045d9c0c760e0e639e30a71cd067c14f190b12888"
+      },
+      "dimensions": [
+        96,
+        96
+      ],
+      "variants": {
+        "3": {
+          "path": "/images/characters/sheet-row-264-star-3.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%BF%A0%EB%A3%A8%EB%A3%A83.png",
+          "bytes": 35198,
+          "sha256": "5ce3afe467c0a559d0e80a30e1cab229e01f72287fcbcdfce57f897e4ef6924f"
+        },
+        "4": {
+          "path": "/images/characters/sheet-row-264-star-4.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%BF%A0%EB%A3%A8%EB%A3%A84.png",
+          "bytes": 35183,
+          "sha256": "79cfe30a81954f20a12c7c16d8340505570e65d2adbfe9c2e672182de7dff2a2"
+        },
+        "5": {
+          "path": "/images/characters/sheet-row-264-star-5.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%EC%BF%A0%EB%A3%A8%EB%A3%A85.png",
+          "bytes": 35329,
+          "sha256": "a28ce8bab87134184d1c4a04c5cfdb9219d89c357e2260cedb6e6af231543367"
+        }
+      }
+    },
+    {
+      "id": "sheet-row-295",
+      "name": "파오이",
+      "aliases": [],
+      "portrait": "/images/characters/unit-row-295.png",
+      "byStar": {
+        "3": "/images/characters/sheet-row-295-star-3.png",
+        "4": "/images/characters/sheet-row-295-star-4.png",
+        "5": "/images/characters/sheet-row-295-star-5.png"
+      },
+      "source": {
+        "type": "xlsx-embedded",
+        "sheet": "데이터",
+        "nameCell": "A295",
+        "imageCell": "B295",
+        "anchor": {
+          "row": 294,
+          "column": 1
+        },
+        "media": "xl/media/image296.png",
+        "sha256": "f8b83341f6af116329da9111cf12aea57b0ba7773ee02507bf95c838289ff3a4"
+      },
+      "dimensions": [
+        96,
+        96
+      ],
+      "variants": {
+        "3": {
+          "path": "/images/characters/sheet-row-295-star-3.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%ED%8C%8C%EC%98%A4%EC%9D%B43.png",
+          "bytes": 32155,
+          "sha256": "56da4a635ee940d0f606d89218694352be7e3b21c0cdaafe48071a54b0fbd22e"
+        },
+        "4": {
+          "path": "/images/characters/sheet-row-295-star-4.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%ED%8C%8C%EC%98%A4%EC%9D%B44.png",
+          "bytes": 32146,
+          "sha256": "b066b3453d25fdbd0cc0259e35f7f42499a75d2d9a5c03f8e6cc69e6d9e7b4f3"
+        },
+        "5": {
+          "path": "/images/characters/sheet-row-295-star-5.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%ED%8C%8C%EC%98%A4%EC%9D%B45.png",
+          "bytes": 32326,
+          "sha256": "ca484ea0d7e54455736fbc5eb10b5f052260bd34cf0a33cd0d81449f63b50b34"
+        }
+      }
+    },
+    {
+      "id": "sheet-row-90",
+      "name": "편오이",
+      "aliases": [],
+      "portrait": "/images/characters/unit-row-090.png",
+      "byStar": {
+        "3": "/images/characters/sheet-row-90-star-3.png",
+        "4": "/images/characters/sheet-row-90-star-4.png",
+        "5": "/images/characters/sheet-row-90-star-5.png"
+      },
+      "source": {
+        "type": "xlsx-embedded",
+        "sheet": "데이터",
+        "nameCell": "A90",
+        "imageCell": "B90",
+        "anchor": {
+          "row": 89,
+          "column": 1
+        },
+        "media": "xl/media/image125.png",
+        "sha256": "9963d8fe9bddff49943d9010e047c93430064bafd5027d60a4c9ea3ac20f7677"
+      },
+      "dimensions": [
+        96,
+        96
+      ],
+      "variants": {
+        "3": {
+          "path": "/images/characters/sheet-row-90-star-3.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%ED%8E%B8%EC%98%A4%EC%9D%B43.png",
+          "bytes": 34204,
+          "sha256": "0ebb25007c9846448b3579513045f3886e537348bfafdfb902625685c17f2dcb"
+        },
+        "4": {
+          "path": "/images/characters/sheet-row-90-star-4.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%ED%8E%B8%EC%98%A4%EC%9D%B44.png",
+          "bytes": 34193,
+          "sha256": "feb87b84adbdaf8821c3efe27e2fb727b6f451856d88de7501668d8696c5d04a"
+        },
+        "5": {
+          "path": "/images/characters/sheet-row-90-star-5.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%ED%8E%B8%EC%98%A4%EC%9D%B45.png",
+          "bytes": 34344,
+          "sha256": "6f6c5731144bdac88d1c320b08b8244327fa425da65d926a0a58bf128995bda8"
+        }
+      }
+    },
+    {
+      "id": "sheet-row-144",
+      "name": "프캬루",
+      "aliases": [],
+      "portrait": "/images/characters/unit-row-144.png",
+      "byStar": {
+        "3": "/images/characters/sheet-row-144-star-3.png",
+        "4": "/images/characters/sheet-row-144-star-4.png",
+        "5": "/images/characters/sheet-row-144-star-5.png"
+      },
+      "source": {
+        "type": "xlsx-embedded",
+        "sheet": "데이터",
+        "nameCell": "A144",
+        "imageCell": "B144",
+        "anchor": {
+          "row": 143,
+          "column": 1
+        },
+        "media": "xl/media/image181.png",
+        "sha256": "7276d8a378cdcfe416115962568c8bb9918a38bb8ce2df2abbe074c8367c211c"
+      },
+      "dimensions": [
+        96,
+        96
+      ],
+      "variants": {
+        "3": {
+          "path": "/images/characters/sheet-row-144-star-3.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%ED%94%84%EC%BA%AC%EB%A3%A83.png",
+          "bytes": 36457,
+          "sha256": "7e834be3223f70a8655aaa41eb03e601ef1a793fa261ff635e396b50b4c9a872"
+        },
+        "4": {
+          "path": "/images/characters/sheet-row-144-star-4.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%ED%94%84%EC%BA%AC%EB%A3%A84.png",
+          "bytes": 36449,
+          "sha256": "eff663e77cbd7ac5d33780e07946009e135ce9a2d03839b65f3ba16d98f29081"
+        },
+        "5": {
+          "path": "/images/characters/sheet-row-144-star-5.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%ED%94%84%EC%BA%AC%EB%A3%A85.png",
+          "bytes": 36615,
+          "sha256": "38122500f964fdaa749cd23a5c46b6f1a8c42753958268b09817ef0c5cb38a9e"
+        }
+      }
+    },
+    {
+      "id": "sheet-row-114",
+      "name": "프코로",
+      "aliases": [],
+      "portrait": "/images/characters/unit-row-114.png",
+      "byStar": {
+        "3": "/images/characters/sheet-row-114-star-3.png",
+        "4": "/images/characters/sheet-row-114-star-4.png",
+        "5": "/images/characters/sheet-row-114-star-5.png"
+      },
+      "source": {
+        "type": "xlsx-embedded",
+        "sheet": "데이터",
+        "nameCell": "A114",
+        "imageCell": "B114",
+        "anchor": {
+          "row": 113,
+          "column": 1
+        },
+        "media": "xl/media/image106.png",
+        "sha256": "4bb65f4d1ad962dd7cc515c5865aa96f1610d44c614d9cea1de08410230a5a8c"
+      },
+      "dimensions": [
+        96,
+        96
+      ],
+      "variants": {
+        "3": {
+          "path": "/images/characters/sheet-row-114-star-3.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%ED%94%84%EC%BD%94%EB%A1%9C3.png",
+          "bytes": 34999,
+          "sha256": "a10f2e8a0b26d7b60a67e1598aa83fc217c39712e3085fe7d7e5a0c8a26e9a8e"
+        },
+        "4": {
+          "path": "/images/characters/sheet-row-114-star-4.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%ED%94%84%EC%BD%94%EB%A1%9C4.png",
+          "bytes": 35007,
+          "sha256": "c3d8bfae790ff2f4763737982c12a5f3a453d89bd408355557afe4ff72125482"
+        },
+        "5": {
+          "path": "/images/characters/sheet-row-114-star-5.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%ED%94%84%EC%BD%94%EB%A1%9C5.png",
+          "bytes": 35130,
+          "sha256": "56d2e69db36fd836042f773f2c66411d88b259e3ab428c066aef0755fe94094b"
+        }
+      }
+    },
+    {
+      "id": "sheet-row-292",
+      "name": "피오",
+      "aliases": [],
+      "portrait": "/images/characters/unit-row-292.png",
+      "byStar": {
+        "3": "/images/characters/sheet-row-292-star-3.png",
+        "4": "/images/characters/sheet-row-292-star-4.png",
+        "5": "/images/characters/sheet-row-292-star-5.png"
+      },
+      "source": {
+        "type": "xlsx-embedded",
+        "sheet": "데이터",
+        "nameCell": "A292",
+        "imageCell": "B292",
+        "anchor": {
+          "row": 291,
+          "column": 1
+        },
+        "media": "xl/media/image266.png",
+        "sha256": "17a05c08c2141aaedf2dc1970a7d77b5f8147784da3b55178ef2714798c02458"
+      },
+      "dimensions": [
+        96,
+        96
+      ],
+      "variants": {
+        "3": {
+          "path": "/images/characters/sheet-row-292-star-3.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%ED%94%BC%EC%98%A43.png",
+          "bytes": 31364,
+          "sha256": "4861b99c295abb8c20caa0d4c2bfa13211e059f7b2c66d6e9a73ed292aaee6bb"
+        },
+        "4": {
+          "path": "/images/characters/sheet-row-292-star-4.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%ED%94%BC%EC%98%A44.png",
+          "bytes": 31349,
+          "sha256": "524c49b460af575a828d78f88f12a7c5931197d1ee676d3a0d803f691b598449"
+        },
+        "5": {
+          "path": "/images/characters/sheet-row-292-star-5.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%ED%94%BC%EC%98%A45.png",
+          "bytes": 31461,
+          "sha256": "0e7c6e46b505b7a3c661827722126628ba09e28f98f1ca0307b1139c0fd776b7"
+        }
+      }
+    },
+    {
+      "id": "sheet-row-168",
+      "name": "호마레",
+      "aliases": [],
+      "portrait": "/images/characters/unit-row-168.png",
+      "byStar": {
+        "3": "/images/characters/sheet-row-168-star-3.png",
+        "4": "/images/characters/sheet-row-168-star-4.png",
+        "5": "/images/characters/sheet-row-168-star-5.png"
+      },
+      "source": {
+        "type": "xlsx-embedded",
+        "sheet": "데이터",
+        "nameCell": "A168",
+        "imageCell": "B168",
+        "anchor": {
+          "row": 167,
+          "column": 1
+        },
+        "media": "xl/media/image300.png",
+        "sha256": "114b991d68cb6407a57884a09e07ebf116602c117da3935fb7cfa282800f774f"
+      },
+      "dimensions": [
+        96,
+        96
+      ],
+      "variants": {
+        "3": {
+          "path": "/images/characters/sheet-row-168-star-3.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%ED%98%B8%EB%A7%88%EB%A0%883.png",
+          "bytes": 34939,
+          "sha256": "95e6d804beda42fc0403d0879589fcc46b365654152389a2da7371c79ccbd592"
+        },
+        "4": {
+          "path": "/images/characters/sheet-row-168-star-4.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%ED%98%B8%EB%A7%88%EB%A0%884.png",
+          "bytes": 34942,
+          "sha256": "b14c2f8c9bdaac33682b6c2e5b142797fcf8001739370d2fbbe35995669949b8"
+        },
+        "5": {
+          "path": "/images/characters/sheet-row-168-star-5.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%ED%98%B8%EB%A7%88%EB%A0%885.png",
+          "bytes": 35065,
+          "sha256": "7a74238d6ba148c566d3d78510cd4e25da174ddd03eae2f9d23577e4a30d4d9f"
+        }
+      }
+    },
+    {
+      "id": "sheet-row-279",
+      "name": "후부키",
+      "aliases": [],
+      "portrait": "/images/characters/unit-row-279.png",
+      "byStar": {
+        "3": "/images/characters/sheet-row-279-star-3.png",
+        "4": "/images/characters/sheet-row-279-star-4.png",
+        "5": "/images/characters/sheet-row-279-star-5.png"
+      },
+      "source": {
+        "type": "xlsx-embedded",
+        "sheet": "데이터",
+        "nameCell": "A279",
+        "imageCell": "B279",
+        "anchor": {
+          "row": 278,
+          "column": 1
+        },
+        "media": "xl/media/image239.png",
+        "sha256": "1005a51629843eec793562c09d3e3351e2afb06d0394857b1218e74f853ddbcd"
+      },
+      "dimensions": [
+        96,
+        96
+      ],
+      "variants": {
+        "3": {
+          "path": "/images/characters/sheet-row-279-star-3.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%ED%9B%84%EB%B6%80%ED%82%A43.png",
+          "bytes": 36979,
+          "sha256": "08c8d56c149cf45e4573a685b1aead825193ed37a1e9d4ffa4fcab9f72fc697c"
+        },
+        "4": {
+          "path": "/images/characters/sheet-row-279-star-4.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%ED%9B%84%EB%B6%80%ED%82%A44.png",
+          "bytes": 36958,
+          "sha256": "9986adb76e4a02e286e84db3c22f51fc2840d1fb65df1fc4c339edf3aab5fefc"
+        },
+        "5": {
+          "path": "/images/characters/sheet-row-279-star-5.png",
+          "source": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/%ED%9B%84%EB%B6%80%ED%82%A45.png",
+          "bytes": 37118,
+          "sha256": "4cde6ceea5a3f93472d603a6ae120bef678269a97509d52ef61b99afbb0e3188"
+        }
+      }
+    }
+  ]
+}
