@@ -1,4 +1,4 @@
-import { BOSS_ACCENTS, BOSS_INK, tenureMonths } from './guild-model.mjs?v=20261022-layout8';
+import { BOSS_ACCENTS, BOSS_INK, tenureMonths } from './guild-model.mjs?v=20261022-portraits9';
 const W=1240,H=1754,PAD=72;
 let reportFontsReady=null;
 const nf=n=>Number.isFinite(n)?n.toLocaleString('ko-KR',{maximumFractionDigits:2}):'산정 대기';

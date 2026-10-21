@@ -16,6 +16,7 @@
 | public/engine.mjs | HP, 회차, 이월 연결, 점수와 기여도 계산 |
 | public/guild-workspace.mjs, public/guild-model.mjs | 하루 단위 대시보드, DB, 순위, 이력과 추천 조합 |
 | public/tactics-workspace.mjs, public/tactics-model.mjs | 원본 색상과 SET 상태를 유지하는 택틱 편집과 개인 이월 |
+| public/characters.json, public/character-portraits.mjs | 원본 327명 초상화 연결, 성급별 이미지와 기본 초상화 복구 |
 | public/responsive.css | 모바일과 중간 너비의 배치 |
 | app/api/state/, app/api/editor/, app/editor-access.ts | 서버 저장과 작성 권한 |
 | public/images/characters/, public/images/bosses/, public/images/branding/ | 사이트에서 사용하는 이미지 |
@@ -34,6 +35,7 @@ GitHub는 소스와 이미지의 보관 위치입니다. 현재 서버 DB와 관
     node scripts/test-exact-hp.mjs
     node scripts/test-workflow.mjs
     node scripts/test-tactics.mjs
+    node scripts/test-portraits.mjs
     node scripts/test-guild.mjs
     node scripts/test-guild-ui.mjs
     node --experimental-strip-types scripts/test-editor.mjs
