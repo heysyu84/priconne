@@ -1,0 +1,1207 @@
+{
+  "2026-09": {
+    "택틱정리-12": {
+      "boss": 1,
+      "stars": [
+        "5",
+        "5",
+        "5",
+        "5",
+        "5"
+      ],
+      "expectedDamage": "3.0",
+      "originalTitle": "1넴 프캬루 호마레 에로체 수마레 바이올렛 55555, 3.0",
+      "characters": [
+        "프캬루",
+        "호마레",
+        "에로체",
+        "수마레",
+        "바이올렛"
+      ],
+      "sourceCell": "'택틱정리'!H7"
+    },
+    "택틱정리-26": {
+      "boss": 1,
+      "stars": [
+        "5",
+        "5",
+        "5",
+        "5",
+        "5"
+      ],
+      "expectedDamage": "2.9",
+      "originalTitle": "1넴 프캬루 호마레 에로체 수마레 바이올렛 55555, 2.9",
+      "characters": [
+        "프캬루",
+        "호마레",
+        "에로체",
+        "수마레",
+        "바이올렛"
+      ],
+      "sourceCell": "'택틱정리'!H21"
+    },
+    "택틱정리-62": {
+      "boss": 1,
+      "stars": [
+        "5",
+        "5",
+        "5",
+        "6",
+        "5"
+      ],
+      "expectedDamage": "3.3",
+      "originalTitle": "1넴 에키드나 알네카 프캬루 밤피 바이올렛 55565, 3.3",
+      "characters": [
+        "에키드나",
+        "알네카",
+        "프캬루",
+        "밤피",
+        "바이올렛"
+      ],
+      "sourceCell": "'택틱정리'!H57"
+    },
+    "택틱정리-78": {
+      "boss": 2,
+      "stars": [
+        "5",
+        "5",
+        "5",
+        "5",
+        "5"
+      ],
+      "expectedDamage": "3.2",
+      "originalTitle": "2넴 피오 레오리 수레시아 와카나 수리아 55555, 3.2",
+      "characters": [
+        "피오",
+        "레오리",
+        "수레시아",
+        "와카나",
+        "수리아"
+      ],
+      "sourceCell": "'택틱정리'!H73"
+    },
+    "택틱정리-96": {
+      "boss": 2,
+      "stars": [
+        "5",
+        "5",
+        "5",
+        "5",
+        "5"
+      ],
+      "expectedDamage": "3.0",
+      "originalTitle": "2넴 피오 편오이 수레시아 와카나 수리아 55555, 3.0",
+      "characters": [
+        "피오",
+        "편오이",
+        "수레시아",
+        "와카나",
+        "수리아"
+      ],
+      "sourceCell": "'택틱정리'!H91"
+    },
+    "택틱정리-116": {
+      "boss": 3,
+      "stars": [
+        "5",
+        "5",
+        "5",
+        "5",
+        "5"
+      ],
+      "expectedDamage": "4.5",
+      "originalTitle": "3넴 아메스 신마호 수네모네 파오이 윈에루 55555, 4.5",
+      "characters": [
+        "아메스",
+        "신마호",
+        "수네모네",
+        "파오이",
+        "윈에루"
+      ],
+      "sourceCell": "'택틱정리'!H111"
+    },
+    "택틱정리-144": {
+      "boss": 3,
+      "stars": [
+        "5",
+        "5",
+        "5",
+        "5",
+        "5"
+      ],
+      "expectedDamage": "3.75",
+      "originalTitle": "3넴 수리스 수메스 알조미 알라비 소노 55555, 3.75",
+      "characters": [
+        "수리스",
+        "수메스",
+        "알조미",
+        "알라비",
+        "소노"
+      ],
+      "sourceCell": "'택틱정리'!H139"
+    },
+    "택틱정리-162": {
+      "boss": 3,
+      "stars": [
+        "5",
+        "5",
+        "5",
+        "5",
+        "5"
+      ],
+      "expectedDamage": "3.17",
+      "originalTitle": "3넴 아메스 수네모네 파오이 게무기 리리컬 55555, 3.17",
+      "characters": [
+        "아메스",
+        "수네모네",
+        "파오이",
+        "게무기",
+        "리리컬"
+      ],
+      "sourceCell": "'택틱정리'!H157"
+    },
+    "택틱정리-186": {
+      "boss": 4,
+      "stars": [
+        "5",
+        "5",
+        "5",
+        "5",
+        "5"
+      ],
+      "expectedDamage": "4.2",
+      "originalTitle": "4넴 아메스 드마호 네네카 수네모네 쿠루루 55555, 4.2",
+      "characters": [
+        "아메스",
+        "드마호",
+        "네네카",
+        "수네모네",
+        "쿠루루"
+      ],
+      "sourceCell": "'택틱정리'!H181"
+    },
+    "택틱정리-212": {
+      "boss": 4,
+      "stars": [
+        "5",
+        "5",
+        "5",
+        "5",
+        "5"
+      ],
+      "expectedDamage": "3.78",
+      "originalTitle": "4넴 아메스 드마호 네네카 수네모네 쿠루루 55555, 3.78",
+      "characters": [
+        "아메스",
+        "드마호",
+        "네네카",
+        "수네모네",
+        "쿠루루"
+      ],
+      "sourceCell": "'택틱정리'!H207"
+    },
+    "택틱정리-239": {
+      "boss": 4,
+      "stars": [
+        "5",
+        "5",
+        "5",
+        "5",
+        "5"
+      ],
+      "expectedDamage": "3.21",
+      "originalTitle": "4넴 아메스 드마호 네네카 수네모네 쿠루루 55555, 3.21",
+      "characters": [
+        "아메스",
+        "드마호",
+        "네네카",
+        "수네모네",
+        "쿠루루"
+      ],
+      "sourceCell": "'택틱정리'!H234"
+    },
+    "택틱정리-263": {
+      "boss": 5,
+      "stars": [
+        "5",
+        "5",
+        "5",
+        "5",
+        "5"
+      ],
+      "expectedDamage": "3.2",
+      "originalTitle": "5넴 수리스 의란파 수소라 피오 봄즈메 55555, 3.2",
+      "characters": [
+        "수리스",
+        "의란파",
+        "수소라",
+        "피오",
+        "봄즈메"
+      ],
+      "sourceCell": "'택틱정리'!H258"
+    },
+    "택틱정리-284": {
+      "boss": 5,
+      "stars": [
+        "5",
+        "5",
+        "5",
+        "5",
+        "5"
+      ],
+      "expectedDamage": "2.98",
+      "originalTitle": "5넴 수리스 의란파 피오 봄즈메 아네모네 55555, 2.98",
+      "characters": [
+        "수리스",
+        "의란파",
+        "피오",
+        "봄즈메",
+        "아네모네"
+      ],
+      "sourceCell": "'택틱정리'!H279"
+    },
+    "택틱정리-300": {
+      "boss": 5,
+      "stars": [
+        "5",
+        "5",
+        "5",
+        "5",
+        "5"
+      ],
+      "expectedDamage": "3.4",
+      "originalTitle": "5넴 메두사 커리코 그레이스 알리스 바이올렛 55555, 3.4",
+      "characters": [
+        "메두사",
+        "커리코",
+        "그레이스",
+        "알리스",
+        "바이올렛"
+      ],
+      "sourceCell": "'택틱정리'!H295"
+    },
+    "타비비토-10": {
+      "boss": 1,
+      "stars": [
+        "5",
+        "5",
+        "5",
+        "6",
+        "5"
+      ],
+      "expectedDamage": "2.7",
+      "originalTitle": "1넴 비카라 그레이스 알리스 마코토 바이올렛 55565, 2.7",
+      "characters": [
+        "비카라",
+        "그레이스",
+        "알리스",
+        "마코토",
+        "바이올렛"
+      ],
+      "sourceCell": "'타비비토'!H5"
+    },
+    "타비비토-27": {
+      "boss": 1,
+      "stars": [
+        "5",
+        "5",
+        "5",
+        "5",
+        "5"
+      ],
+      "expectedDamage": "2.6",
+      "originalTitle": "1넴 프캬루 호마레 에로체 수마레 바이올렛 55555, 2.6",
+      "characters": [
+        "프캬루",
+        "호마레",
+        "에로체",
+        "수마레",
+        "바이올렛"
+      ],
+      "sourceCell": "'타비비토'!H22"
+    },
+    "타비비토-39": {
+      "boss": 2,
+      "stars": [
+        "5",
+        "5",
+        "5",
+        "5",
+        "5"
+      ],
+      "expectedDamage": "2.8",
+      "originalTitle": "2넴 피오 레오리 수레시아 와카나 수리아 55555, 2.8",
+      "characters": [
+        "피오",
+        "레오리",
+        "수레시아",
+        "와카나",
+        "수리아"
+      ],
+      "sourceCell": "'타비비토'!H34"
+    },
+    "타비비토-53": {
+      "boss": 2,
+      "stars": [
+        "5",
+        "5",
+        "5",
+        "5",
+        "5"
+      ],
+      "expectedDamage": "2.3",
+      "originalTitle": "2넴 피오 시오리 프코로 와카나 수리아 55555, 2.3",
+      "characters": [
+        "피오",
+        "시오리",
+        "프코로",
+        "와카나",
+        "수리아"
+      ],
+      "sourceCell": "'타비비토'!H48"
+    },
+    "타비비토-65": {
+      "boss": 3,
+      "stars": [
+        "5",
+        "5",
+        "5",
+        "5",
+        "5"
+      ],
+      "expectedDamage": "3.59",
+      "originalTitle": "3넴 아메스 신마호 수네모네 파오이 윈에루 55555, 3.59",
+      "characters": [
+        "아메스",
+        "신마호",
+        "수네모네",
+        "파오이",
+        "윈에루"
+      ],
+      "sourceCell": "'타비비토'!H60"
+    },
+    "타비비토-83": {
+      "boss": 3,
+      "stars": [
+        "5",
+        "5",
+        "5",
+        "5",
+        "5"
+      ],
+      "expectedDamage": "2.64",
+      "originalTitle": "3넴 수리스 수메스 알조미 알라비 소노 55555, 2.64",
+      "characters": [
+        "수리스",
+        "수메스",
+        "알조미",
+        "알라비",
+        "소노"
+      ],
+      "sourceCell": "'타비비토'!H78"
+    },
+    "타비비토-91": {
+      "boss": 4,
+      "stars": [
+        "5",
+        "5",
+        "6",
+        "5",
+        "5"
+      ],
+      "expectedDamage": "2.68",
+      "originalTitle": "4넴 윈유니 수미미 수페코 수루카 수즈루 55655, 2.68",
+      "characters": [
+        "윈유니",
+        "수미미",
+        "수페코",
+        "수루카",
+        "수즈루"
+      ],
+      "sourceCell": "'타비비토'!H86"
+    },
+    "타비비토-104": {
+      "boss": 5,
+      "stars": [
+        "5",
+        "5",
+        "5",
+        "5",
+        "5"
+      ],
+      "expectedDamage": "2.88",
+      "originalTitle": "5넴 수리스 의란파 피오 봄즈메 아네모네 55555, 2.88",
+      "characters": [
+        "수리스",
+        "의란파",
+        "피오",
+        "봄즈메",
+        "아네모네"
+      ],
+      "sourceCell": "'타비비토'!H99"
+    }
+  },
+  "2026-10": {
+    "oct-택틱정리-12": {
+      "boss": 1,
+      "stars": [
+        "5",
+        "5",
+        "6",
+        "5",
+        "5"
+      ],
+      "expectedDamage": "3.1",
+      "originalTitle": "1넴 수메스 수리코 수페코 수루카 수즈루 55655, 3.1",
+      "characters": [
+        "수메스",
+        "수리코",
+        "수페코",
+        "수루카",
+        "수즈루"
+      ],
+      "sourceCell": "'택틱정리'!H7"
+    },
+    "oct-택틱정리-27": {
+      "boss": 1,
+      "stars": [
+        "5",
+        "5",
+        "5",
+        "5",
+        "5"
+      ],
+      "expectedDamage": "3.0",
+      "originalTitle": "1넴 네피 봉황 후부키 아이라 수네아 55555, 3.0",
+      "characters": [
+        "네피네라",
+        "봉황",
+        "후부키",
+        "아이라",
+        "수네아"
+      ],
+      "sourceCell": "'택틱정리'!H22"
+    },
+    "oct-택틱정리-42": {
+      "boss": 2,
+      "stars": [
+        "5",
+        "5",
+        "5",
+        "5",
+        "5"
+      ],
+      "expectedDamage": "3.0",
+      "originalTitle": "2넴 라비 파오이 이로하 게무기 수셰피 55555, 3.0",
+      "characters": [
+        "라비",
+        "파오이",
+        "이로하",
+        "게무기",
+        "수셰피"
+      ],
+      "sourceCell": "'택틱정리'!H37"
+    },
+    "oct-택틱정리-56": {
+      "boss": 2,
+      "stars": [
+        "5",
+        "5",
+        "5",
+        "5",
+        "5"
+      ],
+      "expectedDamage": "2.8",
+      "originalTitle": "2넴 라비 아오이 게무기 리리컬 수셰피 55555, 2.8",
+      "characters": [
+        "라비",
+        "아오이",
+        "게무기",
+        "리리컬",
+        "수셰피"
+      ],
+      "sourceCell": "'택틱정리'!H51"
+    },
+    "oct-택틱정리-67": {
+      "boss": 3,
+      "stars": [
+        "5",
+        "5",
+        "5",
+        "5",
+        "5"
+      ],
+      "expectedDamage": "3.1",
+      "originalTitle": "3넴 피오 프코로 와카나 수리아 시나츠 55555, 3.1",
+      "characters": [
+        "피오",
+        "프코로",
+        "와카나",
+        "수리아",
+        "시나츠"
+      ],
+      "sourceCell": "'택틱정리'!H62"
+    },
+    "oct-택틱정리-86": {
+      "boss": 3,
+      "stars": [
+        "5",
+        "5",
+        "5",
+        "5",
+        "5"
+      ],
+      "expectedDamage": "3.0",
+      "originalTitle": "3넴 피오 수레시아 와카나 수리아 시나츠 55555, 3.0",
+      "characters": [
+        "피오",
+        "수레시아",
+        "와카나",
+        "수리아",
+        "시나츠"
+      ],
+      "sourceCell": "'택틱정리'!H81"
+    },
+    "oct-택틱정리-101": {
+      "boss": 4,
+      "stars": [
+        "5",
+        "5",
+        "5",
+        "5",
+        "5"
+      ],
+      "expectedDamage": "3.2",
+      "originalTitle": "4넴 루이즈, 성라엘, 에로체, 블룸, 린드 55555, 3.2",
+      "characters": [
+        "루이즈",
+        "성라엘",
+        "에로체",
+        "블룸",
+        "린드"
+      ],
+      "sourceCell": "'택틱정리'!H96"
+    },
+    "oct-택틱정리-115": {
+      "boss": 4,
+      "stars": [
+        "5",
+        "5",
+        "5",
+        "5",
+        "5"
+      ],
+      "expectedDamage": "3.1",
+      "originalTitle": "4넴 수마호 루이즈 성라엘 에로체 오우카 55555, 3.1",
+      "characters": [
+        "수마호",
+        "루이즈",
+        "성라엘",
+        "에로체",
+        "오우카"
+      ],
+      "sourceCell": "'택틱정리'!H110"
+    },
+    "oct-택틱정리-130": {
+      "boss": 5,
+      "stars": [
+        "5",
+        "5",
+        "5",
+        "5",
+        "5"
+      ],
+      "expectedDamage": "3.6",
+      "originalTitle": "5넴 에리스 알네카 미소라 알리스 바이올렛 55555, 3.6",
+      "characters": [
+        "에리스",
+        "알네카",
+        "미소라",
+        "알리스",
+        "바이올렛"
+      ],
+      "sourceCell": "'택틱정리'!H125"
+    },
+    "oct-타비비토-10": {
+      "boss": 1,
+      "stars": [
+        "5",
+        "5",
+        "6",
+        "5",
+        "5"
+      ],
+      "expectedDamage": "2.9",
+      "originalTitle": "1넴 수메스 수리코 수페코 수루카 수즈루 55655, 2.9",
+      "characters": [
+        "수메스",
+        "수리코",
+        "수페코",
+        "수루카",
+        "수즈루"
+      ],
+      "sourceCell": "'타비비토'!H5"
+    },
+    "oct-타비비토-20": {
+      "boss": 2,
+      "stars": [
+        "5",
+        "5",
+        "5",
+        "5",
+        "5"
+      ],
+      "expectedDamage": "2.8",
+      "originalTitle": "2넴 라비 아오이 게무기 리리컬 수셰피 55555, 2.8",
+      "characters": [
+        "라비",
+        "아오이",
+        "게무기",
+        "리리컬",
+        "수셰피"
+      ],
+      "sourceCell": "'타비비토'!H15"
+    },
+    "oct-타비비토-31": {
+      "boss": 3,
+      "stars": [
+        "5",
+        "5",
+        "5",
+        "5",
+        "5"
+      ],
+      "expectedDamage": "3.0",
+      "originalTitle": "3넴 피오 수레시아 와카나 수리아 시나츠 55555, 3.0",
+      "characters": [
+        "피오",
+        "수레시아",
+        "와카나",
+        "수리아",
+        "시나츠"
+      ],
+      "sourceCell": "'타비비토'!H26"
+    },
+    "oct-타비비토-46": {
+      "boss": 4,
+      "stars": [
+        "5",
+        "5",
+        "5",
+        "5",
+        "5"
+      ],
+      "expectedDamage": "2.9",
+      "originalTitle": "4넴 수마호 루이즈 성라엘 에로체 오우카 55555, 2.9",
+      "characters": [
+        "수마호",
+        "루이즈",
+        "성라엘",
+        "에로체",
+        "오우카"
+      ],
+      "sourceCell": "'타비비토'!H41"
+    },
+    "oct-타비비토-57": {
+      "boss": 5,
+      "stars": [
+        "5",
+        "5",
+        "5",
+        "5",
+        "5"
+      ],
+      "expectedDamage": "3.0",
+      "originalTitle": "5넴 에리스 알네카 미소라 알리스 바이올렛 55555, 3.0",
+      "characters": [
+        "에리스",
+        "알네카",
+        "미소라",
+        "알리스",
+        "바이올렛"
+      ],
+      "sourceCell": "'타비비토'!H52"
+    },
+    "oct-타비비토-69": {
+      "boss": 5,
+      "stars": [
+        "5",
+        "5",
+        "5",
+        "5",
+        "6"
+      ],
+      "expectedDamage": "2.6",
+      "originalTitle": "5넴 수리스 의란파 의치카 피오 스즈메 55556, 2.6",
+      "characters": [
+        "수리스",
+        "의란파",
+        "의치카",
+        "피오",
+        "스즈메"
+      ],
+      "sourceCell": "'타비비토'!H64"
+    }
+  },
+  "missingTactics": [
+    {
+      "month": "2026-09",
+      "id": "택틱정리-43",
+      "boss": 1,
+      "stars": [
+        "5",
+        "5",
+        "5",
+        "6",
+        "5"
+      ],
+      "expectedDamage": "3.5",
+      "originalTitle": "1넴 에키드나 프캬루 호마레 밤피 바이올렛 55565, 3.5",
+      "title": "1넴 에키드나 프캬루 호마레 밤피 바이올렛 55565, 3.5",
+      "source": "택틱정리",
+      "characters": [
+        "에키드나",
+        "프캬루",
+        "호마레",
+        "밤피",
+        "바이올렛"
+      ],
+      "note": "필수 : 탱커 HP, 마방 4.0+, 암속강 880, 5p 풀, MS 83+",
+      "type": "세미오토",
+      "video": "https://www.youtube.com/watch?v=srKb-OXJF5E",
+      "rows": [
+        {
+          "text": "AUTO 오프, 밤피, 프캬루, 에키드나 SET",
+          "checked": [
+            true,
+            true,
+            false,
+            true,
+            false,
+            false
+          ],
+          "sourceRow": 42,
+          "textFormatRuns": [
+            {
+              "format": {
+                "foregroundColor": {
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "blue": 1
+                  }
+                }
+              }
+            },
+            {
+              "startIndex": 9
+            }
+          ]
+        },
+        {
+          "text": "1:07 프캬루 후 호마레 ON",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            false,
+            false
+          ],
+          "sourceRow": 44,
+          "textFormatRuns": [
+            {},
+            {
+              "startIndex": 11,
+              "format": {
+                "foregroundColor": {
+                  "red": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "text": "0:54 호마레 후 전부 OFF",
+          "checked": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "sourceRow": 45,
+          "textFormatRuns": [
+            {},
+            {
+              "startIndex": 10,
+              "format": {
+                "foregroundColor": {
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "blue": 1
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "text": "0:49 프캬루 말풍선 보자마자 (시간 되자마자) AUTO 온",
+          "checked": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            true
+          ],
+          "sourceRow": 46,
+          "textFormatRuns": [
+            {},
+            {
+              "startIndex": 28,
+              "format": {
+                "foregroundColor": {
+                  "red": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "text": "0:49 바이올렛 후 호마레, 프캬루, 에키드나 ON, AUTO 오프",
+          "checked": [
+            true,
+            true,
+            true,
+            false,
+            false,
+            false
+          ],
+          "sourceRow": 47,
+          "textFormatRuns": [
+            {},
+            {
+              "startIndex": 12,
+              "format": {
+                "foregroundColor": {
+                  "red": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1
+                  }
+                }
+              }
+            },
+            {
+              "startIndex": 30
+            },
+            {
+              "startIndex": 31,
+              "format": {
+                "foregroundColor": {
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "blue": 1
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "text": "0:45 프캬루 후 밤피 한번만, 프캬루 OFF",
+          "checked": [
+            true,
+            false,
+            true,
+            false,
+            false,
+            false
+          ],
+          "sourceRow": 48,
+          "textFormatRuns": [
+            {},
+            {
+              "startIndex": 11,
+              "format": {
+                "foregroundColor": {
+                  "red": 0.21960784,
+                  "green": 0.4627451,
+                  "blue": 0.11372549
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.21960784,
+                    "green": 0.4627451,
+                    "blue": 0.11372549
+                  }
+                }
+              }
+            },
+            {
+              "startIndex": 18
+            },
+            {
+              "startIndex": 19,
+              "format": {
+                "foregroundColor": {
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "blue": 1
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "text": "0:34 호마레 후 프캬루 ON",
+          "checked": [
+            true,
+            true,
+            true,
+            false,
+            false,
+            false
+          ],
+          "sourceRow": 49,
+          "textFormatRuns": [
+            {},
+            {
+              "startIndex": 11,
+              "format": {
+                "foregroundColor": {
+                  "red": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "text": "0:31 프캬루 후 밤피 한번만",
+          "checked": [
+            true,
+            true,
+            true,
+            false,
+            false,
+            false
+          ],
+          "sourceRow": 50,
+          "textFormatRuns": [
+            {},
+            {
+              "startIndex": 11,
+              "format": {
+                "foregroundColor": {
+                  "red": 0.21960784,
+                  "green": 0.4627451,
+                  "blue": 0.11372549
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.21960784,
+                    "green": 0.4627451,
+                    "blue": 0.11372549
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "text": "0:24 호마레 후 바이올렛 ON",
+          "checked": [
+            true,
+            true,
+            true,
+            false,
+            true,
+            false
+          ],
+          "sourceRow": 51,
+          "textFormatRuns": [
+            {},
+            {
+              "startIndex": 11,
+              "format": {
+                "foregroundColor": {
+                  "red": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "text": "0:18 에키드나 후 밤피 ON, AUTO 온, 호마레 OFF",
+          "checked": [
+            true,
+            true,
+            false,
+            true,
+            true,
+            true
+          ],
+          "sourceRow": 52,
+          "textFormatRuns": [
+            {},
+            {
+              "startIndex": 12,
+              "format": {
+                "foregroundColor": {
+                  "red": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1
+                  }
+                }
+              }
+            },
+            {
+              "startIndex": 27,
+              "format": {
+                "foregroundColor": {
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "blue": 1
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "text": "0:12 호마레 후 호마레 ON, AUTO 오프",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            false
+          ],
+          "sourceRow": 53,
+          "textFormatRuns": [
+            {},
+            {
+              "startIndex": 11,
+              "format": {
+                "foregroundColor": {
+                  "red": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1
+                  }
+                }
+              }
+            },
+            {
+              "startIndex": 19,
+              "format": {
+                "foregroundColor": {
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "blue": 1
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "text": "0:09 프캬루 후 밤피, 프캬루 OFF",
+          "checked": [
+            true,
+            false,
+            true,
+            false,
+            true,
+            false
+          ],
+          "sourceRow": 54,
+          "textFormatRuns": [
+            {},
+            {
+              "startIndex": 11,
+              "format": {
+                "foregroundColor": {
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "blue": 1
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "text": "0:01 호마레 후 밤피. 프캬루 ON",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            false
+          ],
+          "sourceRow": 55,
+          "textFormatRuns": [
+            {},
+            {
+              "startIndex": 11,
+              "format": {
+                "foregroundColor": {
+                  "red": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1
+                  }
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

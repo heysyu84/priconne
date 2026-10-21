@@ -1,0 +1,47 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import {createApiClient} from '../public/api-client.mjs';
+import {buildPages} from './build-pages.mjs';
+import {assetUrl} from '../public/site-paths.mjs';
+import {characterPortrait,handlePortraitError} from '../public/character-portraits.mjs';
+
+const backend='https://nyang-clan-manager.heysyu457310.chatgpt.site', calls=[], saved=new Map();
+const storage={getItem:k=>saved.get(k),setItem:(k,v)=>saved.set(k,v),removeItem:k=>saved.delete(k)};
+let clock=100, reply={editor:true,token:'a'.repeat(64),expiresAt:1000},status=200;
+const client=createApiClient({apiOrigin:backend,pageOrigin:'https://heysyu84.github.io',storage,now:()=>clock,fetcher:async(...args)=>{calls.push(args);return Response.json(reply,{status});}});
+await client('/api/editor',{method:'POST',body:'{"pin":"1122"}'});
+assert.equal(calls[0][0],backend+'/api/editor');assert.equal(calls[0][1].credentials,'omit');assert.equal(calls[0][1].headers.has('authorization'),false);
+assert.equal([...saved.values()].some(v=>v.includes('1122')),false);
+await client('/api/state',{method:'PUT',headers:{'X-Nyang-Client':'4'}});
+assert.equal(calls.at(-1)[1].headers.get('authorization'),'Bearer '+'a'.repeat(64));
+clock=1001;await client('/api/state');assert.equal(calls.at(-1)[1].headers.has('authorization'),false);assert.equal(saved.size,0);
+clock=100;await client('/api/editor',{method:'POST'});reply={editor:false};await client('/api/editor',{method:'POST'});assert.equal(saved.size,0);
+reply={editor:true,token:'b'.repeat(64),expiresAt:1000};await client('/api/editor',{method:'POST'});status=403;await client('/api/state');assert.equal(saved.size,0);
+const local=createApiClient({pageOrigin:backend,fetcher:async(...args)=>{calls.push(args);return Response.json({editor:true});}});
+await local('/api/editor');assert.equal(calls.at(-1)[0],'/api/editor');assert.equal(calls.at(-1)[1].credentials,'same-origin');
+
+globalThis.document={baseURI:'https://heysyu84.github.io/priconne/'};
+assert.equal(assetUrl('/images/characters/a.png'),'/priconne/images/characters/a.png');
+assert.equal(assetUrl('data:image/png;base64,AAAA'),'data:image/png;base64,AAAA');
+const portrait=characterPortrait([{name:'테스트',portrait:'/images/characters/a.png',byStar:{'5':'/images/characters/b.png'}}],'테스트',5);
+assert.equal(portrait.url,'/priconne/images/characters/b.png');
+const img={matches:()=>true,dataset:{portraitFallbacks:JSON.stringify(['/images/characters/a.png'])}};handlePortraitError({target:img});assert.equal(img.src,'/priconne/images/characters/a.png');
+delete globalThis.document;
+const dir=fs.mkdtempSync(path.join(os.tmpdir(),'nyang-pages-'));
+try {
+  buildPages(dir);const html=fs.readFileSync(path.join(dir,'index.html'),'utf8');
+  assert.ok(html.includes(`name="nyang-api-origin" content="${backend}"`));
+  assert.ok(fs.existsSync(path.join(dir,'.nojekyll')));
+  const shell=html.split('<script id="seed-data"')[0];
+  for(const match of shell.matchAll(/(?:href|src)="(\.\/[^"?#]+)(?:\?[^"#]*)?"/g))assert.ok(fs.existsSync(path.join(dir,match[1])),match[1]);
+  assert.equal(/(?:href|src)="\/(?!\/)/.test(shell),false);
+  const script=fs.readFileSync(path.join(dir,'clan.js'),'utf8');
+  assert.equal(/import\('\//.test(script),false);assert.equal(/await fetch\('\/api\//.test(script),false);
+  for(const name of ['characters.json','bosses.json']) {
+    const data=JSON.parse(fs.readFileSync(path.join(dir,name),'utf8'));
+    for(const match of JSON.stringify(data).matchAll(/"(\/images\/[^"?]+)"/g))assert.ok(fs.existsSync(path.join(dir,match[1].slice(1))),match[1]);
+  }
+} finally {fs.rmSync(dir,{recursive:true,force:true});}
+console.log('PASS: Pages API client, tab-only expiring sessions, no stored PIN, cookie-free cross-origin requests, prefixed portraits/fallbacks, complete static assets and HTML entrypoint');

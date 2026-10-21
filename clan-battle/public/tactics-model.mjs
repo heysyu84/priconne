@@ -1,5 +1,5 @@
-import { makeId } from './roster.mjs?v=20261022-portraits9';
-import { shiftTimeline } from './engine.mjs?v=20261022-portraits9';
+import { makeId } from './roster.mjs?v=20261022-pages10';
+import { shiftTimeline } from './engine.mjs?v=20261022-pages10';
 
 export const GROUPS = ['택틱정리', '타비비토'];
 export const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));

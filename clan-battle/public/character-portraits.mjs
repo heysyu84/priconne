@@ -1,3 +1,4 @@
+import { assetUrl } from './site-paths.mjs?v=20261022-pages10';
 export const normalizeCharacterName = value => String(value ?? '').normalize('NFKC').replace(/\s+/g, '').toLocaleLowerCase('ko-KR');
 
 export function findCharacter(catalog, name) {
@@ -16,7 +17,7 @@ export function characterPortrait(catalog, name, star, custom) {
   const character = findCharacter(catalog, name);
   const level = String(star ?? '').replace(/[★☆성\s]/g, '');
   const candidates = [...new Set([custom, character?.byStar?.[level], character?.portrait].map(safeImage).filter(Boolean))];
-  return { character, url: candidates[0] || '', candidates };
+  return { character, url: assetUrl(candidates[0] || ''), candidates };
 }
 
 const escapeAttribute = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -30,7 +31,7 @@ export function handlePortraitError(event) {
   const next = remaining.findIndex(path => safeImage(path));
   if (next >= 0) {
     img.dataset.portraitFallbacks = JSON.stringify(remaining.slice(next + 1));
-    img.src = remaining[next];
+    img.src = assetUrl(remaining[next]);
   } else img.hidden = true;
 }
 

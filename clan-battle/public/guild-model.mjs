@@ -1,4 +1,4 @@
-import { makeId, syncRoster } from './roster.mjs?v=20261022-portraits9';
+import { makeId, syncRoster } from './roster.mjs?v=20261022-pages10';
 
 export const BOSS_COLORS=['#f4cccc','#fff2cc','#d9ead3','#cfe2f3','#d9d2e9'];
 export const BOSS_ACCENTS=['#ea9999','#ffe599','#b6d7a8','#a4c2f4','#b4a7d6'];

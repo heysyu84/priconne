@@ -1,4 +1,4 @@
-import { makeId, memberLabel, syncRoster, matchMembers, parseDamage } from './roster.mjs?v=20261022-portraits9';
+import { makeId, memberLabel, syncRoster, matchMembers, parseDamage } from './roster.mjs?v=20261022-pages10';
 
 export function createWorkflow(api) {
   const { getApp, getMonth, setApp, persist, replay, render, notify, navigate, section, nf, escapeHtml: X } = api;

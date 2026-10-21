@@ -1,14 +1,17 @@
 (async()=>{'use strict';
-const {installPortraitFallback}=await import('/character-portraits.mjs?v=20261022-portraits9');
+const {installPortraitFallback}=await import('./character-portraits.mjs?v=20261022-pages10');
 installPortraitFallback();
-const Engine=await import('/engine.mjs?v=20261022-portraits9');
-const {ensureRoster,syncRoster,memberLabel}=await import('/roster.mjs?v=20261022-portraits9');
-const {createWorkflow}=await import('/workflow.mjs?v=20261022-portraits9');
-const {ensureTactics}=await import('/tactics-model.mjs?v=20261022-portraits9');
-const {applySourceData}=await import('/guild-model.mjs?v=20261022-portraits9');
-const {createGuildWorkspace}=await import('/guild-workspace.mjs?v=20261022-portraits9');
-const {createTacticWorkspace}=await import('/tactics-workspace.mjs?v=20261022-portraits9');
-const [TACTIC_META,CHARACTERS,ROW_FORMATS,BOSS_ART,GUILD_SOURCE]=await Promise.all(['/tactic-metadata.json','/characters.json','/tactic-row-formats.json','/bosses.json','/guild-source.json'].map(async path=>{const response=await fetch(path+'?v=20261022-portraits9');if(!response.ok)throw Error('택틱 자료를 불러오지 못했습니다.');return response.json()}));
+const {assetUrl}=await import('./site-paths.mjs?v=20261022-pages10');
+const {browserApiClient}=await import('./api-client.mjs?v=20261022-pages10');
+const apiFetch=browserApiClient();
+const Engine=await import('./engine.mjs?v=20261022-pages10');
+const {ensureRoster,syncRoster,memberLabel}=await import('./roster.mjs?v=20261022-pages10');
+const {createWorkflow}=await import('./workflow.mjs?v=20261022-pages10');
+const {ensureTactics}=await import('./tactics-model.mjs?v=20261022-pages10');
+const {applySourceData}=await import('./guild-model.mjs?v=20261022-pages10');
+const {createGuildWorkspace}=await import('./guild-workspace.mjs?v=20261022-pages10');
+const {createTacticWorkspace}=await import('./tactics-workspace.mjs?v=20261022-pages10');
+const [TACTIC_META,CHARACTERS,ROW_FORMATS,BOSS_ART,GUILD_SOURCE]=await Promise.all(['/tactic-metadata.json','/characters.json','/tactic-row-formats.json','/bosses.json','/guild-source.json'].map(async path=>{const response=await fetch(assetUrl(path)+'?v=20261022-pages10');if(!response.ok)throw Error('택틱 자료를 불러오지 못했습니다.');return response.json()}));
 const DEFAULT=JSON.parse(document.getElementById('seed-data').textContent);
 const STORAGE='nyangnyang-work-recovery-v1';
 const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
@@ -21,14 +24,14 @@ const rnumber=n=>Math.round(Number(n)||0);
 const monthFormat=m=>m.replace('-','년 ')+'월';
 const seedMonth=deepcopy(DEFAULT.months['2026-10']);
 let boot;
-try { const response=await fetch('/api/state',{cache:'no-store',signal:AbortSignal.timeout(15000)});if(!response.ok)throw Error();boot=await response.json(); }
+try { const response=await apiFetch('/api/state',{cache:'no-store',signal:AbortSignal.timeout(15000)});if(!response.ok)throw Error();boot=await response.json(); }
 catch { $('#content').innerHTML='<section class="panel"><h1>기록에 연결하지 못했습니다</h1><p class="muted">연결을 확인한 뒤 다시 시도해 주세요. 기존 기록은 변경되지 않았습니다.</p><button class="btn primary" onclick="location.reload()">다시 연결</button></section>';$('#sync-state').textContent='연결 실패';return; }
 let app=boot.data||deepcopy(DEFAULT);
 const rosterMigrated=ensureRoster(app,DEFAULT.rosterSeed||[]);
 const tacticsMigrated=ensureTactics(app,TACTIC_META,ROW_FORMATS);
 const guildMigrated=applySourceData(app,GUILD_SOURCE);
 try{const active=localStorage.getItem('nyang-view-month');if(app.months[active])app.active=active;}catch{}
-let editor=false;try{const result=await fetch('/api/editor',{cache:'no-store'});editor=!!(await result.json()).editor;}catch{}
+let editor=false;try{const result=await apiFetch('/api/editor',{cache:'no-store'});editor=!!(await result.json()).editor;}catch{}
 let revision=boot.revision,dirty=0,saving=false,saveTimer=null,blocked=false;
 for(const month of Object.values(app.months))Engine.replayMonth(month);
 let ui={page:'overview',day:'all',filter:'',boss:'all',member:seedMonth.members[0],rank:'damage',tactic:seedMonth.tactics[0]?.id||'',tacticSearch:'',editor:false,editLog:null,calcSeconds:61,calcText:'',calcResult:null,configStage:4,historyMonth:null,logPage:1};
@@ -45,7 +48,7 @@ function persist(){
 function saveStatus(state){const el=$('#sync-state');if(!el)return;el.dataset.state=state;el.textContent={saved:'● 저장 완료',saving:'저장 중…',error:'다시 저장',conflict:'변경 충돌'}[state]||'연결 중';}
 async function flushSave(){
   if(saving||!dirty||blocked)return;saving=true;saveStatus('saving');
-  try{while(dirty){const change=dirty;const response=await fetch('/api/state',{method:'PUT',headers:{'Content-Type':'application/json','X-Nyang-Client':'4'},body:JSON.stringify({revision,data:app})});const result=await response.json();if(!response.ok){if(response.status===403){editor=false;render();}blocked=response.status===409;throw Error(result.error||'저장하지 못했습니다.');}revision=result.revision;if(dirty===change)dirty=0;}
+  try{while(dirty){const change=dirty;const response=await apiFetch('/api/state',{method:'PUT',headers:{'Content-Type':'application/json','X-Nyang-Client':'4'},body:JSON.stringify({revision,data:app})});const result=await response.json();if(!response.ok){if(response.status===403){editor=false;render();}blocked=response.status===409;throw Error(result.error||'저장하지 못했습니다.');}revision=result.revision;if(dirty===change)dirty=0;}
     saveStatus('saved');$('#sync-message').classList.add('hidden');
   }catch(error){saveStatus(blocked?'conflict':'error');const box=$('#sync-message');box.innerHTML=X(error.message)+' <button class="textbutton" id="backup-conflict">JSON 백업</button> <button class="textbutton" id="retry-connection">'+(blocked?'최신 기록 다시 불러오기':'다시 저장')+'</button>';box.classList.remove('hidden');}
   finally{saving=false;}
@@ -63,7 +66,7 @@ function aggregates(d=current(),through=maxDay()){
  for(let p of Object.values(people)){const membership=d.membership[p.memberId]||{fromDay:1,toDay:null};p.allowedShots=Math.max(0,Math.min(through,membership.toDay??through)-membership.fromDay+1)*Number(d.options.dailyAttacks||3);p.missing=Math.max(0,p.allowedShots-p.shots);p.dayDamage=p.byDay[through]?.damage||0;p.dayContribution=p.byDay[through]?.contribution??0}return Object.values(people)
 }
 function bossStatus(d=current()){return Engine.bossProgress(d)}
-function bossPortrait(id){const b=current().bosses.find(b=>b.id===Number(id)),art=BOSS_ART[app.active]?.[id];return b&&art?.name===b.name?art.portrait:''}
+function bossPortrait(id){const b=current().bosses.find(b=>b.id===Number(id)),art=BOSS_ART[app.active]?.[id];return b&&art?.name===b.name?assetUrl(art.portrait):''}
 function section(head,subtitle='',actions=''){return `<div class="hero"><div><h1>${X(head)}</h1></div>${actions?`<div class="btnbar">${actions}</div>`:''}</div>`}
 function metric(label,value,desc){return `<div class="metric"><div class="k">${X(label)}</div><div class="v">${X(value)}</div><div class="d">${X(desc)}</div></div>`}
 function dateOptions(){return ['all',...Array.from({length:maxDay()},(_,i)=>String(i+1))].map(day=>`<button class="${ui.day===day?'active':''}" data-day="${day}">${day==='all'?'전체':`${day}일차`}</button>`).join('')}
@@ -109,9 +112,9 @@ function extraRuleFields(d){const o=d.options;return `<h3>이월 시간 규칙</
 function openForm(title,fields,onSave){
  document.querySelector('#guild-dialog')?.remove();const dialog=document.createElement('dialog');dialog.id='guild-dialog';dialog.className='guild-dialog';dialog.innerHTML=`<form><div class="panel-head"><h2>${X(title)}</h2><button type="button" class="btn sm" data-close-dialog>×</button></div><div class="dialog-fields">${fields.map(f=>`<div class="field"><label for="dialog-${X(f.name)}">${X(f.label)}</label><input id="dialog-${X(f.name)}" name="${X(f.name)}" type="${f.type||'text'}" value="${X(f.value??'')}" ${f.required?'required':''} autocomplete="${f.type==='password'?'off':'on'}" ${f.type==='number'?'step="any"':''}></div>`).join('')}</div><p class="dialog-error" role="alert"></p><div class="form-actions"><button type="button" class="btn" data-close-dialog>취소</button><button type="submit" class="btn primary">저장</button></div></form>`;document.body.append(dialog);dialog.showModal();dialog.querySelectorAll('[data-close-dialog]').forEach(b=>b.onclick=()=>dialog.close());dialog.querySelector('form').onsubmit=async event=>{event.preventDefault();const button=dialog.querySelector('[type="submit"]');button.disabled=true;try{const values=Object.fromEntries(new FormData(event.target));await onSave(values);dialog.close();}catch(error){dialog.querySelector('.dialog-error').textContent=error.message;}finally{button.disabled=false;}};dialog.addEventListener('close',()=>dialog.remove());
 }
-function unlock(){openForm('작성 잠금 해제',[{name:'pin',label:'작성 비밀번호',type:'password',required:true}],async values=>{const response=await fetch('/api/editor',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({pin:values.pin})});const result=await response.json();if(!response.ok)throw Error(result.error);editor=true;persist();render();notice('작성 잠금을 해제했습니다.');});}
-async function lockEditor(){if(dirty){await flushSave();if(dirty)return notice('변경 사항 저장 후 잠글 수 있습니다.');}const response=await fetch('/api/editor',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'lock'})});if(response.ok){editor=false;render();notice('작성 권한을 잠갔습니다.');}}
-document.addEventListener('click',e=>{const b=e.target.closest('[data-admin]');if(!b)return;if(b.dataset.admin==='unlock')unlock();if(b.dataset.admin==='lock')lockEditor();if(b.dataset.admin==='change-pin'){if(!editor)return unlock();openForm('작성 비밀번호 변경',[{name:'pin',label:'현재 비밀번호',type:'password',required:true},{name:'newPin',label:'새 비밀번호',type:'password',required:true}],async values=>{const response=await fetch('/api/editor',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'change',...values})});const result=await response.json();if(!response.ok)throw Error(result.error);notice('작성 비밀번호를 변경했습니다.');});}});
+function unlock(){openForm('작성 잠금 해제',[{name:'pin',label:'작성 비밀번호',type:'password',required:true}],async values=>{const response=await apiFetch('/api/editor',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({pin:values.pin})});const result=await response.json();if(!response.ok)throw Error(result.error);editor=true;persist();render();notice('작성 잠금을 해제했습니다.');});}
+async function lockEditor(){if(dirty){await flushSave();if(dirty)return notice('변경 사항 저장 후 잠글 수 있습니다.');}const response=await apiFetch('/api/editor',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'lock'})});if(response.ok){editor=false;render();notice('작성 권한을 잠갔습니다.');}}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-admin]');if(!b)return;if(b.dataset.admin==='unlock')unlock();if(b.dataset.admin==='lock')lockEditor();if(b.dataset.admin==='change-pin'){if(!editor)return unlock();openForm('작성 비밀번호 변경',[{name:'pin',label:'현재 비밀번호',type:'password',required:true},{name:'newPin',label:'새 비밀번호',type:'password',required:true}],async values=>{const response=await apiFetch('/api/editor',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'change',...values})});const result=await response.json();if(!response.ok)throw Error(result.error);notice('작성 비밀번호를 변경했습니다.');});}});
 
 document.addEventListener('click',event=>{if(event.target.closest('#sync-state')){if(dirty)flushSave();else notice('모든 변경 사항이 저장되어 있습니다.');}if(event.target.closest('#backup-conflict'))exportData();if(event.target.closest('#retry-connection')){if(blocked){if(confirm('현재 창의 저장되지 않은 변경을 버리고 최신 기록을 불러올까요? 필요하면 먼저 JSON 백업을 저장해 주세요.'))location.reload();}else flushSave();}});
 window.addEventListener('beforeunload',event=>{if(dirty||workflow.hasDraft()||tacticWorkspace.hasDraft()){event.preventDefault();event.returnValue='';}});
@@ -121,5 +124,5 @@ saveStatus('saved');if(editor&&(!boot.data||rosterMigrated||tacticsMigrated||gui
 
 render();
 // Reading visitors see newly saved attacks without sharing personal carry settings.
-setInterval(async()=>{if(editor||dirty||document.hidden||document.querySelector('dialog[open]'))return;const el=document.activeElement;if(el?.isContentEditable||['INPUT','SELECT','TEXTAREA'].includes(el?.tagName))return;try{const response=await fetch('/api/state',{cache:'no-store'});if(!response.ok)return;const next=await response.json();if(!next.data||next.revision===revision)return;const active=app.active;app=next.data;ensureRoster(app,DEFAULT.rosterSeed||[]);ensureTactics(app,TACTIC_META,ROW_FORMATS);applySourceData(app,GUILD_SOURCE);if(app.months[active])app.active=active;for(const month of Object.values(app.months))Engine.replayMonth(month);revision=next.revision;render();}catch{}},20000);
+setInterval(async()=>{if(editor||dirty||document.hidden||document.querySelector('dialog[open]'))return;const el=document.activeElement;if(el?.isContentEditable||['INPUT','SELECT','TEXTAREA'].includes(el?.tagName))return;try{const response=await apiFetch('/api/state',{cache:'no-store'});if(!response.ok)return;const next=await response.json();if(!next.data||next.revision===revision)return;const active=app.active;app=next.data;ensureRoster(app,DEFAULT.rosterSeed||[]);ensureTactics(app,TACTIC_META,ROW_FORMATS);applySourceData(app,GUILD_SOURCE);if(app.months[active])app.active=active;for(const month of Object.values(app.months))Engine.replayMonth(month);revision=next.revision;render();}catch{}},20000);
 })();

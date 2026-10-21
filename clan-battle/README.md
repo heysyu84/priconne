@@ -2,7 +2,8 @@
 
 프린세스 커넥트 클랜전의 배틀로그, 대시보드, 택틱과 개인 이월, 추천 조합, 기여도 및 역대 클랜원 기록을 관리합니다.
 
-- 실행 중인 사이트: https://nyang-clan-manager.heysyu457310.chatgpt.site
+- GitHub Pages: https://heysyu84.github.io/priconne/
+- 공유 저장 API / 기존 접속 주소: https://nyang-clan-manager.heysyu457310.chatgpt.site
 - GitHub 위치: heysyu84/priconne → clan-battle/
 - 라이트 모드와 보스별 원본 시트 색상을 사용합니다.
 - 관리자 코드로 작성 잠금을 해제합니다. 공용 기록은 서버에 저장하며 개인 이월 시간은 각 브라우저에만 저장합니다.
@@ -28,7 +29,11 @@
 
 Node.js 22.13 이상과 package.json에 지정된 pnpm을 사용합니다. pnpm install --frozen-lockfile 후 pnpm dev로 개발하고 pnpm build로 빌드합니다. 서버는 Cloudflare Workers/D1 기반의 Vinext 앱이며 데이터베이스 바인딩 이름은 DB입니다. 새 환경의 D1에는 drizzle/의 SQL을 먼저 적용해야 합니다.
 
-GitHub는 소스와 이미지의 보관 위치입니다. 현재 서버 DB와 관리자 세션은 저장소에 포함하지 않습니다. 배포할 때는 정적 파일과 함께 /api/state, /api/editor 서버 기능 및 D1을 연결해야 공유 저장과 작성 권한이 유지됩니다.
+화면과 모든 초상화는 GitHub Pages에서 배포합니다. 공유 기록과 1122 작성 코드 검증은 기존 Cloudflare Workers/D1의 /api/state, /api/editor를 사용합니다. Pages 접속은 허용된 출처만 API에 연결할 수 있고, 수정 세션은 12시간 동안 해당 탭의 sessionStorage에 보관합니다. 작성 코드 자체는 브라우저에 저장하지 않습니다. 기존 주소의 HttpOnly 쿠키 인증도 유지합니다.
+
+`node scripts/build-pages.mjs`는 `out/pages/`에 정적 배포 파일을 만듭니다. 이 결과를 GitHub 저장소 루트의 `docs/`로 올리고, Pages 소스를 `main` 브랜치의 `/docs`로 지정합니다. 원본 소스와 이미지는 계속 `clan-battle/`에 있습니다. 서버 DB와 관리자 세션은 저장소에 포함하지 않습니다.
+
+GitHub Pages만으로 공유 저장 서버를 대체할 수는 없습니다. 서버를 이전할 때는 scripts/build-pages.mjs의 공개 API 주소와 app/api-access.ts의 Pages 출처를 함께 수정하고 기존 DB를 이관해야 합니다.
 
 검증 명령:
 
@@ -39,5 +44,6 @@ GitHub는 소스와 이미지의 보관 위치입니다. 현재 서버 DB와 관
     node scripts/test-guild.mjs
     node scripts/test-guild-ui.mjs
     node --experimental-strip-types scripts/test-editor.mjs
+    node scripts/test-pages.mjs
 
 원본 시트 이미지의 바이트, 해시와 위치는 public/images/sheet-originals/manifest.json에서 확인할 수 있습니다. scripts/extract-sheet-images.py로 동일한 원본 XLSX에서 다시 추출할 수 있습니다.

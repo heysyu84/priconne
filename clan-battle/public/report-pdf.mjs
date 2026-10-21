@@ -1,4 +1,4 @@
-import { BOSS_ACCENTS, BOSS_INK, tenureMonths } from './guild-model.mjs?v=20261022-portraits9';
+import { BOSS_ACCENTS, BOSS_INK, tenureMonths } from './guild-model.mjs?v=20261022-pages10';
 const W=1240,H=1754,PAD=72;
 let reportFontsReady=null;
 const nf=n=>Number.isFinite(n)?n.toLocaleString('ko-KR',{maximumFractionDigits:2}):'산정 대기';
@@ -14,7 +14,7 @@ export function pdfFromJpegs(pages){
   const bytes=new Uint8Array(length);let at=0;for(const c of chunks){bytes.set(c,at);at+=c.length;}return bytes;
 }
 export async function downloadProfilePdf(data){
-  if(typeof FontFace!=='undefined'){reportFontsReady||=Promise.all([['400','Regular'],['700','SemiBold']].map(async([weight,file])=>{const face=new FontFace('Nyang Report',`url(/fonts/Pretendard-${file}.ttf)`,{weight});await face.load();document.fonts.add(face);}));await reportFontsReady;}
+  if(typeof FontFace!=='undefined'){reportFontsReady||=Promise.all([['400','Regular'],['700','SemiBold']].map(async([weight,file])=>{const face=new FontFace('Nyang Report',`url(${new URL(`./fonts/Pretendard-${file}.ttf`,import.meta.url).href})`,{weight});await face.load();document.fonts.add(face);}));await reportFontsReady;}
   await document.fonts.ready;
   const pages=[],canvases=[];let canvas,ctx,y,page=0;
   const text=(value,x,top,size=22,bold=false,color='#3b3350',align='left')=>{ctx.fillStyle=color;ctx.font=`${bold?700:400} ${size}px "Nyang Report", "Noto Sans KR", "Arial", sans-serif`;ctx.textAlign=align;ctx.fillText(String(value),x,top);ctx.textAlign='left';};

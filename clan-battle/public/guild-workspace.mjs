@@ -1,7 +1,7 @@
-import { characterPortrait, portraitAttributes } from './character-portraits.mjs?v=20261022-portraits9';
-import { BOSS_COLORS, BOSS_ACCENTS, BOSS_INK, tenureMonths, monthOnly, thisMonth, dashboardDay, bossTopStats } from './guild-model.mjs?v=20261022-portraits9';
-import { makeId, matchMembers, upsertMember, syncRoster } from './roster.mjs?v=20261022-portraits9';
-import { downloadProfilePdf } from './report-pdf.mjs?v=20261022-portraits9';
+import { characterPortrait, portraitAttributes } from './character-portraits.mjs?v=20261022-pages10';
+import { BOSS_COLORS, BOSS_ACCENTS, BOSS_INK, tenureMonths, monthOnly, thisMonth, dashboardDay, bossTopStats } from './guild-model.mjs?v=20261022-pages10';
+import { makeId, matchMembers, upsertMember, syncRoster } from './roster.mjs?v=20261022-pages10';
+import { downloadProfilePdf } from './report-pdf.mjs?v=20261022-pages10';
 const SCORES=[['damage','피해량'],['contribution','기여도'],['game','인게임 스코어'],['dayDamage','일일 피해량'],['dayContribution','일일 기여도']];
 
 export function createGuildWorkspace(api){

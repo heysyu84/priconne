@@ -5,9 +5,12 @@ import fs from 'node:fs';
 const sqlite=new DatabaseSync(':memory:');
 const DB={prepare(sql){const statement=sqlite.prepare(sql);let args=[];const p={bind(...values){args=values;return p;},async first(){return statement.get(...args)||null;},async run(){const result=statement.run(...args);return {meta:{changes:Number(result.changes)}};}};return p;},async batch(statements){const out=[];for(const s of statements)out.push(await s.run());return out;}};
 globalThis.__editorTestDB=DB;
-registerHooks({resolve(specifier,context,next){if(specifier==='cloudflare:workers')return {url:'data:text/javascript,export const env={DB:globalThis.__editorTestDB}',shortCircuit:true};if(specifier.endsWith('/editor-access'))return next(specifier+'.ts',context);return next(specifier,context);}});
+registerHooks({resolve(specifier,context,next){if(specifier==='cloudflare:workers')return {url:'data:text/javascript,export const env={DB:globalThis.__editorTestDB}',shortCircuit:true};if((specifier.endsWith('/editor-access')||specifier.endsWith('/api-access')))return next(specifier+'.ts',context);return next(specifier,context);}});
 const {editorAction,hasEditor}=await import('../app/editor-access.ts');
 const {PUT}=await import('../app/api/state/route.ts');
+const stateRoute=await import('../app/api/state/route.ts');
+const editorRoute=await import('../app/api/editor/route.ts');
+const {PAGES_ORIGIN}=await import('../app/api-access.ts');
 const url='https://example.invalid';
 const request=(body,cookie='',path='/api/editor',client='4')=>new Request(url+path,{method:'POST',headers:{'Content-Type':'application/json',origin:url,cookie,'X-Nyang-Client':client},body:JSON.stringify(body)});
 assert.equal(await hasEditor(new Request(url)),false);
@@ -31,3 +34,28 @@ assert.equal(await hasEditor(new Request(url,{headers:{cookie:newCookie}})),true
 assert.equal((await editorAction(request({action:'lock'},newCookie))).status,200);
 assert.equal(await hasEditor(new Request(url,{headers:{cookie:newCookie}})),false);
 console.log('PASS: server-side PIN gate, default unlock, HttpOnly session, rejected wrong PIN, authorized state save, revision conflict, exact HP validation, password change and session revocation');
+
+const pagesRequest=(body,token='',origin=PAGES_ORIGIN,path='/api/editor')=>new Request(url+path,{method:'POST',headers:{origin,'Content-Type':'application/json','X-Nyang-Client':'4',...(token?{authorization:`Bearer ${token}`}:{})},body:JSON.stringify(body)});
+for(const [route,method,path] of [[stateRoute,'PUT','state'],[editorRoute,'POST','editor']]) {
+  response=route.OPTIONS(new Request(`${url}/api/${path}`,{method:'OPTIONS',headers:{origin:PAGES_ORIGIN,'access-control-request-method':method,'access-control-request-headers':'authorization, content-type, x-nyang-client'}}));
+  assert.equal(response.status,204);assert.equal(response.headers.get('access-control-allow-origin'),PAGES_ORIGIN);
+  assert.equal(response.headers.has('access-control-allow-credentials'),false);
+  assert.equal(route.OPTIONS(new Request(`${url}/api/${path}`,{method:'OPTIONS',headers:{origin:'https://untrusted.invalid','access-control-request-method':method}})).status,403);
+}
+assert.equal((await editorAction(pagesRequest({pin:'2211'},'','https://untrusted.invalid'))).status,403);
+assert.equal((await editorAction(pagesRequest({pin:'wrong'}))).status,403);
+response=await editorRoute.GET(new Request(url+'/api/editor',{headers:{origin:PAGES_ORIGIN}}));
+assert.equal((await response.json()).editor,false);assert.equal(response.headers.get('access-control-allow-origin'),PAGES_ORIGIN);
+response=await editorAction(pagesRequest({pin:'2211'}));assert.equal(response.status,200);assert.equal(response.headers.has('set-cookie'),false);
+const pagesSession=await response.json();assert.match(pagesSession.token,/^[a-f0-9]{64}$/);
+assert.equal(await hasEditor(pagesRequest({},pagesSession.token)),true);
+assert.equal(await hasEditor(pagesRequest({},pagesSession.token,'https://untrusted.invalid')),false);
+assert.equal((await PUT(pagesRequest({revision:1,data:seed},pagesSession.token,PAGES_ORIGIN,'/api/state'))).status,200);
+assert.equal((await PUT(pagesRequest({revision:2,data:seed},'',PAGES_ORIGIN,'/api/state'))).status,403);
+response=await stateRoute.GET(new Request(url+'/api/state',{headers:{origin:PAGES_ORIGIN}}));
+assert.equal((await response.json()).revision,2);assert.equal(response.headers.get('access-control-allow-origin'),PAGES_ORIGIN);
+assert.equal((await editorAction(pagesRequest({action:'lock'},pagesSession.token))).status,200);
+assert.equal(await hasEditor(pagesRequest({},pagesSession.token)),false);
+response=await editorAction(pagesRequest({pin:'2211'}));const expired=await response.json();sqlite.exec('UPDATE editor_sessions SET expires=0');
+assert.equal(await hasEditor(pagesRequest({},expired.token)),false);
+console.log('PASS: Pages CORS/preflight allowlist, public shared reads, wrong-code rejection, server-authorized bearer save without third-party cookies, lock revocation and expiry');

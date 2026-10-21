@@ -2,10 +2,12 @@ import { env } from "cloudflare:workers";
 import { validateBattleNumbers } from "../../../public/engine.mjs";
 import { hasEditor } from "../../editor-access";
 
-const headers = { "cache-control": "no-store" };
+import { allowedOrigin, apiHeaders, preflight } from "../../api-access";
 type StateRow = { revision: number; payload: string; updated_at: string };
 
-export async function GET() {
+export async function GET(request: Request) {
+  const headers = apiHeaders(request);
+  if (!allowedOrigin(request)) return Response.json({ error: "허용되지 않은 요청입니다." }, { status: 403, headers });
   try {
     const row = await env.DB!.prepare("SELECT revision, payload, updated_at FROM clan_state WHERE id = ?").bind("main").first<StateRow>();
     return Response.json({ revision: row?.revision ?? 0, data: row ? JSON.parse(row.payload) : null, updatedAt: row?.updated_at ?? null }, { headers });
@@ -15,8 +17,8 @@ export async function GET() {
 }
 
 export async function PUT(request: Request) {
-  const origin = request.headers.get("origin");
-  if (origin && origin !== new URL(request.url).origin) return Response.json({ error: "허용되지 않은 요청입니다." }, { status: 403, headers });
+  const headers = apiHeaders(request);
+  if (!allowedOrigin(request)) return Response.json({ error: "허용되지 않은 요청입니다." }, { status: 403, headers });
   try {
     if (request.headers.get("x-nyang-client") !== "4") return Response.json({ error: "입력 화면이 업데이트되었습니다. 필요한 경우 JSON 백업 후 페이지를 새로고침해 주세요.", conflict: true }, { status: 409, headers });
     if (!(await hasEditor(request))) return Response.json({ error: "작성 비밀번호로 잠금을 해제해야 수정할 수 있습니다." }, {status:403,headers});
@@ -50,3 +52,5 @@ export async function PUT(request: Request) {
     return Response.json({ error: "서버에 저장하지 못했습니다. 현재 창을 유지하고 다시 저장해 주세요." }, { status: 503, headers });
   }
 }
+
+export function OPTIONS(request: Request) { return preflight(request, ["GET", "PUT"]); }
