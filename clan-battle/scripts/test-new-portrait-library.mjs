@@ -74,4 +74,15 @@ assert.match(shell, /<script type="module" src="\.\/clan\.js(?:\?[^"]+)?"><\/scr
 const client=fs.readFileSync(path.join(root,'clan.js'),'utf8');
 assert.ok(client.includes('withPortraitLibrary(CHARACTERS.characters,PORTRAIT_LIBRARY)'));
 assert.ok(client.includes("'/portrait-library.json'"));
+// Regression: a missing 5-star portrait (e.g. Aoi) must use a SMALL overlay,
+// not a second full-sized image outside the 62px portrait container.
+const guildSource=fs.readFileSync(path.join(root,'guild-workspace.mjs'),'utf8');
+const guildCss=fs.readFileSync(path.join(root,'guild.css'),'utf8');
+assert.ok(guildSource.includes('class="combo-source-art"'), 'Recommendation markup must match the CSS overlay wrapper');
+assert.ok(!guildSource.includes('class="combo-art"'), 'Old unmatched wrapper must not return');
+assert.ok(guildCss.includes('.combo-party .combo-source-art{position:relative'), 'The portrait container must be positioned');
+assert.ok(guildCss.includes('>img.source-star-overlay{position:absolute'), 'The star icon must be an overlay, not a normal image');
+const aoi=characterPortrait(combined,'아오이',5);
+assert.equal(aoi.showStarOverlay,true);
+assert.match(portraitStarOverlay(aoi),/source-star-overlay/);
 console.log('PASS imported images:',library.characters.length,'named characters;',starFiles,'rarity files;',mapped,'catalog matches; selected rarity and legacy fallback verified');

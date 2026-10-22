@@ -10,7 +10,7 @@ const {ensureRoster,syncRoster,memberLabel}=await import('./roster.mjs?v=2026102
 const {createWorkflow}=await import('./workflow.mjs?v=20261022-ui14');
 const {ensureTactics}=await import('./tactics-model.mjs?v=20261022-ui14');
 const {applySourceData}=await import('./guild-model.mjs?v=20261022-ui14');
-const {createGuildWorkspace}=await import('./guild-workspace.mjs?v=20261022-wide-layout15');
+const {createGuildWorkspace}=await import('./guild-workspace.mjs?v=20261022-star-fix16');
 const {createTacticWorkspace}=await import('./tactics-workspace.mjs?v=20261022-ui14');
 const [TACTIC_META,CHARACTERS,ROW_FORMATS,BOSS_ART,GUILD_SOURCE,PORTRAIT_LIBRARY]=await Promise.all(['/tactic-metadata.json','/characters.json','/tactic-row-formats.json','/bosses.json','/guild-source.json','/portrait-library.json'].map(async path=>{const response=await fetch(assetUrl(path)+'?v=20261022-ui14');if(!response.ok)throw Error('택틱 자료를 불러오지 못했습니다.');return response.json()}));
 const CHARACTER_CATALOG=withPortraitLibrary(CHARACTERS.characters,PORTRAIT_LIBRARY);
