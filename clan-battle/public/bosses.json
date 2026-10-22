@@ -466,10 +466,6 @@
       "referenceKey": "4.16",
       "mappingStatus": "verified"
     },
-    "아쿠아 리오스": {
-      "referenceKey": "5.2",
-      "mappingStatus": "verified"
-    },
     "와이번": {
       "referenceKey": "1.1",
       "mappingStatus": "verified"
@@ -562,10 +558,6 @@
       "referenceKey": "3.1",
       "mappingStatus": "verified"
     },
-    "레인 스피릿트": {
-      "referenceKey": "4.13",
-      "mappingStatus": "needs-visual-review"
-    },
     "오를레온": {
       "referenceKey": "5.8",
       "mappingStatus": "verified"
@@ -580,10 +572,6 @@
     },
     "메두사": {
       "referenceKey": "5.9",
-      "mappingStatus": "verified"
-    },
-    "번사우르스": {
-      "referenceKey": "3.9",
       "mappingStatus": "verified"
     },
     "다크 가고일": {
@@ -614,11 +602,6 @@
       "mappingStatus": "needs-visual-review",
       "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/3.10.png"
     },
-    "울프 헤딘": {
-      "referenceKey": "4.6",
-      "mappingStatus": "verified",
-      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/4.6.png"
-    },
     "레사스 팔트": {
       "referenceKey": "5.11",
       "mappingStatus": "verified",
@@ -630,9 +613,11 @@
       "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/3.3.png"
     },
     "마스터 센리": {
-      "referenceKey": "4.9",
-      "mappingStatus": "needs-visual-review",
-      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/4.9.png"
+      "referenceKey": null,
+      "mappingStatus": "needs-image",
+      "assetSource": null,
+      "mappingNote": "Korean clan boss encyclopedia describes a tanuki; existing 4.9 PNG depicts a flower-like boss, and was misassigned. Do not render as Master Senri.",
+      "koreanReference": "https://d.namu.moe/w/프린세스%20커넥트!%20Re%3ADive/퀘스트/클랜전"
     },
     "사지타리우스": {
       "referenceKey": "5.12",
@@ -643,11 +628,6 @@
       "referenceKey": "4.4",
       "mappingStatus": "needs-visual-review",
       "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/4.4.png"
-    },
-    "자칼 시프": {
-      "referenceKey": "3.4",
-      "mappingStatus": "verified",
-      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/3.4.png"
     },
     "트렌트 캐슬": {
       "referenceKey": "3.17",
@@ -694,18 +674,76 @@
       "mappingStatus": "verified",
       "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/4.19.png"
     },
-    "베놈 사라만드라": {
+    "베놈 샐러맨드라": {
       "referenceKey": "3.13",
       "japaneseName": "ベノムサラマンドラ",
       "aliases": [
+        "베놈 사라만드라",
         "베놈 살라만드라",
-        "베놈 샐러맨드라",
         "베놈사라만드라",
         "베놈살라만드라"
       ],
       "mappingStatus": "verified",
       "source": "https://priconne-redive.jp/news/event/28801/",
-      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/3.13.png"
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/3.13.png",
+      "koreanReference": "https://d.namu.moe/w/프린세스%20커넥트!%20Re%3ADive/퀘스트/클랜전"
+    },
+    "레인 스피릿": {
+      "referenceKey": "4.13",
+      "mappingStatus": "needs-visual-review",
+      "aliases": [
+        "레인 스피릿트"
+      ],
+      "koreanReference": "https://d.namu.moe/w/프린세스%20커넥트!%20Re%3ADive/퀘스트/클랜전"
+    },
+    "울프헤딘": {
+      "referenceKey": "4.6",
+      "mappingStatus": "verified",
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/4.6.png",
+      "aliases": [
+        "울프 헤딘"
+      ],
+      "koreanReference": "https://d.namu.moe/w/프린세스%20커넥트!%20Re%3ADive/퀘스트/클랜전"
+    },
+    "쟈칼 시프": {
+      "referenceKey": "3.4",
+      "mappingStatus": "verified",
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/3.4.png",
+      "aliases": [
+        "자칼 시프",
+        "자칼시프"
+      ],
+      "koreanReference": "https://d.namu.moe/w/프린세스%20커넥트!%20Re%3ADive/퀘스트/클랜전"
+    },
+    "아쿠아리오스": {
+      "referenceKey": "5.2",
+      "mappingStatus": "verified",
+      "aliases": [
+        "아쿠아 리오스"
+      ],
+      "koreanReference": "https://d.namu.moe/w/프린세스%20커넥트!%20Re%3ADive/퀘스트/클랜전"
+    },
+    "번 사우르스": {
+      "referenceKey": "3.9",
+      "mappingStatus": "verified",
+      "aliases": [
+        "번사우르스"
+      ],
+      "koreanReference": "https://d.namu.moe/w/프린세스%20커넥트!%20Re%3ADive/퀘스트/클랜전"
+    },
+    "플라워 마돈나": {
+      "referenceKey": "4.9",
+      "mappingStatus": "needs-visual-review",
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/4.9.png",
+      "mappingNote": "Provisional match based on floral artwork; verify against in-game portrait before marking verified.",
+      "koreanReference": "https://d.namu.moe/w/프린세스%20커넥트!%20Re%3ADive/퀘스트/클랜전"
+    },
+    "플라워 슈발리에": {
+      "referenceKey": "4.11",
+      "mappingStatus": "needs-visual-review",
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/4.11.png",
+      "mappingNote": "Provisional match based on floral artwork; verify against in-game portrait before marking verified.",
+      "koreanReference": "https://d.namu.moe/w/프린세스%20커넥트!%20Re%3ADive/퀘스트/클랜전"
     }
   }
 }
