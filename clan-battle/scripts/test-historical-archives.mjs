@@ -27,9 +27,10 @@ for(let i=1;i<=8;i++){
 }
 assert.equal(count,4524,'2026 January–August battle log total');
 const shell=fs.readFileSync(path.join(root,'clan-battle/public/clan-shell.html'),'utf8');
-const match=shell.match(/<script id="seed-data" type="application\\/json">([\\s\\S]*?)<\\/script>/);
-assert.ok(match,'missing seed data');
-const seed=JSON.parse(match[1]);
+const marker='<script id="seed-data" type="application/json">';
+const seedText=shell.split(marker)[1]?.split('</script>')[0];
+assert.ok(seedText,'missing seed data');
+const seed=JSON.parse(seedText);
 assert.equal(seed.months['2026-09'].events.length,454,'September source data must remain intact');
 assert.equal(seed.months['2026-10'].events.length,0,'October seed must remain intact');
 const script=fs.readFileSync(path.join(root,'docs/clan.js'),'utf8');
