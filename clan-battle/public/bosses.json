@@ -1,156 +1,598 @@
 {
+  "2026-01": {
+    "1": {
+      "name": "고블린 그레이트",
+      "referenceKey": "1.3",
+      "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/1.3.png",
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/1.3.png",
+      "mappingStatus": "verified",
+      "source": "PurikoneKrSheet numbered boss images; Japanese monthly guides and reference comparison"
+    },
+    "2": {
+      "name": "라이라이",
+      "referenceKey": "2.2",
+      "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/2.2.png",
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/2.2.png",
+      "mappingStatus": "verified",
+      "source": "PurikoneKrSheet numbered boss images; Japanese monthly guides and reference comparison"
+    },
+    "3": {
+      "name": "무슈후슈",
+      "referenceKey": "3.5",
+      "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/3.5.png",
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/3.5.png",
+      "mappingStatus": "verified",
+      "source": "PurikoneKrSheet numbered boss images; Japanese monthly guides and reference comparison"
+    },
+    "4": {
+      "name": "옵시디언 와이번",
+      "referenceKey": "4.15",
+      "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/4.15.png",
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/4.15.png",
+      "mappingStatus": "verified",
+      "source": "PurikoneKrSheet numbered boss images; Japanese monthly guides and reference comparison"
+    },
+    "5": {
+      "name": "알게티",
+      "referenceKey": "5.1",
+      "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/5.1.png",
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/5.1.png",
+      "mappingStatus": "verified",
+      "source": "PurikoneKrSheet numbered boss images; Japanese monthly guides and reference comparison"
+    }
+  },
+  "2026-02": {
+    "1": {
+      "name": "그레이터 골렘",
+      "referenceKey": "1.5",
+      "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/1.5.png",
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/1.5.png",
+      "mappingStatus": "verified",
+      "source": "PurikoneKrSheet numbered boss images; Japanese monthly guides and reference comparison"
+    },
+    "2": {
+      "name": "터프가이스트",
+      "referenceKey": "2.6",
+      "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/2.6.png",
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/2.6.png",
+      "mappingStatus": "verified",
+      "source": "PurikoneKrSheet numbered boss images; Japanese monthly guides and reference comparison"
+    },
+    "3": {
+      "name": "니들 크리퍼",
+      "referenceKey": "3.14",
+      "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/3.14.png",
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/3.14.png",
+      "mappingStatus": "verified",
+      "source": "PurikoneKrSheet numbered boss images; Japanese monthly guides and reference comparison"
+    },
+    "4": {
+      "name": "바실리스크 아로스",
+      "referenceKey": "4.16",
+      "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/4.16.png",
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/4.16.png",
+      "mappingStatus": "verified",
+      "source": "PurikoneKrSheet numbered boss images; Japanese monthly guides and reference comparison"
+    },
+    "5": {
+      "name": "아쿠아 리오스",
+      "referenceKey": "5.2",
+      "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/5.2.png",
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/5.2.png",
+      "mappingStatus": "verified",
+      "source": "PurikoneKrSheet numbered boss images; Japanese monthly guides and reference comparison"
+    }
+  },
+  "2026-03": {
+    "1": {
+      "name": "와이번",
+      "referenceKey": "1.1",
+      "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/1.1.png",
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/1.1.png",
+      "mappingStatus": "verified",
+      "source": "PurikoneKrSheet numbered boss images; Japanese monthly guides and reference comparison"
+    },
+    "2": {
+      "name": "테미 카리드",
+      "referenceKey": "2.1",
+      "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/2.1.png",
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/2.1.png",
+      "mappingStatus": "verified",
+      "source": "PurikoneKrSheet numbered boss images; Japanese monthly guides and reference comparison"
+    },
+    "3": {
+      "name": "씨 드레이크",
+      "referenceKey": "3.7",
+      "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/3.7.png",
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/3.7.png",
+      "mappingStatus": "needs-visual-review",
+      "source": "PurikoneKrSheet numbered boss images; Japanese monthly guides and reference comparison"
+    },
+    "4": {
+      "name": "소드 코브라",
+      "referenceKey": "4.5",
+      "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/4.5.png",
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/4.5.png",
+      "mappingStatus": "verified",
+      "source": "PurikoneKrSheet numbered boss images; Japanese monthly guides and reference comparison"
+    },
+    "5": {
+      "name": "토르페돈",
+      "referenceKey": "5.3",
+      "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/5.3.png",
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/5.3.png",
+      "mappingStatus": "verified",
+      "source": "PurikoneKrSheet numbered boss images; Japanese monthly guides and reference comparison"
+    }
+  },
+  "2026-04": {
+    "1": {
+      "name": "마담 엘렉트라",
+      "referenceKey": "1.2",
+      "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/1.2.png",
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/1.2.png",
+      "mappingStatus": "verified",
+      "source": "PurikoneKrSheet numbered boss images; Japanese monthly guides and reference comparison"
+    },
+    "2": {
+      "name": "고블린 라이더",
+      "referenceKey": "2.3",
+      "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/2.3.png",
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/2.3.png",
+      "mappingStatus": "verified",
+      "source": "PurikoneKrSheet numbered boss images; Japanese monthly guides and reference comparison"
+    },
+    "3": {
+      "name": "라이덴",
+      "referenceKey": "3.2",
+      "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/3.2.png",
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/3.2.png",
+      "mappingStatus": "verified",
+      "source": "PurikoneKrSheet numbered boss images; Japanese monthly guides and reference comparison"
+    },
+    "4": {
+      "name": "호넷 퀸",
+      "referenceKey": "4.17",
+      "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/4.17.png",
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/4.17.png",
+      "mappingStatus": "verified",
+      "source": "PurikoneKrSheet numbered boss images; Japanese monthly guides and reference comparison"
+    },
+    "5": {
+      "name": "메사르팀",
+      "referenceKey": "5.4",
+      "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/5.4.png",
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/5.4.png",
+      "mappingStatus": "verified",
+      "source": "PurikoneKrSheet numbered boss images; Japanese monthly guides and reference comparison"
+    }
+  },
+  "2026-05": {
+    "1": {
+      "name": "고블린 그레이트",
+      "referenceKey": "1.3",
+      "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/1.3.png",
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/1.3.png",
+      "mappingStatus": "verified",
+      "source": "PurikoneKrSheet numbered boss images; Japanese monthly guides and reference comparison"
+    },
+    "2": {
+      "name": "랜드 슬로스",
+      "referenceKey": "2.5",
+      "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/2.5.png",
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/2.5.png",
+      "mappingStatus": "verified",
+      "source": "PurikoneKrSheet numbered boss images; Japanese monthly guides and reference comparison"
+    },
+    "3": {
+      "name": "마담 프리즘",
+      "referenceKey": "3.15",
+      "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/3.15.png",
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/3.15.png",
+      "mappingStatus": "verified",
+      "source": "PurikoneKrSheet numbered boss images; Japanese monthly guides and reference comparison"
+    },
+    "4": {
+      "name": "네프테리온",
+      "referenceKey": "4.8",
+      "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/4.8.png",
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/4.8.png",
+      "mappingStatus": "verified",
+      "source": "PurikoneKrSheet numbered boss images; Japanese monthly guides and reference comparison"
+    },
+    "5": {
+      "name": "미노타우로스",
+      "referenceKey": "5.5",
+      "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/5.5.png",
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/5.5.png",
+      "mappingStatus": "verified",
+      "source": "PurikoneKrSheet numbered boss images; Japanese monthly guides and reference comparison"
+    }
+  },
+  "2026-06": {
+    "1": {
+      "name": "프로스트 하운드",
+      "referenceKey": "1.4",
+      "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/1.4.png",
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/1.4.png",
+      "mappingStatus": "verified",
+      "source": "PurikoneKrSheet numbered boss images; Japanese monthly guides and reference comparison"
+    },
+    "2": {
+      "name": "와일드 그리핀",
+      "referenceKey": "2.4",
+      "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/2.4.png",
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/2.4.png",
+      "mappingStatus": "verified",
+      "source": "PurikoneKrSheet numbered boss images; Japanese monthly guides and reference comparison"
+    },
+    "3": {
+      "name": "이와노즈치",
+      "referenceKey": "3.16",
+      "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/3.16.png",
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/3.16.png",
+      "mappingStatus": "verified",
+      "source": "PurikoneKrSheet numbered boss images; Japanese monthly guides and reference comparison"
+    },
+    "4": {
+      "name": "라이트닝 본",
+      "referenceKey": "4.18",
+      "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/4.18.png",
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/4.18.png",
+      "mappingStatus": "needs-visual-review",
+      "source": "PurikoneKrSheet numbered boss images; Japanese monthly guides and reference comparison"
+    },
+    "5": {
+      "name": "트윈 피그즈",
+      "referenceKey": "5.6",
+      "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/5.6.png",
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/5.6.png",
+      "mappingStatus": "verified",
+      "source": "PurikoneKrSheet numbered boss images; Japanese monthly guides and reference comparison"
+    }
+  },
+  "2026-07": {
+    "1": {
+      "name": "그레이터 골렘",
+      "referenceKey": "1.5",
+      "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/1.5.png",
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/1.5.png",
+      "mappingStatus": "verified",
+      "source": "PurikoneKrSheet numbered boss images; Japanese monthly guides and reference comparison"
+    },
+    "2": {
+      "name": "고블린 라이더",
+      "referenceKey": "2.3",
+      "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/2.3.png",
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/2.3.png",
+      "mappingStatus": "verified",
+      "source": "PurikoneKrSheet numbered boss images; Japanese monthly guides and reference comparison"
+    },
+    "3": {
+      "name": "와일드 크로우",
+      "referenceKey": "3.11",
+      "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/3.11.png",
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/3.11.png",
+      "mappingStatus": "needs-visual-review",
+      "source": "PurikoneKrSheet numbered boss images; Japanese monthly guides and reference comparison"
+    },
+    "4": {
+      "name": "타이탄 터틀",
+      "referenceKey": "4.12",
+      "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/4.12.png",
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/4.12.png",
+      "mappingStatus": "verified",
+      "source": "PurikoneKrSheet numbered boss images; Japanese monthly guides and reference comparison"
+    },
+    "5": {
+      "name": "카르키노스",
+      "referenceKey": "5.7",
+      "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/5.7.png",
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/5.7.png",
+      "mappingStatus": "verified",
+      "source": "PurikoneKrSheet numbered boss images; Japanese monthly guides and reference comparison"
+    }
+  },
+  "2026-08": {
+    "1": {
+      "name": "고블린 그레이트",
+      "referenceKey": "1.3",
+      "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/1.3.png",
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/1.3.png",
+      "mappingStatus": "verified",
+      "source": "PurikoneKrSheet numbered boss images; Japanese monthly guides and reference comparison"
+    },
+    "2": {
+      "name": "라이라이",
+      "referenceKey": "2.2",
+      "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/2.2.png",
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/2.2.png",
+      "mappingStatus": "verified",
+      "source": "PurikoneKrSheet numbered boss images; Japanese monthly guides and reference comparison"
+    },
+    "3": {
+      "name": "오크 치프",
+      "referenceKey": "3.1",
+      "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/3.1.png",
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/3.1.png",
+      "mappingStatus": "verified",
+      "source": "PurikoneKrSheet numbered boss images; Japanese monthly guides and reference comparison"
+    },
+    "4": {
+      "name": "레인 스피릿트",
+      "referenceKey": "4.13",
+      "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/4.13.png",
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/4.13.png",
+      "mappingStatus": "needs-visual-review",
+      "source": "PurikoneKrSheet numbered boss images; Japanese monthly guides and reference comparison"
+    },
+    "5": {
+      "name": "오를레온",
+      "referenceKey": "5.8",
+      "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/5.8.png",
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/5.8.png",
+      "mappingStatus": "verified",
+      "source": "PurikoneKrSheet numbered boss images; Japanese monthly guides and reference comparison"
+    }
+  },
   "2026-09": {
     "1": {
       "name": "마담 엘렉트라",
-      "portrait": "/images/bosses/2026-09-1.png",
+      "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/1.2.png",
       "japaneseName": "マダムエレクトラ",
       "referenceKey": "1.2",
       "source": "https://github.com/PurikoneKrSemi/PurikoneKrSheet/blob/main/data/ended/semi_auto/26%EB%85%8409%EC%9B%94.html",
       "referenceFileSha": "f9700d5e9de767e25839f58834e1de15a4298be6",
-      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/1.2.png",
-      "assetBlobSha": "3c3e3190b52a67864a04ea655a1b8a91962aa593",
-      "sha256": "d76d05686fee41787e3c5821b3530cb3e5f7da09ccab28dec3f6a09c54c7bc34",
-      "dimensions": [
-        128,
-        128
-      ]
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/1.2.png"
     },
     "2": {
       "name": "테미 카리드",
-      "portrait": "/images/bosses/2026-09-2.png",
+      "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/2.1.png",
       "japaneseName": "デミカリド",
       "referenceKey": "2.1",
       "source": "https://github.com/PurikoneKrSemi/PurikoneKrSheet/blob/main/data/ended/semi_auto/26%EB%85%8409%EC%9B%94.html",
       "referenceFileSha": "f9700d5e9de767e25839f58834e1de15a4298be6",
-      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/2.1.png",
-      "assetBlobSha": "1ee425b52346e29f97193f08b529f63c239b6407",
-      "sha256": "a452e02c42a855c88dcbc5e4dfce966c4ad231fd9790b52c52886ef8994cd596",
-      "dimensions": [
-        128,
-        128
-      ]
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/2.1.png"
     },
     "3": {
       "name": "레이스 로드",
-      "portrait": "/images/bosses/2026-09-3.png",
+      "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/3.6.png",
       "japaneseName": "レイスロード",
       "referenceKey": "3.6",
       "source": "https://github.com/PurikoneKrSemi/PurikoneKrSheet/blob/main/data/ended/semi_auto/26%EB%85%8409%EC%9B%94.html",
       "referenceFileSha": "f9700d5e9de767e25839f58834e1de15a4298be6",
-      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/3.6.png",
-      "assetBlobSha": "2627fc2ee7b0771a215a75114ac040a33dac7ed6",
-      "sha256": "3a82fb7ce6aa2df89325da46c690b4d043dc03a24285e4e8925a964733fa1927",
-      "dimensions": [
-        128,
-        128
-      ]
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/3.6.png"
     },
     "4": {
       "name": "트라이 로커",
-      "portrait": "/images/bosses/2026-09-4.png",
+      "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/4.1.png",
       "japaneseName": "トライロッカー",
       "referenceKey": "4.1",
       "source": "https://github.com/PurikoneKrSemi/PurikoneKrSheet/blob/main/data/ended/semi_auto/26%EB%85%8409%EC%9B%94.html",
       "referenceFileSha": "f9700d5e9de767e25839f58834e1de15a4298be6",
-      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/4.1.png",
-      "assetBlobSha": "7642254f91fdd64e630f916766dac4cc70e49158",
-      "sha256": "9650cf9cb6a935d00b29ee507170f80c656bfda0a69eecafe558522423a8eb59",
-      "dimensions": [
-        128,
-        128
-      ]
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/4.1.png"
     },
     "5": {
       "name": "메두사",
-      "portrait": "/images/bosses/2026-09-5.png",
+      "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/5.9.png",
       "japaneseName": "メデューサ",
       "referenceKey": "5.9",
       "source": "https://github.com/PurikoneKrSemi/PurikoneKrSheet/blob/main/data/ended/semi_auto/26%EB%85%8409%EC%9B%94.html",
       "referenceFileSha": "f9700d5e9de767e25839f58834e1de15a4298be6",
-      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/5.9.png",
-      "assetBlobSha": "797170b839797e0c4c3516e6fc7aced7456cedcc",
-      "sha256": "fa4c63679393a16207d2d80baf635cdd3e8dad7229da5ca4bf4e40ce35e799ab",
-      "dimensions": [
-        128,
-        128
-      ]
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/5.9.png"
     }
   },
   "2026-10": {
     "1": {
       "name": "프로스트 하운드",
-      "portrait": "/images/bosses/2026-10-1.png",
+      "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/1.4.png",
       "japaneseName": "フロストハウンド",
       "referenceKey": "1.4",
       "source": "https://github.com/PurikoneKrSemi/PurikoneKrSheet/blob/main/data/semi_auto/26%EB%85%8410%EC%9B%94.html",
       "referenceFileSha": "f599c63ba8a5c8e2831d0eca29038a7d9b997cd4",
-      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/1.4.png",
-      "assetBlobSha": "1bffd7f4094be8241462354161a315100a93849c",
-      "sha256": "747e59781b12f23dee911a9990c6ecd3acfd0bac171619587e3f4de761331350",
-      "dimensions": [
-        128,
-        128
-      ]
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/1.4.png"
     },
     "2": {
       "name": "랜드 슬로스",
-      "portrait": "/images/bosses/2026-10-2.png",
+      "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/2.5.png",
       "japaneseName": "ランドスロース",
       "referenceKey": "2.5",
       "source": "https://github.com/PurikoneKrSemi/PurikoneKrSheet/blob/main/data/semi_auto/26%EB%85%8410%EC%9B%94.html",
       "referenceFileSha": "f599c63ba8a5c8e2831d0eca29038a7d9b997cd4",
-      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/2.5.png",
-      "assetBlobSha": "ba0991790068838e44a7fd6adc6d546b4504f556",
-      "sha256": "bac0f63d2eb4d670415b5444578c98e5b99a612b07ff7fb4d760cd205329b9bb",
-      "dimensions": [
-        128,
-        128
-      ]
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/2.5.png"
     },
     "3": {
       "name": "번사우르스",
-      "portrait": "/images/bosses/2026-10-3.png",
+      "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/3.9.png",
       "japaneseName": "バーンサウルス",
       "referenceKey": "3.9",
       "source": "https://github.com/PurikoneKrSemi/PurikoneKrSheet/blob/main/data/semi_auto/26%EB%85%8410%EC%9B%94.html",
       "referenceFileSha": "f599c63ba8a5c8e2831d0eca29038a7d9b997cd4",
-      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/3.9.png",
-      "assetBlobSha": "b2c727673716d4b9bed216416905ce4d11531196",
-      "sha256": "cc933341a04173d8070b9968eb9eef20f96eb1fffa7336e96b1073233811f015",
-      "dimensions": [
-        128,
-        128
-      ]
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/3.9.png"
     },
     "4": {
       "name": "다크 가고일",
-      "portrait": "/images/bosses/2026-10-4.png",
+      "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/4.2.png",
       "japaneseName": "ダークガーゴイル",
       "referenceKey": "4.2",
       "source": "https://github.com/PurikoneKrSemi/PurikoneKrSheet/blob/main/data/semi_auto/26%EB%85%8410%EC%9B%94.html",
       "referenceFileSha": "f599c63ba8a5c8e2831d0eca29038a7d9b997cd4",
-      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/4.2.png",
-      "assetBlobSha": "b6ae02f1722432cb65b23ad74a27a423e4b13d78",
-      "sha256": "ec048641c8ec70cdff0e3fc094693875f97d1525a9f7114fb38e4f1d8deb3ccd",
-      "dimensions": [
-        128,
-        128
-      ]
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/4.2.png"
     },
     "5": {
       "name": "글러튼",
-      "portrait": "/images/bosses/2026-10-5.png",
+      "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/5.10.png",
       "japaneseName": "グラットン",
       "referenceKey": "5.10",
       "source": "https://github.com/PurikoneKrSemi/PurikoneKrSheet/blob/main/data/semi_auto/26%EB%85%8410%EC%9B%94.html",
       "referenceFileSha": "f599c63ba8a5c8e2831d0eca29038a7d9b997cd4",
-      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/5.10.png",
-      "assetBlobSha": "93a3fcac74e4a23c14f97cd62f2786158ef6364d",
-      "sha256": "bb515ac479fd2f1fe4069f5fcf553463f553b0be2af29fe74ddc2ad80432fcda",
-      "dimensions": [
-        128,
-        128
-      ]
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/5.10.png"
+    }
+  },
+  "catalog": {
+    "고블린 그레이트": {
+      "referenceKey": "1.3",
+      "mappingStatus": "verified"
+    },
+    "라이라이": {
+      "referenceKey": "2.2",
+      "mappingStatus": "verified"
+    },
+    "무슈후슈": {
+      "referenceKey": "3.5",
+      "mappingStatus": "verified"
+    },
+    "옵시디언 와이번": {
+      "referenceKey": "4.15",
+      "mappingStatus": "verified"
+    },
+    "알게티": {
+      "referenceKey": "5.1",
+      "mappingStatus": "verified"
+    },
+    "그레이터 골렘": {
+      "referenceKey": "1.5",
+      "mappingStatus": "verified"
+    },
+    "터프가이스트": {
+      "referenceKey": "2.6",
+      "mappingStatus": "verified"
+    },
+    "니들 크리퍼": {
+      "referenceKey": "3.14",
+      "mappingStatus": "verified"
+    },
+    "바실리스크 아로스": {
+      "referenceKey": "4.16",
+      "mappingStatus": "verified"
+    },
+    "아쿠아 리오스": {
+      "referenceKey": "5.2",
+      "mappingStatus": "verified"
+    },
+    "와이번": {
+      "referenceKey": "1.1",
+      "mappingStatus": "verified"
+    },
+    "테미 카리드": {
+      "referenceKey": "2.1",
+      "mappingStatus": "verified"
+    },
+    "씨 드레이크": {
+      "referenceKey": "3.7",
+      "mappingStatus": "needs-visual-review"
+    },
+    "소드 코브라": {
+      "referenceKey": "4.5",
+      "mappingStatus": "verified"
+    },
+    "토르페돈": {
+      "referenceKey": "5.3",
+      "mappingStatus": "verified"
+    },
+    "마담 엘렉트라": {
+      "referenceKey": "1.2",
+      "mappingStatus": "verified"
+    },
+    "고블린 라이더": {
+      "referenceKey": "2.3",
+      "mappingStatus": "verified"
+    },
+    "라이덴": {
+      "referenceKey": "3.2",
+      "mappingStatus": "verified"
+    },
+    "호넷 퀸": {
+      "referenceKey": "4.17",
+      "mappingStatus": "verified"
+    },
+    "메사르팀": {
+      "referenceKey": "5.4",
+      "mappingStatus": "verified"
+    },
+    "랜드 슬로스": {
+      "referenceKey": "2.5",
+      "mappingStatus": "verified"
+    },
+    "마담 프리즘": {
+      "referenceKey": "3.15",
+      "mappingStatus": "verified"
+    },
+    "네프테리온": {
+      "referenceKey": "4.8",
+      "mappingStatus": "verified"
+    },
+    "미노타우로스": {
+      "referenceKey": "5.5",
+      "mappingStatus": "verified"
+    },
+    "프로스트 하운드": {
+      "referenceKey": "1.4",
+      "mappingStatus": "verified"
+    },
+    "와일드 그리핀": {
+      "referenceKey": "2.4",
+      "mappingStatus": "verified"
+    },
+    "이와노즈치": {
+      "referenceKey": "3.16",
+      "mappingStatus": "verified"
+    },
+    "라이트닝 본": {
+      "referenceKey": "4.18",
+      "mappingStatus": "needs-visual-review"
+    },
+    "트윈 피그즈": {
+      "referenceKey": "5.6",
+      "mappingStatus": "verified"
+    },
+    "와일드 크로우": {
+      "referenceKey": "3.11",
+      "mappingStatus": "needs-visual-review"
+    },
+    "타이탄 터틀": {
+      "referenceKey": "4.12",
+      "mappingStatus": "verified"
+    },
+    "카르키노스": {
+      "referenceKey": "5.7",
+      "mappingStatus": "verified"
+    },
+    "오크 치프": {
+      "referenceKey": "3.1",
+      "mappingStatus": "verified"
+    },
+    "레인 스피릿트": {
+      "referenceKey": "4.13",
+      "mappingStatus": "needs-visual-review"
+    },
+    "오를레온": {
+      "referenceKey": "5.8",
+      "mappingStatus": "verified"
+    },
+    "레이스 로드": {
+      "referenceKey": "3.6",
+      "mappingStatus": "verified"
+    },
+    "트라이 로커": {
+      "referenceKey": "4.1",
+      "mappingStatus": "verified"
+    },
+    "메두사": {
+      "referenceKey": "5.9",
+      "mappingStatus": "verified"
+    },
+    "번사우르스": {
+      "referenceKey": "3.9",
+      "mappingStatus": "verified"
+    },
+    "다크 가고일": {
+      "referenceKey": "4.2",
+      "mappingStatus": "verified"
+    },
+    "글러튼": {
+      "referenceKey": "5.10",
+      "mappingStatus": "verified"
     }
   }
 }
