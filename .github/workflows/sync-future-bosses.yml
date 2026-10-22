@@ -1,6 +1,10 @@
 name: Sync JP future clan bosses
 
 on:
+  push:
+    paths:
+      - '.github/workflows/sync-future-bosses.yml'
+      - 'clan-battle/scripts/sync-future-bosses.mjs'
   schedule:
     # Check twice weekly; the upstream API may change after JP clan battles.
     - cron: '15 1 * * 2,5'
@@ -22,6 +26,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Check importer syntax
+        run: node --check clan-battle/scripts/sync-future-bosses.mjs
       - name: Read Aikurumi JP periods and preview Korean months
         run: node clan-battle/scripts/sync-future-bosses.mjs
       - name: Commit preview data (never modify live battle records)
