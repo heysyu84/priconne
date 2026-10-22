@@ -1,6 +1,683 @@
 {
   "source": "aikurumi.cn (JP)",
   "offsetMonths": 13,
-  "updatedAt": null,
-  "months": {}
+  "months": {
+    "2026-10": {
+      "jpMonth": "2025-09",
+      "krMonth": "2026-10",
+      "clanBattleId": 1092,
+      "bosses": [
+        {
+          "slot": 1,
+          "prefabId": 319600,
+          "sourceName": "フロストハウンド",
+          "name": "프로스트 하운드",
+          "referenceKey": "1.4",
+          "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/1.4.png",
+          "status": "verified"
+        },
+        {
+          "slot": 2,
+          "prefabId": 309000,
+          "sourceName": "ランドスロース",
+          "name": "랜드 슬로스",
+          "referenceKey": "2.5",
+          "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/2.5.png",
+          "status": "verified"
+        },
+        {
+          "slot": 3,
+          "prefabId": 303606,
+          "sourceName": "バーンサウルス",
+          "name": "번사우르스",
+          "referenceKey": "3.9",
+          "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/3.9.png",
+          "status": "verified"
+        },
+        {
+          "slot": 4,
+          "prefabId": 303301,
+          "sourceName": "ダークガーゴイル",
+          "name": "다크 가고일",
+          "referenceKey": "4.2",
+          "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/4.2.png",
+          "status": "verified"
+        },
+        {
+          "slot": 5,
+          "prefabId": 301301,
+          "sourceName": "グラットン",
+          "name": "글러튼",
+          "referenceKey": "5.10",
+          "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/5.10.png",
+          "status": "verified"
+        }
+      ]
+    },
+    "2026-11": {
+      "jpMonth": "2025-10",
+      "krMonth": "2026-11",
+      "clanBattleId": 1093,
+      "bosses": [
+        {
+          "slot": 1,
+          "prefabId": 302100,
+          "sourceName": "ワイバーン",
+          "name": "와이번",
+          "referenceKey": "1.1",
+          "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/1.1.png",
+          "status": "verified"
+        },
+        {
+          "slot": 2,
+          "prefabId": 320800,
+          "sourceName": "タフガイスト",
+          "name": "터프가이스트",
+          "referenceKey": "2.6",
+          "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/2.6.png",
+          "status": "verified"
+        },
+        {
+          "slot": 3,
+          "prefabId": 307201,
+          "sourceName": "バジリスク",
+          "name": "バジリスク",
+          "referenceKey": null,
+          "portrait": null,
+          "status": "unmatched"
+        },
+        {
+          "slot": 4,
+          "prefabId": 301501,
+          "sourceName": "ウールヴヘジン",
+          "name": "ウールヴヘジン",
+          "referenceKey": null,
+          "portrait": null,
+          "status": "unmatched"
+        },
+        {
+          "slot": 5,
+          "prefabId": 300201,
+          "sourceName": "レサトパルト",
+          "name": "レサトパルト",
+          "referenceKey": null,
+          "portrait": null,
+          "status": "unmatched"
+        }
+      ]
+    },
+    "2026-12": {
+      "jpMonth": "2025-11",
+      "krMonth": "2026-12",
+      "clanBattleId": 1094,
+      "bosses": [
+        {
+          "slot": 1,
+          "prefabId": 312501,
+          "sourceName": "マダムエレクトラ",
+          "name": "마담 엘렉트라",
+          "referenceKey": "1.2",
+          "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/1.2.png",
+          "status": "verified"
+        },
+        {
+          "slot": 2,
+          "prefabId": 302000,
+          "sourceName": "ワイルドグリフォン",
+          "name": "와일드 그리핀",
+          "referenceKey": "2.4",
+          "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/2.4.png",
+          "status": "verified"
+        },
+        {
+          "slot": 3,
+          "prefabId": 311001,
+          "sourceName": "トレントキャッスル",
+          "name": "トレントキャッスル",
+          "referenceKey": null,
+          "portrait": null,
+          "status": "unmatched"
+        },
+        {
+          "slot": 4,
+          "prefabId": 303900,
+          "sourceName": "サイクロプス",
+          "name": "サイクロプス",
+          "referenceKey": null,
+          "portrait": null,
+          "status": "unmatched"
+        },
+        {
+          "slot": 5,
+          "prefabId": 301801,
+          "sourceName": "サジタリウス",
+          "name": "サジタリウス",
+          "referenceKey": null,
+          "portrait": null,
+          "status": "unmatched"
+        }
+      ]
+    },
+    "2027-01": {
+      "jpMonth": "2025-12",
+      "krMonth": "2027-01",
+      "clanBattleId": 1095,
+      "bosses": [
+        {
+          "slot": 1,
+          "prefabId": 301204,
+          "sourceName": "グレーターゴーレム",
+          "name": "그레이터 골렘",
+          "referenceKey": "1.5",
+          "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/1.5.png",
+          "status": "verified"
+        },
+        {
+          "slot": 2,
+          "prefabId": 316600,
+          "sourceName": "ゴブリンライダー",
+          "name": "고블린 라이더",
+          "referenceKey": "2.3",
+          "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/2.3.png",
+          "status": "verified"
+        },
+        {
+          "slot": 3,
+          "prefabId": 304500,
+          "sourceName": "ライデン",
+          "name": "라이덴",
+          "referenceKey": "3.2",
+          "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/3.2.png",
+          "status": "verified"
+        },
+        {
+          "slot": 4,
+          "prefabId": 322700,
+          "sourceName": "ホーネットクイーン",
+          "name": "호넷 퀸",
+          "referenceKey": "4.17",
+          "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/4.17.png",
+          "status": "verified"
+        },
+        {
+          "slot": 5,
+          "prefabId": 300401,
+          "sourceName": "アルゲティ",
+          "name": "알게티",
+          "referenceKey": "5.1",
+          "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/5.1.png",
+          "status": "verified"
+        }
+      ]
+    },
+    "2027-02": {
+      "jpMonth": "2026-01",
+      "krMonth": "2027-02",
+      "clanBattleId": 1096,
+      "bosses": [
+        {
+          "slot": 1,
+          "prefabId": 305700,
+          "sourceName": "ゴブリングレート",
+          "name": "고블린 그레이트",
+          "referenceKey": "1.3",
+          "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/1.3.png",
+          "status": "verified"
+        },
+        {
+          "slot": 2,
+          "prefabId": 304600,
+          "sourceName": "ライライ",
+          "name": "라이라이",
+          "referenceKey": "2.2",
+          "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/2.2.png",
+          "status": "verified"
+        },
+        {
+          "slot": 3,
+          "prefabId": 304000,
+          "sourceName": "ムーバ",
+          "name": "ムーバ",
+          "referenceKey": null,
+          "portrait": null,
+          "status": "unmatched"
+        },
+        {
+          "slot": 4,
+          "prefabId": 305800,
+          "sourceName": "ネプテリオン",
+          "name": "네프테리온",
+          "referenceKey": "4.8",
+          "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/4.8.png",
+          "status": "verified"
+        },
+        {
+          "slot": 5,
+          "prefabId": 302901,
+          "sourceName": "アクアリオス",
+          "name": "아쿠아 리오스",
+          "referenceKey": "5.2",
+          "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/5.2.png",
+          "status": "verified"
+        }
+      ]
+    },
+    "2027-03": {
+      "jpMonth": "2026-02",
+      "krMonth": "2027-03",
+      "clanBattleId": 1097,
+      "bosses": [
+        {
+          "slot": 1,
+          "prefabId": 302100,
+          "sourceName": "ワイバーン",
+          "name": "와이번",
+          "referenceKey": "1.1",
+          "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/1.1.png",
+          "status": "verified"
+        },
+        {
+          "slot": 2,
+          "prefabId": 309000,
+          "sourceName": "ランドスロース",
+          "name": "랜드 슬로스",
+          "referenceKey": "2.5",
+          "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/2.5.png",
+          "status": "verified"
+        },
+        {
+          "slot": 3,
+          "prefabId": 300602,
+          "sourceName": "ニードルクリーパー",
+          "name": "니들 크리퍼",
+          "referenceKey": "3.14",
+          "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/3.14.png",
+          "status": "verified"
+        },
+        {
+          "slot": 4,
+          "prefabId": 313400,
+          "sourceName": "ソードコブラ",
+          "name": "소드 코브라",
+          "referenceKey": "4.5",
+          "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/4.5.png",
+          "status": "verified"
+        },
+        {
+          "slot": 5,
+          "prefabId": 303001,
+          "sourceName": "トルペドン",
+          "name": "토르페돈",
+          "referenceKey": "5.3",
+          "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/5.3.png",
+          "status": "verified"
+        }
+      ]
+    },
+    "2027-04": {
+      "jpMonth": "2026-03",
+      "krMonth": "2027-04",
+      "clanBattleId": 1098,
+      "bosses": [
+        {
+          "slot": 1,
+          "prefabId": 319600,
+          "sourceName": "フロストハウンド",
+          "name": "프로스트 하운드",
+          "referenceKey": "1.4",
+          "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/1.4.png",
+          "status": "verified"
+        },
+        {
+          "slot": 2,
+          "prefabId": 323200,
+          "sourceName": "デミ・カリド",
+          "name": "테미 카리드",
+          "referenceKey": "2.1",
+          "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/2.1.png",
+          "status": "verified"
+        },
+        {
+          "slot": 3,
+          "prefabId": 303403,
+          "sourceName": "イワノヅチ",
+          "name": "이와노즈치",
+          "referenceKey": "3.16",
+          "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/3.16.png",
+          "status": "verified"
+        },
+        {
+          "slot": 4,
+          "prefabId": 321904,
+          "sourceName": "バジリスク・アロス",
+          "name": "바실리스크 아로스",
+          "referenceKey": "4.16",
+          "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/4.16.png",
+          "status": "verified"
+        },
+        {
+          "slot": 5,
+          "prefabId": 300300,
+          "sourceName": "メサルティム",
+          "name": "메사르팀",
+          "referenceKey": "5.4",
+          "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/5.4.png",
+          "status": "verified"
+        }
+      ]
+    },
+    "2027-05": {
+      "jpMonth": "2026-04",
+      "krMonth": "2027-05",
+      "clanBattleId": 1099,
+      "bosses": [
+        {
+          "slot": 1,
+          "prefabId": 325300,
+          "sourceName": "リビングメイル",
+          "name": "リビングメイル",
+          "referenceKey": null,
+          "portrait": null,
+          "status": "unmatched"
+        },
+        {
+          "slot": 2,
+          "prefabId": 320800,
+          "sourceName": "タフガイスト",
+          "name": "터프가이스트",
+          "referenceKey": "2.6",
+          "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/2.6.png",
+          "status": "verified"
+        },
+        {
+          "slot": 3,
+          "prefabId": 319306,
+          "sourceName": "レイスコレクター",
+          "name": "レイスコレクター",
+          "referenceKey": null,
+          "portrait": null,
+          "status": "unmatched"
+        },
+        {
+          "slot": 4,
+          "prefabId": 304101,
+          "sourceName": "ティタノタートル",
+          "name": "타이탄 터틀",
+          "referenceKey": "4.12",
+          "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/4.12.png",
+          "status": "verified"
+        },
+        {
+          "slot": 5,
+          "prefabId": 300100,
+          "sourceName": "ミノタウロス",
+          "name": "미노타우로스",
+          "referenceKey": "5.5",
+          "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/5.5.png",
+          "status": "verified"
+        }
+      ]
+    },
+    "2027-06": {
+      "jpMonth": "2026-05",
+      "krMonth": "2027-06",
+      "clanBattleId": 1100,
+      "bosses": [
+        {
+          "slot": 1,
+          "prefabId": 312501,
+          "sourceName": "マダムエレクトラ",
+          "name": "마담 엘렉트라",
+          "referenceKey": "1.2",
+          "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/1.2.png",
+          "status": "verified"
+        },
+        {
+          "slot": 2,
+          "prefabId": 302000,
+          "sourceName": "ワイルドグリフォン",
+          "name": "와일드 그리핀",
+          "referenceKey": "2.4",
+          "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/2.4.png",
+          "status": "verified"
+        },
+        {
+          "slot": 3,
+          "prefabId": 300701,
+          "sourceName": "オークチーフ",
+          "name": "오크 치프",
+          "referenceKey": "3.1",
+          "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/3.1.png",
+          "status": "verified"
+        },
+        {
+          "slot": 4,
+          "prefabId": 312000,
+          "sourceName": "オブシダンワイバーン",
+          "name": "옵시디언 와이번",
+          "referenceKey": "4.15",
+          "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/4.15.png",
+          "status": "verified"
+        },
+        {
+          "slot": 5,
+          "prefabId": 302600,
+          "sourceName": "ツインピッグス",
+          "name": "트윈 피그즈",
+          "referenceKey": "5.6",
+          "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/5.6.png",
+          "status": "verified"
+        }
+      ]
+    },
+    "2027-07": {
+      "jpMonth": "2026-06",
+      "krMonth": "2027-07",
+      "clanBattleId": 1101,
+      "bosses": [
+        {
+          "slot": 1,
+          "prefabId": 305700,
+          "sourceName": "ゴブリングレート",
+          "name": "고블린 그레이트",
+          "referenceKey": "1.3",
+          "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/1.3.png",
+          "status": "verified"
+        },
+        {
+          "slot": 2,
+          "prefabId": 304600,
+          "sourceName": "ライライ",
+          "name": "라이라이",
+          "referenceKey": "2.2",
+          "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/2.2.png",
+          "status": "verified"
+        },
+        {
+          "slot": 3,
+          "prefabId": 309604,
+          "sourceName": "ロクス・フォートレス",
+          "name": "ロクス・フォートレス",
+          "referenceKey": null,
+          "portrait": null,
+          "status": "unmatched"
+        },
+        {
+          "slot": 4,
+          "prefabId": 309902,
+          "sourceName": "ゴブリンソーサラー",
+          "name": "ゴブリンソーサラー",
+          "referenceKey": null,
+          "portrait": null,
+          "status": "unmatched"
+        },
+        {
+          "slot": 5,
+          "prefabId": 302701,
+          "sourceName": "カルキノス",
+          "name": "카르키노스",
+          "referenceKey": "5.7",
+          "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/5.7.png",
+          "status": "verified"
+        }
+      ]
+    },
+    "2027-08": {
+      "jpMonth": "2026-07",
+      "krMonth": "2027-08",
+      "clanBattleId": 1102,
+      "bosses": [
+        {
+          "slot": 1,
+          "prefabId": 302100,
+          "sourceName": "ワイバーン",
+          "name": "와이번",
+          "referenceKey": "1.1",
+          "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/1.1.png",
+          "status": "verified"
+        },
+        {
+          "slot": 2,
+          "prefabId": 323200,
+          "sourceName": "デミ・カリド",
+          "name": "테미 카리드",
+          "referenceKey": "2.1",
+          "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/2.1.png",
+          "status": "verified"
+        },
+        {
+          "slot": 3,
+          "prefabId": 304500,
+          "sourceName": "ライデン",
+          "name": "라이덴",
+          "referenceKey": "3.2",
+          "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/3.2.png",
+          "status": "verified"
+        },
+        {
+          "slot": 4,
+          "prefabId": 300801,
+          "sourceName": "スピリットホーン",
+          "name": "スピリットホーン",
+          "referenceKey": null,
+          "portrait": null,
+          "status": "unmatched"
+        },
+        {
+          "slot": 5,
+          "prefabId": 302801,
+          "sourceName": "オルレオン",
+          "name": "오를레온",
+          "referenceKey": "5.8",
+          "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/5.8.png",
+          "status": "verified"
+        }
+      ]
+    },
+    "2027-09": {
+      "jpMonth": "2026-08",
+      "krMonth": "2027-09",
+      "clanBattleId": 1103,
+      "bosses": [
+        {
+          "slot": 1,
+          "prefabId": 312501,
+          "sourceName": "マダムエレクトラ",
+          "name": "마담 엘렉트라",
+          "referenceKey": "1.2",
+          "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/1.2.png",
+          "status": "verified"
+        },
+        {
+          "slot": 2,
+          "prefabId": 325700,
+          "sourceName": "ミストシーカー",
+          "name": "ミストシーカー",
+          "referenceKey": null,
+          "portrait": null,
+          "status": "unmatched"
+        },
+        {
+          "slot": 3,
+          "prefabId": 323108,
+          "sourceName": "バイオドーザー",
+          "name": "バイオドーザー",
+          "referenceKey": null,
+          "portrait": null,
+          "status": "unmatched"
+        },
+        {
+          "slot": 4,
+          "prefabId": 306901,
+          "sourceName": "トライロッカー",
+          "name": "트라이 로커",
+          "referenceKey": "4.1",
+          "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/4.1.png",
+          "status": "verified"
+        },
+        {
+          "slot": 5,
+          "prefabId": 301401,
+          "sourceName": "メデューサ",
+          "name": "메두사",
+          "referenceKey": "5.9",
+          "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/5.9.png",
+          "status": "verified"
+        }
+      ]
+    },
+    "2027-10": {
+      "jpMonth": "2026-09",
+      "krMonth": "2027-10",
+      "clanBattleId": 1104,
+      "bosses": [
+        {
+          "slot": 1,
+          "prefabId": 319600,
+          "sourceName": "フロストハウンド",
+          "name": "프로스트 하운드",
+          "referenceKey": "1.4",
+          "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/1.4.png",
+          "status": "verified"
+        },
+        {
+          "slot": 2,
+          "prefabId": 309000,
+          "sourceName": "ランドスロース",
+          "name": "랜드 슬로스",
+          "referenceKey": "2.5",
+          "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/2.5.png",
+          "status": "verified"
+        },
+        {
+          "slot": 3,
+          "prefabId": 306101,
+          "sourceName": "ジャッカルシーフ",
+          "name": "ジャッカルシーフ",
+          "referenceKey": null,
+          "portrait": null,
+          "status": "unmatched"
+        },
+        {
+          "slot": 4,
+          "prefabId": 303301,
+          "sourceName": "ダークガーゴイル",
+          "name": "다크 가고일",
+          "referenceKey": "4.2",
+          "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/4.2.png",
+          "status": "verified"
+        },
+        {
+          "slot": 5,
+          "prefabId": 301301,
+          "sourceName": "グラットン",
+          "name": "글러튼",
+          "referenceKey": "5.10",
+          "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/5.10.png",
+          "status": "verified"
+        }
+      ]
+    }
+  },
+  "updatedAt": "2026-10-22T13:37:54.343Z"
 }
