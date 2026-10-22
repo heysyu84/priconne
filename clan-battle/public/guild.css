@@ -35,3 +35,11 @@
 .dashboard-table{min-width:1130px}.dashboard-table th,.dashboard-table td{padding:9px 7px!important}.dashboard-table tbody>tr>th{min-width:95px}.dashboard-slots{gap:4px;justify-content:center}.attack-slot{position:relative;min-width:46px;justify-content:center;padding:13px 4px 5px;gap:3px}.attack-slot small{position:absolute;left:5px;top:2px;font-size:8px}.attack-slot .boss-chip{font-size:11px;padding:3px 4px;line-height:1.1}.attack-slot>span:not(.boss-chip):not(.empty-slot){font-size:9px}.dashboard-totals{gap:6px;font-size:9px;justify-content:center}.dashboard-totals>span{white-space:nowrap}
 
 .tw-editor-head .btnbar{display:flex;align-items:center;gap:7px;flex-wrap:wrap}.tw-editor-head .source-video{font-size:12px!important;font-weight:800;padding:9px 13px!important;white-space:nowrap;min-height:35px}.tw-editor-head h2{flex:1;min-width:0}.tw-editor-head{gap:12px}.tw-editor-head .btnbar{flex:none}@media(max-width:800px){.tw-editor-head .btnbar{width:100%;justify-content:flex-end}.tw-editor-head .source-video{font-size:12px!important;padding:8px 12px!important}.tw-editor-head h2{flex-basis:100%}}
+
+/* Rarity overlay for characters with only a no-star source portrait. */
+.combo-party .combo-source-art{position:relative;display:block;width:62px;height:62px;flex:none}
+.combo-party .combo-source-art>img:not(.source-star-overlay){width:100%;height:100%;display:block}
+.combo-party .combo-source-art>img.source-star-overlay{position:absolute;left:2px;bottom:2px;width:27.35%;height:27.35%;margin:0;border:0;border-radius:0;object-fit:contain;pointer-events:none;z-index:3}
+.combo-party .combo-source-art>.source-star-text{position:absolute;bottom:2px;left:2px;font-size:12px;line-height:1;background:#fef3c7;color:#a16207;font-weight:900;border-radius:3px;padding:2px}
+.combo-party .combo-source-art>.source-star-overlay[hidden]{display:none!important}
+@media(max-width:1100px){.combo-party .combo-source-art{width:52px;height:52px}}
