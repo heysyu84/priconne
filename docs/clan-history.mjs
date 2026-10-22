@@ -20,7 +20,7 @@ export function monthlyBattleSummary(month,roster=[]){
   const source=JSON.stringify({
     rows:[...rows].map(p=>[p.id,p.name,p.damage,p.contribution,p.game])
       .sort((a,b)=>String(a[0]).localeCompare(String(b[0]))),
-    events:month.events.length,memberCount,winners
+    events:[...month.events].map(e=>[e.id,e.day,e.memberId,e.member,e.boss,e.stage,e.damage,e.actual,e.kill,e.carry,e.carryFrom,e.sourceGame,e.sourceContribution]).sort((a,b)=>String(a[0]).localeCompare(String(b[0]))),memberCount,winners
   });
   let checksum=2166136261;
   for(let i=0;i<source.length;i++)checksum=Math.imul(checksum^source.charCodeAt(i),16777619);
@@ -36,12 +36,13 @@ export function confirmMonthlyResult(previous,summary,when=new Date().toISOStrin
   if(!summary?.month||!summary.eventCount)throw Error('마감할 배틀로그가 없습니다.');
   if(summary.month<AUTOMATIC_HISTORY_FROM)throw Error('기존 과거 기록은 자동으로 덮어쓰지 않습니다.');
   if(previous?.month&&previous.month!==summary.month)throw Error('다른 월의 결과를 덮어쓸 수 없습니다.');
-  if(previous&&!previous.autoFinalizedAt)throw Error('기존 수동 기록은 자동으로 덮어쓰지 않습니다.');
+  if(previous&&!previous.autoFinalizedAt&&!previous.pendingResult)throw Error('기존 수동 기록은 자동으로 덮어쓰지 않습니다.');
   return {
     ...(previous||{}),month:summary.month,memberCount:summary.memberCount,
     winners:Object.fromEntries(HISTORY_METRICS.map(k=>[k,[...(summary.winners[k]||[])]])),
     autoFinalizedAt:when,autoFirstFinalizedAt:previous?.autoFirstFinalizedAt||when,
     autoEventCount:summary.eventCount,autoResultSignature:summary.signature,
+    pendingResult:false,
     clanRank:previous?.clanRank??null,notes:previous?.notes||'',archiveUrl:previous?.archiveUrl||''
   };
 }
@@ -62,4 +63,22 @@ export function historicalHall(history=[]){
     }
   }
   return [...map.values()].sort((a,b)=>b.total-a.total||a.name.localeCompare(b.name,'ko'));
+}
+
+export function cleanHistoricalHistoryRow(row){
+  if(!row||row.month>=AUTOMATIC_HISTORY_FROM)return row;
+  const clean=value=>String(value||'')
+    .replace(/\d+\s*인\s*클전|\d+\s*인/g,'')
+    .replace(/\(\s*\)/g,'')
+    .replace(/\s*[,，]\s*/g, ', ')
+    .replace(/^\s*[,，]\s*|\s*[,，]\s*$/g,'')
+    .replace(/\s{2,}/g,' ')
+    .trim();
+  return {
+    ...row,
+    memberCount:row.memberCount===null||row.memberCount===undefined||row.memberCount===''?30:row.memberCount,
+    notes:row.month==='2023-06'?'+ 쿨링(노루)':clean(row.notes),
+    ...(row.mergedNotes!==undefined?{mergedNotes:clean(row.mergedNotes)}:{}),
+    ...(row.memberCountNote!==undefined?{memberCountNote:''}:{})
+  };
 }
