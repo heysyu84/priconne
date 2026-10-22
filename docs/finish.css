@@ -34,7 +34,7 @@ input:focus,select:focus,textarea:focus {border-color:#9872bf;box-shadow:0 0 0 3
 .admin-menu>summary {color:#715186;border-color:#ddcfe8;box-shadow:0 2px 4px #5b3d7606}
 .admin-menu[open]>summary {background:#eee4f7;border-color:#cdb4df}
 .admin-menu>div {gap:6px;border-color:#dccde8;box-shadow:0 14px 40px #4f326b1c}
-.mobile-portrait-link {display:none}
+.portrait-maker-link {display:inline-flex}
 
 .hero {margin-bottom:22px}
 .hero>div:first-child {position:relative;padding-left:15px}
@@ -197,7 +197,6 @@ input:focus,select:focus,textarea:focus {border-color:#9872bf;box-shadow:0 0 0 3
 @media(max-width:800px) {
   .sidebar {box-shadow:none}
   .topbar {border-bottom-color:#e0d3ec;background:#fffefc!important}
-  .mobile-portrait-link {display:inline-flex}
   .hero {align-items:stretch;gap:11px;margin-bottom:17px}
   .hero>div:first-child {padding-left:12px}
   .hero>div:first-child:before {width:3px;top:7px;bottom:7px;min-height:22px}
