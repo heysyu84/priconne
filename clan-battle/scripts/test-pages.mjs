@@ -58,6 +58,7 @@ console.log('PASS: Pages API client, tab-only expiring sessions, no stored PIN, 
 // Archive links are gated in the client and may point to a separate read-only D1 store.
 const archiveBundle=fs.readFileSync(new URL('../public/clan.js',import.meta.url),'utf8');
 assert.ok(archiveBundle.includes('splitStorage=boot.splitStorage===true'));
+assert.ok(archiveBundle.includes("api-client.mjs?v=20261022-archive18"));
 assert.ok(archiveBundle.includes('loadArchive(key)'));
 assert.ok(archiveBundle.includes("archiveMode:splitStorage?'v1':undefined"));
 assert.ok(archiveBundle.includes('data-open-archive'));
