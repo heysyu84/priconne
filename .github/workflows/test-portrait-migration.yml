@@ -5,6 +5,7 @@ on:
       - '.github/workflows/test-portrait-migration.yml'
       - 'clan-battle/public/character-portraits.mjs'
       - 'clan-battle/public/portrait-library.json'
+      - 'clan-battle/public/characters.json'
       - 'clan-battle/public/tactics-workspace.mjs'
       - 'clan-battle/public/guild-workspace.mjs'
       - 'clan-battle/public/clan.js'

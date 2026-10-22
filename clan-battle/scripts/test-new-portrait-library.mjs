@@ -28,6 +28,20 @@ for(const c of library.characters){
 }
 for(const c of catalog)if(findCharacter(combined,c.name)?.sourcePortrait)mapped++;
 assert.ok(mapped>=310,mapped);
+const renamed={네피네라:'네피',성레짓타:'성짓타',앤글:'앤글레어',엔요리:'앤요리',엔카리:'앤카리',이이올렛:'이사올렛',크소라:'성소라',크유이:'성유이',페코린느:'페코'};
+for(const [legacy,official] of Object.entries(renamed)){
+  const updated=findCharacter(catalog,official);
+  assert.ok(updated,official);
+  assert.ok(updated.aliases.includes(legacy),legacy);
+  assert.equal(findCharacter(catalog,legacy)?.id,updated.id,'Legacy saved tactic name should resolve to same character');
+  assert.ok(findCharacter(combined,official).sourcePortrait,'New default must use image library '+official);
+  assert.equal(findCharacter(combined,legacy).id,updated.id);
+}
+assert.ok(findCharacter(catalog,'루이즈').aliases.includes('루이즈마리'));
+assert.equal(findCharacter(combined,'루이즈마리').id,findCharacter(combined,'루이즈').id);
+const availableNames=new Set(library.characters.map(c=>c.name));
+assert.equal(catalog.filter(c=>!availableNames.has(c.name)).length,7);
+assert.equal(library.characters.filter(c=>!catalog.some(x=>x.name===c.name)).length,32);
 const p3=characterPortrait(combined,'네네카',3);
 const p5=characterPortrait(combined,'네네카',5);
 assert.match(decodeURIComponent(p3.url),/images\/네네카3.png$/);
