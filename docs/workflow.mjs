@@ -45,7 +45,7 @@ export function createWorkflow(api) {
   }
 
   function quickView() {
-    if(!canEdit())return '<details class="panel quick-panel" aria-label="배틀로그 입력"><summary>배틀로그 입력</summary><button class="btn" data-admin="unlock">🔒 작성 잠금 해제</button></details>';
+    if(!canEdit())return '';
     const d = draft();
     return `<details class="panel quick-panel" ${state.inputOpen?'open':''} aria-label="배틀로그 입력"><summary>배틀로그 입력</summary><div class="panel-head"><div><div class="sub">이름 일부 입력 후 <kbd>↑↓</kbd> 선택 · <kbd>Tab</kbd> 다음 칸 · <kbd>Enter</kbd> 등록</div></div><button type="button" class="btn sm" data-wf="focus-quick">입력으로 이동 <kbd>/</kbd></button></div>
       ${d.beforeId ? `<div class="insert-banner">#${X(month().events.find(e => e.id === d.beforeId)?.seq || '')} 앞에 삽입합니다. <button type="button" class="textbutton" data-wf="cancel-insert">맨 뒤 입력으로 변경</button></div>` : ''}
