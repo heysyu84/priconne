@@ -77,7 +77,11 @@ const monthView=createMonthView({getApp:()=>app,cache:archiveCache,availableMont
   },
   fetchMonth:async key=>{
     const fromSheet=importedArchiveMonths.includes(key);
-    const res=fromSheet?await fetch(assetUrl('/archive-data/'+key+'.json'),{cache:'force-cache'}):await apiFetch('/api/archive?month='+key,{cache:'no-store'});
+    const archivePath='/archive-data/'+key+'.json';
+    const url=location.hostname==='heysyu84.github.io'
+      ? assetUrl(archivePath)
+      : 'https://heysyu84.github.io/priconne'+archivePath;
+    const res=fromSheet?await fetch(url,{cache:'no-store'}):await apiFetch('/api/archive?month='+key,{cache:'no-store'});
     if(!res.ok)throw Error('과거 월 데이터를 가져오지 못했습니다. 다시 시도해 주세요.');
     return fromSheet?await res.json():(await res.json()).data;
   }
