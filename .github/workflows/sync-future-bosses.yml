@@ -1,13 +1,10 @@
 name: Sync JP future clan bosses
 
 on:
-  push:
-    paths:
-      - '.github/workflows/sync-future-bosses.yml'
-      - 'clan-battle/scripts/sync-future-bosses.mjs'
   schedule:
-    # Check twice weekly; the upstream API may change after JP clan battles.
-    - cron: '15 1 * * 2,5'
+    # Candidate dates 28-31 at 23:00 KST (14:00 UTC).
+    # A job guard below permits actual Korean month-end only.
+    - cron: '0 14 28-31 * *'
   workflow_dispatch:
 
 permissions:
@@ -22,20 +19,36 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
+      - name: Check actual Korean month-end
+        id: month_end
+        shell: bash
+        run: |
+          # GitHub cron does not support the L (last-day-of-month) syntax.
+          # At 23:00 KST, tomorrow must be the first of the new month.
+          if [[ "$(TZ=Asia/Seoul date -d 'tomorrow' +%d)" == "01" ]]; then
+            echo "is_last_day=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "is_last_day=false" >> "$GITHUB_OUTPUT"
+            echo "Not the last day in Asia/Seoul; skipping monthly refresh."
+          fi
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
       - name: Check importer syntax
+        if: github.event_name == 'workflow_dispatch' || steps.month_end.outputs.is_last_day == 'true'
         run: |
           node --check clan-battle/scripts/sync-future-bosses.mjs
           node --check docs/clan.js
           node --check clan-battle/public/clan.js
       - name: Verify month offset, boss identity, and non-destructive previews
+        if: github.event_name == 'workflow_dispatch' || steps.month_end.outputs.is_last_day == 'true'
         run: node --test clan-battle/scripts/test-future-bosses.mjs
       - name: Read Aikurumi JP periods and preview Korean months
+        if: github.event_name == 'workflow_dispatch' || steps.month_end.outputs.is_last_day == 'true'
         run: node clan-battle/scripts/sync-future-bosses.mjs
       - name: Commit preview data (never modify live battle records)
+        if: github.event_name == 'workflow_dispatch' || steps.month_end.outputs.is_last_day == 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
