@@ -585,17 +585,20 @@
     "스피릿 혼": {
       "referenceKey": "4.10",
       "mappingStatus": "verified",
-      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/4.10.png"
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/4.10.png",
+      "japaneseName": "スピリットホーン"
     },
     "바실리스크": {
       "referenceKey": "3.8",
       "mappingStatus": "verified",
-      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/3.8.png"
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/3.8.png",
+      "japaneseName": "バジリスク"
     },
     "무버": {
       "referenceKey": "4.3",
       "mappingStatus": "verified",
-      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/4.3.png"
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/4.3.png",
+      "japaneseName": "ムーバ"
     },
     "메가 라팡": {
       "referenceKey": "3.10",
@@ -605,7 +608,8 @@
     "레사스 팔트": {
       "referenceKey": "5.11",
       "mappingStatus": "verified",
-      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/5.11.png"
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/5.11.png",
+      "japaneseName": "レサトパルト"
     },
     "스카이 왈큐레": {
       "referenceKey": "3.3",
@@ -626,7 +630,8 @@
     "사지타리우스": {
       "referenceKey": "5.12",
       "mappingStatus": "verified",
-      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/5.12.png"
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/5.12.png",
+      "japaneseName": "サジタリウス"
     },
     "매드 베어": {
       "referenceKey": "4.4",
@@ -636,22 +641,26 @@
     "트렌트 캐슬": {
       "referenceKey": "3.17",
       "mappingStatus": "verified",
-      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/3.17.png"
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/3.17.png",
+      "japaneseName": "トレントキャッスル"
     },
     "사이클롭스": {
       "referenceKey": "4.7",
       "mappingStatus": "verified",
-      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/4.7.png"
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/4.7.png",
+      "japaneseName": "サイクロプス"
     },
     "리빙 메일": {
       "referenceKey": "1.6",
       "mappingStatus": "verified",
-      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/1.6.png"
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/1.6.png",
+      "japaneseName": "リビングメイル"
     },
     "미스트 시커": {
       "referenceKey": "2.7",
       "mappingStatus": "verified",
-      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/2.7.png"
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/2.7.png",
+      "japaneseName": "ミストシーカー"
     },
     "드로게이터": {
       "referenceKey": "3.12",
@@ -661,22 +670,26 @@
     "레이스 컬렉터": {
       "referenceKey": "3.18",
       "mappingStatus": "verified",
-      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/3.18.png"
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/3.18.png",
+      "japaneseName": "レイスコレクター"
     },
     "록스 포트리스": {
       "referenceKey": "3.19",
       "mappingStatus": "verified",
-      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/3.19.png"
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/3.19.png",
+      "japaneseName": "ロクス・フォートレス"
     },
     "바이오 도저": {
       "referenceKey": "3.20",
       "mappingStatus": "verified",
-      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/3.20.png"
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/3.20.png",
+      "japaneseName": "バイオドーザー"
     },
     "고블린 소서러": {
       "referenceKey": "4.19",
       "mappingStatus": "verified",
-      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/4.19.png"
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/4.19.png",
+      "japaneseName": "ゴブリンソーサラー"
     },
     "베놈 샐러맨드라": {
       "referenceKey": "3.13",
@@ -707,7 +720,8 @@
       "aliases": [
         "울프 헤딘"
       ],
-      "koreanReference": "https://d.namu.moe/w/프린세스%20커넥트!%20Re%3ADive/퀘스트/클랜전"
+      "koreanReference": "https://d.namu.moe/w/프린세스%20커넥트!%20Re%3ADive/퀘스트/클랜전",
+      "japaneseName": "ウールヴヘジン"
     },
     "쟈칼 시프": {
       "referenceKey": "3.4",
@@ -717,7 +731,8 @@
         "자칼 시프",
         "자칼시프"
       ],
-      "koreanReference": "https://d.namu.moe/w/프린세스%20커넥트!%20Re%3ADive/퀘스트/클랜전"
+      "koreanReference": "https://d.namu.moe/w/프린세스%20커넥트!%20Re%3ADive/퀘스트/클랜전",
+      "japaneseName": "ジャッカルシーフ"
     },
     "아쿠아리오스": {
       "referenceKey": "5.2",
