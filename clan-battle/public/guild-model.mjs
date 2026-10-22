@@ -1,4 +1,5 @@
 import { makeId, syncRoster } from './roster.mjs?v=20261022-ui14';
+import {cleanHistoricalHistoryRow,historicalHall} from './clan-history.mjs?v=20261022-hall01';
 
 export const BOSS_COLORS=['#f4cccc','#fff2cc','#d9ead3','#cfe2f3','#d9d2e9'];
 export const BOSS_ACCENTS=['#ea9999','#ffe599','#b6d7a8','#a4c2f4','#b4a7d6'];
@@ -37,6 +38,14 @@ export function applySourceData(app,source){
     app.clanHistory||=structuredClone(source.monthlyHistory);
     app.hallOfFame||=structuredClone(source.hallOfFame);
     app.guildDataVersion=1;changed=true;
+  }
+  if(app.historyAutomationVersion!==1){
+    // One-time, field-scoped migration of historical rows. Never rewrite
+    // historical ranking, winner, rank or already specified attendance values.
+    app.clanHistory=(app.clanHistory||[]).map(cleanHistoricalHistoryRow);
+    app.hallOfFame=historicalHall(app.clanHistory);
+    app.historyAutomationVersion=1;
+    changed=true;
   }
   for(const p of app.roster){p.joinedAt=monthOnly(p.joinedAt);p.leftAt=p.status==='active'?'':monthOnly(p.leftAt);p.periods||=[{joined:p.joinedAt,left:p.leftAt}];}
   for(const [key,month] of Object.entries(app.months)){
