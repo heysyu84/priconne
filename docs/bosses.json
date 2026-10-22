@@ -593,6 +593,71 @@
     "글러튼": {
       "referenceKey": "5.10",
       "mappingStatus": "verified"
+    },
+    "스피릿 혼": {
+      "referenceKey": "4.10",
+      "mappingStatus": "verified",
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/4.10.png"
+    },
+    "바실리스크": {
+      "referenceKey": "3.8",
+      "mappingStatus": "verified",
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/3.8.png"
+    },
+    "무버": {
+      "referenceKey": "4.3",
+      "mappingStatus": "verified",
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/4.3.png"
+    },
+    "메가 라팡": {
+      "referenceKey": "3.10",
+      "mappingStatus": "needs-visual-review",
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/3.10.png"
+    },
+    "울프 헤딘": {
+      "referenceKey": "4.6",
+      "mappingStatus": "verified",
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/4.6.png"
+    },
+    "레사스 팔트": {
+      "referenceKey": "5.11",
+      "mappingStatus": "verified",
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/5.11.png"
+    },
+    "스카이 왈큐레": {
+      "referenceKey": "3.3",
+      "mappingStatus": "needs-visual-review",
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/3.3.png"
+    },
+    "마스터 센리": {
+      "referenceKey": "4.9",
+      "mappingStatus": "needs-visual-review",
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/4.9.png"
+    },
+    "사지타리우스": {
+      "referenceKey": "5.12",
+      "mappingStatus": "verified",
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/5.12.png"
+    },
+    "매드 베어": {
+      "referenceKey": "4.4",
+      "mappingStatus": "needs-visual-review",
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/4.4.png"
+    },
+    "자칼 시프": {
+      "referenceKey": "3.4",
+      "mappingStatus": "verified",
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/3.4.png"
+    },
+    "트렌트 캐슬": {
+      "referenceKey": "3.17",
+      "mappingStatus": "verified",
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/3.17.png"
+    },
+    "사이클롭스": {
+      "referenceKey": "4.7",
+      "mappingStatus": "verified",
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/4.7.png"
     }
   }
 }
