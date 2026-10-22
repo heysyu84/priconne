@@ -11,8 +11,8 @@ const Engine=await import('./engine.mjs?v=20261022-ui14');
 const {ensureRoster,syncRoster,memberLabel}=await import('./roster.mjs?v=20261022-ui14');
 const {createWorkflow}=await import('./workflow.mjs?v=20261022-db19');
 const {ensureTactics}=await import('./tactics-model.mjs?v=20261022-ui14');
-const {applySourceData,remainingAttacks}=await import('./guild-model.mjs?v=20261022-db19');
-const {createGuildWorkspace}=await import('./guild-workspace.mjs?v=20261022-boss-top21');
+const {applySourceData,remainingAttacks}=await import('./guild-model.mjs?v=20261022-hall01');
+const {createGuildWorkspace}=await import('./guild-workspace.mjs?v=20261022-hall01');
 const {createTacticWorkspace}=await import('./tactics-workspace.mjs?v=20261022-ui14');
 const [TACTIC_META,CHARACTERS,ROW_FORMATS,BOSS_ART,GUILD_SOURCE,PORTRAIT_LIBRARY,FUTURE_BOSSES]=await Promise.all(['/tactic-metadata.json','/characters.json','/tactic-row-formats.json','/bosses.json','/guild-source.json','/portrait-library.json','/future-bosses.json'].map(async path=>{const response=await fetch(assetUrl(path)+'?v=20261022-boss-master14');if(!response.ok)throw Error('택틱 자료를 불러오지 못했습니다.');return response.json()}));
 const CHARACTER_CATALOG=withPortraitLibrary(CHARACTERS.characters,PORTRAIT_LIBRARY);
@@ -104,7 +104,7 @@ const current=()=>monthView.record();
 const money=n=>nf(Math.round(n));
 const workflow=createWorkflow({getApp:monthView.app,getMonth:current,setApp:value=>{app=value;syncRoster(app);for(const d of Object.values(app.months))Engine.replayMonth(d)},persist,replay:Engine.replayMonth,render,notify:notice,navigate:goto,section,nf,escapeHtml:X,contribution:contrib,getBosses:()=>bossStatus(),bossPortrait:id=>bossPortrait(id),canEdit,unlock:unlock,openForm});
 const tacticWorkspace=createTacticWorkspace({getApp:monthView.app,getMonth:current,persist:()=>{workflow.clearUndo();persist()},render,notify:notice,navigate:goto,section,copyText,estimateCarry:Engine.estimateCarry,catalog:CHARACTER_CATALOG,bossStatus:()=>bossStatus(),bossPortrait:id=>bossPortrait(id),canEdit,unlock:unlock,openForm});
-const guild=createGuildWorkspace({getApp:monthView.app,getMonth:current,persist,render,notify:notice,navigate:goto,section,nf,escapeHtml:X,aggregates,contribution:contrib,replay:Engine.replayMonth,characters:CHARACTER_CATALOG,canEdit,unlock,openForm,archiveView:archiveRecords,getArchiveMonth:key=>archiveCache.get(key)||app.months[key],openArchive:()=>goto('archive'),onDbTabChange:()=>{if(location.hash.startsWith('#archive'))window.history.replaceState(null,'',location.pathname+location.search);}});
+const guild=createGuildWorkspace({getApp:monthView.app,getMonth:current,persist,render,notify:notice,navigate:goto,section,nf,escapeHtml:X,aggregates,contribution:contrib,replay:Engine.replayMonth,characters:CHARACTER_CATALOG,canEdit,unlock,openForm,archiveView:archiveRecords,getArchiveMonth:key=>archiveCache.get(key)||app.months[key],loadHistoryMonth:key=>monthView.load(key),openArchive:()=>goto('archive'),onDbTabChange:()=>{if(location.hash.startsWith('#archive'))window.history.replaceState(null,'',location.pathname+location.search);}});
 function persist(){
   if(!canEdit())return false;
   try{localStorage.setItem(STORAGE,JSON.stringify(app))}catch{}
