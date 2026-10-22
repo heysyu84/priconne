@@ -142,8 +142,71 @@ export function createGuildWorkspace(api){
     const p=person(id);if(!p)return;
     const leaving=p.status==='active';openForm(leaving?'탈퇴 처리':'클랜원 복귀',[{name:'month',label:leaving?'탈퇴월':'복귀월',type:'month',value:thisMonth(),required:true}],values=>{if(!monthOnly(values.month))throw Error('월을 선택하세요.');if(leaving&&p.periods?.at(-1)?.joined>values.month)throw Error('탈퇴월은 가입월보다 빠를 수 없습니다.');if(!leaving&&p.periods?.at(-1)?.left>values.month)throw Error('복귀월은 마지막 탈퇴월보다 빠를 수 없습니다.');upsertMember(app(),{...p,status:leaving?'left':'active',leftAt:leaving?values.month:''},app().active,month().membership?.[id]?.fromDay||1,leaving?latestDay():null);p.periods||=[{joined:p.joinedAt,left:''}];if(leaving)p.periods.at(-1).left=values.month;else p.periods.push({joined:values.month,left:''});persist();render();});
   }
-  function editHistory(key){const existing=app().clanHistory?.find(x=>x.month===key),archived=api.getArchiveMonth?.(key),summary=archived?summarizeArchive(archived,app().roster):null;const h=existing||(summary?{month:key,memberCount:summary.memberCount,winners:Object.fromEntries(['damage','contribution','game'].map(metric=>[metric,archived.events.length?sortArchiveRankings(summary.rows,metric).slice(0,2).map(p=>p.name):[]]))}:null);openForm('월별 클랜전 결과',[{name:'month',label:'월',type:'month',value:h?.month||key||app().active,required:true},{name:'clanRank',label:'클랜 순위',type:'number',value:h?.clanRank||''},{name:'memberCount',label:'참가 인원',type:'number',value:h?.memberCount||''},...['damage','contribution','game'].flatMap((metric,i)=>[0,1].map(rank=>({name:metric+rank,label:['피해량','기여도','인게임'][i]+` ${rank+1}위`,value:h?.winners[metric]?.[rank]||''}))),{name:'archiveUrl',label:'원본 이력 링크',type:'url',value:h?.archiveUrl||''},{name:'notes',label:'연혁·비고',value:h?.notes||''}],v=>{if(v.memberCount&&(!Number.isInteger(Number(v.memberCount))||Number(v.memberCount)<1||Number(v.memberCount)>30))throw Error('참가 인원은 1~30명입니다.');if(v.archiveUrl&&!validURL(v.archiveUrl))throw Error('링크를 확인하세요.');if(!existing&&app().clanHistory.some(x=>x.month===v.month))throw Error('해당 월의 기록이 이미 있습니다.');const record={...h,month:v.month,clanRank:Number(v.clanRank)||null,memberCount:Number(v.memberCount)||null,winners:Object.fromEntries(['damage','contribution','game'].map(m=>[m,[v[m+0],v[m+1]]])),notes:v.notes,archiveUrl:v.archiveUrl};if(existing)Object.assign(existing,record);else (app().clanHistory||=[]).push(record);rebuildHall();persist();render();});}
-  function rebuildHall(){const map=new Map();for(const h of app().clanHistory)for(const m of ['damage','contribution','game'])for(const [rank,name] of (h.winners[m]||[]).entries()){if(!name||/기록|유실|동면|기 록/.test(name))continue;if(!map.has(name))map.set(name,{name,damage:[0,0],contribution:[0,0],game:[0,0],total:0});const p=map.get(name);p[m][rank]++;p.total++;}app().hallOfFame=[...map.values()];}
+
+  function editHistory(key){
+    const existing=app().clanHistory?.find(x=>x.month===key),archived=api.getArchiveMonth?.(key);
+    const summary=archived?summarizeArchive(archived,app().roster):null;
+    const h=existing||(summary?{
+      month:key,memberCount:summary.memberCount,
+      winners:Object.fromEntries(['damage','contribution','game'].map(metric=>[
+        metric,archived.events.length?sortArchiveRankings(summary.rows,metric).slice(0,2).map(p=>p.name):[]
+      ]))
+    }:{month:key||app().active,memberCount:null,winners:{damage:[],contribution:[],game:[]}});
+    const auto=(h.month||key||app().active)>=AUTOMATIC_HISTORY_FROM;
+    const base=[{name:'month',label:'월',type:'month',value:h.month,required:true},
+      {name:'clanRank',label:'클랜 순위 (공식 발표 후)',type:'number',value:h.clanRank||''}];
+    const legacy=[{name:'memberCount',label:'참가 인원',type:'number',value:h.memberCount||''},
+      ...['damage','contribution','game'].flatMap((metric,i)=>[0,1].map(rank=>({
+        name:metric+rank,label:['피해량','기여도','인게임'][i]+` ${rank+1}위`,
+        value:h.winners?.[metric]?.[rank]||''
+      })))];
+    openForm(auto?'클랜 순위 · 연혁 관리':'월별 클랜전 결과',
+      [...base,...(auto?[]:legacy),{name:'archiveUrl',label:'원본 이력 링크',type:'url',value:h.archiveUrl||''},
+        {name:'notes',label:'연혁·비고',value:h.notes||''}],v=>{
+        if(v.archiveUrl&&!validURL(v.archiveUrl))throw Error('링크를 확인하세요.');
+        if(!existing&&(app().clanHistory||[]).some(x=>x.month===v.month))throw Error('해당 월의 기록이 이미 있습니다.');
+        if(auto&&v.month!==h.month)throw Error('자동 집계 월은 월 이름을 변경할 수 없습니다.');
+        if(!auto&&v.memberCount&&(!Number.isInteger(Number(v.memberCount))||Number(v.memberCount)<1||Number(v.memberCount)>30))
+          throw Error('참가 인원은 1~30명입니다.');
+        const record={
+          ...h,month:v.month,clanRank:Number(v.clanRank)||null,notes:v.notes,archiveUrl:v.archiveUrl,
+          ...(auto?{pendingResult:h.pendingResult||(!h.autoFinalizedAt)}:{
+            memberCount:Number(v.memberCount)||null,
+            winners:Object.fromEntries(['damage','contribution','game'].map(m=>[m,[v[m+0],v[m+1]]]))
+          })
+        };
+        if(existing)Object.assign(existing,record);
+        else (app().clanHistory||=[]).push(record);
+        rebuildHall();persist();render();
+      });
+  }
+  function rebuildHall(){app().hallOfFame=historicalHall(app().clanHistory||[]);}
+  async function closeHistoryMonth(key){
+    if(!canEdit())return api.unlock?.();
+    if(!/^\d{4}-(0[1-9]|1[0-2])$/.test(key)||key<AUTOMATIC_HISTORY_FROM||key>app().active)
+      return notify('현재 또는 지난 클랜전 월을 확인해 주세요.');
+    try{
+      const record=app().months[key]||api.getArchiveMonth?.(key)||await api.loadHistoryMonth?.(key);
+      if(!record)return notify('해당 월의 배틀로그를 불러오지 못했습니다.');
+      if(!record.events?.length)return notify('입력된 배틀로그가 없어 마감할 수 없습니다.');
+      if(!record.events.some(e=>Number(e.day)===Number(record.options?.days||5)))
+        return notify('마지막 일차 배틀로그를 입력한 뒤 마감할 수 있습니다.');
+      const summary=monthlyBattleSummary(record,app().roster);
+      const old=app().clanHistory?.find(h=>h.month===key);
+      if(old?.autoFinalizedAt&&!resultNeedsReconfirm(old,summary))
+        return notify('이미 최신 기록으로 확정된 클랜전입니다.');
+      const names=['피해량','기여도','인게임'];
+      const labels=['damage','contribution','game'].map((m,i)=>names[i]+': '+(summary.winners[m]||[]).map((v,j)=>(j+1)+'위 '+v).join(', '));
+      if(!confirm(key+' 클랜전 결과를 '+(old?.autoFinalizedAt?'재확정':'확정')+'할까요?\n'
+        +'입력된 배틀로그 '+summary.eventCount+'건 / 참가 인원 '+summary.memberCount+'명\n'
+        +labels.join('\n')+'\n클랜 순위·연혁과 이전 월 기록은 그대로 유지합니다.'))return;
+      const result=confirmMonthlyResult(old,summary);
+      if(old)Object.assign(old,result);
+      else (app().clanHistory||=[]).push(result);
+      rebuildHall();persist();render();
+      notify('월별 결과와 명예의 전당 갱신 내용을 저장 중입니다.');
+    }catch(error){notify('클랜전 결과를 확정하지 못했습니다: '+error.message);}
+  }
   function editCombo(id){
     const c=month().recommendations.find(x=>x.id===id),stage=Number(c?.stage||state.comboStage),stage3=stage===3;
     const timeFields=[{name:'requiredSeconds',label:'필요시간(초)',type:'number',value:c?.requiredSeconds??''},{name:'remainingSeconds',label:'이월시간(초)',type:'number',value:c?.remainingSeconds??''}];
@@ -157,7 +220,7 @@ export function createGuildWorkspace(api){
       if(c)Object.assign(c,data);else month().recommendations.push(data);persist();render();
     });
   }
-  document.addEventListener('click',async event=>{const b=event.target.closest('[data-guild]');if(!b)return;const key=b.dataset.guild;if(['add-member','edit-member','toggle-member','add-combo','edit-combo','delete-combo','edit-factor','add-history','edit-history','edit-combo-notice'].includes(key)&&!canEdit()){api.unlock();return;}switch(key){
+  document.addEventListener('click',async event=>{const b=event.target.closest('[data-guild]');if(!b)return;const key=b.dataset.guild;if(['add-member','edit-member','toggle-member','add-combo','edit-combo','delete-combo','edit-factor','add-history','edit-history','close-month','edit-combo-notice'].includes(key)&&!canEdit()){api.unlock();return;}switch(key){
     case 'day':state.day=Number(b.dataset.value);render();break;
     case 'dashboard-day':state.dashboardDay=Number(b.dataset.value);render();break;
     case 'sort':state.sort=b.dataset.value;render();break;
@@ -171,7 +234,7 @@ export function createGuildWorkspace(api){
     case 'show-combo-notice':setComboNoticeHidden(app().active,false);render();break;
     case 'combo-boss':state.comboBoss=b.dataset.value;render();break;
     case 'add-member':editMember();break;case 'edit-member':editMember(b.dataset.id);break;case 'toggle-member':toggleMember(b.dataset.id);break;
-    case 'add-history':editHistory();break;case 'edit-history':editHistory(b.dataset.value);break;
+    case 'add-history':editHistory();break;case 'edit-history':editHistory(b.dataset.value);break;case 'close-month':await closeHistoryMonth(b.dataset.value);break;
     case 'add-combo':editCombo();break;case 'edit-combo':editCombo(b.dataset.id);break;
     case 'delete-combo':if(confirm('이 추천 조합을 삭제할까요?')){month().recommendations=month().recommendations.filter(c=>c.id!==b.dataset.id);persist();render();}break;
     case 'edit-factor':openForm('평균 보정률',[{name:'factor',label:'보정률(%)',type:'number',value:Number(month().options.contributionFactor||.95)*100}],v=>{if(!(Number(v.factor)>0&&Number(v.factor)<=100))throw Error('보정률은 0 초과 100 이하입니다.');month().options.contributionFactor=Number(v.factor)/100;api.replay(month());persist();render();});break;
