@@ -222,3 +222,47 @@
   .profile-boss-stats th:nth-child(2){width:11%}
   .profile-boss-stats .boss-chip{font-size:10px;padding:4px}
 }
+
+/* Clan DB: keep nicknames on one line while fitting all columns to the panel. */
+.db-tabs + .panel .table-scroll{max-width:100%;overflow-x:hidden}
+.db-tabs + .panel .guild-roster{width:100%;max-width:100%;min-width:0;table-layout:fixed}
+.db-tabs + .panel .guild-roster th,
+.db-tabs + .panel .guild-roster td{box-sizing:border-box;padding:9px clamp(4px,.55vw,9px);vertical-align:middle;min-width:0}
+.db-tabs + .panel .guild-roster thead th{white-space:nowrap}
+.db-tabs + .panel .guild-roster thead th:nth-child(1){width:31%}
+.db-tabs + .panel .guild-roster thead th:nth-child(2){width:19%}
+.db-tabs + .panel .guild-roster thead th:nth-child(3){width:12%}
+.db-tabs + .panel .guild-roster thead th:nth-child(4){width:12%}
+.db-tabs + .panel .guild-roster thead th:nth-child(5){width:17%}
+.db-tabs + .panel .guild-roster thead th:nth-child(6){width:9%}
+.db-tabs + .panel .guild-roster tbody th:first-child .textbutton{
+  display:block;width:100%;max-width:100%;padding:0;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  overflow-wrap:normal;word-break:normal;text-align:left;line-height:1.45
+}
+.db-tabs + .panel .guild-roster td.uid{overflow-wrap:anywhere;word-break:break-all;letter-spacing:-.4px}
+.db-tabs + .panel .guild-roster .btnbar{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:3px}
+.db-tabs + .panel .guild-roster .btnbar .btn{min-width:0;padding:5px 1px;white-space:nowrap;font-size:10px}
+@media(max-width:800px){
+  .db-tabs + .panel .guild-roster thead th:nth-child(1){width:36%}
+  .db-tabs + .panel .guild-roster thead th:nth-child(2){width:18%}
+  .db-tabs + .panel .guild-roster thead th:nth-child(3){width:11%}
+  .db-tabs + .panel .guild-roster thead th:nth-child(4){width:11%}
+  .db-tabs + .panel .guild-roster thead th:nth-child(5){width:15%}
+  .db-tabs + .panel .guild-roster thead th:nth-child(6){width:9%}
+  .db-tabs + .panel .guild-roster th,
+  .db-tabs + .panel .guild-roster td{padding:7px 3px;font-size:9px;line-height:1.35}
+  .db-tabs + .panel .guild-roster thead th{font-size:9px;letter-spacing:-.3px}
+  .db-tabs + .panel .guild-roster tbody th:first-child .textbutton{font-size:10px}
+  .db-tabs + .panel .guild-roster td.uid{font-size:8px;letter-spacing:-.5px}
+  .db-tabs + .panel .guild-roster .btnbar{grid-template-columns:minmax(0,1fr);gap:2px}
+  .db-tabs + .panel .guild-roster .btnbar .btn{width:100%;min-height:0;padding:2px 0;font-size:8px;line-height:1.3}
+  .db-tabs + .panel .guild-roster td small,
+  .db-tabs + .panel .guild-roster .member-state{font-size:8px;line-height:1.3}
+}
+@media(max-width:360px){
+  .db-tabs + .panel .guild-roster thead th{font-size:8px;letter-spacing:-.5px}
+  .db-tabs + .panel .guild-roster tbody th:first-child .textbutton{font-size:9px}
+  .db-tabs + .panel .guild-roster th,
+  .db-tabs + .panel .guild-roster td{padding-left:2px;padding-right:2px}
+}
