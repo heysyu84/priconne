@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>프리코네 초상화 합성 도구 · 클랜전</title>
+  <style>
+    :root {
+      --bg: #f3f4f6;
+      --card: #ffffff;
+      --line: #dbe3ee;
+      --line2: #cbd5e1;
+      --text: #1f2937;
+      --muted: #64748b;
+      --primary: #2563eb;
+      --primary-soft: #eff6ff;
+      --danger: #dc2626;
+      --success: #059669;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Malgun Gothic', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+    .wrap {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    h1 {
+      margin: 0 0 8px;
+      font-size: 26px;
+    }
+    .desc {
+      color: var(--muted);
+      margin-bottom: 18px;
+      line-height: 1.5;
+      font-size: 14px;
+    }
+    .layout {
+      display: grid;
+      grid-template-columns: 440px 1fr;
+      gap: 16px;
+      align-items: start;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 18px;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
+    }
+    .section-title {
+      font-size: 16px;
+      margin: 0 0 12px;
+      font-weight: 700;
+    }
+    .sub {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: -4px;
+      margin-bottom: 10px;
+      line-height: 1.45;
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+    label {
+      font-size: 13px;
+      font-weight: 700;
+      color: #334155;
+    }
+    input[type="text"],
+    input[type="number"],
+    input[type="url"],
+    select {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--line2);
+      border-radius: 10px;
+      font-size: 14px;
+      outline: none;
+      background: #fff;
+    }
+    input:focus, select:focus {
+      border-color: #60a5fa;
+      box-shadow: 0 0 0 3px rgba(59,130,246,0.12);
+    }
+    input[type="file"] {
+      font-size: 13px;
+    }
+    .grid2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .grid4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+    .check-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0,1fr));
+      gap: 8px;
+    }
+    .check-item {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      border: 1px solid var(--line);
+      background: #fff;
+      border-radius: 10px;
+      padding: 10px 8px;
+      font-size: 13px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .role-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+    .role-item {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 10px 6px;
+      text-align: center;
+      background: #fff;
+      cursor: pointer;
+      transition: .15s ease;
+    }
+    .role-item:hover { transform: translateY(-1px); }
+    .role-item.selected {
+      border-color: var(--primary);
+      background: var(--primary-soft);
+      box-shadow: 0 0 0 2px rgba(37,99,235,.08) inset;
+    }
+    .role-item img {
+      width: 36px;
+      height: 36px;
+      object-fit: contain;
+      display: block;
+      margin: 0 auto 6px;
+    }
+    .role-item span { font-size: 12px; font-weight: 700; }
+    .preview-shell {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .preview-box {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #f8fafc;
+      padding: 12px;
+      min-height: 290px;
+    }
+    .preview-title {
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .preview-stage {
+      width: 100%;
+      min-height: 230px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      background: linear-gradient(180deg,#f8fafc,#eef2f7);
+      border: 1px dashed var(--line2);
+      border-radius: 12px;
+      padding: 10px;
+    }
+    .preview-stage img,
+    .preview-stage canvas {
+      max-width: 100%;
+      max-height: 220px;
+      image-rendering: auto;
+    }
+    .placeholder {
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+    button {
+      border: none;
+      border-radius: 10px;
+      padding: 11px 14px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: .15s ease;
+    }
+    button:hover { transform: translateY(-1px); }
+    .btn-primary { background: var(--primary); color: #fff; }
+    .btn-sub { background: #e2e8f0; color: #1e293b; }
+    .btn-green { background: var(--success); color: #fff; }
+    .btn-danger { background: var(--danger); color: #fff; }
+    details {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #fff;
+      padding: 10px 12px;
+    }
+    summary {
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 14px;
+      color: #334155;
+    }
+    .advanced-content {
+      margin-top: 12px;
+      display: grid;
+      gap: 14px;
+    }
+    .muted-note {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+    .status {
+      margin-top: 12px;
+      padding: 11px 12px;
+      background: #f8fafc;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      color: #334155;
+      font-size: 13px;
+      line-height: 1.45;
+      white-space: pre-line;
+    }
+    .list-box {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      overflow: hidden;
+      background: #fff;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    th, td {
+      border-bottom: 1px solid #eef2f7;
+      padding: 10px 8px;
+      text-align: left;
+      vertical-align: middle;
+    }
+    th {
+      background: #f8fafc;
+      font-size: 12px;
+      color: #475569;
+    }
+    td code {
+      font-size: 12px;
+      background: #f1f5f9;
+      border-radius: 6px;
+      padding: 2px 6px;
+    }
+    .pill {
+      display: inline-block;
+      padding: 4px 7px;
+      background: #f1f5f9;
+      border-radius: 999px;
+      font-size: 12px;
+      margin-right: 6px;
+      margin-bottom: 6px;
+    }
+    .row-inline {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+    @media (max-width: 980px) {
+      .layout { grid-template-columns: 1fr; }
+      .preview-shell { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 640px) {
+      .grid2, .grid4, .role-grid, .check-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div style="margin-bottom:12px"><a href="./" style="text-decoration:none;color:#2563eb;font-weight:700">← 클랜전 메인으로</a></div><h1>프리코네 초상화 합성 도구 · 클랜전</h1>
+    <div class="desc">
+      성급(별), 속성, 역할(롤) 이미지를 하나의 캐릭터 초상화에 합성하는 도구입니다.<br>
+      기존 버전보다 <b>성급을 개별 선택</b>할 수 있고, <b>기본 초상화와 6성 초상화를 분리</b>해서 사용할 수 있으며,
+      <b>배치 위치를 직접 조절</b>할 수 있습니다.
+    </div>
+
+    <p style="font-size:12px;color:#64748b;line-height:1.6;margin-top:6px">완성 PNG는 파일로 다운로드됩니다. 택틱 DB 및 기존 기록은 자동으로 변경되지 않습니다. 실제 택틱에 적용하려면 이미지 등록과 캐릭터 DB 갱신이 추가로 필요합니다.</p>
+    <div class="layout">
+      <div class="card">
+        <h2 class="section-title">1. 캐릭터 / 재료 설정</h2>
+        <div class="sub">우선 캐릭터 기본 초상화와 필요시 6성 전용 초상화를 넣어주세요.</div>
+        <div class="form-group" style="border:1px solid #dbe3ee;border-radius:12px;padding:12px;background:#f8fafc">
+          <label for="catalog-query">현재 클랜전 캐릭터 DB에서 선택</label>
+          <input id="catalog-query" list="catalog-list" placeholder="캐릭터 이름 검색 (예: 네네카)" autocomplete="off">
+          <datalist id="catalog-list"></datalist>
+          <button type="button" class="btn-sub" id="catalog-load">DB 초상화 불러오기</button>
+          <div class="muted-note" id="catalog-status">기존 캐릭터 목록에서 이미지를 선택할 수 있습니다. 이미지에 기존 표시가 있으면 합성 마크가 겹칠 수 있으므로 미리보기를 확인하세요.</div>
+        </div>
+
+        <div class="form-group">
+          <label for="base-image-input">기본 초상화 (3·4·5성용)</label>
+          <input type="file" id="base-image-input" accept="image/*">
+        </div>
+
+        <div class="form-group">
+          <label for="six-image-input">6성 전용 초상화 (선택)</label>
+          <input type="file" id="six-image-input" accept="image/*">
+          <div class="muted-note">비워두면 6성 생성 시에도 기본 초상화를 사용합니다.</div>
+        </div>
+
+        <details style="margin-bottom:14px;">
+          <summary>합성 아이콘 직접 등록 (자동 로딩 실패 시)</summary>
+          <div class="advanced-content">
+            <label for="asset-files-input">속성·역할 / 별 이미지 파일 선택 (여러 장 가능)</label>
+            <input type="file" id="asset-files-input" multiple accept="image/*">
+            <div class="muted-note">예: <code>07.png</code>는 명속성·힐러, <code>3.png</code>·<code>4.png</code>·<code>5.png</code>·<code>6.png</code>는 성급 표시입니다. 별과 속성·롤 이미지를 모두 선택할 수 있습니다. 파일을 등록하면 외부 주소보다 우선합니다.</div>
+            <div id="asset-files-status" class="muted-note">등록된 로컬 합성 아이콘 없음 (온라인에서 자동 로드)</div>
+          </div>
+        </details>
+
+        <div class="grid2">
+          <div class="form-group">
+            <label for="name-input">캐릭터 이름</label>
+            <input type="text" id="name-input" placeholder="예: 네네카">
+          </div>
+          <div class="form-group">
+            <label for="preview-star-select">미리보기 성급</label>
+            <select id="preview-star-select">
+              <option value="none">기본(별 없음)</option>
+              <option value="3">3성</option>
+              <option value="4">4성</option>
+              <option value="5" selected>5성</option>
+              <option value="6">6성</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid2">
+          <div class="form-group">
+            <label for="attr-select">속성</label>
+            <select id="attr-select">
+              <option value="0">명</option>
+              <option value="1">암</option>
+              <option value="2">풍</option>
+              <option value="3">수</option>
+              <option value="4">화</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="preset-select">배치 프리셋</label>
+            <select id="preset-select">
+              <option value="current">현재 기준 배치</option>
+              <option value="official_like">게임 UI 유사 배치 (시험용)</option>
+              <option value="tight">컴팩트 배치</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>역할(롤)</label>
+          <div class="role-grid" id="role-grid"></div>
+        </div>
+
+        <div class="form-group">
+          <label>생성할 출력</label>
+          <div class="check-grid">
+            <label class="check-item"><input type="checkbox" id="out-none" checked> 기본</label>
+            <label class="check-item"><input type="checkbox" id="out-3" checked> 3성</label>
+            <label class="check-item"><input type="checkbox" id="out-4" checked> 4성</label>
+            <label class="check-item"><input type="checkbox" id="out-5" checked> 5성</label>
+            <label class="check-item"><input type="checkbox" id="out-6"> 6성</label>
+          </div>
+        </div>
+
+        <details>
+          <summary>고급 설정 (오피셜 위치 미세 조정)</summary>
+          <div class="advanced-content">
+            <div>
+              <div class="sub">위치는 가장자리로부터 떨어진 거리이며 크기는 128px 초상화 기준입니다. 미리보기에서 즉시 반영됩니다.</div>
+              <div class="grid4">
+                <div class="form-group">
+                  <label for="star-x">별 왼쪽 여백</label>
+                  <input type="number" id="star-x" value="0">
+                </div>
+                <div class="form-group">
+                  <label for="star-y">별 아래 여백</label>
+                  <input type="number" id="star-y" value="0">
+                </div>
+                <div class="form-group">
+                  <label for="star-w">별 너비</label>
+                  <input type="number" id="star-w" value="35">
+                </div>
+                <div class="form-group">
+                  <label for="star-h">별 높이</label>
+                  <input type="number" id="star-h" value="35">
+                </div>
+              </div>
+
+              <div class="grid4">
+                <div class="form-group">
+                  <label for="badge-x">속성/롤 오른쪽 여백</label>
+                  <input type="number" id="badge-x" value="0">
+                </div>
+                <div class="form-group">
+                  <label for="badge-y">속성/롤 아래 여백</label>
+                  <input type="number" id="badge-y" value="0">
+                </div>
+                <div class="form-group">
+                  <label for="badge-w">속성/롤 너비</label>
+                  <input type="number" id="badge-w" value="56">
+                </div>
+                <div class="form-group">
+                  <label for="badge-h">속성/롤 높이</label>
+                  <input type="number" id="badge-h" value="30">
+                </div>
+              </div>
+
+              <div class="row-inline">
+                <button type="button" class="btn-sub" id="apply-preset-btn">프리셋 다시 적용</button>
+                <button type="button" class="btn-sub" id="refresh-preview-btn">미리보기 새로고침</button>
+              </div>
+            </div>
+          </div>
+        </details>
+
+        <div class="toolbar" style="margin-top:14px;">
+          <button type="button" class="btn-primary" id="preview-btn">미리보기 생성</button>
+          <button type="button" class="btn-green" id="download-btn">선택된 이미지 저장</button>
+          <button type="button" class="btn-danger" id="reset-btn">초기화</button>
+        </div>
+
+        <div class="status" id="status-box">대기 중</div>
+      </div>
+
+      <div class="card">
+        <h2 class="section-title">2. 미리보기 / 생성 결과</h2>
+        <div class="preview-shell">
+          <div class="preview-box">
+            <div class="preview-title">원본 초상화</div>
+            <div class="preview-stage" id="original-stage">
+              <div class="placeholder">이미지를 선택하면<br>여기에 원본이 표시됩니다.</div>
+            </div>
+          </div>
+          <div class="preview-box">
+            <div class="preview-title">합성 미리보기</div>
+            <div class="preview-stage" id="composite-stage">
+              <div class="placeholder">설정을 입력한 뒤<br>미리보기를 생성해주세요.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>예상 저장 파일명</label>
+          <div id="file-name-preview"></div>
+        </div>
+
+        <div class="list-box">
+          <table>
+            <thead>
+              <tr>
+                <th>출력 타입</th>
+                <th>사용 원본</th>
+                <th>저장 파일명</th>
+              </tr>
+            </thead>
+            <tbody id="output-plan-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Overlay assets are local to heysyu84/priconne.
+    const RESOURCE_ORIGINS = [new URL('./portrait-assets/', location.href).href.replace(/\/$/, '')];
+    const GITHUB_BASE = RESOURCE_ORIGINS[0];
+    const ASSET_API_ROOT = '';
+    const assetCache = new Map();
+    const localAssetUrls = new Map();
+
+    const roleMap = {
+      '버퍼': '0',
+      '디버퍼': '1',
+      '부스터': '2',
+      '브레이커': '3',
+      '어태커': '4',
+      '재머': '5',
+      '탱커': '6',
+      '힐러': '7'
+    };
+
+    const presets = {
+      current: { starX: 0, starY: 0, starW: 35, starH: 35, badgeX: 0, badgeY: 0, badgeW: 56, badgeH: 30 },
+      official_like: { starX: 1, starY: 1, starW: 34, starH: 34, badgeX: 0, badgeY: 0, badgeW: 55, badgeH: 29 },
+      tight: { starX: 1, starY: 1, starW: 32, starH: 32, badgeX: 0, badgeY: 1, badgeW: 53, badgeH: 27 }
+    };
+
+    const state = {
+      baseFile: null,
+      sixFile: null,
+      selectedRole: '어태커',
+      previewObjectUrl: null,
+      baseObjectUrl: null,
+      sixObjectUrl: null
+    };
+
+    const $ = (id) => document.getElementById(id);
+
+    const roleGrid = $('role-grid');
+    Object.keys(roleMap).forEach(roleName => {
+      const item = document.createElement('div');
+      item.className = 'role-item' + (roleName === state.selectedRole ? ' selected' : '');
+      item.dataset.role = roleName;
+      const roleAsset = `ars/%EC%83%88%20%ED%8F%B4%EB%8D%94/${encodeURIComponent(roleName)}.png`;
+      item.innerHTML = `<img alt="${roleName}"><span>${roleName}</span>`;
+      const roleImage = item.querySelector('img');
+      let sourceIndex = 0;
+      roleImage.onerror = () => {
+        sourceIndex += 1;
+        if (sourceIndex < RESOURCE_ORIGINS.length) roleImage.src = `${RESOURCE_ORIGINS[sourceIndex]}/${roleAsset}`;
+        else roleImage.style.display = 'none';
+      };
+      roleImage.src = `${RESOURCE_ORIGINS[sourceIndex]}/${roleAsset}`;
+      item.onclick = () => {
+        document.querySelectorAll('.role-item').forEach(el => el.classList.remove('selected'));
+        item.classList.add('selected');
+        state.selectedRole = roleName;
+        renderOutputPlan();
+        renderPreview();
+      };
+      roleGrid.appendChild(item);
+    });
+
+    function setStatus(text) {
+      $('status-box').innerText = text;
+    }
+
+    function loadImage(src) {
+      return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.crossOrigin = 'Anonymous';
+        img.onload = () => resolve(img);
+        img.onerror = () => reject(new Error(`이미지 로드 실패: ${src}`));
+        img.src = src;
+      });
+    }
+
+    async function loadResourceAsset(relativePath) {
+      const local = localAssetUrls.get(relativePath);
+      if (local) return loadImage(local);
+      if (assetCache.has(relativePath)) return assetCache.get(relativePath);
+      const promise = (async () => {
+        const errors = [];
+        // 서로 다른 호스트를 순서대로 시도합니다.
+        for (const origin of RESOURCE_ORIGINS) {
+          const url = `${origin}/${relativePath}`;
+          try { return await loadImage(url); }
+          catch (e) { errors.push(e.message); }
+        }
+        throw new Error(`합성 아이콘(${relativePath})을 불러오지 못했습니다. 인터넷 연결을 확인하거나 '합성 아이콘 직접 등록'에서 해당 PNG를 선택해주세요.`);
+      })();
+      assetCache.set(relativePath, promise);
+      try { return await promise; }
+      catch (e) { assetCache.delete(relativePath); throw e; }
+    }
+
+    function getObjectURL(file) {
+      return file ? URL.createObjectURL(file) : null;
+    }
+
+    function releaseURL(url) {
+      if (url) URL.revokeObjectURL(url);
+    }
+
+    function getSelectedAttrCode() {
+      return $('attr-select').value;
+    }
+
+    function getSelectedRoleCode() {
+      return roleMap[state.selectedRole];
+    }
+
+    function getBadgeCode() {
+      return getSelectedAttrCode() + getSelectedRoleCode();
+    }
+
+    function getPlacement() {
+      return {
+        starX: Number($('star-x').value || 0),
+        starY: Number($('star-y').value || 0),
+        starW: Number($('star-w').value || 35),
+        starH: Number($('star-h').value || 35),
+        badgeX: Number($('badge-x').value || 44),
+        badgeY: Number($('badge-y').value || 98),
+        badgeW: Number($('badge-w').value || 56),
+        badgeH: Number($('badge-h').value || 30)
+      };
+    }
+
+    function applyPreset(name) {
+      const p = presets[name] || presets.current;
+      $('star-x').value = p.starX;
+      $('star-y').value = p.starY;
+      $('star-w').value = p.starW;
+      $('star-h').value = p.starH;
+      $('badge-x').value = p.badgeX;
+      $('badge-y').value = p.badgeY;
+      $('badge-w').value = p.badgeW;
+      $('badge-h').value = p.badgeH;
+      renderPreview();
+    }
+
+    function getName() {
+      return $('name-input').value.trim();
+    }
+
+    function getPreviewStar() {
+      return $('preview-star-select').value;
+    }
+
+    function getSelectedOutputs() {
+      const arr = [];
+      if ($('out-none').checked) arr.push('none');
+      if ($('out-3').checked) arr.push('3');
+      if ($('out-4').checked) arr.push('4');
+      if ($('out-5').checked) arr.push('5');
+      if ($('out-6').checked) arr.push('6');
+      return arr;
+    }
+
+    function getOutputFileName(charName, star) {
+      return star === 'none' ? `${charName}.png` : `${charName}${star}.png`;
+    }
+
+    function renderOriginalPreview() {
+      const stage = $('original-stage');
+      if (!state.baseFile) {
+        stage.innerHTML = '<div class="placeholder">이미지를 선택하면<br>여기에 원본이 표시됩니다.</div>';
+        return;
+      }
+      releaseURL(state.baseObjectUrl);
+      state.baseObjectUrl = getObjectURL(state.baseFile);
+      stage.innerHTML = `<img src="${state.baseObjectUrl}" alt="원본 미리보기">`;
+    }
+
+    async function composeToCanvas(targetStar = 'none') {
+      if (!state.baseFile) throw new Error('기본 초상화를 먼저 선택해주세요.');
+      const useSixSource = (targetStar === '6' && state.sixFile);
+      const sourceFile = useSixSource ? state.sixFile : state.baseFile;
+      const sourceUrl = getObjectURL(sourceFile);
+
+      try {
+        const [bgImg, badgeImg, starImg] = await Promise.all([
+          loadImage(sourceUrl),
+          loadResourceAsset(`ars/${getBadgeCode()}.png`),
+          targetStar === 'none' ? Promise.resolve(null) : loadResourceAsset(`stars/${targetStar}.png`)
+        ]);
+
+        const canvas = document.createElement('canvas');
+        canvas.width = bgImg.width;
+        canvas.height = bgImg.height;
+        const ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(bgImg, 0, 0);
+
+        const p = getPlacement();
+
+        // 좌측 하단 별 / 우측 하단 속성·롤. 원본 해상도가 달라도 배치를 유지합니다.
+        const scale = Math.min(canvas.width, canvas.height) / 128;
+        const px = value => value * scale;
+        if (starImg) {
+          const starWidth = px(p.starW), starHeight = px(p.starH);
+          ctx.drawImage(starImg, px(p.starX), canvas.height - starHeight - px(p.starY), starWidth, starHeight);
+        }
+        if (badgeImg) {
+          const badgeWidth = px(p.badgeW), badgeHeight = px(p.badgeH);
+          ctx.drawImage(badgeImg, canvas.width - badgeWidth - px(p.badgeX), canvas.height - badgeHeight - px(p.badgeY), badgeWidth, badgeHeight);
+        }
+        return canvas;
+      } finally {
+        releaseURL(sourceUrl);
+      }
+    }
+
+    async function renderPreview() {
+      const stage = $('composite-stage');
+      renderOutputPlan();
+      if (!state.baseFile) {
+        stage.innerHTML = '<div class="placeholder">기본 초상화를 먼저 선택해주세요.</div>';
+        return;
+      }
+      try {
+        stage.innerHTML = '<div class="placeholder">미리보기를 생성하는 중...</div>';
+        const canvas = await composeToCanvas(getPreviewStar());
+        stage.innerHTML = '';
+        stage.appendChild(canvas);
+        setStatus(`미리보기 생성 완료\n- 캐릭터: ${getName() || '(이름 미입력)'}\n- 속성 코드: ${getSelectedAttrCode()}\n- 역할: ${state.selectedRole}\n- 미리보기 성급: ${getPreviewStar()}`);
+      } catch (err) {
+        console.error(err);
+        stage.innerHTML = `<div class="placeholder" style="color:#dc2626;">${err.message}</div>`;
+        setStatus('오류: ' + err.message);
+      }
+    }
+
+    function renderOutputPlan() {
+      const body = $('output-plan-body');
+      body.innerHTML = '';
+      const name = getName() || '캐릭터명';
+      const outputs = getSelectedOutputs();
+      const fileNamePreview = $('file-name-preview');
+      fileNamePreview.innerHTML = outputs.length
+        ? outputs.map(star => `<span class="pill">${getOutputFileName(name, star)}</span>`).join('')
+        : '<span class="muted-note">선택된 출력이 없습니다.</span>';
+
+      if (outputs.length === 0) {
+        const tr = document.createElement('tr');
+        tr.innerHTML = '<td colspan="3">선택된 출력이 없습니다.</td>';
+        body.appendChild(tr);
+        return;
+      }
+
+      outputs.forEach(star => {
+        const tr = document.createElement('tr');
+        const sourceLabel = (star === '6' && state.sixFile) ? '6성 전용 초상화' : '기본 초상화';
+        const starLabel = star === 'none' ? '기본(별 없음)' : `${star}성`;
+        tr.innerHTML = `
+          <td>${starLabel}</td>
+          <td>${sourceLabel}</td>
+          <td><code>${getOutputFileName(name, star)}</code></td>
+        `;
+        body.appendChild(tr);
+      });
+    }
+
+    async function downloadSelectedImages() {
+      const name = getName();
+      if (!name) {
+        alert('캐릭터 이름을 입력해주세요.');
+        return;
+      }
+      if (!state.baseFile) {
+        alert('기본 초상화를 선택해주세요.');
+        return;
+      }
+      const outputs = getSelectedOutputs();
+      if (outputs.length === 0) {
+        alert('최소 1개 이상의 출력 타입을 선택해주세요.');
+        return;
+      }
+
+      $('download-btn').disabled = true;
+      $('download-btn').innerText = '저장 중...';
+      setStatus(`이미지 저장 시작\n총 ${outputs.length}개 생성 예정`);
+
+      try {
+        for (let i = 0; i < outputs.length; i++) {
+          const star = outputs[i];
+          setStatus(`이미지 생성 중... (${i + 1}/${outputs.length})\n현재: ${star === 'none' ? '기본' : star + '성'}`);
+          const canvas = await composeToCanvas(star);
+          await new Promise(resolve => {
+            canvas.toBlob(blob => {
+              const url = URL.createObjectURL(blob);
+              const a = document.createElement('a');
+              a.href = url;
+              a.download = getOutputFileName(name, star);
+              a.click();
+              setTimeout(() => {
+                URL.revokeObjectURL(url);
+                resolve();
+              }, 180);
+            }, 'image/png');
+          });
+        }
+        setStatus(`완료\n${outputs.length}개 이미지 저장을 시도했습니다.\n브라우저가 다중 다운로드를 막는 경우 권한 허용이 필요할 수 있습니다.`);
+      } catch (err) {
+        console.error(err);
+        setStatus('오류: ' + err.message);
+        alert('생성 중 오류가 발생했습니다: ' + err.message);
+      } finally {
+        $('download-btn').disabled = false;
+        $('download-btn').innerText = '선택된 이미지 저장';
+      }
+    }
+
+    function resetAll() {
+      releaseURL(state.baseObjectUrl);
+      releaseURL(state.sixObjectUrl);
+      state.baseFile = null;
+      state.sixFile = null;
+      $('base-image-input').value = '';
+      $('six-image-input').value = '';
+      $('asset-files-input').value = '';
+      for (const url of localAssetUrls.values()) URL.revokeObjectURL(url);
+      localAssetUrls.clear();
+      assetCache.clear();
+      $('asset-files-status').innerText = '등록된 로컬 합성 아이콘 없음 (온라인에서 자동 로드)';
+      $('name-input').value = '';
+      $('preview-star-select').value = '5';
+      $('attr-select').value = '0';
+      $('out-none').checked = true;
+      $('out-3').checked = true;
+      $('out-4').checked = true;
+      $('out-5').checked = true;
+      $('out-6').checked = false;
+      $('preset-select').value = 'current';
+      state.selectedRole = '어태커';
+      document.querySelectorAll('.role-item').forEach(el => {
+        el.classList.toggle('selected', el.dataset.role === '어태커');
+      });
+      applyPreset('current');
+      renderOriginalPreview();
+      $('composite-stage').innerHTML = '<div class="placeholder">설정을 입력한 뒤<br>미리보기를 생성해주세요.</div>';
+      renderOutputPlan();
+      setStatus('초기화 완료');
+    }
+
+    $('asset-files-input').addEventListener('change', e => {
+      const files = [...e.target.files];
+      let count = 0;
+      for (const file of files) {
+        const fname = file.name;
+        const starMatch = fname.match(/^([3456])\.(png|jpe?g|webp)$/i);
+        const arMatch = fname.match(/^([0-4][0-7])\.(png|jpe?g|webp)$/i);
+        let key = starMatch ? `stars/${starMatch[1]}.png` : (arMatch ? `ars/${arMatch[1]}.png` : null);
+        if (!key) continue;
+        if (localAssetUrls.has(key)) URL.revokeObjectURL(localAssetUrls.get(key));
+        localAssetUrls.set(key, URL.createObjectURL(file));
+        assetCache.delete(key);
+        count++;
+      }
+      $('asset-files-status').innerText = `${count}개 아이콘 등록됨 (현재 브라우저에서 사용)`;
+      renderPreview();
+    });
+
+    $('base-image-input').addEventListener('change', e => {
+      state.baseFile = e.target.files[0] || null;
+      renderOriginalPreview();
+      renderOutputPlan();
+      renderPreview();
+    });
+
+    $('six-image-input').addEventListener('change', e => {
+      state.sixFile = e.target.files[0] || null;
+      renderOutputPlan();
+      renderPreview();
+    });
+
+    ['name-input', 'attr-select', 'preview-star-select', 'out-none', 'out-3', 'out-4', 'out-5', 'out-6']
+      .forEach(id => $(id).addEventListener('input', () => { renderOutputPlan(); renderPreview(); }));
+
+    ['star-x','star-y','star-w','star-h','badge-x','badge-y','badge-w','badge-h']
+      .forEach(id => $(id).addEventListener('input', renderPreview));
+
+    $('preset-select').addEventListener('change', e => applyPreset(e.target.value));
+    $('apply-preset-btn').addEventListener('click', () => applyPreset($('preset-select').value));
+    $('refresh-preview-btn').addEventListener('click', renderPreview);
+    $('preview-btn').addEventListener('click', renderPreview);
+    $('download-btn').addEventListener('click', downloadSelectedImages);
+    $('reset-btn').addEventListener('click', resetAll);
+
+
+    let characterCatalog=[];
+    const normalized = name=>String(name||'').normalize('NFKC').replace(/\s+/g,'').toLocaleLowerCase('ko-KR');
+    async function loadCatalog(){
+      try{
+        const r=await fetch('./characters.json',{cache:'no-store'});
+        if(!r.ok)throw new Error('HTTP '+r.status);
+        const data=await r.json();
+        characterCatalog=Array.isArray(data.characters)?data.characters:[];
+        const list=$('catalog-list');
+        list.replaceChildren(...characterCatalog.map(c=>{const o=document.createElement('option');o.value=c.name;return o;}));
+        $('catalog-status').textContent=characterCatalog.length+'명 캐릭터 목록 준비 완료. 이름을 입력하고 DB 초상화 불러오기를 눌러주세요.';
+      }catch(err){$('catalog-status').textContent='캐릭터 DB 로드 실패: '+err.message+' · 직접 이미지 업로드는 계속 가능합니다.';}
+    }
+    async function fromCatalog(){
+      const k=normalized($('catalog-query').value);
+      const c=characterCatalog.find(x=>normalized(x.name)===k || x.aliases?.some(a=>normalized(a)===k));
+      if(!c){alert('DB에서 해당 캐릭터를 찾지 못했습니다.');return;}
+      const imageFile=async(path,label)=>{
+        if(!/^\/images\/(?:characters|sheet-originals)\/[\w.-]+$/.test(path||''))return null;
+        const r=await fetch('./'+path.slice(1));
+        if(!r.ok)throw new Error(label+' 초상화 로드 실패: HTTP '+r.status);
+        const b=await r.blob();
+        return new File([b],c.name+'_'+label+'.png',{type:b.type||'image/png'});
+      };
+      try{
+        state.baseFile=await imageFile(c.portrait,'기본');
+        if(!state.baseFile)throw new Error('기본 초상화가 없습니다.');
+        state.sixFile=await imageFile(c.byStar?.['6'],'6성');
+        $('name-input').value=c.name;
+        $('catalog-status').textContent=c.name+' 이미지 불러오기 완료'+(state.sixFile?' · 6성 포함':'')+' · 속성·롤은 수동 지정하세요. 별이 중복되는지 확인하세요.';
+        renderOriginalPreview();renderOutputPlan();renderPreview();
+      }catch(err){$('catalog-status').textContent='불러오기 실패: '+err.message;}
+    }
+    $('catalog-load').addEventListener('click',fromCatalog);
+    $('catalog-query').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();fromCatalog();}});
+    loadCatalog();
+
+    applyPreset('current');
+    renderOutputPlan();
+  </script>
+</body>
+</html>
