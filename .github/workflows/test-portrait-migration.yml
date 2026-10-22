@@ -1,0 +1,36 @@
+name: Verify portrait migration
+on:
+  push:
+    paths:
+      - '.github/workflows/test-portrait-migration.yml'
+      - 'clan-battle/public/character-portraits.mjs'
+      - 'clan-battle/public/portrait-library.json'
+      - 'clan-battle/public/tactics-workspace.mjs'
+      - 'clan-battle/public/guild-workspace.mjs'
+      - 'clan-battle/public/clan.js'
+      - 'clan-battle/public/clan-shell.html'
+      - 'clan-battle/scripts/test-new-portrait-library.mjs'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate module syntax and portrait behavior
+        run: |
+          cd clan-battle
+          node --check public/character-portraits.mjs
+          node --check public/tactics-workspace.mjs
+          node --check public/guild-workspace.mjs
+          node --check public/clan.js
+          node scripts/test-portraits.mjs
+          node scripts/test-tactics.mjs
+          node scripts/test-new-portrait-library.mjs
