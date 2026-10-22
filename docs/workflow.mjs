@@ -1,5 +1,6 @@
-import { makeId, memberLabel, syncRoster, matchMembers, parseDamage } from './roster.mjs?v=20261022-pages10';
-import { dayClosures, cancelDayClosure } from './battle-days.mjs?v=20261022-reopen11';
+import { sequenceVisible, setSequenceVisible } from './view-settings.mjs?v=20261022-ui14';
+import { makeId, memberLabel, syncRoster, matchMembers, parseDamage } from './roster.mjs?v=20261022-ui14';
+import { dayClosures, cancelDayClosure } from './battle-days.mjs?v=20261022-ui14';
 
 export function createWorkflow(api) {
   const { getApp, getMonth, setApp, persist, replay, render, notify, navigate, section, nf, escapeHtml: X } = api;
@@ -67,31 +68,24 @@ export function createWorkflow(api) {
   }
   function visibleRows() { return filteredRows().slice((state.page - 1) * 50, state.page * 50); }
   function gridCell(e, field, content, className = '') {
-    return `<td role="gridcell" tabindex="0" class="edit-cell ${className}" data-row="${X(e.id)}" data-col="${field}" aria-label="#${e.seq} ${({ day: '일차', member: '클랜원', boss: '보스', damage: '피해량', carry: '이월 사용', role: '역할', bonus: '가산점', memo: '메모' })[field]}" title="Enter 또는 F2로 수정 · 방향키로 이동">${content}</td>`;
+    return `<td role="gridcell" ${canEdit()?'tabindex="0"':''} class="${canEdit()?'edit-cell':'view-cell'} ${className}" data-row="${X(e.id)}" data-col="${field}" aria-label="#${e.seq} ${({ day: '일차', member: '클랜원', boss: '보스', damage: '피해량', carry: '이월 사용', role: '역할', bonus: '가산점', memo: '메모' })[field]}" ${canEdit()?'title="Enter 또는 F2로 수정 · 방향키로 이동"':''}>${content}</td>`;
   }
   function gridView() {
-    const rows = filteredRows();
-    const pages = Math.max(1, Math.ceil(rows.length / 50));
-    state.page = Math.min(state.page, pages);
-    const shown = visibleRows();
-    const warnings = new Map(replay(month()).map(w => [w.id, w.message]));
-    return `<div class="table-scroll battle-sheet-scroll"><table class="datatable battle-sheet" role="grid" aria-label="배틀로그 키보드 편집 표"><thead><tr><th>#</th><th>일차</th><th>클랜원</th><th>보스 · 진행</th><th class="number">기록 피해량</th><th>이월 사용</th>${state.details ? '<th>가산점(만)</th><th>메모</th>' : ''}<th class="number">실제 피해량</th><th class="number">남은 HP</th>${state.details ? '<th class="number">기여도</th>' : ''}<th>행</th></tr></thead><tbody>${shown.map(e => {
-      const b = month().bosses.find(b => b.id === e.boss), warning = warnings.get(e.id);
-      const prev=shown[shown.indexOf(e)-1];
-      return `${(!prev||prev.day!==e.day)?`<tr class="day-divider"><th colspan="14">${e.day}일차</th></tr>`:''}<tr class="${warning ? 'row-warning' : ''}"><td class="h-num" title="${X(warning || '')}">${warning ? '!' : ''}${e.seq}</td>
-      <td>${e.day}일</td>${gridCell(e, 'member', `<strong>${X(e.member)}</strong>`, 'member-cell')}
-      ${gridCell(e, 'boss', `${e.boss} · ${X(b?.name || '')}<small>${e.stage}단계 · ${e.lap}회차</small>`)}
-      ${gridCell(e, 'damage', nf(e.damage), 'number')}${gridCell(e, 'carry', `<input type="checkbox" data-carry-record="${X(e.id)}" aria-label="#${e.seq} 이월 사용 체크" ${e.carry?'checked':''} ${canEdit()?'':'disabled'}>`)}
-      ${state.details ? gridCell(e, 'bonus', nf(e.bonus || 0), 'number') + gridCell(e, 'memo', X(e.memo || ''), 'memo-cell') : ''}
-      <td class="number calculated">${nf(e.actual)}${e.kill ? '<small class="accent">격파</small>' : ''}</td><td class="number calculated hp-exact" title="${nf(e.before)} − ${nf(e.actual)} = ${nf(e.after)}"><strong>${nf(e.after)}</strong><small>${nf(e.before)} − ${nf(e.actual)}</small></td>${state.details ? `<td class="number calculated">${nf(api.contribution(e, month()))}</td>` : ''}
-      ${canEdit()?`<td class="row-tools"><button type="button" data-wf="insert-row" data-id="${X(e.id)}" title="이 행 앞에 입력 (Insert)" aria-label="#${e.seq} 앞에 입력">＋</button><button type="button" data-wf="delete-row" data-id="${X(e.id)}" title="이 공격 삭제 (Delete)" aria-label="#${e.seq} 삭제">×</button><button type="button" data-wf="split-day" data-id="${X(e.id)}" title="이 공격 뒤에서 일차 나누기">│</button></td>`:'<td></td>'}</tr>`;
-    }).join('') || `<tr><td colspan="14"><div class="empty">공격 기록이 없습니다. 위의 입력 줄에서 이름 한 글자로 시작하세요.</div></td></tr>`}</tbody></table></div>
-    <div class="sheet-footer"><span>${rows.length}건 · ${state.page} / ${pages} 페이지${warnings.size ? ` · 타수·이월 연결 주의 ${warnings.size}건` : ''}</span><div class="btnbar"><button type="button" class="btn sm" data-wf="previous" ${state.page <= 1 ? 'disabled' : ''}>이전</button><button type="button" class="btn sm" data-wf="next" ${state.page >= pages ? 'disabled' : ''}>다음</button></div></div>`;
+    const rows=filteredRows(),pages=Math.max(1,Math.ceil(rows.length/50)),seq=sequenceVisible();
+    state.page=Math.min(state.page,pages);
+    const shown=visibleRows(),warnings=new Map(replay(month()).map(w=>[w.id,w.message]));
+    const cols=[...(seq?[[42]]:[]),[44],[92],[138],[118],[64],...(state.details?[[80],[160]]:[]),[118],[142],...(state.details?[[118]]:[]),...(canEdit()?[[94]]:[])];
+    const colspan=cols.length;
+    return `<div class="table-scroll battle-sheet-scroll"><table class="datatable battle-sheet compact-battle-sheet ${state.details?'with-details':''} ${canEdit()?'is-editable':'is-readonly'}" role="grid" aria-label="배틀로그 표"><colgroup>${cols.map(([width])=>`<col style="width:${width}px">`).join('')}</colgroup><thead><tr>${seq?'<th>순번</th>':''}<th>일차</th><th>클랜원</th><th>보스 · 진행</th><th class="number">기록 피해량</th><th>${canEdit()?'이월 사용':'유형'}</th>${state.details?'<th>가산점(만)</th><th>메모</th>':''}<th class="number">실제 피해량</th><th class="number">남은 HP</th>${state.details?'<th class="number">기여도</th>':''}${canEdit()?'<th>행</th>':''}</tr></thead><tbody>${shown.map((e,index)=>{
+      const b=month().bosses.find(b=>b.id===e.boss),warning=warnings.get(e.id),prev=shown[index-1];
+      const carry=canEdit()?`<input type="checkbox" data-carry-record="${X(e.id)}" aria-label="#${e.seq} 이월 사용 체크" ${e.carry?'checked':''}>`:`<span class="carry-kind">${e.carry?'이월타':e.kill?'격파':'일반'}${e.carry&&e.kill?' · 격파':''}</span>`;
+      return `${!prev||prev.day!==e.day?`<tr class="day-divider"><th colspan="${colspan}">${e.day}일차</th></tr>`:''}<tr class="${warning?'row-warning':''}">${seq?`<td class="h-num" title="${X(warning||'')}">${warning?'! ':''}${e.seq}</td>`:''}<td>${e.day}일</td>${gridCell(e,'member',`<strong>${X(e.member)}</strong>`,'member-cell')}${gridCell(e,'boss',`${e.boss} · ${X(b?.name||'')}<small>${e.stage}단계 · ${e.lap}회차</small>`,'boss-cell')}${gridCell(e,'damage',nf(e.damage),'number')}${gridCell(e,'carry',carry,'carry-cell')}${state.details?gridCell(e,'bonus',nf(e.bonus||0),'number')+gridCell(e,'memo',X(e.memo||''),'memo-cell'):''}<td class="number calculated">${nf(e.actual)}${e.kill?'<small class="inline-kill">격파</small>':''}</td><td class="number calculated hp-exact" title="${nf(e.before)} − ${nf(e.actual)} = ${nf(e.after)}"><strong>${nf(e.after)}</strong>${state.details?`<small>${nf(e.before)} − ${nf(e.actual)}</small>`:''}</td>${state.details?`<td class="number calculated">${nf(api.contribution(e,month()))}</td>`:''}${canEdit()?`<td class="row-tools"><button type="button" data-wf="insert-row" data-id="${X(e.id)}" title="이 행 앞에 입력 (Insert)" aria-label="#${e.seq} 앞에 입력">＋</button><button type="button" data-wf="delete-row" data-id="${X(e.id)}" title="이 공격 삭제 (Delete)" aria-label="#${e.seq} 삭제">×</button><button type="button" data-wf="split-day" data-id="${X(e.id)}" title="이 공격 뒤에서 일차 나누기">│</button></td>`:''}</tr>`;
+    }).join('')||`<tr><td colspan="${colspan}"><div class="empty">공격 기록이 없습니다.</div></td></tr>`}</tbody></table></div><div class="sheet-footer"><span>${rows.length}건 · ${state.page} / ${pages} 페이지${warnings.size?` · 타수·이월 연결 주의 ${warnings.size}건`:''}</span><div class="btnbar"><button type="button" class="btn sm" data-wf="previous" ${state.page<=1?'disabled':''}>이전</button><button type="button" class="btn sm" data-wf="next" ${state.page>=pages?'disabled':''}>다음</button></div></div>`;
   }
   function battleView() {
     prepareMonth();
-    return section('배틀로그 편집실', '키보드로 연속 입력하고 표에서 바로 수정합니다.', `<button type="button" class="btn" data-wf="undo" ${state.undo.length&&canEdit() ? '' : 'disabled'}>실행 취소 <kbd>Ctrl Z</kbd></button><button type="button" class="btn" data-action="export">JSON 백업</button>`)
-      + bossStrip() + quickView() + `<section class="panel sheet-panel section-spacer"><div class="panel-head"><div><h2>공격 내역 <span class="pill">${month().events.length}건</span></h2><div class="sub" ${canEdit()?'':'hidden'}>표에서 <kbd>←↑↓→</kbd> 이동 · <kbd>Enter / F2</kbd> 수정 · <kbd>Space</kbd> 이월 전환 · <kbd>Esc</kbd> 취소 · HP는 1 단위</div></div><label class="switch small"><input id="wf-details" type="checkbox" ${state.details ? 'checked' : ''}>가산점·메모·기여도 열</label></div>
+    return section('배틀로그', '', canEdit()?`<button type="button" class="btn" data-wf="undo" ${state.undo.length&&canEdit() ? '' : 'disabled'}>실행 취소 <kbd>Ctrl Z</kbd></button><button type="button" class="btn" data-action="export">JSON 백업</button>`:'')
+      + bossStrip() + quickView() + `<section class="panel sheet-panel section-spacer"><div class="panel-head"><div><h2>공격 내역 <span class="pill">${month().events.length}건</span></h2><div class="sub" ${canEdit()?'':'hidden'}>표에서 <kbd>←↑↓→</kbd> 이동 · <kbd>Enter / F2</kbd> 수정 · <kbd>Space</kbd> 이월 전환 · <kbd>Esc</kbd> 취소 · HP는 1 단위</div></div><div class="battle-view-options"><label class="switch small"><input id="wf-sequence" type="checkbox" ${sequenceVisible()?'checked':''}>순번 표시</label><label class="switch small"><input id="wf-details" type="checkbox" ${state.details ? 'checked' : ''}>상세 열</label></div></div>
       ${dayClosuresView()}<div class="filterbar"><input id="wf-log-search" aria-label="공격 기록 검색" placeholder="이름 · UID · 순번 · 보스 검색" value="${X(state.query)}"><select id="wf-day-filter" aria-label="공격 일차 필터"><option value="all">전체 일차</option>${Array.from({ length: maxDay() }, (_, i) => `<option value="${i + 1}" ${state.filterDay === String(i + 1) ? 'selected' : ''}>${i + 1}일차</option>`).join('')}</select></div><div id="wf-grid">${gridView()}</div></section>`;
   }
 
@@ -289,6 +283,7 @@ export function createWorkflow(api) {
     const el = event.target;
     if(el.dataset.carryRecord){if(!guard())return;const e=month().events.find(e=>e.id===el.dataset.carryRecord);if(e){remember();e.carry=el.checked;save('이월 사용을 변경했습니다.');}return;}
     if (el.dataset.quick) { draft()[el.dataset.quick] = el.type === 'checkbox' ? el.checked : ['day', 'boss'].includes(el.dataset.quick) ? Number(el.value) : el.value; }
+    if (el.id === 'wf-sequence') { setSequenceVisible(el.checked); update(); }
     if (el.id === 'wf-details') { state.details = el.checked; update(); }
     if (el.id === 'wf-day-filter') { state.filterDay = el.value; state.page = 1; $('#wf-grid').innerHTML = gridView(); }
     

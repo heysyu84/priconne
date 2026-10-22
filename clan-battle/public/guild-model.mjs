@@ -1,4 +1,4 @@
-import { makeId, syncRoster } from './roster.mjs?v=20261022-pages10';
+import { makeId, syncRoster } from './roster.mjs?v=20261022-ui14';
 
 export const BOSS_COLORS=['#f4cccc','#fff2cc','#d9ead3','#cfe2f3','#d9d2e9'];
 export const BOSS_ACCENTS=['#ea9999','#ffe599','#b6d7a8','#a4c2f4','#b4a7d6'];
@@ -22,6 +22,9 @@ export function ensureDayBreaks(month){
 }
 export function applySourceData(app,source){
   let changed=false;
+  if(!Array.isArray(app.boosterCharacters)){
+    app.boosterCharacters=[...(source.boosterCharacters||[])];changed=true;
+  }
   if(!app.guildDataVersion){
     for(const record of source.roster){
       let p=app.roster.find(p=>record.uid&&p.uid===record.uid)||app.roster.find(p=>p.name===record.name||p.aliases?.includes(record.name));
@@ -39,6 +42,9 @@ export function applySourceData(app,source){
   for(const [key,month] of Object.entries(app.months)){
     changed=ensureDayBreaks(month)||changed;
     if(!month.guildDataVersion){month.recommendations||=structuredClone(source.recommendations?.[key]||[]);month.communityLinks||=structuredClone(source.communityLinks||[]);month.recommendationNotes||=structuredClone(key===source.source.month?source.recommendationNotes:[]);month.guildDataVersion=1;changed=true;}
+    if(!month.comboNotices){
+      month.comboNotices={tp:source.recommendationWarnings?.tp||'',stage3:source.recommendationWarnings?.stage3||''};changed=true;
+    }
   }
   syncRoster(app);return changed;
 }

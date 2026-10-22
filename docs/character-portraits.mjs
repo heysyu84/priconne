@@ -1,4 +1,4 @@
-import { assetUrl } from './site-paths.mjs?v=20261022-pages10';
+import { assetUrl } from './site-paths.mjs?v=20261022-ui14';
 
 export const normalizeCharacterName = value => String(value ?? '').normalize('NFKC').replace(/\s+/g, '').toLocaleLowerCase('ko-KR');
 

@@ -35,7 +35,7 @@ console.log('PASS: protected editing, month-only roster without active departure
 
 assert.ok(!readonly.includes('data-tw="duplicate"'));assert.ok(!readonly.includes('data-tw="delete"'));assert.ok(!readonly.includes('data-tw="restore"'));
 for(const tag of readonly.match(/<input type="checkbox"[^>]*>/g)||[])assert.ok(tag.includes('disabled'));
-assert.ok(/tw-editor-head[\s\S]*source-video[\s\S]*▶ 원본 영상/.test(readonly));
+assert.ok(/tw-editor-head[\s\S]*tw-source-summary[\s\S]*source-link-box/.test(readonly));assert.ok(!readonly.includes('택틱 없음'));assert.ok(!readonly.includes('▶ 원본 영상'));
 assert.ok(!readonly.includes('tw-line-number'));assert.ok(!readonly.includes('<th>#</th>'));
 assert.ok(guild.combos().includes('data-guild="combo-stage" data-value="4" class="active"'));
 assert.ok(!guild.combos().includes('data-value="2" class='));
@@ -49,5 +49,5 @@ click('guild','dashboard-day',{value:'1'});assert.ok(guild.dashboard().includes(
 guild.afterMonthChange();assert.ok(guild.dashboard().includes(`data-guild="dashboard-day" data-value="${currentDay}" class="active"`));
 app.active='2026-10';guild.afterMonthChange();
 month().tactics=[];const emptyReadonly=tactics.view();assert.ok(!emptyReadonly.includes('data-tw="new"'));
-console.log('PASS: unauthenticated users cannot edit/check/create/duplicate/delete; original video is in the title action row');
+console.log('PASS: unauthenticated users cannot edit/check/create/duplicate/delete; compact source icons sit beside expected damage');
 console.log('PASS: current-day dashboard default, day selection/reset, three attack columns, no arrow/legend/row-number column, recommendations default to stage four');

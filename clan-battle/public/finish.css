@@ -281,3 +281,98 @@ input:focus,select:focus,textarea:focus {border-color:#9872bf;box-shadow:0 0 0 3
   .hero>div:first-child {padding-left:0}
   .hero>div:first-child:before {display:none}
 }
+
+/* Compact records, source links and editable source-sheet guidance. */
+.source-link-box{display:inline-flex;align-items:center;justify-content:center;width:28px;height:22px;flex:none;border:1px solid #d7c5e3;border-radius:5px;background:#fbf7fe;color:#9062ab;vertical-align:middle;text-decoration:none;box-shadow:0 1px 2px #5e3e7508}
+.source-link-box svg{display:block;width:21px;height:17px;pointer-events:none}
+.source-link-box.is-video{background:#fcf0f4;border-color:#e2c5d1;color:#b56c89}
+.source-link-box.is-site{background:#f3eefb;color:#8566aa}
+.source-link-box.is-empty{background:transparent;border-color:#e2d6eb;box-shadow:none}
+.source-link-box:hover{border-color:#b393c8;filter:brightness(.98)}
+.source-link-box.is-empty:hover{filter:none;border-color:#e2d6eb}
+.source-link-group{display:inline-flex;align-items:center;gap:4px;vertical-align:middle}
+.tw-source-summary{display:inline-flex;align-items:center;gap:5px;white-space:nowrap;vertical-align:baseline;margin-left:3px;line-height:1.4}
+.tw-source-summary small{font-size:10px;font-weight:650;color:#a18aad}
+.tw-source-summary>strong{font-size:17px;font-variant-numeric:tabular-nums;color:#856099}
+.tw-work .tw-editor-head h2{line-height:1.75}
+.tw-editor-head .btnbar:empty{display:none}
+.tw-links{padding-top:0;padding-bottom:12px}
+.is-booster,.combo-party strong.is-booster,.tw-config-fieldset:disabled input.is-booster{color:#2d77bb!important}
+.combo-summary{display:grid;grid-template-columns:auto auto auto auto auto minmax(0,1fr) 28px;align-items:center;gap:8px;font-size:11px;color:#977ca8;border-bottom:1px solid color-mix(in srgb,var(--boss-accent) 40%,#fff);padding-bottom:12px;min-width:0}
+.combo-summary>span,.combo-summary>.combo-boss{white-space:nowrap;min-width:0}
+.combo-summary>.combo-stage{color:var(--boss-ink);font-weight:750}
+.combo-summary>.combo-boss{font-size:12px;color:var(--boss-ink)}
+.combo-summary .combo-source{color:#9675a8;font-weight:800}
+.combo-summary .combo-damage{display:inline-flex;align-items:baseline;justify-content:flex-end;gap:5px;color:var(--boss-ink);font-variant-numeric:tabular-nums}
+.combo-summary .combo-damage small{font-size:9px;color:#a38aaf}
+.combo-summary .combo-damage strong{font-size:20px;line-height:1.2;letter-spacing:-.5px}
+.combo-summary .source-link-box{justify-self:end}
+.combo-admin-actions{display:flex;gap:5px;justify-content:flex-end;margin-top:10px}
+.combo-card .combo-party{margin-top:15px;margin-bottom:3px}
+.combo-card .combo-meta{margin-top:13px;margin-bottom:0;line-height:1.7}
+.combo-notice{margin:0 0 17px;padding:14px 17px;min-width:0;border-color:#e8d4ce;background:linear-gradient(115deg,#fff9f1,#fff9fc)}
+.combo-notice-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:9px}
+.combo-notice-head>strong{font-size:13px;color:#a0786a}
+.combo-notice-head .textbutton{font-size:11px;white-space:nowrap}
+.combo-notice-text{white-space:pre-line;overflow-wrap:anywhere;font-size:12px;line-height:1.85;color:#9a726e}
+.combo-notice-collapsed{margin-bottom:15px}
+.combo-other-notes{background:#fcf9ff;border-color:#e6d8f0}
+.combo-other-notes>summary{font-size:13px;font-weight:750;color:#9773aa;cursor:pointer}
+.combo-other-notes .combo-notice-text{margin-top:12px;color:#97809e}
+.combo-other-notes>.btn{margin-top:12px}
+.guild-roster tr.guild-member-active>th,.guild-roster tr.guild-member-active>td{background:#f1e8f9!important;border-bottom-color:#e2d3ee}
+.guild-roster tr.guild-member-active>th .textbutton{color:#80519c;font-weight:850}
+.guild-roster tr.guild-member-left>th,.guild-roster tr.guild-member-left>td{background:#fdfcfe;color:#a18aaf}
+.guild-roster tr.guild-member-left>th .textbutton{color:#a087ae;font-weight:650}
+.battle-view-options{display:flex;align-items:center;gap:12px;flex-wrap:wrap;color:#a08bae}
+.battle-view-options .switch{font-size:11px;gap:5px;white-space:nowrap}
+.battle-view-options input{width:14px;height:14px;margin:0;accent-color:#9773b5}
+.battle-sheet.compact-battle-sheet{min-width:720px;table-layout:fixed;width:100%}
+.battle-sheet.compact-battle-sheet.with-details{min-width:1100px}
+.compact-battle-sheet th,.compact-battle-sheet td{height:34px;padding:5px 7px;line-height:1.35;font-size:11px}
+.compact-battle-sheet thead th{height:30px;padding-top:6px;padding-bottom:6px;font-size:10px}
+.compact-battle-sheet .member-cell{min-width:0}
+.compact-battle-sheet .member-cell strong{white-space:normal;overflow-wrap:anywhere;font-weight:700}
+.compact-battle-sheet .boss-cell{white-space:normal;overflow-wrap:anywhere}
+.compact-battle-sheet td small{font-size:9px;margin-top:2px}
+.compact-battle-sheet .edit-cell{min-width:0}
+.compact-battle-sheet .view-cell{cursor:default}
+.compact-battle-sheet .carry-cell{text-align:center}
+.compact-battle-sheet .carry-kind{font-size:10px;color:#9377a6;white-space:normal}
+.compact-battle-sheet td .inline-kill{display:inline;margin:0 0 0 4px;font-size:8px;color:#8c7898}
+.compact-battle-sheet .hp-exact strong{font-size:11px;color:#8d69a3}
+.compact-battle-sheet .day-divider th{padding:6px 8px!important;height:28px;font-size:11px}
+.compact-battle-sheet .row-tools button{height:22px;width:22px;margin-right:2px;font-size:12px;padding:0}
+.compact-battle-sheet .row-warning>.member-cell{background:#fff7e7;color:#a27a3c}
+.recent-battle-table th,.recent-battle-table td{padding:7px 6px;font-size:10px}
+.profile-metrics{grid-template-columns:repeat(3,minmax(0,1fr))}
+.guild-dialog textarea{width:100%;font:inherit;font-size:14px;border:1px solid #dfcde9;border-radius:8px;padding:10px;line-height:1.7;min-height:160px;color:#80658f;background:white}
+#setting-boosters{min-height:150px;font-size:13px;line-height:1.8;resize:vertical}
+@media(max-width:800px){
+ .combo-card{padding:13px 11px}
+ .combo-summary{gap:5px;font-size:10px;grid-template-columns:auto auto auto auto auto minmax(0,1fr) 26px;padding-bottom:10px}
+ .combo-summary>.combo-boss{font-size:11px}
+ .combo-summary .combo-damage{gap:3px}
+ .combo-summary .combo-damage small{font-size:8px}
+ .combo-summary .combo-damage strong{font-size:17px}
+ .combo-summary .source-link-box{width:26px;height:21px}
+ .combo-notice{padding:13px 12px}
+ .combo-notice-text{font-size:11px;line-height:1.85}
+ .combo-notice-head{align-items:flex-start;gap:8px}
+ .combo-notice-head .btnbar{gap:10px}
+ .combo-notice-head>strong{font-size:12px}
+ .combo-summary .combo-source{font-size:10px}
+ .tw-source-summary>strong{font-size:16px}
+ .tw-source-summary small{font-size:9px}
+ .tw-source-summary .source-link-box{width:27px;height:21px}
+ .battle-view-options{gap:11px;width:100%;justify-content:flex-end}
+ .sheet-panel .panel-head{gap:9px}
+ .compact-battle-sheet th,.compact-battle-sheet td{padding-left:6px;padding-right:6px}
+ .guild-dialog textarea{font-size:16px}
+}
+@media(max-width:360px){
+ .combo-summary{gap:4px;font-size:9px}
+ .combo-summary>.combo-boss,.combo-summary .combo-source{font-size:10px}
+ .combo-summary .combo-damage strong{font-size:16px}
+ .combo-summary .combo-damage small{font-size:7px}
+}

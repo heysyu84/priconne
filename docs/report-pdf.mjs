@@ -1,4 +1,4 @@
-import { BOSS_ACCENTS, BOSS_INK, tenureMonths } from './guild-model.mjs?v=20261022-pages10';
+import { BOSS_ACCENTS, BOSS_INK, tenureMonths } from './guild-model.mjs?v=20261022-ui14';
 const W=1240,H=1754,PAD=72;
 let reportFontsReady=null;
 const nf=n=>Number.isFinite(n)?n.toLocaleString('ko-KR',{maximumFractionDigits:2}):'산정 대기';
@@ -19,7 +19,7 @@ export async function downloadProfilePdf(data){
   const pages=[],canvases=[];let canvas,ctx,y,page=0;
   const text=(value,x,top,size=22,bold=false,color='#3b3350',align='left')=>{ctx.fillStyle=color;ctx.font=`${bold?700:400} ${size}px "Nyang Report", "Noto Sans KR", "Arial", sans-serif`;ctx.textAlign=align;ctx.fillText(String(value),x,top);ctx.textAlign='left';};
   const line=top=>{ctx.fillStyle='#e7e0ef';ctx.fillRect(PAD,top,W-PAD*2,2);};
-  function start(){canvas=document.createElement('canvas');canvas.width=W;canvas.height=H;ctx=canvas.getContext('2d');ctx.fillStyle='#ffffff';ctx.fillRect(0,0,W,H);ctx.fillStyle='#8062b0';ctx.fillRect(0,0,W,14);text('냥냥클랜 리리다이브',PAD,75,25,true,'#8062b0');text(data.month+' · 개인 이력서',W-PAD,75,22,false,'#6e627e','right');line(100);page++;text(`${data.p?.name||data.summary.name}`,PAD,165,42,true);text(`UID ${data.p?.uid||'미기재'}   |   ${data.day}일차까지`,PAD,205,20,false,'#6e627e');text(`소속 ${tenureMonths(data.p||{})??'미상'}개월`,W-PAD,165,21,false,'#6e627e','right');text(String(page),W/2,H-38,18,false,'#9b90a7','center');y=245;canvases.push(canvas);}
+  function start(){canvas=document.createElement('canvas');canvas.width=W;canvas.height=H;ctx=canvas.getContext('2d');ctx.fillStyle='#ffffff';ctx.fillRect(0,0,W,H);ctx.fillStyle='#8062b0';ctx.fillRect(0,0,W,14);text('냥냥클랜 리리다이브',PAD,75,25,true,'#8062b0');text(data.month+(data.all?' · 클랜 전체 기록':' · 개인 이력서'),W-PAD,75,22,false,'#6e627e','right');line(100);page++;text(`${data.p?.name||data.summary.name}`,PAD,165,42,true);text(data.all?`${data.day}일차까지 · 클랜 전체 합계`:`UID ${data.p?.uid||'미기재'}   |   ${data.day}일차까지`,PAD,205,20,false,'#6e627e');if(!data.all)text(`소속 ${tenureMonths(data.p||{})??'미상'}개월`,W-PAD,165,21,false,'#6e627e','right');text(String(page),W/2,H-38,18,false,'#9b90a7','center');y=245;canvases.push(canvas);}
   function need(height){if(y+height>H-85)start();}
   function heading(label){need(95);text(label,PAD,y+35,26,true);y+=64;}
   function row(cells,widths,header=false,colors=null){need(52);if(header){ctx.fillStyle='#f2edf8';ctx.fillRect(PAD,y,W-PAD*2,48);}let x=PAD;cells.forEach((cell,i)=>{if(colors?.[i]){ctx.fillStyle=colors[i];ctx.fillRect(x+3,y+5,widths[i]-6,38);}const right=!!cell?.right,value=cell?.text??cell;text(value,x+(right?widths[i]-15:12),y+32,20,header||i===0,'#3b3350',right?'right':'left');x+=widths[i];});y+=48;line(y);}
@@ -36,9 +36,10 @@ export async function downloadProfilePdf(data){
   for(let day=1;day<=data.days;day++){const events=data.events.filter(e=>e.day===day);row([day+'일차',{text:nf(events.reduce((s,e)=>s+e.actual,0)),right:true},{text:nf(events.reduce((s,e)=>s+data.contribution(e),0)),right:true},events.filter(e=>!e.carry).length+' / '+events.filter(e=>e.carry).length],[150,340,340,266]);}
   heading('보스별 기록');row(['보스','공격 수','실제 피해량 합계','평균 피해량'],[260,130,360,346],true);
   for(const boss of data.bosses){const rows=data.events.filter(e=>e.boss===boss.id),sum=rows.reduce((s,e)=>s+e.actual,0);row([boss.id+'넴 · '+boss.name,rows.length,{text:nf(sum),right:true},{text:nf(rows.length?sum/rows.length:0),right:true}],[260,130,360,346],false,[BOSS_ACCENTS[boss.id-1]]);}
-  heading('공격 상세');
+  if(!data.all){heading('공격 상세');
   const widths=[100,210,210,290,286];row(['일차','보스 · 단계','일반 / 이월','실제 피해량','기여도'],widths,true);
   for(const e of data.events){if(y+52>H-85){start();heading('공격 상세 · 계속');row(['일차','보스 · 단계','일반 / 이월','실제 피해량','기여도'],widths,true);}row([e.day+'일',`${e.boss}넴 · ${e.stage}단계`,e.carry?'이월':'일반',{text:nf(e.actual),right:true},{text:nf(data.contribution(e)),right:true}],widths,false,[null,BOSS_ACCENTS[e.boss-1]]);}
+  }
   for(const c of canvases){const encoded=c.toDataURL('image/jpeg',.94).split(',')[1];pages.push(Uint8Array.from(atob(encoded),c=>c.charCodeAt(0)));}
   const blob=new Blob([pdfFromJpegs(pages)],{type:'application/pdf'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=`냥냥클랜_리리다이브_${data.month}_${data.p?.name||data.summary.name}_이력서.pdf`;a.click();setTimeout(()=>URL.revokeObjectURL(url),3000);
 }
