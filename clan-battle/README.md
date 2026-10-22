@@ -49,3 +49,11 @@ GitHub Pages만으로 공유 저장 서버를 대체할 수는 없습니다. 서
     node scripts/test-pages.mjs
 
 원본 시트 이미지의 바이트, 해시와 위치는 public/images/sheet-originals/manifest.json에서 확인할 수 있습니다. scripts/extract-sheet-images.py로 동일한 원본 XLSX에서 다시 추출할 수 있습니다.
+
+## 분리형 월별 아카이브 (2026-10-22 설계)
+현재 진행 중인 월은 `clan_state`에, 과거 월은 `clan_archive_months`에 별도 보관합니다.
+새 클라이언트는 `/api/state?compact=1`을 사용하고 서버가 `splitStorage:true`를 명시한 경우에만 분리 저장합니다.
+과거 월은 `/api/archive?month=YYYY-MM`으로 필요할 때만 불러오고 읽기 전용 '과거 기록' 페이지에서 조회합니다.
+구버전 API는 전체 월 데이터로 작동하므로 배포 중 기록 손실을 막습니다. 기존 데이터 이전은 수정 권한이 있는 클라이언트의 **첫 정상 저장 시** D1 단일 트랜잭션으로 보관되며, 과거 월은 삭제하지 않고 옮겨집니다.
+중요: GitHub Pages에 정적 파일을 배포하는 것만으로 Cloudflare API와 D1 마이그레이션이 배포되지는 않습니다. 서버 배포 전에 D1 백업을 생성하고 `drizzle/0001_clan_archives.sql`을 적용한 뒤 API 앱을 배포해야 분리가 실제 작동합니다.
+JSON 전체 백업 시 아카이브를 함께 가져오고, 복원 시 명시적 보관 월 덮어쓰기로 처리합니다.
