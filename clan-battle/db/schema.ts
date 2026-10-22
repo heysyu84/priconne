@@ -12,3 +12,8 @@ export const clanRevisions = sqliteTable("clan_revisions", {
   payload: text("payload").notNull(),
   createdAt: text("created_at").notNull(),
 });
+export const clanArchiveMonths = sqliteTable("clan_archive_months", {
+  month: text("month").primaryKey(),
+  payload: text("payload").notNull(),
+  updatedAt: text("updated_at").notNull(),
+});
