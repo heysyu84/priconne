@@ -89,7 +89,7 @@ export function createGuildWorkspace(api){
         ?`<button type="button" class="btn sm ${changed?'':'primary'}" data-guild="close-month" data-value="${X(h.month)}">${changed?'결과 재확정':'월별 결과 확정'}</button>`:'';
       const edit=canEdit()?`<button type="button" class="textbutton" data-guild="edit-history" data-value="${X(h.month)}">${auto?'클랜 순위 · 비고 수정':'수정'}</button>`:'';
       return `<tr><th>${validURL(h.archiveUrl)?`<a href="${X(validURL(h.archiveUrl))}" target="_blank" rel="noopener noreferrer">${X(h.month)} ↗</a>`:X(h.month)}${status}</th>
-        <td>${Number(h.clanRank)>0?nf(h.clanRank)+'위':'—'}</td>
+        <td>${Number(h.clanRank)>0?nf(h.clanRank)+'위':(typeof h.clanRank==='string'&&h.clanRank.trim()?X(h.clanRank):'—')}</td>
         <td>${Number(memberCount)>0?nf(memberCount)+'명':'미기재'}</td>
         ${['damage','contribution','game'].map(k=>`<td>${(winners?.[k]||[]).map((n,i)=>n?`<div><span class="place">${i+1}위</span> ${X(n)}</div>`:'').join('')||'—'}</td>`).join('')}
         <td class="history-note">${X([...new Set([h.notes,h.mergedNotes,h.recordCondition].filter(Boolean))].join(' · '))}
@@ -169,7 +169,7 @@ export function createGuildWorkspace(api){
         if(!auto&&v.memberCount&&(!Number.isInteger(Number(v.memberCount))||Number(v.memberCount)<1||Number(v.memberCount)>30))
           throw Error('참가 인원은 1~30명입니다.');
         const record={
-          ...h,month:v.month,clanRank:Number(v.clanRank)||null,notes:v.notes,archiveUrl:v.archiveUrl,
+          ...h,month:v.month,clanRank:v.clanRank===''?(typeof h.clanRank==='string'&&!/^\d+$/.test(h.clanRank)?h.clanRank:null):(Number(v.clanRank)||null),notes:v.notes,archiveUrl:v.archiveUrl,
           ...(auto?{pendingResult:h.pendingResult||(!h.autoFinalizedAt)}:{
             memberCount:Number(v.memberCount)||null,
             winners:Object.fromEntries(['damage','contribution','game'].map(m=>[m,[v[m+0],v[m+1]]]))
