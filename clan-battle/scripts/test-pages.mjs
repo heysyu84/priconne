@@ -82,3 +82,20 @@ assert.ok(clanStyle.includes('.db-rate-records .db-top-record-table tbody th{tex
 assert.ok(!clanStyle.includes('.db-top-record-table tbody th{text-align:left'),'No left-aligned ranking headings');
 assert.ok(clanStyle.includes('tbody td{text-align:center;vertical-align:middle}'),'Table headers and numbers must be centered');
 console.log('PASS: both DB tables share boss-chip dimensions and all top-record headings are centered');
+
+
+// Mobile battle-log table must not inherit oversized desktop column minima.
+// Leave exact numeric damage and HP content intact; shrink only its layout.
+const battleWorkflow=fs.readFileSync(new URL('../public/workflow.mjs',import.meta.url),'utf8');
+assert.match(battleWorkflow,/const mobileWidths=\[/,'Mobile battle log must have independent column widths');
+assert.match(battleWorkflow,/--mobile-col-width:/,'Mobile columns must be individually sized');
+assert.match(battleWorkflow,/--mobile-battle-width:/,'Mobile table width must be based on its actual columns');
+assert.match(finishCss,/\.battle-sheet\.compact-battle-sheet\.with-details\s*\{/,
+  'Expanded battle log must override the old 1100px mobile minimum');
+assert.match(finishCss,/min-width:var\(--mobile-battle-width\)!important/,
+  'Mobile table width must not retain desktop minimums');
+assert.match(finishCss,/\.compact-battle-sheet colgroup col\s*\{width:var\(--mobile-col-width\)!important\}/,
+  'Mobile colgroup needs independent per-column width');
+assert.match(finishCss,/\.compact-battle-sheet \.number[\s\S]*?white-space:nowrap/,
+  'Exact damage and remaining HP must not clip or wrap');
+console.log('PASS: mobile battle log columns have a compact independent width and preserve exact numeric values');
