@@ -613,11 +613,15 @@
       "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/3.3.png"
     },
     "마스터 센리": {
-      "referenceKey": null,
-      "mappingStatus": "needs-image",
-      "assetSource": null,
-      "mappingNote": "Korean clan boss encyclopedia describes a tanuki; existing 4.9 PNG depicts a flower-like boss, and was misassigned. Do not render as Master Senri.",
-      "koreanReference": "https://d.namu.moe/w/프린세스%20커넥트!%20Re%3ADive/퀘스트/클랜전"
+      "referenceKey": "4.20",
+      "mappingStatus": "verified",
+      "assetSource": "/images/bosses/4.20.webp",
+      "mappingNote": "Legacy clan battle boss portrait uploaded by user; preserved as a dedicated local asset",
+      "koreanReference": "https://d.namu.moe/w/프린세스%20커넥트!%20Re%3ADive/퀘스트/클랜전",
+      "bossContent": "clan",
+      "isClanBoss": true,
+      "portrait": "/images/bosses/4.20.webp",
+      "sourceNote": "User-provided portrait of discontinued 4th-slot clan battle boss. Custom code 4.20 (not an upstream numbered filename)."
     },
     "사지타리우스": {
       "referenceKey": "5.12",
@@ -733,17 +737,27 @@
     },
     "플라워 마돈나": {
       "referenceKey": "4.9",
-      "mappingStatus": "needs-visual-review",
+      "mappingStatus": "verified",
       "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/4.9.png",
-      "mappingNote": "Provisional match based on floral artwork; verify against in-game portrait before marking verified.",
-      "koreanReference": "https://d.namu.moe/w/프린세스%20커넥트!%20Re%3ADive/퀘스트/클랜전"
+      "mappingNote": "User confirmed code-name match",
+      "koreanReference": "https://d.namu.moe/w/프린세스%20커넥트!%20Re%3ADive/퀘스트/클랜전",
+      "sourceNote": "Portrait code and boss name confirmed by user"
     },
     "플라워 슈발리에": {
       "referenceKey": "4.11",
-      "mappingStatus": "needs-visual-review",
+      "mappingStatus": "verified",
       "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/4.11.png",
-      "mappingNote": "Provisional match based on floral artwork; verify against in-game portrait before marking verified.",
-      "koreanReference": "https://d.namu.moe/w/프린세스%20커넥트!%20Re%3ADive/퀘스트/클랜전"
+      "mappingNote": "User confirmed code-name match",
+      "koreanReference": "https://d.namu.moe/w/프린세스%20커넥트!%20Re%3ADive/퀘스트/클랜전",
+      "sourceNote": "Portrait code and boss name confirmed by user"
+    },
+    "지즈": {
+      "referenceKey": "4.14",
+      "mappingStatus": "verified",
+      "bossContent": "other",
+      "isClanBoss": false,
+      "sourceNote": "User identified as Giez / 지즈; not a clan battle boss",
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/4.14.png"
     }
   }
 }
