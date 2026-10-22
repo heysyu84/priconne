@@ -73,7 +73,14 @@ def main():
             if row in by_row:
                 raise ValueError(f"More than one portrait at 데이터!B{row}")
             by_row[row] = image
-    original = {character["name"]: character for character in catalog["characters"]}
+    # Existing Excel names may have been renamed to match the image filenames.
+    # Accept old workbook names through preserved aliases rather than duplicating them.
+    original = {}
+    for character in catalog["characters"]:
+        for key in [character["name"], *character.get("aliases", [])]:
+            if key in original and original[key]["id"] != character["id"]:
+                raise ValueError(f"Conflicting existing name/alias: {key}")
+            original[key] = character
     characters = list(catalog["characters"])
     added = 0
     for row, image in sorted(by_row.items()):

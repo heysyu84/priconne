@@ -5,8 +5,8 @@ const read = name => JSON.parse(fs.readFileSync(new URL('../public/'+name,import
 const catalog=read('characters.json').characters,source=read('guild-source.json');
 const html=fs.readFileSync(new URL('../public/clan-shell.html',import.meta.url),'utf8');
 const app=JSON.parse(html.match(/<script id="seed-data" type="application\/json">([\s\S]*?)<\/script>/)[1]);
-assert.equal(catalog.length,327);
-assert.equal(new Set(catalog.map(c=>c.id)).size,327);
+assert.equal(catalog.length,352);
+assert.equal(new Set(catalog.map(c=>c.id)).size,352);
 assert.equal(findCharacter(catalog,'에키드나').source.nameCell,'A275');
 const references=new Set();let paths=0;
 for(const c of catalog){

@@ -9,7 +9,7 @@ const root=path.resolve(dir,'../public');
 const catalog=JSON.parse(fs.readFileSync(path.join(root,'characters.json'),'utf8')).characters;
 const library=JSON.parse(fs.readFileSync(path.join(root,'portrait-library.json'),'utf8'));
 const combined=withPortraitLibrary(catalog,library);
-assert.equal(catalog.length,327);
+assert.equal(catalog.length,352);
 assert.equal(library.characters.length,352);
 assert.ok(combined.length>=catalog.length);
 function assertSourceExists(url){
@@ -37,11 +37,18 @@ for(const [legacy,official] of Object.entries(renamed)){
   assert.ok(findCharacter(combined,official).sourcePortrait,'New default must use image library '+official);
   assert.equal(findCharacter(combined,legacy).id,updated.id);
 }
-assert.ok(findCharacter(catalog,'루이즈').aliases.includes('루이즈마리'));
-assert.equal(findCharacter(combined,'루이즈마리').id,findCharacter(combined,'루이즈').id);
+const confirmed={루이즈:'마리',미오:'혼다',성요리:'클요리',에키드나:'수키드나',원유미:'앨유미',퍼라엘:'파라엘',퓨오리:'마오리'};
+for (const [oldName,canon] of Object.entries(confirmed)) {
+  const target=findCharacter(catalog,canon);
+  assert.ok(target && target.aliases.includes(oldName),oldName);
+  assert.equal(findCharacter(catalog,oldName).id,target.id);
+  assert.ok(findCharacter(combined,oldName).sourcePortrait,oldName);
+}
+assert.ok(findCharacter(catalog,'마리').aliases.includes('루이즈마리'));
+assert.equal(findCharacter(combined,'루이즈마리').id,findCharacter(combined,'마리').id);
 const availableNames=new Set(library.characters.map(c=>c.name));
-assert.equal(catalog.filter(c=>!availableNames.has(c.name)).length,7);
-assert.equal(library.characters.filter(c=>!catalog.some(x=>x.name===c.name)).length,32);
+assert.equal(catalog.filter(c=>!availableNames.has(c.name)).length,0);
+assert.equal(library.characters.filter(c=>!catalog.some(x=>x.name===c.name)).length,0);
 const p3=characterPortrait(combined,'네네카',3);
 const p5=characterPortrait(combined,'네네카',5);
 assert.match(decodeURIComponent(p3.url),/images\/네네카3.png$/);
@@ -55,8 +62,8 @@ assert.match(portraitStarOverlay(n5),/stars\/5.png/);
 const n6=characterPortrait(combined,'나나카',6);
 assert.match(decodeURIComponent(n6.url),/images\/나나카6.png$/);
 assert.equal(n6.showStarOverlay,false);
-const unknown=characterPortrait(combined,'에키드나',5);
-assert.ok(unknown.url.startsWith('/images/'),'Unmatched characters keep their original image');
+const known=characterPortrait(combined,'에키드나',5);
+assert.match(decodeURIComponent(known.url),/images\/수키드나5.png$/);
 const override=characterPortrait(combined,'네네카',3,'data:image/png;base64,AAAA');
 assert.equal(override.url,'data:image/png;base64,AAAA');
 assert.equal(override.showStarOverlay,false);
