@@ -27,7 +27,12 @@ jobs:
         with:
           node-version: '22'
       - name: Check importer syntax
-        run: node --check clan-battle/scripts/sync-future-bosses.mjs
+        run: |
+          node --check clan-battle/scripts/sync-future-bosses.mjs
+          node --check docs/clan.js
+          node --check clan-battle/public/clan.js
+      - name: Verify month offset, boss identity, and non-destructive previews
+        run: node --test clan-battle/scripts/test-future-bosses.mjs
       - name: Read Aikurumi JP periods and preview Korean months
         run: node clan-battle/scripts/sync-future-bosses.mjs
       - name: Commit preview data (never modify live battle records)
