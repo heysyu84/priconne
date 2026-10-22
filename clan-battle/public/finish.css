@@ -507,3 +507,31 @@ input:focus,select:focus,textarea:focus {border-color:#9872bf;box-shadow:0 0 0 3
  .compact-battle-sheet.with-details th,.compact-battle-sheet.with-details td{white-space:normal;overflow-wrap:anywhere}
  .compact-battle-sheet.with-details .row-tools{white-space:normal}
 }
+
+/* Five-boss 4th-stage records, aligned with all boss contribution columns. */
+.db-rate-records .db-top-record-table{width:100%;min-width:0;table-layout:fixed;border-collapse:collapse}
+.db-rate-records .db-top-record-table thead th:first-child{width:20%}
+.db-rate-records .db-top-record-table thead th:not(:first-child){width:16%}
+.db-rate-records .db-top-record-table th,
+.db-rate-records .db-top-record-table td{min-width:0;box-sizing:border-box;padding:8px 3px;text-align:center;white-space:nowrap;font-size:11px;font-variant-numeric:tabular-nums}
+.db-rate-records .db-top-record-table tbody th{text-align:left;font-weight:750}
+.db-rate-records .db-top-record-table .boss-chip{font-size:10px;padding:3px 4px;white-space:nowrap}
+.db-rate-records .db-top-average th,.db-rate-records .db-top-average td{border-top:2px solid #d4c4e3;background:#faf7fd;font-weight:750}
+.db-rate-records .db-top-corrected th,.db-rate-records .db-top-corrected td{background:#f1eaf9;color:#6b4786;font-weight:850}
+.db-rate-records .db-top-record-footer{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-top:13px;color:#8b759b;font-size:11px}
+.db-rate-records .db-top-record-footer>.btn{flex:none}
+.db-rate-records .table-scroll{overflow-x:hidden}
+@media(min-width:1180px){
+  .db-rates-layout{max-width:none;grid-template-columns:minmax(0,.94fr) minmax(0,1.06fr)}
+}
+@media(max-width:800px){
+  .db-rate-records .db-top-record-table th,
+  .db-rate-records .db-top-record-table td{padding:7px 1px;font-size:10px;letter-spacing:-.35px}
+  .db-rate-records .db-top-record-table .boss-chip{font-size:9px;padding:3px 2px}
+  .db-rate-records .db-top-record-footer{font-size:10px}
+}
+@media(max-width:360px){
+  .db-rate-records .db-top-record-table th,
+  .db-rate-records .db-top-record-table td{font-size:9px;letter-spacing:-.45px}
+  .db-rate-records .db-top-record-table .boss-chip{font-size:8px}
+}

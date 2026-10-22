@@ -60,3 +60,14 @@ assert.ok(guild.db().includes('<td class="number">-</td>'));
 month().bosses[0].contribution[1]=priorRate;
 assert.ok(guild.profile().includes('profile-activity-grid'));
 console.log('PASS: responsive DB rates and profile cards, absent contribution rendered as dash');
+
+const fiveBossPanel=guild.db();
+assert.ok(fiveBossPanel.includes('4단계 상위 기록 · 전체 보스'));
+assert.ok(fiveBossPanel.includes('피해량 단위: 만'));
+assert.ok(fiveBossPanel.includes('db-top-record-table'));
+assert.ok(fiveBossPanel.includes('db-top-average'));
+assert.ok(fiveBossPanel.includes('db-top-corrected'));
+assert.ok(!fiveBossPanel.includes('data-guild="top-boss"'));
+assert.ok(!fiveBossPanel.includes('<th>클랜원</th>'));
+assert.ok(!fiveBossPanel.includes('<th>일차</th>'));
+console.log('PASS: all five stage-four bosses show top ten, average and corrected average simultaneously');
