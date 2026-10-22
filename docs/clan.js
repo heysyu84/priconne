@@ -37,12 +37,43 @@ const importedArchiveMonths=Array.from({length:8},(_,i)=>'2026-'+String(i+1).pad
 const monthView=createMonthView({getApp:()=>app,cache:archiveCache,availableMonths:importedArchiveMonths,
   prepare:record=>{
     if(!Array.isArray(record.sourceRankings)){Engine.replayMonth(record);return;}
-    // Allocate each person's finalized source game total to their attacks.
-    // This preserves exact monthly totals without recalculating old seasons.
+    // Imported months use an older sheet schema. Hydrate the read-only view
+    // without replaying or rewriting its source HP, sequence or stage values.
+    const memberNames=[...new Set([...(record.members||[]),...record.events.map(e=>e.member)].filter(Boolean))];
+    record.members=memberNames;
+    const idsByName=new Map();
+    for(const name of memberNames){
+      const match=app.roster?.find(p=>p.name===name||p.aliases?.includes(name));
+      idsByName.set(name,match?.id||'archive-member-'+record.month+'-'+encodeURIComponent(name));
+    }
+    record.memberIds=memberNames.map(name=>idsByName.get(name));
+    record.membership||={};
+    for(const id of record.memberIds)record.membership[id]||={fromDay:1,toDay:Number(record.options?.days)||5};
+    record.dayBreaks||=[];
+    record.tactics||=[];
+    const pending=new Map();
     const totals=new Map(record.sourceRankings.map(p=>[p.name,Number(p.game)||0]));
     const weights=new Map();
-    for(const e of record.events){const base=(Number(e.actual)||0)*(Number(record.bosses.find(b=>b.id===Number(e.boss))?.game?.[e.stage])||1);e.archiveWeight=base;weights.set(e.member,(weights.get(e.member)||0)+base);}
-    for(const e of record.events){e.sourceGame=(totals.get(e.member)||0)*e.archiveWeight/(weights.get(e.member)||1);delete e.archiveWeight;}
+    for(const e of [...record.events].sort((a,b)=>a.seq-b.seq)){
+      e.memberId=idsByName.get(e.member)||'archive-member-'+record.month+'-'+encodeURIComponent(e.member||'unknown');
+      const key=e.day+':'+e.memberId;
+      if(!pending.has(key))pending.set(key,[]);
+      const carries=pending.get(key);
+      if(e.carry){
+        const index=carries.findIndex(x=>Number(x.hitIndex)===Number(e.carryIndex));
+        const matched=index>=0?carries.splice(index,1)[0]:carries.shift();
+        e.carryFrom=matched?.id||null;
+      }else if(e.kill){
+        carries.push({id:e.id,hitIndex:e.hitIndex});
+      }
+      const base=(Number(e.actual)||0)*(Number(record.bosses.find(b=>b.id===Number(e.boss))?.game?.[e.stage])||1);
+      e.archiveWeight=base;
+      weights.set(e.member,(weights.get(e.member)||0)+base);
+    }
+    for(const e of record.events){
+      e.sourceGame=(totals.get(e.member)||0)*e.archiveWeight/(weights.get(e.member)||1);
+      delete e.archiveWeight;
+    }
   },
   fetchMonth:async key=>{
     const fromSheet=importedArchiveMonths.includes(key);
