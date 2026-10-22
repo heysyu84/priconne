@@ -81,28 +81,28 @@
           "slot": 3,
           "prefabId": 307201,
           "sourceName": "バジリスク",
-          "name": "バジリスク",
-          "referenceKey": null,
-          "portrait": null,
-          "status": "unmatched"
+          "name": "바실리스크",
+          "referenceKey": "3.8",
+          "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/3.8.png",
+          "status": "verified"
         },
         {
           "slot": 4,
           "prefabId": 301501,
           "sourceName": "ウールヴヘジン",
-          "name": "ウールヴヘジン",
-          "referenceKey": null,
-          "portrait": null,
-          "status": "unmatched"
+          "name": "울프헤딘",
+          "referenceKey": "4.6",
+          "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/4.6.png",
+          "status": "verified"
         },
         {
           "slot": 5,
           "prefabId": 300201,
           "sourceName": "レサトパルト",
-          "name": "レサトパルト",
-          "referenceKey": null,
-          "portrait": null,
-          "status": "unmatched"
+          "name": "레사스 팔트",
+          "referenceKey": "5.11",
+          "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/5.11.png",
+          "status": "verified"
         }
       ]
     },
@@ -133,28 +133,28 @@
           "slot": 3,
           "prefabId": 311001,
           "sourceName": "トレントキャッスル",
-          "name": "トレントキャッスル",
-          "referenceKey": null,
-          "portrait": null,
-          "status": "unmatched"
+          "name": "트렌트 캐슬",
+          "referenceKey": "3.17",
+          "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/3.17.png",
+          "status": "verified"
         },
         {
           "slot": 4,
           "prefabId": 303900,
           "sourceName": "サイクロプス",
-          "name": "サイクロプス",
-          "referenceKey": null,
-          "portrait": null,
-          "status": "unmatched"
+          "name": "사이클롭스",
+          "referenceKey": "4.7",
+          "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/4.7.png",
+          "status": "verified"
         },
         {
           "slot": 5,
           "prefabId": 301801,
           "sourceName": "サジタリウス",
-          "name": "サジタリウス",
-          "referenceKey": null,
-          "portrait": null,
-          "status": "unmatched"
+          "name": "사지타리우스",
+          "referenceKey": "5.12",
+          "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/5.12.png",
+          "status": "verified"
         }
       ]
     },
@@ -237,10 +237,10 @@
           "slot": 3,
           "prefabId": 304000,
           "sourceName": "ムーバ",
-          "name": "ムーバ",
-          "referenceKey": null,
-          "portrait": null,
-          "status": "unmatched"
+          "name": "무버",
+          "referenceKey": "4.3",
+          "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/4.3.png",
+          "status": "verified"
         },
         {
           "slot": 4,
@@ -375,10 +375,10 @@
           "slot": 1,
           "prefabId": 325300,
           "sourceName": "リビングメイル",
-          "name": "リビングメイル",
-          "referenceKey": null,
-          "portrait": null,
-          "status": "unmatched"
+          "name": "리빙 메일",
+          "referenceKey": "1.6",
+          "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/1.6.png",
+          "status": "verified"
         },
         {
           "slot": 2,
@@ -393,10 +393,10 @@
           "slot": 3,
           "prefabId": 319306,
           "sourceName": "レイスコレクター",
-          "name": "レイスコレクター",
-          "referenceKey": null,
-          "portrait": null,
-          "status": "unmatched"
+          "name": "레이스 컬렉터",
+          "referenceKey": "3.18",
+          "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/3.18.png",
+          "status": "verified"
         },
         {
           "slot": 4,
@@ -497,19 +497,19 @@
           "slot": 3,
           "prefabId": 309604,
           "sourceName": "ロクス・フォートレス",
-          "name": "ロクス・フォートレス",
-          "referenceKey": null,
-          "portrait": null,
-          "status": "unmatched"
+          "name": "록스 포트리스",
+          "referenceKey": "3.19",
+          "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/3.19.png",
+          "status": "verified"
         },
         {
           "slot": 4,
           "prefabId": 309902,
           "sourceName": "ゴブリンソーサラー",
-          "name": "ゴブリンソーサラー",
-          "referenceKey": null,
-          "portrait": null,
-          "status": "unmatched"
+          "name": "고블린 소서러",
+          "referenceKey": "4.19",
+          "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/4.19.png",
+          "status": "verified"
         },
         {
           "slot": 5,
@@ -558,10 +558,10 @@
           "slot": 4,
           "prefabId": 300801,
           "sourceName": "スピリットホーン",
-          "name": "スピリットホーン",
-          "referenceKey": null,
-          "portrait": null,
-          "status": "unmatched"
+          "name": "스피릿 혼",
+          "referenceKey": "4.10",
+          "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/4.10.png",
+          "status": "verified"
         },
         {
           "slot": 5,
@@ -592,19 +592,19 @@
           "slot": 2,
           "prefabId": 325700,
           "sourceName": "ミストシーカー",
-          "name": "ミストシーカー",
-          "referenceKey": null,
-          "portrait": null,
-          "status": "unmatched"
+          "name": "미스트 시커",
+          "referenceKey": "2.7",
+          "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/2.7.png",
+          "status": "verified"
         },
         {
           "slot": 3,
           "prefabId": 323108,
           "sourceName": "バイオドーザー",
-          "name": "バイオドーザー",
-          "referenceKey": null,
-          "portrait": null,
-          "status": "unmatched"
+          "name": "바이오 도저",
+          "referenceKey": "3.20",
+          "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/3.20.png",
+          "status": "verified"
         },
         {
           "slot": 4,
@@ -653,10 +653,10 @@
           "slot": 3,
           "prefabId": 306101,
           "sourceName": "ジャッカルシーフ",
-          "name": "ジャッカルシーフ",
-          "referenceKey": null,
-          "portrait": null,
-          "status": "unmatched"
+          "name": "쟈칼 시프",
+          "referenceKey": "3.4",
+          "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/3.4.png",
+          "status": "verified"
         },
         {
           "slot": 4,
