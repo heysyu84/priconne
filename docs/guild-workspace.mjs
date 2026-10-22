@@ -1,4 +1,4 @@
-import { summarizeArchive, sortArchiveRankings } from './archive-summary.mjs?v=20261022-db19';
+import { summarizeArchive, sortArchiveRankings } from './archive-summary.mjs?v=20261022-import01';
 import { CLAN_PROFILE, isBoosterCharacter, formatExpectedDamage, comboNoticeHidden, setComboNoticeHidden, sourceLinkBox } from './view-settings.mjs?v=20261022-ui14';
 import { characterPortrait, portraitAttributes, portraitStarOverlay } from './character-portraits.mjs?v=20261022-ui14';
 import { BOSS_COLORS, BOSS_ACCENTS, BOSS_INK, tenureMonths, monthOnly, thisMonth, dashboardDay, bossTopStats } from './guild-model.mjs?v=20261022-db19';
