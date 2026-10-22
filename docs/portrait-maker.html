@@ -310,22 +310,26 @@
     <div class="layout">
       <div class="card">
         <h2 class="section-title">1. 캐릭터 / 재료 설정</h2>
-        <div class="sub">우선 캐릭터 기본 초상화와 필요시 6성 전용 초상화를 넣어주세요.</div>
+        <div class="sub">테두리가 있는 기존 GitHub 초상화는 사용하지 않습니다. 테두리 없는 신형 초상화를 사용하세요.</div>
         <div class="form-group" style="border:1px solid #dbe3ee;border-radius:12px;padding:12px;background:#f8fafc">
-          <label for="catalog-query">현재 클랜전 캐릭터 DB에서 선택</label>
+          <label for="catalog-query">캐릭터 DB 검색 (이름만 사용)</label>
           <input id="catalog-query" list="catalog-list" placeholder="캐릭터 이름 검색 (예: 네네카)" autocomplete="off">
           <datalist id="catalog-list"></datalist>
-          <button type="button" class="btn-sub" id="catalog-load">DB 초상화 불러오기</button>
-          <div class="muted-note" id="catalog-status">기존 캐릭터 목록에서 이미지를 선택할 수 있습니다. 이미지에 기존 표시가 있으면 합성 마크가 겹칠 수 있으므로 미리보기를 확인하세요.</div>
+          <button type="button" class="btn-sub" id="catalog-load">캐릭터명 입력하기</button>
+          <div class="muted-note" id="catalog-status">구형 초상화는 불러오지 않습니다. 캐릭터명만 가져오고, 테두리 없는 신형 초상화는 별도로 선택합니다.</div>
         </div>
 
+        <p class="muted-note" style="padding:11px 12px;border:1px solid #bfdbfe;border-radius:10px;background:#eff6ff;margin:0 0 14px">
+          <strong>신형 초상화 원본</strong><br>
+          <a href="https://redive.estertion.win/icon/unit/" target="_blank" rel="noopener noreferrer">Estertion 캐릭터 아이콘 페이지 ↗</a>에서 테두리 없는 WebP/PNG를 저장한 뒤 아래에서 업로드하세요. 기존 클랜전 이미지 폴더의 원본은 자동으로 불러오지 않습니다.
+        </p>
         <div class="form-group">
-          <label for="base-image-input">기본 초상화 (3·4·5성용)</label>
+          <label for="base-image-input">신형 기본 초상화 (3·4·5성용)</label>
           <input type="file" id="base-image-input" accept="image/*">
         </div>
 
         <div class="form-group">
-          <label for="six-image-input">6성 전용 초상화 (선택)</label>
+          <label for="six-image-input">신형 6성 전용 초상화 (선택)</label>
           <input type="file" id="six-image-input" accept="image/*">
           <div class="muted-note">비워두면 6성 생성 시에도 기본 초상화를 사용합니다.</div>
         </div>
@@ -891,28 +895,24 @@
         characterCatalog=Array.isArray(data.characters)?data.characters:[];
         const list=$('catalog-list');
         list.replaceChildren(...characterCatalog.map(c=>{const o=document.createElement('option');o.value=c.name;return o;}));
-        $('catalog-status').textContent=characterCatalog.length+'명 캐릭터 목록 준비 완료. 이름을 입력하고 DB 초상화 불러오기를 눌러주세요.';
+        $('catalog-status').textContent=characterCatalog.length+'명 캐릭터 목록 준비 완료. 이름만 가져옵니다. 구형 초상화는 불러오지 않습니다.';
       }catch(err){$('catalog-status').textContent='캐릭터 DB 로드 실패: '+err.message+' · 직접 이미지 업로드는 계속 가능합니다.';}
     }
-    async function fromCatalog(){
+    function fromCatalog(){
       const k=normalized($('catalog-query').value);
       const c=characterCatalog.find(x=>normalized(x.name)===k || x.aliases?.some(a=>normalized(a)===k));
       if(!c){alert('DB에서 해당 캐릭터를 찾지 못했습니다.');return;}
-      const imageFile=async(path,label)=>{
-        if(!/^\/images\/(?:characters|sheet-originals)\/[\w.-]+$/.test(path||''))return null;
-        const r=await fetch('./'+path.slice(1));
-        if(!r.ok)throw new Error(label+' 초상화 로드 실패: HTTP '+r.status);
-        const b=await r.blob();
-        return new File([b],c.name+'_'+label+'.png',{type:b.type||'image/png'});
-      };
-      try{
-        state.baseFile=await imageFile(c.portrait,'기본');
-        if(!state.baseFile)throw new Error('기본 초상화가 없습니다.');
-        state.sixFile=await imageFile(c.byStar?.['6'],'6성');
-        $('name-input').value=c.name;
-        $('catalog-status').textContent=c.name+' 이미지 불러오기 완료'+(state.sixFile?' · 6성 포함':'')+' · 속성·롤은 수동 지정하세요. 별이 중복되는지 확인하세요.';
-        renderOriginalPreview();renderOutputPlan();renderPreview();
-      }catch(err){$('catalog-status').textContent='불러오기 실패: '+err.message;}
+      // Only use the name; never fetch old bordered portraits from the catalog.
+      state.baseFile=null;
+      state.sixFile=null;
+      $('base-image-input').value='';
+      $('six-image-input').value='';
+      $('name-input').value=c.name;
+      $('catalog-status').textContent=c.name+' 이름 적용 완료. 신형 테두리 없는 기본 초상화와 필요시 6성 초상화를 아래에서 선택하세요.';
+      renderOriginalPreview();
+      $('composite-stage').innerHTML='<div class="placeholder">신형 원본 초상화를 업로드해주세요.</div>';
+      renderOutputPlan();
+      setStatus('캐릭터명 적용: '+c.name+'\n구형 초상화는 사용하지 않습니다.\n테두리 없는 신형 초상화를 선택해 합성하세요.');
     }
     $('catalog-load').addEventListener('click',fromCatalog);
     $('catalog-query').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();fromCatalog();}});
