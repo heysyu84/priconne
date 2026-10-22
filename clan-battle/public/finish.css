@@ -558,3 +558,19 @@ input:focus,select:focus,textarea:focus {border-color:#9872bf;box-shadow:0 0 0 3
 .future-boss-art { width: 56px; height: 56px; display: grid; place-items: center; border-radius: 11px; background: #e7e4f0; color: #524675; font-weight: 700; }
 .future-boss-art img { width: 100%; height: 100%; object-fit: contain; }
 @media(max-width:740px){.future-boss-list{grid-template-columns:repeat(2,minmax(0,1fr))}.future-month summary{flex-wrap:wrap}.future-boss-panel .panel-head{flex-wrap:wrap}}
+
+/* Monthly rules: booster roster stays collapsed until opened explicitly. */
+.booster-settings { border: 1px solid #e4e3eb; border-radius: 11px; background: #fff; overflow: hidden; }
+.booster-settings > summary { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 13px 14px; cursor: pointer; }
+.booster-settings > summary::marker { color: #786bab; }
+.booster-settings > summary strong { font-size: 14px; }
+.booster-settings[open] > summary { border-bottom: 1px solid #e4e3eb; }
+.booster-settings-body { padding: 14px; }
+.booster-settings-body > p { margin: 0 0 12px; }
+.booster-list { list-style: none; padding: 0; margin: 0 0 14px; display: grid; grid-template-columns: repeat(auto-fill,minmax(175px,1fr)); gap: 8px; }
+.booster-list li { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-width: 0; padding: 7px 9px; border-radius: 9px; background: #f7f6fa; font-size: 13px; overflow-wrap: anywhere; }
+.booster-list li .btn { flex-shrink: 0; }
+.booster-add-row { display: flex; align-items: flex-end; gap: 8px; margin: 10px 0; }
+.booster-add-row .field { flex: 1; min-width: 0; margin: 0; }
+.booster-add-row input { width: 100%; }
+@media(max-width:520px) { .booster-add-row { align-items: stretch; flex-wrap: wrap; } .booster-add-row .field { flex-basis: 100%; } .booster-list { grid-template-columns: repeat(auto-fill,minmax(145px,1fr)); } }
