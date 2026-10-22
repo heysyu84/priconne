@@ -10,7 +10,6 @@ function savedView() {
 export function createComboWorkspace(api) {
   const {state, render, section, canEdit, characters, escapeHtml: X, notice, detailedRows} = api;
   let view = savedView(), lastMonth = '', selectedBosses = null, distinctBosses = true;
-  const expanded = new Set();
   const source = combo => [combo.url, combo.video, combo.tacticUrl].find(value => sourceLinkKind(value) !== 'empty');
   const seconds = value => value === null || value === undefined || value === '' ? '—' : X(value) + '초';
   const boss = value => `<span class="combo-mini-boss" data-boss-color="${X(value)}">${X(value)}넴</span>`;
@@ -30,8 +29,9 @@ export function createComboWorkspace(api) {
   function compactRows(rows) {
     if (!rows.length) return '<div class="panel empty">등록된 추천 조합이 없습니다.</div>';
     return `<div class="combo-compact-list">${rows.map(combo => {
-      const stage3 = Number(combo.stage) === 3, open = expanded.has(combo.id);
-      return `<article class="combo-compact-row${stage3 ? ' is-stage3' : ''}" data-boss-color="${X(combo.boss)}" aria-label="${X(combo.stage)}단계 ${X(combo.boss)}넴 추천 조합"><div class="combo-mini-layout">${boss(combo.boss)}${party(combo)}<div class="combo-mini-meta">${metadata(combo)}</div><div class="combo-mini-score"><small>${stage3 ? '이월' : '기대딜'}</small><strong>${stage3 ? seconds(combo.remainingSeconds) : X(formatExpectedDamage(combo.expectedDamage))}</strong></div>${stage3 ? '' : sourceLinkBox(source(combo))}<button class="btn sm combo-expand" data-combo-action="expand" data-id="${X(combo.id)}" aria-expanded="${open}" aria-label="${X(combo.boss)}넴 조합 ${open ? '접기' : '상세 보기'}">${open ? '접기' : '상세'}</button></div>${open ? `<div class="combo-compact-expanded">${detailedRows([combo])}</div>` : ''}</article>`;
+      const stage3 = Number(combo.stage) === 3;
+      const stars = Array.from({length:5}, (_, i) => combo.stars?.[i] || '?').join('');
+      return `<article class="combo-compact-row${stage3 ? ' is-stage3' : ''}" data-boss-color="${X(combo.boss)}" aria-label="${X(combo.stage)}단계 ${X(combo.boss)}넴 추천 조합"><div class="combo-mini-layout"><div class="combo-mini-topline">${boss(combo.boss)}<div class="combo-mini-meta">${metadata(combo)}${combo.note ? `<span class="combo-mini-note">${X(combo.note)}</span>` : ''}</div></div><div class="combo-mini-lineup">${party(combo)}</div><div class="combo-mini-info"><span class="combo-mini-stars" aria-label="성급 ${X(stars)}"><small>성급</small> ${X(stars)}</span><div class="combo-mini-result"><div class="combo-mini-score"><small>${stage3 ? '이월' : '기대딜'}</small><strong>${stage3 ? seconds(combo.remainingSeconds) : X(formatExpectedDamage(combo.expectedDamage))}</strong></div>${stage3 ? '' : sourceLinkBox(source(combo))}</div></div></div></article>`;
     }).join('')}</div>`;
   }
   function distribution() {
@@ -47,7 +47,7 @@ export function createComboWorkspace(api) {
   }
   function markup() {
     const month = api.month(), key = api.app().active;
-    if (key !== lastMonth) { expanded.clear(); selectedBosses = null; lastMonth = key; }
+    if (key !== lastMonth) { selectedBosses = null; lastMonth = key; }
     const stage = Number(state.comboStage), currentView = stage === 3 && view === 'planner' ? 'compact' : view;
     const rows = (month.recommendations || []).filter(combo => Number(combo.stage) === stage && (state.comboBoss === 'all' || Number(combo.boss) === Number(state.comboBoss)));
     const modes = [['compact', '간략'], ['detail', '상세'], ...(stage === 4 ? [['planner', '3타 분배']] : [])];
@@ -63,7 +63,6 @@ export function createComboWorkspace(api) {
         view = button.dataset.value;
         if (view !== 'planner') try { localStorage.setItem(preferenceKey, view); } catch {}
         break;
-      case 'expand': expanded.has(button.dataset.id) ? expanded.delete(button.dataset.id) : expanded.add(button.dataset.id); break;
       case 'boss': {
         if (selectedBosses === null) selectedBosses = new Set(api.month().bosses.map(value => Number(value.id)));
         const id = Number(button.dataset.value);

@@ -134,3 +134,40 @@
  .combo-plan-table th,.combo-plan-table td {padding:8px 2px}
  .combo-plan-table .combo-plan-damage>strong {font-size:16px}
 }
+
+/* Compact cards keep the five portraits together and put the facts beside them. */
+.combo-compact-row .combo-mini-layout,
+.combo-compact-row.is-stage3 .combo-mini-layout {display:grid;grid-template-columns:minmax(0,190px) minmax(82px,1fr);grid-template-areas:"top top" "party info";gap:7px 12px;padding:10px 12px;align-items:center}
+.combo-mini-topline {grid-area:top;display:flex;align-items:flex-start;gap:8px;min-width:0}
+.combo-mini-topline>.combo-mini-boss {flex:none;font-size:11px;padding:3px 6px}
+.combo-mini-topline .combo-mini-meta {flex:1;gap:3px 8px;line-height:1.5}
+.combo-mini-note {color:#80658f;white-space:pre-wrap}
+.combo-mini-lineup {grid-area:party;min-width:0}
+.combo-compact-row .combo-mini-party {width:190px;max-width:100%;grid-template-columns:repeat(5,minmax(0,1fr));gap:3px}
+.combo-compact-row .combo-mini-unit {gap:2px}
+.combo-compact-row .combo-mini-art {width:30px;height:30px;max-width:100%}
+.combo-compact-row .combo-mini-unit strong {font-size:10.5px;line-height:1.25;letter-spacing:-.3px}
+.combo-compact-row .source-star-overlay {display:none}
+.combo-mini-info {grid-area:info;display:flex;flex-direction:column;align-items:flex-start;gap:5px;min-width:0}
+.combo-mini-stars {font-size:13px;font-weight:750;letter-spacing:1px;color:#806092;font-variant-numeric:tabular-nums;white-space:nowrap}
+.combo-mini-stars small {font-size:10px;font-weight:500;letter-spacing:0;color:#9f8aac}
+.combo-mini-result {display:flex;align-items:center;gap:7px;min-width:0}
+.combo-compact-row .combo-mini-score {flex-direction:row;align-items:baseline;gap:5px}
+.combo-compact-row .combo-mini-score strong {font-size:22px}
+.combo-mini-result .source-link-box {width:25px;height:20px;min-width:25px}
+.combo-compact-row.is-stage3 .combo-mini-score strong {font-size:17px}
+@media(max-width:680px) {
+ .combo-compact-row .combo-mini-layout,.combo-compact-row.is-stage3 .combo-mini-layout {gap:6px 8px;padding:9px 10px}
+ .combo-mini-topline {gap:7px}
+ .combo-mini-topline .combo-mini-meta {font-size:10px;gap:2px 7px}
+ .combo-compact-row .combo-mini-score {gap:4px}
+ .combo-compact-row .combo-mini-score strong {font-size:20px}
+ .combo-compact-row .combo-mini-score small {font-size:9px}
+ .combo-mini-result {gap:5px;flex-wrap:wrap}
+ .combo-mini-result .source-link-box {width:23px;min-width:23px;height:18px}
+}
+@media(max-width:350px) {
+ .combo-compact-row .combo-mini-layout,.combo-compact-row.is-stage3 .combo-mini-layout {grid-template-columns:minmax(0,1fr) 84px;gap:6px}
+ .combo-compact-row .combo-mini-unit strong {font-size:10px}
+ .combo-mini-result {gap:3px}
+}
