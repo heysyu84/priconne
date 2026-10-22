@@ -5,6 +5,15 @@ on:
       - '.github/workflows/verify-clan-archives.yml'
       - 'clan-battle/scripts/test-historical-archives.mjs'
       - 'clan-battle/scripts/test-future-bosses.mjs'
+      - 'clan-battle/scripts/test-clan-history.mjs'
+      - 'clan-battle/public/clan-history.mjs'
+      - 'docs/clan-history.mjs'
+      - 'clan-battle/public/guild-model.mjs'
+      - 'docs/guild-model.mjs'
+      - 'clan-battle/public/guild-workspace.mjs'
+      - 'docs/guild-workspace.mjs'
+      - 'clan-battle/public/guild-source.json'
+      - 'docs/guild-source.json'
       - 'clan-battle/scripts/sync-future-bosses.mjs'
       - 'docs/bosses.json'
       - 'clan-battle/public/bosses.json'
@@ -39,6 +48,9 @@ jobs:
         run: |
           cd clan-battle
           node --check public/clan.js
+          node --check public/clan-history.mjs
+          node --check public/guild-workspace.mjs
+          node scripts/test-clan-history.mjs
           node --check ../docs/clan.js
           node --check scripts/sync-future-bosses.mjs
           node --test scripts/test-future-bosses.mjs
