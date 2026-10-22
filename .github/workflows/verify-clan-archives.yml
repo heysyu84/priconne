@@ -4,6 +4,12 @@ on:
     paths:
       - '.github/workflows/verify-clan-archives.yml'
       - 'clan-battle/scripts/test-historical-archives.mjs'
+      - 'clan-battle/scripts/test-future-bosses.mjs'
+      - 'clan-battle/scripts/sync-future-bosses.mjs'
+      - 'docs/bosses.json'
+      - 'clan-battle/public/bosses.json'
+      - 'docs/future-bosses.json'
+      - 'clan-battle/public/future-bosses.json'
       - 'clan-battle/public/clan.js'
       - 'clan-battle/public/month-view.mjs'
       - 'clan-battle/public/archive-summary.mjs'
@@ -33,6 +39,9 @@ jobs:
         run: |
           cd clan-battle
           node --check public/clan.js
+          node --check ../docs/clan.js
+          node --check scripts/sync-future-bosses.mjs
+          node --test scripts/test-future-bosses.mjs
           node --check public/month-view.mjs
           node --check public/archive-summary.mjs
           node scripts/test-month-view.mjs
