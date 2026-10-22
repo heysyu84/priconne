@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
 import {addMonths,parseStartMonth,buildPreview} from './sync-future-bosses.mjs';
 
 test('Japanese battle month maps to Korean battle month 13 months later',()=>{
@@ -31,4 +32,31 @@ test('unfetched previews remain stored and live battle records are not generated
  const data=buildPreview('2026-10',[],{catalog:{}},{months:{'2026-11':{krMonth:'2026-11',bosses:[]}}});
  assert.equal(data.months['2026-11'].krMonth,'2026-11');
  assert.equal(Object.hasOwn(data,'events'),false);
+});
+
+test('all 15 previously unmatched JP bosses use verified Korean names and assets on the next refresh',()=>{
+ const catalog=JSON.parse(readFileSync(new URL('../../docs/bosses.json',import.meta.url),'utf8'));
+ const expected=[
+  ['バジリスク','바실리스크'],['ウールヴヘジン','울프헤딘'],['レサトパルト','레사스 팔트'],
+  ['トレントキャッスル','트렌트 캐슬'],['サイクロプス','사이클롭스'],['サジタリウス','사지타리우스'],
+  ['ムーバ','무버'],['リビングメイル','리빙 메일'],['レイスコレクター','레이스 컬렉터'],
+  ['ロクス・フォートレス','록스 포트리스'],['ゴブリンソーサラー','고블린 소서러'],
+  ['スピリットホーン','스피릿 혼'],['ミストシーカー','미스트 시커'],['バイオドーザー','바이오 도저'],
+  ['ジャッカルシーフ','쟈칼 시프']
+ ];
+ const cycles=[0,1,2].map(i=>({
+  jpMonth:['2025-10','2025-11','2025-12'][i],
+  id:200+i,
+  bosses:expected.slice(i*5,i*5+5).map(([sourceName],slot)=>({sourceName,slot:slot+1,prefabId:990000+i*5+slot}))
+ }));
+ const preview=buildPreview('2026-11',cycles,catalog);
+ for(let i=0;i<expected.length;i++){
+  const [sourceName,koreanName]=expected[i];
+  const boss=preview.months[['2026-11','2026-12','2027-01'][Math.floor(i/5)]].bosses[i%5];
+  assert.equal(boss.sourceName,sourceName);
+  assert.equal(boss.name,koreanName);
+  assert.equal(boss.status,'verified');
+  assert.equal(boss.referenceKey,catalog.catalog[koreanName].referenceKey);
+  assert.equal(boss.portrait,catalog.catalog[koreanName].assetSource);
+ }
 });
