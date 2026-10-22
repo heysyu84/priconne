@@ -96,7 +96,11 @@ export function handlePortraitError(event) {
     img.dataset.portraitFallbacks = JSON.stringify(remaining.slice(next + 1));
     img.src = assetUrl(remaining[next]);
     const marker = img.parentElement?.querySelector?.('[data-portrait-star-overlay]');
-    if (marker) marker.hidden = img.src !== img.dataset.portraitStarBase;
+    if (marker) {
+      const base = img.dataset.portraitStarBase;
+      const absolute = base ? new URL(base, globalThis.document?.baseURI || 'https://fallback.invalid/').href : '';
+      marker.hidden = !base || new URL(img.src, globalThis.document?.baseURI || 'https://fallback.invalid/').pathname !== new URL(absolute).pathname;
+    }
   } else img.hidden = true;
 }
 
