@@ -1,0 +1,57 @@
+/* Compact page illustration: the lower panel edge supports the character's arms. */
+.hero-with-art {
+  position:relative;
+  isolation:isolate;
+  min-height:94px;
+  margin-top:16px;
+  padding:15px 230px 15px 22px;
+  border:1px solid #e2d7ec;
+  border-radius:13px;
+  background:linear-gradient(110deg,#fff 38%,#f8f3fc);
+  box-shadow:0 3px 12px #5b3b7607;
+  overflow:visible;
+}
+.hero-with-art>div.hero-copy {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:9px 22px;
+  width:100%;
+  min-width:0;
+  padding-left:0;
+}
+.hero-with-art>div.hero-copy::before {display:none}
+.hero-with-art .hero-heading {min-width:0}
+.hero-with-art h1 {margin:0;font-size:26px;line-height:1.35}
+.hero-with-art .btnbar {justify-content:flex-start;max-width:100%}
+.menu-mascot {
+  position:absolute;
+  right:22px;
+  bottom:0;
+  transform:translateY(var(--art-overhang,6%));
+  z-index:1;
+  width:186px;
+  max-width:calc(100% - 22px);
+  margin:0;
+  pointer-events:none;
+  user-select:none;
+}
+.menu-mascot img {display:block;width:100%;height:auto;object-fit:contain}
+@media(max-width:800px) {
+  .hero-with-art {min-height:100px;margin-top:12px;padding:13px 164px 13px 14px}
+  .hero-with-art>div.hero-copy {display:flex;flex-direction:column;align-items:flex-start;gap:8px}
+  .hero-with-art h1 {font-size:22px;letter-spacing:-.8px}
+  .hero-with-art .btnbar {width:auto;gap:6px}
+  .hero-with-art .btn {padding:7px 9px;min-height:32px}
+  .menu-mascot {right:10px;width:150px;bottom:0}
+}
+@media(max-width:370px) {
+  .hero-with-art {padding-right:142px}
+  .hero-with-art h1 {font-size:20px}
+  .menu-mascot {right:7px;width:130px}
+}
+@media print {
+  .menu-mascot {display:none}
+  .hero-with-art {min-height:0;margin-top:0;padding:0;border:0;box-shadow:none;background:none}
+}

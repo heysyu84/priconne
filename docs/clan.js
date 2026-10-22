@@ -1,4 +1,5 @@
 (async()=>{'use strict';
+const {menuArtMarkup}=await import('./menu-art.mjs?v=20261022-sd01');
 const {summarizeArchive,sortArchiveRankings}=await import('./archive-summary.mjs?v=20261022-import01');
 const {createMonthView}=await import('./month-view.mjs?v=20261022-import01');
 const {sequenceVisible}=await import('./view-settings.mjs?v=20261022-ui14');
@@ -168,7 +169,7 @@ function bossPortrait(id){
     ? 'https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/'+code+'.png'
     : '';
 }
-function section(head,subtitle='',actions=''){return `<div class="hero"><div><h1>${X(head)}</h1></div>${actions?`<div class="btnbar">${actions}</div>`:''}</div>`}
+function section(head,subtitle='',actions=''){const art=menuArtMarkup(ui.page);return `<div class="hero ${art?'hero-with-art':''}"><div class="hero-copy"><div class="hero-heading"><h1>${X(head)}</h1></div>${actions?`<div class="btnbar">${actions}</div>`:''}</div>${art}</div>`}
 function metric(label,value,desc){return `<div class="metric"><div class="k">${X(label)}</div><div class="v">${X(value)}</div><div class="d">${X(desc)}</div></div>`}
 function dateOptions(){return ['all',...Array.from({length:maxDay()},(_,i)=>String(i+1))].map(day=>`<button class="${ui.day===day?'active':''}" data-day="${day}">${day==='all'?'전체':`${day}일차`}</button>`).join('')}
 function bossTiles(d=current()){return `<section class="raid-boss-section" aria-label="보스 진행 현황"><div class="raid-section-label"><span>✦ RAID BOSSES</span></div><div class="boss-grid">${bossStatus(d).map((b,i)=>`<article class="boss-card" data-boss-card="${b.id}" data-boss-color="${b.id}" style="--boss-tone:${['#ea9999','#ffe599','#b6d7a8','#a4c2f4','#b4a7d6'][i]}"><div class="boss-top"><div class="boss-art">${bossPortrait(b.id)?`<img src="${X(bossPortrait(b.id))}" alt="${X(b.name)} 보스">`:`<span>${b.id}</span>`}<span class="boss-emblem">${b.id}</span></div><div><div class="boss-num">BOSS ${String(b.id).padStart(2,'0')}</div><h2 class="boss-name">${X(b.name)}</h2><div class="boss-phase">${b.stage}단계 <strong>${b.lap}회차</strong></div></div></div><div class="boss-hp"><span>남은 HP</span><strong><span class="boss-hp-value">${nf(b.hp)}</span><span class="boss-hp-ratio">/ ${nf(b.max)}</span></strong></div><div class="track boss-track"><div class="bar ${b.hp/b.max<.25?'orange':''}" style="width:${Math.max(0,Math.min(100,b.hp/b.max*100))}%"></div></div><div class="boss-info"><span>MAX ${nf(b.max)}</span><span>${b.max?(b.hp/b.max*100).toFixed(1):0}%</span></div><button type="button" class="boss-tactic-link" data-boss-center="${b.id}">${b.id}넴 택틱 보기 <span>→</span></button></article>`).join('')}</div></section>`}

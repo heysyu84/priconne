@@ -1,0 +1,161 @@
+{
+  "version": 1,
+  "created": "2026-10-22",
+  "generator": "Built-in image_gen.imagegen",
+  "headerSize": [
+    576,
+    384
+  ],
+  "loading": "Only the current menu header is requested. Archives and reserves are never preloaded.",
+  "menus": [
+    {
+      "page": "overview",
+      "character": "페코린느",
+      "slug": "pecorine",
+      "image": "headers/pecorine.webp",
+      "master": "archive/headers/pecorine.webp",
+      "scene": "주먹밥을 들고 반겨 주는 모습"
+    },
+    {
+      "page": "dashboard",
+      "character": "콧코로(嚮導幼君)",
+      "slug": "kokkoro-guide",
+      "image": "headers/kokkoro-guide.webp",
+      "master": "archive/headers/kokkoro-guide.webp",
+      "scene": "초록 영혼새와 잎으로 진행을 안내하는 모습"
+    },
+    {
+      "page": "battle",
+      "character": "캬루(편입생)",
+      "slug": "kyaru-transfer",
+      "image": "headers/kyaru-transfer.webp",
+      "master": "archive/headers/kyaru-transfer.webp",
+      "scene": "깃펜으로 배틀로그를 기록하는 모습"
+    },
+    {
+      "page": "tactics",
+      "character": "쿄우카(고딕)",
+      "slug": "kyoka-gothic",
+      "image": "headers/kyoka-gothic.webp",
+      "master": "archive/headers/kyoka-gothic.webp",
+      "scene": "책과 고양이 인형 뒤에서 빼꼼 내다보는 모습"
+    },
+    {
+      "page": "combos",
+      "character": "리리(서머)",
+      "slug": "riri-summer",
+      "image": "headers/riri-summer.webp",
+      "master": "archive/headers/riri-summer.webp",
+      "scene": "포갠 팔뚝에 볼을 기대고 다섯 꽃 장식을 바라보는 모습"
+    },
+    {
+      "page": "members",
+      "character": "호우오우",
+      "slug": "houou",
+      "image": "headers/houou.webp",
+      "master": "archive/headers/houou.webp",
+      "scene": "봉황과 함께 트로피를 드는 모습, 두 팔로 수정 완료"
+    },
+    {
+      "page": "profile",
+      "character": "밤피(서머)",
+      "slug": "vampy-summer",
+      "image": "headers/vampy-summer.webp",
+      "master": "archive/headers/vampy-summer.webp",
+      "scene": "앨범을 끌어안고 엎드린 모습"
+    },
+    {
+      "page": "db",
+      "character": "아그라이아",
+      "slug": "aglaia",
+      "image": "headers/aglaia.webp",
+      "master": "archive/headers/aglaia.webp",
+      "scene": "팔을 베고 엎드려 무릎을 굽히고 맨발을 든 모습"
+    }
+  ],
+  "reserve": [
+    {
+      "character": "티아",
+      "slug": "tia",
+      "image": "reserve/tia.webp"
+    },
+    {
+      "character": "바이올렛(이자나미)",
+      "slug": "violet-izanami",
+      "image": "reserve/violet-izanami.webp"
+    },
+    {
+      "character": "루이즈마리(서머)",
+      "slug": "louise-marie-summer",
+      "image": "reserve/louise-marie-summer.webp"
+    }
+  ],
+  "fullBody": [
+    {
+      "character": "페코린느",
+      "slug": "pecorine",
+      "image": "archive/full-body/pecorine.webp",
+      "reference": "https://redive.estertion.win/card/full/105831.webp"
+    },
+    {
+      "character": "캬루(편입생)",
+      "slug": "kyaru-transfer",
+      "image": "archive/full-body/kyaru-transfer.webp",
+      "reference": "https://redive.estertion.win/card/full/127231.webp"
+    },
+    {
+      "character": "콧코로(嚮導幼君)",
+      "slug": "kokkoro-guide",
+      "image": "archive/full-body/kokkoro-guide.webp",
+      "reference": "https://redive.estertion.win/card/full/137631.webp"
+    },
+    {
+      "character": "호우오우",
+      "slug": "houou",
+      "image": "archive/full-body/houou.webp",
+      "reference": "https://redive.estertion.win/card/full/134731.webp"
+    },
+    {
+      "character": "밤피(서머)",
+      "slug": "vampy-summer",
+      "image": "archive/full-body/vampy-summer.webp",
+      "reference": "https://redive.estertion.win/card/full/140231.webp"
+    },
+    {
+      "character": "리리(서머)",
+      "slug": "riri-summer",
+      "image": "archive/full-body/riri-summer.webp",
+      "reference": "https://redive.estertion.win/card/full/131631.webp"
+    },
+    {
+      "character": "쿄우카(고딕)",
+      "slug": "kyoka-gothic",
+      "image": "archive/full-body/kyoka-gothic.webp",
+      "reference": "https://redive.estertion.win/card/full/139031.webp"
+    },
+    {
+      "character": "아그라이아",
+      "slug": "aglaia",
+      "image": "archive/full-body/aglaia.webp",
+      "reference": "User attachments image(5).png and image(6).png"
+    },
+    {
+      "character": "티아",
+      "slug": "tia",
+      "image": "reserve/tia.webp",
+      "reference": "https://redive.estertion.win/card/full/140331.webp"
+    },
+    {
+      "character": "바이올렛(이자나미)",
+      "slug": "violet-izanami",
+      "image": "reserve/violet-izanami.webp",
+      "reference": "https://redive.estertion.win/card/full/138031.webp"
+    },
+    {
+      "character": "루이즈마리(서머)",
+      "slug": "louise-marie-summer",
+      "image": "reserve/louise-marie-summer.webp",
+      "reference": "https://redive.estertion.win/card/full/139931.webp"
+    }
+  ]
+}
