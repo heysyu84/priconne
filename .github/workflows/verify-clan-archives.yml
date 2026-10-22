@@ -12,6 +12,9 @@ on:
       - 'docs/clan.js'
       - 'docs/archive-data/**'
       - 'docs/index.html'
+      - 'clan-battle/public/finish.css'
+      - 'docs/finish.css'
+      - 'clan-battle/scripts/test-pages.mjs'
   workflow_dispatch:
 
 permissions:

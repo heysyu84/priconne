@@ -20,8 +20,8 @@ input,select,textarea {color:#4b3b5c;border-color:#dacee5}
 input::placeholder,textarea::placeholder {color:#93859e}
 input:focus,select:focus,textarea:focus {border-color:#9872bf;box-shadow:0 0 0 3px #eee4f8}
 
-/* Nine desktop destinations occupy a single navigation row. */
-.sidebar {grid-template-columns:repeat(9,minmax(0,1fr));border-bottom-color:#e0d4ec;box-shadow:0 4px 18px #60447d06}
+/* Eight desktop destinations use the whole navigation row without hiding symbols. */
+.sidebar {grid-template-columns:repeat(8,minmax(0,1fr));border-bottom-color:#e0d4ec;box-shadow:0 4px 18px #60447d06}
 .sidebar .nav {color:#786888;transition:background .16s,border-color .16s,color .16s}
 .sidebar .nav .symbol {color:#9c80ba}
 .sidebar .nav:hover {color:#68458c;background:#f4edf9;border-color:#e5d5f1}
@@ -190,8 +190,8 @@ input:focus,select:focus,textarea:focus {border-color:#9872bf;box-shadow:0 0 0 3
 .guild-dialog input {border-color:#dfcde9}
 
 @media(min-width:801px) and (max-width:1150px) {
-  .sidebar .nav {font-size:11px;padding:8px 3px;gap:3px}
-  .sidebar .nav .symbol {display:none}
+  .sidebar .nav {font-size:11px;padding:8px 4px;gap:4px;letter-spacing:-.3px}
+  .sidebar .nav .symbol {display:inline-flex;flex:0 0 16px;width:16px;justify-content:center;font-size:15px}
   .boss-card .boss-hp>strong {font-size:clamp(14px,1.8vw,21px)}
 }
 @media(max-width:800px) {
@@ -377,7 +377,7 @@ input:focus,select:focus,textarea:focus {border-color:#9872bf;box-shadow:0 0 0 3
 }
 
 /* Wide-screen density: constrain the canvas and pair complementary data cards. */
-.content{width:100%;max-width:1400px;margin-inline:auto}
+.content{width:100%;max-width:1360px;margin-inline:auto}
 .db-rates-layout,.profile-activity-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:16px;align-items:start}
 .db-rates-layout>.panel,.profile-activity-grid>.panel{min-width:0;margin:0}
 .db-rate-factors .table-scroll,.db-rate-records .table-scroll{max-width:100%;overflow-x:auto}
@@ -405,8 +405,8 @@ input:focus,select:focus,textarea:focus {border-color:#9872bf;box-shadow:0 0 0 3
  .profile-activity-grid{grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr)}
 }
 @media(min-width:1560px){
- .sidebar{grid-template-columns:repeat(9,minmax(0,142px));justify-content:center}
- .topbar{right:max(30px,calc((100vw - 1400px)/2 + 28px))}
+ .sidebar{grid-template-columns:repeat(8,minmax(0,148px));justify-content:center}
+ .topbar{right:max(24px,calc((100vw - 1360px)/2 + 24px))}
 }
 @media(max-width:800px){
  .db-rates-layout,.profile-activity-grid{gap:12px}
@@ -470,12 +470,12 @@ input:focus,select:focus,textarea:focus {border-color:#9872bf;box-shadow:0 0 0 3
  .combo-summary-stage3 .combo-time strong,.combo-summary-stage3 .combo-operation strong{font-size:10px}
 }
 
-/* Use one compact canvas across all views. */
-.content{max-width:1100px}
+/* Readable desktop canvas: bounded at 1360px, never artificially squeezed to 1100px. */
+.content{max-width:1360px}
 @media(min-width:801px){
  .content{padding-inline:24px!important}
- .sidebar{padding-inline:max(24px,calc((100vw - 1100px)/2 + 24px));grid-template-columns:repeat(9,minmax(0,1fr))}
- .topbar{right:max(24px,calc((100vw - 1100px)/2 + 24px))}
+ .sidebar{padding-inline:max(24px,calc((100vw - 1360px)/2 + 24px));grid-template-columns:repeat(8,minmax(0,1fr))}
+ .topbar{right:max(24px,calc((100vw - 1360px)/2 + 24px))}
  .panel{padding:18px}
  .dashboard-panel{padding:0}
  .sheet-panel,.tw-work{padding:16px}
