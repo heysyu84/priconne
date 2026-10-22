@@ -100,7 +100,27 @@ assert.match(finishCss,/\.compact-battle-sheet \.number[\s\S]*?white-space:nowra
   'Exact damage and remaining HP must not clip or wrap');
 console.log('PASS: mobile battle log columns have a compact independent width and preserve exact numeric values');
 
-assert.ok(battleWorkflow.includes('<td class="battle-day-cell">${e.day}일</td>'), 'Battle log day values must have a stable cell class, with or without sequence');
+assert.ok(battleWorkflow.includes('<td class="battle-day-cell">${e.day}일차</td>'), 'Battle log day values must have a stable cell class, with or without sequence');
 assert.match(finishCss, /\.battle-sheet\.compact-battle-sheet thead th\s*\{\s*text-align:center!important/, 'Mobile battle log titles must be centered');
 assert.match(finishCss, /\.battle-sheet\.compact-battle-sheet tbody td\.battle-day-cell\s*\{\s*text-align:center/, 'Mobile day data should be centered');
 console.log('PASS: mobile battle log headers and day-value cells are centered');
+
+
+// Readability / responsive changes should preserve compact table widths.
+const tacticalUi=fs.readFileSync(new URL('../public/tactics-workspace.mjs',import.meta.url),'utf8');
+const readabilityCss=fs.readFileSync(new URL('../public/readability.css',import.meta.url),'utf8');
+const guildUi=fs.readFileSync(new URL('../public/guild-workspace.mjs',import.meta.url),'utf8');
+const htmlShell=fs.readFileSync(new URL('../public/clan-shell.html',import.meta.url),'utf8');
+assert.ok(!tacticalUi.includes('id="tw-search"'),'Tactic search must be removed from list');
+assert.ok(!tacticalUi.includes('state.query'),'Tactic list must not be filtered by the deleted search');
+assert.ok(tacticalUi.includes('class="tw-carry-entry"')&&tacticalUi.includes('>초기화</button>'),'Mobile carry field and apply action should be grouped and reset labeled correctly');
+assert.ok(battleWorkflow.includes('mini-boss-inline')&&battleWorkflow.includes('mini-boss-progress'),'Mobile boss needs horizontal name, stage and lap');
+assert.ok(battleWorkflow.includes('class="pill ${e.carry?')&&battleWorkflow.includes('battle-kind'),'Battle log type must use shared colored pills');
+assert.ok(guildUi.includes('daily-stat daily-damage')&&guildUi.includes('daily-stat daily-contribution'),'Daily historical damage and contribution must have separate labels and values');
+assert.match(finishCss,/\.datatable thead th,[\s\S]*?table\.tw-grid thead th\s*\{\s*text-align:center!important/,'Data table headings should be centered by default');
+assert.match(finishCss,/\.tw-group-tabs \.tw-carry-controls\s*\{\s*display:flex/,'Mobile carry controls should pack together on the right');
+assert.match(finishCss,/\.profile-activity-grid \.daily-profile-bars>div>\.daily-damage\s*\{grid-column:2/,'Daily history should separate damage and contribution');
+assert.match(readabilityCss,/body\{font-size:15px/,'Readable default desktop font');
+assert.match(readabilityCss,/\.battle-sheet\.compact-battle-sheet tbody td\{font-size:11\.5px/,'Improve mobile battle log text size');
+assert.ok(htmlShell.includes('readability.css?v='),'Readability stylesheet should load after other presentation styles');
+console.log('PASS: tactic library, carry reset, mobile boss progress, colored battle types, historical figures, and global text readability');
