@@ -8,7 +8,7 @@ export function createApiClient({apiOrigin = '', pageOrigin, fetcher, storage, n
     try { value ? storage?.setItem(key, JSON.stringify(value)) : storage?.removeItem(key); } catch {}
   }
   return async function apiFetch(path, options = {}) {
-    if (!/^\/api\/(?:state|editor)$/.test(path)) throw Error('지원하지 않는 API 경로입니다.');
+    if (!/^\/api\/(?:state(?:\?since=\d+)?|editor)$/.test(path)) throw Error('지원하지 않는 API 경로입니다.');
     const headers = new Headers(options.headers);
     if (crossOrigin && session) {
       if (session.expiresAt > now() && /^[a-f0-9]{64}$/.test(session.token || '')) headers.set('Authorization', `Bearer ${session.token}`);

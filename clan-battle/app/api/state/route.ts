@@ -9,6 +9,12 @@ export async function GET(request: Request) {
   const headers = apiHeaders(request);
   if (!allowedOrigin(request)) return Response.json({ error: "허용되지 않은 요청입니다." }, { status: 403, headers });
   try {
+    const since = new URL(request.url).searchParams.get("since");
+    if(since !== null && /^\d+$/.test(since)){
+      const known = await env.DB!.prepare("SELECT revision FROM clan_state WHERE id = ?").bind("main").first<Pick<StateRow, "revision">>();
+      const knownRevision = known?.revision ?? 0;
+      if(knownRevision === Number(since))return Response.json({ revision:knownRevision, changed:false }, { headers });
+    }
     const row = await env.DB!.prepare("SELECT revision, payload, updated_at FROM clan_state WHERE id = ?").bind("main").first<StateRow>();
     return Response.json({ revision: row?.revision ?? 0, data: row ? JSON.parse(row.payload) : null, updatedAt: row?.updated_at ?? null }, { headers });
   } catch {

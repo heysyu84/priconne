@@ -129,6 +129,69 @@ ui.member=current().members[0];ui.tactic=current().tactics[0]?.id||'';
 saveStatus('saved');if(editor&&(!boot.data||rosterMigrated||tacticsMigrated||guildMigrated))persist();
 
 render();
-// Reading visitors see newly saved attacks without sharing personal carry settings.
-setInterval(async()=>{if(editor||dirty||document.hidden||document.querySelector('dialog[open]'))return;const el=document.activeElement;if(el?.isContentEditable||['INPUT','SELECT','TEXTAREA'].includes(el?.tagName))return;try{const response=await apiFetch('/api/state',{cache:'no-store'});if(!response.ok)return;const next=await response.json();if(!next.data||next.revision===revision)return;const active=app.active;app=next.data;ensureRoster(app,DEFAULT.rosterSeed||[]);ensureTactics(app,TACTIC_META,ROW_FORMATS);applySourceData(app,GUILD_SOURCE);if(app.months[active])app.active=active;for(const month of Object.values(app.months))Engine.replayMonth(month);revision=next.revision;render();}catch{}},20000);
+// Battle logs and tactic corrections synchronize silently between browsers.
+// Prefer a lightweight server-sent revision stream; legacy API deployments fall
+// back to short polling. Never replace a local draft or an in-flight save.
+let syncInFlight=false,liveConnected=false,remoteRevision=revision;
+function liveSafe(){
+  if(document.hidden||dirty||saving||blocked||document.querySelector('dialog[open]'))return false;
+  if(workflow.hasDraft()||tacticWorkspace.hasDraft())return false;
+  if(editor&&ui.page==='settings')return false;
+  const focused=document.activeElement;
+  return !focused?.isContentEditable&&!['INPUT','SELECT','TEXTAREA'].includes(focused?.tagName);
+}
+async function refreshShared(){
+  if(syncInFlight||!liveSafe())return;
+  syncInFlight=true;
+  try{
+    const response=await apiFetch('/api/state?since='+revision,{cache:'no-store'});
+    if(!response.ok)return;
+    const next=await response.json();
+    if(!next.data||next.revision<=revision||!liveSafe())return;
+    const active=app.active;
+    app=next.data;
+    ensureRoster(app,DEFAULT.rosterSeed||[]);
+    ensureTactics(app,TACTIC_META,ROW_FORMATS);
+    applySourceData(app,GUILD_SOURCE);
+    if(app.months[active])app.active=active;
+    for(const month of Object.values(app.months))Engine.replayMonth(month);
+    revision=next.revision;
+    remoteRevision=revision;
+    render();
+  }catch{}finally{syncInFlight=false;}
+}
+function startRealtime(){
+  if(typeof EventSource!=='function')return;
+  const origin=document.querySelector('meta[name="nyang-api-origin"]')?.content||location.origin;
+  const url=new URL('/api/changes',origin);
+  url.searchParams.set('since',String(revision));
+  const stream=new EventSource(url.href);
+  let everConnected=false;
+  stream.addEventListener('open',()=>{liveConnected=true;everConnected=true;});
+  stream.addEventListener('change',event=>{
+    try{
+      const currentRevision=Number(JSON.parse(event.data)?.revision);
+      if(!Number.isSafeInteger(currentRevision)||currentRevision<=revision)return;
+      remoteRevision=Math.max(remoteRevision,currentRevision);
+      void refreshShared();
+    }catch{}
+  });
+  stream.addEventListener('error',()=>{
+    liveConnected=false;
+    // A previously unsupported server cannot stream yet: stop retrying it.
+    // When a working connection drops, EventSource reconnects automatically.
+    if(!everConnected)stream.close();
+  });
+  window.addEventListener('beforeunload',()=>stream.close(),{once:true});
+}
+startRealtime();
+setInterval(()=>{
+  if(remoteRevision>revision||!liveConnected)void refreshShared();
+},2000);
+document.addEventListener('focusout',()=>{
+  if(remoteRevision>revision)setTimeout(()=>{void refreshShared()},0);
+});
+document.addEventListener('visibilitychange',()=>{
+  if(!document.hidden)void refreshShared();
+});
 })();
