@@ -292,7 +292,7 @@ function updateBoosterView(message){
 }
 function addBoosterCharacter(){
   if(!canEdit())return unlock();
-  const input=$('#booster-new-name'),raw=input?.value.trim().replace(/\\s+/g,' ');
+  const input=$('#booster-new-name'),raw=input?.value.trim().replace(/\s+/g,' ');
   if(!raw)return notice('추가할 캐릭터 이름을 입력하세요.');
   if(raw.length>60)return notice('캐릭터 이름은 60자 이내로 입력해 주세요.');
   const character=findCharacter(CHARACTER_CATALOG,raw);
