@@ -1,13 +1,15 @@
-// Only our GitHub Pages frontend may use the shared API from another origin.
+// Only our production Pages frontends may use the shared API from another origin.
 export const PAGES_ORIGIN = "https://heysyu84.github.io";
-export const isPagesRequest = (request: Request) => request.headers.get("origin") === PAGES_ORIGIN;
+export const CLOUDFLARE_PAGES_ORIGIN = "https://priconne.pages.dev";
+const PAGES_ORIGINS = new Set([PAGES_ORIGIN, CLOUDFLARE_PAGES_ORIGIN]);
+export const isPagesRequest = (request: Request) => PAGES_ORIGINS.has(request.headers.get("origin") || "");
 export function allowedOrigin(request: Request) {
   const origin = request.headers.get("origin");
-  return !origin || origin === new URL(request.url).origin || origin === PAGES_ORIGIN;
+  return !origin || origin === new URL(request.url).origin || isPagesRequest(request);
 }
 export function apiHeaders(request: Request) {
   const headers = new Headers({ "cache-control": "no-store", "vary": "Origin" });
-  if (isPagesRequest(request)) headers.set("access-control-allow-origin", PAGES_ORIGIN);
+  if (isPagesRequest(request)) headers.set("access-control-allow-origin", request.headers.get("origin")!);
   return headers;
 }
 export function apiJSON(request: Request, data: unknown, init: ResponseInit = {}) {
