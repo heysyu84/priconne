@@ -52,6 +52,8 @@ export function resultNeedsReconfirm(saved,summary){
 export function historicalHall(history=[]){
   const map=new Map();
   for(const result of history){
+    // Never award unconfirmed monthly leaders, even when a draft has names.
+    if(result.month>=AUTOMATIC_HISTORY_FROM&&!result.autoFinalizedAt)continue;
     for(const metric of HISTORY_METRICS){
       for(const [rank,name] of (result.winners?.[metric]||[]).slice(0,2).entries()){
         if(typeof name!=='string'||!name.trim()||/기록|유실|동면|기 록/.test(name))continue;
