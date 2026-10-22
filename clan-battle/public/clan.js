@@ -161,7 +161,7 @@ function bossPortrait(id){
   const monthly=BOSS_ART[monthView.key()]?.[id];
   const art=monthly?.name===boss.name?monthly:BOSS_ART.catalog?.[boss.name];
   const code=art?.referenceKey;
-  return /^[1-5]\\.\\d+$/.test(code||'')
+  return /^[1-5]\.\d+$/.test(code||'')
     ? 'https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/'+code+'.png'
     : '';
 }
