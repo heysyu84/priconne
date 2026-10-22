@@ -63,7 +63,7 @@ async function flushSave(){
   finally{saving=false;}
 }
 function notice(t){let el=$('#toast');el.textContent=t;el.classList.remove('hidden');clearTimeout(notice._t);notice._t=setTimeout(()=>el.classList.add('hidden'),3200)}
-function goto(page){if(!workflow.beforeNavigate()||!tacticWorkspace.beforeNavigate())return;ui.page=page==='calculator'?'tactics':page;ui.editor=false;render();if(ui.page==='archive'){const key=ui.archiveMonth||archiveKeys()[0];history.replaceState(null,'','#archive'+(key?'='+key:''));if(key)void loadArchive(key);}else if(location.hash.startsWith('#archive'))history.replaceState(null,'',location.pathname+location.search);window.scrollTo({top:0,behavior:'instant'})}
+function goto(page){if(!workflow.beforeNavigate()||!tacticWorkspace.beforeNavigate())return;ui.page=page==='calculator'?'tactics':page;ui.editor=false;render();if(ui.page==='archive'){const key=ui.archiveMonth||archiveKeys()[0];window.history.replaceState(null,'','#archive'+(key?'='+key:''));if(key)void loadArchive(key);}else if(location.hash.startsWith('#archive'))window.history.replaceState(null,'',location.pathname+location.search);window.scrollTo({top:0,behavior:'instant'})}
 function sortedEvents(d=current()){return [...d.events].sort((a,b)=>(a.seq-b.seq)||Number(a.sourceRow||0)-Number(b.sourceRow||0))}
 function maxDay(){return Math.max(current().options.days||5,...current().events.map(e=>e.day||0),1)}
 function phase(lap,d=current()){return d.levels.find(l=>l.count>0&&Number(lap)>=l.start&&Number(lap)<=l.end)?.stage||d.options.startStage||2}
@@ -113,7 +113,7 @@ function history(){const entries=[...new Set([...Object.keys(app.months),...arch
 // editable current-month state or sent with ordinary battle-log saves.
 async function loadArchive(key){
   if(!/^\d{4}-\d{2}$/.test(key))return;
-  ui.archiveMonth=key;archiveError='';archiveTab='logs';archivePageNumber=1;if(ui.page==='archive')history.replaceState(null,'','#archive='+key);
+  ui.archiveMonth=key;archiveError='';archiveTab='logs';archivePageNumber=1;if(ui.page==='archive')window.history.replaceState(null,'','#archive='+key);
   if(archiveCache.has(key)||app.months[key]){if(ui.page==='archive')render();return;}
   archiveLoading=key;if(ui.page==='archive')render();
   try{
