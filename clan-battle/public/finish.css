@@ -1,0 +1,283 @@
+/* Final presentation layer. Keep data layouts and boss identities intact. */
+:root {
+  --bg:#f5f2fa;
+  --panel:#fff;
+  --panel2:#f8f5fc;
+  --line:#e2d8ed;
+  --ink:#382d49;
+  --muted:#776984;
+  --soft:#91809e;
+  --accent:#7651ad;
+  --accent-dim:#eee5f8;
+  --shadow:0 8px 26px #4930680b;
+}
+html,body {color:var(--ink);background-color:var(--bg)}
+body {background-image:radial-gradient(ellipse at 95% 0%,#eaeefe 0,transparent 40%),radial-gradient(ellipse at 0% 25%,#f1e8fa 0,transparent 42%)}
+button,a,input,select,textarea {-webkit-tap-highlight-color:transparent}
+button:focus-visible,a:focus-visible,summary:focus-visible {outline:3px solid #ae8bd5;outline-offset:3px}
+button:disabled {cursor:default}
+input,select,textarea {color:#4b3b5c;border-color:#dacee5}
+input::placeholder,textarea::placeholder {color:#93859e}
+input:focus,select:focus,textarea:focus {border-color:#9872bf;box-shadow:0 0 0 3px #eee4f8}
+
+/* Nine desktop destinations occupy a single navigation row. */
+.sidebar {grid-template-columns:repeat(9,minmax(0,1fr));border-bottom-color:#e0d4ec;box-shadow:0 4px 18px #60447d06}
+.sidebar .nav {color:#786888;transition:background .16s,border-color .16s,color .16s}
+.sidebar .nav .symbol {color:#9c80ba}
+.sidebar .nav:hover {color:#68458c;background:#f4edf9;border-color:#e5d5f1}
+.sidebar .nav.active {color:#694398;background:linear-gradient(135deg,#f1e7fd,#e9ddf7);border-color:#d0b8e5;box-shadow:inset 0 -2px #b995d8,0 2px 5px #7350970a}
+.sidebar .nav.active .symbol {color:#9161ba}
+.topbar .top-actions .month {color:#665076;border-color:#d9cce5;box-shadow:0 2px 5px #583b7405}
+.status[data-state=saved] {color:#527466;background:#f0f7f3;border-color:#dbe9e0}
+.status[data-state=saving] {color:#77648d;background:#f4eff9;border-color:#e3d7ed}
+.status[data-state=error],.status[data-state=conflict] {color:#a9485c;background:#fff0f3;border-color:#edc7d0}
+.admin-menu>summary {color:#715186;border-color:#ddcfe8;box-shadow:0 2px 4px #5b3d7606}
+.admin-menu[open]>summary {background:#eee4f7;border-color:#cdb4df}
+.admin-menu>div {gap:6px;border-color:#dccde8;box-shadow:0 14px 40px #4f326b1c}
+.mobile-portrait-link {display:none}
+
+.hero {margin-bottom:22px}
+.hero>div:first-child {position:relative;padding-left:15px}
+.hero>div:first-child:before {content:'';position:absolute;left:0;top:9px;bottom:8px;width:4px;min-height:23px;border-radius:4px;background:linear-gradient(#ac86d4,#7953a8)}
+.hero h1 {color:#40314f;font-size:27px;font-weight:850;letter-spacing:-.9px}
+.btn {color:#765b8d;border-color:#d8c8e6;background:#fff;border-radius:9px;box-shadow:0 2px 4px #5b3a7706;transition:background .15s,border-color .15s,box-shadow .15s}
+.btn:hover {color:#674283;border-color:#b79aca;background:#f9f5fd;box-shadow:0 3px 9px #60407b0c}
+.btn.primary {color:white;border-color:#8260b2;background:linear-gradient(135deg,#9774c7,#7954ad);box-shadow:0 3px 8px #7954ad1f}
+.btn.primary:hover {color:white;background:linear-gradient(135deg,#906bc3,#6e479f);border-color:#7650a7}
+.btn.danger {color:#ae5369;border-color:#e7c4ce;background:#fff8fa}
+.textbutton {color:#8057a2;text-decoration:none}
+.textbutton:hover {color:#643b87;text-decoration:underline;text-underline-offset:3px}
+.panel {border-color:#e2d7ec;border-radius:13px;box-shadow:0 3px 12px #5b3b7607}
+.panel-head {padding-bottom:13px;margin-bottom:16px;border-bottom:1px solid #eee6f4}
+.panel-head h2,.panel h3 {color:#5b426e;font-weight:800}
+.panel-head h2 {font-size:15px}
+.panel .sub,.small.muted {color:#85738f}
+.note {color:#7e6b8c;background:#f9f5fc;border-color:#e6d9ef}
+.empty {color:#85738f;line-height:1.85;background:radial-gradient(ellipse at center,#faf7fd,transparent 72%);border-radius:10px}
+.foot {color:#95849f;font-size:10px}
+.toast {color:#694985;background:#fefbff;border-color:#d8c1e8;box-shadow:0 10px 35px #53316f1c}
+
+/* Boss colours remain the original sheet's five colours. */
+.raid-section-label>span {color:#9573ac;font-size:9px;letter-spacing:1.8px}
+.boss-card {border-radius:14px;box-shadow:0 4px 12px #553a6e09;background:linear-gradient(135deg,#fff 35%,color-mix(in srgb,var(--boss-bg) 65%,#fff))!important}
+.boss-card .boss-art {border-color:color-mix(in srgb,var(--boss-accent) 72%,#fff);box-shadow:0 0 0 3px #fff,0 0 0 4px color-mix(in srgb,var(--boss-accent) 35%,#fff)}
+.boss-card .boss-name {color:#5a436a;font-weight:800}
+.boss-card .boss-num {font-weight:850;letter-spacing:1.1px}
+.boss-card .boss-phase {color:#8b759a}
+.boss-card .boss-phase strong {color:var(--boss-ink);background:#ffffffa8;border-color:color-mix(in srgb,var(--boss-accent) 50%,#fff)}
+.boss-card .boss-hp>span {color:#957b9e;letter-spacing:.3px}
+.boss-card .boss-hp>strong {font-size:clamp(18px,1.8vw,25px);font-weight:850;letter-spacing:-.7px}
+.boss-card .boss-hp-value {display:inline}
+.boss-card .boss-track {height:8px;border:0;background:#ffffffb8;box-shadow:inset 0 1px 3px #59416d12}
+.boss-card .boss-track .bar {background:linear-gradient(90deg,var(--boss-accent),color-mix(in srgb,var(--boss-accent) 62%,var(--boss-ink)))!important}
+.boss-card .boss-track .bar.orange {background:linear-gradient(90deg,#e7a18e,#cb6b79)!important}
+.boss-card .boss-info {color:#8d789b;font-size:10px}
+.boss-card .boss-info>span:last-child {color:var(--boss-ink);font-weight:750}
+.boss-tactic-link {background:#ffffff82;transition:background .15s;font-size:11px}
+.boss-tactic-link:hover {background:#fff}
+.boss-tactic-link span {color:var(--boss-ink);opacity:.7}
+.raid-stats {margin:22px 0;background:#ffffffc9;border-color:#e2d6ed;border-radius:12px;box-shadow:0 2px 9px #5a397306}
+.raid-stats .metric {border-right-color:#e9e0f0;padding-top:7px;padding-bottom:7px}
+.raid-stats .metric .k {color:#8b729d;font-size:10px;font-weight:750}
+.raid-stats .metric .v {color:#65477e;font-size:24px;line-height:1.4;letter-spacing:-.6px;font-variant-numeric:tabular-nums}
+.raid-stats .metric .d {color:#9a87a6;font-size:9px}
+.metric {border-color:#e2d5ed}
+.metric .k {color:#887095}
+.metric .v {color:#66467f}
+.metric .d {color:#9581a1}
+
+/* Clearer table hierarchy without making compact tables wider. */
+.datatable th {color:#7c648e;background:#f2edf8;border-bottom-color:#ddd0e8;font-weight:800}
+.datatable td {color:#675273;border-bottom-color:#eee6f4}
+.datatable tbody tr:nth-child(even)>td {background:#fcfaff}
+.datatable tbody tr:hover>td {background:#f5effb}
+.datatable .h-num,.h-num {color:#855aa3}
+.datatable td.number {font-variant-numeric:tabular-nums}
+.table-scroll,.battle-sheet-scroll,.tw-grid-scroll {scrollbar-color:#cdbbdf transparent;scrollbar-width:thin}
+.tabset {background:#f0e9f7;border-color:#e0d4eb}
+.tabset button {color:#8c729f}
+.tabset button.active:not([data-boss-color]) {color:#755194;background:#fff;box-shadow:0 2px 5px #62417e10}
+.db-tabs button {font-weight:800}
+.guild-roster tbody th:first-child {color:#6f4f85}
+.guild-roster .uid {color:#8b7699}
+.guild-hall .medal-count {color:#99702a;background:#fcf4de;border:1px solid #f2e4bc}
+.member-state.active {color:#62806a}
+.dashboard-controls {border-bottom:1px solid #e9dff0;background:linear-gradient(110deg,#fff,#faf6ff)}
+.dashboard-table>thead th {background:#eee5f7;color:#7a598e}
+.dashboard-table .attack-slot {background:#faf7fd;border-color:#e5d8ef}
+.dashboard-table .empty-slot {color:#b9a7c7;font-size:14px}
+.dashboard-count {color:#7b5b92}
+.pending-carry {color:#a17a30!important}
+.rank-all-scores .sorted {background:#f1e8f9;color:#795097}
+.sort-head {color:#83668f}
+.sort-head.active {color:#775098}
+.pill {color:#8c6da0;background:#f0e9f7}
+.pill.positive {color:#5c876f;background:#edf6ef}
+.pill.blue {color:#6487ad;background:#edf3fb}
+.pill.warning {color:#a17d36;background:#fcf3df}
+.pill.gray {color:#8d7a98;background:#f1edf5}
+.rank-head {color:#725682}
+.rank-data {color:#8b63a7;font-weight:850}
+.rank-num {display:inline-flex;align-items:center;justify-content:center;width:21px;height:21px;border-radius:7px;background:#f4eef9;color:#a18ab3;font-size:10px}
+.rank-list>div:nth-child(1) .rank-num {background:#fcf1cf;color:#a27b26}
+.rank-list>div:nth-child(2) .rank-num {background:#edf0f7;color:#7a859c}
+.rank-list>div:nth-child(3) .rank-num {background:#f8e9df;color:#b08262}
+.rank-list .track {height:6px;background:#f1eaf8}
+.rank-list .bar {background:linear-gradient(90deg,#c5acdF,#a17ac4)}
+
+/* Tactic text stays dominant beside the compact portrait checks. */
+.tw-library {background:#fffdfb;border-color:#e3d8e9}
+.tw-library input {color:#745c84;border-color:#e2d5ea;background:#fff}
+.tw-card-title {color:#715481;font-weight:800}
+.tw-card small {color:#9b83ab}
+.tw-card[data-boss-color] {background:color-mix(in srgb,var(--boss-bg) 28%,white)}
+.tw-card.active[data-boss-color] {background:color-mix(in srgb,var(--boss-bg) 75%,white)}
+.tw-work {border-color:#ddcde9}
+.tw-boss-banner {box-shadow:inset 0 1px #ffffffa8}
+.tw-boss-banner>div>span {color:#8f759f}
+.tw-editor-head h2 {color:#6c4e80;font-weight:800}
+.tw-characters {background:#faf6fe;border-color:#e6d9f0}
+.tw-config-fieldset:disabled input,.tw-config-fieldset:disabled select {color:#6b4c80}
+.tw-character-slot select {color:#ac8848}
+.tw-more summary,.tw-bottom>span,.tw-carry-state,.tw-key-help {color:#947ba5}
+.tw-group-tabs {background:#f0e8f8;border-color:#ddcce9}
+.tw-group-tabs [role=tab] {color:#9a7daf}
+.tw-group-tabs [role=tab][aria-selected=true] {color:#856631;background:#fffaf0;border-color:#e9d8b8}
+.tw-group-tabs .tw-carry-controls .field label {color:#88649e}
+.tw-group-tabs .tw-carry-controls input {color:#7c5496;border-color:#d9c3e7;background:#fff}
+.tw-preview-note {color:#7d5b99;background:#f0e7fa;border-color:#d9c5ec}
+.tw-grid th {color:#8a6a9f;background:#f3ebfa;border-color:#e3d4ed}
+.tw-grid .tw-text-cell>[data-tw-text] {color:#44334f;line-height:1.85}
+.tw-grid .tw-check-cell {border-right-color:#f0e7f6}
+.tw-grid .tw-auto-heading {color:#b3677d;background:#fff0f4}
+.tw-grid .tw-auto-cell {background:#fff9fb}
+.tw-grid input[type=checkbox] {border-color:#c6b7d2;border-radius:4px}
+.tw-grid input[type=checkbox]:checked {background:#9770b4;border-color:#9770b4}
+.tw-grid .tw-auto-cell input:checked {background:#bf758b;border-color:#bf758b}
+.tw-grid .tw-blank .tw-text-cell {background:#faf6fe}
+.tw-estimator summary,.mathvalue {color:#8960a4}
+.community-links .btn,.tw-links .btn {font-weight:750}
+.tw-links .linked {color:#5b8568;background:#f0f7ef;border-color:#d2e3cd}
+.missing-link {color:#a18eac;background:#f4eff8}
+
+.battle-boss-strip>button {box-shadow:0 2px 5px #51316b05}
+.battle-boss-strip>button[aria-pressed=true] {outline:1px solid #c7a8df;outline-offset:1px}
+.mini-boss-data>span,.mini-boss-data small {color:#967da5}
+.mini-boss-data strong {color:#8964a2}
+.quick-panel {background:linear-gradient(110deg,#fff,#faf5ff);border-top-color:#bc96d6}
+.quick-panel>summary {color:#7e5896;font-weight:800}
+.quick-panel:not([open]) {padding:15px 18px}
+.battle-sheet th {background:#f1eaf8}
+.battle-sheet td.calculated {color:#937aA5;background:#fbf7fe}
+.battle-sheet .hp-exact strong {color:#855ba0}
+.battle-sheet .hp-exact small {color:#a18bb0}
+.sheet-footer {color:#9a82aa}
+.profile-donut {background:linear-gradient(160deg,#fff,#fbf7ff);border-color:#e5d7ef;box-shadow:0 2px 7px #5c3a7904}
+.profile-donut figcaption {color:#745288;font-size:13px}
+.profile-donut li {color:#8b739d}
+.profile-donut li strong,.donut strong {color:#80589b}
+.donut small {color:#a08aac}
+.rate-summary>div {color:#9375a7;background:#f5eefc;border:1px solid #e9dcf2}
+.rate-summary strong {color:#7b4e96}
+.combo-card {box-shadow:0 3px 12px #5b3b7607;background:linear-gradient(135deg,#fff 55%,color-mix(in srgb,var(--boss-bg) 60%,#fff))}
+.combo-card .panel-head {border-bottom-color:color-mix(in srgb,var(--boss-accent) 40%,#fff)}
+.combo-party strong {color:#6d4c7f;line-height:1.45}
+.combo-meta {color:#93749f}
+.combo-party img,.portrait-missing {box-shadow:0 0 0 2px #fff,0 0 0 3px #efe5f5}
+.guild-dialog {border-color:#d7bee8;box-shadow:0 24px 90px #49286235}
+.guild-dialog .panel-head h2 {color:#79508f}
+.guild-dialog label {color:#8b669e}
+.guild-dialog input {border-color:#dfcde9}
+
+@media(min-width:801px) and (max-width:1150px) {
+  .sidebar .nav {font-size:11px;padding:8px 3px;gap:3px}
+  .sidebar .nav .symbol {display:none}
+  .boss-card .boss-hp>strong {font-size:clamp(14px,1.8vw,21px)}
+}
+@media(max-width:800px) {
+  .sidebar {box-shadow:none}
+  .topbar {border-bottom-color:#e0d3ec;background:#fffefc!important}
+  .mobile-portrait-link {display:inline-flex}
+  .hero {align-items:stretch;gap:11px;margin-bottom:17px}
+  .hero>div:first-child {padding-left:12px}
+  .hero>div:first-child:before {width:3px;top:7px;bottom:7px;min-height:22px}
+  .hero h1 {font-size:24px;letter-spacing:-.8px}
+  .hero .btnbar {width:100%;gap:7px}
+  .hero .btn {min-height:34px}
+  .panel-head {gap:8px;padding-bottom:11px;margin-bottom:13px}
+  .panel-head h2 {font-size:14px}
+  .boss-grid {gap:9px}
+  .boss-card {grid-template-columns:minmax(0,42%) minmax(0,1fr);grid-template-rows:minmax(36px,auto) 8px 12px auto;column-gap:10px;row-gap:4px;padding:10px 12px 0;border-radius:14px}
+  .boss-card .boss-top {min-height:64px;gap:8px}
+  .boss-card .boss-art {width:52px;height:52px;border-radius:12px}
+  .boss-card .boss-art img {border-radius:11px}
+  .boss-card .boss-num {font-size:8px;letter-spacing:.7px}
+  .boss-card .boss-name {font-size:clamp(11px,3.1vw,14px);line-height:1.2;margin:4px 0 5px;letter-spacing:-.3px}
+  .boss-card .boss-phase {font-size:9px;gap:4px}
+  .boss-card .boss-phase strong {font-size:9px;padding:2px 4px}
+  .boss-card .boss-hp {align-self:end;margin:0;text-align:right;letter-spacing:-.6px}
+  .boss-card .boss-hp>strong {display:flex;flex-direction:column;align-items:flex-end;gap:2px;line-height:1.15;font-size:clamp(16px,4.65vw,22px)}
+  .boss-card .boss-hp-value {display:block;max-width:100%;font-size:1em;letter-spacing:-.6px}
+  .boss-card .boss-hp-ratio {display:block;color:#9c859f;font-size:10px;line-height:1.2;font-weight:650;letter-spacing:-.2px}
+  .boss-card .boss-track {height:8px;margin:0}
+  .boss-card .boss-info {margin:0;font-size:10px;line-height:1.2}
+  .boss-card .boss-tactic-link {margin-top:2px;padding:7px 12px;min-height:29px;font-size:10px;gap:17px}
+  .raid-stats {display:grid;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:11px 0;padding:12px 0;margin:18px 0}
+  .raid-stats .metric {padding:2px 14px}
+  .raid-stats .metric:nth-child(2) {border-right:0}
+  .raid-stats .metric .k {font-size:10px}
+  .raid-stats .metric .v {font-size:22px;margin-top:3px}
+  .raid-stats .metric .d {font-size:9px}
+  .tw-work {padding:12px}
+  .tw-library {max-height:none;overflow:visible}
+  .tw-library #tw-library-list {max-height:160px;overflow-y:auto;overflow-x:hidden}
+  .tw-boss-tabs {display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;width:100%;overflow:visible}
+  .tw-boss-tabs button {min-width:0;padding:8px 2px;font-size:10px;white-space:nowrap}
+  .tw-grid .tw-text-cell>[data-tw-text] {padding:9px 8px;font-size:14px!important}
+  .tw-config-fieldset:disabled .tw-characters {gap:5px}
+  .tw-character-slot input:not([type=file]) {font-size:10px}
+  .tw-card-title {line-height:1.7}
+  .tw-card {padding:11px 10px}
+  .tw-carry-state {font-size:10px;line-height:1.65}
+  .quick-panel:not([open]) {padding:14px}
+  .profile-controls>select {max-width:100%;min-width:0}
+  .profile-controls .tabset {display:flex}
+  .profile-controls .tabset button {flex:1;min-width:0;padding-left:7px;padding-right:7px}
+  .profile-donuts {grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .profile-donut {min-width:0;padding:11px 7px}
+  .profile-donut .donut {width:min(130px,100%);height:auto;aspect-ratio:1}
+  .profile-donut .donut>div {width:66%;height:auto;aspect-ratio:1;gap:3px}
+  .profile-donut .donut strong {font-size:clamp(12px,3.8vw,16px)}
+  .profile-donut .donut small {font-size:9px}
+  .profile-donut ul {margin-top:14px;gap:6px}
+  .profile-donut li {gap:5px;font-size:10px}
+  .profile-donut li i {width:9px;height:9px;flex:none}
+  .combo-party {gap:6px}
+  .combo-party img,.portrait-missing {width:clamp(38px,12vw,52px);height:clamp(38px,12vw,52px)}
+  .combo-party strong {font-size:11px}
+  .guild-dialog input {font-size:16px}
+  .mobile-nav {height:auto;min-height:65px;padding:5px 4px max(6px,env(safe-area-inset-bottom));background:#fffefcf5;border-top-color:#e3d3ee;box-shadow:0 -4px 20px #60417f0b}
+  .mobile-nav button {min-width:0;gap:2px;color:#ab90bb;padding:6px 1px;line-height:1.35}
+  .mobile-nav button.active {color:#8a5aa4}
+  .mobile-nav button span {width:28px;height:25px;border-radius:8px;display:grid;place-items:center;font-size:17px}
+  .mobile-nav button.active span {background:#f0e4f9;box-shadow:inset 0 0 0 1px #e4cfee}
+  .content {padding-bottom:calc(92px + env(safe-area-inset-bottom))!important}
+}
+@media(max-width:360px) {
+  .boss-card {column-gap:8px;padding-left:10px;padding-right:10px}
+  .boss-card .boss-top {gap:7px}
+  .boss-card .boss-art {width:46px;height:46px}
+  .boss-card .boss-hp>strong {font-size:16px}
+  .boss-card .boss-hp-ratio {font-size:9px}
+  .boss-card .boss-tactic-link {width:calc(100% + 20px);margin-left:-10px;margin-right:-10px;padding-left:10px;padding-right:10px}
+  .hero .btn {font-size:10px;padding-left:9px;padding-right:9px}
+}
+@media(prefers-reduced-motion:reduce) {
+  *,*:before,*:after {transition:none!important;scroll-behavior:auto!important}
+}
+@media print {
+  html,body {background:#fff!important}
+  .panel,.boss-card,.profile-donut {box-shadow:none}
+  .hero>div:first-child {padding-left:0}
+  .hero>div:first-child:before {display:none}
+}
