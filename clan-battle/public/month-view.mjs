@@ -1,9 +1,9 @@
 // Keep the viewed month separate from the current month's editable payload.
-export function createMonthView({getApp,fetchMonth,prepare=()=>{},cache=new Map()}) {
+export function createMonthView({getApp,fetchMonth,prepare=()=>{},cache=new Map(),availableMonths=[]}) {
   let selected='',selection=0;
   const pending=new Map();
   const latest=()=>Object.keys(getApp().months).sort().at(-1);
-  const keys=()=>[...new Set([...Object.keys(getApp().months),...(getApp().archivedMonths||[])])].sort().reverse();
+  const keys=()=>[...new Set([...Object.keys(getApp().months),...(getApp().archivedMonths||[]),...availableMonths])].sort().reverse();
   const key=()=>selected||getApp().active;
   const record=()=>getApp().months[key()]||cache.get(key());
   const isPast=()=>key()!==latest();
