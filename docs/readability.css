@@ -1,0 +1,71 @@
+/* Shared legibility pass, loaded last.
+   Typography is enlarged without changing table widths, column allocations,
+   character artwork or fixed navigation footprints. */
+html{font-size:15px}
+body{font-size:15px;line-height:1.6}
+.panel .sub,.small,.muted.small{font-size:12px;line-height:1.55}
+.panel-head h2,.panel h2,.panel h3{line-height:1.4}
+.panel-head h2{font-size:16px}
+.btn{font-size:12.5px}
+.btn.sm{font-size:11.5px}
+.field>label,.field label{line-height:1.4}
+.metric .k,.metric .d{font-size:12px;line-height:1.4}
+.datatable{font-size:13px}
+.datatable thead th{font-size:12px;line-height:1.4;text-align:center!important;vertical-align:middle;white-space:normal;overflow-wrap:anywhere;word-break:keep-all}
+.datatable tbody td,.datatable tbody th{font-size:12px;line-height:1.5}
+.datatable thead .sort-head{font-size:inherit;line-height:inherit}
+.datatable td.number{font-variant-numeric:tabular-nums}
+.pill{font-size:10.5px;line-height:1.35}
+.tw-card-title{font-size:13px;line-height:1.6}
+.tw-card small{font-size:11.5px;line-height:1.5}
+.tw-boss-label{font-size:11px}
+.tw-key-help,.tw-carry-state,.tw-more summary{font-size:11px;line-height:1.55}
+.tw-grid .tw-text-cell>[data-tw-text]{font-size:14px;line-height:1.75}
+.tw-grid th{font-size:10px}
+.combo-party strong,.combo-mini-unit strong{font-size:12px;line-height:1.45;overflow-wrap:anywhere}
+.combo-mini-meta,.combo-meta{font-size:12px;line-height:1.5}
+.combo-summary .combo-source,.combo-notice-text{font-size:12px}
+.combo-planner-controls .combo-support-help,.combo-plan-caption{font-size:12px}
+.profile-activity-grid .daily-profile-bars .daily-stat small{font-size:11px}
+.profile-activity-grid .daily-profile-bars .daily-stat b{font-size:13px;line-height:1.45}
+.sidebar .nav{font-size:13px}
+@media(max-width:800px){
+  body{font-size:14px;line-height:1.6}
+  .panel .sub,.small,.muted.small{font-size:11.5px;line-height:1.5}
+  .panel-head h2{font-size:15px}
+  .metric .k,.metric .d{font-size:11.5px}
+  .btn{font-size:11.5px}
+  .btn.sm{font-size:11px}
+  .datatable thead th{font-size:11px;line-height:1.35;padding-inline:3px}
+  .datatable tbody td,.datatable tbody th{font-size:11.5px;line-height:1.45}
+  .datatable thead th .sort-head{white-space:normal;overflow-wrap:anywhere}
+  .tw-card-title{font-size:12px;line-height:1.5}
+  .tw-card small{font-size:11px;line-height:1.45}
+  .tw-grid .tw-text-cell>[data-tw-text]{font-size:14px;line-height:1.7}
+  .tw-key-help,.tw-carry-state{font-size:10.5px}
+  .combo-party strong,.combo-mini-unit strong{font-size:11.5px}
+  .combo-mini-meta,.combo-meta{font-size:11px}
+  .combo-summary .combo-source{font-size:11px}
+  .combo-notice-text{font-size:12px;line-height:1.7}
+  .mobile-nav button{font-size:9.5px;line-height:1.3}
+  /* Keep the deliberately compressed mobile battle grid: readable without
+     expanding its fixed content-width or introducing additional scrolling. */
+  .battle-sheet.compact-battle-sheet thead th{font-size:10.5px;padding-inline:2px}
+  .battle-sheet.compact-battle-sheet tbody td{font-size:11.5px;padding-inline:2px}
+  .battle-sheet.compact-battle-sheet .number,
+  .battle-sheet.compact-battle-sheet .hp-exact strong{font-size:11.5px;letter-spacing:-.35px}
+  .battle-sheet.compact-battle-sheet .member-cell strong,
+  .battle-sheet.compact-battle-sheet .boss-cell{font-size:11.5px}
+  .battle-sheet.compact-battle-sheet .boss-cell small{font-size:10px}
+  .battle-sheet.compact-battle-sheet .battle-day-cell{font-size:11px;white-space:nowrap}
+  .battle-sheet.compact-battle-sheet td .battle-kind{font-size:10.5px;padding:3px 2px}
+  .recent-battle-table thead th{font-size:11px}
+  .recent-battle-table tbody td{font-size:11.5px}
+  .profile-activity-grid .daily-profile-bars>div>.daily-stat b{font-size:12.5px}
+}
+@media(max-width:360px){
+  .datatable thead th{font-size:10.5px;padding-inline:2px}
+  .datatable tbody td,.datatable tbody th{font-size:11px}
+  .battle-sheet.compact-battle-sheet .number,
+  .battle-sheet.compact-battle-sheet .hp-exact strong{font-size:11px}
+}
