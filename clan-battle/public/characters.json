@@ -362,8 +362,10 @@
     },
     {
       "id": "sheet-row-265",
-      "name": "네피네라",
-      "aliases": [],
+      "name": "네피",
+      "aliases": [
+        "네피네라"
+      ],
       "portrait": "/images/characters/unit-row-265.png",
       "byStar": {},
       "source": {
@@ -1367,7 +1369,9 @@
     {
       "id": "sheet-row-299",
       "name": "루이즈",
-      "aliases": [],
+      "aliases": [
+        "루이즈마리"
+      ],
       "portrait": "/images/characters/unit-row-299.png",
       "byStar": {},
       "source": {
@@ -2738,8 +2742,10 @@
     },
     {
       "id": "sheet-row-247",
-      "name": "성레짓타",
-      "aliases": [],
+      "name": "성짓타",
+      "aliases": [
+        "성레짓타"
+      ],
       "portrait": "/images/sheet-originals/image280.png",
       "byStar": {},
       "source": {
@@ -5887,8 +5893,10 @@
     },
     {
       "id": "sheet-row-214",
-      "name": "앤글",
-      "aliases": [],
+      "name": "앤글레어",
+      "aliases": [
+        "앤글"
+      ],
       "portrait": "/images/sheet-originals/image205.png",
       "byStar": {},
       "source": {
@@ -6124,8 +6132,10 @@
     },
     {
       "id": "sheet-row-127",
-      "name": "엔요리",
-      "aliases": [],
+      "name": "앤요리",
+      "aliases": [
+        "엔요리"
+      ],
       "portrait": "/images/sheet-originals/image89.png",
       "byStar": {},
       "source": {
@@ -6148,8 +6158,10 @@
     },
     {
       "id": "sheet-row-126",
-      "name": "엔카리",
-      "aliases": [],
+      "name": "앤카리",
+      "aliases": [
+        "엔카리"
+      ],
       "portrait": "/images/sheet-originals/image140.png",
       "byStar": {},
       "source": {
@@ -7101,8 +7113,10 @@
     },
     {
       "id": "sheet-row-324",
-      "name": "이이올렛",
-      "aliases": [],
+      "name": "이사올렛",
+      "aliases": [
+        "이이올렛"
+      ],
       "portrait": "/images/sheet-originals/image324.png",
       "byStar": {},
       "source": {
@@ -7843,8 +7857,10 @@
     },
     {
       "id": "sheet-row-319",
-      "name": "크소라",
-      "aliases": [],
+      "name": "성소라",
+      "aliases": [
+        "크소라"
+      ],
       "portrait": "/images/sheet-originals/image318.png",
       "byStar": {},
       "source": {
@@ -7867,8 +7883,10 @@
     },
     {
       "id": "sheet-row-320",
-      "name": "크유이",
-      "aliases": [],
+      "name": "성유이",
+      "aliases": [
+        "크유이"
+      ],
       "portrait": "/images/sheet-originals/image285.png",
       "byStar": {},
       "source": {
@@ -8202,8 +8220,10 @@
     },
     {
       "id": "sheet-row-1",
-      "name": "페코린느",
-      "aliases": [],
+      "name": "페코",
+      "aliases": [
+        "페코린느"
+      ],
       "portrait": "/images/sheet-originals/image73.png",
       "byStar": {},
       "source": {
