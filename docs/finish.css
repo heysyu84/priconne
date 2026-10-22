@@ -514,8 +514,9 @@ input:focus,select:focus,textarea:focus {border-color:#9872bf;box-shadow:0 0 0 3
 .db-rate-records .db-top-record-table thead th:not(:first-child){width:16%}
 .db-rate-records .db-top-record-table th,
 .db-rate-records .db-top-record-table td{min-width:0;box-sizing:border-box;padding:8px 3px;text-align:center;white-space:nowrap;font-size:11px;font-variant-numeric:tabular-nums}
-.db-rate-records .db-top-record-table tbody th{text-align:left;font-weight:750}
-.db-rate-records .db-top-record-table .boss-chip{font-size:10px;padding:3px 4px;white-space:nowrap}
+.db-rate-records .db-top-record-table tbody th{text-align:center;font-weight:750;vertical-align:middle;white-space:normal;word-break:keep-all}
+.db-rate-factors .datatable thead .boss-chip,
+.db-rate-records .db-top-record-table thead .boss-chip{display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box;min-height:24px;padding:3px 5px;border-radius:7px;font-size:11px;font-weight:750;line-height:1.15;white-space:nowrap}
 .db-rate-records .db-top-average th,.db-rate-records .db-top-average td{border-top:2px solid #d4c4e3;background:#faf7fd;font-weight:750}
 .db-rate-records .db-top-corrected th,.db-rate-records .db-top-corrected td{background:#f1eaf9;color:#6b4786;font-weight:850}
 .db-rate-records .db-top-record-footer{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-top:13px;color:#8b759b;font-size:11px}
@@ -527,11 +528,17 @@ input:focus,select:focus,textarea:focus {border-color:#9872bf;box-shadow:0 0 0 3
 @media(max-width:800px){
   .db-rate-records .db-top-record-table th,
   .db-rate-records .db-top-record-table td{padding:7px 1px;font-size:10px;letter-spacing:-.35px}
-  .db-rate-records .db-top-record-table .boss-chip{font-size:9px;padding:3px 2px}
   .db-rate-records .db-top-record-footer{font-size:10px}
 }
 @media(max-width:360px){
   .db-rate-records .db-top-record-table th,
   .db-rate-records .db-top-record-table td{font-size:9px;letter-spacing:-.45px}
-  .db-rate-records .db-top-record-table .boss-chip{font-size:8px}
+  .db-rate-factors .datatable thead .boss-chip,
+  .db-rate-records .db-top-record-table thead .boss-chip{min-height:22px;padding:2px 3px;font-size:10px}
 }
+
+/* Stage factors and top-ten records share the same centered table headers. */
+.db-rate-factors .datatable thead th,
+.db-rate-records .db-top-record-table thead th,
+.db-rate-records .db-top-record-table tbody th,
+.db-rate-records .db-top-record-table tbody td{text-align:center;vertical-align:middle}

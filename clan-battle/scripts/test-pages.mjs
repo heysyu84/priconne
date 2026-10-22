@@ -70,3 +70,12 @@ assert.ok(finishCss.includes('.sidebar .nav .symbol {display:inline-flex'),'Mid-
 assert.ok(!finishCss.includes('.sidebar .nav .symbol {display:none}'),'Do not hide nav icons above the mobile breakpoint');
 assert.ok(!finishCss.includes('.content{max-width:1100px}'),'1100px desktop cap regressed');
 console.log('PASS: bounded but spacious desktop canvas, eight visible navigation icons at tablet widths');
+
+const clanStyle=fs.readFileSync(new URL('../public/finish.css',import.meta.url),'utf8');
+const sharedBossChips=clanStyle.match(/\\.db-rate-factors \\.datatable thead \\.boss-chip,\\s*\\.db-rate-records \\.db-top-record-table thead \\.boss-chip\\s*\\{([^}]*)\\}/);
+assert.ok(sharedBossChips,'Factor and top-record chips must share one size rule');
+assert.ok(sharedBossChips[1].includes('font-size:11px')&&sharedBossChips[1].includes('padding:3px 5px'),'Boss chip typography and padding should match');
+assert.ok(clanStyle.includes('.db-rate-records .db-top-record-table tbody th{text-align:center'),'Ranking, average and corrected average row titles must be centered');
+assert.ok(!clanStyle.includes('.db-top-record-table tbody th{text-align:left'),'No left-aligned ranking headings');
+assert.ok(clanStyle.includes('tbody td{text-align:center;vertical-align:middle}'),'Table headers and numbers must be centered');
+console.log('PASS: both DB tables share boss-chip dimensions and all top-record headings are centered');
