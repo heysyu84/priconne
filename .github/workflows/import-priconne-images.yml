@@ -1,0 +1,44 @@
+name: Import named Priconne images
+
+on:
+  push:
+    paths:
+      - '.github/workflows/import-priconne-images.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: upstream-image-import
+  cancel-in-progress: false
+
+jobs:
+  import-assets:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - name: Checkout user repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+
+      - name: Checkout upstream image tree (no upstream code execution)
+        run: |
+          git clone --depth 1 --filter=blob:none --sparse https://github.com/PurikoneKrSemi/PurikoneKrSheet.git /tmp/priconne-image-source
+          git -C /tmp/priconne-image-source sparse-checkout set images 초상화
+
+      - name: Copy image folders, named files and search manifest
+        run: python3 clan-battle/scripts/import-image-library.py /tmp/priconne-image-source
+
+      - name: Commit all imported images
+        run: |
+          if [ -n "$(git status --porcelain -- docs/source-library clan-battle/public/source-library)" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add docs/source-library clan-battle/public/source-library
+            git commit -m "Import named character, boss and other images from upstream"
+            git push origin HEAD:main
+          else
+            echo "Image library already up to date"
+          fi
