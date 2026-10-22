@@ -1,6 +1,24 @@
 import { contribution } from './engine.mjs?v=20261022-ui14';
 
 export function summarizeArchive(month, roster = [], result = {}) {
+  // Historical sheets already contain finalized leaderboards. Their exact
+  // contribution and in-game totals take precedence over later rule changes.
+  if (Array.isArray(month.sourceRankings) && month.sourceRankings.length) {
+    const rows = month.sourceRankings.map(p => ({
+      id: 'archive:' + p.name,
+      name: p.name,
+      damage: Number(p.damage) || 0,
+      contribution: Number(p.contribution) || 0,
+      game: Number(p.game) || 0,
+    }));
+    return {
+      rows,
+      damage: (month.events || []).reduce((sum, e) => sum + (Number(e.actual) || 0), 0),
+      game: rows.reduce((sum, p) => sum + p.game, 0),
+      clanRank: Number(result.clanRank) > 0 ? Number(result.clanRank) : null,
+      memberCount: Number(result.memberCount) > 0 ? Number(result.memberCount) : rows.length,
+    };
+  }
   const people = new Map(), names = new Map();
   const add = (id, name) => {
     const key = id || 'name:' + name;
