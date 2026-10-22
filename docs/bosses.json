@@ -658,6 +658,41 @@
       "referenceKey": "4.7",
       "mappingStatus": "verified",
       "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/4.7.png"
+    },
+    "리빙 메일": {
+      "referenceKey": "1.6",
+      "mappingStatus": "verified",
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/1.6.png"
+    },
+    "미스트 시커": {
+      "referenceKey": "2.7",
+      "mappingStatus": "verified",
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/2.7.png"
+    },
+    "드로게이터": {
+      "referenceKey": "3.12",
+      "mappingStatus": "verified",
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/3.12.png"
+    },
+    "레이스 컬렉터": {
+      "referenceKey": "3.18",
+      "mappingStatus": "verified",
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/3.18.png"
+    },
+    "록스 포트리스": {
+      "referenceKey": "3.19",
+      "mappingStatus": "verified",
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/3.19.png"
+    },
+    "바이오 도저": {
+      "referenceKey": "3.20",
+      "mappingStatus": "verified",
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/3.20.png"
+    },
+    "고블린 소서러": {
+      "referenceKey": "4.19",
+      "mappingStatus": "verified",
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/4.19.png"
     }
   }
 }
