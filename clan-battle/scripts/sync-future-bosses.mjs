@@ -89,7 +89,7 @@ export function buildPreview(current,cycles,catalog,previous={}){
   const names=new Map();
   for(const [name,record] of Object.entries(catalog.catalog||{})){
     for(const alias of [name,record.japaneseName,...(record.aliases||[])]){
-      if(alias)names.set(normalize(alias),{name,referenceKey:record.referenceKey||null,portrait:record.portrait||null});
+      if(alias)names.set(normalize(alias),{name,referenceKey:record.referenceKey||null,portrait:record.portrait||record.assetSource||null});
     }
   }
   for(const entries of Object.values(catalog)){
