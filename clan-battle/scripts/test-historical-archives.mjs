@@ -1,0 +1,40 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import path from 'node:path';
+import {fileURLToPath} from 'node:url';
+
+const here=path.dirname(fileURLToPath(import.meta.url));
+const root=path.resolve(here,'../..');
+const expectedCounts=[600,614,615,608,584,547,476,480];
+let count=0;
+for(let i=1;i<=8;i++){
+  const month='2026-'+String(i).padStart(2,'0');
+  const relative='archive-data/'+month+'.json';
+  const publicText=fs.readFileSync(path.join(root,'clan-battle/public',relative),'utf8');
+  const docsText=fs.readFileSync(path.join(root,'docs',relative),'utf8');
+  assert.equal(docsText,publicText,month+': published archive differs from source');
+  const data=JSON.parse(publicText);
+  assert.equal(data.month,month);
+  assert.equal(data.archived,true);
+  assert.equal(data.events.length,expectedCounts[i-1],month+': incomplete battle history');
+  assert.ok(Array.isArray(data.sourceRankings)&&data.sourceRankings.length>0,month+': missing ranking');
+  assert.ok(Array.isArray(data.bosses)&&data.bosses.length===5,month+': missing bosses');
+  assert.ok(Array.isArray(data.tactics),month+': missing tactic collection');
+  assert.ok(data.options&&Array.isArray(data.levels),month+': missing phase rules');
+  assert.equal(new Set(data.events.map(event=>event.seq)).size,data.events.length,month+': duplicate entry sequence');
+  assert.ok(data.events.every(event=>event.member&&Number.isFinite(Number(event.damage))&&Number(event.boss)>0),month+': invalid battle log');
+  count+=data.events.length;
+}
+assert.equal(count,4524,'2026 January–August battle log total');
+const shell=fs.readFileSync(path.join(root,'clan-battle/public/clan-shell.html'),'utf8');
+const match=shell.match(/<script id="seed-data" type="application\\/json">([\\s\\S]*?)<\\/script>/);
+assert.ok(match,'missing seed data');
+const seed=JSON.parse(match[1]);
+assert.equal(seed.months['2026-09'].events.length,454,'September source data must remain intact');
+assert.equal(seed.months['2026-10'].events.length,0,'October seed must remain intact');
+const script=fs.readFileSync(path.join(root,'docs/clan.js'),'utf8');
+assert.ok(script.includes("importedArchiveMonths=Array.from({length:8}"),'month loader not connected');
+assert.ok(script.includes("monthView.select(key)"),'month selection not connected');
+assert.ok(script.includes("'/archive-data/'+key+'.json'"),'published archive loading missing');
+assert.equal(script,fs.readFileSync(path.join(root,'clan-battle/public/clan.js'),'utf8'));
+console.log('PASS: eight archived months, 4,524 unique battle records, ranking/phase data, 454 September logs, current month untouched, Docs/source parity');

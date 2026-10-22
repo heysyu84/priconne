@@ -1,0 +1,39 @@
+name: Verify historical battle archive
+on:
+  push:
+    paths:
+      - '.github/workflows/verify-clan-archives.yml'
+      - 'clan-battle/scripts/test-historical-archives.mjs'
+      - 'clan-battle/public/clan.js'
+      - 'clan-battle/public/month-view.mjs'
+      - 'clan-battle/public/archive-summary.mjs'
+      - 'clan-battle/public/clan-shell.html'
+      - 'clan-battle/public/archive-data/**'
+      - 'docs/clan.js'
+      - 'docs/archive-data/**'
+      - 'docs/index.html'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  archived-months:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check syntax and archived-month workflows
+        run: |
+          cd clan-battle
+          node --check public/clan.js
+          node --check public/month-view.mjs
+          node --check public/archive-summary.mjs
+          node scripts/test-month-view.mjs
+          node scripts/test-archive-summary.mjs
+          node scripts/test-historical-archives.mjs
+          node scripts/test-guild-ui.mjs
+          node scripts/test-pages.mjs
