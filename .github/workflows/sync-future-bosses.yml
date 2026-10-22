@@ -1,0 +1,37 @@
+name: Sync JP future clan bosses
+
+on:
+  schedule:
+    # Check twice weekly; the upstream API may change after JP clan battles.
+    - cron: '15 1 * * 2,5'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: future-clan-boss-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Read Aikurumi JP periods and preview Korean months
+        run: node clan-battle/scripts/sync-future-bosses.mjs
+      - name: Commit preview data (never modify live battle records)
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/future-bosses.json clan-battle/public/future-bosses.json
+          if git diff --cached --quiet; then
+            echo "No changes"
+          else
+            git commit -m "Sync upcoming Korean clan bosses from JP"
+            git push
+          fi
