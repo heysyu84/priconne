@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import { ensureTactics, titleFor, commandState, pastedRows, richLine, shiftedRuns, parseClock } from '../public/tactics-model.mjs';
+import { ensureTactics, titleFor, compareTactics, commandState, pastedRows, richLine, shiftedRuns, parseClock } from '../public/tactics-model.mjs';
 const read=path=>JSON.parse(fs.readFileSync(new URL('../public/'+path,import.meta.url),'utf8'));
 const html=fs.readFileSync(new URL('../public/clan-shell.html',import.meta.url),'utf8');
 const app=JSON.parse(html.match(/<script id="seed-data" type="application\/json">([\s\S]*?)<\/script>/)[1]);
@@ -15,6 +15,20 @@ assert.deepEqual(target.stars,['5','5','5','6','5']);
 assert.equal(target.expectedDamage,'3.3');
 assert.equal(titleFor(target),'1넴 에키드나 알네카 프캬루 밤피 바이올렛 55565, 기대딜 3.3');
 assert.equal(app.months['2026-10'].tactics.find(t=>t.id==='oct-택틱정리-145').boss,null);
+const unordered = [
+  {id:'boss2',boss:2,expectedDamage:'4.5'},
+  {id:'blank',boss:1,expectedDamage:''},
+  {id:'low',boss:1,expectedDamage:'2.9'},
+  {id:'high',boss:1,expectedDamage:'3.75'},
+  {id:'same',boss:1,expectedDamage:'3.75억'},
+  {id:'ten-thousands',boss:1,expectedDamage:'30,000만'},
+  {id:'invalid',boss:1,expectedDamage:'미입력'},
+  {id:'unclassified',boss:null,expectedDamage:'9.9'},
+];
+assert.deepEqual([...unordered].sort(compareTactics).map(t=>t.id),['high','same','ten-thousands','low','blank','invalid','boss2','unclassified']);
+assert.equal(unordered[0].id,'boss2');
+unordered.find(t=>t.id==='low').expectedDamage='4.0';
+assert.equal([...unordered].sort(compareTactics)[0].id,'low');
 let preserved=0;
 for(const [monthKey,month] of Object.entries(original.months)){
   assert.deepEqual(month.events,app.months[monthKey].events);

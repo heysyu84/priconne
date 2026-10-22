@@ -2,6 +2,7 @@
 
 프린세스 커넥트 클랜전의 배틀로그, 대시보드, 택틱과 개인 이월, 추천 조합, 기여도 및 역대 클랜원 기록을 관리합니다.
 
+- Cloudflare Pages: https://priconne.pages.dev/
 - GitHub Pages: https://heysyu84.github.io/priconne/
 - 공유 저장 API / 기존 접속 주소: https://nyang-clan-manager.heysyu457310.chatgpt.site
 - GitHub 위치: heysyu84/priconne → clan-battle/
@@ -17,6 +18,8 @@
 | public/clan-shell.html, public/clan.js | 화면과 초기 데이터 |
 | public/engine.mjs | HP, 회차, 이월 연결, 점수와 기여도 계산 |
 | public/guild-workspace.mjs, public/guild-model.mjs | 하루 단위 대시보드, DB, 순위, 이력과 추천 조합 |
+| public/combo-workspace.mjs, public/combo-planner.mjs, public/combo.css | 간략 추천 조합과 4단계 3타 분배 계산 |
+| app/api/presence/, public/presence.mjs, public/presence.css | 익명 브라우저 접속 수 집계와 상단 표시 |
 | public/tactics-workspace.mjs, public/tactics-model.mjs | 원본 색상과 SET 상태를 유지하는 택틱 편집과 개인 이월 |
 | public/characters.json, public/character-portraits.mjs | 원본 327명 초상화 연결, 성급별 이미지와 기본 초상화 복구 |
 | public/responsive.css | 모바일과 중간 너비의 배치 |
@@ -45,6 +48,8 @@ GitHub Pages만으로 공유 저장 서버를 대체할 수는 없습니다. 서
     node scripts/test-portraits.mjs
     node scripts/test-guild.mjs
     node scripts/test-guild-ui.mjs
+    node scripts/test-combo-planner.mjs
+    node scripts/test-presence.mjs
     node --experimental-strip-types scripts/test-editor.mjs
     node scripts/test-pages.mjs
 
@@ -74,6 +79,12 @@ JSON 전체 백업 시 아카이브를 함께 가져오고, 복원 시 명시적
 4단계 상위 기록은 전체 보스를 기본으로 표시합니다. 전체 보기에서는 보스별 상위 10건과 평균·보정 평균을 만 단위 표로 비교하고, 개별 보스 선택 시 클랜원·일차를 포함한 기존 상세 기록을 제공합니다.
 
 웹 상단 메뉴는 모바일 전환 전까지 13px 글자와 16px 아이콘을 유지하며, 가변 열 너비와 메뉴 여백으로 좁은 웹 화면에 맞춥니다.
+
+추천 조합은 간략 보기를 기본으로 표시하며, 개별 조합 펼치기와 전체 상세 보기를 지원합니다. 간략·상세 선택은 해당 브라우저에 기억합니다. 4단계의 ‘3타 분배’는 선택한 월에 등록된 조합의 기대딜 합계가 높은 보스 분배 5개를 계산합니다. 내 캐릭터는 하루 한 번만 사용하고 타당 서포트 한 명을 빌리는 조건을 적용합니다. 반드시 빌려야 하는 캐릭터는 `[이름]`으로 표시하며, ‘자유’는 중복이 없어 누구든 한 명 빌릴 수 있는 편성입니다. 서로 다른 보스 세 곳을 기본으로 추천하고, 선택을 해제하면 같은 보스 재타격도 허용합니다.
+
+택틱 작업실은 보스 번호 순서로 묶고 각 보스 안에서 기대딜이 높은 순서로 표시합니다. 기대딜 미입력은 해당 보스의 마지막에 배치하며, 같은 수치는 기존 순서를 유지합니다. 기대딜을 수정하면 목록 순서도 즉시 갱신합니다.
+
+상단 접속자 수는 익명 브라우저 단위입니다. 동일 브라우저의 여러 탭은 같은 식별자를 사용하며 20초마다 접속 상태를 갱신합니다. 마지막 갱신 후 60초가 지난 브라우저는 집계에서 제외합니다. 이름이나 IP 주소를 저장하지 않으며, D1의 `clan_presence` 테이블에는 임의 식별자와 마지막 접속 시각만 보관합니다. 서버 오류 시 0명으로 잘못 표시하지 않고 `—`를 표시합니다. 새 서버에는 `drizzle/0002_regular_dreaming_celestial.sql`을 적용해야 합니다.
 
 
 ## 메뉴 SD 일러스트

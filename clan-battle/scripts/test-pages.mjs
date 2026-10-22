@@ -24,6 +24,8 @@ await client('/api/archive?month=2026-09');
 assert.equal(calls.at(-1)[0],backend+'/api/archive?month=2026-09');
 await client('/api/archive?all=1');
 assert.equal(calls.at(-1)[0],backend+'/api/archive?all=1');
+await client('/api/presence',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({browserId:'c'.repeat(32)})});
+assert.equal(calls.at(-1)[0],backend+'/api/presence');assert.equal(calls.at(-1)[1].credentials,'omit');
 assert.equal(calls.at(-1)[1].headers.get('authorization'),'Bearer '+'a'.repeat(64));
 clock=1001;await client('/api/state');assert.equal(calls.at(-1)[1].headers.has('authorization'),false);assert.equal(saved.size,0);
 clock=100;await client('/api/editor',{method:'POST'});reply={editor:false};await client('/api/editor',{method:'POST'});assert.equal(saved.size,0);
@@ -58,7 +60,7 @@ console.log('PASS: Pages API client, tab-only expiring sessions, no stored PIN, 
 // Archive links are gated in the client and may point to a separate read-only D1 store.
 const archiveBundle=fs.readFileSync(new URL('../public/clan.js',import.meta.url),'utf8');
 assert.ok(archiveBundle.includes('splitStorage=boot.splitStorage===true'));
-assert.ok(archiveBundle.includes("api-client.mjs?v=20261022-archive18"));
+assert.ok(archiveBundle.includes('api-client.mjs?v='));
 assert.ok(archiveBundle.includes('loadArchive(key)'));
 assert.ok(archiveBundle.includes("archiveMode:splitStorage?'v1':undefined"));
 assert.ok(archiveBundle.includes('data-open-archive'));

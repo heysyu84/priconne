@@ -15,6 +15,13 @@
       "when": 1792660000000,
       "tag": "0001_clan_archives",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1792696772144,
+      "tag": "0002_regular_dreaming_celestial",
+      "breakpoints": true
     }
   ]
 }

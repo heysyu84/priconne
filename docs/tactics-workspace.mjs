@@ -1,7 +1,7 @@
 import { isBoosterCharacter, formatExpectedDamage, sourceLinkBox } from './view-settings.mjs?v=20261022-ui14';
 import { characterPortrait, portraitAttributes, portraitStarOverlay, normalizeCharacterName } from './character-portraits.mjs?v=20261022-ui14';
 import { makeId, parseDamage } from './roster.mjs?v=20261022-ui14';
-import { GROUPS, groupOf, titleFor, newRow, checkedSix, commandState, pastedRows, richLine, parseClock, clock, escapeHtml as X } from './tactics-model.mjs?v=20261022-ui14';
+import { GROUPS, groupOf, titleFor, compareTactics, newRow, checkedSix, commandState, pastedRows, richLine, parseClock, clock, escapeHtml as X } from './tactics-model.mjs?v=20261023-combo02';
 import { shiftTimeline } from './engine.mjs?v=20261022-ui14';
 
 export function createTacticWorkspace(api) {
@@ -11,7 +11,7 @@ export function createTacticWorkspace(api) {
   const month=()=>getMonth(), base=()=>Number(month().options.battleSeconds||90);
   const all=()=>month().tactics;
   const current=()=>all().find(t=>t.id===state.selected&&!t.trashedAt);
-  const visible=()=>all().filter(t=>!t.trashedAt&&groupOf(t)===state.group&&(state.boss==='all'||String(t.boss||'none')===state.boss)&&(!state.query||`${t.title} ${t.note} ${t.characters.join(' ')}`.toLowerCase().includes(state.query.toLowerCase())));
+  const visible=()=>all().filter(t=>!t.trashedAt&&groupOf(t)===state.group&&(state.boss==='all'||String(t.boss||'none')===state.boss)&&(!state.query||`${t.title} ${t.note} ${t.characters.join(' ')}`.toLowerCase().includes(state.query.toLowerCase()))).sort(compareTactics);
   const canEdit=()=>api.canEdit?.()??true;
   const viewing=()=>state.remaining!==null;
   const readOnly=()=>viewing()||!canEdit();
@@ -101,7 +101,7 @@ export function createTacticWorkspace(api) {
     const id=state.selected,index=Number(el.dataset.twPortrait),url=URL.createObjectURL(file);
     try{const image=new Image();image.src=url;await image.decode();if(id!==state.selected)return;const canvas=document.createElement('canvas');canvas.width=96;canvas.height=96;canvas.getContext('2d').drawImage(image,0,0,96,96);remember(true);current().customPortraits||=Array(5).fill('');current().customPortraits[index]=canvas.toDataURL('image/webp',.9);save();redraw();notify('이 택틱의 초상화를 저장했습니다.');}catch{notify('이미지를 읽을 수 없습니다.');}finally{URL.revokeObjectURL(url);}
   }
-  function mutateMeta(el){if(!canEdit())return;const t=current();if(!t)return;remember();if(el.dataset.twMeta){const key=el.dataset.twMeta;t[key]=key==='boss'?(Number(el.value)||null):el.value.trim();}if(el.dataset.twChar!==undefined){const i=Number(el.dataset.twChar);t.characters[i]=el.value.trim();if(t.customPortraits)t.customPortraits[i]='';}if(el.dataset.twStar!==undefined)t.stars[Number(el.dataset.twStar)]=el.value;save();}
+  function mutateMeta(el){if(!canEdit())return;const t=current();if(!t)return;remember();if(el.dataset.twMeta){const key=el.dataset.twMeta;t[key]=key==='boss'?(Number(el.value)||null):el.value.trim();}if(el.dataset.twChar!==undefined){const i=Number(el.dataset.twChar);t.characters[i]=el.value.trim();if(t.customPortraits)t.customPortraits[i]='';}if(el.dataset.twStar!==undefined)t.stars[Number(el.dataset.twStar)]=el.value;save();if(el.dataset.twMeta==='expectedDamage'&&$('#tw-library-list'))$('#tw-library-list').innerHTML=libraryCards();}
   function refreshPortrait(i){const t=current(),slot=$('#tw-char-'+i)?.closest('.tw-character-slot');if(!t||!slot)return;slot.querySelector('[data-tw-char]')?.classList.toggle('is-booster',isBoosterCharacter(getApp(),t.characters[i],catalog));const data=imageData(t,i),url=data.url;slot.querySelector('.tw-portrait').innerHTML=`<span class="tw-initial">${X(t.characters[i]?.slice(0,1)||'?')}</span>${url?`<img src="${X(url)}" alt="${X(t.characters[i])} 초상화" ${portraitAttributes(data)}>${portraitStarOverlay(data)}`:''}`;}
   function refreshLabels(){const t=current();if(!t)return;document.querySelectorAll('.tw-grid th').forEach((th,i)=>{if(i>=0&&i<5){th.innerHTML=checkPortrait(t,i);th.title=t.characters[i]||'';}});document.querySelectorAll('[data-tw-row]').forEach((tr,index)=>tr.querySelectorAll('[data-tw-check]').forEach((c,i)=>c.setAttribute('aria-label',(tr.dataset.twRow==='draft'?'새 행':(index+1)+'행')+' '+(i===5?'AUTO':t.characters[i]||'캐릭터 '+(i+1))+' SET')));}
   function editorTitle(t){

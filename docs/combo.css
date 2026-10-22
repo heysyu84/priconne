@@ -1,0 +1,136 @@
+.recommendation-workspace {min-width:0}
+.combo-workspace-toolbar,.combo-workspace-boss-filter {display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:12px}
+.combo-workspace-toolbar .tabset,.combo-workspace-boss-filter .tabset {margin:0;min-width:0;flex-wrap:wrap}
+.combo-view-tabs {background:#f1eaf8;border:1px solid #e5d9ef;border-radius:12px;padding:3px}
+.combo-view-tabs button {min-height:34px;padding:7px 15px;border-radius:9px}
+.combo-view-tabs button.active {background:#fff;color:#765090;box-shadow:0 2px 6px #63427a12}
+.combo-compact-list {display:grid;gap:8px}
+.combo-compact-row {min-width:0;background:linear-gradient(100deg,#fff 78%,var(--boss-bg,#f7f3fb));border:1px solid #e6dfec;border-left:3px solid var(--boss-accent,#a38ab7);border-radius:13px;overflow:hidden}
+.combo-mini-layout {display:grid;grid-template-columns:42px minmax(190px,1fr) minmax(100px,170px) 66px 28px 47px;grid-template-areas:"boss party meta score link more";align-items:center;gap:9px;padding:10px 12px}
+.combo-mini-layout>.combo-mini-boss {grid-area:boss}
+.combo-mini-layout>.combo-mini-party {grid-area:party}
+.combo-mini-layout>.combo-mini-meta {grid-area:meta}
+.combo-mini-layout>.combo-mini-score {grid-area:score}
+.combo-mini-layout>.source-link-box {grid-area:link}
+.combo-mini-layout>.combo-expand {grid-area:more}
+.combo-mini-layout .source-link-box {width:28px;height:23px;min-width:0}
+.combo-mini-boss {display:inline-flex;align-items:center;justify-content:center;min-width:0;max-width:100%;padding:4px 5px;border-radius:7px;background:var(--boss-bg,#f2eaf7);color:var(--boss-ink,#795891);border:1px solid color-mix(in srgb,var(--boss-accent,#a38ab7) 32%,#fff);font-size:12px;font-weight:800;white-space:nowrap}
+.combo-mini-party {display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;min-width:0;max-width:420px}
+.combo-mini-unit {display:flex;flex-direction:column;align-items:center;gap:4px;min-width:0;text-align:center}
+.combo-mini-art {position:relative;display:block;width:36px;height:36px;flex:none}
+.combo-mini-art img.combo-mini-avatar {display:block;width:100%;height:100%;border-radius:8px;object-fit:cover;box-shadow:0 0 0 1px #e7dfec}
+.combo-mini-art .source-star-overlay {position:absolute;inset:auto 0 0;width:100%;height:auto;pointer-events:none}
+.combo-mini-art .source-star-text {font-size:9px;line-height:12px}
+.combo-mini-missing {display:flex;align-items:center;justify-content:center;width:100%;height:100%;border-radius:8px;background:#f2ecf7;color:#a58ab4}
+.combo-mini-unit strong {font-size:11px;font-weight:650;line-height:1.3;color:#735887;max-width:100%;overflow-wrap:anywhere}
+.combo-mini-meta {display:flex;flex-wrap:wrap;align-items:center;gap:4px 8px;font-size:11px;line-height:1.45;color:#967fa6;min-width:0;overflow-wrap:anywhere}
+.combo-mini-meta span {max-width:100%}
+.combo-mini-score {display:flex;flex-direction:column;align-items:flex-end;gap:1px;color:var(--boss-ink,#735389);font-variant-numeric:tabular-nums;min-width:0}
+.combo-mini-score small {font-size:10px;font-weight:500;color:#9f8aac}
+.combo-mini-score strong {font-size:22px;line-height:1.15;white-space:nowrap;letter-spacing:-.5px}
+.combo-expand {padding:6px 8px!important;min-width:0;font-size:11px!important}
+.combo-compact-expanded {border-top:1px solid #ede5f2;padding:12px;background:#fcfaff}
+.combo-compact-expanded .combo-card {margin:0;box-shadow:none}
+.combo-compact-row.is-stage3 .combo-mini-layout {grid-template-columns:42px minmax(190px,1fr) minmax(110px,190px) 66px 47px;grid-template-areas:"boss party meta score more"}
+.combo-compact-row.is-stage3 .combo-mini-score strong {font-size:17px}
+.combo-planner-controls {padding:16px 18px}
+.combo-planner-controls .panel-head {gap:12px;align-items:center;flex-wrap:wrap;border:0;padding:0;margin-bottom:12px}
+.combo-planner-controls h2 {font-size:17px;margin:0 0 5px}
+.combo-planner-controls p {margin:0}
+.combo-repeat-option {display:inline-flex;align-items:center;gap:7px;font-size:12px;white-space:nowrap;color:#876799;cursor:pointer}
+.combo-repeat-option input {width:16px;height:16px;accent-color:#9971b5}
+.combo-planner-bosses {display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-bottom:12px}
+.combo-planner-bosses .btn {padding:6px 11px;min-height:30px;border-color:#e8e0ee;color:#a08aae;background:#fff}
+.combo-planner-bosses .btn.selected {background:var(--boss-bg,#f0e8f6);border-color:var(--boss-accent,#aa8fbd);color:var(--boss-ink,#75568b)}
+.combo-planner-controls .combo-support-help {font-size:11px;line-height:1.7;color:#9a849f}
+.combo-support-example {color:#c15770;font-weight:700}
+.combo-plan-caption {font-size:12px;color:#977fa5;margin:15px 2px 10px}
+.combo-distribution-list {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;align-items:start;min-width:0}
+.combo-distribution.panel {padding:0;overflow:hidden;margin:0;min-width:0;border-color:#e7dfee;box-shadow:0 3px 12px #75538405}
+.combo-distribution.is-best {border-color:#c1a4d6;box-shadow:0 4px 16px #8e62ad10}
+.combo-distribution-head {display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 14px;background:#faf7fd;border-bottom:1px solid #eee6f3}
+.combo-distribution.is-best .combo-distribution-head {background:linear-gradient(110deg,#f0e6fa,#fbf8fe)}
+.combo-distribution-head>div:first-child {display:flex;gap:7px;align-items:center;flex-wrap:wrap;min-width:0}
+.combo-plan-rank {display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:7px;background:#e9dff2;color:#835da0;font-size:12px;font-weight:800;flex:none}
+.combo-distribution-head>div:first-child>strong {font-size:13px;letter-spacing:-.2px;color:#77518e}
+.combo-distribution-head>div:first-child>small {font-size:10px;color:#aa91b8}
+.combo-plan-total {display:flex;align-items:flex-end;flex-direction:column;gap:1px;flex:none}
+.combo-plan-total small {font-size:10px;color:#a189b0}
+.combo-plan-total strong {font-size:24px;line-height:1.1;letter-spacing:-.7px;color:#795293;font-variant-numeric:tabular-nums}
+.combo-plan-total strong span {font-size:12px;margin-left:3px;font-weight:600}
+.combo-plan-table {width:100%;table-layout:fixed;border-collapse:collapse;border-spacing:0}
+.combo-plan-table .plan-boss-col {width:11%}
+.combo-plan-table .plan-party-col {width:53%}
+.combo-plan-table .plan-damage-col {width:14%}
+.combo-plan-table .plan-support-col {width:22%}
+.combo-plan-table th,.combo-plan-table td {padding:9px 5px;vertical-align:middle;text-align:center;border-bottom:1px solid #f0eaf4;min-width:0;overflow-wrap:anywhere}
+.combo-plan-table thead th {font-size:10px;font-weight:650;background:#fff;color:#ad97b8;padding:7px 4px}
+.combo-plan-table tbody tr:last-child>* {border-bottom:0}
+.combo-plan-table tbody th {font-weight:600}
+.combo-plan-table tbody th>small {display:block;font-size:9px;font-weight:500;color:#b49dc0;margin-bottom:4px}
+.combo-plan-table .combo-mini-boss {padding:3px 4px;font-size:10px}
+.combo-plan-table .combo-mini-party {gap:3px}
+.combo-plan-table .combo-mini-art {width:29px;height:29px}
+.combo-plan-table .combo-mini-unit strong {font-size:10px;font-weight:600}
+.combo-plan-table .combo-plan-damage>strong {display:block;font-size:17px;color:#866299;font-variant-numeric:tabular-nums}
+.combo-plan-damage .source-link-box {width:23px;height:17px;display:inline-flex;margin-top:4px;vertical-align:top}
+.combo-plan-support {font-size:11px;line-height:1.6;color:#c15770}
+.combo-support-mark {position:absolute;top:-5px;right:-5px;width:13px;height:13px;display:flex;align-items:center;justify-content:center;border-radius:4px;background:#c86680;color:#fff;font-size:9px;font-weight:850;border:1px solid #fff}
+.combo-mini-unit.is-support .combo-mini-avatar {box-shadow:0 0 0 2px #d9869a}
+.combo-planner-empty {line-height:1.8;font-size:13px}
+@media(max-width:1000px) {
+ .combo-distribution-list {grid-template-columns:minmax(0,1fr)}
+ .combo-plan-table .combo-mini-party {max-width:400px;margin:auto}
+ .combo-mini-layout {grid-template-columns:40px minmax(170px,1fr) minmax(85px,130px) 58px 26px 42px;gap:7px}
+ .combo-mini-score strong {font-size:21px}
+ .combo-plan-table .plan-boss-col {width:10%}
+ .combo-plan-table .plan-party-col {width:56%}
+ .combo-plan-table .plan-damage-col {width:13%}
+ .combo-plan-table .plan-support-col {width:21%}
+}
+@media(max-width:680px) {
+ .combo-workspace-toolbar {gap:8px}
+ .combo-view-tabs button {padding:7px 12px;min-height:32px;font-size:12px}
+ .combo-workspace-boss-filter {gap:6px;margin-bottom:10px}
+ .combo-workspace-boss-filter .tabset {gap:4px}
+ .combo-workspace-boss-filter .tabset button {padding:6px 9px;font-size:11px}
+ .combo-mini-layout,.combo-compact-row.is-stage3 .combo-mini-layout {grid-template-columns:39px minmax(0,1fr) 54px 26px 43px;grid-template-areas:"boss meta score link more" "party party party party party";gap:8px 6px;padding:10px}
+ .combo-compact-row.is-stage3 .combo-mini-layout {grid-template-columns:39px minmax(0,1fr) 62px 43px;grid-template-areas:"boss meta score more" "party party party party"}
+ .combo-mini-party {max-width:none;gap:6px}
+ .combo-mini-art {width:32px;height:32px}
+ .combo-mini-unit strong {font-size:11px}
+ .combo-mini-meta {gap:2px 6px;font-size:10px}
+ .combo-mini-score strong {font-size:21px}
+ .combo-mini-score small {font-size:9px}
+ .combo-compact-expanded {padding:8px}
+ .combo-planner-controls {padding:13px}
+ .combo-planner-controls .panel-head {gap:9px}
+ .combo-planner-controls h2 {font-size:16px}
+ .combo-planner-controls .small.muted {font-size:11px}
+ .combo-planner-bosses {gap:6px}
+ .combo-planner-bosses .btn {padding:6px 9px}
+ .combo-distribution-head {padding:11px 10px;gap:7px}
+ .combo-distribution-head>div:first-child {gap:5px}
+ .combo-distribution-head>div:first-child>strong {font-size:12px}
+ .combo-distribution-head>div:first-child>small {flex-basis:100%;margin-left:27px}
+ .combo-plan-total strong {font-size:24px}
+ .combo-plan-table th,.combo-plan-table td {padding:8px 3px}
+ .combo-plan-table .plan-boss-col {width:11%}
+ .combo-plan-table .plan-party-col {width:53%}
+ .combo-plan-table .plan-damage-col {width:14%}
+ .combo-plan-table .plan-support-col {width:22%}
+ .combo-plan-table .combo-mini-art {width:25px;height:25px}
+ .combo-plan-table .combo-mini-party {gap:3px}
+ .combo-plan-table .combo-mini-unit strong {font-size:10px}
+ .combo-plan-support {font-size:10px}
+ .combo-plan-table .combo-plan-damage>strong {font-size:17px}
+}
+@media(max-width:370px) {
+ .combo-mini-layout {gap:7px 4px;padding:9px}
+ .combo-workspace-toolbar .tabset button {padding-left:10px;padding-right:10px}
+ .combo-plan-table .combo-mini-art {width:22px;height:22px}
+ .combo-plan-table .combo-mini-party {gap:2px}
+ .combo-plan-table .combo-mini-unit strong {font-size:9px}
+ .combo-plan-table th,.combo-plan-table td {padding:8px 2px}
+ .combo-plan-table .combo-plan-damage>strong {font-size:16px}
+}

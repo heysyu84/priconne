@@ -5,12 +5,14 @@ import { characterPortrait, portraitAttributes, portraitStarOverlay } from './ch
 import { BOSS_COLORS, BOSS_ACCENTS, BOSS_INK, tenureMonths, monthOnly, thisMonth, dashboardDay, bossTopStats } from './guild-model.mjs?v=20261022-hall01';
 import { makeId, matchMembers, upsertMember, syncRoster } from './roster.mjs?v=20261022-ui14';
 import { downloadProfilePdf } from './report-pdf.mjs?v=20261022-ui14';
+import { createComboWorkspace } from './combo-workspace.mjs?v=20261023-combo01';
 const SCORES=[['damage','피해량'],['contribution','기여도'],['game','인게임 스코어'],['dayDamage','일일 피해량'],['dayContribution','일일 기여도']];
 
 export function createGuildWorkspace(api){
   const {getApp,getMonth,render,persist,section,nf,escapeHtml:X,notify,openForm}=api;
   const app=()=>getApp(),month=()=>getMonth(),canEdit=()=>api.canEdit(),person=id=>app().roster.find(p=>p.id===id);
   const state={db:'rates',search:'',profile:CLAN_PROFILE,day:null,dashboardDay:null,sort:'contribution',boss:1,comboStage:'4',comboBoss:'all'};
+  const comboWorkspace=createComboWorkspace({state,app,month,render,section,canEdit,characters:api.characters,escapeHtml:X,notice:comboNotice,detailedRows:comboCards});
   const days=()=>Number(month().options.days||5),latestDay=()=>Math.max(1,...month().events.map(e=>Number(e.day)||1),...(month().dayBreaks||[]).map(b=>b.nextDay));
   const selectedDay=()=>state.day===null?Math.min(days(),latestDay()):Number(state.day);
   const total=p=>tenureMonths(p),period=p=>total(p)===null?'미상':nf(total(p))+'개월';
@@ -119,16 +121,16 @@ export function createGuildWorkspace(api){
     if(!notes.tp&&!canEdit())return '';
     return `<section class="panel combo-notice combo-tp-notice" aria-label="4단계 조합 안내"><div class="combo-notice-head"><strong>4단계 조합 안내</strong><div class="btnbar">${canEdit()?'<button class="textbutton" data-guild="edit-combo-notice" data-value="tp">문구 수정</button>':''}<button class="textbutton" data-guild="hide-combo-notice">숨기기</button></div></div><div class="combo-notice-text">${X(notes.tp||'')}</div></section>`;
   }
-  function combos(){
-    const d=month(),rows=(d.recommendations||[]).filter(c=>[3,4].includes(c.stage)&&c.stage===Number(state.comboStage)&&(state.comboBoss==='all'||c.boss===Number(state.comboBoss)));
-    return section('추천 조합','',canEdit()?'<button class="btn primary" data-guild="add-combo">＋ 추천 조합</button>':'')+`<div class="combo-filters"><div class="tabset">${[['4','4단계'],['3','3단계']].map(([key,label])=>`<button data-guild="combo-stage" data-value="${key}" class="${state.comboStage===key?'active':''}">${label}</button>`).join('')}</div><div class="tabset">${[['all','전체 보스'],...d.bosses.map(b=>[String(b.id),b.id+'넴'])].map(([key,label])=>`<button data-guild="combo-boss" data-value="${key}" data-boss-color="${key}" class="${state.comboBoss===key?'active':''}">${label}</button>`).join('')}</div></div>${comboNotice()}<div class="combo-list">${rows.map(c=>{
+  function combos(){return comboWorkspace.render();}
+  function comboCards(rows){
+    return rows.map(c=>{
       const source=/타비/.test(c.tactic||'')?'타비':/택틱/.test(c.tactic||'')?'택틱':'—',damage=formatExpectedDamage(c.expectedDamage),link=validURL(c.url)||validURL(c.video)||validURL(c.tacticUrl);
       const manual=c.manualCount===null||c.manualCount===undefined||c.manualCount===''?'—':c.manualCount;
       const stage3=c.stage===3,time=v=>v===null||v===undefined||v===''?'—':X(v)+'초';
       const summary=stage3?`<div class="combo-summary combo-summary-stage3"><span class="combo-stage">3단계</span><strong class="combo-boss">${c.boss}넴</strong><span class="combo-time" aria-label="필요시간 ${time(c.requiredSeconds)}"><small>필요</small><strong>${time(c.requiredSeconds)}</strong></span><span class="combo-time" aria-label="이월시간 ${time(c.remainingSeconds)}"><small>이월</small><strong>${time(c.remainingSeconds)}</strong></span><span class="combo-operation"><small>조작</small><strong>${X(c.tactic?.trim()||'전부 SET')}</strong></span></div>`:`<div class="combo-summary"><span class="combo-stage">${c.stage}단계</span><strong class="combo-boss">${c.boss}넴</strong><span class="combo-source">${source}</span><span>손컨 ${X(manual)}</span><span>TP ${X(c.tp||'—')}</span><span class="combo-damage"><small>기대딜</small><strong>${X(damage)}</strong></span>${sourceLinkBox(link)}</div>`;
       const details=stage3?(c.note?`<div class="combo-meta"><span>${X(c.note)}</span></div>`:''):(c.requiredSeconds||c.remainingSeconds||c.note||(c.tactic&&!/타비|택틱/.test(c.tactic))?`<div class="combo-meta">${c.requiredSeconds?`<span>필요 시간 ${c.requiredSeconds}초</span>`:''}${c.remainingSeconds?`<span>이월 ${c.remainingSeconds}초</span>`:''}${c.tactic&&!/타비|택틱/.test(c.tactic)?`<span>${X(c.tactic)}</span>`:''}${c.note?`<span>${X(c.note)}</span>`:''}</div>`:'');
       return `<article class="panel combo-card" data-boss-color="${c.boss}" aria-label="${c.stage}단계 ${c.boss}넴 추천 조합">${summary}${canEdit()?`<div class="combo-admin-actions"><button class="btn sm" data-guild="edit-combo" data-id="${X(c.id)}">수정</button><button class="btn sm danger" data-guild="delete-combo" data-id="${X(c.id)}">삭제</button></div>`:''}<div class="combo-party">${Array.from({length:5},(_,i)=>{const portrait=characterPortrait(api.characters,c.characters[i],c.stars?.[i]),url=portrait.url;return `<div>${url?`<span class="combo-source-art"><img src="${X(url)}" ${portraitAttributes(portrait)} alt="${X(c.characters[i])}">${portraitStarOverlay(portrait)}</span>`:'<div class="portrait-missing">?</div>'}<strong class="${isBoosterCharacter(app(),c.characters[i],api.characters)?'is-booster':''}">${X(c.characters[i]||'미선택')}</strong><span>★ ${X(c.stars?.[i]||'?')}</span></div>`;}).join('')}</div>${details}</article>`;
-    }).join('')||'<div class="panel empty">등록된 추천 조합이 없습니다.</div>'}</div>`;
+    }).join('')||'<div class="panel empty">등록된 추천 조합이 없습니다.</div>';
   }
   function editComboNotice(key){
     if(!['tp','stage3'].includes(key))return;

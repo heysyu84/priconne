@@ -1,0 +1,18 @@
+.online-presence {display:inline-flex;align-items:center;justify-content:center;gap:4px;min-height:32px;padding:6px 9px;border:1px solid #e5dced;border-radius:8px;background:#faf7fd;color:#9c82ad;font-size:11px;line-height:1.2;white-space:nowrap;font-variant-numeric:tabular-nums}
+.online-presence svg {width:14px;height:14px;flex:none;color:#ae94be}
+.online-presence strong {font-size:12px;color:#7e5c93;font-weight:800}
+.online-presence[data-connected="false"] strong {color:#b6a7bf}
+@media(max-width:800px) {
+ .online-presence {font-size:10px;padding:6px 7px;min-height:30px;gap:3px}
+ .online-presence strong {font-size:11px}
+ .online-presence svg {width:12px;height:12px}
+ .presence-current {display:none}
+}
+@media(max-width:400px) {
+ .topbar .top-actions {gap:4px}
+ .topbar .top-actions .status {padding-left:6px;padding-right:6px}
+ .topbar .top-actions .month {width:94px;padding-left:6px;padding-right:6px}
+ .topbar .admin-menu>summary {padding-left:7px;padding-right:7px;font-size:10px;white-space:nowrap}
+ .online-presence {padding-left:5px;padding-right:5px}
+}
+@media print {.online-presence{display:none}}

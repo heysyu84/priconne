@@ -6,6 +6,18 @@ export const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, c => 
 export const groupOf = tactic => tactic.group || (tactic.source === '타비비토' ? '타비비토' : '택틱정리');
 export const checkedSix = checked => Array.from({length:6}, (_, i) => checked?.[i] === true || checked?.[i] === 'TRUE');
 export const titleFor = tactic => `${tactic.boss ? tactic.boss+'넴' : '보스 미분류'} ${tactic.characters.map(c=>c||'미선택').join(' ')} ${tactic.stars.map(s=>s||'?').join('')}, 기대딜 ${tactic.expectedDamage || '미입력'}`;
+export function compareTactics(a, b) {
+  const boss = tactic => Number(tactic.boss) > 0 ? Number(tactic.boss) : Infinity;
+  if (boss(a) !== boss(b)) return boss(a) < boss(b) ? -1 : 1;
+  const damage = tactic => {
+    const match = String(tactic.expectedDamage ?? '').replace(/[,\s]/g, '').match(/^(\d+(?:\.\d+)?)(억|만)?$/);
+    if (!match) return -Infinity;
+    const value = Number(match[1]) / (match[2] === '만' ? 10000 : 1);
+    return Number.isFinite(value) ? value : -Infinity;
+  };
+  const left = damage(a), right = damage(b);
+  return left === right ? 0 : left > right ? -1 : 1;
+}
 export const newRow = (checked = [], text = '') => ({id:makeId(), text, checked:checkedSix(checked), manualChecks:false});
 
 export function ensureTactics(app, metadata = {}, rowFormats = {}) {
