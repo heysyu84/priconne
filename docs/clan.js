@@ -2,7 +2,7 @@
 const {summarizeArchive,sortArchiveRankings}=await import('./archive-summary.mjs?v=20261022-import01');
 const {createMonthView}=await import('./month-view.mjs?v=20261022-import01');
 const {sequenceVisible}=await import('./view-settings.mjs?v=20261022-ui14');
-const {installPortraitFallback,withPortraitLibrary}=await import('./character-portraits.mjs?v=20261022-ui14');
+const {installPortraitFallback,withPortraitLibrary,findCharacter,normalizeCharacterName}=await import('./character-portraits.mjs?v=20261022-ui14');
 installPortraitFallback();
 const {assetUrl}=await import('./site-paths.mjs?v=20261022-ui14');
 const {browserApiClient}=await import('./api-client.mjs?v=20261022-archive18');
@@ -219,7 +219,7 @@ function saveRules(){
   if(!ranges.length||ranges[0].start!==1||ranges[0].stage!==o.startStage||ranges.some((l,i)=>i&&l.start!==ranges[i-1].end+1))return ruleError('단계 구간은 1회차부터 빈 구간·중복 없이 이어져야 합니다.');
   let invalid=false;$$('[data-boss]').forEach(el=>{const [id,field]=el.dataset.boss.split('-');const b=candidate.bosses.find(b=>b.id===+id);if(field==='name')b.name=el.value.trim()||b.name;else{const value=el.value===''?null:Number(el.value);if((field==='hp'&&(!Number.isSafeInteger(value)||!(value>0)))||(field==='game'&&!(value>=0))||(field==='contribution'&&value!==null&&!(value>=0)))invalid=true;b[field][String(ui.configStage)]=value;}});
   if(invalid)return ruleError('보스 HP는 1 HP 단위의 양의 정수로, 배율은 0 이상으로 입력하세요.');
-  try{Engine.replayMonth(candidate)}catch(error){return ruleError(error.message)}app.months[app.active]=candidate;if($('#setting-boosters'))app.boosterCharacters=[...new Set($('#setting-boosters').value.split(/[\n,，]/).map(v=>v.trim()).filter(Boolean))];persist();notice('선택한 월의 규칙과 계산 결과를 저장했습니다.');render();return true;
+  try{Engine.replayMonth(candidate)}catch(error){return ruleError(error.message)}app.months[app.active]=candidate;persist();notice('선택한 월의 규칙과 계산 결과를 저장했습니다.');render();return true;
 }
 function history(){const entries=[...new Set([...Object.keys(app.months),...archiveKeys()])].sort().reverse();return section('월별 아카이브','월마다 보스와 규칙을 따로 보관합니다.',`<button class="btn primary" data-action="newmonth">＋ 다음 달 만들기</button>`)+`<div class="grid-even">${entries.map(key=>{const d=app.months[key];return `<div class="history-month"><div><strong>${monthFormat(key)} 클랜전</strong><small>${d?d.bosses.map(b=>X(b.name)).join(' · '):'과거 기록 별도 보관'}</small><div class="small muted" style="margin-top:8px">${d?'공격 '+d.events.length+'건 · 택틱 '+d.tactics.filter(t=>!t.trashedAt).length+'개':'월별 아카이브에서 조회'}</div></div><button class="btn ${key===app.active?'primary':''}" ${key===app.active?`data-select-month="${key}"`:`data-open-archive="${key}"`}>${key===app.active?'조회 중':'과거 기록 →'}</button></div>`}).join('')}</div><section class="panel section-spacer ${editor?'':'hidden'}"><h2>백업과 복원</h2><p class="muted small">변경 사항은 자동 저장됩니다. JSON 백업에는 모든 월의 공격 기록·택틱·설정이 포함됩니다. 백업을 복원하면 현재 데이터를 해당 내용으로 교체합니다.</p><div class="btnbar"><button class="btn" data-action="export">JSON 백업 저장</button><label class="btn">JSON 백업 복원<input type="file" id="import-json" accept=".json,application/json" style="display:none"></label></div></section>`+futureBossPreview()}
 // Past months are loaded only when opened. They are never mixed into the
@@ -269,12 +269,51 @@ function copyText(txt){if(navigator.clipboard&&window.isSecureContext){navigator
 function fallbackCopy(txt){const ta=document.createElement('textarea');ta.value=txt;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.focus();ta.select();let ok=false;try{ok=document.execCommand('copy')}catch(e){}ta.remove();notice(ok?'복사했습니다':'복사 기능이 제한된 브라우저입니다. 직접 선택해 복사해 주세요.')}
 const pages={overview,dashboard:()=>guild.dashboard(),battle,roster,tactics,calculator:tactics,members,profile:()=>guild.profile(),db:()=>guild.db(),combos:()=>guild.combos(),settings,history,archive:()=>guild.db()};const labels={overview:'클랜전 상황판',dashboard:'대시보드',battle:'배틀로그',roster:'클랜원 관리',tactics:'택틱 작업실',calculator:'택틱 작업실',members:'월간 순위',profile:'개인 이력',db:'클랜 DB',combos:'추천 조합',settings:'규칙 · 월별 설정',history:'월별 아카이브',archive:'과거 기록'};
 function render(){document.title=`냥냥클랜 리리다이브 · ${labels[ui.page]}`;$('#top-name').textContent=labels[ui.page];const months=monthView.keys(),selector=$('#month-select');selector.innerHTML=months.map(m=>`<option value="${m}" ${m===(detailMonthLoading||monthView.key())?'selected':''}>${monthFormat(m)}</option>`).join('');selector.disabled=!!detailMonthLoading;$$('[data-page]').forEach(x=>x.classList.toggle('active',x.dataset.page===ui.page));$('#content').innerHTML=(pages[ui.page]||overview)()+`<div class="foot">© 냥냥클랜 리리다이브</div>`;$$('.field').forEach((field,i)=>{const input=field.querySelector('input,select,textarea'),label=field.querySelector('label');if(input&&label&&!label.contains(input)){if(!input.id)input.id='field-'+ui.page+'-'+i;label.htmlFor=input.id;}});workflow.mount(ui.page);tacticWorkspace.mount(ui.page);$$('[data-action="export"],[data-editor-only]').forEach(el=>el.classList.toggle('hidden',!editor));const access=$('#editor-control');if(access){access.textContent=editor?'🔒 작성 잠금':'🔓 작성 잠금 해제';access.dataset.admin=editor?'lock':'unlock';}if(!canEdit()&&['settings'].includes(ui.page)){$$('#content input,#content select,#content textarea').forEach(el=>el.disabled=true);}}
-function handleAction(a){switch(a.dataset.action){case 'export':exportData();break;case 'newmonth':newMonth();break;case 'saverules':saveRules();break;case 'applyfuture':applyFutureBossNames();break;}}
+function handleAction(a){switch(a.dataset.action){case 'export':exportData();break;case 'newmonth':newMonth();break;case 'saverules':saveRules();break;case 'applyfuture':applyFutureBossNames();break;case 'addbooster':addBoosterCharacter();break;case 'removebooster':removeBoosterCharacter(Number(a.dataset.boosterIndex));break;}}
 document.addEventListener('click',e=>{let b=e.target.closest('button,[data-go]');if(!b)return;if(b.dataset.page){goto(b.dataset.page);return}if(b.dataset.bossCenter){tacticWorkspace.openBoss(Number(b.dataset.bossCenter));goto('tactics');return}if(b.dataset.go){goto(b.dataset.go);return}if(b.dataset.action){handleAction(b);return}if(b.dataset.day){ui.day=b.dataset.day;ui.logPage=1;render();return}if(b.dataset.pager){ui.logPage+=Number(b.dataset.pager);render();return}if(b.dataset.lognew!==undefined){ui.editLog='';render();$('#editor-anchor')?.scrollIntoView({behavior:'smooth',block:'start'});return}if(b.dataset.editlog){ui.editLog=b.dataset.editlog;render();$('#editor-anchor')?.scrollIntoView({behavior:'smooth',block:'start'});return}if(b.dataset.logcancel!==undefined){ui.editLog=null;render();return}if(b.dataset.stage){if(ui.page==='settings'){if(canEdit()&&saveRules()===false)return;ui.configStage=Number(b.dataset.stage);render()}return}if(b.dataset.openArchive){ui.archiveMonth=b.dataset.openArchive;goto('archive');return}if(b.dataset.archiveSort){ui.archiveSort=b.dataset.archiveSort;render();return}if(b.dataset.selectMonth){void selectDetailMonth(b.dataset.selectMonth,true);return}});
 document.addEventListener('change',e=>{const v=e.target;if(v.id==='archive-month-select'){void loadArchive(v.value);return}if(v.id==='archive-log-member-select'){ui.archiveLogMember=v.value;ui.archiveLogPage=1;render();return}if(v.id==='archive-log-day-select'){ui.archiveLogDay=v.value;ui.archiveLogPage=1;render();return}if(v.id==='archive-log-page-select'){ui.archiveLogPage=Number(v.value)||1;render();return}if(v.id==='setting-auto')$$('[data-boss$="-contribution"]').forEach(el=>{if(ui.configStage===4)el.disabled=v.checked});if(v.id==='month-select'){void selectDetailMonth(v.value);return}if(v.id==='log-boss'){ui.boss=v.value;ui.logPage=1;render()}if(v.id==='rank-metric'){ui.rank=v.value;render()}if(v.id==='profile-member'){ui.member=v.value;render()}if(v.id==='import-json'&&v.files?.[0])importJSON(v.files[0]);});
 document.addEventListener('input',e=>{if(e.target.id==='log-search'){ui.filter=e.target.value;ui.logPage=1;let pos=e.target.selectionStart;render();let el=$('#log-search');el?.focus();el?.setSelectionRange(pos,pos)}});
 document.addEventListener('submit',e=>{if(e.target.id==='log-form'){e.preventDefault();updateLog(e.target)}});
-function extraRuleFields(d){const o=d.options;return `<h3>이월 시간 규칙</h3><div class="settings-grid"><div class="field"><label>기본 전투시간 (초)</label><input id="setting-battle" type="number" min="1" value="${o.battleSeconds||90}"></div><div class="field"><label>이월 보정시간 (초)</label><input id="setting-carry-bonus" type="number" min="0" value="${o.carryBonusSeconds??20}"></div><div class="field"><label>최대 이월시간 (초)</label><input id="setting-carry-max" type="number" min="1" value="${o.carryMaxSeconds||90}"></div></div><div class="divider"></div><div class="panel-head"><h3>부스터 캐릭터</h3><span class="pill">공통 설정</span></div><div class="field"><label for="setting-boosters">한 줄에 한 명 · 모든 월의 조합과 택틱에 적용</label><textarea id="setting-boosters" rows="5">${X((app.boosterCharacters||[]).join('\n'))}</textarea></div>`;}
+document.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.id==='booster-new-name'){e.preventDefault();addBoosterCharacter();}});
+function extraRuleFields(d){
+  const o=d.options,boosters=Array.isArray(app.boosterCharacters)?app.boosterCharacters:[],editable=canEdit();
+  return `<h3>이월 시간 규칙</h3><div class="settings-grid"><div class="field"><label>기본 전투시간 (초)</label><input id="setting-battle" type="number" min="1" value="${o.battleSeconds||90}"></div><div class="field"><label>이월 보정시간 (초)</label><input id="setting-carry-bonus" type="number" min="0" value="${o.carryBonusSeconds??20}"></div><div class="field"><label>최대 이월시간 (초)</label><input id="setting-carry-max" type="number" min="1" value="${o.carryMaxSeconds||90}"></div></div><div class="divider"></div>
+  <details class="booster-settings" id="booster-details"><summary><strong>부스터 캐릭터 일람</strong><span class="pill">총 ${boosters.length}명 · 공통 설정</span></summary>
+  <div class="booster-settings-body"><p class="small muted">등록된 캐릭터 이름은 모든 월의 추천 조합과 택틱에서 부스터로 구분됩니다. 명단은 기본적으로 숨겨져 있습니다.</p>
+  <ul class="booster-list">${boosters.length?boosters.map((name,index)=>`<li><span>${X(name)}</span>${editable?`<button type="button" class="btn sm" data-action="removebooster" data-booster-index="${index}" aria-label="${X(name)} 부스터 목록에서 삭제">삭제</button>`:''}</li>`).join(''):'<li class="muted">등록된 부스터 캐릭터가 없습니다.</li>'}</ul>
+  ${editable?`<div class="booster-add-row"><div class="field"><label for="booster-new-name">부스터 캐릭터 추가</label><input id="booster-new-name" list="booster-character-suggestions" maxlength="60" placeholder="캐릭터 이름 입력" autocomplete="off"></div><button type="button" class="btn primary" data-action="addbooster">추가</button></div><datalist id="booster-character-suggestions">${CHARACTER_CATALOG.map(c=>`<option value="${X(c.name)}"></option>`).join('')}</datalist><p class="small muted">관리자 작성 권한으로 추가·삭제하면 즉시 서버에 저장됩니다. 목록에 없는 신규 캐릭터 이름도 등록할 수 있습니다.</p>`:'<p class="small muted">캐릭터를 추가하거나 삭제하려면 작성 잠금을 해제하세요.</p>'}
+  </div></details>`;
+}
+function updateBoosterView(message){
+  const wasOpen=$('#booster-details')?.open;
+  render();
+  if(wasOpen)$('#booster-details').open=true;
+  if(message)notice(message);
+}
+function addBoosterCharacter(){
+  if(!canEdit())return unlock();
+  const input=$('#booster-new-name'),raw=input?.value.trim().replace(/\\s+/g,' ');
+  if(!raw)return notice('추가할 캐릭터 이름을 입력하세요.');
+  if(raw.length>60)return notice('캐릭터 이름은 60자 이내로 입력해 주세요.');
+  const character=findCharacter(CHARACTER_CATALOG,raw);
+  const name=character?.name||raw;
+  const list=Array.isArray(app.boosterCharacters)?app.boosterCharacters:[];
+  if(list.some(value=>normalizeCharacterName(value)===normalizeCharacterName(name)||
+     (character&&findCharacter(CHARACTER_CATALOG,value)?.name===character.name)))return notice('이미 등록된 부스터 캐릭터입니다.');
+  app.boosterCharacters=[...list,name];
+  persist();
+  updateBoosterView(character?'부스터 캐릭터를 추가했습니다.':'부스터 이름을 등록했습니다. 캐릭터 도감에 추가되면 자동으로 연결됩니다.');
+  $('#booster-new-name')?.focus();
+}
+function removeBoosterCharacter(index){
+  if(!canEdit())return unlock();
+  const list=Array.isArray(app.boosterCharacters)?app.boosterCharacters:[];
+  if(!Number.isInteger(index)||index<0||index>=list.length)return;
+  if(!confirm(list[index]+'을(를) 부스터 일람에서 삭제할까요?'))return;
+  app.boosterCharacters=list.filter((_,i)=>i!==index);
+  persist();
+  updateBoosterView('부스터 캐릭터를 삭제했습니다.');
+}
 function openForm(title,fields,onSave){
  document.querySelector('#guild-dialog')?.remove();const dialog=document.createElement('dialog');dialog.id='guild-dialog';dialog.className='guild-dialog';dialog.innerHTML=`<form><div class="panel-head"><h2>${X(title)}</h2><button type="button" class="btn sm" data-close-dialog>×</button></div><div class="dialog-fields">${fields.map(f=>`<div class="field ${f.type==='textarea'?'full':''}"><label for="dialog-${X(f.name)}">${X(f.label)}</label>${f.type==='textarea'?`<textarea id="dialog-${X(f.name)}" name="${X(f.name)}" rows="7" ${f.required?'required':''}>${X(f.value??'')}</textarea>`:`<input id="dialog-${X(f.name)}" name="${X(f.name)}" type="${f.type||'text'}" value="${X(f.value??'')}" ${f.required?'required':''} autocomplete="${f.type==='password'?'off':'on'}" ${f.type==='number'?'step="any"':''}>`}</div>`).join('')}</div><p class="dialog-error" role="alert"></p><div class="form-actions"><button type="button" class="btn" data-close-dialog>취소</button><button type="submit" class="btn primary">저장</button></div></form>`;document.body.append(dialog);dialog.showModal();dialog.querySelectorAll('[data-close-dialog]').forEach(b=>b.onclick=()=>dialog.close());dialog.querySelector('form').onsubmit=async event=>{event.preventDefault();const button=dialog.querySelector('[type="submit"]');button.disabled=true;try{const values=Object.fromEntries(new FormData(event.target));await onSave(values);dialog.close();}catch(error){dialog.querySelector('.dialog-error').textContent=error.message;}finally{button.disabled=false;}};dialog.addEventListener('close',()=>dialog.remove());
 }
