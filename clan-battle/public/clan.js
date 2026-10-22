@@ -1,5 +1,5 @@
 (async()=>{'use strict';
-const {installPortraitFallback}=await import('./character-portraits.mjs?v=20261022-pages10');
+const {installPortraitFallback,withPortraitLibrary}=await import('./character-portraits.mjs?v=20261022-source-portraits2');
 installPortraitFallback();
 const {assetUrl}=await import('./site-paths.mjs?v=20261022-pages10');
 const {browserApiClient}=await import('./api-client.mjs?v=20261022-pages10');
@@ -9,9 +9,10 @@ const {ensureRoster,syncRoster,memberLabel}=await import('./roster.mjs?v=2026102
 const {createWorkflow}=await import('./workflow.mjs?v=20261022-settings12');
 const {ensureTactics}=await import('./tactics-model.mjs?v=20261022-pages10');
 const {applySourceData}=await import('./guild-model.mjs?v=20261022-pages10');
-const {createGuildWorkspace}=await import('./guild-workspace.mjs?v=20261022-settings12');
-const {createTacticWorkspace}=await import('./tactics-workspace.mjs?v=20261022-settings12');
-const [TACTIC_META,CHARACTERS,ROW_FORMATS,BOSS_ART,GUILD_SOURCE]=await Promise.all(['/tactic-metadata.json','/characters.json','/tactic-row-formats.json','/bosses.json','/guild-source.json'].map(async path=>{const response=await fetch(assetUrl(path)+'?v=20261022-pages10');if(!response.ok)throw Error('택틱 자료를 불러오지 못했습니다.');return response.json()}));
+const {createGuildWorkspace}=await import('./guild-workspace.mjs?v=20261022-source-portraits2');
+const {createTacticWorkspace}=await import('./tactics-workspace.mjs?v=20261022-source-portraits2');
+const [TACTIC_META,CHARACTERS,ROW_FORMATS,BOSS_ART,GUILD_SOURCE,PORTRAIT_LIBRARY]=await Promise.all(['/tactic-metadata.json','/characters.json','/tactic-row-formats.json','/bosses.json','/guild-source.json','/portrait-library.json'].map(async path=>{const response=await fetch(assetUrl(path)+'?v=20261022-pages10');if(!response.ok)throw Error('택틱 자료를 불러오지 못했습니다.');return response.json()}));
+const CHARACTER_CATALOG=withPortraitLibrary(CHARACTERS.characters,PORTRAIT_LIBRARY);
 const DEFAULT=JSON.parse(document.getElementById('seed-data').textContent);
 const STORAGE='nyangnyang-work-recovery-v1';
 const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
@@ -38,8 +39,8 @@ let ui={page:'overview',day:'all',filter:'',boss:'all',member:seedMonth.members[
 const current=()=>app.months[app.active];
 const money=n=>nf(Math.round(n));
 const workflow=createWorkflow({getApp:()=>app,getMonth:current,setApp:value=>{app=value;syncRoster(app);for(const d of Object.values(app.months))Engine.replayMonth(d)},persist,replay:Engine.replayMonth,render,notify:notice,navigate:goto,section,nf,escapeHtml:X,contribution:contrib,getBosses:()=>bossStatus(),bossPortrait:id=>bossPortrait(id),canEdit:()=>editor,unlock:unlock,openForm});
-const tacticWorkspace=createTacticWorkspace({getApp:()=>app,getMonth:current,persist:()=>{workflow.clearUndo();persist()},render,notify:notice,navigate:goto,section,copyText,estimateCarry:Engine.estimateCarry,catalog:CHARACTERS.characters,bossStatus:()=>bossStatus(),bossPortrait:id=>bossPortrait(id),canEdit:()=>editor,unlock:unlock,openForm});
-const guild=createGuildWorkspace({getApp:()=>app,getMonth:current,persist,render,notify:notice,navigate:goto,section,nf,escapeHtml:X,aggregates,contribution:contrib,replay:Engine.replayMonth,characters:CHARACTERS.characters,canEdit:()=>editor,unlock,openForm});
+const tacticWorkspace=createTacticWorkspace({getApp:()=>app,getMonth:current,persist:()=>{workflow.clearUndo();persist()},render,notify:notice,navigate:goto,section,copyText,estimateCarry:Engine.estimateCarry,catalog:CHARACTER_CATALOG,bossStatus:()=>bossStatus(),bossPortrait:id=>bossPortrait(id),canEdit:()=>editor,unlock:unlock,openForm});
+const guild=createGuildWorkspace({getApp:()=>app,getMonth:current,persist,render,notify:notice,navigate:goto,section,nf,escapeHtml:X,aggregates,contribution:contrib,replay:Engine.replayMonth,characters:CHARACTER_CATALOG,canEdit:()=>editor,unlock,openForm});
 function persist(){
   if(!editor)return false;
   try{localStorage.setItem(STORAGE,JSON.stringify(app))}catch{}
