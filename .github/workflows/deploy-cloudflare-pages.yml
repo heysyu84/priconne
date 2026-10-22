@@ -3,9 +3,9 @@ name: Deploy Priconne to Cloudflare Pages
 # Deploy the already-published static site independently of Cloudflare's
 # GitHub App/webhook connection. The existing priconne.pages.dev project
 # and shared clan API are not changed or recreated.
+# Manual fallback only: the original Cloudflare Git integration is working again.
+# Keep this available for a future outage without failing every source commit.
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
 
 permissions:
