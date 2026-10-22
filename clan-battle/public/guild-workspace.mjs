@@ -1,4 +1,5 @@
 import { summarizeArchive, sortArchiveRankings } from './archive-summary.mjs?v=20261022-import01';
+import {AUTOMATIC_HISTORY_FROM,monthlyBattleSummary,confirmMonthlyResult,resultNeedsReconfirm,historicalHall} from './clan-history.mjs?v=20261022-hall01';
 import { CLAN_PROFILE, isBoosterCharacter, formatExpectedDamage, comboNoticeHidden, setComboNoticeHidden, sourceLinkBox } from './view-settings.mjs?v=20261022-ui14';
 import { characterPortrait, portraitAttributes, portraitStarOverlay } from './character-portraits.mjs?v=20261022-ui14';
 import { BOSS_COLORS, BOSS_ACCENTS, BOSS_INK, tenureMonths, monthOnly, thisMonth, dashboardDay, bossTopStats } from './guild-model.mjs?v=20261022-db19';
@@ -60,10 +61,48 @@ export function createGuildWorkspace(api){
   const rosterSearch=()=>`<div class="filterbar"><input id="guild-roster-search" aria-label="클랜원 검색" placeholder="이름 · 초성 · UID" value="${X(state.search)}"></div>`;
   function roster(){return section('클랜원 관리','',canEdit()?'<button class="btn primary" data-guild="add-member">＋ 클랜원</button>':'')+`<section class="panel"><div class="panel-head"><h2>현재 클랜원 ${app().roster.filter(p=>p.status==='active').length} / 30</h2></div>${rosterSearch()}<div id="guild-roster-table">${rosterTable(true)}</div></section>`;}
   function db(){return section('클랜 DB')+`<div class="tabset db-tabs">${[['rates','기여도'],['archive','과거 기록'],['history','과거 이력'],['hall','명예의 전당'],['roster','역대 클랜원']].map(([key,label])=>`<button class="${state.db===key?'active':''}" data-guild="db-tab" data-value="${key}">${label}</button>`).join('')}</div>${state.db==='roster'?`<section class="panel"><div class="panel-head"><h2>역대 클랜원 ${app().roster.length}명</h2>${canEdit()?'<button class="btn primary" data-guild="add-member">＋ 클랜원</button>':''}</div>${rosterSearch()}<div id="guild-roster-table">${rosterTable()}</div></section>`:state.db==='archive'?(api.archiveView?.()||'<section class="panel empty">지난 클랜전 기록이 아직 없습니다.</section>'):state.db==='history'?history():state.db==='hall'?hall():rates()}`;}
-  function history(){
-    return `<section class="panel"><div class="panel-head"><h2>역대 클랜전</h2>${canEdit()?'<button class="btn" data-guild="add-history">＋ 월별 결과</button>':''}</div>${table(['월','클랜 순위','참가 인원','피해량 1·2위','기여도 1·2위','인게임 1·2위','연혁 · 기록'],[...(app().clanHistory||[])].sort((a,b)=>b.month.localeCompare(a.month)).map(h=>`<tr><th>${validURL(h.archiveUrl)?`<a href="${X(validURL(h.archiveUrl))}" target="_blank" rel="noopener noreferrer">${X(h.month)} ↗</a>`:X(h.month)}</th><td>${h.clanRank?nf(h.clanRank)+'위':'—'}</td><td>${h.memberCount?nf(h.memberCount)+'명':'미기재'}</td>${['damage','contribution','game'].map(k=>`<td>${(h.winners[k]||[]).map((n,i)=>n?`<div><span class="place">${i+1}위</span> ${X(n)}</div>`:'').join('')||'—'}</td>`).join('')}<td class="history-note">${X([...new Set([h.notes,h.mergedNotes,h.recordCondition].filter(Boolean))].join(' · '))}${canEdit()?`<button class="textbutton" data-guild="edit-history" data-value="${h.month}">수정</button>`:''}</td></tr>`))}</section>`;
+
+  function currentSummary(key){
+    const record=app().months[key]||api.getArchiveMonth?.(key);
+    if(!record)return null;
+    try{return monthlyBattleSummary(record,app().roster);}catch{return null;}
   }
-  function hall(){const rows=[...(app().hallOfFame||[])].sort((a,b)=>b.total-a.total);return `<section class="panel"><h2>명예의 전당</h2>${table(['클랜원','피해량 1위 / 2위','기여도 1위 / 2위','인게임 1위 / 2위','총 수상'],rows.map(p=>`<tr><th>${X(p.name)}</th>${['damage','contribution','game'].map(k=>`<td><strong>${nf(p[k]?.[0])}</strong> / ${nf(p[k]?.[1])}</td>`).join('')}<td><span class="medal-count">♛ ${nf(p.total)}</span></td></tr>`),'guild-hall')}</section>`;}
+  function history(){
+    const records=app().clanHistory||[];
+    const known=new Set(records.map(h=>h.month));
+    const extra=[...new Set([...Object.keys(app().months||{}),...(app().archivedMonths||[])])]
+      .filter(key=>key>=AUTOMATIC_HISTORY_FROM&&!known.has(key))
+      .map(key=>({month:key,memberCount:null,winners:{},pendingResult:true,clanRank:null}));
+    const displayed=[...records,...extra].sort((a,b)=>b.month.localeCompare(a.month));
+    const cells=displayed.map(h=>{
+      const auto=h.month>=AUTOMATIC_HISTORY_FROM;
+      const summary=auto?currentSummary(h.month):null;
+      const sealed=!!h.autoFinalizedAt;
+      const changed=sealed&&summary&&resultNeedsReconfirm(h,summary);
+      const winners=sealed?h.winners:(summary?.eventCount?summary.winners:h.winners)||{};
+      const memberCount=sealed?h.memberCount:(summary?.eventCount?summary.memberCount:h.memberCount);
+      const state=auto
+        ?(sealed?(changed?'기록 변경 · 재확정 필요':'마감 완료'):(summary?.eventCount?'잠정 기록 · 마감 대기':'집계 대기'))
+        :'';
+      const status=state?`<div class="history-state ${changed?'history-dirty':sealed?'history-closed':'history-pending'}">${X(state)}</div>`:'';
+      const closeButton=auto&&canEdit()&&(!sealed||changed)
+        ?`<button type="button" class="btn sm ${changed?'':'primary'}" data-guild="close-month" data-value="${X(h.month)}">${changed?'결과 재확정':'월별 결과 확정'}</button>`:'';
+      const edit=canEdit()?`<button type="button" class="textbutton" data-guild="edit-history" data-value="${X(h.month)}">${auto?'클랜 순위 · 비고 수정':'수정'}</button>`:'';
+      return `<tr><th>${validURL(h.archiveUrl)?`<a href="${X(validURL(h.archiveUrl))}" target="_blank" rel="noopener noreferrer">${X(h.month)} ↗</a>`:X(h.month)}${status}</th>
+        <td>${Number(h.clanRank)>0?nf(h.clanRank)+'위':'—'}</td>
+        <td>${Number(memberCount)>0?nf(memberCount)+'명':'미기재'}</td>
+        ${['damage','contribution','game'].map(k=>`<td>${(winners?.[k]||[]).map((n,i)=>n?`<div><span class="place">${i+1}위</span> ${X(n)}</div>`:'').join('')||'—'}</td>`).join('')}
+        <td class="history-note">${X([...new Set([h.notes,h.mergedNotes,h.recordCondition].filter(Boolean))].join(' · '))}
+          <div class="history-actions">${edit}${closeButton}</div></td></tr>`;
+    });
+    return `<section class="panel"><div class="panel-head"><div><h2>역대 클랜전</h2><p class="small muted">2026년 10월부터 순위와 참가 인원을 자동 집계합니다. 마지막 일차 배틀로그 확인 후 관리자가 확정하면 명예의 전당에 반영됩니다.</p></div>${canEdit()?'<button class="btn" data-guild="add-history">＋ 월별 결과</button>':''}</div>
+    ${table(['월','클랜 순위','참가 인원','피해량 1·2위','기여도 1·2위','인게임 1·2위','연혁 · 기록'],cells,'guild-history')}</section>`;
+  }
+  function hall(){
+    const rows=historicalHall(app().clanHistory||[]);
+    return `<section class="panel"><div class="panel-head"><div><h2>명예의 전당</h2><p class="small muted">확정된 월별 결과에서 피해량·기여도·인게임 각 1·2위 수상 횟수를 자동 집계합니다. 진행 중인 잠정 기록은 포함하지 않습니다.</p></div></div>
+    ${table(['클랜원','피해량 1위 / 2위','기여도 1위 / 2위','인게임 1위 / 2위','총 수상'],rows.map(p=>`<tr><th>${X(p.name)}</th>${['damage','contribution','game'].map(k=>`<td><strong>${nf(p[k]?.[0])}</strong> / ${nf(p[k]?.[1])}</td>`).join('')}<td><span class="medal-count">♛ ${nf(p.total)}</span></td></tr>`),'guild-hall')}</section>`;
+  }
   function rates(){
     const d=month(),tops=d.bosses.map(b=>bossTopStats(d,b.id));
     const compact=value=>value===null||value===undefined||!Number.isFinite(Number(value))?'-':(Number(value)/10000).toLocaleString('ko-KR',{maximumFractionDigits:1});
