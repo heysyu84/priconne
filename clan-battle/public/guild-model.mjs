@@ -53,6 +53,19 @@ export function dashboardDay(month,memberId,day){
   const basics=events.filter(e=>!e.carry),carries=events.filter(e=>e.carry),used=new Set(carries.map(e=>e.carryFrom).filter(Boolean));
   return {used:basics.length,remaining:Math.max(0,Number(month.options.dailyAttacks||3)-basics.length),pending:basics.filter(e=>e.kill&&!used.has(e.id)).length,slots:basics.map(e=>({basic:e,carry:carries.find(c=>c.carryFrom===e.id)||null,pending:e.kill&&!used.has(e.id)})),orphan:carries.filter(e=>!e.carryFrom)};
 }
+export function remainingAttacks(month){
+  const days=Number(month.options.days||5);
+  const progress=Math.max(1,...month.events.map(e=>Number(e.day)||1),...(month.dayBreaks||[]).map(b=>Number(b.nextDay)||1));
+  const day=Math.min(days,progress),ended=progress>days;
+  let normal=0,carry=0;
+  if(!ended)for(const id of new Set([...(month.memberIds||[]),...month.events.map(e=>e.memberId).filter(Boolean)])){
+    const membership=month.membership?.[id];
+    if(membership&&(day<Number(membership.fromDay||1)||day>Number(membership.toDay??days)))continue;
+    const usage=dashboardDay(month,id,day);
+    normal+=usage.remaining;carry+=usage.pending;
+  }
+  return {day,normal,carry,ended};
+}
 export function bossTopStats(month,bossId){
   const all=month.events.filter(e=>Number(e.boss)===Number(bossId)&&e.stage===4&&e.damage>0);
   const samples=[...all].sort((a,b)=>b.damage-a.damage).slice(0,10);

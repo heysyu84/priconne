@@ -1,0 +1,15 @@
+import assert from 'node:assert/strict';
+import { remainingAttacks } from '../public/guild-model.mjs';
+const ids=Array.from({length:20},(_,i)=>'m'+i);
+const month={options:{days:5,dailyAttacks:3},memberIds:ids,membership:{},events:[],dayBreaks:[]};
+assert.deepEqual(remainingAttacks(month),{day:1,normal:60,carry:0,ended:false});
+for(let i=0;i<10;i++)for(let hit=0;hit<3;hit++)month.events.push({id:i+'-'+hit,day:1,memberId:ids[i],carry:false,kill:hit===0});
+assert.deepEqual(remainingAttacks(month),{day:1,normal:30,carry:10,ended:false});
+month.events.push({id:'carry',day:1,memberId:'m0',carry:true,carryFrom:'0-0',kill:true});
+assert.deepEqual(remainingAttacks(month),{day:1,normal:30,carry:9,ended:false});
+month.dayBreaks.push({nextDay:2});assert.deepEqual(remainingAttacks(month),{day:2,normal:60,carry:0,ended:false});
+month.membership.m0={fromDay:1,toDay:1};month.membership.m1={fromDay:3,toDay:null};
+assert.deepEqual(remainingAttacks(month),{day:2,normal:54,carry:0,ended:false});
+month.events.push({id:'later',day:2,memberId:'m2',carry:false,kill:false});assert.equal(remainingAttacks(month).normal,53);
+month.dayBreaks.push({nextDay:6});assert.deepEqual(remainingAttacks(month),{day:5,normal:0,carry:0,ended:true});
+console.log('PASS: 30+10 remaining basic/carry attacks, used carry and carry-kill behavior, day reset, membership eligibility and final-day closure');

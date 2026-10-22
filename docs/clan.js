@@ -1,4 +1,5 @@
 (async()=>{'use strict';
+const {summarizeArchive,sortArchiveRankings}=await import('./archive-summary.mjs?v=20261022-db19');
 const {sequenceVisible}=await import('./view-settings.mjs?v=20261022-ui14');
 const {installPortraitFallback,withPortraitLibrary}=await import('./character-portraits.mjs?v=20261022-ui14');
 installPortraitFallback();
@@ -7,10 +8,10 @@ const {browserApiClient}=await import('./api-client.mjs?v=20261022-archive18');
 const apiFetch=browserApiClient();
 const Engine=await import('./engine.mjs?v=20261022-ui14');
 const {ensureRoster,syncRoster,memberLabel}=await import('./roster.mjs?v=20261022-ui14');
-const {createWorkflow}=await import('./workflow.mjs?v=20261022-ui14');
+const {createWorkflow}=await import('./workflow.mjs?v=20261022-db19');
 const {ensureTactics}=await import('./tactics-model.mjs?v=20261022-ui14');
-const {applySourceData}=await import('./guild-model.mjs?v=20261022-ui14');
-const {createGuildWorkspace}=await import('./guild-workspace.mjs?v=20261022-star-fix16');
+const {applySourceData,remainingAttacks}=await import('./guild-model.mjs?v=20261022-db19');
+const {createGuildWorkspace}=await import('./guild-workspace.mjs?v=20261022-db19');
 const {createTacticWorkspace}=await import('./tactics-workspace.mjs?v=20261022-ui14');
 const [TACTIC_META,CHARACTERS,ROW_FORMATS,BOSS_ART,GUILD_SOURCE,PORTRAIT_LIBRARY]=await Promise.all(['/tactic-metadata.json','/characters.json','/tactic-row-formats.json','/bosses.json','/guild-source.json','/portrait-library.json'].map(async path=>{const response=await fetch(assetUrl(path)+'?v=20261022-ui14');if(!response.ok)throw Error('택틱 자료를 불러오지 못했습니다.');return response.json()}));
 const CHARACTER_CATALOG=withPortraitLibrary(CHARACTERS.characters,PORTRAIT_LIBRARY);
@@ -31,23 +32,23 @@ catch { $('#content').innerHTML='<section class="panel"><h1>기록에 연결하�
 let app=boot.data||deepcopy(DEFAULT);
 let splitStorage=boot.splitStorage===true,restoreArchivesPending=false;
 const archiveCache=new Map();
-let archiveLoading='',archiveError='',archiveTab='logs',archivePageNumber=1;
+let archiveLoading='',archiveError='';
 const archiveKeys=()=>{const latest=Object.keys(app.months).sort().at(-1);return [...new Set([...(app.archivedMonths||[]),...Object.keys(app.months).filter(k=>k!==latest)])].sort().reverse()};
 const rosterMigrated=ensureRoster(app,DEFAULT.rosterSeed||[]);
 const tacticsMigrated=ensureTactics(app,TACTIC_META,ROW_FORMATS);
 const guildMigrated=applySourceData(app,GUILD_SOURCE);
-try{const active=localStorage.getItem('nyang-view-month');if(app.months[active])app.active=active;}catch{}
+app.active=Object.keys(app.months).sort().at(-1);
 let editor=false;try{const result=await apiFetch('/api/editor',{cache:'no-store'});editor=!!(await result.json()).editor;}catch{}
 let revision=boot.revision,dirty=0,saving=false,saveTimer=null,blocked=false;
 for(const month of Object.values(app.months))Engine.replayMonth(month);
-let ui={page:'overview',day:'all',filter:'',boss:'all',member:seedMonth.members[0],rank:'damage',tactic:seedMonth.tactics[0]?.id||'',tacticSearch:'',editor:false,editLog:null,calcSeconds:61,calcText:'',calcResult:null,configStage:4,historyMonth:null,logPage:1};
+let ui={page:'overview',day:'all',filter:'',boss:'all',member:seedMonth.members[0],rank:'damage',tactic:seedMonth.tactics[0]?.id||'',tacticSearch:'',editor:false,editLog:null,calcSeconds:61,calcText:'',calcResult:null,configStage:4,historyMonth:null,logPage:1,archiveSort:'contribution'};
 const archiveHash=location.hash.match(/^#archive(?:=(\d{4}-\d{2}))?$/);
 if(archiveHash){ui.page='archive';ui.archiveMonth=archiveHash[1]||null;}
 const current=()=>app.months[app.active];
 const money=n=>nf(Math.round(n));
 const workflow=createWorkflow({getApp:()=>app,getMonth:current,setApp:value=>{app=value;syncRoster(app);for(const d of Object.values(app.months))Engine.replayMonth(d)},persist,replay:Engine.replayMonth,render,notify:notice,navigate:goto,section,nf,escapeHtml:X,contribution:contrib,getBosses:()=>bossStatus(),bossPortrait:id=>bossPortrait(id),canEdit:()=>editor,unlock:unlock,openForm});
 const tacticWorkspace=createTacticWorkspace({getApp:()=>app,getMonth:current,persist:()=>{workflow.clearUndo();persist()},render,notify:notice,navigate:goto,section,copyText,estimateCarry:Engine.estimateCarry,catalog:CHARACTER_CATALOG,bossStatus:()=>bossStatus(),bossPortrait:id=>bossPortrait(id),canEdit:()=>editor,unlock:unlock,openForm});
-const guild=createGuildWorkspace({getApp:()=>app,getMonth:current,persist,render,notify:notice,navigate:goto,section,nf,escapeHtml:X,aggregates,contribution:contrib,replay:Engine.replayMonth,characters:CHARACTER_CATALOG,canEdit:()=>editor,unlock,openForm});
+const guild=createGuildWorkspace({getApp:()=>app,getMonth:current,persist,render,notify:notice,navigate:goto,section,nf,escapeHtml:X,aggregates,contribution:contrib,replay:Engine.replayMonth,characters:CHARACTER_CATALOG,canEdit:()=>editor,unlock,openForm,archiveView:archiveRecords,getArchiveMonth:key=>archiveCache.get(key)||app.months[key],openArchive:()=>goto('archive'),onDbTabChange:()=>{if(location.hash.startsWith('#archive'))window.history.replaceState(null,'',location.pathname+location.search);}});
 function persist(){
   if(!editor)return false;
   try{localStorage.setItem(STORAGE,JSON.stringify(app))}catch{}
@@ -63,7 +64,18 @@ async function flushSave(){
   finally{saving=false;}
 }
 function notice(t){let el=$('#toast');el.textContent=t;el.classList.remove('hidden');clearTimeout(notice._t);notice._t=setTimeout(()=>el.classList.add('hidden'),3200)}
-function goto(page){if(!workflow.beforeNavigate()||!tacticWorkspace.beforeNavigate())return;ui.page=page==='calculator'?'tactics':page;ui.editor=false;render();if(ui.page==='archive'){const key=ui.archiveMonth||archiveKeys()[0];window.history.replaceState(null,'','#archive'+(key?'='+key:''));if(key)void loadArchive(key);}else if(location.hash.startsWith('#archive'))window.history.replaceState(null,'',location.pathname+location.search);window.scrollTo({top:0,behavior:'instant'})}
+function archiveVisible(){return ui.page==='db'&&guild.isArchiveOpen();}
+function goto(page){
+  if(!workflow.beforeNavigate()||!tacticWorkspace.beforeNavigate())return;
+  if(page==='archive'){guild.openArchive();ui.page='db';}else ui.page=page==='calculator'?'tactics':page;
+  ui.editor=false;render();
+  if(archiveVisible()){
+    const key=archiveKeys().includes(ui.archiveMonth)?ui.archiveMonth:archiveKeys()[0];
+    window.history.replaceState(null,'','#archive'+(key?'='+key:''));
+    if(key)void loadArchive(key);
+  }else if(location.hash.startsWith('#archive'))window.history.replaceState(null,'',location.pathname+location.search);
+  window.scrollTo({top:0,behavior:'instant'});
+}
 function sortedEvents(d=current()){return [...d.events].sort((a,b)=>(a.seq-b.seq)||Number(a.sourceRow||0)-Number(b.sourceRow||0))}
 function maxDay(){return Math.max(current().options.days||5,...current().events.map(e=>e.day||0),1)}
 function phase(lap,d=current()){return d.levels.find(l=>l.count>0&&Number(lap)>=l.start&&Number(lap)<=l.end)?.stage||d.options.startStage||2}
@@ -80,7 +92,7 @@ function section(head,subtitle='',actions=''){return `<div class="hero"><div><h1
 function metric(label,value,desc){return `<div class="metric"><div class="k">${X(label)}</div><div class="v">${X(value)}</div><div class="d">${X(desc)}</div></div>`}
 function dateOptions(){return ['all',...Array.from({length:maxDay()},(_,i)=>String(i+1))].map(day=>`<button class="${ui.day===day?'active':''}" data-day="${day}">${day==='all'?'전체':`${day}일차`}</button>`).join('')}
 function bossTiles(d=current()){return `<section class="raid-boss-section" aria-label="보스 진행 현황"><div class="raid-section-label"><span>✦ RAID BOSSES</span></div><div class="boss-grid">${bossStatus(d).map((b,i)=>`<article class="boss-card" data-boss-card="${b.id}" data-boss-color="${b.id}" style="--boss-tone:${['#ea9999','#ffe599','#b6d7a8','#a4c2f4','#b4a7d6'][i]}"><div class="boss-top"><div class="boss-art">${bossPortrait(b.id)?`<img src="${X(bossPortrait(b.id))}" alt="${X(b.name)} 보스">`:`<span>${b.id}</span>`}<span class="boss-emblem">${b.id}</span></div><div><div class="boss-num">BOSS ${String(b.id).padStart(2,'0')}</div><h2 class="boss-name">${X(b.name)}</h2><div class="boss-phase">${b.stage}단계 <strong>${b.lap}회차</strong></div></div></div><div class="boss-hp"><span>남은 HP</span><strong><span class="boss-hp-value">${nf(b.hp)}</span><span class="boss-hp-ratio">/ ${nf(b.max)}</span></strong></div><div class="track boss-track"><div class="bar ${b.hp/b.max<.25?'orange':''}" style="width:${Math.max(0,Math.min(100,b.hp/b.max*100))}%"></div></div><div class="boss-info"><span>MAX ${nf(b.max)}</span><span>${b.max?(b.hp/b.max*100).toFixed(1):0}%</span></div><button type="button" class="boss-tactic-link" data-boss-center="${b.id}">${b.id}넴 택틱 보기 <span>→</span></button></article>`).join('')}</div></section>`}
-function overview(){const d=current(),day=maxDay(),arr=aggregates(d,day),events=d.events,dam=arr.reduce((s,p)=>s+p.damage,0),game=arr.reduce((s,p)=>s+p.game,0),top=[...arr].sort((a,b)=>b.contribution-a.contribution).slice(0,7),max=top[0]?.contribution||1,lev=bossStatus(d).reduce((a,b)=>Math.max(a,b.lap),1);return section('클랜전 상황판',`${monthFormat(app.active)} · 보스 진행과 다음 공격을 한눈에`,`<button class="btn" data-go="battle">배틀로그 ↗</button><button class="btn primary" data-go="tactics">택틱 확인 →</button>`)+bossTiles(d)+`<div class="metrics raid-stats">${metric('누적 실제 피해량',abbrev(dam),'초과 피해 제외 합계')}${metric('누적 인게임 점수',abbrev(game),'보스·단계별 배율 적용')}${metric('기록된 공격',nf(events.length)+'건','실제 공격 이력')}${metric('최고 진행 회차',lev+'회차','5개 보스 중 최고')}</div><div class="grid-2"><section class="panel"><div class="panel-head"><h2>최근 배틀로그</h2><button class="btn sm ghost" data-go="battle">전체 기록 보기 →</button></div>${logTable(sortedEvents(d).slice(-9).reverse(),false)}</section><section class="panel"><div class="panel-head"><h2>클랜 기여도 상위</h2><button class="btn sm ghost" data-go="members">개인 통계 →</button></div><div class="rank-list">${top.map((p,i)=>`<div><div class="rank-head"><div class="rank-name"><span class="rank-num">${i+1}</span>${X(p.name)}</div><span class="rank-data">${abbrev(p.contribution)}</span></div><div class="track"><div class="bar" style="width:${Number.isFinite(p.contribution)?p.contribution/max*100:0}%"></div></div></div>`).join('')}</div></section></div><div class="note section-spacer" ${editor?'':'hidden'}>공격 기록은 입력한 순서대로 계산됩니다. 월별 설정과 택틱은 선택한 월에만 적용되며 변경 사항은 자동 저장됩니다.</div>`}
+function overview(){const d=current(),remaining=remainingAttacks(d),day=maxDay(),arr=aggregates(d,day),events=d.events,dam=arr.reduce((s,p)=>s+p.damage,0),game=arr.reduce((s,p)=>s+p.game,0),top=[...arr].sort((a,b)=>b.contribution-a.contribution).slice(0,7),max=top[0]?.contribution||1,lev=bossStatus(d).reduce((a,b)=>Math.max(a,b.lap),1);return section('클랜전 상황판',`${monthFormat(app.active)} · 보스 진행과 다음 공격을 한눈에`,`<button class="btn" data-go="battle">배틀로그 ↗</button><button class="btn primary" data-go="tactics">택틱 확인 →</button>`)+bossTiles(d)+`<div class="metrics raid-stats">${metric('누적 실제 피해량',abbrev(dam),'초과 피해 제외 합계')}${metric('누적 인게임 점수',abbrev(game),'보스·단계별 배율 적용')}${metric('잔여타수',nf(remaining.normal)+'+'+nf(remaining.carry)+'타',remaining.day+'일차'+(remaining.ended?' 종료':' · 기본타 + 이월타'))}${metric('최고 진행 회차',lev+'회차','5개 보스 중 최고')}</div><div class="grid-2"><section class="panel"><div class="panel-head"><h2>최근 배틀로그</h2><button class="btn sm ghost" data-go="battle">전체 기록 보기 →</button></div>${logTable(sortedEvents(d).slice(-9).reverse(),false)}</section><section class="panel"><div class="panel-head"><h2>클랜 기여도 상위</h2><button class="btn sm ghost" data-go="members">개인 통계 →</button></div><div class="rank-list">${top.map((p,i)=>`<div><div class="rank-head"><div class="rank-name"><span class="rank-num">${i+1}</span>${X(p.name)}</div><span class="rank-data">${abbrev(p.contribution)}</span></div><div class="track"><div class="bar" style="width:${Number.isFinite(p.contribution)?p.contribution/max*100:0}%"></div></div></div>`).join('')}</div></section></div><div class="note section-spacer" ${editor?'':'hidden'}>공격 기록은 입력한 순서대로 계산됩니다. 월별 설정과 택틱은 선택한 월에만 적용되며 변경 사항은 자동 저장됩니다.</div>`}
 function logTable(rows,showEdit=true){
  if(!rows.length)return '<div class="empty">조회할 공격 기록이 없습니다.</div>';
  const seq=sequenceVisible();
@@ -113,63 +125,41 @@ function history(){const entries=[...new Set([...Object.keys(app.months),...arch
 // editable current-month state or sent with ordinary battle-log saves.
 async function loadArchive(key){
   if(!/^\d{4}-\d{2}$/.test(key))return;
-  ui.archiveMonth=key;archiveError='';archiveTab='logs';archivePageNumber=1;if(ui.page==='archive')window.history.replaceState(null,'','#archive='+key);
-  if(archiveCache.has(key)||app.months[key]){if(ui.page==='archive')render();return;}
-  archiveLoading=key;if(ui.page==='archive')render();
+  ui.archiveMonth=key;archiveError='';
+  if(archiveVisible())window.history.replaceState(null,'','#archive='+key);
+  if(archiveCache.has(key)||app.months[key]){if(archiveVisible())render();return;}
+  if(archiveLoading===key)return;
+  archiveLoading=key;if(archiveVisible())render();
   try{
     const res=await apiFetch('/api/archive?month='+key,{cache:'no-store'});
-    if(!res.ok)throw Error('아카이브 서버에서 과거 월 데이터를 가져올 수 없습니다.');
-    const json=await res.json(),record=json.data;
-    if(!record||!Array.isArray(record.events)||!Array.isArray(record.tactics))throw Error('보관된 월별 기록 형식을 확인해 주세요.');
-    Engine.replayMonth(record);
-    archiveCache.set(key,record);
+    if(!res.ok)throw Error('과거 월 데이터를 가져오지 못했습니다. 다시 시도해 주세요.');
+    const record=(await res.json()).data;
+    if(!record||!Array.isArray(record.events)||!Array.isArray(record.bosses))throw Error('보관된 월별 기록 형식을 확인해 주세요.');
+    Engine.replayMonth(record);archiveCache.set(key,record);
   }catch(e){archiveError=e.message||'과거 기록 조회 실패';}
-  finally{if(archiveLoading===key)archiveLoading='';if(ui.page==='archive'&&ui.archiveMonth===key)render();}
+  finally{if(archiveLoading===key)archiveLoading='';if(archiveVisible()&&ui.archiveMonth===key)render();}
 }
-function archive(){
-  const keys=archiveKeys(),key=ui.archiveMonth||keys[0],d=archiveCache.get(key)||app.months[key];
-  const selectors=keys.map(k=>`<button class="btn sm ${k===key?'primary':''}" data-open-archive="${X(k)}">${monthFormat(k)}</button>`).join('');
-  const heading=section('과거 클랜전 기록','현재 클랜전과 분리된 읽기 전용 아카이브입니다.');
-  if(!keys.length)return heading+'<section class="panel empty">지난 클랜전 기록이 아직 없습니다.</section>';
-  const nav=`<section class="panel archive-selector"><strong>월 선택</strong><div class="btnbar">${selectors}</div><button class="btn sm" data-page="overview">현재 클랜전 →</button></section>`;
-  if(!d)return heading+nav+`<section class="panel empty">${archiveLoading===key?'과거 기록을 불러오는 중입니다…':archiveError?X(archiveError):'월을 선택하면 해당 기록을 불러옵니다.'}</section>`;
-  const events=[...(d.events||[])].sort((a,b)=>Number(a.seq)-Number(b.seq)),tactics=(d.tactics||[]).filter(t=>!t.trashedAt);
-  const total=events.reduce((n,e)=>n+Number(e.actual??e.damage??0),0);
-  const tabs=`<div class="tabset archive-tabs">${[['logs','배틀로그'],['ranking','월별 순위'],['tactics','택틱'],['rules','월별 규칙']].map(([k,label])=>`<button data-archive-tab="${k}" class="${archiveTab===k?'active':''}">${label}</button>`).join('')}</div>`;
-  const metrics=`<div class="metrics archive-metrics"><div class="metric"><div class="k">공격 기록</div><div class="v">${nf(events.length)}건</div></div><div class="metric"><div class="k">실제 피해량 합계</div><div class="v">${nf(total)}</div></div><div class="metric"><div class="k">택틱</div><div class="v">${nf(tactics.length)}개</div></div></div>`;
-  let detail='';
-  if(archiveTab==='logs'){
-    const chunk=50,pages=Math.max(1,Math.ceil(events.length/chunk)),page=Math.max(1,Math.min(archivePageNumber,pages));
-    const rows=events.slice((page-1)*chunk,page*chunk).map(e=>`<tr><td>${nf(e.seq)}</td><td>${nf(e.day)}일차</td><th>${X(e.member||app.roster.find(p=>p.id===e.memberId)?.name||'—')}</th><td>${nf(e.boss)}넴</td><td>${nf(e.stage)}단계 · ${nf(e.lap)}회차</td><td class="number">${nf(e.actual??e.damage)}</td><td>${e.carry?'이월':'일반'}</td></tr>`).join('');
-    detail=`<section class="panel"><h2>배틀로그 · ${monthFormat(key)}</h2><div class="table-scroll"><table class="datatable archive-table"><thead><tr><th>#</th><th>일차</th><th>클랜원</th><th>보스</th><th>단계 · 회차</th><th>실제 피해량</th><th>구분</th></tr></thead><tbody>${rows||'<tr><td colspan="7" class="empty">기록 없음</td></tr>'}</tbody></table></div><div class="btnbar archive-pages"><button class="btn sm" data-archive-page="prev" ${page<=1?'disabled':''}>이전</button><span>${page} / ${pages}</span><button class="btn sm" data-archive-page="next" ${page>=pages?'disabled':''}>다음</button></div></section>`;
-  }else if(archiveTab==='ranking'){
-    const members=new Map();
-    for(const e of events){
-      const key=e.memberId||e.member||'—';
-      if(!members.has(key))members.set(key,{name:e.member||app.roster.find(p=>p.id===e.memberId)?.name||'—',hits:0,damage:0,contribution:0,game:0});
-      const p=members.get(key),damage=Number(e.actual??e.damage??0),contribution=Engine.contribution(e,d);
-      p.hits++;p.damage+=damage;p.contribution+=Number.isFinite(contribution)?contribution:0;
-      p.game+=damage*Number(d.bosses.find(b=>b.id===Number(e.boss))?.game?.[e.stage]||0);
-    }
-    const ranked=[...members.values()].sort((a,b)=>b.contribution-a.contribution||b.damage-a.damage);
-    detail=`<section class="panel"><h2>월별 기여도 순위 · ${monthFormat(key)}</h2><div class="table-scroll"><table class="datatable"><thead><tr><th>순위</th><th>클랜원</th><th>공격 수</th><th>실제 피해량</th><th>기여도</th><th>인게임 점수</th></tr></thead><tbody>${ranked.map((p,i)=>`<tr><td>${i+1}</td><th>${X(p.name)}</th><td>${nf(p.hits)}</td><td class="number">${nf(p.damage)}</td><td class="number">${nf(p.contribution)}</td><td class="number">${nf(p.game)}</td></tr>`).join('')||'<tr><td colspan="6" class="empty">기록 없음</td></tr>'}</tbody></table></div></section>`;
-  }else if(archiveTab==='tactics'){
-    detail=`<section class="panel"><h2>택틱 · ${monthFormat(key)}</h2><div class="archive-tactic-list">${tactics.map(t=>`<details class="archive-tactic"><summary>${X(t.boss?t.boss+'넴 · ':'')}${X(t.title||t.characters?.join(' ')||'택틱')} <span>${X(t.group||'')}</span></summary><div class="archive-tactic-party">${(t.characters||[]).map((n,i)=>`<span>${X(n)} ★${X(t.stars?.[i]||'-')}</span>`).join('')}</div><ol>${(t.rows||[]).map(r=>`<li>${X(r.text||'')}</li>`).join('')}</ol></details>`).join('')||'<div class="empty">보관된 택틱이 없습니다.</div>'}</div></section>`;
-  }else{
-    detail=`<section class="panel"><h2>${monthFormat(key)} 규칙</h2><div class="table-scroll"><table class="datatable"><thead><tr><th>보스</th><th>이름</th><th>2단계 HP</th><th>3단계 HP</th><th>4단계 HP</th></tr></thead><tbody>${(d.bosses||[]).map(b=>`<tr><td>${b.id}넴</td><th>${X(b.name)}</th><td>${nf(b.hp?.[2])}</td><td>${nf(b.hp?.[3])}</td><td>${nf(b.hp?.[4])}</td></tr>`).join('')}</tbody></table></div></section>`;
-  }
-  return heading+nav+metrics+tabs+detail;
+function archiveRecords(){
+  const keys=archiveKeys(),key=ui.archiveMonth&&keys.includes(ui.archiveMonth)?ui.archiveMonth:keys[0];
+  if(!key)return '<section class="panel empty">지난 클랜전 기록이 아직 없습니다.</section>';
+  const d=archiveCache.get(key)||app.months[key];
+  const nav=`<section class="panel archive-record-selector"><div class="field"><label for="archive-month-select">조회 월</label><select id="archive-month-select">${keys.map(k=>`<option value="${X(k)}" ${k===key?'selected':''}>${monthFormat(k)}</option>`).join('')}</select></div>${editor?`<button class="btn sm" data-guild="edit-history" data-value="${X(key)}">클랜전 결과 수정</button>`:''}</section>`;
+  if(!d)return nav+`<section class="panel empty">${archiveLoading===key?'과거 기록을 불러오는 중입니다…':archiveError?X(archiveError)+' <button class="btn sm" data-open-archive="'+X(key)+'">다시 시도</button>':'월을 선택하면 해당 기록을 불러옵니다.'}</section>`;
+  const summary=summarizeArchive(d,app.roster,(app.clanHistory||[]).find(h=>h.month===key)),sorted=sortArchiveRankings(summary.rows,ui.archiveSort);
+  const metrics=`<div class="metrics archive-record-metrics">${[['실제 피해량 합계',nf(summary.damage)],['인게임 점수 합계',nf(summary.game)],['클랜 등수',summary.clanRank?nf(summary.clanRank)+'위':'-'],['클랜원 수',nf(summary.memberCount)+'명']].map(([label,value])=>`<div class="metric"><div class="k">${label}</div><div class="v">${value}</div></div>`).join('')}</div>`;
+  const columns=[['damage','실제 피해량'],['contribution','기여도'],['game','인게임 점수']];
+  return nav+metrics+`<section class="panel archive-record-ranking"><div class="panel-head"><h2>${monthFormat(key)} 월별 순위</h2></div><div class="table-scroll"><table class="datatable archive-ranking-table"><thead><tr><th>순위</th><th>클랜원</th>${columns.map(([metric,label])=>`<th><button class="sort-head ${ui.archiveSort===metric?'active':''}" data-archive-sort="${metric}" aria-pressed="${ui.archiveSort===metric}">${label}${ui.archiveSort===metric?' ↓':''}</button></th>`).join('')}</tr></thead><tbody>${sorted.map((p,i)=>`<tr><td class="h-num">${i+1}</td><th>${X(p.name)}</th>${columns.map(([metric])=>`<td class="number ${ui.archiveSort===metric?'sorted':''}">${nf(p[metric])}</td>`).join('')}</tr>`).join('')||'<tr><td colspan="5" class="empty">기록이 없습니다.</td></tr>'}</tbody></table></div></section>`;
 }
 async function exportData(){if(!editor)return unlock();let data=app;if(splitStorage){try{const response=await apiFetch('/api/archive?all=1',{cache:'no-store'});if(!response.ok)throw Error();const archives=(await response.json()).months||{};data={...app,months:{...archives,...app.months}};}catch{notice('전체 백업에 필요한 과거 기록을 가져오지 못했습니다. 기록 손실을 막기 위해 백업을 중단했습니다.');return;}}const blob=new Blob([JSON.stringify({version:4,exportedAt:new Date().toISOString(),data},null,2)],{type:'application/json'});const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='nyangnyang-clan-'+app.active+'-backup.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1500);notice('JSON 백업 파일을 저장했습니다')}
 async function importJSON(file){if(!editor){unlock();return;}try{let data=JSON.parse(await file.text());if(!data?.data?.months||!Object.keys(data.data.months).length)throw Error('지원하지 않는 백업 형식');if(!confirm('현재 클랜 데이터를 이 백업 내용으로 교체할까요? 먼저 현재 데이터의 JSON 백업을 권장합니다.'))return;for(const d of Object.values(data.data.months)){if(!Array.isArray(d.bosses)||!Array.isArray(d.events)||!Array.isArray(d.tactics)||!Array.isArray(d.members)||!d.options)throw Error('월별 데이터가 올바르지 않습니다.');Engine.replayMonth(d);}app=data.data;ensureRoster(app,DEFAULT.rosterSeed||[]);ensureTactics(app,TACTIC_META,ROW_FORMATS);applySourceData(app,GUILD_SOURCE);for(const d of Object.values(app.months))Engine.replayMonth(d);workflow.afterMonthChange();restoreArchivesPending=splitStorage;persist();ui.page='overview';notice('백업 복원 내용을 저장 중입니다. 완료 상태를 확인해 주세요.');render()}catch(e){notice('백업 파일을 읽을 수 없습니다: '+e.message)}}
 function newMonth(){if(!editor){unlock();return;}if(!workflow.beforeNavigate())return;const last=Object.keys(app.months).sort().at(-1);const [y,m]=last.split('-').map(Number),next=new Date(y,m,1),key=`${next.getFullYear()}-${String(next.getMonth()+1).padStart(2,'0')}`;if(app.months[key]){app.active=key;workflow.afterMonthChange();goto('settings');return}if(!confirm(`${monthFormat(key)} 새 클랜전을 만들까요? 전월의 보스·배율·단계 규칙을 복사하고 재적 클랜원 명단으로 시작합니다. 공격 기록과 택틱은 빈 상태로 만듭니다.`))return;const prev=app.months[last],ids=app.roster.filter(p=>p.status==='active').map(p=>p.id);app.months[key]={month:key,bosses:deepcopy(prev.bosses),levels:deepcopy(prev.levels),members:[],memberIds:ids,membership:Object.fromEntries(ids.map(id=>[id,{fromDay:1,toDay:null}])),options:deepcopy(prev.options),events:[],tactics:[],recommendations:[],communityLinks:deepcopy(prev.communityLinks||[]),comboNotices:deepcopy(prev.comboNotices||GUILD_SOURCE.recommendationWarnings||{}),dayBreaks:[],guildDataVersion:1};syncRoster(app);app.active=key;workflow.afterMonthChange();guild.afterMonthChange();ui.member=current().members[0];persist();goto('settings');notice('새 클랜전을 생성했습니다. 보스와 배율을 수정하세요.')}
 function copyText(txt){if(navigator.clipboard&&window.isSecureContext){navigator.clipboard.writeText(txt).then(()=>notice('복사했습니다')).catch(()=>fallbackCopy(txt));}else fallbackCopy(txt)}
 function fallbackCopy(txt){const ta=document.createElement('textarea');ta.value=txt;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.focus();ta.select();let ok=false;try{ok=document.execCommand('copy')}catch(e){}ta.remove();notice(ok?'복사했습니다':'복사 기능이 제한된 브라우저입니다. 직접 선택해 복사해 주세요.')}
-const pages={overview,dashboard:()=>guild.dashboard(),battle,roster,tactics,calculator:tactics,members,profile:()=>guild.profile(),db:()=>guild.db(),combos:()=>guild.combos(),settings,history,archive};const labels={overview:'클랜전 상황판',dashboard:'대시보드',battle:'배틀로그',roster:'클랜원 관리',tactics:'택틱 작업실',calculator:'택틱 작업실',members:'월간 순위',profile:'개인 이력',db:'클랜 DB',combos:'추천 조합',settings:'규칙 · 월별 설정',history:'월별 아카이브',archive:'과거 기록'};
-function render(){document.title=`냥냥클랜 리리다이브 · ${labels[ui.page]}`;$('#top-name').textContent=labels[ui.page];let months=Object.keys(app.months).sort().reverse();$('#month-select').innerHTML=months.map(m=>`<option value="${m}" ${m===app.active?'selected':''}>${monthFormat(m)}</option>`).join('')+(archiveKeys().length?'<option value="__archive__">과거 기록 →</option>':'');$$('[data-page]').forEach(x=>x.classList.toggle('active',x.dataset.page===ui.page));$('#content').innerHTML=(pages[ui.page]||overview)()+`<div class="foot">© 냥냥클랜 리리다이브</div>`;$$('.field').forEach((field,i)=>{const input=field.querySelector('input,select,textarea'),label=field.querySelector('label');if(input&&label&&!label.contains(input)){if(!input.id)input.id='field-'+ui.page+'-'+i;label.htmlFor=input.id;}});workflow.mount(ui.page);tacticWorkspace.mount(ui.page);$$('[data-action="export"],[data-editor-only]').forEach(el=>el.classList.toggle('hidden',!editor));const access=$('#editor-control');if(access){access.textContent=editor?'🔒 작성 잠금':'🔓 작성 잠금 해제';access.dataset.admin=editor?'lock':'unlock';}if(!editor&&['settings'].includes(ui.page)){$$('#content input,#content select,#content textarea').forEach(el=>el.disabled=true);}}
+const pages={overview,dashboard:()=>guild.dashboard(),battle,roster,tactics,calculator:tactics,members,profile:()=>guild.profile(),db:()=>guild.db(),combos:()=>guild.combos(),settings,history,archive:()=>guild.db()};const labels={overview:'클랜전 상황판',dashboard:'대시보드',battle:'배틀로그',roster:'클랜원 관리',tactics:'택틱 작업실',calculator:'택틱 작업실',members:'월간 순위',profile:'개인 이력',db:'클랜 DB',combos:'추천 조합',settings:'규칙 · 월별 설정',history:'월별 아카이브',archive:'과거 기록'};
+function render(){document.title=`냥냥클랜 리리다이브 · ${labels[ui.page]}`;$('#top-name').textContent=labels[ui.page];let months=Object.keys(app.months).sort().slice(-1);$('#month-select').innerHTML=months.map(m=>`<option value="${m}" ${m===app.active?'selected':''}>${monthFormat(m)}</option>`).join('');$$('[data-page]').forEach(x=>x.classList.toggle('active',x.dataset.page===ui.page));$('#content').innerHTML=(pages[ui.page]||overview)()+`<div class="foot">© 냥냥클랜 리리다이브</div>`;$$('.field').forEach((field,i)=>{const input=field.querySelector('input,select,textarea'),label=field.querySelector('label');if(input&&label&&!label.contains(input)){if(!input.id)input.id='field-'+ui.page+'-'+i;label.htmlFor=input.id;}});workflow.mount(ui.page);tacticWorkspace.mount(ui.page);$$('[data-action="export"],[data-editor-only]').forEach(el=>el.classList.toggle('hidden',!editor));const access=$('#editor-control');if(access){access.textContent=editor?'🔒 작성 잠금':'🔓 작성 잠금 해제';access.dataset.admin=editor?'lock':'unlock';}if(!editor&&['settings'].includes(ui.page)){$$('#content input,#content select,#content textarea').forEach(el=>el.disabled=true);}}
 function handleAction(a){switch(a.dataset.action){case 'export':exportData();break;case 'newmonth':newMonth();break;case 'saverules':saveRules();break;}}
-document.addEventListener('click',e=>{let b=e.target.closest('button,[data-go]');if(!b)return;if(b.dataset.page){goto(b.dataset.page);return}if(b.dataset.bossCenter){tacticWorkspace.openBoss(Number(b.dataset.bossCenter));goto('tactics');return}if(b.dataset.go){goto(b.dataset.go);return}if(b.dataset.action){handleAction(b);return}if(b.dataset.day){ui.day=b.dataset.day;ui.logPage=1;render();return}if(b.dataset.pager){ui.logPage+=Number(b.dataset.pager);render();return}if(b.dataset.lognew!==undefined){ui.editLog='';render();$('#editor-anchor')?.scrollIntoView({behavior:'smooth',block:'start'});return}if(b.dataset.editlog){ui.editLog=b.dataset.editlog;render();$('#editor-anchor')?.scrollIntoView({behavior:'smooth',block:'start'});return}if(b.dataset.logcancel!==undefined){ui.editLog=null;render();return}if(b.dataset.stage){if(ui.page==='settings'){if(saveRules()===false)return;ui.configStage=Number(b.dataset.stage);render()}return}if(b.dataset.openArchive){goto('archive');void loadArchive(b.dataset.openArchive);return}if(b.dataset.archiveTab){archiveTab=b.dataset.archiveTab;archivePageNumber=1;render();return}if(b.dataset.archivePage){archivePageNumber+=b.dataset.archivePage==='next'?1:-1;render();return}if(b.dataset.selectMonth){if(!workflow.beforeNavigate()||!tacticWorkspace.beforeNavigate())return;app.active=b.dataset.selectMonth;workflow.afterMonthChange();guild.afterMonthChange();ui.member=current().members[0];ui.tactic=current().tactics[0]?.id||'';try{localStorage.setItem('nyang-view-month',app.active)}catch{}goto('overview');return}});
-document.addEventListener('change',e=>{const v=e.target;if(v.id==='setting-auto')$$('[data-boss$="-contribution"]').forEach(el=>{if(ui.configStage===4)el.disabled=v.checked});if(v.id==='month-select'){if(v.value==='__archive__'){goto('archive');return}if(!workflow.beforeNavigate()||!tacticWorkspace.beforeNavigate()){v.value=app.active;return}app.active=v.value;workflow.afterMonthChange();guild.afterMonthChange();ui.member=current().members[0];ui.tactic=current().tactics[0]?.id||'';try{localStorage.setItem('nyang-view-month',app.active)}catch{}render()}if(v.id==='log-boss'){ui.boss=v.value;ui.logPage=1;render()}if(v.id==='rank-metric'){ui.rank=v.value;render()}if(v.id==='profile-member'){ui.member=v.value;render()}if(v.id==='import-json'&&v.files?.[0])importJSON(v.files[0]);});
+document.addEventListener('click',e=>{let b=e.target.closest('button,[data-go]');if(!b)return;if(b.dataset.page){goto(b.dataset.page);return}if(b.dataset.bossCenter){tacticWorkspace.openBoss(Number(b.dataset.bossCenter));goto('tactics');return}if(b.dataset.go){goto(b.dataset.go);return}if(b.dataset.action){handleAction(b);return}if(b.dataset.day){ui.day=b.dataset.day;ui.logPage=1;render();return}if(b.dataset.pager){ui.logPage+=Number(b.dataset.pager);render();return}if(b.dataset.lognew!==undefined){ui.editLog='';render();$('#editor-anchor')?.scrollIntoView({behavior:'smooth',block:'start'});return}if(b.dataset.editlog){ui.editLog=b.dataset.editlog;render();$('#editor-anchor')?.scrollIntoView({behavior:'smooth',block:'start'});return}if(b.dataset.logcancel!==undefined){ui.editLog=null;render();return}if(b.dataset.stage){if(ui.page==='settings'){if(saveRules()===false)return;ui.configStage=Number(b.dataset.stage);render()}return}if(b.dataset.openArchive){ui.archiveMonth=b.dataset.openArchive;goto('archive');return}if(b.dataset.archiveSort){ui.archiveSort=b.dataset.archiveSort;render();return}if(b.dataset.selectMonth){if(!workflow.beforeNavigate()||!tacticWorkspace.beforeNavigate())return;app.active=b.dataset.selectMonth;workflow.afterMonthChange();guild.afterMonthChange();ui.member=current().members[0];ui.tactic=current().tactics[0]?.id||'';try{localStorage.setItem('nyang-view-month',app.active)}catch{}goto('overview');return}});
+document.addEventListener('change',e=>{const v=e.target;if(v.id==='archive-month-select'){void loadArchive(v.value);return}if(v.id==='setting-auto')$$('[data-boss$="-contribution"]').forEach(el=>{if(ui.configStage===4)el.disabled=v.checked});if(v.id==='month-select'){if(v.value==='__archive__'){goto('archive');return}if(!workflow.beforeNavigate()||!tacticWorkspace.beforeNavigate()){v.value=app.active;return}app.active=v.value;workflow.afterMonthChange();guild.afterMonthChange();ui.member=current().members[0];ui.tactic=current().tactics[0]?.id||'';try{localStorage.setItem('nyang-view-month',app.active)}catch{}render()}if(v.id==='log-boss'){ui.boss=v.value;ui.logPage=1;render()}if(v.id==='rank-metric'){ui.rank=v.value;render()}if(v.id==='profile-member'){ui.member=v.value;render()}if(v.id==='import-json'&&v.files?.[0])importJSON(v.files[0]);});
 document.addEventListener('input',e=>{if(e.target.id==='log-search'){ui.filter=e.target.value;ui.logPage=1;let pos=e.target.selectionStart;render();let el=$('#log-search');el?.focus();el?.setSelectionRange(pos,pos)}});
 document.addEventListener('submit',e=>{if(e.target.id==='log-form'){e.preventDefault();updateLog(e.target)}});
 function extraRuleFields(d){const o=d.options;return `<h3>이월 시간 규칙</h3><div class="settings-grid"><div class="field"><label>기본 전투시간 (초)</label><input id="setting-battle" type="number" min="1" value="${o.battleSeconds||90}"></div><div class="field"><label>이월 보정시간 (초)</label><input id="setting-carry-bonus" type="number" min="0" value="${o.carryBonusSeconds??20}"></div><div class="field"><label>최대 이월시간 (초)</label><input id="setting-carry-max" type="number" min="1" value="${o.carryMaxSeconds||90}"></div></div><div class="divider"></div><div class="panel-head"><h3>부스터 캐릭터</h3><span class="pill">공통 설정</span></div><div class="field"><label for="setting-boosters">한 줄에 한 명 · 모든 월의 조합과 택틱에 적용</label><textarea id="setting-boosters" rows="5">${X((app.boosterCharacters||[]).join('\n'))}</textarea></div>`;}
@@ -186,8 +176,9 @@ document.addEventListener('visibilitychange',()=>{if(document.visibilityState===
 ui.member=current().members[0];ui.tactic=current().tactics[0]?.id||'';
 saveStatus('saved');if(editor&&(!boot.data||rosterMigrated||tacticsMigrated||guildMigrated))persist();
 
+if(ui.page==='archive'){guild.openArchive();ui.page='db';}
 render();
-if(ui.page==='archive'){const key=ui.archiveMonth||archiveKeys()[0];if(key)void loadArchive(key);}
+if(archiveVisible()){const key=archiveKeys().includes(ui.archiveMonth)?ui.archiveMonth:archiveKeys()[0];if(key)void loadArchive(key);}
 // Battle logs and tactic corrections synchronize silently between browsers.
 // Prefer a lightweight server-sent revision stream; legacy API deployments fall
 // back to short polling. Never replace a local draft or an in-flight save.

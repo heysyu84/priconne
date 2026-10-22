@@ -1,0 +1,18 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import { summarizeArchive, sortArchiveRankings } from '../public/archive-summary.mjs';
+import { ensureRoster } from '../public/roster.mjs';
+import { applySourceData } from '../public/guild-model.mjs';
+import { replayMonth } from '../public/engine.mjs';
+const sample={memberIds:['a','b'],members:['이전 이름','무공격'],bosses:[{id:1,game:{2:2},contribution:{2:.5}},{id:2,game:{3:3},contribution:{3:.25}}],events:[{memberId:'a',member:'이전 이름',actual:100,damage:150,boss:1,stage:2},{memberId:'a',member:'이전 이름',actual:40,damage:100,boss:2,stage:3}]};
+const original=structuredClone(sample),summary=summarizeArchive(sample,[{id:'a',name:'현재 이름'}]);
+assert.equal(summary.damage,140);assert.equal(summary.game,320);assert.equal(summary.memberCount,2);assert.equal(summary.clanRank,null);
+assert.equal(summary.rows[0].contribution,60);assert.equal(summary.rows[0].name,'이전 이름');assert.equal(summary.rows[1].damage,0);assert.deepEqual(sample,original);
+assert.equal(summarizeArchive(sample,[],{clanRank:21,memberCount:22}).clanRank,21);assert.equal(summarizeArchive(sample,[],{memberCount:22}).memberCount,22);
+const rows=[{name:'피해량',damage:100,game:100,contribution:1},{name:'기여도',damage:90,game:200,contribution:2},{name:'미확정',damage:80,game:300,contribution:NaN}];
+assert.equal(sortArchiveRankings(rows)[0].name,'기여도');assert.equal(sortArchiveRankings(rows,'damage')[0].name,'피해량');assert.equal(sortArchiveRankings(rows,'game')[0].name,'미확정');assert.equal(rows[0].name,'피해량');
+const shell=fs.readFileSync(new URL('../public/clan-shell.html',import.meta.url),'utf8'),app=JSON.parse(shell.match(/<script id="seed-data" type="application\/json">([\s\S]*?)<\/script>/)[1]);
+ensureRoster(app,app.rosterSeed);applySourceData(app,JSON.parse(fs.readFileSync(new URL('../public/guild-source.json',import.meta.url),'utf8')));
+const d=app.months['2026-09'];replayMonth(d);const before=JSON.stringify(d),real=summarizeArchive(d,app.roster,app.clanHistory.find(h=>h.month==='2026-09'));
+assert.equal(real.damage,101280678979);assert.ok(Math.abs(real.game-461740233461.6)<.01);assert.equal(real.memberCount,22);assert.equal(real.clanRank,21);assert.equal(JSON.stringify(d),before);assert.equal(d.events.length,454);assert.ok(d.tactics.length>0);
+console.log('PASS: exact historical damage/game totals, original month preservation, snapshot names and zero-attack members, saved clan rank/count and metric sorting');
