@@ -33,15 +33,28 @@ catch { $('#content').innerHTML='<section class="panel"><h1>기록에 연결하�
 let app=boot.data||deepcopy(DEFAULT);
 let splitStorage=boot.splitStorage===true,restoreArchivesPending=false;
 const archiveCache=new Map();
-const monthView=createMonthView({getApp:()=>app,cache:archiveCache,prepare:Engine.replayMonth,fetchMonth:async key=>{
-  const res=await apiFetch('/api/archive?month='+key,{cache:'no-store'});
-  if(!res.ok)throw Error('과거 월 데이터를 가져오지 못했습니다. 다시 시도해 주세요.');
-  return (await res.json()).data;
-}});
+const importedArchiveMonths=Array.from({length:8},(_,i)=>'2026-'+String(i+1).padStart(2,'0'));
+const monthView=createMonthView({getApp:()=>app,cache:archiveCache,availableMonths:importedArchiveMonths,
+  prepare:record=>{
+    if(!Array.isArray(record.sourceRankings)){Engine.replayMonth(record);return;}
+    // Allocate each person's finalized source game total to their attacks.
+    // This preserves exact monthly totals without recalculating old seasons.
+    const totals=new Map(record.sourceRankings.map(p=>[p.name,Number(p.game)||0]));
+    const weights=new Map();
+    for(const e of record.events){const base=(Number(e.actual)||0)*(Number(record.bosses.find(b=>b.id===Number(e.boss))?.game?.[e.stage])||1);e.archiveWeight=base;weights.set(e.member,(weights.get(e.member)||0)+base);}
+    for(const e of record.events){e.sourceGame=(totals.get(e.member)||0)*e.archiveWeight/(weights.get(e.member)||1);delete e.archiveWeight;}
+  },
+  fetchMonth:async key=>{
+    const fromSheet=importedArchiveMonths.includes(key);
+    const res=fromSheet?await fetch(assetUrl('/archive-data/'+key+'.json'),{cache:'force-cache'}):await apiFetch('/api/archive?month='+key,{cache:'no-store'});
+    if(!res.ok)throw Error('과거 월 데이터를 가져오지 못했습니다. 다시 시도해 주세요.');
+    return fromSheet?await res.json():(await res.json()).data;
+  }
+});
 let detailMonthLoading='',detailMonthRequest=0;
 const canEdit=()=>editor&&!monthView.isPast();
 let archiveLoading='',archiveError='';
-const archiveKeys=()=>{const latest=Object.keys(app.months).sort().at(-1);return [...new Set([...(app.archivedMonths||[]),...Object.keys(app.months).filter(k=>k!==latest)])].sort().reverse()};
+const archiveKeys=()=>{const latest=Object.keys(app.months).sort().at(-1);return [...new Set([...importedArchiveMonths,...(app.archivedMonths||[]),...Object.keys(app.months).filter(k=>k!==latest)])].sort().reverse()};
 const rosterMigrated=ensureRoster(app,DEFAULT.rosterSeed||[]);
 const tacticsMigrated=ensureTactics(app,TACTIC_META,ROW_FORMATS);
 const guildMigrated=applySourceData(app,GUILD_SOURCE);
@@ -99,8 +112,8 @@ async function selectDetailMonth(key,overview=false){
 function sortedEvents(d=current()){return [...d.events].sort((a,b)=>(a.seq-b.seq)||Number(a.sourceRow||0)-Number(b.sourceRow||0))}
 function maxDay(){return Math.max(current().options.days||5,...current().events.map(e=>e.day||0),1)}
 function phase(lap,d=current()){return d.levels.find(l=>l.count>0&&Number(lap)>=l.start&&Number(lap)<=l.end)?.stage||d.options.startStage||2}
-function score(e,d=current()){return (Number(e.actual)||0)*(Number(d.bosses[e.boss-1]?.game?.[e.stage])||0)}
-function contrib(e,d=current()){return Engine.contribution(e,d)}
+function score(e,d=current()){return Number.isFinite(e.sourceGame)?e.sourceGame:(Number(e.actual)||0)*(Number(d.bosses[e.boss-1]?.game?.[e.stage])||0)}
+function contrib(e,d=current()){return Number.isFinite(e.sourceContribution)?e.sourceContribution:Engine.contribution(e,d)}
 function aggregates(d=current(),through=maxDay()){
  const people={};for(let [index,name] of d.members.entries())people[name]={name,memberId:d.memberIds[index],damage:0,contribution:0,game:0,shots:0,carry:0,dayDamage:0,dayContribution:0,byDay:{},byBoss:{}};
  for(const e of d.events){if(Number(e.day)>through)continue;const n=e.member||'미등록';let p=people[n]||(people[n]={name:n,damage:0,contribution:0,game:0,shots:0,carry:0,dayDamage:0,dayContribution:0,byDay:{},byBoss:{}});p.damage+=Number(e.actual)||0;p.contribution+=contrib(e,d);p.game+=score(e,d);p.shots+=!e.carry?1:0;p.carry+=e.carry?1:0;p.byDay[e.day]||(p.byDay[e.day]={damage:0,contribution:0,shots:0,carry:0});let day=p.byDay[e.day];day.damage+=Number(e.actual)||0;day.contribution+=contrib(e,d);day.shots+=e.carry?0:1;day.carry+=e.carry?1:0;p.byBoss[e.boss]||(p.byBoss[e.boss]={damage:0,shots:0,best:0});let b=p.byBoss[e.boss];b.damage+=Number(e.actual)||0;b.shots++;b.best=Math.max(b.best,Number(e.actual)||0)}
@@ -145,6 +158,7 @@ function history(){const entries=[...new Set([...Object.keys(app.months),...arch
 // editable current-month state or sent with ordinary battle-log saves.
 async function loadArchive(key){
   if(!/^\d{4}-\d{2}$/.test(key))return;
+  if(ui.archiveMonth!==key){ui.archiveLogPage=1;ui.archiveLogMember='';ui.archiveLogDay='';}
   ui.archiveMonth=key;archiveError='';
   if(archiveVisible())window.history.replaceState(null,'','#archive='+key);
   if(archiveCache.has(key)||app.months[key]){if(archiveVisible())render();return;}
