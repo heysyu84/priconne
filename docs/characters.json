@@ -4,6 +4,86 @@
   "variantSource": "https://github.com/PurikoneKrSemi/PurikoneKrSheet/tree/main/images",
   "characters": [
     {
+      "id": "image-ac70-ba54-c2a4",
+      "name": "거메스",
+      "aliases": [],
+      "portrait": "/source-library/images/nostar/%EA%B1%B0%EB%A9%94%EC%8A%A4.png",
+      "byStar": {
+        "3": "/source-library/images/%EA%B1%B0%EB%A9%94%EC%8A%A43.png",
+        "4": "/source-library/images/%EA%B1%B0%EB%A9%94%EC%8A%A44.png",
+        "5": "/source-library/images/%EA%B1%B0%EB%A9%94%EC%8A%A45.png"
+      },
+      "source": {
+        "type": "image-library",
+        "imageName": "거메스"
+      },
+      "dimensions": [
+        100,
+        100
+      ],
+      "variants": {}
+    },
+    {
+      "id": "image-ac70-c0ac-b80c",
+      "name": "거사렌",
+      "aliases": [],
+      "portrait": "/source-library/images/nostar/%EA%B1%B0%EC%82%AC%EB%A0%8C.png",
+      "byStar": {
+        "3": "/source-library/images/%EA%B1%B0%EC%82%AC%EB%A0%8C3.png",
+        "4": "/source-library/images/%EA%B1%B0%EC%82%AC%EB%A0%8C4.png",
+        "5": "/source-library/images/%EA%B1%B0%EC%82%AC%EB%A0%8C5.png"
+      },
+      "source": {
+        "type": "image-library",
+        "imageName": "거사렌"
+      },
+      "dimensions": [
+        100,
+        100
+      ],
+      "variants": {}
+    },
+    {
+      "id": "image-ac78-b9c8-d638",
+      "name": "걸마호",
+      "aliases": [],
+      "portrait": "/source-library/images/nostar/%EA%B1%B8%EB%A7%88%ED%98%B8.png",
+      "byStar": {
+        "3": "/source-library/images/%EA%B1%B8%EB%A7%88%ED%98%B83.png",
+        "4": "/source-library/images/%EA%B1%B8%EB%A7%88%ED%98%B84.png",
+        "5": "/source-library/images/%EA%B1%B8%EB%A7%88%ED%98%B85.png"
+      },
+      "source": {
+        "type": "image-library",
+        "imageName": "걸마호"
+      },
+      "dimensions": [
+        100,
+        100
+      ],
+      "variants": {}
+    },
+    {
+      "id": "image-ac78-bbf8-d638",
+      "name": "걸미호",
+      "aliases": [],
+      "portrait": "/source-library/images/nostar/%EA%B1%B8%EB%AF%B8%ED%98%B8.png",
+      "byStar": {
+        "3": "/source-library/images/%EA%B1%B8%EB%AF%B8%ED%98%B83.png",
+        "4": "/source-library/images/%EA%B1%B8%EB%AF%B8%ED%98%B84.png",
+        "5": "/source-library/images/%EA%B1%B8%EB%AF%B8%ED%98%B85.png"
+      },
+      "source": {
+        "type": "image-library",
+        "imageName": "걸미호"
+      },
+      "dimensions": [
+        100,
+        100
+      ],
+      "variants": {}
+    },
+    {
       "id": "sheet-row-302",
       "name": "게무기",
       "aliases": [],
@@ -49,6 +129,26 @@
           "sha256": "e0d15f776dd518e16988765bfc8013ff38b5ca83862b69b6cf2d4346a1d1f8f5"
         }
       }
+    },
+    {
+      "id": "image-ace0-cfc4-ce74",
+      "name": "고쿄카",
+      "aliases": [],
+      "portrait": "/source-library/images/nostar/%EA%B3%A0%EC%BF%84%EC%B9%B4.png",
+      "byStar": {
+        "3": "/source-library/images/%EA%B3%A0%EC%BF%84%EC%B9%B43.png",
+        "4": "/source-library/images/%EA%B3%A0%EC%BF%84%EC%B9%B44.png",
+        "5": "/source-library/images/%EA%B3%A0%EC%BF%84%EC%B9%B45.png"
+      },
+      "source": {
+        "type": "image-library",
+        "imageName": "고쿄카"
+      },
+      "dimensions": [
+        100,
+        100
+      ],
+      "variants": {}
     },
     {
       "id": "sheet-row-187",
@@ -1367,29 +1467,24 @@
       "variants": {}
     },
     {
-      "id": "sheet-row-299",
-      "name": "루이즈",
-      "aliases": [
-        "루이즈마리"
-      ],
-      "portrait": "/images/characters/unit-row-299.png",
-      "byStar": {},
+      "id": "image-b8e8-b8e8-c774",
+      "name": "루루이",
+      "aliases": [],
+      "portrait": "/source-library/images/nostar/%EB%A3%A8%EB%A3%A8%EC%9D%B4.png",
+      "byStar": {
+        "3": "/source-library/images/%EB%A3%A8%EB%A3%A8%EC%9D%B43.png",
+        "4": "/source-library/images/%EB%A3%A8%EB%A3%A8%EC%9D%B44.png",
+        "5": "/source-library/images/%EB%A3%A8%EB%A3%A8%EC%9D%B45.png"
+      },
       "source": {
-        "type": "xlsx-embedded",
-        "sheet": "데이터",
-        "nameCell": "A299",
-        "imageCell": "B299",
-        "anchor": {
-          "row": 298,
-          "column": 1
-        },
-        "media": "xl/media/image267.png",
-        "sha256": "b98750e0e994929bd72bbdb38cff36d9319fa846aaa98ede23e373933c7cc104"
+        "type": "image-library",
+        "imageName": "루루이"
       },
       "dimensions": [
-        96,
-        96
-      ]
+        100,
+        100
+      ],
+      "variants": {}
     },
     {
       "id": "sheet-row-43",
@@ -1559,6 +1654,26 @@
       "variants": {}
     },
     {
+      "id": "image-b9ac-c790",
+      "name": "리자",
+      "aliases": [],
+      "portrait": "/source-library/images/nostar/%EB%A6%AC%EC%9E%90.png",
+      "byStar": {
+        "3": "/source-library/images/%EB%A6%AC%EC%9E%903.png",
+        "4": "/source-library/images/%EB%A6%AC%EC%9E%904.png",
+        "5": "/source-library/images/%EB%A6%AC%EC%9E%905.png"
+      },
+      "source": {
+        "type": "image-library",
+        "imageName": "리자"
+      },
+      "dimensions": [
+        100,
+        100
+      ],
+      "variants": {}
+    },
+    {
       "id": "sheet-row-218",
       "name": "리조미",
       "aliases": [],
@@ -1702,6 +1817,36 @@
       "variants": {}
     },
     {
+      "id": "sheet-row-299",
+      "name": "마리",
+      "aliases": [
+        "루이즈마리",
+        "루이즈"
+      ],
+      "portrait": "/images/characters/unit-row-299.png",
+      "byStar": {},
+      "source": {
+        "type": "xlsx-embedded",
+        "sheet": "데이터",
+        "nameCell": "A299",
+        "imageCell": "B299",
+        "anchor": {
+          "row": 298,
+          "column": 1
+        },
+        "media": "xl/media/image267.png",
+        "sha256": "b98750e0e994929bd72bbdb38cff36d9319fa846aaa98ede23e373933c7cc104"
+      },
+      "dimensions": [
+        96,
+        96
+      ],
+      "sourceNameMatch": {
+        "imageFilename": "마리",
+        "verification": "user-confirmed"
+      }
+    },
+    {
       "id": "sheet-row-104",
       "name": "마스미",
       "aliases": [],
@@ -1724,6 +1869,36 @@
         96
       ],
       "variants": {}
+    },
+    {
+      "id": "sheet-row-105",
+      "name": "마오리",
+      "aliases": [
+        "퓨오리"
+      ],
+      "portrait": "/images/sheet-originals/image241.png",
+      "byStar": {},
+      "source": {
+        "type": "xlsx-embedded",
+        "sheet": "데이터",
+        "nameCell": "A105",
+        "imageCell": "B105",
+        "anchor": {
+          "row": 104,
+          "column": 1
+        },
+        "media": "xl/media/image241.png",
+        "sha256": "aac14a5d4feaa94844a325b3173d26b59e5b7405350b86dda125fbb70c4fcb8f"
+      },
+      "dimensions": [
+        96,
+        96
+      ],
+      "variants": {},
+      "sourceNameMatch": {
+        "imageFilename": "마오리",
+        "verification": "face-compared"
+      }
     },
     {
       "id": "sheet-row-54",
@@ -2093,30 +2268,6 @@
       }
     },
     {
-      "id": "sheet-row-108",
-      "name": "미오",
-      "aliases": [],
-      "portrait": "/images/sheet-originals/image78.png",
-      "byStar": {},
-      "source": {
-        "type": "xlsx-embedded",
-        "sheet": "데이터",
-        "nameCell": "A108",
-        "imageCell": "B108",
-        "anchor": {
-          "row": 107,
-          "column": 1
-        },
-        "media": "xl/media/image78.png",
-        "sha256": "cafc5bfa3899bd4acbc517b01eefaf5c7530c4f4c93966ff97d64d2d6c54d2af"
-      },
-      "dimensions": [
-        96,
-        96
-      ],
-      "variants": {}
-    },
-    {
       "id": "sheet-row-46",
       "name": "미츠키",
       "aliases": [],
@@ -2161,6 +2312,46 @@
       "dimensions": [
         96,
         96
+      ],
+      "variants": {}
+    },
+    {
+      "id": "image-bc14-b808-c774-c2a4",
+      "name": "바레이스",
+      "aliases": [],
+      "portrait": "/source-library/images/nostar/%EB%B0%94%EB%A0%88%EC%9D%B4%EC%8A%A4.png",
+      "byStar": {
+        "3": "/source-library/images/%EB%B0%94%EB%A0%88%EC%9D%B4%EC%8A%A43.png",
+        "4": "/source-library/images/%EB%B0%94%EB%A0%88%EC%9D%B4%EC%8A%A44.png",
+        "5": "/source-library/images/%EB%B0%94%EB%A0%88%EC%9D%B4%EC%8A%A45.png"
+      },
+      "source": {
+        "type": "image-library",
+        "imageName": "바레이스"
+      },
+      "dimensions": [
+        100,
+        100
+      ],
+      "variants": {}
+    },
+    {
+      "id": "image-bc14-c170-d53c",
+      "name": "바셰피",
+      "aliases": [],
+      "portrait": "/source-library/images/nostar/%EB%B0%94%EC%85%B0%ED%94%BC.png",
+      "byStar": {
+        "3": "/source-library/images/%EB%B0%94%EC%85%B0%ED%94%BC3.png",
+        "4": "/source-library/images/%EB%B0%94%EC%85%B0%ED%94%BC4.png",
+        "5": "/source-library/images/%EB%B0%94%EC%85%B0%ED%94%BC5.png"
+      },
+      "source": {
+        "type": "image-library",
+        "imageName": "바셰피"
+      },
+      "dimensions": [
+        100,
+        100
       ],
       "variants": {}
     },
@@ -2212,6 +2403,66 @@
       }
     },
     {
+      "id": "image-bc1c-b808-c2dc-c544",
+      "name": "발레시아",
+      "aliases": [],
+      "portrait": "/source-library/images/nostar/%EB%B0%9C%EB%A0%88%EC%8B%9C%EC%95%84.png",
+      "byStar": {
+        "3": "/source-library/images/%EB%B0%9C%EB%A0%88%EC%8B%9C%EC%95%843.png",
+        "4": "/source-library/images/%EB%B0%9C%EB%A0%88%EC%8B%9C%EC%95%844.png",
+        "5": "/source-library/images/%EB%B0%9C%EB%A0%88%EC%8B%9C%EC%95%845.png"
+      },
+      "source": {
+        "type": "image-library",
+        "imageName": "발레시아"
+      },
+      "dimensions": [
+        100,
+        100
+      ],
+      "variants": {}
+    },
+    {
+      "id": "image-bc1c-b9ac-b9ac",
+      "name": "발리리",
+      "aliases": [],
+      "portrait": "/source-library/images/nostar/%EB%B0%9C%EB%A6%AC%EB%A6%AC.png",
+      "byStar": {
+        "3": "/source-library/images/%EB%B0%9C%EB%A6%AC%EB%A6%AC3.png",
+        "4": "/source-library/images/%EB%B0%9C%EB%A6%AC%EB%A6%AC4.png",
+        "5": "/source-library/images/%EB%B0%9C%EB%A6%AC%EB%A6%AC5.png"
+      },
+      "source": {
+        "type": "image-library",
+        "imageName": "발리리"
+      },
+      "dimensions": [
+        100,
+        100
+      ],
+      "variants": {}
+    },
+    {
+      "id": "image-bc1c-b9ac-c544",
+      "name": "발리아",
+      "aliases": [],
+      "portrait": "/source-library/images/nostar/%EB%B0%9C%EB%A6%AC%EC%95%84.png",
+      "byStar": {
+        "3": "/source-library/images/%EB%B0%9C%EB%A6%AC%EC%95%843.png",
+        "4": "/source-library/images/%EB%B0%9C%EB%A6%AC%EC%95%844.png",
+        "5": "/source-library/images/%EB%B0%9C%EB%A6%AC%EC%95%845.png"
+      },
+      "source": {
+        "type": "image-library",
+        "imageName": "발리아"
+      },
+      "dimensions": [
+        100,
+        100
+      ],
+      "variants": {}
+    },
+    {
       "id": "sheet-row-74",
       "name": "발리코",
       "aliases": [],
@@ -2232,6 +2483,26 @@
       "dimensions": [
         96,
         96
+      ],
+      "variants": {}
+    },
+    {
+      "id": "image-bc1c-be14-b8f8",
+      "name": "발블룸",
+      "aliases": [],
+      "portrait": "/source-library/images/nostar/%EB%B0%9C%EB%B8%94%EB%A3%B8.png",
+      "byStar": {
+        "3": "/source-library/images/%EB%B0%9C%EB%B8%94%EB%A3%B83.png",
+        "4": "/source-library/images/%EB%B0%9C%EB%B8%94%EB%A3%B84.png",
+        "5": "/source-library/images/%EB%B0%9C%EB%B8%94%EB%A3%B85.png"
+      },
+      "source": {
+        "type": "image-library",
+        "imageName": "발블룸"
+      },
+      "dimensions": [
+        100,
+        100
       ],
       "variants": {}
     },
@@ -2694,6 +2965,26 @@
       "variants": {}
     },
     {
+      "id": "image-c11c-b85c-ccb4",
+      "name": "서로체",
+      "aliases": [],
+      "portrait": "/source-library/images/nostar/%EC%84%9C%EB%A1%9C%EC%B2%B4.png",
+      "byStar": {
+        "3": "/source-library/images/%EC%84%9C%EB%A1%9C%EC%B2%B43.png",
+        "4": "/source-library/images/%EC%84%9C%EB%A1%9C%EC%B2%B44.png",
+        "5": "/source-library/images/%EC%84%9C%EB%A1%9C%EC%B2%B45.png"
+      },
+      "source": {
+        "type": "image-library",
+        "imageName": "서로체"
+      },
+      "dimensions": [
+        100,
+        100
+      ],
+      "variants": {}
+    },
+    {
       "id": "sheet-row-282",
       "name": "성라엘",
       "aliases": [],
@@ -2739,32 +3030,6 @@
           "sha256": "e32694cdbccef67a4300a2fc70a5c0483ebd56f487e59a2eb0a767a6675534e3"
         }
       }
-    },
-    {
-      "id": "sheet-row-247",
-      "name": "성짓타",
-      "aliases": [
-        "성레짓타"
-      ],
-      "portrait": "/images/sheet-originals/image280.png",
-      "byStar": {},
-      "source": {
-        "type": "xlsx-embedded",
-        "sheet": "데이터",
-        "nameCell": "A247",
-        "imageCell": "B247",
-        "anchor": {
-          "row": 246,
-          "column": 1
-        },
-        "media": "xl/media/image280.png",
-        "sha256": "2ca30ec29f517c557fc9cf4304f0c0c03b8296b44cafe5c1eba8c264cf4ef9be"
-      },
-      "dimensions": [
-        96,
-        96
-      ],
-      "variants": {}
     },
     {
       "id": "sheet-row-149",
@@ -2911,6 +3176,32 @@
       "variants": {}
     },
     {
+      "id": "sheet-row-319",
+      "name": "성소라",
+      "aliases": [
+        "크소라"
+      ],
+      "portrait": "/images/sheet-originals/image318.png",
+      "byStar": {},
+      "source": {
+        "type": "xlsx-embedded",
+        "sheet": "데이터",
+        "nameCell": "A319",
+        "imageCell": "B319",
+        "anchor": {
+          "row": 318,
+          "column": 1
+        },
+        "media": "xl/media/image318.png",
+        "sha256": "00c1174439a0196da06b29b7c1735b67e84a3392d894e60534ed769cbe8dd76d"
+      },
+      "dimensions": [
+        96,
+        96
+      ],
+      "variants": {}
+    },
+    {
       "id": "sheet-row-69",
       "name": "성야네",
       "aliases": [],
@@ -2959,30 +3250,6 @@
       "variants": {}
     },
     {
-      "id": "sheet-row-210",
-      "name": "성요리",
-      "aliases": [],
-      "portrait": "/images/sheet-originals/image175.png",
-      "byStar": {},
-      "source": {
-        "type": "xlsx-embedded",
-        "sheet": "데이터",
-        "nameCell": "A210",
-        "imageCell": "B210",
-        "anchor": {
-          "row": 209,
-          "column": 1
-        },
-        "media": "xl/media/image175.png",
-        "sha256": "715389e5a52601ed4ef39d729ea26b7f544b6eb4230ae8402d517cccc136ae11"
-      },
-      "dimensions": [
-        96,
-        96
-      ],
-      "variants": {}
-    },
-    {
       "id": "sheet-row-180",
       "name": "성유니",
       "aliases": [],
@@ -2999,6 +3266,32 @@
         },
         "media": "xl/media/image147.png",
         "sha256": "ea89a4b1d9bc959a469ab8cd6910e212547f9eccedbca6992f5553c1f11f3b08"
+      },
+      "dimensions": [
+        96,
+        96
+      ],
+      "variants": {}
+    },
+    {
+      "id": "sheet-row-320",
+      "name": "성유이",
+      "aliases": [
+        "크유이"
+      ],
+      "portrait": "/images/sheet-originals/image285.png",
+      "byStar": {},
+      "source": {
+        "type": "xlsx-embedded",
+        "sheet": "데이터",
+        "nameCell": "A320",
+        "imageCell": "B320",
+        "anchor": {
+          "row": 319,
+          "column": 1
+        },
+        "media": "xl/media/image285.png",
+        "sha256": "2340ec9878c847ca173f56353822b9d14205a9e570286e6db9e71d5767cf5511"
       },
       "dimensions": [
         96,
@@ -3071,6 +3364,32 @@
         },
         "media": "xl/media/image265.png",
         "sha256": "e97a9b2c42ea0c5c2c2f17b01046c19823a2d534a5ebcac509ebb4b2137f476c"
+      },
+      "dimensions": [
+        96,
+        96
+      ],
+      "variants": {}
+    },
+    {
+      "id": "sheet-row-247",
+      "name": "성짓타",
+      "aliases": [
+        "성레짓타"
+      ],
+      "portrait": "/images/sheet-originals/image280.png",
+      "byStar": {},
+      "source": {
+        "type": "xlsx-embedded",
+        "sheet": "데이터",
+        "nameCell": "A247",
+        "imageCell": "B247",
+        "anchor": {
+          "row": 246,
+          "column": 1
+        },
+        "media": "xl/media/image280.png",
+        "sha256": "2ca30ec29f517c557fc9cf4304f0c0c03b8296b44cafe5c1eba8c264cf4ef9be"
       },
       "dimensions": [
         96,
@@ -3484,6 +3803,22 @@
       "variants": {}
     },
     {
+      "id": "image-c218-b2c8-b17c-34",
+      "name": "수니논4",
+      "aliases": [],
+      "portrait": "/source-library/images/nostar/%EC%88%98%EB%8B%88%EB%85%BC4.png",
+      "byStar": {},
+      "source": {
+        "type": "image-library",
+        "imageName": "수니논4"
+      },
+      "dimensions": [
+        100,
+        100
+      ],
+      "variants": {}
+    },
+    {
       "id": "sheet-row-237",
       "name": "수란파",
       "aliases": [],
@@ -3575,6 +3910,26 @@
       "dimensions": [
         96,
         96
+      ],
+      "variants": {}
+    },
+    {
+      "id": "image-c218-b808-c9d3-d0c0",
+      "name": "수레짓타",
+      "aliases": [],
+      "portrait": "/source-library/images/nostar/%EC%88%98%EB%A0%88%EC%A7%93%ED%83%80.png",
+      "byStar": {
+        "3": "/source-library/images/%EC%88%98%EB%A0%88%EC%A7%93%ED%83%803.png",
+        "4": "/source-library/images/%EC%88%98%EB%A0%88%EC%A7%93%ED%83%804.png",
+        "5": "/source-library/images/%EC%88%98%EB%A0%88%EC%A7%93%ED%83%805.png"
+      },
+      "source": {
+        "type": "image-library",
+        "imageName": "수레짓타"
+      },
+      "dimensions": [
+        100,
+        100
       ],
       "variants": {}
     },
@@ -3862,6 +4217,26 @@
       }
     },
     {
+      "id": "image-c218-b9c8-b9ac",
+      "name": "수마리",
+      "aliases": [],
+      "portrait": "/source-library/images/nostar/%EC%88%98%EB%A7%88%EB%A6%AC.png",
+      "byStar": {
+        "3": "/source-library/images/%EC%88%98%EB%A7%88%EB%A6%AC3.png",
+        "4": "/source-library/images/%EC%88%98%EB%A7%88%EB%A6%AC4.png",
+        "5": "/source-library/images/%EC%88%98%EB%A7%88%EB%A6%AC5.png"
+      },
+      "source": {
+        "type": "image-library",
+        "imageName": "수마리"
+      },
+      "dimensions": [
+        100,
+        100
+      ],
+      "variants": {}
+    },
+    {
       "id": "sheet-row-61",
       "name": "수마키",
       "aliases": [],
@@ -4071,6 +4446,46 @@
       "dimensions": [
         96,
         96
+      ],
+      "variants": {}
+    },
+    {
+      "id": "image-c218-bc24-d53c",
+      "name": "수밤피",
+      "aliases": [],
+      "portrait": "/source-library/images/nostar/%EC%88%98%EB%B0%A4%ED%94%BC.png",
+      "byStar": {
+        "3": "/source-library/images/%EC%88%98%EB%B0%A4%ED%94%BC3.png",
+        "4": "/source-library/images/%EC%88%98%EB%B0%A4%ED%94%BC4.png",
+        "5": "/source-library/images/%EC%88%98%EB%B0%A4%ED%94%BC5.png"
+      },
+      "source": {
+        "type": "image-library",
+        "imageName": "수밤피"
+      },
+      "dimensions": [
+        100,
+        100
+      ],
+      "variants": {}
+    },
+    {
+      "id": "image-c218-bd80-d0a4",
+      "name": "수부키",
+      "aliases": [],
+      "portrait": "/source-library/images/nostar/%EC%88%98%EB%B6%80%ED%82%A4.png",
+      "byStar": {
+        "3": "/source-library/images/%EC%88%98%EB%B6%80%ED%82%A43.png",
+        "4": "/source-library/images/%EC%88%98%EB%B6%80%ED%82%A44.png",
+        "5": "/source-library/images/%EC%88%98%EB%B6%80%ED%82%A45.png"
+      },
+      "source": {
+        "type": "image-library",
+        "imageName": "수부키"
+      },
+      "dimensions": [
+        100,
+        100
       ],
       "variants": {}
     },
@@ -4744,6 +5159,35 @@
       "variants": {}
     },
     {
+      "id": "sheet-row-275",
+      "name": "수키드나",
+      "aliases": [
+        "에키드나"
+      ],
+      "portrait": "/images/characters/unit-row-275.png",
+      "byStar": {},
+      "source": {
+        "type": "xlsx-embedded",
+        "sheet": "데이터",
+        "nameCell": "A275",
+        "imageCell": "B275",
+        "anchor": {
+          "row": 274,
+          "column": 1
+        },
+        "media": "xl/media/image313.png",
+        "sha256": "188b30bbcfb4425584c2d78e0536ac26badcfa73db02e65386a2964eef73ad48"
+      },
+      "dimensions": [
+        96,
+        96
+      ],
+      "sourceNameMatch": {
+        "imageFilename": "수키드나",
+        "verification": "user-confirmed"
+      }
+    },
+    {
       "id": "sheet-row-57",
       "name": "수페코",
       "aliases": [],
@@ -5126,6 +5570,26 @@
       "dimensions": [
         96,
         96
+      ],
+      "variants": {}
+    },
+    {
+      "id": "image-c2e0-b8e8-ce74",
+      "name": "신루카",
+      "aliases": [],
+      "portrait": "/source-library/images/%EC%8B%A0%EB%A3%A8%EC%B9%B45.png",
+      "byStar": {
+        "3": "/source-library/images/%EC%8B%A0%EB%A3%A8%EC%B9%B43.png",
+        "4": "/source-library/images/%EC%8B%A0%EB%A3%A8%EC%B9%B44.png",
+        "5": "/source-library/images/%EC%8B%A0%EB%A3%A8%EC%B9%B45.png"
+      },
+      "source": {
+        "type": "image-library",
+        "imageName": "신루카"
+      },
+      "dimensions": [
+        100,
+        100
       ],
       "variants": {}
     },
@@ -5918,6 +6382,58 @@
       "variants": {}
     },
     {
+      "id": "sheet-row-127",
+      "name": "앤요리",
+      "aliases": [
+        "엔요리"
+      ],
+      "portrait": "/images/sheet-originals/image89.png",
+      "byStar": {},
+      "source": {
+        "type": "xlsx-embedded",
+        "sheet": "데이터",
+        "nameCell": "A127",
+        "imageCell": "B127",
+        "anchor": {
+          "row": 126,
+          "column": 1
+        },
+        "media": "xl/media/image89.png",
+        "sha256": "84cea8f845f3e5c029707dd7c3e727b4b96c1c3f250c33526a1c6bf386950842"
+      },
+      "dimensions": [
+        96,
+        96
+      ],
+      "variants": {}
+    },
+    {
+      "id": "sheet-row-126",
+      "name": "앤카리",
+      "aliases": [
+        "엔카리"
+      ],
+      "portrait": "/images/sheet-originals/image140.png",
+      "byStar": {},
+      "source": {
+        "type": "xlsx-embedded",
+        "sheet": "데이터",
+        "nameCell": "A126",
+        "imageCell": "B126",
+        "anchor": {
+          "row": 125,
+          "column": 1
+        },
+        "media": "xl/media/image140.png",
+        "sha256": "a20d101beda45dc3e7d205a2ed152734259ecc32fd04f5c038f40328596140c1"
+      },
+      "dimensions": [
+        96,
+        96
+      ],
+      "variants": {}
+    },
+    {
       "id": "sheet-row-115",
       "name": "앨리노",
       "aliases": [],
@@ -5940,6 +6456,36 @@
         96
       ],
       "variants": {}
+    },
+    {
+      "id": "sheet-row-116",
+      "name": "앨유미",
+      "aliases": [
+        "원유미"
+      ],
+      "portrait": "/images/sheet-originals/image137.png",
+      "byStar": {},
+      "source": {
+        "type": "xlsx-embedded",
+        "sheet": "데이터",
+        "nameCell": "A116",
+        "imageCell": "B116",
+        "anchor": {
+          "row": 115,
+          "column": 1
+        },
+        "media": "xl/media/image137.png",
+        "sha256": "29178c5d655dcd68f6d6682f45cbc48c1db0e767c42faccedfe713beb46716da"
+      },
+      "dimensions": [
+        96,
+        96
+      ],
+      "variants": {},
+      "sourceNameMatch": {
+        "imageFilename": "앨유미",
+        "verification": "face-compared"
+      }
     },
     {
       "id": "sheet-row-280",
@@ -6060,6 +6606,26 @@
       }
     },
     {
+      "id": "image-c5d0-b9ac-ce74",
+      "name": "에리카",
+      "aliases": [],
+      "portrait": "/source-library/images/nostar/%EC%97%90%EB%A6%AC%EC%B9%B4.png",
+      "byStar": {
+        "3": "/source-library/images/%EC%97%90%EB%A6%AC%EC%B9%B43.png",
+        "4": "/source-library/images/%EC%97%90%EB%A6%AC%EC%B9%B44.png",
+        "5": "/source-library/images/%EC%97%90%EB%A6%AC%EC%B9%B45.png"
+      },
+      "source": {
+        "type": "image-library",
+        "imageName": "에리카"
+      },
+      "dimensions": [
+        100,
+        100
+      ],
+      "variants": {}
+    },
+    {
       "id": "sheet-row-44",
       "name": "에리코",
       "aliases": [],
@@ -6100,81 +6666,6 @@
         },
         "media": "xl/media/image103.png",
         "sha256": "6330b18df2810fff0f5537a5d66f82b281ea46000e78362bb6ad804c0d30b49a"
-      },
-      "dimensions": [
-        96,
-        96
-      ],
-      "variants": {}
-    },
-    {
-      "id": "sheet-row-275",
-      "name": "에키드나",
-      "aliases": [],
-      "portrait": "/images/characters/unit-row-275.png",
-      "byStar": {},
-      "source": {
-        "type": "xlsx-embedded",
-        "sheet": "데이터",
-        "nameCell": "A275",
-        "imageCell": "B275",
-        "anchor": {
-          "row": 274,
-          "column": 1
-        },
-        "media": "xl/media/image313.png",
-        "sha256": "188b30bbcfb4425584c2d78e0536ac26badcfa73db02e65386a2964eef73ad48"
-      },
-      "dimensions": [
-        96,
-        96
-      ]
-    },
-    {
-      "id": "sheet-row-127",
-      "name": "앤요리",
-      "aliases": [
-        "엔요리"
-      ],
-      "portrait": "/images/sheet-originals/image89.png",
-      "byStar": {},
-      "source": {
-        "type": "xlsx-embedded",
-        "sheet": "데이터",
-        "nameCell": "A127",
-        "imageCell": "B127",
-        "anchor": {
-          "row": 126,
-          "column": 1
-        },
-        "media": "xl/media/image89.png",
-        "sha256": "84cea8f845f3e5c029707dd7c3e727b4b96c1c3f250c33526a1c6bf386950842"
-      },
-      "dimensions": [
-        96,
-        96
-      ],
-      "variants": {}
-    },
-    {
-      "id": "sheet-row-126",
-      "name": "앤카리",
-      "aliases": [
-        "엔카리"
-      ],
-      "portrait": "/images/sheet-originals/image140.png",
-      "byStar": {},
-      "source": {
-        "type": "xlsx-embedded",
-        "sheet": "데이터",
-        "nameCell": "A126",
-        "imageCell": "B126",
-        "anchor": {
-          "row": 125,
-          "column": 1
-        },
-        "media": "xl/media/image140.png",
-        "sha256": "a20d101beda45dc3e7d205a2ed152734259ecc32fd04f5c038f40328596140c1"
       },
       "dimensions": [
         96,
@@ -6541,30 +7032,6 @@
       "variants": {}
     },
     {
-      "id": "sheet-row-116",
-      "name": "원유미",
-      "aliases": [],
-      "portrait": "/images/sheet-originals/image137.png",
-      "byStar": {},
-      "source": {
-        "type": "xlsx-embedded",
-        "sheet": "데이터",
-        "nameCell": "A116",
-        "imageCell": "B116",
-        "anchor": {
-          "row": 115,
-          "column": 1
-        },
-        "media": "xl/media/image137.png",
-        "sha256": "29178c5d655dcd68f6d6682f45cbc48c1db0e767c42faccedfe713beb46716da"
-      },
-      "dimensions": [
-        96,
-        96
-      ],
-      "variants": {}
-    },
-    {
       "id": "sheet-row-257",
       "name": "윈로에",
       "aliases": [],
@@ -6636,6 +7103,26 @@
       }
     },
     {
+      "id": "image-c708-c624-b9ac",
+      "name": "윈오리",
+      "aliases": [],
+      "portrait": "/source-library/images/nostar/%EC%9C%88%EC%98%A4%EB%A6%AC.png",
+      "byStar": {
+        "3": "/source-library/images/%EC%9C%88%EC%98%A4%EB%A6%AC3.png",
+        "4": "/source-library/images/%EC%9C%88%EC%98%A4%EB%A6%AC4.png",
+        "5": "/source-library/images/%EC%9C%88%EC%98%A4%EB%A6%AC5.png"
+      },
+      "source": {
+        "type": "image-library",
+        "imageName": "윈오리"
+      },
+      "dimensions": [
+        100,
+        100
+      ],
+      "variants": {}
+    },
+    {
       "id": "sheet-row-256",
       "name": "윈유니",
       "aliases": [],
@@ -6681,6 +7168,26 @@
           "sha256": "53a21f7ac4178984b4a95b07ced8270e8b5a273f81963c64da09ec93e7af3849"
         }
       }
+    },
+    {
+      "id": "image-c708-ce74-b098",
+      "name": "윈카나",
+      "aliases": [],
+      "portrait": "/source-library/images/nostar/%EC%9C%88%EC%B9%B4%EB%82%98.png",
+      "byStar": {
+        "3": "/source-library/images/%EC%9C%88%EC%B9%B4%EB%82%983.png",
+        "4": "/source-library/images/%EC%9C%88%EC%B9%B4%EB%82%984.png",
+        "5": "/source-library/images/%EC%9C%88%EC%B9%B4%EB%82%985.png"
+      },
+      "source": {
+        "type": "image-library",
+        "imageName": "윈카나"
+      },
+      "dimensions": [
+        100,
+        100
+      ],
+      "variants": {}
     },
     {
       "id": "sheet-row-110",
@@ -7088,30 +7595,6 @@
       "variants": {}
     },
     {
-      "id": "sheet-row-33",
-      "name": "이오",
-      "aliases": [],
-      "portrait": "/images/sheet-originals/image55.png",
-      "byStar": {},
-      "source": {
-        "type": "xlsx-embedded",
-        "sheet": "데이터",
-        "nameCell": "A33",
-        "imageCell": "B33",
-        "anchor": {
-          "row": 32,
-          "column": 1
-        },
-        "media": "xl/media/image55.png",
-        "sha256": "6dc020920566680bda1834844cc3eb63843168fef07371c62f9de6f59d03bb68"
-      },
-      "dimensions": [
-        96,
-        96
-      ],
-      "variants": {}
-    },
-    {
       "id": "sheet-row-324",
       "name": "이사올렛",
       "aliases": [
@@ -7130,6 +7613,30 @@
         },
         "media": "xl/media/image324.png",
         "sha256": "617237c3a057aeb8453cd93412fddf6dd771e82bc282ab1a8c1f458ffdf67284"
+      },
+      "dimensions": [
+        96,
+        96
+      ],
+      "variants": {}
+    },
+    {
+      "id": "sheet-row-33",
+      "name": "이오",
+      "aliases": [],
+      "portrait": "/images/sheet-originals/image55.png",
+      "byStar": {},
+      "source": {
+        "type": "xlsx-embedded",
+        "sheet": "데이터",
+        "nameCell": "A33",
+        "imageCell": "B33",
+        "anchor": {
+          "row": 32,
+          "column": 1
+        },
+        "media": "xl/media/image55.png",
+        "sha256": "6dc020920566680bda1834844cc3eb63843168fef07371c62f9de6f59d03bb68"
       },
       "dimensions": [
         96,
@@ -7856,58 +8363,6 @@
       "variants": {}
     },
     {
-      "id": "sheet-row-319",
-      "name": "성소라",
-      "aliases": [
-        "크소라"
-      ],
-      "portrait": "/images/sheet-originals/image318.png",
-      "byStar": {},
-      "source": {
-        "type": "xlsx-embedded",
-        "sheet": "데이터",
-        "nameCell": "A319",
-        "imageCell": "B319",
-        "anchor": {
-          "row": 318,
-          "column": 1
-        },
-        "media": "xl/media/image318.png",
-        "sha256": "00c1174439a0196da06b29b7c1735b67e84a3392d894e60534ed769cbe8dd76d"
-      },
-      "dimensions": [
-        96,
-        96
-      ],
-      "variants": {}
-    },
-    {
-      "id": "sheet-row-320",
-      "name": "성유이",
-      "aliases": [
-        "크유이"
-      ],
-      "portrait": "/images/sheet-originals/image285.png",
-      "byStar": {},
-      "source": {
-        "type": "xlsx-embedded",
-        "sheet": "데이터",
-        "nameCell": "A320",
-        "imageCell": "B320",
-        "anchor": {
-          "row": 319,
-          "column": 1
-        },
-        "media": "xl/media/image285.png",
-        "sha256": "2340ec9878c847ca173f56353822b9d14205a9e570286e6db9e71d5767cf5511"
-      },
-      "dimensions": [
-        96,
-        96
-      ],
-      "variants": {}
-    },
-    {
       "id": "sheet-row-91",
       "name": "클로에",
       "aliases": [],
@@ -7954,6 +8409,36 @@
         96
       ],
       "variants": {}
+    },
+    {
+      "id": "sheet-row-210",
+      "name": "클요리",
+      "aliases": [
+        "성요리"
+      ],
+      "portrait": "/images/sheet-originals/image175.png",
+      "byStar": {},
+      "source": {
+        "type": "xlsx-embedded",
+        "sheet": "데이터",
+        "nameCell": "A210",
+        "imageCell": "B210",
+        "anchor": {
+          "row": 209,
+          "column": 1
+        },
+        "media": "xl/media/image175.png",
+        "sha256": "715389e5a52601ed4ef39d729ea26b7f544b6eb4230ae8402d517cccc136ae11"
+      },
+      "dimensions": [
+        96,
+        96
+      ],
+      "variants": {},
+      "sourceNameMatch": {
+        "imageFilename": "클요리",
+        "verification": "user-confirmed"
+      }
     },
     {
       "id": "sheet-row-211",
@@ -8124,6 +8609,56 @@
       "variants": {}
     },
     {
+      "id": "image-d2f0-c544",
+      "name": "티아",
+      "aliases": [],
+      "portrait": "/source-library/images/nostar/%ED%8B%B0%EC%95%84.png",
+      "byStar": {
+        "3": "/source-library/images/%ED%8B%B0%EC%95%843.png",
+        "4": "/source-library/images/%ED%8B%B0%EC%95%844.png",
+        "5": "/source-library/images/%ED%8B%B0%EC%95%845.png"
+      },
+      "source": {
+        "type": "image-library",
+        "imageName": "티아"
+      },
+      "dimensions": [
+        100,
+        100
+      ],
+      "variants": {}
+    },
+    {
+      "id": "sheet-row-327",
+      "name": "파라엘",
+      "aliases": [
+        "퍼라엘"
+      ],
+      "portrait": "/images/sheet-originals/image327.png",
+      "byStar": {},
+      "source": {
+        "type": "xlsx-embedded",
+        "sheet": "데이터",
+        "nameCell": "A327",
+        "imageCell": "B327",
+        "anchor": {
+          "row": 326,
+          "column": 1
+        },
+        "media": "xl/media/image327.png",
+        "sha256": "4cc8f815b046d926b5b203e634573638d696f89d7afd96b4827b5d7d6d422ccb"
+      },
+      "dimensions": [
+        96,
+        96
+      ],
+      "variants": {},
+      "sourceNameMatch": {
+        "imageFilename": "파라엘",
+        "verification": "face-compared"
+      }
+    },
+    {
       "id": "sheet-row-295",
       "name": "파오이",
       "aliases": [],
@@ -8195,26 +8730,22 @@
       "variants": {}
     },
     {
-      "id": "sheet-row-327",
-      "name": "퍼라엘",
+      "id": "image-d328-ceac-b8e8",
+      "name": "패캬루",
       "aliases": [],
-      "portrait": "/images/sheet-originals/image327.png",
-      "byStar": {},
+      "portrait": "/source-library/images/nostar/%ED%8C%A8%EC%BA%AC%EB%A3%A8.png",
+      "byStar": {
+        "3": "/source-library/images/%ED%8C%A8%EC%BA%AC%EB%A3%A83.png",
+        "4": "/source-library/images/%ED%8C%A8%EC%BA%AC%EB%A3%A84.png",
+        "5": "/source-library/images/%ED%8C%A8%EC%BA%AC%EB%A3%A85.png"
+      },
       "source": {
-        "type": "xlsx-embedded",
-        "sheet": "데이터",
-        "nameCell": "A327",
-        "imageCell": "B327",
-        "anchor": {
-          "row": 326,
-          "column": 1
-        },
-        "media": "xl/media/image327.png",
-        "sha256": "4cc8f815b046d926b5b203e634573638d696f89d7afd96b4827b5d7d6d422ccb"
+        "type": "image-library",
+        "imageName": "패캬루"
       },
       "dimensions": [
-        96,
-        96
+        100,
+        100
       ],
       "variants": {}
     },
@@ -8356,30 +8887,6 @@
         },
         "media": "xl/media/image6.png",
         "sha256": "4f7152751652f8d4c643a34701cad18ddcecbd0bb42fe6f31bab2e3571b774ea"
-      },
-      "dimensions": [
-        96,
-        96
-      ],
-      "variants": {}
-    },
-    {
-      "id": "sheet-row-105",
-      "name": "퓨오리",
-      "aliases": [],
-      "portrait": "/images/sheet-originals/image241.png",
-      "byStar": {},
-      "source": {
-        "type": "xlsx-embedded",
-        "sheet": "데이터",
-        "nameCell": "A105",
-        "imageCell": "B105",
-        "anchor": {
-          "row": 104,
-          "column": 1
-        },
-        "media": "xl/media/image241.png",
-        "sha256": "aac14a5d4feaa94844a325b3173d26b59e5b7405350b86dda125fbb70c4fcb8f"
       },
       "dimensions": [
         96,
@@ -9200,6 +9707,36 @@
       }
     },
     {
+      "id": "sheet-row-108",
+      "name": "혼다",
+      "aliases": [
+        "미오"
+      ],
+      "portrait": "/images/sheet-originals/image78.png",
+      "byStar": {},
+      "source": {
+        "type": "xlsx-embedded",
+        "sheet": "데이터",
+        "nameCell": "A108",
+        "imageCell": "B108",
+        "anchor": {
+          "row": 107,
+          "column": 1
+        },
+        "media": "xl/media/image78.png",
+        "sha256": "cafc5bfa3899bd4acbc517b01eefaf5c7530c4f4c93966ff97d64d2d6c54d2af"
+      },
+      "dimensions": [
+        96,
+        96
+      ],
+      "variants": {},
+      "sourceNameMatch": {
+        "imageFilename": "혼다",
+        "verification": "user-confirmed"
+      }
+    },
+    {
       "id": "sheet-row-279",
       "name": "후부키",
       "aliases": [],
@@ -9277,5 +9814,12 @@
     "nameRange": "A1:A327",
     "imageRange": "B1:B327",
     "characterCount": 327
+  },
+  "nameReconciliation": {
+    "source": "Imported image library",
+    "imageFiles": 352,
+    "canonicalNames": 352,
+    "legacyAliasesPreserved": true,
+    "unmatched": 0
   }
 }
