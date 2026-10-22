@@ -1,6 +1,6 @@
 (async()=>{'use strict';
-const {summarizeArchive,sortArchiveRankings}=await import('./archive-summary.mjs?v=20261022-db19');
-const {createMonthView}=await import('./month-view.mjs?v=20261022-month20');
+const {summarizeArchive,sortArchiveRankings}=await import('./archive-summary.mjs?v=20261022-import01');
+const {createMonthView}=await import('./month-view.mjs?v=20261022-import01');
 const {sequenceVisible}=await import('./view-settings.mjs?v=20261022-ui14');
 const {installPortraitFallback,withPortraitLibrary}=await import('./character-portraits.mjs?v=20261022-ui14');
 installPortraitFallback();
