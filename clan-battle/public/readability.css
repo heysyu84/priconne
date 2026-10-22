@@ -30,7 +30,7 @@ body{font-size:15px;line-height:1.6}
 .profile-activity-grid .daily-profile-bars .daily-stat b{font-size:13px;line-height:1.45}
 .sidebar .nav{font-size:13px}
 @media(max-width:800px){
-  body{font-size:14px;line-height:1.6}
+  body{font-size:15px;line-height:1.6}
   .panel .sub,.small,.muted.small{font-size:11.5px;line-height:1.5}
   .panel-head h2{font-size:15px}
   .metric .k,.metric .d{font-size:11.5px}
@@ -64,6 +64,7 @@ body{font-size:15px;line-height:1.6}
   .profile-activity-grid .daily-profile-bars>div>.daily-stat b{font-size:12.5px}
 }
 @media(max-width:360px){
+  body{font-size:14.5px}
   .datatable thead th{font-size:10.5px;padding-inline:2px}
   .datatable tbody td,.datatable tbody th{font-size:11px}
   .battle-sheet.compact-battle-sheet .number,
