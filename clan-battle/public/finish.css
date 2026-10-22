@@ -542,3 +542,19 @@ input:focus,select:focus,textarea:focus {border-color:#9872bf;box-shadow:0 0 0 3
 .db-rate-records .db-top-record-table thead th,
 .db-rate-records .db-top-record-table tbody th,
 .db-rate-records .db-top-record-table tbody td{text-align:center;vertical-align:middle}
+
+
+/* Japanese-to-Korean +13-month clan boss preview: read-only until manually applied. */
+.future-boss-panel .panel-head { align-items: center; gap: 12px; }
+.future-boss-panel .panel-head p { margin: 5px 0 0; }
+.future-months { display: grid; gap: 10px; margin: 14px 0; }
+.future-month { border: 1px solid #e4e3eb; border-radius: 11px; overflow: hidden; background: #fff; }
+.future-month summary { display: flex; align-items: center; gap: 10px; justify-content: space-between; padding: 12px 14px; cursor: pointer; }
+.future-month summary::marker { color: #786bab; }
+.future-boss-list { padding: 10px; display: grid; grid-template-columns: repeat(5,minmax(0,1fr)); gap: 8px; border-top: 1px solid #ecebf3; }
+.future-boss-item { text-align: center; min-width: 0; padding: 10px 5px; border-radius: 9px; background: #faf9fd; display: grid; justify-items: center; gap: 5px; }
+.future-boss-item strong { font-size: 12px; line-height: 1.5; overflow-wrap: anywhere; }
+.future-boss-item span.warning { color: #b45b16; }
+.future-boss-art { width: 56px; height: 56px; display: grid; place-items: center; border-radius: 11px; background: #e7e4f0; color: #524675; font-weight: 700; }
+.future-boss-art img { width: 100%; height: 100%; object-fit: contain; }
+@media(max-width:740px){.future-boss-list{grid-template-columns:repeat(2,minmax(0,1fr))}.future-month summary{flex-wrap:wrap}.future-boss-panel .panel-head{flex-wrap:wrap}}
