@@ -14,7 +14,7 @@ const {ensureTactics}=await import('./tactics-model.mjs?v=20261022-ui14');
 const {applySourceData,remainingAttacks}=await import('./guild-model.mjs?v=20261022-db19');
 const {createGuildWorkspace}=await import('./guild-workspace.mjs?v=20261022-boss-top21');
 const {createTacticWorkspace}=await import('./tactics-workspace.mjs?v=20261022-ui14');
-const [TACTIC_META,CHARACTERS,ROW_FORMATS,BOSS_ART,GUILD_SOURCE,PORTRAIT_LIBRARY]=await Promise.all(['/tactic-metadata.json','/characters.json','/tactic-row-formats.json','/bosses.json','/guild-source.json','/portrait-library.json'].map(async path=>{const response=await fetch(assetUrl(path)+'?v=20261022-boss-catalog08');if(!response.ok)throw Error('택틱 자료를 불러오지 못했습니다.');return response.json()}));
+const [TACTIC_META,CHARACTERS,ROW_FORMATS,BOSS_ART,GUILD_SOURCE,PORTRAIT_LIBRARY]=await Promise.all(['/tactic-metadata.json','/characters.json','/tactic-row-formats.json','/bosses.json','/guild-source.json','/portrait-library.json'].map(async path=>{const response=await fetch(assetUrl(path)+'?v=20261022-boss-catalog10');if(!response.ok)throw Error('택틱 자료를 불러오지 못했습니다.');return response.json()}));
 const CHARACTER_CATALOG=withPortraitLibrary(CHARACTERS.characters,PORTRAIT_LIBRARY);
 const DEFAULT=JSON.parse(document.getElementById('seed-data').textContent);
 const STORAGE='nyangnyang-work-recovery-v1';
@@ -159,7 +159,9 @@ function bossPortrait(id){
   const boss=current().bosses.find(b=>b.id===Number(id));
   if(!boss)return '';
   const monthly=BOSS_ART[monthView.key()]?.[id];
-  const art=monthly?.name===boss.name?monthly:BOSS_ART.catalog?.[boss.name];
+  const catalog=BOSS_ART.catalog||{};
+  const art=monthly?.name===boss.name?monthly:
+    catalog[boss.name]||Object.values(catalog).find(item=>item.aliases?.includes(boss.name));
   const code=art?.referenceKey;
   return /^[1-5]\.\d+$/.test(code||'')
     ? 'https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/'+code+'.png'
