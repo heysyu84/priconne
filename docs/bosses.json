@@ -693,6 +693,19 @@
       "referenceKey": "4.19",
       "mappingStatus": "verified",
       "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/4.19.png"
+    },
+    "베놈 사라만드라": {
+      "referenceKey": "3.13",
+      "japaneseName": "ベノムサラマンドラ",
+      "aliases": [
+        "베놈 살라만드라",
+        "베놈 샐러맨드라",
+        "베놈사라만드라",
+        "베놈살라만드라"
+      ],
+      "mappingStatus": "verified",
+      "source": "https://priconne-redive.jp/news/event/28801/",
+      "assetSource": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/3.13.png"
     }
   }
 }
