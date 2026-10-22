@@ -1,0 +1,56 @@
+name: Deploy Priconne to Cloudflare Pages
+
+# Deploy the already-published static site independently of Cloudflare's
+# GitHub App/webhook connection. The existing priconne.pages.dev project
+# and shared clan API are not changed or recreated.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: priconne-cloudflare-pages-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Publish docs/ to priconne.pages.dev
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Verify Cloudflare deploy credentials
+        env:
+          TOKEN_CONFIGURED: ${{ secrets.CLOUDFLARE_API_TOKEN != '' }}
+          ACCOUNT_CONFIGURED: ${{ secrets.CLOUDFLARE_ACCOUNT_ID != '' }}
+        shell: bash
+        run: |
+          if [[ "$TOKEN_CONFIGURED" != "true" || "$ACCOUNT_CONFIGURED" != "true" ]]; then
+            echo "::error::Cloudflare credentials are missing. In GitHub repository Settings > Secrets and variables > Actions, add CLOUDFLARE_API_TOKEN (Pages Write) and CLOUDFLARE_ACCOUNT_ID. Do not commit credentials to the repository."
+            exit 1
+          fi
+
+      - name: Check out current main branch
+        uses: actions/checkout@v4
+
+      - name: Verify static site
+        shell: bash
+        run: |
+          test -s docs/index.html
+          test -s docs/clan.js
+          test -s docs/combo-workspace.mjs
+          test -s docs/presence.mjs
+          grep -q 'id="online-presence"' docs/index.html
+          grep -q 'combo-workspace' docs/guild-workspace.mjs
+
+      - name: Deploy directly to existing Cloudflare Pages project
+        uses: cloudflare/wrangler-action@v4
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy docs --project-name=priconne --branch=main
+
+      - name: Confirm deployment
+        run: echo "Published docs/ to the existing priconne.pages.dev project."
