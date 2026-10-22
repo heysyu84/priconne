@@ -639,3 +639,16 @@ input:focus,select:focus,textarea:focus {border-color:#9872bf;box-shadow:0 0 0 3
     font-size:16px;
   }
 }
+
+/* Mobile battle-log table: centered column titles and day values only. */
+@media(max-width:800px){
+  .battle-sheet.compact-battle-sheet thead th{
+    text-align:center!important;
+    vertical-align:middle;
+  }
+  .battle-sheet.compact-battle-sheet tbody td.battle-day-cell{
+    text-align:center;
+    vertical-align:middle;
+    white-space:nowrap;
+  }
+}
