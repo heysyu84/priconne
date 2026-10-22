@@ -99,3 +99,8 @@ assert.match(finishCss,/\.compact-battle-sheet colgroup col\s*\{width:var\(--mob
 assert.match(finishCss,/\.compact-battle-sheet \.number[\s\S]*?white-space:nowrap/,
   'Exact damage and remaining HP must not clip or wrap');
 console.log('PASS: mobile battle log columns have a compact independent width and preserve exact numeric values');
+
+assert.ok(battleWorkflow.includes('<td class="battle-day-cell">${e.day}일</td>'), 'Battle log day values must have a stable cell class, with or without sequence');
+assert.match(finishCss, /\.battle-sheet\.compact-battle-sheet thead th\s*\{\s*text-align:center!important/, 'Mobile battle log titles must be centered');
+assert.match(finishCss, /\.battle-sheet\.compact-battle-sheet tbody td\.battle-day-cell\s*\{\s*text-align:center/, 'Mobile day data should be centered');
+console.log('PASS: mobile battle log headers and day-value cells are centered');
