@@ -135,13 +135,24 @@ function archive(){
   if(!d)return heading+nav+`<section class="panel empty">${archiveLoading===key?'과거 기록을 불러오는 중입니다…':archiveError?X(archiveError):'월을 선택하면 해당 기록을 불러옵니다.'}</section>`;
   const events=[...(d.events||[])].sort((a,b)=>Number(a.seq)-Number(b.seq)),tactics=(d.tactics||[]).filter(t=>!t.trashedAt);
   const total=events.reduce((n,e)=>n+Number(e.actual??e.damage??0),0);
-  const tabs=`<div class="tabset archive-tabs">${[['logs','배틀로그'],['tactics','택틱'],['rules','월별 규칙']].map(([k,label])=>`<button data-archive-tab="${k}" class="${archiveTab===k?'active':''}">${label}</button>`).join('')}</div>`;
+  const tabs=`<div class="tabset archive-tabs">${[['logs','배틀로그'],['ranking','월별 순위'],['tactics','택틱'],['rules','월별 규칙']].map(([k,label])=>`<button data-archive-tab="${k}" class="${archiveTab===k?'active':''}">${label}</button>`).join('')}</div>`;
   const metrics=`<div class="metrics archive-metrics"><div class="metric"><div class="k">공격 기록</div><div class="v">${nf(events.length)}건</div></div><div class="metric"><div class="k">실제 피해량 합계</div><div class="v">${nf(total)}</div></div><div class="metric"><div class="k">택틱</div><div class="v">${nf(tactics.length)}개</div></div></div>`;
   let detail='';
   if(archiveTab==='logs'){
     const chunk=50,pages=Math.max(1,Math.ceil(events.length/chunk)),page=Math.max(1,Math.min(archivePageNumber,pages));
     const rows=events.slice((page-1)*chunk,page*chunk).map(e=>`<tr><td>${nf(e.seq)}</td><td>${nf(e.day)}일차</td><th>${X(e.member||app.roster.find(p=>p.id===e.memberId)?.name||'—')}</th><td>${nf(e.boss)}넴</td><td>${nf(e.stage)}단계 · ${nf(e.lap)}회차</td><td class="number">${nf(e.actual??e.damage)}</td><td>${e.carry?'이월':'일반'}</td></tr>`).join('');
     detail=`<section class="panel"><h2>배틀로그 · ${monthFormat(key)}</h2><div class="table-scroll"><table class="datatable archive-table"><thead><tr><th>#</th><th>일차</th><th>클랜원</th><th>보스</th><th>단계 · 회차</th><th>실제 피해량</th><th>구분</th></tr></thead><tbody>${rows||'<tr><td colspan="7" class="empty">기록 없음</td></tr>'}</tbody></table></div><div class="btnbar archive-pages"><button class="btn sm" data-archive-page="prev" ${page<=1?'disabled':''}>이전</button><span>${page} / ${pages}</span><button class="btn sm" data-archive-page="next" ${page>=pages?'disabled':''}>다음</button></div></section>`;
+  }else if(archiveTab==='ranking'){
+    const members=new Map();
+    for(const e of events){
+      const key=e.memberId||e.member||'—';
+      if(!members.has(key))members.set(key,{name:e.member||app.roster.find(p=>p.id===e.memberId)?.name||'—',hits:0,damage:0,contribution:0,game:0});
+      const p=members.get(key),damage=Number(e.actual??e.damage??0),contribution=Engine.contribution(e,d);
+      p.hits++;p.damage+=damage;p.contribution+=Number.isFinite(contribution)?contribution:0;
+      p.game+=damage*Number(d.bosses.find(b=>b.id===Number(e.boss))?.game?.[e.stage]||0);
+    }
+    const ranked=[...members.values()].sort((a,b)=>b.contribution-a.contribution||b.damage-a.damage);
+    detail=`<section class="panel"><h2>월별 기여도 순위 · ${monthFormat(key)}</h2><div class="table-scroll"><table class="datatable"><thead><tr><th>순위</th><th>클랜원</th><th>공격 수</th><th>실제 피해량</th><th>기여도</th><th>인게임 점수</th></tr></thead><tbody>${ranked.map((p,i)=>`<tr><td>${i+1}</td><th>${X(p.name)}</th><td>${nf(p.hits)}</td><td class="number">${nf(p.damage)}</td><td class="number">${nf(p.contribution)}</td><td class="number">${nf(p.game)}</td></tr>`).join('')||'<tr><td colspan="6" class="empty">기록 없음</td></tr>'}</tbody></table></div></section>`;
   }else if(archiveTab==='tactics'){
     detail=`<section class="panel"><h2>택틱 · ${monthFormat(key)}</h2><div class="archive-tactic-list">${tactics.map(t=>`<details class="archive-tactic"><summary>${X(t.boss?t.boss+'넴 · ':'')}${X(t.title||t.characters?.join(' ')||'택틱')} <span>${X(t.group||'')}</span></summary><div class="archive-tactic-party">${(t.characters||[]).map((n,i)=>`<span>${X(n)} ★${X(t.stars?.[i]||'-')}</span>`).join('')}</div><ol>${(t.rows||[]).map(r=>`<li>${X(r.text||'')}</li>`).join('')}</ol></details>`).join('')||'<div class="empty">보관된 택틱이 없습니다.</div>'}</div></section>`;
   }else{
