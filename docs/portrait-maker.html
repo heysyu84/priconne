@@ -288,6 +288,15 @@
       gap: 8px;
       align-items: center;
     }
+
+    .source-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;margin:10px 0;max-height:370px;overflow-y:auto}
+    .source-tile{display:flex;flex-direction:column;align-items:center;gap:4px;min-width:0;padding:7px 4px;border:1px solid #cbd5e1;border-radius:9px;background:white;color:#334155;cursor:pointer}
+    .source-tile:hover{border-color:#2563eb;background:#eff6ff}
+    .source-tile img{width:62px;height:62px;object-fit:contain;border-radius:5px;image-rendering:auto}
+    .source-tile span{display:block;font-size:11px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .source-tile small{font-size:10px;color:#64748b}
+    .source-tile button{padding:3px 6px;font-size:10px;background:#dbeafe;color:#1e40af}
+
     @media (max-width: 980px) {
       .layout { grid-template-columns: 1fr; }
       .preview-shell { grid-template-columns: 1fr; }
@@ -321,8 +330,32 @@
 
         <p class="muted-note" style="padding:11px 12px;border:1px solid #bfdbfe;border-radius:10px;background:#eff6ff;margin:0 0 14px">
           <strong>신형 초상화 원본</strong><br>
-          <a href="https://redive.estertion.win/icon/unit/" target="_blank" rel="noopener noreferrer">Estertion 캐릭터 아이콘 페이지 ↗</a>에서 테두리 없는 WebP/PNG를 저장한 뒤 아래에서 업로드하세요. 기존 클랜전 이미지 폴더의 원본은 자동으로 불러오지 않습니다.
+          위 이미지 자료실에서 파일명으로 검색해 선택하거나, 별도 PNG·WebP 파일을 아래에서 직접 업로드할 수 있습니다. 기존 클랜전의 구형 이미지는 새 원본으로 사용하지 않습니다.
         </p>
+
+        <div class="form-group" style="border:1px solid #dbe3ee;background:#f8fafc;padding:12px;border-radius:12px">
+          <label for="library-filter">PurikoneKrSemi 이미지 자료실 · 파일명으로 검색</label>
+          <div class="sub" style="margin:5px 0">캐릭터뿐 아니라 보스·심연보스·원본·배경·기타 이미지 전체를 탐색합니다. 검색 결과를 누르면 바로 원본으로 불러옵니다.</div>
+          <div class="grid2">
+            <input id="library-filter" placeholder="한글 이름 또는 파일명 (예: 네네카, 1.4)" autocomplete="off">
+            <select id="library-category" aria-label="이미지 폴더 선택">
+              <option value="all">전체 폴더</option>
+              <option value="nostar" selected>별 없는 초상화</option>
+              <option value="original">원본 초상화</option>
+              <option value="characters">성급별 초상화</option>
+              <option value="one-star">1성 이미지</option>
+              <option value="boss">보스·심연보스</option>
+              <option value="other">배경·헤더·기타</option>
+              <option value="overlays">합성 재료</option>
+              <option value="root">기타 최상위</option>
+            </select>
+          </div>
+          <div id="library-info" class="muted-note" style="margin-top:8px">이미지 자료실을 불러오는 중…</div>
+          <div id="library-results" class="source-grid"></div>
+          <button type="button" id="library-more" class="btn-sub" hidden>더 보기</button>
+          <div id="library-selected" class="muted-note" aria-live="polite">이미지 선택 전</div>
+        </div>
+
         <div class="form-group">
           <label for="base-image-input">신형 기본 초상화 (3·4·5성용)</label>
           <input type="file" id="base-image-input" accept="image/*">
@@ -917,6 +950,97 @@
     $('catalog-load').addEventListener('click',fromCatalog);
     $('catalog-query').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();fromCatalog();}});
     loadCatalog();
+
+    // Source-library paths deliberately retain the original Korean file names.
+    // The manifest is created from the third-party repository's image files.
+    let upstreamImageItems=[];
+    let libraryVisible=0;
+    const SOURCE_PAGE_SIZE=72;
+    const labelsByCategory={characters:'성급별',nostar:'별 없음',original:'원본',boss:'보스',other:'기타',overlays:'합성',root:'최상위','one-star':'1성'};
+    const sourceUrl=item=>'./source-library/'+item.path.split('/').map(encodeURIComponent).join('/');
+    const libraryNormalize=x=>String(x||'').normalize('NFKC').replace(/\s+/g,'').toLocaleLowerCase('ko-KR');
+    async function loadSourceLibrary(){
+      try{
+        const res=await fetch('./source-library/manifest.json',{cache:'no-store'});
+        if(!res.ok)throw new Error('HTTP '+res.status);
+        const manifest=await res.json();
+        upstreamImageItems=Array.isArray(manifest.images)?manifest.images:[];
+        if(!upstreamImageItems.length)throw new Error('목록이 비어 있습니다.');
+        $('library-info').textContent='저장소로 복사된 이미지 '+upstreamImageItems.length.toLocaleString('ko-KR')+'개 · 원본 파일명 유지';
+        libraryVisible=0;
+        paintSourceLibrary();
+      }catch(e){
+        $('library-info').textContent='이미지 자료실이 아직 배포되지 않았거나 불러오지 못했습니다: '+e.message+' · 복사가 완료되면 페이지를 새로고침하세요.';
+      }
+    }
+    function filteredSourceImages(){
+      const q=libraryNormalize($('library-filter').value);
+      const cat=$('library-category').value;
+      return upstreamImageItems.filter(x=>(cat==='all'||x.category===cat)
+        &&(!q||libraryNormalize(x.path).includes(q)||libraryNormalize(x.name).includes(q)));
+    }
+    function paintSourceLibrary(){
+      const matching=filteredSourceImages(),root=$('library-results');
+      root.replaceChildren();
+      const toShow=matching.slice(0,libraryVisible||SOURCE_PAGE_SIZE);
+      for(const item of toShow){
+        const card=document.createElement('div');
+        card.className='source-tile';
+        const main=document.createElement('button');
+        main.type='button';main.className='source-tile';
+        main.style.width='100%';
+        main.title=item.path;
+        const picture=document.createElement('img');
+        picture.loading='lazy';picture.decoding='async';
+        picture.src=sourceUrl(item);
+        picture.alt=item.name;
+        picture.onerror=()=>{picture.style.visibility='hidden'};
+        const name=document.createElement('span');name.textContent=item.filename||item.name;
+        const group=document.createElement('small');group.textContent=labelsByCategory[item.category]||item.category;
+        main.append(picture,name,group);
+        main.onclick=()=>chooseSourceImage(item,'base');
+        card.append(main);
+        if(item.category==='original'||item.category==='nostar'||item.category==='characters'||item.category==='one-star'){
+          const six=document.createElement('button');six.type='button';six.textContent='6성용 지정';
+          six.onclick=()=>chooseSourceImage(item,'six');
+          card.append(six);
+        }
+        root.append(card);
+      }
+      $('library-more').hidden=toShow.length>=matching.length;
+      $('library-info').textContent=upstreamImageItems.length.toLocaleString('ko-KR')+
+        '개 중 '+matching.length.toLocaleString('ko-KR')+'개 검색 · '+toShow.length+'개 표시';
+    }
+    async function chooseSourceImage(item,target){
+      const btn=$('library-selected');
+      btn.textContent='원본 이미지를 불러오는 중: '+item.path;
+      try{
+        const response=await fetch(sourceUrl(item));
+        if(!response.ok)throw new Error('HTTP '+response.status);
+        const blob=await response.blob();
+        if(!blob.type.startsWith('image/'))throw new Error('이미지 응답이 아닙니다.');
+        const file=new File([blob],item.filename||item.name,{type:blob.type});
+        if(target==='six'){
+          state.sixFile=file;
+          $('out-6').checked=true;
+        }else{
+          state.baseFile=file;
+          if(['characters','original','nostar','one-star'].includes(item.category)){
+            let n=item.name;
+            if(item.category==='characters')n=n.replace(/[3-6]$/,'');
+            $('name-input').value=n;
+          }else $('name-input').value=item.name;
+          renderOriginalPreview();
+        }
+        const precomposed=item.category==='characters'||item.category==='one-star';
+        btn.textContent='선택 완료: '+item.path+(precomposed?' · 이 파일에는 별 표시가 이미 포함되어 있을 수 있습니다. 중복 합성을 확인하세요.':'');
+        renderOutputPlan();renderPreview();
+      }catch(e){btn.textContent='원본 불러오기 실패: '+e.message;}
+    }
+    $('library-filter').addEventListener('input',()=>{libraryVisible=SOURCE_PAGE_SIZE;paintSourceLibrary()});
+    $('library-category').addEventListener('change',()=>{libraryVisible=SOURCE_PAGE_SIZE;paintSourceLibrary()});
+    $('library-more').addEventListener('click',()=>{libraryVisible+=SOURCE_PAGE_SIZE;paintSourceLibrary()});
+    loadSourceLibrary();
 
     applyPreset('current');
     renderOutputPlan();
