@@ -376,3 +376,50 @@ input:focus,select:focus,textarea:focus {border-color:#9872bf;box-shadow:0 0 0 3
  .combo-summary .combo-damage strong{font-size:16px}
  .combo-summary .combo-damage small{font-size:7px}
 }
+
+/* Wide-screen density: constrain the canvas and pair complementary data cards. */
+.content{width:100%;max-width:1400px;margin-inline:auto}
+.db-rates-layout,.profile-activity-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:16px;align-items:start}
+.db-rates-layout>.panel,.profile-activity-grid>.panel{min-width:0;margin:0}
+.db-rate-factors .table-scroll,.db-rate-records .table-scroll{max-width:100%;overflow-x:auto}
+.db-rate-factors .datatable,.db-rate-records .datatable{width:100%;table-layout:fixed}
+.db-rate-factors .datatable th,.db-rate-factors .datatable td{padding:10px 6px;text-align:center;font-variant-numeric:tabular-nums}
+.db-rate-factors .datatable th:first-child{width:17%}
+.db-rate-factors .datatable th .boss-chip{white-space:nowrap}
+.db-rate-records .datatable th:nth-child(1){width:13%}
+.db-rate-records .datatable th:nth-child(2){width:32%}
+.db-rate-records .datatable th:nth-child(3){width:35%}
+.db-rate-records .datatable th:nth-child(4){width:20%}
+.db-rate-records .datatable th,.db-rate-records .datatable td{padding:10px 6px}
+.db-rate-records .datatable td:nth-child(3){font-variant-numeric:tabular-nums}
+.db-rate-records .panel-head{align-items:center}
+.db-rate-records .panel-head .tabset{flex-wrap:nowrap;min-width:0}
+.db-rate-records .panel-head .tabset button{padding:6px 10px}
+.db-rate-records .rate-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-bottom:17px}
+.db-rate-records .rate-summary>div{padding:11px 10px;min-width:0;font-size:11px;line-height:1.5}
+.db-rate-records .rate-summary strong{font-size:17px;margin-top:5px;overflow-wrap:anywhere}
+.db-rate-records .rate-summary>.btn{grid-column:1/-1;justify-self:end}
+.profile-activity-grid{margin-top:18px}
+.profile-activity-grid .daily-profile-bars>div{grid-template-columns:44px minmax(0,1fr) auto auto;gap:8px}
+.profile-activity-grid .daily-profile-bars>div>span{font-size:11px;white-space:nowrap}
+@media(min-width:1160px){
+ .db-rates-layout{grid-template-columns:minmax(0,.94fr) minmax(0,1.06fr)}
+ .profile-activity-grid{grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr)}
+}
+@media(min-width:1560px){
+ .sidebar{grid-template-columns:repeat(9,minmax(0,142px));justify-content:center}
+ .topbar{right:max(30px,calc((100vw - 1400px)/2 + 28px))}
+}
+@media(max-width:800px){
+ .db-rates-layout,.profile-activity-grid{gap:12px}
+ .db-rate-records .rate-summary{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .db-rate-records .rate-summary>div:nth-child(3){grid-column:1/-1}
+ .db-rate-records .panel-head .tabset button{padding:5px 8px}
+ .db-rate-factors .datatable th,.db-rate-factors .datatable td{padding:9px 4px}
+ .profile-activity-grid .daily-profile-bars>div{grid-template-columns:48px minmax(0,1fr);gap:5px 8px}
+ .profile-activity-grid .daily-profile-bars>div>span{white-space:normal}
+}
+@media print{
+ .content{max-width:none}
+ .db-rates-layout,.profile-activity-grid{grid-template-columns:1fr}
+}
