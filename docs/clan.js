@@ -41,6 +41,8 @@ let editor=false;try{const result=await apiFetch('/api/editor',{cache:'no-store'
 let revision=boot.revision,dirty=0,saving=false,saveTimer=null,blocked=false;
 for(const month of Object.values(app.months))Engine.replayMonth(month);
 let ui={page:'overview',day:'all',filter:'',boss:'all',member:seedMonth.members[0],rank:'damage',tactic:seedMonth.tactics[0]?.id||'',tacticSearch:'',editor:false,editLog:null,calcSeconds:61,calcText:'',calcResult:null,configStage:4,historyMonth:null,logPage:1};
+const archiveHash=location.hash.match(/^#archive(?:=(\d{4}-\d{2}))?$/);
+if(archiveHash){ui.page='archive';ui.archiveMonth=archiveHash[1]||null;}
 const current=()=>app.months[app.active];
 const money=n=>nf(Math.round(n));
 const workflow=createWorkflow({getApp:()=>app,getMonth:current,setApp:value=>{app=value;syncRoster(app);for(const d of Object.values(app.months))Engine.replayMonth(d)},persist,replay:Engine.replayMonth,render,notify:notice,navigate:goto,section,nf,escapeHtml:X,contribution:contrib,getBosses:()=>bossStatus(),bossPortrait:id=>bossPortrait(id),canEdit:()=>editor,unlock:unlock,openForm});
@@ -61,7 +63,7 @@ async function flushSave(){
   finally{saving=false;}
 }
 function notice(t){let el=$('#toast');el.textContent=t;el.classList.remove('hidden');clearTimeout(notice._t);notice._t=setTimeout(()=>el.classList.add('hidden'),3200)}
-function goto(page){if(!workflow.beforeNavigate()||!tacticWorkspace.beforeNavigate())return;ui.page=page==='calculator'?'tactics':page;ui.editor=false;render();if(ui.page==='archive'){const key=ui.archiveMonth||archiveKeys()[0];if(key)void loadArchive(key);}window.scrollTo({top:0,behavior:'instant'})}
+function goto(page){if(!workflow.beforeNavigate()||!tacticWorkspace.beforeNavigate())return;ui.page=page==='calculator'?'tactics':page;ui.editor=false;render();if(ui.page==='archive'){const key=ui.archiveMonth||archiveKeys()[0];history.replaceState(null,'','#archive'+(key?'='+key:''));if(key)void loadArchive(key);}else if(location.hash.startsWith('#archive'))history.replaceState(null,'',location.pathname+location.search);window.scrollTo({top:0,behavior:'instant'})}
 function sortedEvents(d=current()){return [...d.events].sort((a,b)=>(a.seq-b.seq)||Number(a.sourceRow||0)-Number(b.sourceRow||0))}
 function maxDay(){return Math.max(current().options.days||5,...current().events.map(e=>e.day||0),1)}
 function phase(lap,d=current()){return d.levels.find(l=>l.count>0&&Number(lap)>=l.start&&Number(lap)<=l.end)?.stage||d.options.startStage||2}
@@ -111,7 +113,7 @@ function history(){const entries=[...new Set([...Object.keys(app.months),...arch
 // editable current-month state or sent with ordinary battle-log saves.
 async function loadArchive(key){
   if(!/^\d{4}-\d{2}$/.test(key))return;
-  ui.archiveMonth=key;archiveError='';archiveTab='logs';archivePageNumber=1;
+  ui.archiveMonth=key;archiveError='';archiveTab='logs';archivePageNumber=1;if(ui.page==='archive')history.replaceState(null,'','#archive='+key);
   if(archiveCache.has(key)||app.months[key]){if(ui.page==='archive')render();return;}
   archiveLoading=key;if(ui.page==='archive')render();
   try{
@@ -174,6 +176,7 @@ ui.member=current().members[0];ui.tactic=current().tactics[0]?.id||'';
 saveStatus('saved');if(editor&&(!boot.data||rosterMigrated||tacticsMigrated||guildMigrated))persist();
 
 render();
+if(ui.page==='archive'){const key=ui.archiveMonth||archiveKeys()[0];if(key)void loadArchive(key);}
 // Battle logs and tactic corrections synchronize silently between browsers.
 // Prefer a lightweight server-sent revision stream; legacy API deployments fall
 // back to short polling. Never replace a local draft or an in-flight save.
