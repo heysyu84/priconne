@@ -94,7 +94,7 @@ export function syncTacticRecommendations(month){
   }
   linked.add(String(current.id));
   // The tactic workspace is canonical for hand-controls and TP too.
-  // Preserve only recommendation-specific times, commentary, and custom URLs.
+  // Preserve recommendation-specific times and custom URLs; the memo mirrors its tactic.
   for(const field of ['stage','boss','characters','stars','expectedDamage','tactic','manualCount','tp']){
    const next=incoming[field];
    if(JSON.stringify(current[field])!==JSON.stringify(next)){current[field]=next;changed=true;}

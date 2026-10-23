@@ -32,7 +32,7 @@ tactic.tp='';
 assert.equal(syncTacticRecommendations(month),true);
 assert.equal(old.tp,'');
 assert.equal(syncTacticRecommendations(month),false);
-assert.equal(old.note,'');
+assert.equal(old.note,tactic.note);
 assert.equal(old.legacyRecommendationNote,'6p 1합류');
 
 tactic.note='탱커 HP 40만+, 전장 300 필수';
