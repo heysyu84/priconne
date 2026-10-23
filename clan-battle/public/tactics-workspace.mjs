@@ -76,7 +76,7 @@ export function createTacticWorkspace(api) {
   }
   function detailNote(t){
     const note=String(t.note||'').trim();
-    return `<div id="tw-detail-note" class="tw-detail-note" role="note" aria-label="택틱 중요 조건" ${note?'':'hidden'}><span class="tw-detail-note-label">※ 중요 조건</span><span class="tw-detail-note-text">${X(note)}</span></div>`;
+    return `<div id="tw-detail-note" class="tw-detail-note" role="note" aria-label="택틱 메모" ${note?'':'hidden'}><span class="tw-detail-note-text">${X(note)}</span></div>`;
   }
   function editor(t){
     if(!t)return `<section class="panel tw-work" data-editor-build="20261022-pages10"><div class="empty">선택한 보스에 택틱이 없습니다.${canEdit()?'<br><button type="button" class="btn primary" data-tw="new">새 택틱 작성</button>':''}</div></section>`;

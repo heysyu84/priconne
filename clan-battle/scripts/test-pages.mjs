@@ -119,13 +119,13 @@ console.log('PASS: mobile battle log headers and day-value cells are centered');
 // Readability / responsive changes should preserve compact table widths.
 const tacticalUi=fs.readFileSync(new URL('../public/tactics-workspace.mjs',import.meta.url),'utf8');
 const tacticCss=fs.readFileSync(new URL('../public/tactics-workspace.css',import.meta.url),'utf8');
-assert.ok(tacticalUi.includes('id="tw-detail-note"')&&tacticalUi.includes('※ 중요 조건'),
-  'The detailed tactic should show its memo prominently under the title');
+assert.ok(tacticalUi.includes('id="tw-detail-note"')&&tacticalUi.includes('aria-label="택틱 메모"')&&!tacticalUi.includes('※ 중요 조건'),
+  'The detailed tactic should show only the memo itself, without an important-condition label');
 assert.ok(tacticalUi.includes('${detailNote(t)}<fieldset'),
   'The memo must appear immediately after the title and before the tactic form');
 assert.ok(tacticalUi.includes('X(note)')&&tacticalUi.includes('detailNote.hidden=!note'),
   'The memo text must be escaped and dynamically hidden when empty');
-assert.ok(tacticCss.includes('.tw-detail-note-text{flex:1 1 280px')&&tacticCss.includes('font-size:15px'),
+assert.ok(tacticCss.includes('.tw-detail-note-text{flex:1 1 100%')&&tacticCss.includes('font-size:15px'),
   'Long tactic notes must be legible and wrap on desktop/mobile');
 const readabilityCss=fs.readFileSync(new URL('../public/readability.css',import.meta.url),'utf8');
 const guildUi=fs.readFileSync(new URL('../public/guild-workspace.mjs',import.meta.url),'utf8');

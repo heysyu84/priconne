@@ -34,10 +34,8 @@
  color:#b1263c;font-size:15px;font-weight:750;line-height:1.7;
  word-break:keep-all;overflow-wrap:anywhere;
 }
-.tw-detail-note-label{flex:none;font-size:15px;font-weight:900;letter-spacing:-.02em}
-.tw-detail-note-text{flex:1 1 280px;min-width:0;white-space:pre-wrap;overflow-wrap:anywhere;word-break:keep-all}
+.tw-detail-note-text{flex:1 1 100%;min-width:0;white-space:pre-wrap;overflow-wrap:anywhere;word-break:keep-all}
 @media(max-width:600px){
  .tw-detail-note{margin:-3px 0 13px;padding-bottom:10px;row-gap:2px;font-size:15px}
- .tw-detail-note-label{font-size:14px}
  .tw-detail-note-text{flex-basis:100%}
 }
