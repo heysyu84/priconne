@@ -1,9 +1,12 @@
 import { makeId } from './roster.mjs?v=20261022-pages10';
 import { shiftTimeline } from './engine.mjs?v=20261022-pages10';
 
-export const GROUPS = ['택틱정리', '타비비토'];
+export const CARRY_GROUP = '이월 택틱';
+export const GROUPS = ['택틱정리', '타비비토', CARRY_GROUP];
+export const carryTacticsVisible = month => month?.options?.showCarryTactics !== false;
+export const tacticGroupsFor = month => GROUPS.filter(group => group !== CARRY_GROUP || carryTacticsVisible(month));
 export const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-export const groupOf = tactic => tactic.group || (tactic.source === '타비비토' ? '타비비토' : '택틱정리');
+export const groupOf = tactic => tactic.group || (GROUPS.includes(tactic.source) ? tactic.source : GROUPS[0]);
 export const checkedSix = checked => Array.from({length:6}, (_, i) => checked?.[i] === true || checked?.[i] === 'TRUE');
 export const titleFor = tactic => `${tactic.boss ? tactic.boss+'넴' : '보스 미분류'} ${tactic.characters.map(c=>c||'미선택').join(' ')} 성급 ${tactic.stars.map(s=>s||'?').join('')}, 손컨 ${tactic.manualCount === '' || tactic.manualCount == null ? '—' : tactic.manualCount}, TP ${tactic.tp || '—'}, 기대딜 ${tactic.expectedDamage || '미입력'}`;
 export function compareTactics(a, b) {

@@ -1,4 +1,6 @@
-// Stage-4 tactics are the canonical source for the stage-4 recommendation list.
+import { CARRY_GROUP, groupOf } from './tactics-model.mjs?v=20261024-carry-tactics01';
+
+// Full-battle stage-4 tactics are the source for the recommendation list.
 // Keep stage-3 recommendations and historical records intact.
 const normal=s=>String(s??'').normalize('NFKC').replace(/\s+/g,'').toLocaleLowerCase('ko-KR');
 const typeOf=t=>/타비/.test(String(t.group||t.source||''))?'타비':'택틱';
@@ -17,7 +19,7 @@ export function stripTpFromMemo(note){
   .trim();
 }
 export function tacticReady(t){
- return !!(t&&!t.trashedAt&&t.id&&[1,2,3,4,5].includes(Number(t.boss))&&
+ return !!(t&&groupOf(t)!==CARRY_GROUP&&!t.trashedAt&&t.id&&[1,2,3,4,5].includes(Number(t.boss))&&
   Array.isArray(t.characters)&&t.characters.length===5&&t.characters.every(x=>String(x||'').trim())&&
   new Set(t.characters.map(normal)).size===5&&Array.isArray(t.stars)&&t.stars.length===5&&
   t.stars.every(x=>/^[1-6]$/.test(String(x)))&&

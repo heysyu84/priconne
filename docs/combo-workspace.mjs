@@ -1,7 +1,7 @@
 import {characterPortrait, portraitAttributes, portraitStarOverlay} from './character-portraits.mjs?v=20261023-image-cleanup01';
 import {isBoosterCharacter, formatExpectedDamage, sourceLinkBox, sourceLinkKind} from './view-settings.mjs?v=20261023-image-cleanup01';
 import {planThreeAttacks} from './combo-planner.mjs?v=20261023-image-cleanup01';
-import {visibleTacticRecommendations,recommendationDisplayOrder} from './tactic-combo-sync.mjs?v=20261023-sortcount03';
+import {visibleTacticRecommendations,recommendationDisplayOrder} from './tactic-combo-sync.mjs?v=20261024-carry-tactics01';
 
 export function createComboWorkspace(api) {
   const {state, render, section, canEdit, characters, escapeHtml: X, notice} = api;

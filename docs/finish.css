@@ -1061,7 +1061,19 @@ table.tw-grid thead th{
  .tw-toolbar .tw-carry-actions{gap:4px}
 }
 
-/* External tactics preserve pasted text while calculating leading timeline times. */
+/* Monthly carry tactic tab and administrator display setting. */
+.carry-tactics-setting h3{margin-top:0}
+.carry-tactics-toggle{display:flex;align-items:center;gap:9px;width:fit-content;font-weight:750;color:#73598b;cursor:pointer}
+.carry-tactics-toggle input{width:18px;height:18px;margin:0;accent-color:#8963a8;flex:none}
+.carry-tactics-setting p{margin:9px 0 0;line-height:1.6}
+@media(max-width:800px){
+ .tw-toolbar>.tw-group-tabs[data-tab-count="4"]>[role=tab]{padding:9px 4px!important;white-space:nowrap}
+ .tw-toolbar>.tw-group-tabs[data-tab-count="4"]>[role=tab]>span{margin-left:3px}
+}
+@media(max-width:380px){
+ .tw-toolbar>.tw-group-tabs[data-tab-count="4"]>[role=tab]>span{display:none}
+}
+/* External tactics preserve pasted text while calculating timeline times. */
 .tw-external{margin-top:16px;min-width:0}
 .tw-external-head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:12px}
 .tw-external-head h2{margin:0 0 6px;font-size:19px}
