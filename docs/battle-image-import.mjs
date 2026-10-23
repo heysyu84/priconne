@@ -241,7 +241,7 @@ export function createBattleImageImport(api){
   const row=state.rows.find(x=>x.id===holder.dataset.bliId);
   if(!row)return;
   const field=element.dataset.bliField;if(!field)return;
-  if(field==='selected'){row.selected=element.checked;return;}
+  if(field==='selected'){row.selected=element.checked;render();return;}
   if(field==='carry'){row.carry=element.checked;return;}
   row[field]=field==='damage'?Number(String(element.value).replace(/[^\d]/g,''))||'':element.value;
   updateRows();render();

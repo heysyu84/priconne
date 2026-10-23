@@ -1,3 +1,10 @@
+/* Use one baseline at every preference value, so increasing the preference
+   cannot switch back to smaller pre-mobile defaults. Minimums use CSS pixels. */
+html[data-text-scale]{--ui-text-scale:var(--user-text-scale,1);--menu-text-scale:var(--user-text-scale,1);--tactic-text-scale:var(--user-text-scale,1);--ui-font-min:0px;--body-font-min:0px;--menu-font-min:0px;--desktop-layout-floor:1;--layout-text-scale:max(var(--user-text-scale,1),var(--desktop-layout-floor))}
+@media(min-width:801px){html[data-text-scale]{--menu-font-min:16px}}
+@media(min-width:1920px) and (max-resolution:1.49dppx){html[data-text-scale]{--ui-font-min:14px;--body-font-min:18px;--menu-font-min:18px;--desktop-layout-floor:1.15}}
+@media(min-width:3200px) and (max-resolution:1.49dppx){html[data-text-scale]{--ui-font-min:16px;--body-font-min:22px;--menu-font-min:20px;--desktop-layout-floor:1.25}}
+@media(max-width:800px){html[data-text-scale]{--ui-text-scale:calc(1.1 * var(--user-text-scale,1));--menu-text-scale:calc(1.15 * var(--user-text-scale,1));--tactic-text-scale:calc(var(--mobile-tactic-base,1) * var(--user-text-scale,1));--layout-text-scale:var(--ui-text-scale)}}
 .display-dialog{width:min(640px,calc(100% - 24px));max-height:calc(100dvh - 32px);padding:0;margin:auto;overflow:auto;border:1px solid #d7c7e4;border-radius:16px;background:#fff;color:#594169;box-shadow:0 20px 80px #37204033;font-size:14px;line-height:1.6}
 .display-dialog::backdrop{background:#24153677;backdrop-filter:blur(3px)}
 .display-dialog-head{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 22px;border-bottom:1px solid #eee5f4}
@@ -17,35 +24,35 @@
 .display-copy-result{min-height:1.5em;margin:5px 0 12px;font-size:12px;color:#795e8e;overflow-wrap:anywhere}
 
 /* Layout follows the selected text size. Images keep their original size. */
-html[data-text-scale]:not([data-text-scale="100"]) :is(.panel,.main,.content,.tw-work,.tw-library){min-width:0}
-html[data-text-scale]:not([data-text-scale="100"]) .sidebar{grid-template-rows:56px auto;height:auto;min-height:121px}
-html[data-text-scale]:not([data-text-scale="100"]) .sidebar .nav{white-space:normal;overflow-wrap:anywhere;line-height:1.35}
-html[data-text-scale]:not([data-text-scale="100"]) .sidebar .nav .symbol{flex-shrink:0}
-html[data-text-scale]:not([data-text-scale="100"]) .topbar{height:auto}
-html[data-text-scale]:not([data-text-scale="100"]) .top-actions{flex-wrap:wrap}
-html[data-text-scale]:not([data-text-scale="100"]) .topbar .top-actions .month{height:auto;min-height:36px;width:auto!important;min-width:0!important;max-width:100%;line-height:1.4}
-html[data-text-scale]:not([data-text-scale="100"]) .top-actions .status{height:auto;max-width:none;line-height:1.4}
-html[data-text-scale]:not([data-text-scale="100"]) .admin-menu>div{width:max-content;max-width:calc(100vw - 24px)}
-html[data-text-scale]:not([data-text-scale="100"]) .admin-menu>div .btn{white-space:normal}
-html[data-text-scale]:not([data-text-scale="100"]) :is(.quick-grid,.quick-secondary,.tw-carry-entry) input:not([type=checkbox]),
-html[data-text-scale]:not([data-text-scale="100"]) :is(.quick-grid,.quick-secondary) select,
-html[data-text-scale]:not([data-text-scale="100"]) .quick-submit{height:auto;min-height:39px;line-height:1.45}
-html[data-text-scale]:not([data-text-scale="100"]) .tw-carry-entry #tw-carry{width:calc(76px * var(--user-text-scale));max-width:100%}
-html[data-text-scale]:not([data-text-scale="100"]) .battle-sheet.compact-battle-sheet{min-width:calc(720px * var(--user-text-scale))}
-html[data-text-scale]:not([data-text-scale="100"]) .battle-sheet.compact-battle-sheet.with-details{min-width:calc(1100px * var(--user-text-scale))}
-html[data-text-scale]:not([data-text-scale="100"]) .battle-sheet.compact-battle-sheet td.is-editing :is(input,select){height:auto;min-height:36px;line-height:1.4}
+html[data-text-scale] :is(.panel,.main,.content,.tw-work,.tw-library){min-width:0}
+html[data-text-scale] .sidebar{grid-template-rows:56px auto;height:auto;min-height:121px}
+html[data-text-scale] .sidebar .nav{white-space:normal;overflow-wrap:anywhere;line-height:1.35}
+html[data-text-scale] .sidebar .nav .symbol{flex-shrink:0}
+html[data-text-scale] .topbar{height:auto}
+html[data-text-scale] .top-actions{flex-wrap:wrap}
+html[data-text-scale] .topbar .top-actions .month{height:auto;min-height:36px;width:auto!important;min-width:0!important;max-width:100%;line-height:1.4}
+html[data-text-scale] .top-actions .status{height:auto;max-width:none;line-height:1.4}
+html[data-text-scale] .admin-menu>div{width:max-content;max-width:calc(100vw - 24px)}
+html[data-text-scale] .admin-menu>div .btn{white-space:normal}
+html[data-text-scale] :is(.quick-grid,.quick-secondary,.tw-carry-entry) input:not([type=checkbox]),
+html[data-text-scale] :is(.quick-grid,.quick-secondary) select,
+html[data-text-scale] .quick-submit{height:auto;min-height:39px;line-height:1.45}
+html[data-text-scale] .tw-carry-entry #tw-carry{width:calc(76px * var(--layout-text-scale));max-width:100%}
+html[data-text-scale] .battle-sheet.compact-battle-sheet{min-width:calc(720px * var(--layout-text-scale))}
+html[data-text-scale] .battle-sheet.compact-battle-sheet.with-details{min-width:calc(1100px * var(--layout-text-scale))}
+html[data-text-scale] .battle-sheet.compact-battle-sheet td.is-editing :is(input,select){height:auto;min-height:36px;line-height:1.4}
 @media(min-width:801px) and (max-width:1150px){
-  html[data-text-scale]:not([data-text-scale="100"]) .topbar{position:relative;top:auto;right:auto;width:100%;padding:10px 24px}
-  html[data-text-scale]:not([data-text-scale="100"]) .topbar .top-actions{justify-content:flex-end}
+  html[data-text-scale] .topbar{position:relative;top:auto;right:auto;width:100%;padding:10px 24px}
+  html[data-text-scale] .topbar .top-actions{justify-content:flex-end}
 }
 @media(max-width:800px){
   .display-dialog-head{padding:14px 16px}
   .display-dialog-body{padding:16px}
-  html[data-text-scale]:not([data-text-scale="100"]) .topbar{height:auto!important;min-height:46px}
-  html[data-text-scale]:not([data-text-scale="100"]) .topbar .top-actions{gap:6px;flex-wrap:wrap}
-  html[data-text-scale]:not([data-text-scale="100"]) .battle-sheet.compact-battle-sheet,
-  html[data-text-scale]:not([data-text-scale="100"]) .battle-sheet.compact-battle-sheet.with-details{width:calc(var(--mobile-battle-width) * var(--user-text-scale))!important;min-width:calc(var(--mobile-battle-width) * var(--user-text-scale))!important}
-  html[data-text-scale]:not([data-text-scale="100"]) .compact-battle-sheet colgroup col{width:calc(var(--mobile-col-width) * var(--user-text-scale))!important}
+  html[data-text-scale] .topbar{height:auto!important;min-height:46px}
+  html[data-text-scale] .topbar .top-actions{gap:6px;flex-wrap:wrap}
+  html[data-text-scale] .battle-sheet.compact-battle-sheet,
+  html[data-text-scale] .battle-sheet.compact-battle-sheet.with-details{width:calc(var(--mobile-battle-width) * var(--layout-text-scale))!important;min-width:calc(var(--mobile-battle-width) * var(--layout-text-scale))!important}
+  html[data-text-scale] .compact-battle-sheet colgroup col{width:calc(var(--mobile-col-width) * var(--layout-text-scale))!important}
   html:is([data-text-scale="150"],[data-text-scale="155"],[data-text-scale="160"],[data-text-scale="165"],[data-text-scale="170"],[data-text-scale="175"],[data-text-scale="180"],[data-text-scale="185"],[data-text-scale="190"],[data-text-scale="195"],[data-text-scale="200"]) .mobile-nav{grid-template-columns:repeat(4,minmax(0,1fr))!important;height:auto;min-height:110px}
   html:is([data-text-scale="150"],[data-text-scale="155"],[data-text-scale="160"],[data-text-scale="165"],[data-text-scale="170"],[data-text-scale="175"],[data-text-scale="180"],[data-text-scale="185"],[data-text-scale="190"],[data-text-scale="195"],[data-text-scale="200"]) .content{padding-bottom:180px!important}
 }

@@ -37,8 +37,7 @@ app.active='2026-10';guild.afterMonthChange();editor=false;let combos=guild.comb
 click('hide-combo-notice');assert.ok(guild.combos().includes('TP · 스펙 안내 보기'));click('show-combo-notice');assert.ok(guild.combos().includes('combo-tp-notice'));
 click('combo-stage',{value:'3'});combos=guild.combos();assert.ok(/<details class="panel combo-notice combo-other-notes">/.test(combos));assert.ok(!combos.includes('combo-tp-notice'));
 let thirdStageCards=combos.slice(combos.indexOf('<div class="combo-compact-list">'));assert.ok(thirdStageCards.includes('combo-mini-layout'));assert.ok(thirdStageCards.includes('필요'));assert.ok(thirdStageCards.includes('21초'));assert.ok(thirdStageCards.includes('90초'));assert.equal((thirdStageCards.match(/전부 SET/g)||[]).length,5);for(const hidden of ['기대딜','source-link-box','손컨','TP '])assert.ok(!thirdStageCards.includes(hidden),hidden);
-const comboView=value=>{const button={dataset:{comboAction:'view',value},closest:()=>({})};for(const fn of listeners.click)fn({target:{closest:selector=>selector==='[data-combo-action]'?button:null},preventDefault(){}});};
-comboView('detail');combos=guild.combos();thirdStageCards=combos.slice(combos.indexOf('<div class="combo-list">'));assert.ok(thirdStageCards.includes('combo-summary-stage3'));for(const hidden of ['기대딜','source-link-box','손컨','TP '])assert.ok(!thirdStageCards.includes(hidden),hidden);comboView('compact');
+assert.ok(!combos.includes('data-combo-action="view"'),'Recommendations use the unified card layout');
 editor=true;click('add-combo');for(const hidden of ['expectedDamage','url','manualCount','tp'])assert.ok(!form.fields.some(f=>f.name===hidden));assert.equal(form.fields.find(f=>f.name==='tactic').value,'전부 SET');assert.equal(form.fields.find(f=>f.name==='stage').value,3);
 guild.openArchive();assert.equal(guild.isArchiveOpen(),true);assert.ok(guild.db().includes('지난 클랜전 기록이 아직 없습니다.'));
 
