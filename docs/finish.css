@@ -855,7 +855,10 @@ table.tw-grid thead th{
  .tw-library{position:relative;top:auto;max-height:none;overflow:visible}
  .tw-library #tw-library-list{display:block;max-height:220px;overflow-y:auto;overflow-x:hidden}
  .tw-boss-label{display:block}
- .boss-grid,.battle-boss-strip{grid-template-columns:repeat(3,minmax(0,1fr))}
+ /* Fit five boss cards in one desktop row by narrowing only their columns and spacing. */
+ .boss-grid{grid-template-columns:repeat(5,minmax(0,1fr));gap:9px;overflow:visible}
+ .boss-grid>.boss-card{min-width:0;max-width:100%}
+ .battle-boss-strip{grid-template-columns:repeat(3,minmax(0,1fr))}
  .grid-2,.profile-activity-grid{grid-template-columns:minmax(0,1fr)}
  /* Situation board: recent battle logs 80%, contribution leaders 20%. */
  .raid-stats+.grid-2{grid-template-columns:minmax(0,4fr) minmax(0,1fr);gap:12px;align-items:start}
