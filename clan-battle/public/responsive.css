@@ -34,6 +34,7 @@
 .dashboard-table .textbutton{white-space:normal;overflow-wrap:anywhere;font-size:12px;padding:0}
 .dashboard-table .attack-slot{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:center;justify-content:center;gap:5px;width:100%;height:42px;min-width:0;padding:5px;border-radius:6px}
 .dashboard-table .boss-chip{padding:4px 0;width:100%;font-size:12px;line-height:1.2;min-width:0}
+.dashboard-table .attack-slot.is-solo .boss-chip{grid-column:1/-1}
 .dashboard-count{font-variant-numeric:tabular-nums;font-weight:700}
 .tw-layout{min-width:0;grid-template-columns:245px minmax(0,1fr)}
 .tw-library,.tw-work,.tw-config-fieldset,.tw-config{min-width:0;max-width:100%}

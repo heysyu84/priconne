@@ -29,7 +29,10 @@ export function createGuildWorkspace(api){
       const p=person(id),result=dashboardDay(d,id,day),membership=d.membership?.[id],unavailable=membership&&(day<membership.fromDay||day>(membership.toDay??days()));
       const name=`<th><button class="textbutton" data-guild="profile" data-id="${X(id)}">${X(p?.name||d.events.find(e=>e.memberId===id)?.member||'미등록')}</button></th>`;
       if(unavailable)return `<tr>${name}<td class="day-unavailable" colspan="${count+3}">—</td></tr>`;
-      const slots=Array.from({length:count},(_,i)=>{const slot=result.slots[i];return `<td><div class="attack-slot ${slot?'filled':''}">${slot?chip(slot.basic.boss):'<span class="empty-slot">—</span>'}${slot?.carry?chip(slot.carry.boss):slot?.pending?'<strong class="pending-carry" title="미사용 이월">★</strong>':'<span class="empty-slot">—</span>'}</div></td>`;}).join('');
+      const slots=Array.from({length:count},(_,i)=>{
+        const slot=result.slots[i],solo=!!slot&&!slot.carry&&!slot.pending;
+        return `<td><div class="attack-slot ${slot?'filled':''}${solo?' is-solo':''}">${slot?chip(slot.basic.boss):'<span class="empty-slot">—</span>'}${slot?.carry?chip(slot.carry.boss):slot?.pending?'<strong class="pending-carry" title="미사용 이월">★</strong>':slot?'':'<span class="empty-slot">—</span>'}</div></td>`;
+      }).join('');
       return `<tr>${name}${slots}<td class="dashboard-count">${result.used}/${count}</td><td class="dashboard-count">${result.remaining}</td><td class="dashboard-count ${result.pending?'pending-carry':''}">${result.pending}${result.orphan.length?'<span class="text-danger" title="이월 연결 확인"> !</span>':''}</td></tr>`;
     });
     return section('대시보드')+`<section class="panel dashboard-panel"><div class="panel-head dashboard-controls">${dayTabs('dashboard-day',day)}<span class="pill">${Math.min(days(),latestDay())}일차 진행 중</span></div>${table(headers,rows,'dashboard-table')}</section>`;

@@ -22,6 +22,21 @@ const memberId=month.memberIds[0];
 for(let i=0;i<6;i++)month.events.push({id:'auto-'+i,seq:i+1,day:1,boss:i%5+1,memberId,member:'자동 검증',carry:i%2===1,damage:0,damageMode:'max',bonus:0});
 replayMonth(month);assert.ok(month.events.every(e=>e.kill));assert.equal(month.events[0].damage,12000000);assert.equal(contribution(month.events[0],month),15750000);assert.equal(contribution(month.events[1],month),15750000);
 const dash=dashboardDay(month,memberId,1);assert.equal(dash.used,3);assert.equal(dash.pending,0);assert.equal(dash.remaining,0);assert.ok(dash.slots.every(s=>s.carry));
+// Dashboard slot appearances: no carry = one full-width boss; an unused carry
+// gets a star; a used carry displays the second boss.
+const soloMonth=structuredClone(month);
+soloMonth.events=[{id:'solo',seq:1,day:1,boss:4,memberId,carry:false,kill:false}];
+const soloDay=dashboardDay(soloMonth,memberId,1);
+assert.equal(soloDay.slots.length,1);
+assert.equal(soloDay.slots[0].basic.boss,4);
+assert.equal(soloDay.slots[0].carry,null);
+assert.equal(soloDay.slots[0].pending,false);
+soloMonth.events[0].kill=true;
+assert.equal(dashboardDay(soloMonth,memberId,1).slots[0].pending,true);
+soloMonth.events.push({id:'used-carry',seq:2,day:1,boss:2,memberId,carry:true,carryFrom:'solo'});
+const usedSlot=dashboardDay(soloMonth,memberId,1).slots[0];
+assert.equal(usedSlot.pending,false);
+assert.equal(usedSlot.carry.boss,2);
 month.dayBreaks.push({id:'d2',afterSeq:6,nextDay:2});month.events.push({id:'next-day',seq:7,day:1,boss:1,memberId,member:'자동 검증',carry:false,damage:1});replayMonth(month);assert.equal(month.events.at(-1).day,2);
 assert.equal(dashboardDay(month,memberId,2).used,1);
 month.events=Array.from({length:12},(_,i)=>({id:'sample'+i,seq:i+1,stage:4,boss:1,damage:10000001+i*10000,actual:10000001+i*10000,memberId:'user'+(i%3),member:'유저'+(i%3)}));

@@ -129,6 +129,14 @@ assert.ok(tacticCss.includes('.tw-detail-note-text{flex:1 1 100%')&&tacticCss.in
   'Long tactic notes must be legible and wrap on desktop/mobile');
 const readabilityCss=fs.readFileSync(new URL('../public/readability.css',import.meta.url),'utf8');
 const guildUi=fs.readFileSync(new URL('../public/guild-workspace.mjs',import.meta.url),'utf8');
+const guildDashboardCss=fs.readFileSync(new URL('../public/guild.css',import.meta.url),'utf8');
+const responsiveDashboardCss=fs.readFileSync(new URL('../public/responsive.css',import.meta.url),'utf8');
+assert.ok(guildUi.includes("solo=!!slot&&!slot.carry&&!slot.pending")&&guildUi.includes("solo?' is-solo':''"),
+  'A normal attack without carry should receive a full-width slot');
+assert.ok(guildUi.includes('title="미사용 이월">★')&&guildUi.includes('chip(slot.carry.boss)'),
+  'Unused and used carry indicators should remain visible');
+assert.ok(guildDashboardCss.includes('.dashboard-table .attack-slot.is-solo .boss-chip')&&responsiveDashboardCss.includes('grid-column:1/-1'),
+  'Single-boss attack should occupy both halves on desktop and mobile');
 const htmlShell=fs.readFileSync(new URL('../public/clan-shell.html',import.meta.url),'utf8');
 assert.ok(!tacticalUi.includes('id="tw-search"'),'Tactic search must be removed from list');
 assert.ok(!tacticalUi.includes('state.query'),'Tactic list must not be filtered by the deleted search');
