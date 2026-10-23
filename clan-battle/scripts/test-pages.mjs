@@ -147,6 +147,12 @@ console.log('PASS: tactic library, carry reset, mobile boss progress, colored ba
 
 // Resume the two nearly-finished Work edits without losing earlier features.
 const compactCombos=fs.readFileSync(new URL('../public/combo-workspace.mjs',import.meta.url),'utf8');
+assert.ok(!compactCombos.includes('내 캐릭터는 하루 1회 · 서포트는 타당 1명'),
+  'Redundant basic support rule must not appear in the planner');
+assert.ok(!compactCombos.includes('중복을 풀기 위해 꼭 빌릴 캐릭터입니다.'),
+  'Redundant borrowed character explanation must not appear');
+assert.ok(compactCombos.includes('4단계 3타 분배') && compactCombos.includes("planThreeAttacks("),
+  'Planner calculation and heading must remain intact');
 const compactCss=fs.readFileSync(new URL('../public/combo.css',import.meta.url),'utf8');
 const appClient=fs.readFileSync(new URL('../public/clan.js',import.meta.url),'utf8');
 const displayScript=fs.readFileSync(new URL('../public/display-settings.mjs',import.meta.url),'utf8');

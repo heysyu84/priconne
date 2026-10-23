@@ -16,7 +16,7 @@ const {createWorkflow}=await import('./workflow.mjs?v=20261024-admin-battle-entr
 const {ensureTactics}=await import('./tactics-model.mjs?v=20261024-tactic-conditions01');
 const {syncTacticRecommendations}=await import('./tactic-combo-sync.mjs?v=20261024-tactic-note-sync01');
 const {applySourceData,remainingAttacks}=await import('./guild-model.mjs?v=20261022-hall01');
-const {createGuildWorkspace}=await import('./guild-workspace.mjs?v=20261024-tactic-note-sync01');
+const {createGuildWorkspace}=await import('./guild-workspace.mjs?v=20261024-combo-help-clean01');
 const {createTacticWorkspace}=await import('./tactics-workspace.mjs?v=20261024-tactic-toolbar01');
 const {createBattleImageImport}=await import('./battle-image-import.mjs?v=20261023-extraction03');
 const [TACTIC_META,CHARACTERS,ROW_FORMATS,BOSS_ART,GUILD_SOURCE,PORTRAIT_LIBRARY,FUTURE_BOSSES]=await Promise.all(['/tactic-metadata.json','/characters.json','/tactic-row-formats.json','/bosses.json','/guild-source.json','/portrait-library.json','/future-bosses.json'].map(async path=>{const response=await fetch(assetUrl(path)+'?v=20261023-image-cleanup01');if(!response.ok)throw Error('택틱 자료를 불러오지 못했습니다.');return response.json()}));
