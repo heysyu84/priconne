@@ -16,14 +16,15 @@ export function convertForeignTactic(raw, koreanNames=[], foreignNames=[]) {
  const find=s=>dict.find(x=>x.name===trim(s))?.i??-1;
  const actorStart=s=>{
    const v=trim(s);
-   const hit=dict.find(x=>v===x.name||v.startsWith(x.name+' ')||v.startsWith(x.name+'s1'));
+   const hit=dict.find(x=>v===x.name||v.startsWith(x.name+' ')||v.startsWith(x.name+'s1')||v.startsWith(x.name+'(')||v.startsWith(x.name+'（'));
    return hit?{name:hit.name,rest:trim(v.slice(hit.name.length))}:null;
  };
  const warn=[];const warning=s=>{if(!warn.includes(s))warn.push(s);};
  let src=trim(raw).replace(/\[(\d{1,2}:[0-5]\d)\]\(https?:\/\/[^)]*\)/g,'$1').replace(/https?:\/\/\S+/g,'');
  const section=src.search(/【\s*(?:お団子|団子|당고)\s*(?:ver\.?|版)?\s*】/i);
  if(section>=0 && /(?:SET|セット|切)/.test(src.slice(0,section)))src=src.slice(0,section);
- const dango=/[OX〇○◯●ー－—-]{5}/i.test(src);
+ src=src.replace(/[\uFE0E\uFE0F\u200D]/g,'');
+ const dango=/[OX〇○◯●⭕❌ー－—-]{5}/i.test(src);
  const format=dango?'dango':'commands';
  src=src.replace(/\u00a0/g,' ').replace(/[ \u3000]*(\d{1,2}:[0-5]\d)(?=[ \u3000\t]|$)/g,'\n$1 ');
  const rows=[],state=[false,false,false,false,false];let auto=false,time='',lastTime='';
@@ -42,18 +43,18 @@ export function convertForeignTactic(raw, koreanNames=[], foreignNames=[]) {
  };
  const autoState=rawText=>{
    let changed=null;
-   const rest=rawText.replace(/(?:AUTO|オート|自动|自動)\s*(?:ON|OFF|オン|オフ|切|关|關|开|開|开启)/gi,t=>{
+   const rest=rawText.replace(/(?:AUTO|オート|오토|자동|自动|自動)\s*(?:ON|OFF|オン|オフ|切|关|關|开|開|开启)/gi,t=>{
      changed=/(?:ON|オン|开|開|开启)$/i.test(t);return ' ';
    });
    return {rest,changed};
  };
  const act=(payload,actor='',initial=false)=>{
-   const a=autoState(payload);const before=auto;
+   const a=autoState(payload);a.rest=a.rest.replace(/^[\s'‘’]+|[\s'‘’]+$/g,'');const before=auto;
    const skill=a.rest.match(/(?:s1|1スキル|技能1)\s*(?:开始后|開始後|スタート後)/i);
    if(skill)a.rest=a.rest.replace(skill[0],' ');
    if(a.changed!==null)auto=a.changed;
    const on=[],off=[];
-   const symbols=a.rest.match(/[OX〇○◯●ー－—-]{5}/i);
+   const symbols=a.rest.match(/[OX〇○◯●⭕❌ー－—-]{5}/i);
    if(symbols && a.changed===null){
      const suffix=a.rest.slice(symbols.index+symbols[0].length);
      const bare=suffix.match(/(?:^|[\s、,，])(ON|OFF|切|オン|オフ)(?=$|[\s、,，])/i);
@@ -61,7 +62,7 @@ export function convertForeignTactic(raw, koreanNames=[], foreignNames=[]) {
    }
    if(symbols){
      [...symbols[0].toUpperCase()].forEach((mark,i)=>{
-       const next=/[O〇○◯●]/.test(mark);
+       const next=/[O〇○◯●⭕]/.test(mark);
        if(next!==state[i]){state[i]=next;(next?on:off).push(i);}
      });
    }else{
@@ -85,17 +86,40 @@ export function convertForeignTactic(raw, koreanNames=[], foreignNames=[]) {
    if(!rows.length && !actor && initial){cmds.sort((x,y)=>x.startsWith('AUTO')?-1:y.startsWith('AUTO')?1:0);}
    append(actor,cmds,skill?'1스킬 시작 후':'');
  };
+ const arrowDango=merged=>{
+   const segments=merged.split(/\s*(?:➡|→|➜|⇒|⟶)\s*/);
+   if(segments.length<2||!segments.every(x=>/[OX〇○◯●⭕❌ー－—-]{5}/i.test(x)))return false;
+   const first=segments[0].match(/[OX〇○◯●⭕❌ー－—-]{5}/i);
+   const rawActor=trim(segments[0].slice(0,first.index)).replace(/[\[\]()（）]/g,' ').trim();
+   const actor=actorStart(rawActor)?.name||rawActor;
+   const orderedOn=[],orderedOff=[];
+   for(const part of segments){
+     const match=part.match(/[OX〇○◯●⭕❌ー－—-]{5}/i);
+     [...match[0].toUpperCase()].forEach((mark,i)=>{
+       const on=/[O〇○◯●⭕]/.test(mark);
+       if(state[i]!==on){state[i]=on;(on?orderedOn:orderedOff).push(i);}
+     });
+     if(/(?:AUTO|オート|오토|자동|自动|自動)\s*(?:ON|OFF|オン|オフ|切|关|關|开|開)/i.test(part))
+       warning('화살표와 AUTO 혼합, 확인 필요: '+part);
+   }
+   const commands=[];
+   if(orderedOn.length)commands.push(orderedOn.map(i=>label[i]).join(', ')+(orderedOn.length>1?' 순으로 ON':' ON'));
+   if(orderedOff.length)commands.push(orderedOff.map(i=>label[i]).join(', ')+(orderedOff.length>1?' 순으로 OFF':' OFF'));
+   if(orderedOn.length&&orderedOff.length)warning('화살표의 ON/OFF 순서 확인 필요: '+merged);
+   append(actor,commands);return true;
+ };
  const processLine=input=>{
    let line=trim(input);if(!line)return;
    const t=line.match(/^(\d{1,2}:[0-5]\d)\s*/);
    if(t){time=t[1];line=trim(line.slice(t[0].length));}
-   const parts=line.replace(/[ \u3000]{2,}/g,'\t').split(/\t+/).map(trim).filter(Boolean);
+   const parts=line.replace(/(?:[ ]{2,}|[\u3000]+)/g,'\t').split(/\t+/).map(trim).filter(Boolean);
    if(!parts.length)return;
    if(dango){
      const merged=parts.join(' ');
-     const s=merged.match(/[OX〇○◯●ー－—-]{5}/i);
+     if(arrowDango(merged))return;
+     const s=merged.match(/[OX〇○◯●⭕❌ー－—-]{5}/i);
      if(s){
-       const rawActor=trim(merged.slice(0,s.index));
+       const rawActor=trim(merged.slice(0,s.index)).replace(/[\[\]()（）]/g,' ').trim().replace(/^(?:시작|초동|初動|開始|开局|初始|START)$/i,'');
        const a=actorStart(rawActor);
        let actor=a?.name||rawActor;
        if(!rows.length&&!actor&&(time==='1:30'||!t))time='';
