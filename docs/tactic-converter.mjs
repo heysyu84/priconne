@@ -25,6 +25,15 @@ export function convertForeignTactic(raw, koreanNames=[], foreignNames=[]) {
    return hit?{name:hit.name,rest:trim(v.slice(hit.name.length))}:null;
  };
  const warn=[];const warning=s=>{if(!warn.includes(s))warn.push(s);};
+ // Indices 1..5 follow the source left-to-right; unsorted output goes 5..1.
+ const ordered=xs=>[...new Set(xs)].sort((a,b)=>b-a).map(i=>label[i]).join(', ');
+ const cleanActor=s=>trim(s).replace(/[(（]\s*(?:AUTO|오토|オート|자동|自動|수동|手動|SET)\s*[)）]/gi,'')
+   .replace(/^[\s'"‘’]+|[\s'"‘’]+$/g,'');
+ const autoOnly=/^(.*?)\s*['"‘’]?\s*((?:AUTO|オート|오토|자동|自動)\s*(?:ON|OFF|온|오프|オン|オフ|切|关|關|开|開|开启))\s*['"‘’]?\s*$/i;
+ const orderPriority=s=>/한번만$/.test(s)?-1:/^AUTO 온$/.test(s)?1:/^AUTO 오프$/.test(s)?3:
+   /(?:\sON|\sSET)$/.test(s)?0:/\sOFF$/.test(s)?2:4;
+ const prioritize=(commands,initial=false)=>[...commands].sort((a,b)=>
+   (initial&&/^AUTO /.test(a)?-2:orderPriority(a))-(initial&&/^AUTO /.test(b)?-2:orderPriority(b)));
  let src=trim(raw).replace(/\[(\d{1,2}:[0-5]\d)\]\(https?:\/\/[^)]*\)/g,'$1').replace(/https?:\/\/\S+/g,'');
  const section=src.search(/【\s*(?:お団子|団子|당고)\s*(?:ver\.?|版)?\s*】/i);
  if(section>=0 && /(?:SET|セット|切)/.test(src.slice(0,section)))src=src.slice(0,section);
@@ -37,7 +46,6 @@ export function convertForeignTactic(raw, koreanNames=[], foreignNames=[]) {
    if(!cmds.length&&!actor)return;
    const head=time?(rows.length&&time===lastTime?'ㄴ ':time+' '):'';
    const name=actor?(find(actor)>=0?label[find(actor)]:actor)+(condition?' '+condition+' ':' 후 '):'';
-   if(actor&&find(actor)<0)warning('행동 캐릭터 명칭 확인: '+actor);
    const text=trim(head+name+(cmds.join(', ')||'(SET 변경 없음)'));
    rows.push({text,checked:[...state,auto],source:sourceLine,time,actor,instruction:cmds.join(', ')});lastTime=time;
  };
@@ -48,12 +56,11 @@ export function convertForeignTactic(raw, koreanNames=[], foreignNames=[]) {
  };
  const autoState=rawText=>{
    let changed=null;const events=[];
-   const rest=rawText.replace(/(?:AUTO|オート|오토|자동|自动|自動)\s*(?:ON|OFF|オン|オフ|切|关|關|开|開|开启)/gi,(t,index)=>{
-     changed=/(?:ON|オン|开|開|开启)$/i.test(t);events.push({index,text:'AUTO '+(changed?'온':'오프')});return ' '.repeat(t.length);
+   const rest=rawText.replace(/(?:AUTO|オート|오토|자동|自动|自動)\s*(?:ON|OFF|온|오프|オン|オフ|切|关|關|开|開|开启)/gi,(t,index)=>{
+     changed=/(?:ON|온|オン|开|開|开启)$/i.test(t);events.push({index,text:'AUTO '+(changed?'온':'오프')});return ' '.repeat(t.length);
    });
    return {rest,changed,events};
  };
- const ordered = xs => [...new Set(xs)].map(i=>label[i]).join(', ');
  const onceCommands = commands => {
    const result=[];
    for(let i=0;i<commands.length;i++){
@@ -110,7 +117,7 @@ export function convertForeignTactic(raw, koreanNames=[], foreignNames=[]) {
        // Explicit instructions also matter when SET state is unchanged.
        for(const i of ids)state[i]=enable;
        const orderedAction=/[➡→➜⇒⟶]|順に|順番に|순으로|순서대로/.test(whole)&&ids.length>1;
-       events.push({index,text:(all?'전부':ordered(ids))+(orderedAction?' 순으로':'')+(enable?(initial?' SET':' ON'):' OFF')});
+       events.push({index,text:(all?'전부':orderedAction?ids.map(i=>label[i]).join(', '):ordered(ids))+(orderedAction?' 순으로':'')+(enable?(initial?' SET':' ON'):' OFF')});
        return ' ';
      });
      commands.push(...events.sort((a,b)=>a.index-b.index).map(e=>e.text));
@@ -120,31 +127,55 @@ export function convertForeignTactic(raw, koreanNames=[], foreignNames=[]) {
        if(ids.length){commands.push(ids.length===5?'전부 SET':ordered(ids)+' SET');rest=rest.replace(new RegExp(dictPattern,'g'),' ');}
      }
    }
-   const leftover=trim(rest.replace(/(?:初動|UBセット|お団子|시작|초동|開始|开局|初始|START)/gi,'').replace(/[\s、,，:：;；'‘’()[\]（）➡→➜⇒⟶]+/g,' '));
+   const leftover=trim(rest.replace(/(?:初動|UBセット|お団子|시작|초동|開始|开局|初始|START)/gi,'').replace(/[\s、,，:：;；'‘’\"()[\]（）➡→➜⇒⟶]+/g,' '));
    if(leftover){warning('미해석 원문·조건 확인: '+leftover);commands.push('[원문 확인: '+leftover+']');}
    // A fully OFF initial row still establishes the initial time/state.
    if(initial&&!commands.length&&!actor)commands.push('전부 OFF');
-   append(actor,onceCommands(commands),skill?'1스킬 시작 후':'');
+   append(actor,prioritize(onceCommands(commands),initial),skill?'1스킬 시작 후':'');
  };
  const arrowDango=merged=>{
    const segments=merged.split(/\s*(?:➡|→|➜|⇒|⟶)\s*/);
    if(segments.length<2||!segments.every(x=>/[OX〇○◯●⭕❌ー－—-]{5}/i.test(x)))return false;
    const first=segments[0].match(/[OX〇○◯●⭕❌ー－—-]{5}/i);
-   const rawActor=trim(segments[0].slice(0,first.index)).replace(/[\[\]()（）]/g,' ').trim();
+   const rawActor=cleanActor(segments[0].slice(0,first.index)).replace(/[\[\]]/g,' ').trim();
    const actor=actorStart(rawActor)?.name||rawActor;
-   const start=rows.length;
-   for(let i=0;i<segments.length;i++)act(i===0?segments[i].slice(first.index):segments[i],actor,!rows.length);
-   const group=rows.splice(start);
-   if(group.length){
-     const firstRow=group[0],prefix=firstRow.instruction?firstRow.text.slice(0,-firstRow.instruction.length):firstRow.text.replace(/\(SET 변경 없음\)$/,'');
-     // Keep each transition in order, with a single timing/actor prefix.
-     let commands=group.map(r=>r.instruction).filter(Boolean);
-     if(commands.length>1&&commands.every(c=>/^[^,]+ ON$/.test(c))){
-       commands=[commands.map(c=>c.slice(0,-3)).join(', ')+' 순으로 ON'];
+   const previousTime=lastTime;
+   const actions=[],autoActions=[],unresolved=[];
+   const initial=!rows.length&&(!time||time==='1:30');
+   for(let j=0;j<segments.length;j++){
+     const segment=segments[j],symbol=segment.match(/[OX〇○◯●⭕❌ー－—-]{5}/i);
+     const before=[...state],prevAuto=auto,rowStart=rows.length;
+     // Later actor labels describe the second trigger. Do not interpret them
+     // as a character number or an unknown error in the joined output.
+     act(segment.slice(symbol.index),'',initial&&j===0);
+     const produced=rows.splice(rowStart);
+     for(let i=0;i<5;i++)if(state[i]!==before[i])actions.push({i,on:state[i]});
+     for(const item of produced){
+       if(/AUTO 온/.test(item.instruction))autoActions.push('AUTO 온');
+       if(/AUTO 오프/.test(item.instruction))autoActions.push('AUTO 오프');
+       for(const m of item.instruction.matchAll(/\[원문 확인: [^\]]+\]/g))unresolved.push(m[0]);
      }
-     const instruction=onceCommands(commands).join(', ');
-     rows.push({...group.at(-1),text:prefix+(instruction||'(SET 변경 없음)'),instruction,source:sourceLine});
+     if(prevAuto!==auto&&!produced.some(r=>/AUTO (?:온|오프)/.test(r.instruction)))
+       autoActions.push('AUTO '+(auto?'온':'오프'));
    }
+   // Keep the final state, but a rapid ON -> OFF is a one-shot action.
+   const on=[],off=[],once=[];
+   for(let i=4;i>=0;i--){
+     const events=actions.filter(e=>e.i===i).map(e=>e.on);
+     if(!events.length)continue;
+     if(events.length===2&&events[0]&&!events[1])once.push(label[i]+' 한번만');
+     else(events.at(-1)?on:off).push(i);
+   }
+   const commands=[...once];
+   if(on.length)commands.push(ordered(on)+(initial?' SET':' ON'));
+   if(off.length)commands.push(ordered(off)+' OFF');
+   commands.push(...[...new Set(autoActions)]);
+   commands.push(...[...new Set(unresolved)]);
+   const instruction=prioritize(commands,initial).join(', ')||'(SET 변경 없음)';
+   const head=time?(rows.length&&time===previousTime?'ㄴ ':time+' '):'';
+   const named=actor?(find(actor)>=0?label[find(actor)]:actor)+' 후 ':'';
+   rows.push({text:trim(head+named+instruction),checked:[...state,auto],source:sourceLine,time,actor,instruction});
+   lastTime=time;
    return true;
  };
  // Boss cues are timing conditions, not sixth-party character names.
@@ -179,6 +210,12 @@ export function convertForeignTactic(raw, koreanNames=[], foreignNames=[]) {
    sourceLine=trim(input);let line=sourceLine;if(!line)return;
    const t=line.match(/^(\d{1,2}:[0-5]\d)\s*/);
    if(t){time=t[1];line=trim(line.slice(t[0].length));}
+   const autoLine=line.match(autoOnly);
+   if(autoLine&&!/[OX〇○◯●⭕❌ー－—-]{5}/i.test(line)&&cleanActor(autoLine[1])){
+     const rawActor=cleanActor(autoLine[1]),actor=actorStart(rawActor);
+     act(autoLine[2],actor?.name||rawActor,false);
+     return;
+   }
    const boss=bossCue(line);
    if(boss){actBoss(boss);return;}
    const parts=line.replace(/(?:[ ]{2,}|[\u3000]+)/g,'\t').split(/\t+/).map(trim).filter(Boolean);
@@ -188,14 +225,20 @@ export function convertForeignTactic(raw, koreanNames=[], foreignNames=[]) {
      if(arrowDango(merged))return;
      const s=merged.match(/[OX〇○◯●⭕❌ー－—-]{5}/i);
      if(s){
-       const rawActor=trim(merged.slice(0,s.index)).replace(/[\[\]()（）]/g,' ').trim().replace(/^(?:시작|초동|初動|開始|开局|初始|START)$/i,'');
+       const rawActor=cleanActor(merged.slice(0,s.index)).replace(/[\[\]]/g,' ').trim().replace(/^(?:시작|초동|初動|開始|开局|初始|START)$/i,'');
        const a=actorStart(rawActor);
-       let actor=a?.name||rawActor;
+       const actor=a?.name||rawActor;
        if(!rows.length&&!actor&&(time==='1:30'||!t))time='';
-       act(merged.slice(s.index),actor,!rows.length);
+       act(merged.slice(s.index),actor,!rows.length&&(!time||time==='1:30'));
      }else{
-       const a=actorStart(merged);
-       act(a?.rest||merged,a?.name||'',!rows.length);
+       const match=merged.match(autoOnly);
+       if(match&&cleanActor(match[1])){
+         const rawActor=cleanActor(match[1]),a=actorStart(rawActor);
+         act(match[2],a?.name||rawActor,!rows.length&&(!time||time==='1:30'));
+       }else{
+         const a=actorStart(merged);
+         act(a?.rest||merged,a?.name||'',!rows.length&&(!time||time==='1:30'));
+       }
      }
    }else{
      if(!t&&!rows.length&&/(?:初動|UBセット|开局|初始)/i.test(line)){act(line,'',true);return;}
