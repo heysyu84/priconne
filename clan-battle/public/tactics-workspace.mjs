@@ -4,12 +4,17 @@ import { makeId, parseDamage } from './roster.mjs?v=20261022-ui14';
 import { GROUPS, groupOf, titleFor, compareTactics, newRow, checkedSix, commandState, recalculateTacticRows, replaceTacticRowText, pastedRows, richLine, parseClock, clock, escapeHtml as X } from './tactics-model.mjs?v=20261024-tactic-conditions01';
 import { shiftTimeline } from './engine.mjs?v=20261022-ui14';
 import { parseTacticTransfer, validTacticLineup, hasTacticSlots, resolveTacticSlots } from './tactic-transfer.mjs?v=20261023-slots01';
+import { createExternalTacticCarry } from './external-tactic-carry.mjs?v=20261024-external-carry01';
+
+const EXTERNAL_GROUP = '외부 택틱';
 
 export function createTacticWorkspace(api) {
   const { getApp, getMonth, persist, render, notify, navigate, section, copyText, catalog = [] } = api;
   const state={estimateInputs:null,month:null,group:'택틱정리',boss:'all',selected:null,remaining:null,trash:false,restore:null,undo:[],rememberedAt:0,more:false};
   const $=selector=>document.querySelector(selector);
   const month=()=>getMonth(), base=()=>Number(month().options.battleSeconds||90);
+  const externalCarry=createExternalTacticCarry({baseSeconds:base,escapeHtml:X,copyText,notify});
+  const isExternal=()=>state.group===EXTERNAL_GROUP;
   const all=()=>month().tactics;
   const current=()=>all().find(t=>t.id===state.selected&&!t.trashedAt);
   const visible=()=>all().filter(t=>!t.trashedAt&&groupOf(t)===state.group&&(state.boss==='all'||String(t.boss||'none')===state.boss)).sort(compareTactics);
@@ -31,6 +36,7 @@ export function createTacticWorkspace(api) {
   };
   function prepare(){
     if(state.month!==getApp().active){state.month=getApp().active;state.selected=null;state.boss='all';state.remaining=null;state.trash=false;state.undo=[];state.estimateInputs=null;}
+    if(isExternal())return;
     if(!visible().some(t=>t.id===state.selected))state.selected=visible()[0]?.id||null;loadPersonal();
   }
   function remember(force=false){
@@ -72,7 +78,10 @@ export function createTacticWorkspace(api) {
     return `<div class="tw-grid-scroll"><table class="tw-grid" aria-label="택틱 작성 표"><colgroup>${Array(6).fill('<col class="tw-col-check">').join('')}<col><col class="tw-col-tools"></colgroup><thead><tr>${t.characters.map((c,i)=>`<th title="${X(c)}">${checkPortrait(t,i)}</th>`).join('')}<th class="tw-auto-heading" title="AUTO">A</th><th>조작 · 시간${viewing()?' <span class="pill blue">이월 적용 중</span>':canEdit()?' <span class="tw-edit-hint">바로 입력 가능</span>':''}</th><th></th></tr></thead><tbody id="tw-rows">${t.rows.map((r,i)=>rowHtml(r,i,t)).join('')}${readOnly()?'':rowHtml(newRow(t.rows.at(-1)?.checked||[]),t.rows.length,t,true).replace(/data-tw-row="[^"]+"/, 'data-tw-row="draft"').replace(/data-tw-text="[^"]+"/, 'data-tw-text="draft"')}</tbody></table></div>`;
   }
   function carryControls(t){
-    return `<div class="tw-carry-controls"><button type="button" class="btn sm tw-estimate-toggle" data-tw="toggle-estimate" aria-expanded="${state.estimate}">◷ 이월 계산기</button><div class="tw-carry-actions"><div class="tw-carry-entry"><div class="field"><label for="tw-carry">이월 받은 시간</label><input id="tw-carry" inputmode="numeric" value="${clock(state.remaining??base())}" placeholder="1:01 / 61"></div><button type="button" class="btn sm primary" data-tw="carry">이월 적용 <kbd>Enter</kbd></button></div><button type="button" class="btn sm" data-tw="original" title="원본 ${clock(base())}로 초기화" aria-label="원본 ${clock(base())}로 초기화" ${viewing()?'':'disabled'}>초기화</button></div></div>`;
+    const value=isExternal()?externalCarry.carryValue():clock(state.remaining??base());
+    const original=isExternal()?externalCarry.originalValue():clock(base());
+    const resetDisabled=isExternal()?externalCarry.isOriginal():!viewing();
+    return `<div class="tw-carry-controls"><button type="button" class="btn sm tw-estimate-toggle" data-tw="toggle-estimate" aria-expanded="${!!state.estimate}">◷ 이월 계산기</button><div class="tw-carry-actions"><div class="tw-carry-entry"><div class="field"><label for="tw-carry">이월 받은 시간</label><input id="tw-carry" inputmode="numeric" value="${X(value)}" placeholder="1:01 / 61"></div><button type="button" class="btn sm primary" data-tw="carry">이월 적용 <kbd>Enter</kbd></button></div><button type="button" class="btn sm" data-tw="original" title="원본 ${X(original)}로 초기화" aria-label="원본 ${X(original)}로 초기화" ${resetDisabled?'disabled':''}>초기화</button></div></div>`;
   }
   function detailNote(t){
     const note=String(t.note||'').trim();
@@ -84,9 +93,9 @@ export function createTacticWorkspace(api) {
   }
   function bossHeader(t){const b=api.bossStatus?.().find(b=>b.id===t.boss);if(!b)return '';const image=api.bossPortrait?.(b.id);return `<div class="tw-boss-banner" data-boss-color="${t.boss}">${image?`<img src="${X(image)}" alt="${X(b.name)} 보스">`:''}<div><span>BOSS ${String(b.id).padStart(2,'0')} · ${b.stage}단계 ${b.lap}회차</span><strong>${X(b.name)}</strong></div><div class="tw-boss-hp"><span>남은 HP</span><strong>${Number(b.hp).toLocaleString('ko-KR')}</strong></div></div>`;}
   function trashView(){return `<section class="panel"><div class="panel-head"><h2>삭제한 택틱</h2><button type="button" class="btn sm" data-tw="close-trash">작성으로 돌아가기</button></div><p class="muted small">삭제한 택틱의 본문과 SET 상태를 보관합니다. 복원하면 원래 분류로 돌아갑니다.</p><div class="tw-trash-list">${all().filter(t=>t.trashedAt).map(t=>`<div><div><strong>${X(t.title)}</strong><small>${X(groupOf(t))} · ${t.rows.length}행</small></div><button type="button" class="btn sm" data-tw="restore" data-tw-id="${X(t.id)}" aria-label="${X(t.title)} 복원">복원</button><button type="button" class="btn sm danger" data-tw="purge" data-tw-id="${X(t.id)}">완전 삭제</button></div>`).join('')||'<div class="empty">삭제한 택틱이 없습니다.</div>'}</div></section>`;}
-  function view(isCalculator=false){prepare();const t=current();return section(isCalculator?'이월 · 원본 택틱':'택틱 작업실',isCalculator?'원본의 색상과 SET을 유지하며 이월 시간을 바로 적용합니다.':'한 화면에서 작성·정리·이월 적용까지. 입력한 내용은 자동 저장됩니다.',canEdit()?`<button type="button" class="btn" data-tw="undo" ${state.undo.length?'':'disabled'}>실행 취소</button><button type="button" class="btn" data-tw="trash">삭제함 ${all().filter(t=>t.trashedAt).length}</button><button type="button" class="btn primary" data-tw="new">＋ 새 택틱</button>`:'')
-    +`<div class="tw-navigation"><div class="tw-toolbar"><div class="tw-group-tabs" role="tablist" aria-label="택틱 분류">${GROUPS.map(group=>`<button type="button" role="tab" aria-selected="${state.group===group}" data-tw="group" data-value="${group}">${group}<span>${all().filter(t=>!t.trashedAt&&groupOf(t)===group).length}</span></button>`).join('')}</div>${carryControls(t)}</div><div class="tw-filter-row"><div class="tw-boss-tabs" role="tablist" aria-label="보스별 택틱">${[['all','전체'],...month().bosses.map(b=>[String(b.id),`${b.id}넴`]),['none','미분류']].map(([value,label])=>`<button type="button" role="tab" aria-selected="${state.boss===value}" data-tw="boss-filter" data-value="${value}" data-boss-color="${value}">${label}</button>`).join('')}</div>${communityLinks()}</div></div>`
-    +(state.estimate?estimator():'')+(state.trash?trashView():`<div class="tw-layout">${library()}${editor(t)}</div>`);
+  function view(isCalculator=false){prepare();const t=current();return section(isCalculator?'이월 · 원본 택틱':'택틱 작업실',isExternal()?'시트에 없는 택틱도 붙여넣고 이월 시간을 계산할 수 있습니다.':isCalculator?'원본의 색상과 SET을 유지하며 이월 시간을 바로 적용합니다.':'한 화면에서 작성·정리·이월 적용까지. 입력한 내용은 자동 저장됩니다.',canEdit()&&!isExternal()?`<button type="button" class="btn" data-tw="undo" ${state.undo.length?'':'disabled'}>실행 취소</button><button type="button" class="btn" data-tw="trash">삭제함 ${all().filter(t=>t.trashedAt).length}</button><button type="button" class="btn primary" data-tw="new">＋ 새 택틱</button>`:'')
+    +`<div class="tw-navigation"><div class="tw-toolbar"><div class="tw-group-tabs" role="tablist" aria-label="택틱 분류">${[...GROUPS,EXTERNAL_GROUP].map(group=>`<button type="button" role="tab" aria-selected="${state.group===group}" data-tw="group" data-value="${group}">${group}${group===EXTERNAL_GROUP?'':`<span>${all().filter(t=>!t.trashedAt&&groupOf(t)===group).length}</span>`}</button>`).join('')}</div>${carryControls(t)}</div><div class="tw-filter-row">${isExternal()?'':`<div class="tw-boss-tabs" role="tablist" aria-label="보스별 택틱">${[['all','전체'],...month().bosses.map(b=>[String(b.id),`${b.id}넴`]),['none','미분류']].map(([value,label])=>`<button type="button" role="tab" aria-selected="${state.boss===value}" data-tw="boss-filter" data-value="${value}" data-boss-color="${value}">${label}</button>`).join('')}</div>`}${communityLinks()}</div></div>`
+    +(state.estimate?estimator():'')+(isExternal()?externalCarry.view():state.trash?trashView():`<div class="tw-layout">${library()}${editor(t)}</div>`);
   }
   function choose(id){state.personalId=null;state.selected=id;state.remaining=null;state.trash=false;redraw();}
   function create(){remember(true);const t={id:makeId(),boss:state.boss!=='all'&&state.boss!=='none'?Number(state.boss):1,group:state.group,source:state.group,characters:Array(5).fill(''),stars:Array(5).fill('5'),expectedDamage:'',manualCount:'',tp:'',note:'',video:'',type:'세미오토',rows:[],editorVersion:1};t.title=titleFor(t);all().unshift(t);state.boss='all';state.selected=t.id;state.remaining=null;state.trash=false;persist();redraw({meta:'tw-char-0'});}
@@ -99,7 +108,7 @@ export function createTacticWorkspace(api) {
   function editText(el){if(readOnly())return;const text=readText(el),existing=rowFor(el,false);if(existing?.text===text||(!existing&&!text.trim()))return;remember();const row=existing||rowFor(el);if(!row)return;replaceTacticRowText(row,text);recalcAuto(current().rows.indexOf(row));save();}
   function insertAfter(el){if(!canEdit())return;const t=current();remember(true);const row=rowFor(el);const index=t.rows.indexOf(row);const next=t.rows[index+1];if(next&&!next.text){focusRow(next.id);return;}const fresh=newRow(row.checked);t.rows.splice(index+1,0,fresh);save();redrawRows(fresh.id);}
   function deleteRow(id){if(!canEdit())return;const t=current(),index=t.rows.findIndex(r=>r.id===id);if(index<0)return;remember(true);t.rows.splice(index,1);save();redrawRows(t.rows[Math.min(index,t.rows.length-1)]?.id||'draft');}
-  function applyCarry(){const seconds=parseClock($('#tw-carry')?.value,Number(month().options.carryMaxSeconds||base()));if(!Number.isFinite(seconds))return notify(`이월 시간을 0~${month().options.carryMaxSeconds||base()}초 또는 1:01 형식으로 입력하세요.`);setPersonal(seconds);redraw();}
+  function applyCarry(){if(isExternal()){externalCarry.apply($('#tw-carry')?.value);return;}const seconds=parseClock($('#tw-carry')?.value,Number(month().options.carryMaxSeconds||base()));if(!Number.isFinite(seconds))return notify(`이월 시간을 0~${month().options.carryMaxSeconds||base()}초 또는 1:01 형식으로 입력하세요.`);setPersonal(seconds);redraw();}
   function applyLineup(){const t=current(),chars=$('#tw-lineup').value.split(/[,，]/).map(c=>c.trim()).filter(Boolean);if(chars.length!==5)return notify('캐릭터 5명을 쉼표로 구분하세요.');remember(true);t.characters=chars;recalcAuto(0);save();redraw({meta:'tw-stars'});}
   function applyStars(){const text=$('#tw-stars').value;if(!/^[1-6]{5}$/.test(text))return notify('1~6 사이 성급 5개를 입력하세요. 예: 55565');remember(true);current().stars=[...text];save();redraw({meta:'tw-expected'});}
   function pasteColors(html,rows){
@@ -197,10 +206,10 @@ export function createTacticWorkspace(api) {
   document.addEventListener('pointerdown',event=>{if(event.target.closest('[data-character-choice]'))event.preventDefault();});
   document.addEventListener('click',event=>{const choice=event.target.closest('[data-character-choice]');if(choice)chooseCharacter(Number(choice.dataset.characterChoice));else if(charPicker&&event.target!==charPicker.input)closeCharacters();});
   document.addEventListener('compositionend',event=>{if(event.target.dataset.twChar!==undefined)showCharacters(event.target);});
-  function mount(page){closeCharacters();if(!['tactics','calculator'].includes(page))return;const restore=state.restore;state.restore=null;if(restore?.meta)$('#'+restore.meta)?.focus();else if(restore?.row)focusRow(restore.row);if(state.estimate)refreshEstimate();}
+  function mount(page){closeCharacters();if(!['tactics','calculator'].includes(page))return;if(isExternal())externalCarry.mount();const restore=state.restore;state.restore=null;if(restore?.meta)$('#'+restore.meta)?.focus();else if(restore?.row)focusRow(restore.row);if(state.estimate)refreshEstimate();}
   function beforeNavigate(){const el=document.activeElement;if(el?.matches('[data-tw-text]')&&!viewing())editText(el);return true;}
   document.addEventListener('input',event=>{
-    const el=event.target;if(el.dataset.twEstimate!==undefined){state.estimateInputs={...(state.estimateInputs||{}),[el.id]:el.value};refreshEstimate();return;}if(el.matches('[data-tw-text]')){if(!event.isComposing)editText(el);return;}
+    const el=event.target;if(isExternal()&&externalCarry.input(el))return;if(el.dataset.twEstimate!==undefined){state.estimateInputs={...(state.estimateInputs||{}),[el.id]:el.value};refreshEstimate();return;}if(el.matches('[data-tw-text]')){if(!event.isComposing)editText(el);return;}
     if(el.dataset.twMeta||el.dataset.twChar!==undefined){if(!canEdit())return;mutateMeta(el);if(el.dataset.twChar!==undefined&&!event.isComposing)showCharacters(el);}
   });
   document.addEventListener('compositionend',event=>{if(event.target.matches('[data-tw-text]'))editText(event.target);});
@@ -237,7 +246,8 @@ export function createTacticWorkspace(api) {
       case 'restore':{const restored=all().find(t=>t.id===b.dataset.twId);if(restored){remember(true);delete restored.trashedAt;state.group=groupOf(restored);state.boss='all';state.selected=restored.id;state.trash=false;persist();redraw();notify('택틱을 복원했습니다.');}break;}
       case 'duplicate':if(t){remember(true);const clone=structuredClone(t);clone.id=makeId();clone.rows.forEach(r=>r.id=makeId());clone.note=(clone.note?clone.note+' · ':'')+'복제본';all().unshift(clone);state.selected=clone.id;persist();redraw();}break;
       case 'carry':applyCarry();break;
-      case 'original':setPersonal(base());redraw();break;
+      case 'original':if(isExternal())externalCarry.reset();else{setPersonal(base());redraw();}break;
+      case 'external-copy':externalCarry.copy();break;
       case 'row-delete':deleteRow(b.dataset.row);break;
       case 'restate':if(t){remember(true);let previous=[];for(const row of t.rows){row.checked=commandState(row.text,previous,t.characters,catalog);row.manualChecks=false;previous=row.checked;}save();redrawRows();notify('문장으로 SET을 계산했습니다. 조건·한번만 지시는 원문과 함께 확인하세요.');}break;
       case 'copy':if(t)copyText(t.rows.map(r=>viewing()?shiftTimeline(r.text,state.remaining,base()):r.text).join('\n'));break;
@@ -247,13 +257,14 @@ export function createTacticWorkspace(api) {
   document.addEventListener('keydown',event=>{
     if(event.isComposing||event.keyCode===229)return;const el=event.target,t=current();
     if(el.dataset.twChar!==undefined&&charPicker&&['Enter','ArrowDown','ArrowUp','Escape'].includes(event.key)){event.preventDefault();if(event.key==='Escape'){closeCharacters();return;}if(event.key==='Enter'){chooseCharacter();return;}charPicker.index=Math.max(0,Math.min(charPicker.matches.length-1,charPicker.index+(event.key==='ArrowDown'?1:-1)));drawCharacters();return;}
+    if(isExternal()&&el.id==='tw-external-base'&&event.key==='Enter'){event.preventDefault();applyCarry();return;}
     if(!$('#tw-title')&&!el.closest('.tw-navigation'))return;
     const typing=el.isContentEditable||['INPUT','TEXTAREA','SELECT'].includes(el.tagName);
-    if((event.ctrlKey||event.metaKey)&&event.key.toLowerCase()==='z'&&!event.shiftKey){event.preventDefault();undo();return;}
+    if(!isExternal()&&(event.ctrlKey||event.metaKey)&&event.key.toLowerCase()==='z'&&!event.shiftKey){event.preventDefault();undo();return;}
     if(el.id==='tw-carry'&&event.key==='Enter'){event.preventDefault();applyCarry();return;}
     if(el.id==='tw-lineup'&&event.key==='Enter'){event.preventDefault();applyLineup();return;}
     if(el.id==='tw-stars'&&event.key==='Enter'){event.preventDefault();applyStars();return;}
-    if(el.getAttribute('role')==='tab'&&['ArrowLeft','ArrowRight'].includes(event.key)){event.preventDefault();const tabs=[...el.parentNode.querySelectorAll('[role="tab"]')],index=tabs.indexOf(el),next=tabs[(index+(event.key==='ArrowRight'?1:-1)+tabs.length)%tabs.length];const type=next.dataset.tw;state[type==='group'?'group':'boss']=next.dataset.value;state.remaining=null;redraw();$(`[data-tw="${type}"][data-value="${CSS.escape(next.dataset.value)}"]`)?.focus();return;}
+    if(el.getAttribute('role')==='tab'&&['ArrowLeft','ArrowRight'].includes(event.key)){event.preventDefault();const tabs=[...el.parentNode.querySelectorAll('[role="tab"]')],index=tabs.indexOf(el),next=tabs[(index+(event.key==='ArrowRight'?1:-1)+tabs.length)%tabs.length];const type=next.dataset.tw;state[type==='group'?'group':'boss']=next.dataset.value;state.personalId=null;state.remaining=null;state.trash=false;redraw();$(`[data-tw="${type}"][data-value="${CSS.escape(next.dataset.value)}"]`)?.focus();return;}
     if(!el.matches('[data-tw-text]')||!t||readOnly())return;
     if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();editText(el);insertAfter(el);return;}
     if(event.shiftKey&&(event.key==='Delete'||((event.ctrlKey||event.metaKey)&&event.key.toLowerCase()==='k'))){event.preventDefault();const r=rowFor(el,false);if(r)deleteRow(r.id);return;}
@@ -280,6 +291,6 @@ export function createTacticWorkspace(api) {
     const values=[['tw-hp','보스 남은 HP',String(api.bossStatus?.().find(b=>b.id===current()?.boss)?.hp||1)],['tw-first','선통 예상 피해량','0'],['tw-second','후통 예상 피해량','300000000'],['tw-seconds','후통 전투시간 (초)',String(base())]];
     return `<section class="panel section-spacer tw-estimator"><h2>선통 · 후통 예상 이월 계산</h2><p class="small muted">값을 입력하면 예상 이월 시간이 즉시 표시됩니다. 실제 택틱에는 ‘위 택틱에 적용’을 눌렀을 때만 반영됩니다.</p><div class="tw-estimate-fields">${values.map(([id,label,initial])=>`<div class="field"><label for="${id}">${label}</label><input id="${id}" data-tw-estimate inputmode="decimal" value="${X(state.estimateInputs?.[id]??initial)}"></div>`).join('')}</div><div class="tw-estimate-actions"><div class="tw-estimate-result" role="status" aria-live="polite"><small>예상 이월 시간</small><strong id="tw-estimate-result">계산 중</strong></div><button type="button" class="btn primary" data-tw="estimate-apply">위 택틱에 적용</button></div></section>`;
   }
-  document.addEventListener('click',event=>{const b=event.target.closest('[data-tw]');if(!b)return;if(b.dataset.tw==='open-tactic'){navigate('tactics');$('#tw-carry')?.focus();}if(b.dataset.tw==='estimate-apply'){const result=estimatedCarry();if(!result)return;refreshEstimate();if(result.error){notify(result.error);return;}setPersonal(result.seconds);redraw();notify(`계산한 ${result.seconds}초를 택틱에 적용했습니다.`);}});
-  return {view,calculator:view,mount,beforeNavigate,openBoss:id=>{prepare();state.boss=String(id);state.remaining=null;state.trash=false;state.selected=visible()[0]?.id||null;},hasDraft:()=>{const el=document.activeElement;return !!(el?.matches('[data-tw-text]')&&rowFor(el,false)?.text!==readText(el)&&readText(el));}};
+  document.addEventListener('click',event=>{const b=event.target.closest('[data-tw]');if(!b)return;if(b.dataset.tw==='open-tactic'){navigate('tactics');$('#tw-carry')?.focus();}if(b.dataset.tw==='estimate-apply'){const result=estimatedCarry();if(!result)return;refreshEstimate();if(result.error){notify(result.error);return;}if(isExternal()){if(!externalCarry.apply(String(result.seconds)))return;}else{setPersonal(result.seconds);redraw();}notify(`계산한 ${result.seconds}초를 택틱에 적용했습니다.`);}});
+  return {view,calculator:view,mount,beforeNavigate,openBoss:id=>{if(isExternal())state.group=GROUPS[0];prepare();state.boss=String(id);state.remaining=null;state.trash=false;state.selected=visible()[0]?.id||null;},hasDraft:()=>{const el=document.activeElement;return !!(el?.matches('[data-tw-text]')&&rowFor(el,false)?.text!==readText(el)&&readText(el));}};
 }

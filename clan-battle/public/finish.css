@@ -1060,3 +1060,31 @@ table.tw-grid thead th{
  .tw-toolbar .tw-carry-controls .btn{padding-left:5px;padding-right:5px}
  .tw-toolbar .tw-carry-actions{gap:4px}
 }
+
+/* External tactics preserve pasted text while calculating leading timeline times. */
+.tw-external{margin-top:16px;min-width:0}
+.tw-external-head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:12px}
+.tw-external-head h2{margin:0 0 6px;font-size:19px}
+.tw-external-head p{margin:0;line-height:1.6}
+.tw-external-base{flex:none;margin:0}
+.tw-external-base input{width:96px;font-size:16px;font-variant-numeric:tabular-nums}
+.tw-external-columns{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}
+.tw-external-column{display:flex;flex-direction:column;min-width:0;gap:7px}
+.tw-external-column>label,.tw-external-result-head{display:flex;align-items:center;min-height:36px;margin:0;font-weight:800;color:#73598b}
+.tw-external-result-head{justify-content:space-between;gap:8px}
+.tw-external-result-head label{margin:0}
+.tw-external-result-head .btn{margin:0}
+.tw-external-column textarea{display:block;box-sizing:border-box;width:100%;max-width:100%;min-width:0;min-height:380px;flex:1;resize:vertical;padding:14px;border:1px solid #ddcfe8;border-radius:10px;background:#fff;color:#594769;font-family:ui-monospace,SFMono-Regular,Consolas,"Noto Sans KR",monospace;font-size:14px;line-height:1.8;tab-size:4;white-space:pre-wrap;overflow-wrap:anywhere}
+.tw-external-column textarea:focus{outline:2px solid #c9aedf;outline-offset:1px}
+.tw-external-column textarea[readonly]{background:#faf7fd;border-color:#d3bfe4}
+.tw-external-column textarea::placeholder{color:#a092aa}
+.tw-external-status{margin-top:14px;color:#795591;font-weight:750;line-height:1.6;overflow-wrap:anywhere}
+.tw-external-status[data-error=true]{color:#aa5c69}
+.tw-external-note{margin:8px 0 0;padding:10px 12px;border-radius:8px;background:#fbf3e6;color:#8d6a42;line-height:1.6}
+.tw-external-help{margin:10px 0 0;line-height:1.6}
+@media(max-width:800px){
+ .tw-external-head{align-items:flex-start;gap:10px}
+ .tw-external-columns{grid-template-columns:minmax(0,1fr);gap:16px}
+ .tw-external-column textarea{min-height:240px;font-size:16px;padding:11px}
+ .tw-external-column textarea[readonly]{min-height:280px}
+}
