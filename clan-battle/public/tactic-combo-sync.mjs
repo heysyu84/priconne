@@ -93,3 +93,22 @@ export function visibleTacticRecommendations(month){
   seen.add(id);return true;
  });
 }
+
+function comparableDamage(value) {
+  const raw=String(value??'').replace(/[,\s]/g,'').replace(/억$/,'');
+  if(!raw)return -Infinity;
+  const number=Number(raw);
+  return Number.isFinite(number)&&number>=0?number:-Infinity;
+}
+export function recommendationDisplayOrder(a,b){
+  const bossOrder=Number(a.boss)-Number(b.boss);
+  if(bossOrder)return bossOrder;
+  if(Number(a.stage)===3&&Number(b.stage)===3){
+    const carry=Number(b.remainingSeconds||0)-Number(a.remainingSeconds||0);
+    if(carry)return carry;
+  }else{
+    const lhs=comparableDamage(a.expectedDamage),rhs=comparableDamage(b.expectedDamage);
+    if(lhs!==rhs)return lhs<rhs?1:-1;
+  }
+  return String(a.id||'').localeCompare(String(b.id||''),'ko');
+}
