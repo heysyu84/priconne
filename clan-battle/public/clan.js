@@ -14,6 +14,7 @@ const Engine=await import('./engine.mjs?v=20261022-ui14');
 const {ensureRoster,syncRoster,memberLabel}=await import('./roster.mjs?v=20261022-ui14');
 const {createWorkflow}=await import('./workflow.mjs?v=20261023-image-cleanup01');
 const {ensureTactics}=await import('./tactics-model.mjs?v=20261023-foreign01');
+const {syncTacticRecommendations}=await import('./tactic-combo-sync.mjs?v=20261023-synced01');
 const {applySourceData,remainingAttacks}=await import('./guild-model.mjs?v=20261022-hall01');
 const {createGuildWorkspace}=await import('./guild-workspace.mjs?v=20261023-image-cleanup01');
 const {createTacticWorkspace}=await import('./tactics-workspace.mjs?v=20261023-image-cleanup01');
@@ -97,6 +98,7 @@ const archiveKeys=()=>{const latest=Object.keys(app.months).sort().at(-1);return
 const rosterMigrated=ensureRoster(app,DEFAULT.rosterSeed||[]);
 const tacticsMigrated=ensureTactics(app,TACTIC_META,ROW_FORMATS);
 const guildMigrated=applySourceData(app,GUILD_SOURCE);
+const comboSynced=syncTacticRecommendations(app.months[app.active]);
 app.active=Object.keys(app.months).sort().at(-1);
 let editor=false;try{const result=await apiFetch('/api/editor',{cache:'no-store'});editor=!!(await result.json()).editor;}catch{}
 let revision=boot.revision,dirty=0,saving=false,saveTimer=null,blocked=false;
@@ -112,6 +114,7 @@ const guild=createGuildWorkspace({getApp:monthView.app,getMonth:current,persist,
 const imageImporter=createBattleImageImport({getApp:monthView.app,getMonth:current,persist,render,navigate:goto,notify:notice,canEdit,unlock,replay:Engine.replayMonth,beforeCommit:()=>workflow.rememberExternal()});
 function persist(){
   if(!canEdit())return false;
+  syncTacticRecommendations(app.months[app.active]);
   try{localStorage.setItem(STORAGE,JSON.stringify(app))}catch{}
   dirty++;saveStatus('saving');clearTimeout(saveTimer);saveTimer=setTimeout(flushSave,450);
 }
@@ -330,7 +333,7 @@ document.addEventListener('click',event=>{if(event.target.closest('#sync-state')
 window.addEventListener('beforeunload',event=>{if(dirty||workflow.hasDraft()||tacticWorkspace.hasDraft()){event.preventDefault();event.returnValue='';}});
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden'&&dirty)flushSave();});
 ui.member=current().members[0];ui.tactic=current().tactics[0]?.id||'';
-saveStatus('saved');if(editor&&(!boot.data||rosterMigrated||tacticsMigrated||guildMigrated))persist();
+saveStatus('saved');if(editor&&(!boot.data||rosterMigrated||tacticsMigrated||guildMigrated||comboSynced))persist();
 
 if(ui.page==='archive'){guild.openArchive();ui.page='db';}
 render();
@@ -360,6 +363,7 @@ async function refreshShared(){
     ensureRoster(app,DEFAULT.rosterSeed||[]);
     ensureTactics(app,TACTIC_META,ROW_FORMATS);
     applySourceData(app,GUILD_SOURCE);
+    syncTacticRecommendations(app.months[app.active]);
     if(app.months[active])app.active=active;
     for(const month of Object.values(app.months))Engine.replayMonth(month);
     revision=next.revision;
