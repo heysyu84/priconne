@@ -922,3 +922,16 @@ html[data-text-scale] .display-presets .btn{font-size:max(var(--ui-font-min,0px)
 html[data-text-scale] .display-example{font-size:max(var(--ui-font-min,0px),round(nearest,calc((14px) * var(--ui-text-scale,1)),1px))!important}
 html[data-text-scale] .display-width-info{font-size:max(var(--ui-font-min,0px),round(nearest,calc((12px) * var(--ui-text-scale,1)),1px))!important}
 html[data-text-scale] .display-copy-result{font-size:max(var(--ui-font-min,0px),round(nearest,calc((12px) * var(--ui-text-scale,1)),1px))!important}
+
+/* Apply the SAME scaled font to tactic character names and stars / expected damage.
+   Stronger and later than generic .tw-card-title rules, for all device widths. */
+html[data-text-scale] .tw-library .tw-card{
+ --tw-card-main-font-size:max(var(--ui-font-min,0px),round(nearest,calc((13px) * var(--ui-text-scale,1)),1px));
+}
+html[data-text-scale] .tw-library .tw-card-title,
+html[data-text-scale] .tw-library .tw-card-details,
+html[data-text-scale] .tw-library .tw-card-details>span{
+ font-size:var(--tw-card-main-font-size)!important;
+ font-weight:800;
+ line-height:1.5;
+}

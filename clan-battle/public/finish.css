@@ -933,19 +933,23 @@ table.tw-grid thead th{
 
 
 /* Tactic list cards: 1) boss and names 2) stars and predicted damage 3) notes. */
-.tw-library .tw-card-title{display:block;line-height:1.5;overflow-wrap:anywhere}
-.tw-library .tw-card-details{display:flex;align-items:center;flex-wrap:wrap;gap:5px 9px;margin-top:5px;font-size:12px;color:#816d91;font-weight:750}
-/* Match the character-name line at every responsive and user text-scale setting. */
-@media(max-width:600px){.tw-library .tw-card-details{font-size:11px}}
-html[data-text-scale] .tw-library .tw-card-details{
- font-size:max(var(--ui-font-min,0px),round(nearest,calc(14px * var(--ui-text-scale,1)),1px))!important;
+/* All primary information on tactic cards shares a single exact type size. */
+.tw-library .tw-card{--tw-card-main-font-size:12px}
+.tw-library .tw-card-title,
+.tw-library .tw-card-details{
+ font-size:var(--tw-card-main-font-size);
+ font-weight:800;
+ line-height:1.5;
 }
-@media(max-width:800px){
- html[data-text-scale] .tw-library .tw-card-details{
-  font-size:max(var(--ui-font-min,0px),round(nearest,calc(13px * var(--ui-text-scale,1)),1px))!important;
- }
+.tw-library .tw-card-title{display:block;overflow-wrap:anywhere}
+.tw-library .tw-card-details{
+ display:flex;align-items:center;flex-wrap:wrap;gap:5px 9px;margin-top:5px;
+ color:#816d91;
 }
-.tw-library .tw-card-details>span{white-space:nowrap}
+.tw-library .tw-card-details>span{font-size:inherit;font-weight:inherit;white-space:nowrap}
+@media(max-width:600px){
+ .tw-library .tw-card{--tw-card-main-font-size:11px}
+}
 .tw-library .tw-card-note{display:block;margin-top:6px;max-height:none;font-size:10px;line-height:1.5;overflow-wrap:anywhere;color:#947f9e}
 
 /* Live carry-time preview; applying to tactic stays a separate action. */
