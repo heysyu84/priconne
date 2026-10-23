@@ -11,8 +11,6 @@
  html[data-nav-layout="compact"] .topbar .bread{display:none}
  html[data-nav-layout="compact"] .topbar .top-actions{width:100%;justify-content:flex-end;flex-wrap:wrap;gap:8px}
  html[data-nav-layout="compact"] .mobile-nav{display:grid!important;grid-template-columns:repeat(8,minmax(0,1fr));position:fixed;z-index:40;bottom:0;left:0;right:0;height:auto;min-height:65px;padding:6px 4px max(6px,env(safe-area-inset-bottom));background:#fffefcf5;border-top:1px solid #e3d3ee;box-shadow:0 -4px 20px #60417f0b}
- html[data-nav-layout="compact"] .mobile-nav[data-nav-columns="4"]{grid-template-columns:repeat(4,minmax(0,1fr))!important;min-height:110px}
- html[data-nav-layout="compact"] .mobile-nav[data-nav-columns="2"]{grid-template-columns:repeat(2,minmax(0,1fr))!important;min-height:190px}
  html[data-nav-layout="compact"] .mobile-nav button{min-width:0;border:0;background:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:6px 1px;color:#ab90bb;font-weight:750;font-size:max(var(--menu-font-min,16px),1em);white-space:nowrap;line-height:1.35}
  html[data-nav-layout="compact"] .mobile-nav button.active{color:#8a5aa4}
  html[data-nav-layout="compact"] .mobile-nav button span{width:32px;min-height:27px;font-size:1.2em;border-radius:8px;display:grid;place-items:center}
@@ -20,8 +18,9 @@
  html[data-nav-layout="compact"] .content{padding-bottom:max(100px,var(--adaptive-nav-bottom,100px))!important}
  html[data-nav-layout="compact"] .toast{bottom:max(85px,var(--adaptive-nav-bottom,85px))}
 }
-@media print{.sidebar[data-nav-probe],html[data-nav-layout="compact"] .mobile-nav{display:none!important}}
 
 /* The column decision is measured at runtime, including native mobile viewports. */
 html[data-nav-layout="compact"] .mobile-nav[data-nav-columns="4"]{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;min-height:110px}
 html[data-nav-layout="compact"] .mobile-nav[data-nav-columns="2"]{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;min-height:190px}
+
+@media print{.sidebar[data-nav-probe],html[data-nav-layout="compact"] .mobile-nav{display:none!important}}
