@@ -969,14 +969,7 @@ table.tw-grid thead th{
  box-sizing:border-box;overflow-x:auto;overscroll-behavior-x:contain;
 }
 
-/* Place the carry notice completely outside the navigation box.
-   The notice never contributes to tab height or internal flex centering. */
-.tw-carry-note-outside{
- display:block;width:100%;max-width:100%;
- margin:-10px 0 16px;padding:0 6px;
- background:transparent;border:0;text-align:right;
- color:#947ba5;font-size:10px;line-height:1.4;
-}
+/* Keep input controls vertically centered with the two tactic category tabs. */
 .tw-navigation>.tw-group-tabs{align-items:center}
 @media(min-width:801px){
  .tw-navigation>.tw-group-tabs>.tw-carry-controls{
@@ -986,7 +979,4 @@ table.tw-grid thead th{
  .tw-navigation>.tw-group-tabs .tw-carry-entry .field{
   display:flex;flex-direction:row;align-items:center;
  }
-}
-@media(max-width:800px){
- .tw-carry-note-outside{font-size:9px;margin:-8px 0 14px}
 }
