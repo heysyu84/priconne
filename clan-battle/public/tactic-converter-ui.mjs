@@ -1,6 +1,6 @@
-import {convertForeignTactic,foreignSuggestions} from './tactic-converter.mjs?v=20261023-autolineup02';
+import {convertForeignTactic,foreignSuggestions} from './tactic-converter.mjs?v=20261023-autolineup03';
 import {colorRuns} from './tactics-model.mjs?v=20261023-check-sync01';
-import {serializeTacticTransfer,validTacticLineup} from './tactic-transfer.mjs?v=20261023-autolineup02';
+import {serializeTacticTransfer,validTacticLineup} from './tactic-transfer.mjs?v=20261023-autolineup03';
 
 const $=id=>document.getElementById(id);
 const normalize=s=>String(s??'').normalize('NFKC').replace(/\s+/g,'').toLocaleLowerCase('ko-KR');
