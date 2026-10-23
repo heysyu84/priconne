@@ -133,20 +133,61 @@ function render(){
  problems.push(...current.warnings);
  $('messages').textContent=problems.length?'확인 필요 ('+problems.length+'건)\n'+problems.join('\n'):
    '변환 완료 · '+current.rows.length+'행 · '+(current.format==='dango'?'당고':'일반 SET')+' 형식';
- const enabled=lineupReady()&&confirmed&&current.rows.length>0;
- $('copy-with-set').disabled=$('copy-text').disabled=!enabled;
+ // Plain text does not need a confirmed five-character lineup.
+ const hasRows=current.rows.length>0;
+ const fullCopyReady=hasRows&&lineupReady()&&confirmed;
+ $('copy-with-set').disabled=!fullCopyReady;
+ $('copy-text').disabled=!hasRows;
+ $('copy-with-set').title=fullCopyReady?'캐릭터·SET 상태와 본문 전체 복사':
+   !hasRows?'먼저 원문을 변환해 주세요.':
+   !lineupReady()?'캐릭터 5명의 정식 이름을 먼저 지정해 주세요.':'덱 순서 확인란을 체크해 주세요.';
+ $('copy-text').title=hasRows?'변환된 한국어 본문만 복사':'먼저 원문을 변환해 주세요.';
+ $('copy-help').textContent=fullCopyReady?'편성·SET 포함 복사와 본문만 복사 모두 사용할 수 있습니다.':
+   hasRows?'본문만 복사는 지금 사용할 수 있습니다. 편성·SET 포함 복사는 캐릭터 5명과 덱 순서 확인을 완료해야 활성화됩니다.':
+   '변환 결과가 나오면 본문만 복사할 수 있습니다.';
+ $('manual-copy').hidden=true;
 }
-async function copy(text){
- if(!text)return;
- try{await navigator.clipboard.writeText(text);}
- catch{
-   const field=document.createElement('textarea');field.value=text;field.style.position='fixed';field.style.top='-9999px';
-   document.body.append(field);field.select();
-   const ok=document.execCommand('copy');field.remove();
-   if(!ok){alert('클립보드 접근을 허용해 주세요.');return;}
+// A synchronous copy attempt keeps the browser's user gesture, important
+// for Safari and restricted clipboard contexts. Never report success on failure.
+function copyLegacy(text){
+ const field=document.createElement('textarea');
+ field.value=text;
+ field.style.cssText='position:fixed;top:0;left:0;width:1px;height:1px;opacity:0;pointer-events:none';
+ const previous=document.activeElement;
+ document.body.append(field);
+ try{
+   field.focus({preventScroll:true});
+   field.select();
+   field.setSelectionRange(0,field.value.length);
+   return Boolean(document.execCommand?.('copy'));
+ }catch{return false;}
+ finally{
+   field.remove();
+   if(previous?.focus)try{previous.focus({preventScroll:true});}catch{}
  }
- $('messages').textContent='복사 완료! 클전 사이트 택틱 작업실의 빈 택틱 행에 붙여넣으세요.\n'+
- (current?.warnings?.length?current.warnings.join('\n'):'');
+}
+function copy(text){
+ if(!text){$('messages').textContent='복사할 결과가 없습니다. 먼저 변환해 주세요.';return;}
+ const success=()=>{
+   $('manual-copy').hidden=true;
+   $('messages').textContent='복사 완료! 클전 사이트 택틱 작업실의 빈 택틱 행에 붙여넣으세요.\\n'+
+     (current?.warnings?.length?current.warnings.join('\\n'):'');
+ };
+ const manual=()=>{
+   $('messages').textContent='브라우저가 클립보드 복사를 차단했습니다. 아래 내용 전체를 선택하여 직접 복사해 주세요.';
+   const section=$('manual-copy'),field=$('manual-copy-text');
+   section.hidden=false;
+   field.value=text;
+   field.focus({preventScroll:true});
+   field.select();
+   field.setSelectionRange(0,field.value.length);
+ };
+ if(copyLegacy(text)){success();return;}
+ try{
+   if(!navigator.clipboard?.writeText){manual();return;}
+   // Called directly from the click handler, before any asynchronous wait.
+   Promise.resolve(navigator.clipboard.writeText(text)).then(success,manual);
+ }catch{manual();}
 }
 $('convert').addEventListener('click',()=>{learnAliases();render();});
 $('detect-lineup').addEventListener('click',detectNames);
@@ -154,14 +195,22 @@ $('lineup-confirm').addEventListener('change',event=>setConfirmation(event.targe
 $('clear').addEventListener('click',()=>{
  $('raw').value='';current=null;$('preview').textContent='원문을 입력하세요.';
  $('messages').textContent='';$('copy-with-set').disabled=$('copy-text').disabled=true;
+ $('manual-copy').hidden=true;
+ $('copy-help').textContent='변환 결과가 나오면 본문만 복사할 수 있습니다.';
 });
 $('copy-with-set').addEventListener('click',()=>{
- if(!lineupReady()||!confirmed||!current?.rows.length||convertedRaw!==$('raw').value)return;
+ if(convertedRaw!==$('raw').value){$('messages').textContent='원문이 변경되었습니다. 다시 변환한 뒤 복사하세요.';return;}
+ if(!current?.rows.length){$('messages').textContent='먼저 원문을 변환해 주세요.';return;}
+ if(!lineupReady()||!confirmed){
+   $('messages').textContent='편성·SET 포함 복사는 5명 정식 이름과 덱 순서 확인이 필요합니다. 본문만 복사는 바로 가능합니다.';
+   return;
+ }
  try{copy(serializeTacticTransfer(koreanNames(),current.pasteText));}
  catch(error){$('messages').textContent=error.message;}
 });
 $('copy-text').addEventListener('click',()=>{
- if(!lineupReady()||!confirmed||!current?.rows.length||convertedRaw!==$('raw').value)return;
+ if(convertedRaw!==$('raw').value){$('messages').textContent='원문이 변경되었습니다. 다시 변환한 뒤 복사하세요.';return;}
+ if(!current?.rows.length){$('messages').textContent='먼저 원문을 변환해 주세요.';return;}
  copy(current.text);
 });
 document.querySelectorAll('#lineup input').forEach(input=>input.addEventListener('change',()=>{
