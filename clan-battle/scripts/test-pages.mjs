@@ -84,6 +84,16 @@ assert.ok(clanStyle.includes('tbody td{text-align:center;vertical-align:middle}'
 console.log('PASS: both DB tables share boss-chip dimensions and all top-record headings are centered');
 
 
+// The collapsed battle-log entry form must not be shown or usable without editor privileges.
+assert.ok(battleWorkflow.includes('const canSubmit=()=>canEdit();'),
+  'Public battle-log viewers must not see the entry composer');
+assert.ok(battleWorkflow.includes("if(!canSubmit())return '';"),
+  'The composer must be absent, not just collapsed, when editing is locked');
+assert.ok(battleWorkflow.includes('if(!canSubmit()||publicSubmitting)return;'),
+  'Submitting must remain gated by the same editor permission');
+assert.ok(battleWorkflow.includes('<details class="panel quick-panel"'),
+  'The editor should retain a collapsible battle entry form');
+
 // Mobile battle-log table must not inherit oversized desktop column minima.
 // Leave exact numeric damage and HP content intact; shrink only its layout.
 const battleWorkflow=fs.readFileSync(new URL('../public/workflow.mjs',import.meta.url),'utf8');

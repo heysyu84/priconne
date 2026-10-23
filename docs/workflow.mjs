@@ -9,7 +9,8 @@ export function createWorkflow(api) {
   const $ = s => document.querySelector(s);
   const canEdit=()=>api.canEdit?.()??true;
   const guard=()=>{if(canEdit())return true;api.unlock?.();return false;};
-  const canSubmit=()=>canEdit()||!!api.canSubmitBattle?.();
+  // The battle entry composer is restricted to an unlocked editor. Public users can still read the battle log.
+  const canSubmit=()=>canEdit();
   let publicSubmitting=false;
   const maxDay = () => Number(month().options.days || 5);
   const recentDay = () => Math.min(maxDay(), Math.max(1, ...month().events.map(e => Number(e.day) || 1),...(month().dayBreaks||[]).map(b=>b.nextDay)));
