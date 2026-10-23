@@ -13,11 +13,13 @@ export function compareTactics(a, b) {
   const boss = tactic => Number(tactic.boss) > 0 ? Number(tactic.boss) : Infinity;
   if (boss(a) !== boss(b)) return boss(a) < boss(b) ? -1 : 1;
   const damage = tactic => {
-    if (Number.isFinite(Number(tactic.expectedDamageSort)) && Number(tactic.expectedDamageSort) > 0) return Number(tactic.expectedDamageSort);
-    const match = String(tactic.expectedDamage ?? '').replace(/[,\s]/g, '').match(/^(\d+(?:\.\d+)?)(억|만)?$/);
-    if (!match) return -Infinity;
-    const value = Number(match[1]) / (match[2] === '만' ? 10000 : 1);
-    return Number.isFinite(value) ? value : -Infinity;
+    const raw = String(tactic.expectedDamage ?? '').replace(/[,\s]/g, '');
+    return Math.max(...raw.split(/[~～]/).map(part => {
+      const rich = part.match(/^(?:(\d+(?:\.\d+)?)억)?(?:(\d+(?:\.\d+)?)만)?$/);
+      if (rich && (rich[1] || rich[2])) return Number(rich[1] || 0) + Number(rich[2] || 0) / 10000;
+      const simple = part.match(/^(\d+(?:\.\d+)?)(억|만)?$/);
+      return simple ? Number(simple[1]) * (simple[2] === '만' ? 0.0001 : 1) : -Infinity;
+    }));
   };
   const left = damage(a), right = damage(b);
   return left === right ? 0 : left > right ? -1 : 1;

@@ -47,6 +47,15 @@ const unordered = [
 ];
 assert.deepEqual([...unordered].sort(compareTactics).map(t=>t.id),['high','same','ten-thousands','low','blank','invalid','boss2','unclassified']);
 assert.equal(unordered[0].id,'boss2');
+const carryDamageOrder=[
+  {id:'rangeLow',boss:1,expectedDamage:'6,010만~6,020만'},
+  {id:'rangeHigh',boss:1,expectedDamage:'1억 5,740만~1억 6,000만'},
+  {id:'regular',boss:1,expectedDamage:'2.1'}
+];
+assert.deepEqual([...carryDamageOrder].sort(compareTactics).map(t=>t.id),['regular','rangeHigh','rangeLow']);
+carryDamageOrder[0].expectedDamage='3억~3.1억';
+assert.equal([...carryDamageOrder].sort(compareTactics)[0].id,'rangeLow','edited range should re-sort immediately');
+
 unordered.find(t=>t.id==='low').expectedDamage='4.0';
 assert.equal([...unordered].sort(compareTactics)[0].id,'low');
 let preserved=0;
