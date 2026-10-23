@@ -13,25 +13,24 @@ export function createComboWorkspace(api) {
   const source = combo => [combo.url, combo.video, combo.tacticUrl].find(value => sourceLinkKind(value) !== 'empty');
   const seconds = value => value === null || value === undefined || value === '' ? '—' : X(value) + '초';
   const boss = value => `<span class="combo-mini-boss" data-boss-color="${X(value)}">${X(value)}넴</span>`;
-  function party(combo, supportIndex = -1) {
+  function party(combo, supportIndex = -1, compact = false) {
     return `<div class="combo-mini-party">${Array.from({length: 5}, (_, index) => {
       const name = combo.characters?.[index] || '미선택', borrowed = index === supportIndex;
       const portrait = characterPortrait(characters, name, combo.stars?.[index]);
-      return `<span class="combo-mini-unit${borrowed ? ' is-support' : ''}" title="${X(name)} · ${X(combo.stars?.[index] || '?')}성${borrowed ? ' · 서포트' : ''}"><span class="combo-mini-art">${portrait.url ? `<img class="combo-mini-avatar" src="${X(portrait.url)}" ${portraitAttributes(portrait)} alt="${X(name)}" loading="lazy">${portraitStarOverlay(portrait)}` : '<span class="combo-mini-missing">?</span>'}${borrowed ? '<span class="combo-support-mark" aria-label="서포트">S</span>' : ''}</span><strong class="${isBoosterCharacter(api.app(), name, characters) ? 'is-booster' : ''}">${borrowed ? '[' + X(name) + ']' : X(name)}</strong></span>`;
+      return `<span class="combo-mini-unit${borrowed ? ' is-support' : ''}" title="${X(name)} · ${X(combo.stars?.[index] || '?')}성${borrowed ? ' · 서포트' : ''}"><span class="combo-mini-art">${portrait.url ? `<img class="combo-mini-avatar" src="${X(portrait.url)}" ${portraitAttributes(portrait)} alt="${X(name)}" loading="lazy">${portraitStarOverlay(portrait)}` : '<span class="combo-mini-missing">?</span>'}${borrowed ? '<span class="combo-support-mark" aria-label="서포트">S</span>' : ''}</span><strong class="${isBoosterCharacter(api.app(), name, characters) ? 'is-booster' : ''}"${compact ? ` style="--combo-name-length:${Math.max(1, Array.from(name).length)}"` : ''}>${borrowed ? '[' + X(name) + ']' : X(name)}</strong>${compact ? `<small class="combo-mini-unit-star" aria-label="${X(combo.stars?.[index] || '?')}성">★${X(combo.stars?.[index] || '?')}</small>` : ''}</span>`;
     }).join('')}</div>`;
   }
   function metadata(combo) {
-    if (Number(combo.stage) === 3) return `<span>필요 ${seconds(combo.requiredSeconds)}</span><span>${X(combo.tactic?.trim() || '전부 SET')}</span>`;
+    if (Number(combo.stage) === 3) return `<span class="combo-mini-chip"><small>필요</small> ${seconds(combo.requiredSeconds)}</span><span class="combo-mini-chip is-tactic">${X(combo.tactic?.trim() || '전부 SET')}</span>`;
     const type = /타비/.test(combo.tactic || '') ? '타비' : /택틱/.test(combo.tactic || '') ? '택틱' : combo.tactic || '—';
     const manual = combo.manualCount === null || combo.manualCount === undefined || combo.manualCount === '' ? '—' : combo.manualCount;
-    return `<span>${X(type)}</span><span>손컨 ${X(manual)}</span><span>TP ${X(combo.tp || '—')}</span>`;
+    return `<span class="combo-mini-chip ${type === '택틱' ? 'is-tactic' : type === '타비' ? 'is-tabi' : ''}">${X(type)}</span><span class="combo-mini-chip${Number(manual) > 0 ? ' has-manual' : ''}">손컨 ${X(manual)}</span><span class="combo-mini-chip">TP ${X(combo.tp || '—')}</span>`;
   }
   function compactRows(rows) {
     if (!rows.length) return '<div class="panel empty">등록된 추천 조합이 없습니다.</div>';
     return `<div class="combo-compact-list">${rows.map(combo => {
       const stage3 = Number(combo.stage) === 3;
-      const stars = Array.from({length:5}, (_, i) => combo.stars?.[i] || '?').join('');
-      return `<article class="combo-compact-row${stage3 ? ' is-stage3' : ''}" data-boss-color="${X(combo.boss)}" aria-label="${X(combo.stage)}단계 ${X(combo.boss)}넴 추천 조합"><div class="combo-mini-layout"><div class="combo-mini-topline">${boss(combo.boss)}<div class="combo-mini-meta">${metadata(combo)}${combo.note ? `<span class="combo-mini-note">${X(combo.note)}</span>` : ''}</div></div><div class="combo-mini-lineup">${party(combo)}</div><div class="combo-mini-info"><span class="combo-mini-stars" aria-label="성급 ${X(stars)}"><small>성급</small> ${X(stars)}</span><div class="combo-mini-result"><div class="combo-mini-score"><small>${stage3 ? '이월' : '기대딜'}</small><strong>${stage3 ? seconds(combo.remainingSeconds) : X(formatExpectedDamage(combo.expectedDamage))}</strong></div>${stage3 ? '' : sourceLinkBox(source(combo))}</div></div></div></article>`;
+      return `<article class="combo-compact-row${stage3 ? ' is-stage3' : ''}" data-boss-color="${X(combo.boss)}" aria-label="${X(combo.stage)}단계 ${X(combo.boss)}넴 추천 조합"><div class="combo-mini-layout"><div class="combo-mini-header">${boss(combo.boss)}<div class="combo-mini-facts">${metadata(combo)}${stage3 ? '' : sourceLinkBox(source(combo))}</div></div><div class="combo-mini-lineup">${party(combo, -1, true)}</div><div class="combo-mini-score"><small>${stage3 ? '이월' : '기대딜'}</small><strong>${stage3 ? seconds(combo.remainingSeconds) : X(formatExpectedDamage(combo.expectedDamage))}</strong></div>${combo.note ? `<p class="combo-mini-note">${X(combo.note)}</p>` : ''}</div></article>`;
     }).join('')}</div>`;
   }
   function distribution() {

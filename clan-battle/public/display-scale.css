@@ -686,19 +686,25 @@ html[data-text-scale]:not([data-text-scale="100"]) .combo-plan-table .combo-plan
 html[data-text-scale]:not([data-text-scale="100"]) .combo-plan-table .combo-mini-unit strong{font-size:calc((9px) * var(--user-text-scale,1))!important}
 html[data-text-scale]:not([data-text-scale="100"]) .combo-plan-table .combo-plan-damage>strong{font-size:calc((16px) * var(--user-text-scale,1))!important}
 }
-html[data-text-scale]:not([data-text-scale="100"]) .combo-mini-topline>.combo-mini-boss{font-size:calc((11px) * var(--user-text-scale,1))!important}
-html[data-text-scale]:not([data-text-scale="100"]) .combo-compact-row .combo-mini-unit strong{font-size:calc((10.5px) * var(--user-text-scale,1))!important}
-html[data-text-scale]:not([data-text-scale="100"]) .combo-mini-stars{font-size:calc((13px) * var(--user-text-scale,1))!important}
-html[data-text-scale]:not([data-text-scale="100"]) .combo-mini-stars small{font-size:calc((10px) * var(--user-text-scale,1))!important}
-html[data-text-scale]:not([data-text-scale="100"]) .combo-compact-row .combo-mini-score strong{font-size:calc((22px) * var(--user-text-scale,1))!important}
-html[data-text-scale]:not([data-text-scale="100"]) .combo-compact-row.is-stage3 .combo-mini-score strong{font-size:calc((17px) * var(--user-text-scale,1))!important}
-@media(max-width:680px){
-html[data-text-scale]:not([data-text-scale="100"]) .combo-mini-topline .combo-mini-meta{font-size:calc((10px) * var(--user-text-scale,1))!important}
-html[data-text-scale]:not([data-text-scale="100"]) .combo-compact-row .combo-mini-score strong{font-size:calc((20px) * var(--user-text-scale,1))!important}
-html[data-text-scale]:not([data-text-scale="100"]) .combo-compact-row .combo-mini-score small{font-size:calc((9px) * var(--user-text-scale,1))!important}
+html[data-text-scale]:not([data-text-scale="100"]) .combo-mini-header>.combo-mini-boss{font-size:calc((12px) * var(--user-text-scale,1))!important}
+html[data-text-scale]:not([data-text-scale="100"]) .combo-compact-row .combo-mini-unit strong{font-size:min(calc(12px * var(--user-text-scale,1)),calc((100cqw + 1.5px)/var(--combo-name-length,1)))!important}
+html[data-text-scale]:not([data-text-scale="100"]) .combo-mini-unit-star{font-size:calc((11px) * var(--user-text-scale,1))!important}
+html[data-text-scale]:not([data-text-scale="100"]) .combo-mini-chip{font-size:calc((12px) * var(--user-text-scale,1))!important}
+html[data-text-scale]:not([data-text-scale="100"]) .combo-mini-chip small{font-size:inherit!important}
+html[data-text-scale]:not([data-text-scale="100"]) .combo-compact-row .combo-mini-score small{font-size:calc((12px) * var(--user-text-scale,1))!important}
+html[data-text-scale]:not([data-text-scale="100"]) .combo-compact-row .combo-mini-score strong{font-size:calc((32px) * var(--user-text-scale,1))!important}
+html[data-text-scale]:not([data-text-scale="100"]) .combo-compact-row.is-stage3 .combo-mini-score strong{font-size:calc((27px) * var(--user-text-scale,1))!important}
+html[data-text-scale]:not([data-text-scale="100"]) .combo-mini-note{font-size:calc((12px) * var(--user-text-scale,1))!important}
+@container combo-card (max-width:569px){
+html[data-text-scale]:not([data-text-scale="100"]) .combo-mini-header>.combo-mini-boss{font-size:calc((11.5px) * var(--user-text-scale,1))!important}
+html[data-text-scale]:not([data-text-scale="100"]) .combo-mini-chip{font-size:calc((11.5px) * var(--user-text-scale,1))!important}
+html[data-text-scale]:not([data-text-scale="100"]) .combo-compact-row .combo-mini-score small{font-size:calc((11px) * var(--user-text-scale,1))!important}
+html[data-text-scale]:not([data-text-scale="100"]) .combo-compact-row .combo-mini-score strong{font-size:calc((30px) * var(--user-text-scale,1))!important}
+html[data-text-scale]:not([data-text-scale="100"]) .combo-compact-row.is-stage3 .combo-mini-score strong{font-size:calc((25px) * var(--user-text-scale,1))!important}
+html[data-text-scale]:not([data-text-scale="100"]) .combo-mini-note{font-size:calc((11.5px) * var(--user-text-scale,1))!important}
 }
-@media(max-width:350px){
-html[data-text-scale]:not([data-text-scale="100"]) .combo-compact-row .combo-mini-unit strong{font-size:calc((10px) * var(--user-text-scale,1))!important}
+@container combo-card (max-width:305px){
+html[data-text-scale]:not([data-text-scale="100"]) .combo-mini-chip{font-size:calc((11px) * var(--user-text-scale,1))!important}
 }
 /* presence.css */
 html[data-text-scale]:not([data-text-scale="100"]) .online-presence{font-size:calc((11px) * var(--user-text-scale,1))!important}
