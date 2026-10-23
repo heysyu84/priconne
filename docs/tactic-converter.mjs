@@ -10,7 +10,7 @@ export const foreignSuggestions=name=>(suggested[trim(name)]||[])[0]||'';
 export function convertForeignTactic(raw, koreanNames=[], foreignNames=[]) {
  const ko=Array.from({length:5},(_,i)=>trim(koreanNames[i])||'캐릭터'+(i+1));
  const label=ko.map(n=>({'네피네라':'네피'}[n]||n));
- const aliases=ko.map((x,i)=>[trim(foreignNames[i]),x,...(suggested[x]||[])].filter(Boolean));
+ const aliases=ko.map((x,i)=>[...trim(foreignNames[i]).split(/[,，|]/),x,...(suggested[x]||[])].map(trim).filter(Boolean));
  const dict=aliases.flatMap((a,i)=>a.map(name=>({name,i}))).sort((a,b)=>b.name.length-a.name.length);
  const dictPattern='(?:'+[...new Set(dict.map(x=>reg(x.name)))].join('|')+')';
  const find=s=>dict.find(x=>x.name===trim(s))?.i??-1;
