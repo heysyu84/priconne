@@ -1,6 +1,6 @@
-// Measure actual menu typography instead of guessing a resolution breakpoint.
+// Stay in PC navigation mode from 801px upward, even with a capped canvas.
 export function compactNavigation(viewport, available, required, compact=false) {
-  return viewport<=800 || available<required+(compact?12:0);
+  return viewport<=800;
 }
 // Keep all eight destinations readable even when desktop UI text is enlarged.
 export function bottomNavigationColumns(availableWidth, itemWidth) {
@@ -40,12 +40,7 @@ export function installAdaptiveNavigation(doc=document,win=window) {
     const gap=parseFloat(style.columnGap)||0;
     const widestLabel=Math.max(0,...[...probe.children].map(b=>Math.max(b.getBoundingClientRect().width,b.scrollWidth)));
     const needed=Math.ceil(widestLabel*buttons.length+gap*Math.max(0,buttons.length-1)+buttons.length*5);
-    // Reserve room for both the brand mark and all four toolbar controls.
-    // Measure on a permanently wide, hidden copy to avoid compact/wide flicker.
-    const toolbarRequired=toolbarProbe.querySelector('.top-actions')?.getBoundingClientRect().width||0;
-    const desktopBrandRequired=214;
-    const topRowRequired=Math.ceil(desktopBrandRequired+toolbarRequired+60);
-    compact=compactNavigation(viewport,available,needed,compact)||viewport<topRowRequired+(compact?12:0);
+    compact=compactNavigation(viewport,available,needed,compact);
     const layout=compact?'compact':'wide';
     if(root.dataset.navLayout!==layout){
       const active=doc.activeElement,page=active?.closest?.('.nav')?.dataset.page;
