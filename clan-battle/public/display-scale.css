@@ -940,3 +940,7 @@ html[data-text-scale] .tw-library .tw-card-details>span{
 @media(max-width:800px){
 html[data-text-scale] .tw-work .tw-title-lineup{font-size:max(var(--ui-font-min,0px),round(nearest,calc((clamp(11px,3.8vw,15px)) * var(--ui-text-scale,1)),1px))!important}
 }
+
+/* Tactic toolbar control scale. */
+html[data-text-scale] .tw-toolbar .tw-carry-entry #tw-carry{font-size:max(var(--ui-font-min,0px),round(nearest,calc((16px) * var(--ui-text-scale,1)),1px))!important}
+html[data-text-scale] .tw-toolbar .tw-estimate-toggle{font-size:max(var(--ui-font-min,0px),round(nearest,calc((13px) * var(--ui-text-scale,1)),1px))!important}
