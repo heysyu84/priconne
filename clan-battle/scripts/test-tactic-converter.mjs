@@ -22,3 +22,14 @@ for(const source of ['初動 ピオ SET\n1:12 ピオ スレシア SET\n1:12 ピ�
  let previous=[];for(const row of result.rows){previous=commandState(row.text,previous,ko);assert.deepEqual(previous,row.checked);}
 }
 console.log('PASS: ordered commands, AUTO order, conditions, once, dango and clipboard round-trip');
+
+for(const source of ['初動 ピオ SET','初動 OXXXX']){
+ const r=run(source);assert.match(r.rows[0].text,/^AUTO 오프, /);assert.equal(r.rows[0].checked[5],false);
+}
+for(const source of ['初動 AUTO ON ピオ SET','1:30 AUTO ON ピオ SET','初動 OXXXX ON']){
+ const r=run(source);assert.ok(!r.text.includes('AUTO 오프'));assert.equal(r.rows[0].checked[5],true);
+}
+result=run('初動 AUTO OFF ピオ SET');assert.equal((result.text.match(/AUTO 오프/g)||[]).length,1);
+result=run('1:12 ピオ スレシア SET → AUTO ON');assert.equal(result.rows[0].text,'AUTO 오프');assert.equal(result.rows.at(-1).checked[5],true);
+result=run('初動 ピオ SET\n1:12 ピオ AUTO ON');assert.match(result.rows[0].text,/^AUTO 오프/);assert.equal(result.rows.at(-1).checked[5],true);
+console.log('PASS: implicit AUTO OFF, explicit starting AUTO and later timed AUTO preserved');

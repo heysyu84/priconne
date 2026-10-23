@@ -1,4 +1,4 @@
-import {convertForeignTactic,foreignSuggestions} from './tactic-converter.mjs?v=20261023-extraction03';
+import {convertForeignTactic,foreignSuggestions} from './tactic-converter.mjs?v=20261023-auto-default01';
 import {colorRuns} from './tactics-model.mjs?v=20261023-check-sync01';
 import {serializeTacticTransfer,validTacticLineup} from './tactic-transfer.mjs?v=20261023-autolineup04';
 

@@ -175,6 +175,18 @@ export function convertForeignTactic(raw, koreanNames=[], foreignNames=[]) {
      rows.splice(i,2,{...b,text:a.text.slice(0,-a.instruction.length)+instruction,instruction,source:[a.source,b.source].join('\n')});i--;
    }
  }
+ // Missing initial AUTO means OFF. A later timed AUTO command is not
+ // a starting-state declaration, so retain it after a separate initial row.
+ if(rows.length){
+   const first=rows[0],initial=!first.time||first.time==='1:30';
+   if(!initial){
+     rows.unshift({text:'AUTO 오프',instruction:'AUTO 오프',checked:[false,false,false,false,false,false],time:'',actor:'',source:'시작 AUTO 설정 미기재 → AUTO 오프 기본 적용'});
+   }else if(!/AUTO (?:온|오프)/.test(first.instruction)){
+     first.text='AUTO 오프, '+first.text;
+     first.instruction='AUTO 오프, '+first.instruction;
+     first.checked[5]=false;
+   }
+ }
  if(!rows.length)warning('변환 가능한 행을 찾지 못했습니다.');
  if(ko.some(x=>/^캐릭터[1-5]$/.test(x)))warning('캐릭터 5명의 한국어 이름을 먼저 지정해 주세요.');
  return {format,rows,warnings:warn,text:rows.map(x=>x.text).join('\n'),
