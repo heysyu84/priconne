@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>해외 택틱 변환기 · 냥냥클랜</title><meta name="color-scheme" content="light">
+<style>
+:root{font-family:system-ui,-apple-system,"Malgun Gothic",sans-serif;color:#24243b;background:#f5f3fb}
+*{box-sizing:border-box}body{margin:0;font-size:15px;line-height:1.55}button,input,textarea{font:inherit}
+header{background:white;border-bottom:1px solid #e2e0ee;padding:14px max(16px,calc((100vw - 1160px)/2))}
+header a{color:#6452a6;text-decoration:none;font-weight:700}
+main{max-width:1160px;margin:auto;padding:23px 16px 65px}h1{font-size:26px;margin:0 0 3px}
+.lead{color:#5e6174;margin:0 0 18px}
+.panel{border:1px solid #dfdce8;background:white;border-radius:15px;padding:18px;margin-bottom:16px}
+h2{font-size:17px;margin:0 0 9px}.muted,.hint{color:#646579;font-size:13px;margin:5px 0}
+.form-row{display:grid;grid-template-columns:40px minmax(0,1fr) minmax(0,1fr);gap:10px;align-items:center;margin:8px 0}
+.form-row input{width:100%;min-width:0}
+.form-header{font-size:12px;color:#646579;display:grid;grid-template-columns:40px 1fr 1fr;gap:10px}
+input,textarea{border:1px solid #c9c6d9;border-radius:8px;padding:9px 10px;background:#fff;color:#25243b}
+input:focus,textarea:focus{outline:2px solid #a89ceb;outline-offset:1px}
+textarea{width:100%;min-height:255px;resize:vertical;line-height:1.65}
+.columns{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+button{border:1px solid #cbc5e3;color:#473e6d;background:#f5f1ff;border-radius:9px;padding:10px 14px;cursor:pointer;font-weight:650}
+button.primary{background:#5841a0;color:white;border-color:#5841a0}
+button:disabled{opacity:.42;cursor:not-allowed}
+#preview{min-height:225px;max-height:540px;overflow:auto;background:#faf9ff;border:1px solid #e4e0f0;border-radius:10px;padding:13px}
+.preview-line{display:flex;gap:10px;border-bottom:1px solid #e7e3ee;padding:8px 0}
+.preview-line:last-child{border-bottom:none}
+.set-status{white-space:nowrap;font-size:11px;letter-spacing:2px;min-width:91px;margin-top:3px}
+.set-status .on{color:#218046}.set-status .off{color:#aaa}
+.preview-text{word-break:keep-all;overflow-wrap:anywhere}
+.on-text{color:#c2364f;font-weight:700}.off-text{color:#2d63bc;font-weight:700}
+#messages{margin-top:12px;white-space:pre-wrap;color:#936318;font-size:13px}
+#messages:empty{display:none}
+.steps{margin:8px 0 0;padding-left:22px;color:#4d4d67;font-size:14px}
+@media(max-width:760px){.columns{grid-template-columns:1fr}h1{font-size:21px}.panel{padding:13px}.form-row{gap:5px;grid-template-columns:24px minmax(0,1fr) minmax(0,1fr)}.form-header{gap:5px;grid-template-columns:24px 1fr 1fr}.set-status{min-width:82px}main{padding:14px 10px 48px}}
+</style></head><body>
+<header><a href="./">← 냥냥클랜 리리다이브 · 클랜전 사이트</a></header>
+<main>
+<h1>해외 택틱 자동 변환기</h1>
+<p class="lead">일본어 일반 택틱과 일본·중국식 당고(O/X, 〇/ー)를 한국어 ON/OFF 방식으로 변환합니다.</p>
+<section class="panel">
+<h2>① 덱 순서와 이름 대응</h2>
+<p class="hint">왼쪽부터 실제 택틱의 1~5번 자리입니다. 원문 이름과 사이트에서 사용할 한국어 이름을 정확히 연결하세요.</p>
+<div class="form-header"><span>순서</span><span>해외 원문 이름</span><span>사이트 이름</span></div>
+<div id="lineup"></div>
+<p class="hint">이름 순서가 틀리면 당고 체크 상태도 잘못 계산됩니다. 원문 이름은 별칭까지 포함해 직접 수정할 수 있습니다.</p>
+</section>
+<div class="columns">
+<section class="panel"><h2>② 해외 택틱 원문</h2>
+<textarea id="raw" spellcheck="false" placeholder="유튜브 설명란, 일본어 SET/切 택틱 또는 중국어 O/X 당고를 붙여넣으세요."></textarea>
+<div class="actions"><button id="convert" type="button" class="primary">변환하기</button><button id="clear" type="button">원문 지우기</button></div>
+<p class="hint">일반 명령과 당고가 한 게시물에 중복 기재된 경우 일반 명령을 우선합니다.</p>
+</section>
+<section class="panel"><h2>③ 한국어 결과 미리보기</h2>
+<div id="preview" aria-live="polite"><span class="muted">덱 이름과 원문을 입력한 뒤 변환하기를 누르세요.</span></div>
+<div id="messages" role="status"></div>
+<div class="actions"><button id="copy-with-set" type="button" class="primary" disabled>SET 포함 복사 (권장)</button><button id="copy-text" type="button" disabled>본문만 복사</button></div>
+<p class="hint">SET 포함 복사는 화면에 보이지 않는 6개 체크 상태를 각 행에 포함합니다. 클전 사이트에 붙여넣으면 기존 택틱 작업실이 이를 자동 인식합니다.</p>
+</section>
+</div>
+<section class="panel"><h2>④ 클전 사이트에 넣는 방법</h2>
+<ol class="steps">
+<li><strong>SET 포함 복사</strong> 버튼을 누릅니다.</li>
+<li>기존 클전 사이트 → 택틱 작업실에서 작성 잠금을 해제하고, 대상 택틱의 캐릭터 5명과 순서를 확인합니다.</li>
+<li>첫 번째 빈 택틱 행을 클릭하고 <strong>Ctrl+V</strong> (모바일: 붙여넣기) 합니다.</li>
+<li>명령어의 빨강/파랑 표시와 캐릭터·AUTO 체크박스를 확인한 뒤 저장 상태를 확인합니다.</li>
+</ol>
+<p class="hint">변환기는 데이터베이스를 직접 수정하지 않습니다. 원문이 모호한 경우 확인 경고가 나오며, 최종 적용 전에는 원본 영상과 대조해 주세요.</p>
+</section>
+</main><script type="module" src="./tactic-converter-ui.mjs?v=20261023-a"></script></body></html>
