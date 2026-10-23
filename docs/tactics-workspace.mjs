@@ -1,8 +1,9 @@
 import { isBoosterCharacter, formatExpectedDamage, sourceLinkBox } from './view-settings.mjs?v=20261022-ui14';
-import { characterPortrait, portraitAttributes, portraitStarOverlay, normalizeCharacterName } from './character-portraits.mjs?v=20261022-ui14';
+import { characterPortrait, portraitAttributes, portraitStarOverlay, normalizeCharacterName, findCharacter } from './character-portraits.mjs?v=20261022-ui14';
 import { makeId, parseDamage } from './roster.mjs?v=20261022-ui14';
 import { GROUPS, groupOf, titleFor, compareTactics, newRow, checkedSix, commandState, recalculateTacticRows, replaceTacticRowText, pastedRows, richLine, parseClock, clock, escapeHtml as X } from './tactics-model.mjs?v=20261023-foreign01';
 import { shiftTimeline } from './engine.mjs?v=20261022-ui14';
+import { parseTacticTransfer } from './tactic-transfer.mjs?v=20261023-autolineup01';
 
 export function createTacticWorkspace(api) {
   const { getApp, getMonth, persist, render, notify, navigate, section, copyText, catalog = [] } = api;
@@ -94,7 +95,50 @@ export function createTacticWorkspace(api) {
       if(runs.some(r=>r.color)&&runs.map(r=>r.text).join('')===rows[i].text)rows[i].runs=runs;
     }
   }
-  function paste(event){const el=event.target.closest('[data-tw-text]');if(!el||readOnly())return;const text=event.clipboardData?.getData('text/plain');if(!text)return;event.preventDefault();const t=current();remember(true);const row=rowFor(el),index=t.rows.indexOf(row);const rows=pastedRows(text,t.rows[index-1]?.checked||[],t.characters,catalog);if(!rows.length)return;pasteColors(event.clipboardData.getData('text/html'),rows);t.rows.splice(index,1,...rows);save();redrawRows(rows.at(-1).id);notify(`${rows.length}행을 붙여넣었습니다.`);}
+  function paste(event){
+   const el=event.target.closest('[data-tw-text]');
+   if(!el||readOnly())return;
+   const text=event.clipboardData?.getData('text/plain');
+   if(!text)return;
+   event.preventDefault();
+   const t=current();if(!t)return;
+   let transfer=null;
+   try{transfer=parseTacticTransfer(text);}
+   catch(error){notify(error.message||'복사한 택틱 정보를 확인하세요.');return;}
+   let lineup=null;
+   if(transfer){
+     // 별칭을 정식 DB 이름으로 통일해야 초상화와 부스터 정보가 자동으로 따라옵니다.
+     lineup=transfer.characters.map(name=>findCharacter(catalog,name)?.name||null);
+     if(lineup.some(name=>!name)){
+       notify('사이트 캐릭터 DB에서 확인되지 않는 이름: '+transfer.characters.filter((name,i)=>!lineup[i]).join(', ')+' · 변환기의 한국어 이름을 확인하세요.');
+       return;
+     }
+     const changed=lineup.some((name,i)=>normalizeCharacterName(t.characters[i])!==normalizeCharacterName(name));
+     const existing=t.characters.some(name=>String(name||'').trim());
+     if(changed&&existing&&!confirm(
+       '현재 택틱의 캐릭터 편성이 변환 결과와 다릅니다.\\n현재: '+t.characters.map(x=>x||'미선택').join(', ')+
+       '\\n변환: '+lineup.join(', ')+
+       '\\n\\n기존 편성을 변경하고 붙여넣을까요? (취소하면 아무것도 변경하지 않습니다.)'
+     ))return;
+   }
+   const row=rowFor(el,false);
+   const index=row?t.rows.indexOf(row):t.rows.length;
+   const previous=t.rows[index-1]?.checked||[];
+   const rows=pastedRows(transfer?.text||text,previous,lineup||t.characters,catalog);
+   if(!rows.length)return;
+   remember(true);
+   if(lineup){
+     t.characters=[...lineup];
+     if(t.customPortraits)t.customPortraits=t.customPortraits.map((value,i)=>normalizeCharacterName(transfer.characters[i])===normalizeCharacterName(lineup[i])?value:'');
+   }
+   if(row)t.rows.splice(index,1,...rows);
+   else t.rows.push(...rows);
+   if(!transfer)pasteColors(event.clipboardData.getData('text/html'),rows);
+   save();
+   if(transfer)redraw({row:rows.at(-1).id});
+   else redrawRows(rows.at(-1).id);
+   notify(transfer?`${rows.length}행과 캐릭터 5명·초상화·SET 상태를 가져왔습니다.`:`${rows.length}행을 붙여넣었습니다.`);
+ }
   async function uploadPortrait(el){if(!canEdit())return;
     const file=el.files?.[0];if(!file||!/^image\/(png|jpeg|webp)$/.test(file.type))return notify('PNG·JPG·WebP 이미지를 선택하세요.');
     if(file.size>10_000_000)return notify('10MB 이하 이미지를 선택하세요.');
