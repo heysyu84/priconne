@@ -2,15 +2,17 @@ import {characterPortrait, portraitAttributes, portraitStarOverlay} from './char
 import {isBoosterCharacter, formatExpectedDamage, sourceLinkBox, sourceLinkKind} from './view-settings.mjs?v=20261022-ui14';
 import {planThreeAttacks} from './combo-planner.mjs?v=20261023-combo01';
 
-const preferenceKey = 'nyang-combo-view';
-function savedView() {
-  try { return localStorage.getItem(preferenceKey) === 'detail' ? 'detail' : 'compact'; } catch { return 'compact'; }
-}
-
 export function createComboWorkspace(api) {
-  const {state, render, section, canEdit, characters, escapeHtml: X, notice, detailedRows} = api;
-  let view = savedView(), lastMonth = '', selectedBosses = null, distinctBosses = true;
+  const {state, render, section, canEdit, characters, escapeHtml: X, notice} = api;
+  let view = 'compact', lastMonth = '', selectedBosses = null, distinctBosses = true;
   const source = combo => [combo.url, combo.video, combo.tacticUrl].find(value => sourceLinkKind(value) !== 'empty');
+  // Keep stored values intact. Render integer TP levels as 4.0 / 4.0+.
+  const tpLabel = value => {
+    const raw = String(value ?? '').trim();
+    if (!raw) return '—';
+    const match = raw.match(/^(\d+)(?:\.(\d+))?(\+)?$/);
+    return X(match ? match[1] + '.' + (match[2] || '0') + (match[3] || '') : raw);
+  };
   const seconds = value => value === null || value === undefined || value === '' ? '—' : X(value) + '초';
   const boss = value => `<span class="combo-mini-boss" data-boss-color="${X(value)}">${X(value)}넴</span>`;
   function party(combo, supportIndex = -1, compact = false) {
@@ -24,7 +26,7 @@ export function createComboWorkspace(api) {
     if (Number(combo.stage) === 3) return `<span class="combo-mini-chip"><small>필요</small> ${seconds(combo.requiredSeconds)}</span><span class="combo-mini-chip is-tactic">${X(combo.tactic?.trim() || '전부 SET')}</span>`;
     const type = /타비/.test(combo.tactic || '') ? '타비' : /택틱/.test(combo.tactic || '') ? '택틱' : combo.tactic || '—';
     const manual = combo.manualCount === null || combo.manualCount === undefined || combo.manualCount === '' ? '—' : combo.manualCount;
-    return `<span class="combo-mini-chip ${type === '택틱' ? 'is-tactic' : type === '타비' ? 'is-tabi' : ''}">${X(type)}</span><span class="combo-mini-chip${Number(manual) > 0 ? ' has-manual' : ''}">손컨 ${X(manual)}</span><span class="combo-mini-chip">TP ${X(combo.tp || '—')}</span>`;
+    return `<span class="combo-mini-chip ${type === '택틱' ? 'is-tactic' : type === '타비' ? 'is-tabi' : ''}">${X(type)}</span><span class="combo-mini-chip${Number(manual) > 0 ? ' has-manual' : ''}">손컨 ${X(manual)}</span><span class="combo-mini-chip is-tp">TP ${tpLabel(combo.tp)}</span>`;
   }
   function compactRows(rows) {
     if (!rows.length) return '<div class="panel empty">등록된 추천 조합이 없습니다.</div>';
@@ -49,18 +51,17 @@ export function createComboWorkspace(api) {
     if (key !== lastMonth) { selectedBosses = null; lastMonth = key; }
     const stage = Number(state.comboStage), currentView = stage === 3 && view === 'planner' ? 'compact' : view;
     const rows = (month.recommendations || []).filter(combo => Number(combo.stage) === stage && (state.comboBoss === 'all' || Number(combo.boss) === Number(state.comboBoss)));
-    const modes = [['compact', '간략'], ['detail', '상세'], ...(stage === 4 ? [['planner', '3타 분배']] : [])];
-    const filters = `<div class="combo-workspace-toolbar"><div class="tabset" aria-label="추천 조합 단계">${[['4', '4단계'], ['3', '3단계']].map(([value, label]) => `<button data-guild="combo-stage" data-value="${value}" class="${state.comboStage === value ? 'active' : ''}">${label}</button>`).join('')}</div><div class="tabset combo-view-tabs" role="group" aria-label="조합 보기 방식">${modes.map(([value, label]) => `<button data-combo-action="view" data-value="${value}" class="${currentView === value ? 'active' : ''}" aria-pressed="${currentView === value}">${label}</button>`).join('')}</div></div>${currentView === 'planner' ? '' : `<div class="combo-workspace-boss-filter"><div class="tabset" aria-label="보스별 조합">${[['all', '전체 보스'], ...month.bosses.map(value => [String(value.id), value.id + '넴'])].map(([value, label]) => `<button data-guild="combo-boss" data-value="${value}" data-boss-color="${value}" class="${state.comboBoss === value ? 'active' : ''}">${label}</button>`).join('')}</div><span class="small muted">${rows.length}개 조합</span></div>`}`;
-    return section('추천 조합', '', canEdit() ? '<button class="btn primary" data-guild="add-combo">＋ 추천 조합</button>' : '') + `<div class="recommendation-workspace">${filters}${notice()}${currentView === 'planner' ? distribution() : currentView === 'detail' ? `<div class="combo-list">${detailedRows(rows)}</div>` : compactRows(rows)}</div>`;
+    const modes = stage === 4 ? [['compact', '조합 목록'], ['planner', '3타 분배']] : [];
+    const filters = `<div class="combo-workspace-toolbar"><div class="tabset" aria-label="추천 조합 단계">${[['4', '4단계'], ['3', '3단계']].map(([value, label]) => `<button data-guild="combo-stage" data-value="${value}" class="${state.comboStage === value ? 'active' : ''}">${label}</button>`).join('')}</div>${modes.length ? `<div class="tabset combo-view-tabs" role="group" aria-label="조합 목록과 3타 분배 전환">${modes.map(([value, label]) => `<button data-combo-action="view" data-value="${value}" class="${currentView === value ? 'active' : ''}" aria-pressed="${currentView === value}">${label}</button>`).join('')}</div>` : ''}</div>${currentView === 'planner' ? '' : `<div class="combo-workspace-boss-filter"><div class="tabset" aria-label="보스별 조합">${[['all', '전체 보스'], ...month.bosses.map(value => [String(value.id), value.id + '넴'])].map(([value, label]) => `<button data-guild="combo-boss" data-value="${value}" data-boss-color="${value}" class="${state.comboBoss === value ? 'active' : ''}">${label}</button>`).join('')}</div><span class="small muted">${rows.length}개 조합</span></div>`}`;
+    return section('추천 조합', '', canEdit() ? '<button class="btn primary" data-guild="add-combo">＋ 추천 조합</button>' : '') + `<div class="recommendation-workspace">${filters}${notice()}${currentView === 'planner' ? distribution() : compactRows(rows)}</div>`;
   }
   document.addEventListener('click', event => {
     const button = event.target.closest('[data-combo-action]');
     if (!button || !button.closest('.recommendation-workspace')) return;
     switch (button.dataset.comboAction) {
       case 'view':
-        if (!['compact', 'detail', 'planner'].includes(button.dataset.value)) return;
+        if (!['compact', 'planner'].includes(button.dataset.value)) return;
         view = button.dataset.value;
-        if (view !== 'planner') try { localStorage.setItem(preferenceKey, view); } catch {}
         break;
       case 'boss': {
         if (selectedBosses === null) selectedBosses = new Set(api.month().bosses.map(value => Number(value.id)));
