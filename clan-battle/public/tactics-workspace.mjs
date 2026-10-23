@@ -7,7 +7,7 @@ import { parseTacticTransfer, validTacticLineup, hasTacticSlots, resolveTacticSl
 
 export function createTacticWorkspace(api) {
   const { getApp, getMonth, persist, render, notify, navigate, section, copyText, catalog = [] } = api;
-  const state={month:null,group:'택틱정리',boss:'all',selected:null,remaining:null,trash:false,restore:null,undo:[],rememberedAt:0,more:false};
+  const state={estimateInputs:null,month:null,group:'택틱정리',boss:'all',selected:null,remaining:null,trash:false,restore:null,undo:[],rememberedAt:0,more:false};
   const $=selector=>document.querySelector(selector);
   const month=()=>getMonth(), base=()=>Number(month().options.battleSeconds||90);
   const all=()=>month().tactics;
@@ -23,7 +23,7 @@ export function createTacticWorkspace(api) {
   const imageData=(t,i)=>characterPortrait(catalog,t.characters[i],t.stars[i],t.customPortraits?.[i]);
   const imageUrl=(t,i)=>imageData(t,i).url;
   function prepare(){
-    if(state.month!==getApp().active){state.month=getApp().active;state.selected=null;state.boss='all';state.remaining=null;state.trash=false;state.undo=[];}
+    if(state.month!==getApp().active){state.month=getApp().active;state.selected=null;state.boss='all';state.remaining=null;state.trash=false;state.undo=[];state.estimateInputs=null;}
     if(!visible().some(t=>t.id===state.selected))state.selected=visible()[0]?.id||null;loadPersonal();
   }
   function remember(force=false){
@@ -184,10 +184,10 @@ export function createTacticWorkspace(api) {
   document.addEventListener('pointerdown',event=>{if(event.target.closest('[data-character-choice]'))event.preventDefault();});
   document.addEventListener('click',event=>{const choice=event.target.closest('[data-character-choice]');if(choice)chooseCharacter(Number(choice.dataset.characterChoice));else if(charPicker&&event.target!==charPicker.input)closeCharacters();});
   document.addEventListener('compositionend',event=>{if(event.target.dataset.twChar!==undefined)showCharacters(event.target);});
-  function mount(page){closeCharacters();if(!['tactics','calculator'].includes(page))return;const restore=state.restore;state.restore=null;if(restore?.meta)$('#'+restore.meta)?.focus();else if(restore?.row)focusRow(restore.row);}
+  function mount(page){closeCharacters();if(!['tactics','calculator'].includes(page))return;const restore=state.restore;state.restore=null;if(restore?.meta)$('#'+restore.meta)?.focus();else if(restore?.row)focusRow(restore.row);if(state.estimate)refreshEstimate();}
   function beforeNavigate(){const el=document.activeElement;if(el?.matches('[data-tw-text]')&&!viewing())editText(el);return true;}
   document.addEventListener('input',event=>{
-    const el=event.target;if(el.matches('[data-tw-text]')){if(!event.isComposing)editText(el);return;}
+    const el=event.target;if(el.dataset.twEstimate!==undefined){state.estimateInputs={...(state.estimateInputs||{}),[el.id]:el.value};refreshEstimate();return;}if(el.matches('[data-tw-text]')){if(!event.isComposing)editText(el);return;}
     if(el.dataset.twMeta||el.dataset.twChar!==undefined){if(!canEdit())return;mutateMeta(el);if(el.dataset.twChar!==undefined&&!event.isComposing)showCharacters(el);}
   });
   document.addEventListener('compositionend',event=>{if(event.target.matches('[data-tw-text]'))editText(event.target);});
@@ -250,7 +250,23 @@ export function createTacticWorkspace(api) {
       else if(event.ctrlKey)focusRow(t.rows[next]?.id||'draft');
     }
   });
-  function estimator(){return `<section class="panel section-spacer tw-estimator"><h2>선통 · 후통 예상 이월 계산</h2><p class="small muted">HP·피해량은 1 단위 정수 또는 만·억 표기로 입력하세요. 전투시간·이월 보정은 선택 월의 설정을 따릅니다.</p><div class="tw-estimate-fields">${[['tw-hp','보스 남은 HP',String(api.bossStatus?.().find(b=>b.id===current()?.boss)?.hp||1)],['tw-first','선통 예상 피해량','0'],['tw-second','후통 예상 피해량','300000000'],['tw-seconds','후통 전투시간 (초)',String(base())]].map(([id,label,value])=>`<div class="field"><label for="${id}">${label}</label><input id="${id}" inputmode="decimal" value="${value}"></div>`).join('')}</div><div class="form-actions"><button type="button" class="btn primary" data-tw="estimate">계산 후 위 택틱에 적용</button><span class="mathvalue" id="tw-estimate-result"></span></div></section>`;}
-  document.addEventListener('click',event=>{const b=event.target.closest('[data-tw]');if(!b)return;if(b.dataset.tw==='open-tactic'){navigate('tactics');$('#tw-carry')?.focus();}if(b.dataset.tw==='estimate'){const num=id=>id==='tw-seconds'?Number($('#'+id).value):parseDamage($('#'+id).value),result=api.estimateCarry({hp:num('tw-hp'),first:num('tw-first'),second:num('tw-second'),seconds:num('tw-seconds'),base:base(),bonus:Number(month().options.carryBonusSeconds??20),cap:Number(month().options.carryMaxSeconds||90)});$('#tw-estimate-result').textContent=result.error||result.seconds+'초';if(!result.error){setPersonal(result.seconds);redraw();notify(`계산한 ${result.seconds}초를 택틱에 적용했습니다.`);}}});
+  function estimatedCarry(){
+    const fields=['tw-hp','tw-first','tw-second','tw-seconds'];
+    if(fields.some(id=>!$('#'+id)))return null;
+    const num=id=>id==='tw-seconds'?Number($('#'+id).value):parseDamage($('#'+id).value);
+    return api.estimateCarry({hp:num('tw-hp'),first:num('tw-first'),second:num('tw-second'),seconds:num('tw-seconds'),base:base(),bonus:Number(month().options.carryBonusSeconds??20),cap:Number(month().options.carryMaxSeconds||90)});
+  }
+  function refreshEstimate(){
+    const result=estimatedCarry(),output=$('#tw-estimate-result');
+    if(!result||!output)return;
+    output.textContent=result.error||clock(result.seconds)+' · '+result.seconds+'초';
+    output.closest('.tw-estimate-result')?.setAttribute('data-error',String(!!result.error));
+    const apply=$('[data-tw="estimate-apply"]');if(apply)apply.disabled=!!result.error;
+  }
+  function estimator(){
+    const values=[['tw-hp','보스 남은 HP',String(api.bossStatus?.().find(b=>b.id===current()?.boss)?.hp||1)],['tw-first','선통 예상 피해량','0'],['tw-second','후통 예상 피해량','300000000'],['tw-seconds','후통 전투시간 (초)',String(base())]];
+    return `<section class="panel section-spacer tw-estimator"><h2>선통 · 후통 예상 이월 계산</h2><p class="small muted">값을 입력하면 예상 이월 시간이 즉시 표시됩니다. 실제 택틱에는 ‘위 택틱에 적용’을 눌렀을 때만 반영됩니다.</p><div class="tw-estimate-fields">${values.map(([id,label,initial])=>`<div class="field"><label for="${id}">${label}</label><input id="${id}" data-tw-estimate inputmode="decimal" value="${X(state.estimateInputs?.[id]??initial)}"></div>`).join('')}</div><div class="tw-estimate-actions"><div class="tw-estimate-result" role="status" aria-live="polite"><small>예상 이월 시간</small><strong id="tw-estimate-result">계산 중</strong></div><button type="button" class="btn primary" data-tw="estimate-apply">위 택틱에 적용</button></div></section>`;
+  }
+  document.addEventListener('click',event=>{const b=event.target.closest('[data-tw]');if(!b)return;if(b.dataset.tw==='open-tactic'){navigate('tactics');$('#tw-carry')?.focus();}if(b.dataset.tw==='estimate-apply'){const result=estimatedCarry();if(!result)return;refreshEstimate();if(result.error){notify(result.error);return;}setPersonal(result.seconds);redraw();notify(`계산한 ${result.seconds}초를 택틱에 적용했습니다.`);}});
   return {view,calculator:view,mount,beforeNavigate,openBoss:id=>{prepare();state.boss=String(id);state.remaining=null;state.trash=false;state.selected=visible()[0]?.id||null;},hasDraft:()=>{const el=document.activeElement;return !!(el?.matches('[data-tw-text]')&&rowFor(el,false)?.text!==readText(el)&&readText(el));}};
 }
