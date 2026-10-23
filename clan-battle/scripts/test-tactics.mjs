@@ -9,7 +9,27 @@ assert.equal(ensureTactics(app,meta,formats),true);
 assert.equal(ensureTactics(app,meta,formats),false);
 assert.equal(app.months['2026-09'].tactics.length,23);
 assert.deepEqual([...new Set(app.months['2026-09'].tactics.map(t=>t.boss))].sort(),[1,2,3,4,5]);
-assert.equal(app.months['2026-10'].tactics.length,16);
+const october=app.months['2026-10'];
+const carry=october.tactics.filter(t=>t.group==='이월 택틱');
+assert.equal(october.tactics.length,original.months['2026-10'].tactics.length+25);
+assert.equal(carry.length,25,'all October carry strategies imported');
+assert.equal(carry.filter(t=>t.video).length,24);
+assert.equal(carry.filter(t=>t.tacticUrl).length,1);
+assert.ok(carry.every(t=>t.note.includes('필요 이월시간: ')&&t.rows.every(row=>!row.text.startsWith('유의사항:'))));
+assert.ok(carry.every(t=>t.rows.every(row=>row.checked.length===6&&row.manualChecks===true)));
+assert.equal(carry.filter(t=>t.boss===1).length,3);
+assert.equal(carry.filter(t=>t.boss===2).length,6);
+assert.equal(carry.filter(t=>t.boss===3).length,6);
+assert.equal(carry.filter(t=>t.boss===4).length,4);
+assert.equal(carry.filter(t=>t.boss===5).length,6);
+const firstCarry=carry.find(t=>t.id==='carry-2026-10-1-3');
+assert.deepEqual(firstCarry.rows[0].checked,[true,false,true,true,true,false],'SET characters reverse with display lineup');
+assert.equal(firstCarry.expectedDamage,'6,010만~6,020만');
+assert.equal([...carry].sort(compareTactics)[0].id,firstCarry.id);
+firstCarry.note='관리자 수정 유의사항';
+assert.equal(ensureTactics(app,meta,formats),false,'existing carry tactics must not be replaced or duplicated');
+assert.equal(firstCarry.note,'관리자 수정 유의사항');
+
 const target=app.months['2026-09'].tactics.find(t=>t.id==='택틱정리-62');
 assert.deepEqual(target.stars,['5','5','5','6','5']);
 assert.equal(target.expectedDamage,'3.3');
@@ -96,4 +116,4 @@ for(const text of ['1:99','91','-1','nan',''])assert.ok(Number.isNaN(parseClock(
 assert.equal(catalog.length,351);let imageCount=0;
 for(const character of catalog){for(const path of [character.portrait,...Object.values(character.byStar)]){const buffer=fs.readFileSync(new URL('../public'+path,import.meta.url));assert.equal(buffer.subarray(0,8).toString('hex'),'89504e470d0a1a0a');imageCount++;}}
 assert.ok(catalog.find(c=>c.name==='수키드나'&&c.aliases.includes('에키드나')).portrait.includes(encodeURIComponent('수키드나')+'.png'));
-console.log(`PASS: 39 tactics, 454 original attacks unchanged, ${preserved} rich-text rows, carry conversion, SET import, ${imageCount} PNG mappings`);
+console.log(`PASS: 39 source tactics + 25 carry tactics, 454 original attacks unchanged, ${preserved} rich-text rows, carry conversion, SET import, ${imageCount} PNG mappings`);
