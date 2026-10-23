@@ -4,7 +4,7 @@ import { makeId, parseDamage } from './roster.mjs?v=20261022-ui14';
 import { GROUPS, groupOf, titleFor, compareTactics, newRow, checkedSix, commandState, recalculateTacticRows, replaceTacticRowText, pastedRows, richLine, parseClock, clock, escapeHtml as X } from './tactics-model.mjs?v=20261024-tactic-conditions01';
 import { shiftTimeline } from './engine.mjs?v=20261022-ui14';
 import { parseTacticTransfer, validTacticLineup, hasTacticSlots, resolveTacticSlots } from './tactic-transfer.mjs?v=20261023-slots01';
-import { createExternalTacticCarry } from './external-tactic-carry.mjs?v=20261024-external-carry01';
+import { createExternalTacticCarry } from './external-tactic-carry.mjs?v=20261024-external-carry02';
 
 const EXTERNAL_GROUP = '외부 택틱';
 
