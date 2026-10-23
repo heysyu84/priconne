@@ -13,7 +13,7 @@ assert.equal(app.months['2026-10'].tactics.length,16);
 const target=app.months['2026-09'].tactics.find(t=>t.id==='택틱정리-62');
 assert.deepEqual(target.stars,['5','5','5','6','5']);
 assert.equal(target.expectedDamage,'3.3');
-assert.equal(titleFor(target),'1넴 에키드나 알네카 프캬루 밤피 바이올렛 55565, 기대딜 3.3');
+assert.equal(titleFor(target),'1넴 에키드나 알네카 프캬루 밤피 바이올렛 성급 55565, 손컨 —, TP —, 기대딜 3.3');
 assert.equal(app.months['2026-10'].tactics.find(t=>t.id==='oct-택틱정리-145').boss,null);
 const unordered = [
   {id:'boss2',boss:2,expectedDamage:'4.5'},

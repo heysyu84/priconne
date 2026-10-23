@@ -13,11 +13,11 @@ startPresence({apiFetch,onCount:count=>{const value=document.getElementById('onl
 const Engine=await import('./engine.mjs?v=20261022-ui14');
 const {ensureRoster,syncRoster,memberLabel}=await import('./roster.mjs?v=20261022-ui14');
 const {createWorkflow}=await import('./workflow.mjs?v=20261024-public-battle-append01');
-const {ensureTactics}=await import('./tactics-model.mjs?v=20261023-foreign01');
-const {syncTacticRecommendations}=await import('./tactic-combo-sync.mjs?v=20261023-sortcount03');
+const {ensureTactics}=await import('./tactics-model.mjs?v=20261024-tactic-conditions01');
+const {syncTacticRecommendations}=await import('./tactic-combo-sync.mjs?v=20261024-tactic-conditions01');
 const {applySourceData,remainingAttacks}=await import('./guild-model.mjs?v=20261022-hall01');
-const {createGuildWorkspace}=await import('./guild-workspace.mjs?v=20261024-combo-tabs-note-outside01');
-const {createTacticWorkspace}=await import('./tactics-workspace.mjs?v=20261024-tactic-no-carry-note01');
+const {createGuildWorkspace}=await import('./guild-workspace.mjs?v=20261024-tactic-conditions01');
+const {createTacticWorkspace}=await import('./tactics-workspace.mjs?v=20261024-tactic-conditions01');
 const {createBattleImageImport}=await import('./battle-image-import.mjs?v=20261023-extraction03');
 const [TACTIC_META,CHARACTERS,ROW_FORMATS,BOSS_ART,GUILD_SOURCE,PORTRAIT_LIBRARY,FUTURE_BOSSES]=await Promise.all(['/tactic-metadata.json','/characters.json','/tactic-row-formats.json','/bosses.json','/guild-source.json','/portrait-library.json','/future-bosses.json'].map(async path=>{const response=await fetch(assetUrl(path)+'?v=20261023-image-cleanup01');if(!response.ok)throw Error('택틱 자료를 불러오지 못했습니다.');return response.json()}));
 const CHARACTER_CATALOG=withPortraitLibrary(CHARACTERS.characters,PORTRAIT_LIBRARY);

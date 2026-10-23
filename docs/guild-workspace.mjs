@@ -220,6 +220,11 @@ export function createGuildWorkspace(api){
       if(v.url&&!validURL(v.url))throw Error('링크를 확인하세요.');
       const data={...c,...v,id:c?.id||makeId(),characters:chars,stars:[...v.stars],stage:Number(v.stage),boss:Number(v.boss),requiredSeconds:v.requiredSeconds===''?null:Number(v.requiredSeconds),remainingSeconds:v.remainingSeconds===''?null:Number(v.remainingSeconds)};
       if(data.stage===3&&!data.tactic?.trim())data.tactic='전부 SET';
+      if(data.stage===4&&v.manualCount!==''&&!/^(?:[0-9])(?:\.5)?$/.test(v.manualCount))throw Error('손컨은 0~9.5까지 0.5 단위로 입력하세요.');
+      if(c?.sourceTacticId){
+        const sourceTactic=month().tactics.find(t=>String(t.id)===String(c.sourceTacticId));
+        if(sourceTactic){sourceTactic.manualCount=v.manualCount;sourceTactic.tp=v.tp;}
+      }
       if(c)Object.assign(c,data);else month().recommendations.push(data);persist();render();
     });
   }

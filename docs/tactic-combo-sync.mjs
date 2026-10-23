@@ -1,10 +1,20 @@
 // Stage-4 tactics are the canonical source for the stage-4 recommendation list.
-// Keep stage-3 recommendations and manual-only fields intact.
+// Keep stage-3 recommendations and historical records intact.
 const normal=s=>String(s??'').normalize('NFKC').replace(/\s+/g,'').toLocaleLowerCase('ko-KR');
 const typeOf=t=>/타비/.test(String(t.group||t.source||''))?'타비':'택틱';
 const sameNumber=(a,b)=>Number(a)===Number(b)&&Number.isFinite(Number(a));
-const tpOf=note=>String(note||'').match(/(?:^|[\s,])TP\s*[:：]?\s*(\d+(?:\.\d+)?\+?)/i)?.[1]||'';
-const extraNote=note=>String(note||'').replace(/(?:^|[\s,])TP\s*[:：]?\s*\d+(?:\.\d+)?\+?/ig,'').replace(/^[\s,·]+|[\s,·]+$/g,'');
+const tpOf=note=>String(note||'').match(/\bTP\s*[:：]?\s*(\d+(?:\.\d+)?\+?)/i)?.[1]||'';
+export function stripTpFromMemo(note){
+ const source=String(note||'');
+ if(!tpOf(source))return source;
+ return source
+  .replace(/\bTP\s*[:：]?\s*\d+(?:\.\d+)?\+?(?:\s*이상\s*필수|\s*이상|\s*필수)?(?:\s*\([^)]{0,160}\))?(?:\s*는\s*되야\s*돌아갈\s*것\s*같음)?/gi,'')
+  .replace(/\s*([,，;；])\s*(?=[,，;；])/g,'')
+  .replace(/^[\s,，;；·]+|[\s,，;；·]+$/g,'')
+  .replace(/^\s*필수\s*[:：]\s*$/,'')
+  .replace(/[ \t]{2,}/g,' ')
+  .trim();
+}
 export function tacticReady(t){
  return !!(t&&!t.trashedAt&&t.id&&[1,2,3,4,5].includes(Number(t.boss))&&
   Array.isArray(t.characters)&&t.characters.length===5&&t.characters.every(x=>String(x||'').trim())&&
@@ -20,18 +30,48 @@ const sameSource=(combo,tactic)=>{
 const fromTactic=t=>({
  stage:4,boss:Number(t.boss),characters:[...t.characters],stars:t.stars.map(String),
  expectedDamage:String(t.expectedDamage||''),tactic:typeOf(t),url:String(t.tacticUrl||t.video||''),
- video:String(t.video||''),tacticUrl:String(t.tacticUrl||''),tp:tpOf(t.note),
- note:extraNote(t.note),sourceTacticId:String(t.id)
+ video:String(t.video||''),tacticUrl:String(t.tacticUrl||''),
+ manualCount:String(t.manualCount??''),tp:String(t.tp??''),
+ note:String(t.note||''),sourceTacticId:String(t.id)
 });
 const sameRecord=(combo,t)=>Number(combo.stage)===4&&Number(combo.boss)===Number(t.boss)&&
  identity(combo)===identity(t)&&sameSource(combo,t)&&sameNumber(combo.expectedDamage,t.expectedDamage);
+
+// Run exactly once per saved month. Move legacy TP text out of notes, and
+// import recommendation-only hand-control / TP values before syncing canonical tactics.
+export function migrateTacticConditions(month){
+ if(!month||!Array.isArray(month.tactics)||Number(month.tacticConditionsVersion)>=1)return false;
+ const recommendations=Array.isArray(month.recommendations)?month.recommendations:[];
+ for(const tactic of month.tactics){
+  const linked=recommendations.find(r=>String(r.sourceTacticId||'')===String(tactic.id));
+  const exact=recommendations.filter(r=>sameRecord(r,tactic));
+  const possible=recommendations.filter(r=>Number(r.stage)===4&&identity(r)===identity(tactic)&&sameSource(r,tactic));
+  const source=linked||(exact.length===1?exact[0]:null)||(possible.length===1?possible[0]:null);
+  if(tactic.manualCount===undefined||tactic.manualCount===null||tactic.manualCount===''){
+   tactic.manualCount=source?.manualCount===undefined||source?.manualCount===null?'':String(source.manualCount);
+  }
+  if(tactic.tp===undefined||tactic.tp===null||tactic.tp===''){
+   tactic.tp=String(source?.tp||tpOf(tactic.note)||'');
+  }
+  tactic.note=stripTpFromMemo(tactic.note);
+  tactic.title=tactic.title||'';
+ }
+ // Legacy recommendation notes should also no longer show duplicated TP text.
+ for(const record of recommendations){
+  if((record.tp===undefined||record.tp===null||record.tp==='')&&tpOf(record.note))record.tp=tpOf(record.note);
+  record.note=stripTpFromMemo(record.note);
+ }
+ month.tacticConditionsVersion=1;
+ return true;
+}
 export function syncTacticRecommendations(month){
  if(!month||!Array.isArray(month.tactics))return false;
+ const migrated=migrateTacticConditions(month);
  if(!Array.isArray(month.recommendations))month.recommendations=[];
  const hidden=new Set(Array.isArray(month.hiddenTacticRecommendationIds)?month.hiddenTacticRecommendationIds:[]);
  const rows=month.recommendations;
  const linked=new Set();
- let changed=false;
+ let changed=migrated;
  for(const tactic of month.tactics){
   if(!tacticReady(tactic)||hidden.has(String(tactic.id)))continue;
   let current=rows.find(row=>String(row.sourceTacticId||'')===String(tactic.id));
@@ -48,14 +88,14 @@ export function syncTacticRecommendations(month){
   }
   const incoming=fromTactic(tactic);
   if(!current){
-   rows.push({id:'tactic-combo-'+String(tactic.id),...incoming,tacticSourceUrl:incoming.url,manualCount:null,
+   rows.push({id:'tactic-combo-'+String(tactic.id),...incoming,tacticSourceUrl:incoming.url,
     requiredSeconds:null,remainingSeconds:null});
    changed=true;continue;
   }
   linked.add(String(current.id));
-  // Do not overwrite manually curated recommendation-specific fields:
-  // TP, hand-controls, required/remaining seconds, commentary, custom URLs.
-  for(const field of ['stage','boss','characters','stars','expectedDamage','tactic']){
+  // The tactic workspace is canonical for hand-controls and TP too.
+  // Preserve only recommendation-specific times, commentary, and custom URLs.
+  for(const field of ['stage','boss','characters','stars','expectedDamage','tactic','manualCount','tp']){
    const next=incoming[field];
    if(JSON.stringify(current[field])!==JSON.stringify(next)){current[field]=next;changed=true;}
   }
@@ -65,8 +105,7 @@ export function syncTacticRecommendations(month){
   const mayUpdate=prior!==undefined?current.url===prior:!current.url;
   if(mayUpdate&&current.url!==incoming.url){current.url=incoming.url;changed=true;}
   if(current.tacticSourceUrl!==incoming.url){current.tacticSourceUrl=incoming.url;changed=true;}
-  // New records with no curated TP/notes take defaults from the tactic.
-  if((current.tp===undefined||current.tp===null||current.tp==='')&&incoming.tp){current.tp=incoming.tp;changed=true;}
+  // Existing manually curated recommendation commentary is preserved.
   if((current.note===undefined||current.note===null||current.note==='')&&incoming.note){current.note=incoming.note;changed=true;}
  }
  // Do not leave orphaned automatically-linked records when source is deleted/incomplete.

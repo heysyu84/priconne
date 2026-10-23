@@ -5,7 +5,7 @@ export const GROUPS = ['택틱정리', '타비비토'];
 export const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 export const groupOf = tactic => tactic.group || (tactic.source === '타비비토' ? '타비비토' : '택틱정리');
 export const checkedSix = checked => Array.from({length:6}, (_, i) => checked?.[i] === true || checked?.[i] === 'TRUE');
-export const titleFor = tactic => `${tactic.boss ? tactic.boss+'넴' : '보스 미분류'} ${tactic.characters.map(c=>c||'미선택').join(' ')} ${tactic.stars.map(s=>s||'?').join('')}, 기대딜 ${tactic.expectedDamage || '미입력'}`;
+export const titleFor = tactic => `${tactic.boss ? tactic.boss+'넴' : '보스 미분류'} ${tactic.characters.map(c=>c||'미선택').join(' ')} 성급 ${tactic.stars.map(s=>s||'?').join('')}, 손컨 ${tactic.manualCount === '' || tactic.manualCount == null ? '—' : tactic.manualCount}, TP ${tactic.tp || '—'}, 기대딜 ${tactic.expectedDamage || '미입력'}`;
 export function compareTactics(a, b) {
   const boss = tactic => Number(tactic.boss) > 0 ? Number(tactic.boss) : Infinity;
   if (boss(a) !== boss(b)) return boss(a) < boss(b) ? -1 : 1;

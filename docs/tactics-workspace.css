@@ -18,3 +18,9 @@
 .source-star-overlay[hidden]{display:none!important}
 .tw-portrait .source-star-text,.tw-check-art .source-star-text{width:auto;height:auto;min-width:27%;padding:0 1px;line-height:1.15;background:#fef3c7;color:#a16207;font-size:9px;font-weight:900;white-space:nowrap}
 @media(max-width:800px){.tw-check-art{width:16px;height:16px}}
+
+/* Tactic conditions are editable beside the core metadata and stay readable on narrow screens. */
+.tw-meta{grid-template-columns:minmax(120px,1.25fr) minmax(80px,.75fr) minmax(90px,.85fr) minmax(100px,1fr) minmax(95px,.95fr)}
+.tw-title-condition{white-space:nowrap;font-variant-numeric:tabular-nums}
+@media(max-width:1050px){.tw-meta{grid-template-columns:repeat(3,minmax(0,1fr))}.tw-meta>.field:last-child{grid-column:span 2}}
+@media(max-width:600px){.tw-meta{grid-template-columns:repeat(2,minmax(0,1fr))}.tw-meta>.field:last-child{grid-column:1/-1}}
