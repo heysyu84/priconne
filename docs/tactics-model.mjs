@@ -160,6 +160,31 @@ export function ensureTactics(app, metadata = {}, rowFormats = {}) {
       month.carryCommandRevision = 1;
       changed = true;
     }
+    // Use '후' after the left-side timing trigger in October carry tactics.
+    // Keep 1넴, changed character lists and manually edited steps untouched.
+    if (key === '2026-10' && Array.isArray(metadata.carryTactics) && Number(month.carryAfterRevision || 0) < 1) {
+      const references = new Map(metadata.carryTactics
+        .filter(t => Number(t.boss) >= 2 && Number(t.boss) <= 5)
+        .map(t => [String(t.id), t]));
+      for (const tactic of month.tactics || []) {
+        const reference = references.get(String(tactic.id));
+        if (!reference || groupOf(tactic) !== CARRY_GROUP || Number(tactic.boss) !== Number(reference.boss)) continue;
+        if (!Array.isArray(tactic.characters) || tactic.characters.length !== 5
+            || !tactic.characters.every((name, index) => name === reference.characters[index])) continue;
+        const steps = new Map((reference.rows || []).map(row => [String(row.id), row]));
+        let updated = false;
+        for (const step of tactic.rows || []) {
+          const referenceStep = steps.get(String(step.id));
+          if (!referenceStep?.preAfterTriggerText || step.text !== referenceStep.preAfterTriggerText) continue;
+          step.text = referenceStep.text;
+          delete step.runs;
+          updated = true;
+        }
+        if (updated) { tactic.title = titleFor(tactic); changed = true; }
+      }
+      month.carryAfterRevision = 1;
+      changed = true;
+    }
     if (!month.tacticsMetadataVersion) {
       for (const missing of metadata.missingTactics || []) {
         if (missing.month === key && !month.tactics.some(t => t.id === missing.id)) { const {month:_, ...t} = missing; month.tactics.push(structuredClone(t)); changed = true; }

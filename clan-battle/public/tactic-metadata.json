@@ -1560,7 +1560,7 @@
         },
         {
           "id": "carry-2026-10-2-6-r1",
-          "text": "1:21 파오이 · 리리컬 ON",
+          "text": "1:21 파오이 후 리리컬 ON",
           "checked": [
             false,
             true,
@@ -1572,7 +1572,8 @@
           "manualChecks": true,
           "sourceRow": 117,
           "sourceText": "파오이",
-          "sourceSnapshot": "[XOOOO]"
+          "sourceSnapshot": "[XOOOO]",
+          "preAfterTriggerText": "1:21 파오이 · 리리컬 ON"
         },
         {
           "id": "carry-2026-10-2-6-r2",
@@ -1608,7 +1609,7 @@
         },
         {
           "id": "carry-2026-10-2-6-r4",
-          "text": "1:14 리리컬 · 수네모네 ON · 리리컬, 게무기 OFF",
+          "text": "1:14 리리컬 후 수네모네 ON · 리리컬, 게무기 OFF",
           "checked": [
             true,
             true,
@@ -1621,11 +1622,12 @@
           "sourceRow": 120,
           "sourceText": "리리컬",
           "sourceSnapshot": "[OOXXO]",
-          "preRightToLeftText": "1:14 리리컬 · 수네모네 ON · 게무기, 리리컬 OFF"
+          "preRightToLeftText": "1:14 리리컬 · 수네모네 ON · 게무기, 리리컬 OFF",
+          "preAfterTriggerText": "1:14 리리컬 · 수네모네 ON · 리리컬, 게무기 OFF"
         },
         {
           "id": "carry-2026-10-2-6-r5",
-          "text": "1:09 수네모네 · 게무기 ON · 중간딜 2750만",
+          "text": "1:09 수네모네 후 게무기 ON · 중간딜 2750만",
           "checked": [
             true,
             true,
@@ -1637,11 +1639,12 @@
           "manualChecks": true,
           "sourceRow": 121,
           "sourceText": "수네모네",
-          "sourceSnapshot": "[OOOXO]"
+          "sourceSnapshot": "[OOOXO]",
+          "preAfterTriggerText": "1:09 수네모네 · 게무기 ON · 중간딜 2750만"
         },
         {
           "id": "carry-2026-10-2-6-r6",
-          "text": "1:09 게무기 · 리리컬 ON",
+          "text": "1:09 게무기 후 리리컬 ON",
           "checked": [
             true,
             true,
@@ -1653,11 +1656,12 @@
           "manualChecks": true,
           "sourceRow": 122,
           "sourceText": "게무기",
-          "sourceSnapshot": "[OOOOO]"
+          "sourceSnapshot": "[OOOOO]",
+          "preAfterTriggerText": "1:09 게무기 · 리리컬 ON"
         },
         {
           "id": "carry-2026-10-2-6-r7",
-          "text": "1:00 게무기 · AUTO ON · 리리컬, 게무기 OFF · 중간딜 6760만",
+          "text": "1:00 게무기 후 AUTO ON · 리리컬, 게무기 OFF · 중간딜 6760만",
           "checked": [
             true,
             true,
@@ -1670,11 +1674,12 @@
           "sourceRow": 123,
           "sourceText": "게무기",
           "sourceSnapshot": "[OOXXO] ⭕",
-          "preRightToLeftText": "1:00 게무기 · AUTO ON · 게무기, 리리컬 OFF · 중간딜 6760만"
+          "preRightToLeftText": "1:00 게무기 · AUTO ON · 게무기, 리리컬 OFF · 중간딜 6760만",
+          "preAfterTriggerText": "1:00 게무기 · AUTO ON · 리리컬, 게무기 OFF · 중간딜 6760만"
         },
         {
           "id": "carry-2026-10-2-6-r8",
-          "text": "0:48 게무기 후르츠 후딜캔 · 게무기 ON · AUTO OFF · 중간딜 1억 370",
+          "text": "0:48 게무기 후르츠 후딜캔 후 게무기 ON · AUTO OFF · 중간딜 1억 370",
           "checked": [
             true,
             true,
@@ -1686,11 +1691,12 @@
           "manualChecks": true,
           "sourceRow": 124,
           "sourceText": "게무기 후르츠 후딜캔",
-          "sourceSnapshot": "[OOOXO] ❌"
+          "sourceSnapshot": "[OOOXO] ❌",
+          "preAfterTriggerText": "0:48 게무기 후르츠 후딜캔 · 게무기 ON · AUTO OFF · 중간딜 1억 370"
         },
         {
           "id": "carry-2026-10-2-6-r9",
-          "text": "0:44 수셰피 · AUTO ON · 파오이 OFF · 중간딜 1억 1220",
+          "text": "0:44 수셰피 후 AUTO ON · 파오이 OFF · 중간딜 1억 1220",
           "checked": [
             true,
             false,
@@ -1702,11 +1708,12 @@
           "manualChecks": true,
           "sourceRow": 125,
           "sourceText": "수셰피",
-          "sourceSnapshot": "[OXOXO] ⭕"
+          "sourceSnapshot": "[OXOXO] ⭕",
+          "preAfterTriggerText": "0:44 수셰피 · AUTO ON · 파오이 OFF · 중간딜 1억 1220"
         },
         {
           "id": "carry-2026-10-2-6-r10",
-          "text": "0:36 파오이 오토 · 리리컬 ON · 중간딜 1억 2890",
+          "text": "0:36 파오이 오토 후 리리컬 ON · 중간딜 1억 2890",
           "checked": [
             true,
             false,
@@ -1718,7 +1725,8 @@
           "manualChecks": true,
           "sourceRow": 126,
           "sourceText": "파오이 오토",
-          "sourceSnapshot": "[OXOOO]"
+          "sourceSnapshot": "[OXOOO]",
+          "preAfterTriggerText": "0:36 파오이 오토 · 리리컬 ON · 중간딜 1억 2890"
         },
         {
           "id": "carry-2026-10-2-6-r11",
@@ -1789,7 +1797,7 @@
         },
         {
           "id": "carry-2026-10-2-5-r1",
-          "text": "1:22 드마호 · 쿠루루, 수네모네 ON",
+          "text": "1:22 드마호 후 쿠루루, 수네모네 ON",
           "checked": [
             false,
             true,
@@ -1802,11 +1810,12 @@
           "sourceRow": 95,
           "sourceText": "드마호",
           "sourceSnapshot": "[XOOOO]",
-          "preRightToLeftText": "1:22 드마호 · 수네모네, 쿠루루 ON"
+          "preRightToLeftText": "1:22 드마호 · 수네모네, 쿠루루 ON",
+          "preAfterTriggerText": "1:22 드마호 · 쿠루루, 수네모네 ON"
         },
         {
           "id": "carry-2026-10-2-5-r2",
-          "text": "1:16 뉴사렌 · 성이오 ON · 쿠루루, 수네모네, 뉴사렌 OFF · AUTO OFF",
+          "text": "1:16 뉴사렌 후 성이오 ON · 쿠루루, 수네모네, 뉴사렌 OFF · AUTO OFF",
           "checked": [
             true,
             false,
@@ -1819,11 +1828,12 @@
           "sourceRow": 96,
           "sourceText": "뉴사렌",
           "sourceSnapshot": "[OXOXX] ❌",
-          "preRightToLeftText": "1:16 뉴사렌 · 성이오 ON · 뉴사렌, 수네모네, 쿠루루 OFF · AUTO OFF"
+          "preRightToLeftText": "1:16 뉴사렌 · 성이오 ON · 뉴사렌, 수네모네, 쿠루루 OFF · AUTO OFF",
+          "preAfterTriggerText": "1:16 뉴사렌 · 성이오 ON · 쿠루루, 수네모네, 뉴사렌 OFF · AUTO OFF"
         },
         {
           "id": "carry-2026-10-2-5-r3",
-          "text": "1:11 성이오 · 수네모네 ON",
+          "text": "1:11 성이오 후 수네모네 ON",
           "checked": [
             true,
             false,
@@ -1835,11 +1845,12 @@
           "manualChecks": true,
           "sourceRow": 97,
           "sourceText": "성이오",
-          "sourceSnapshot": "[OXOOX]"
+          "sourceSnapshot": "[OXOOX]",
+          "preAfterTriggerText": "1:11 성이오 · 수네모네 ON"
         },
         {
           "id": "carry-2026-10-2-5-r4",
-          "text": "1:11 수네모네 · 쿠루루 ON",
+          "text": "1:11 수네모네 후 쿠루루 ON",
           "checked": [
             true,
             false,
@@ -1851,11 +1862,12 @@
           "manualChecks": true,
           "sourceRow": 98,
           "sourceText": "수네모네",
-          "sourceSnapshot": "[OXOOO]"
+          "sourceSnapshot": "[OXOOO]",
+          "preAfterTriggerText": "1:11 수네모네 · 쿠루루 ON"
         },
         {
           "id": "carry-2026-10-2-5-r5",
-          "text": "1:08 뉴사렌 평타 후딜캔 · 쿠루루, 수네모네 OFF · 중간딜 3280만",
+          "text": "1:08 뉴사렌 평타 후딜캔 후 쿠루루, 수네모네 OFF · 중간딜 3280만",
           "checked": [
             true,
             false,
@@ -1868,11 +1880,12 @@
           "sourceRow": 99,
           "sourceText": "뉴사렌 평타 후딜캔",
           "sourceSnapshot": "[OXOXX]",
-          "preRightToLeftText": "1:08 뉴사렌 평타 후딜캔 · 수네모네, 쿠루루 OFF · 중간딜 3280만"
+          "preRightToLeftText": "1:08 뉴사렌 평타 후딜캔 · 수네모네, 쿠루루 OFF · 중간딜 3280만",
+          "preAfterTriggerText": "1:08 뉴사렌 평타 후딜캔 · 쿠루루, 수네모네 OFF · 중간딜 3280만"
         },
         {
           "id": "carry-2026-10-2-5-r6",
-          "text": "1:02 성이오 · 수네모네 ON · 중간딜 6010만",
+          "text": "1:02 성이오 후 수네모네 ON · 중간딜 6010만",
           "checked": [
             true,
             false,
@@ -1884,11 +1897,12 @@
           "manualChecks": true,
           "sourceRow": 100,
           "sourceText": "성이오",
-          "sourceSnapshot": "[OXOOX]"
+          "sourceSnapshot": "[OXOOX]",
+          "preAfterTriggerText": "1:02 성이오 · 수네모네 ON · 중간딜 6010만"
         },
         {
           "id": "carry-2026-10-2-5-r7",
-          "text": "1:02 수네모네 → 쿠루루 → 뉴사렌 · 쿠루루, 뉴사렌 순으로 ON",
+          "text": "1:02 수네모네 후 쿠루루, 뉴사렌 순으로 ON",
           "checked": [
             true,
             true,
@@ -1901,7 +1915,8 @@
           "sourceRow": 101,
           "sourceText": "수네모네 → 쿠루루 → 뉴사렌",
           "sourceSnapshot": "[OOOOO]",
-          "preRightToLeftText": "1:02 수네모네 → 쿠루루 → 뉴사렌 · 뉴사렌, 쿠루루 ON"
+          "preRightToLeftText": "1:02 수네모네 → 쿠루루 → 뉴사렌 · 뉴사렌, 쿠루루 ON",
+          "preAfterTriggerText": "1:02 수네모네 → 쿠루루 → 뉴사렌 · 쿠루루, 뉴사렌 순으로 ON"
         },
         {
           "id": "carry-2026-10-2-5-r8",
@@ -1972,7 +1987,7 @@
         },
         {
           "id": "carry-2026-10-2-4-r1",
-          "text": "1:22 드마호 · 엔요리, 수네모네 ON · AUTO ON",
+          "text": "1:22 드마호 후 엔요리, 수네모네 ON · AUTO ON",
           "checked": [
             false,
             true,
@@ -1985,11 +2000,12 @@
           "sourceRow": 75,
           "sourceText": "드마호",
           "sourceSnapshot": "[XOOOO] ⭕",
-          "preRightToLeftText": "1:22 드마호 · 수네모네, 엔요리 ON · AUTO ON"
+          "preRightToLeftText": "1:22 드마호 · 수네모네, 엔요리 ON · AUTO ON",
+          "preAfterTriggerText": "1:22 드마호 · 엔요리, 수네모네 ON · AUTO ON"
         },
         {
           "id": "carry-2026-10-2-4-r2",
-          "text": "1:21 성이오 오토 · 성이오 ON",
+          "text": "1:21 성이오 오토 후 성이오 ON",
           "checked": [
             true,
             true,
@@ -2001,7 +2017,8 @@
           "manualChecks": true,
           "sourceRow": 76,
           "sourceText": "성이오 오토",
-          "sourceSnapshot": "[OOOOO]"
+          "sourceSnapshot": "[OOOOO]",
+          "preAfterTriggerText": "1:21 성이오 오토 · 성이오 ON"
         },
         {
           "id": "carry-2026-10-2-4-r3",
@@ -2120,7 +2137,7 @@
         },
         {
           "id": "carry-2026-10-2-3-r1",
-          "text": "1:21 파오이 · 리리컬 ON",
+          "text": "1:21 파오이 후 리리컬 ON",
           "checked": [
             true,
             false,
@@ -2132,11 +2149,12 @@
           "manualChecks": true,
           "sourceRow": 54,
           "sourceText": "파오이",
-          "sourceSnapshot": "[OXOOO]"
+          "sourceSnapshot": "[OXOOO]",
+          "preAfterTriggerText": "1:21 파오이 · 리리컬 ON"
         },
         {
           "id": "carry-2026-10-2-3-r2",
-          "text": "1:19 수셰피 · 게무기 ON · 리리컬 OFF",
+          "text": "1:19 수셰피 후 게무기 ON · 리리컬 OFF",
           "checked": [
             true,
             true,
@@ -2148,11 +2166,12 @@
           "manualChecks": true,
           "sourceRow": 55,
           "sourceText": "수셰피",
-          "sourceSnapshot": "[OOXOO]"
+          "sourceSnapshot": "[OOXOO]",
+          "preAfterTriggerText": "1:19 수셰피 · 게무기 ON · 리리컬 OFF"
         },
         {
           "id": "carry-2026-10-2-3-r3",
-          "text": "1:10 파오이 · 리리컬 ON · AUTO ON · 파오이 OFF",
+          "text": "1:10 파오이 후 리리컬 ON · AUTO ON · 파오이 OFF",
           "checked": [
             false,
             true,
@@ -2164,7 +2183,8 @@
           "manualChecks": true,
           "sourceRow": 56,
           "sourceText": "파오이",
-          "sourceSnapshot": "[XOOOO] ⭕"
+          "sourceSnapshot": "[XOOOO] ⭕",
+          "preAfterTriggerText": "1:10 파오이 · 리리컬 ON · AUTO ON · 파오이 OFF"
         },
         {
           "id": "carry-2026-10-2-3-r4",
@@ -2299,7 +2319,7 @@
         },
         {
           "id": "carry-2026-10-2-1-r2",
-          "text": "1:11 프캬루 2발째 · 루나 ON",
+          "text": "1:11 프캬루 2발째 후 루나 ON",
           "checked": [
             true,
             true,
@@ -2311,7 +2331,8 @@
           "manualChecks": true,
           "sourceRow": 15,
           "sourceText": "프캬루 2발째",
-          "sourceSnapshot": "[OOOOO]"
+          "sourceSnapshot": "[OOOOO]",
+          "preAfterTriggerText": "1:11 프캬루 2발째 · 루나 ON"
         },
         {
           "id": "carry-2026-10-2-1-r3",
@@ -2382,7 +2403,7 @@
         },
         {
           "id": "carry-2026-10-2-2-r1",
-          "text": "1:18 프캬루 2발째 · 프캬루 OFF",
+          "text": "1:18 프캬루 2발째 후 프캬루 OFF",
           "checked": [
             false,
             false,
@@ -2394,11 +2415,12 @@
           "manualChecks": true,
           "sourceRow": 33,
           "sourceText": "프캬루 2발째",
-          "sourceSnapshot": "[XXXOO]"
+          "sourceSnapshot": "[XXXOO]",
+          "preAfterTriggerText": "1:18 프캬루 2발째 · 프캬루 OFF"
         },
         {
           "id": "carry-2026-10-2-2-r2",
-          "text": "1:12 호마레 마인드 크랙 후딜캔 · 프캬루 ON",
+          "text": "1:12 호마레 마인드 크랙 후딜캔 후 프캬루 ON",
           "checked": [
             false,
             true,
@@ -2410,11 +2432,12 @@
           "manualChecks": true,
           "sourceRow": 34,
           "sourceText": "호마레 마인드 크랙 후딜캔",
-          "sourceSnapshot": "[XOXOO]"
+          "sourceSnapshot": "[XOXOO]",
+          "preAfterTriggerText": "1:12 호마레 마인드 크랙 후딜캔 · 프캬루 ON"
         },
         {
           "id": "carry-2026-10-2-2-r3",
-          "text": "1:11 프캬루 2발째 · 호마레, 루나 ON",
+          "text": "1:11 프캬루 2발째 후 호마레, 루나 ON",
           "checked": [
             true,
             true,
@@ -2427,7 +2450,8 @@
           "sourceRow": 35,
           "sourceText": "프캬루 2발째",
           "sourceSnapshot": "[OOOOO]",
-          "preRightToLeftText": "1:11 프캬루 2발째 · 루나, 호마레 ON"
+          "preRightToLeftText": "1:11 프캬루 2발째 · 루나, 호마레 ON",
+          "preAfterTriggerText": "1:11 프캬루 2발째 · 호마레, 루나 ON"
         },
         {
           "id": "carry-2026-10-2-2-r4",
@@ -2514,7 +2538,7 @@
         },
         {
           "id": "carry-2026-10-3-6-r1",
-          "text": "1:12 시나츠 · 수리아 ON · 시나츠 OFF",
+          "text": "1:12 시나츠 후 수리아 ON · 시나츠 OFF",
           "checked": [
             true,
             false,
@@ -2526,11 +2550,12 @@
           "manualChecks": true,
           "sourceRow": 106,
           "sourceText": "시나츠",
-          "sourceSnapshot": "[OXOOX]"
+          "sourceSnapshot": "[OXOOX]",
+          "preAfterTriggerText": "1:12 시나츠 · 수리아 ON · 시나츠 OFF"
         },
         {
           "id": "carry-2026-10-3-6-r2",
-          "text": "1:10 와카나 · 수레시아 ON · 와카나 OFF · AUTO OFF · 중간딜 1620만",
+          "text": "1:10 와카나 후 수레시아 ON · 와카나 OFF · AUTO OFF · 중간딜 1620만",
           "checked": [
             true,
             true,
@@ -2542,7 +2567,8 @@
           "manualChecks": true,
           "sourceRow": 107,
           "sourceText": "와카나",
-          "sourceSnapshot": "[OOXOX] ❌"
+          "sourceSnapshot": "[OOXOX] ❌",
+          "preAfterTriggerText": "1:10 와카나 · 수레시아 ON · 와카나 OFF · AUTO OFF · 중간딜 1620만"
         },
         {
           "id": "carry-2026-10-3-6-r3",
@@ -2562,7 +2588,7 @@
         },
         {
           "id": "carry-2026-10-3-6-r4",
-          "text": "0:57 편오이 · 시나츠 ON · 중간딜 5360만",
+          "text": "0:57 편오이 후 시나츠 ON · 중간딜 5360만",
           "checked": [
             true,
             true,
@@ -2574,11 +2600,12 @@
           "manualChecks": true,
           "sourceRow": 109,
           "sourceText": "편오이",
-          "sourceSnapshot": "[OOXOO]"
+          "sourceSnapshot": "[OOXOO]",
+          "preAfterTriggerText": "0:57 편오이 · 시나츠 ON · 중간딜 5360만"
         },
         {
           "id": "carry-2026-10-3-6-r5",
-          "text": "0:54 수리아 · 와카나 ON · 수리아 OFF · 중간딜 6730만",
+          "text": "0:54 수리아 후 와카나 ON · 수리아 OFF · 중간딜 6730만",
           "checked": [
             true,
             true,
@@ -2590,11 +2617,12 @@
           "manualChecks": true,
           "sourceRow": 110,
           "sourceText": "수리아",
-          "sourceSnapshot": "[OOOXO]"
+          "sourceSnapshot": "[OOOXO]",
+          "preAfterTriggerText": "0:54 수리아 · 와카나 ON · 수리아 OFF · 중간딜 6730만"
         },
         {
           "id": "carry-2026-10-3-6-r6",
-          "text": "0:54 와카나 · 와카나 OFF",
+          "text": "0:54 와카나 후 와카나 OFF",
           "checked": [
             true,
             true,
@@ -2606,11 +2634,12 @@
           "manualChecks": true,
           "sourceRow": 111,
           "sourceText": "와카나",
-          "sourceSnapshot": "[OOXXO]"
+          "sourceSnapshot": "[OOXXO]",
+          "preAfterTriggerText": "0:54 와카나 · 와카나 OFF"
         },
         {
           "id": "carry-2026-10-3-6-r7",
-          "text": "0:47 시나츠 · 시나츠, 수레시아 OFF · 중간딜 10400만",
+          "text": "0:47 시나츠 후 시나츠, 수레시아 OFF · 중간딜 10400만",
           "checked": [
             true,
             false,
@@ -2623,11 +2652,12 @@
           "sourceRow": 112,
           "sourceText": "시나츠",
           "sourceSnapshot": "[OXXXX]",
-          "preRightToLeftText": "0:47 시나츠 · 수레시아, 시나츠 OFF · 중간딜 10400만"
+          "preRightToLeftText": "0:47 시나츠 · 수레시아, 시나츠 OFF · 중간딜 10400만",
+          "preAfterTriggerText": "0:47 시나츠 · 시나츠, 수레시아 OFF · 중간딜 10400만"
         },
         {
           "id": "carry-2026-10-3-6-r8",
-          "text": "0:44 편오이 · 수리아 ON · AUTO ON · 중간딜 11740만",
+          "text": "0:44 편오이 후 수리아 ON · AUTO ON · 중간딜 11740만",
           "checked": [
             true,
             false,
@@ -2639,7 +2669,8 @@
           "manualChecks": true,
           "sourceRow": 113,
           "sourceText": "편오이",
-          "sourceSnapshot": "[OXXOX] ⭕"
+          "sourceSnapshot": "[OXXOX] ⭕",
+          "preAfterTriggerText": "0:44 편오이 · 수리아 ON · AUTO ON · 중간딜 11740만"
         },
         {
           "id": "carry-2026-10-3-6-r9",
@@ -2758,7 +2789,7 @@
         },
         {
           "id": "carry-2026-10-3-5-r1",
-          "text": "1:16 수레시아 · 시나츠 ON",
+          "text": "1:16 수레시아 후 시나츠 ON",
           "checked": [
             true,
             true,
@@ -2770,11 +2801,12 @@
           "manualChecks": true,
           "sourceRow": 83,
           "sourceText": "수레시아",
-          "sourceSnapshot": "[OOOOO]"
+          "sourceSnapshot": "[OOOOO]",
+          "preAfterTriggerText": "1:16 수레시아 · 시나츠 ON"
         },
         {
           "id": "carry-2026-10-3-5-r2",
-          "text": "1:16 시나츠 · 시나츠 OFF",
+          "text": "1:16 시나츠 후 시나츠 OFF",
           "checked": [
             true,
             true,
@@ -2786,11 +2818,12 @@
           "manualChecks": true,
           "sourceRow": 84,
           "sourceText": "시나츠",
-          "sourceSnapshot": "[OOOOX]"
+          "sourceSnapshot": "[OOOOX]",
+          "preAfterTriggerText": "1:16 시나츠 · 시나츠 OFF"
         },
         {
           "id": "carry-2026-10-3-5-r3",
-          "text": "1:07 와카나 · 시나츠 ON · 편오이 OFF · 중간딜 3350만",
+          "text": "1:07 와카나 후 시나츠 ON · 편오이 OFF · 중간딜 3350만",
           "checked": [
             true,
             false,
@@ -2802,11 +2835,12 @@
           "manualChecks": true,
           "sourceRow": 85,
           "sourceText": "와카나",
-          "sourceSnapshot": "[OXOOO]"
+          "sourceSnapshot": "[OXOOO]",
+          "preAfterTriggerText": "1:07 와카나 · 시나츠 ON · 편오이 OFF · 중간딜 3350만"
         },
         {
           "id": "carry-2026-10-3-5-r4",
-          "text": "1:04 수레시아 · 편오이 ON · 시나츠 OFF · 중간딜 4960만",
+          "text": "1:04 수레시아 후 편오이 ON · 시나츠 OFF · 중간딜 4960만",
           "checked": [
             true,
             true,
@@ -2818,7 +2852,8 @@
           "manualChecks": true,
           "sourceRow": 86,
           "sourceText": "수레시아",
-          "sourceSnapshot": "[OOOOX]"
+          "sourceSnapshot": "[OOOOX]",
+          "preAfterTriggerText": "1:04 수레시아 · 편오이 ON · 시나츠 OFF · 중간딜 4960만"
         },
         {
           "id": "carry-2026-10-3-5-r5",
@@ -2838,7 +2873,7 @@
         },
         {
           "id": "carry-2026-10-3-5-r6",
-          "text": "0:59 편오이 · 시나츠 ON · 중간딜 6130만",
+          "text": "0:59 편오이 후 시나츠 ON · 중간딜 6130만",
           "checked": [
             true,
             true,
@@ -2850,11 +2885,12 @@
           "manualChecks": true,
           "sourceRow": 88,
           "sourceText": "편오이",
-          "sourceSnapshot": "[OOOOO]"
+          "sourceSnapshot": "[OOOOO]",
+          "preAfterTriggerText": "0:59 편오이 · 시나츠 ON · 중간딜 6130만"
         },
         {
           "id": "carry-2026-10-3-5-r7",
-          "text": "0:59 시나츠 · 시나츠, 수레시아, 편오이 OFF",
+          "text": "0:59 시나츠 후 시나츠, 수레시아, 편오이 OFF",
           "checked": [
             true,
             false,
@@ -2867,11 +2903,12 @@
           "sourceRow": 89,
           "sourceText": "시나츠",
           "sourceSnapshot": "[OXXOX]",
-          "preRightToLeftText": "0:59 시나츠 · 편오이, 수레시아, 시나츠 OFF"
+          "preRightToLeftText": "0:59 시나츠 · 편오이, 수레시아, 시나츠 OFF",
+          "preAfterTriggerText": "0:59 시나츠 · 시나츠, 수레시아, 편오이 OFF"
         },
         {
           "id": "carry-2026-10-3-5-r8",
-          "text": "0:50 와카나 · 수레시아, 편오이 ON · 중간딜 9990만",
+          "text": "0:50 와카나 후 수레시아, 편오이 ON · 중간딜 9990만",
           "checked": [
             true,
             true,
@@ -2884,11 +2921,12 @@
           "sourceRow": 90,
           "sourceText": "와카나",
           "sourceSnapshot": "[OOOOX]",
-          "preRightToLeftText": "0:50 와카나 · 편오이, 수레시아 ON · 중간딜 9990만"
+          "preRightToLeftText": "0:50 와카나 · 편오이, 수레시아 ON · 중간딜 9990만",
+          "preAfterTriggerText": "0:50 와카나 · 수레시아, 편오이 ON · 중간딜 9990만"
         },
         {
           "id": "carry-2026-10-3-5-r9",
-          "text": "0:50 편오이 · 시나츠 ON",
+          "text": "0:50 편오이 후 시나츠 ON",
           "checked": [
             true,
             true,
@@ -2900,7 +2938,8 @@
           "manualChecks": true,
           "sourceRow": 91,
           "sourceText": "편오이",
-          "sourceSnapshot": "[OOOOO]"
+          "sourceSnapshot": "[OOOOO]",
+          "preAfterTriggerText": "0:50 편오이 · 시나츠 ON"
         }
       ],
       "type": "이월 택틱",
@@ -2955,7 +2994,7 @@
         },
         {
           "id": "carry-2026-10-3-4-r1",
-          "text": "1:11 수리아 · 수리아 OFF",
+          "text": "1:11 수리아 후 수리아 OFF",
           "checked": [
             true,
             true,
@@ -2967,7 +3006,8 @@
           "manualChecks": true,
           "sourceRow": 66,
           "sourceText": "수리아",
-          "sourceSnapshot": "[OOOOX]"
+          "sourceSnapshot": "[OOOOX]",
+          "preAfterTriggerText": "1:11 수리아 · 수리아 OFF"
         },
         {
           "id": "carry-2026-10-3-4-r2",
@@ -2987,7 +3027,7 @@
         },
         {
           "id": "carry-2026-10-3-4-r3",
-          "text": "1:03 수레시아 → 수리아 · 수리아 ON",
+          "text": "1:03 수레시아 후 수리아 ON",
           "checked": [
             true,
             true,
@@ -2999,7 +3039,8 @@
           "manualChecks": true,
           "sourceRow": 68,
           "sourceText": "수레시아 → 수리아",
-          "sourceSnapshot": "[OOOOO]"
+          "sourceSnapshot": "[OOOOO]",
+          "preAfterTriggerText": "1:03 수레시아 → 수리아 · 수리아 ON"
         }
       ],
       "type": "이월 택틱",
@@ -3054,7 +3095,7 @@
         },
         {
           "id": "carry-2026-10-3-3-r1",
-          "text": "1:21 수사렌 · 수레이 ON",
+          "text": "1:21 수사렌 후 수레이 ON",
           "checked": [
             true,
             false,
@@ -3066,11 +3107,12 @@
           "manualChecks": true,
           "sourceRow": 48,
           "sourceText": "수사렌",
-          "sourceSnapshot": "[OXXOO]"
+          "sourceSnapshot": "[OXXOO]",
+          "preAfterTriggerText": "1:21 수사렌 · 수레이 ON"
         },
         {
           "id": "carry-2026-10-3-3-r2",
-          "text": "1:10 수레이 · 프셰피, 수리코 ON · 중간딜 2770만",
+          "text": "1:10 수레이 후 프셰피, 수리코 ON · 중간딜 2770만",
           "checked": [
             true,
             true,
@@ -3083,7 +3125,8 @@
           "sourceRow": 49,
           "sourceText": "수레이",
           "sourceSnapshot": "[OOOOO]",
-          "preRightToLeftText": "1:10 수레이 · 수리코, 프셰피 ON · 중간딜 2770만"
+          "preRightToLeftText": "1:10 수레이 · 수리코, 프셰피 ON · 중간딜 2770만",
+          "preAfterTriggerText": "1:10 수레이 · 프셰피, 수리코 ON · 중간딜 2770만"
         },
         {
           "id": "carry-2026-10-3-3-r3",
@@ -3170,7 +3213,7 @@
         },
         {
           "id": "carry-2026-10-3-2-r1",
-          "text": "1:17 스즈메 · 봄쿄카 ON",
+          "text": "1:17 스즈메 후 봄쿄카 ON",
           "checked": [
             true,
             true,
@@ -3182,11 +3225,12 @@
           "manualChecks": true,
           "sourceRow": 30,
           "sourceText": "스즈메",
-          "sourceSnapshot": "[OOOOO]"
+          "sourceSnapshot": "[OOOOO]",
+          "preAfterTriggerText": "1:17 스즈메 · 봄쿄카 ON"
         },
         {
           "id": "carry-2026-10-3-2-r2",
-          "text": "1:17 봄쿄카 · 봄쿄카 OFF",
+          "text": "1:17 봄쿄카 후 봄쿄카 OFF",
           "checked": [
             true,
             true,
@@ -3198,11 +3242,12 @@
           "manualChecks": true,
           "sourceRow": 31,
           "sourceText": "봄쿄카",
-          "sourceSnapshot": "[OOOXO]"
+          "sourceSnapshot": "[OOOXO]",
+          "preAfterTriggerText": "1:17 봄쿄카 · 봄쿄카 OFF"
         },
         {
           "id": "carry-2026-10-3-2-r3",
-          "text": "1:11 스즈메 · 봄쿄카 ON",
+          "text": "1:11 스즈메 후 봄쿄카 ON",
           "checked": [
             true,
             true,
@@ -3214,7 +3259,8 @@
           "manualChecks": true,
           "sourceRow": 32,
           "sourceText": "스즈메",
-          "sourceSnapshot": "[OOOOO]"
+          "sourceSnapshot": "[OOOOO]",
+          "preAfterTriggerText": "1:11 스즈메 · 봄쿄카 ON"
         },
         {
           "id": "carry-2026-10-3-2-r4",
@@ -3285,7 +3331,7 @@
         },
         {
           "id": "carry-2026-10-3-1-r1",
-          "text": "1:22 수메스 · 수네카 ON",
+          "text": "1:22 수메스 후 수네카 ON",
           "checked": [
             true,
             true,
@@ -3297,7 +3343,8 @@
           "manualChecks": true,
           "sourceRow": 14,
           "sourceText": "수메스",
-          "sourceSnapshot": "[OOOOO]"
+          "sourceSnapshot": "[OOOOO]",
+          "preAfterTriggerText": "1:22 수메스 · 수네카 ON"
         },
         {
           "id": "carry-2026-10-3-1-r2",
@@ -3368,7 +3415,7 @@
         },
         {
           "id": "carry-2026-10-4-4-r1",
-          "text": "1:19 성라엘 · 성라엘 OFF 〔시뮬 택틱이 원본과 밀리며, 주인장 프나강이 낮아〕",
+          "text": "1:19 성라엘 후 성라엘 OFF 〔시뮬 택틱이 원본과 밀리며, 주인장 프나강이 낮아〕",
           "checked": [
             false,
             false,
@@ -3380,11 +3427,12 @@
           "manualChecks": true,
           "sourceRow": 68,
           "sourceText": "성라엘",
-          "sourceSnapshot": "[XXOOO]"
+          "sourceSnapshot": "[XXOOO]",
+          "preAfterTriggerText": "1:19 성라엘 · 성라엘 OFF 〔시뮬 택틱이 원본과 밀리며, 주인장 프나강이 낮아〕"
         },
         {
           "id": "carry-2026-10-4-4-r2",
-          "text": "1:10 블룸 · 성라엘 ON 〔디테일한 검증을 하지 못했습니다.〕",
+          "text": "1:10 블룸 후 성라엘 ON 〔디테일한 검증을 하지 못했습니다.〕",
           "checked": [
             false,
             true,
@@ -3396,7 +3444,8 @@
           "manualChecks": true,
           "sourceRow": 69,
           "sourceText": "블룸",
-          "sourceSnapshot": "[XOOOO]"
+          "sourceSnapshot": "[XOOOO]",
+          "preAfterTriggerText": "1:10 블룸 · 성라엘 ON 〔디테일한 검증을 하지 못했습니다.〕"
         },
         {
           "id": "carry-2026-10-4-4-r3",
@@ -3531,7 +3580,7 @@
         },
         {
           "id": "carry-2026-10-4-3-r1",
-          "text": "1:10 성라엘 · 성라엘 OFF · 중간딜 2060만",
+          "text": "1:10 성라엘 후 성라엘 OFF · 중간딜 2060만",
           "checked": [
             false,
             true,
@@ -3543,11 +3592,12 @@
           "manualChecks": true,
           "sourceRow": 47,
           "sourceText": "성라엘",
-          "sourceSnapshot": "[XOXOX]"
+          "sourceSnapshot": "[XOXOX]",
+          "preAfterTriggerText": "1:10 성라엘 · 성라엘 OFF · 중간딜 2060만"
         },
         {
           "id": "carry-2026-10-4-3-r2",
-          "text": "1:01 에로체 · 성라엘 ON · AUTO ON · 중간딜 4130만",
+          "text": "1:01 에로체 후 성라엘 ON · AUTO ON · 중간딜 4130만",
           "checked": [
             false,
             true,
@@ -3559,7 +3609,8 @@
           "manualChecks": true,
           "sourceRow": 48,
           "sourceText": "에로체",
-          "sourceSnapshot": "[XOOOX] ⭕"
+          "sourceSnapshot": "[XOOOX] ⭕",
+          "preAfterTriggerText": "1:01 에로체 · 성라엘 ON · AUTO ON · 중간딜 4130만"
         },
         {
           "id": "carry-2026-10-4-3-r3",
@@ -3694,7 +3745,7 @@
         },
         {
           "id": "carry-2026-10-4-1-r1",
-          "text": "1:22 뉴사렌 · 뉴사렌 OFF",
+          "text": "1:22 뉴사렌 후 뉴사렌 OFF",
           "checked": [
             false,
             false,
@@ -3706,11 +3757,12 @@
           "manualChecks": true,
           "sourceRow": 14,
           "sourceText": "뉴사렌",
-          "sourceSnapshot": "[XXXOO]"
+          "sourceSnapshot": "[XXXOO]",
+          "preAfterTriggerText": "1:22 뉴사렌 · 뉴사렌 OFF"
         },
         {
           "id": "carry-2026-10-4-1-r2",
-          "text": "1:10 라이라엘 벽력 후딜캔 · 뉴츠네 ON 〔←뉴츠네 드림 슛 이후 번개 1틱〕 · 중간딜 2910만",
+          "text": "1:10 라이라엘 벽력 후딜캔 후 뉴츠네 ON 〔←뉴츠네 드림 슛 이후 번개 1틱〕 · 중간딜 2910만",
           "checked": [
             true,
             false,
@@ -3722,11 +3774,12 @@
           "manualChecks": true,
           "sourceRow": 15,
           "sourceText": "라이라엘 벽력 후딜캔",
-          "sourceSnapshot": "[OXXOO]"
+          "sourceSnapshot": "[OXXOO]",
+          "preAfterTriggerText": "1:10 라이라엘 벽력 후딜캔 · 뉴츠네 ON 〔←뉴츠네 드림 슛 이후 번개 1틱〕 · 중간딜 2910만"
         },
         {
           "id": "carry-2026-10-4-1-r3",
-          "text": "1:10 뉴츠네 → 뉴사렌 · 뉴사렌 ON",
+          "text": "1:10 뉴츠네 후 뉴사렌 ON",
           "checked": [
             true,
             false,
@@ -3738,7 +3791,8 @@
           "manualChecks": true,
           "sourceRow": 16,
           "sourceText": "뉴츠네 → 뉴사렌",
-          "sourceSnapshot": "[OXOOO]"
+          "sourceSnapshot": "[OXOOO]",
+          "preAfterTriggerText": "1:10 뉴츠네 → 뉴사렌 · 뉴사렌 ON"
         }
       ],
       "type": "이월 택틱",
@@ -3860,7 +3914,7 @@
         },
         {
           "id": "carry-2026-10-5-5-r1",
-          "text": "1:14 스즈메 오토 · 스즈메 ON",
+          "text": "1:14 스즈메 오토 후 스즈메 ON",
           "checked": [
             true,
             true,
@@ -3872,11 +3926,12 @@
           "manualChecks": true,
           "sourceRow": 82,
           "sourceText": "스즈메 오토",
-          "sourceSnapshot": "[OOOOO]"
+          "sourceSnapshot": "[OOOOO]",
+          "preAfterTriggerText": "1:14 스즈메 오토 · 스즈메 ON"
         },
         {
           "id": "carry-2026-10-5-5-r2",
-          "text": "0:59 카마키 · 카마키 OFF · 중간딜 5840만",
+          "text": "0:59 카마키 후 카마키 OFF · 중간딜 5840만",
           "checked": [
             false,
             true,
@@ -3888,11 +3943,12 @@
           "manualChecks": true,
           "sourceRow": 83,
           "sourceText": "카마키",
-          "sourceSnapshot": "[XOOOO]"
+          "sourceSnapshot": "[XOOOO]",
+          "preAfterTriggerText": "0:59 카마키 · 카마키 OFF · 중간딜 5840만"
         },
         {
           "id": "carry-2026-10-5-5-r3",
-          "text": "0:45 스즈메 · 카마키 ON · 중간딜 9140만",
+          "text": "0:45 스즈메 후 카마키 ON · 중간딜 9140만",
           "checked": [
             true,
             true,
@@ -3904,7 +3960,8 @@
           "manualChecks": true,
           "sourceRow": 84,
           "sourceText": "스즈메",
-          "sourceSnapshot": "[OOOOO]"
+          "sourceSnapshot": "[OOOOO]",
+          "preAfterTriggerText": "0:45 스즈메 · 카마키 ON · 중간딜 9140만"
         },
         {
           "id": "carry-2026-10-5-5-r4",
@@ -3975,7 +4032,7 @@
         },
         {
           "id": "carry-2026-10-5-6-r1",
-          "text": "1:01 알네카 · AUTO OFF · 중간딜 4600만",
+          "text": "1:01 알네카 후 AUTO OFF · 중간딜 4600만",
           "checked": [
             false,
             false,
@@ -3987,11 +4044,12 @@
           "manualChecks": true,
           "sourceRow": 100,
           "sourceText": "알네카",
-          "sourceSnapshot": "〃 ❌"
+          "sourceSnapshot": "〃 ❌",
+          "preAfterTriggerText": "1:01 알네카 · AUTO OFF · 중간딜 4600만"
         },
         {
           "id": "carry-2026-10-5-6-r2",
-          "text": "1:00 바이올렛 · 미소라 ON · AUTO ON · 중간딜 4840만",
+          "text": "1:00 바이올렛 후 미소라 ON · AUTO ON · 중간딜 4840만",
           "checked": [
             false,
             true,
@@ -4003,7 +4061,8 @@
           "manualChecks": true,
           "sourceRow": 101,
           "sourceText": "바이올렛",
-          "sourceSnapshot": "[XOOOO] ⭕"
+          "sourceSnapshot": "[XOOOO] ⭕",
+          "preAfterTriggerText": "1:00 바이올렛 · 미소라 ON · AUTO ON · 중간딜 4840만"
         },
         {
           "id": "carry-2026-10-5-6-r3",
@@ -4320,7 +4379,7 @@
         },
         {
           "id": "carry-2026-10-5-2-r1",
-          "text": "1:20 요리 · AUTO OFF",
+          "text": "1:20 요리 후 AUTO OFF",
           "checked": [
             true,
             true,
@@ -4332,11 +4391,12 @@
           "manualChecks": true,
           "sourceRow": 30,
           "sourceText": "요리",
-          "sourceSnapshot": "〃 ❌"
+          "sourceSnapshot": "〃 ❌",
+          "preAfterTriggerText": "1:20 요리 · AUTO OFF"
         },
         {
           "id": "carry-2026-10-5-2-r2",
-          "text": "1:15 캬루 · AUTO ON",
+          "text": "1:15 캬루 후 AUTO ON",
           "checked": [
             true,
             true,
@@ -4348,11 +4408,12 @@
           "manualChecks": true,
           "sourceRow": 31,
           "sourceText": "캬루",
-          "sourceSnapshot": "〃 ⭕"
+          "sourceSnapshot": "〃 ⭕",
+          "preAfterTriggerText": "1:15 캬루 · AUTO ON"
         },
         {
           "id": "carry-2026-10-5-2-r3",
-          "text": "1:14 요리 · 요리 ON",
+          "text": "1:14 요리 후 요리 ON",
           "checked": [
             true,
             true,
@@ -4364,7 +4425,8 @@
           "manualChecks": true,
           "sourceRow": 32,
           "sourceText": "요리",
-          "sourceSnapshot": "[OOOOO]"
+          "sourceSnapshot": "[OOOOO]",
+          "preAfterTriggerText": "1:14 요리 · 요리 ON"
         },
         {
           "id": "carry-2026-10-5-2-r4",
@@ -4451,7 +4513,7 @@
         },
         {
           "id": "carry-2026-10-5-3-r2",
-          "text": "1:10 프레이 램페이지 후딜캔 · 미미 ON · 중간딜 2170만",
+          "text": "1:10 프레이 램페이지 후딜캔 후 미미 ON · 중간딜 2170만",
           "checked": [
             true,
             true,
@@ -4463,7 +4525,8 @@
           "manualChecks": true,
           "sourceRow": 49,
           "sourceText": "프레이 램페이지 후딜캔",
-          "sourceSnapshot": "[OOOXO]"
+          "sourceSnapshot": "[OOOXO]",
+          "preAfterTriggerText": "1:10 프레이 램페이지 후딜캔 · 미미 ON · 중간딜 2170만"
         }
       ],
       "type": "이월 택틱",

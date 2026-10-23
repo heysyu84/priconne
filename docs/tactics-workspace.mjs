@@ -1,7 +1,7 @@
 import { isBoosterCharacter, formatExpectedDamage, sourceLinkBox } from './view-settings.mjs?v=20261023-image-cleanup01';
 import { characterPortrait, portraitAttributes, portraitStarOverlay, normalizeCharacterName, findCharacter } from './character-portraits.mjs?v=20261023-image-cleanup01';
 import { makeId, parseDamage } from './roster.mjs?v=20261022-ui14';
-import { GROUPS, CARRY_GROUP, tacticGroupsFor, groupOf, titleFor, compareTactics, newRow, checkedSix, commandState, recalculateTacticRows, replaceTacticRowText, pastedRows, richLine, parseClock, clock, escapeHtml as X } from './tactics-model.mjs?v=20261024-carry-command03';
+import { GROUPS, CARRY_GROUP, tacticGroupsFor, groupOf, titleFor, compareTactics, newRow, checkedSix, commandState, recalculateTacticRows, replaceTacticRowText, pastedRows, richLine, parseClock, clock, escapeHtml as X } from './tactics-model.mjs?v=20261024-carry-after04';
 import { shiftTimeline } from './engine.mjs?v=20261022-ui14';
 import { parseTacticTransfer, validTacticLineup, hasTacticSlots, resolveTacticSlots } from './tactic-transfer.mjs?v=20261023-slots01';
 import { createExternalTacticCarry } from './external-tactic-carry.mjs?v=20261024-external-carry02';
