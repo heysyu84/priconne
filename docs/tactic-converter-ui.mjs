@@ -21,10 +21,11 @@ for(let i=0;i<5;i++){
  const label=document.createElement('span');label.textContent=String(i+1);
  const from=document.createElement('input');from.placeholder='원문 이름';from.id='from-'+i;from.setAttribute('aria-label',(i+1)+'번 해외 이름');
  const to=document.createElement('input');to.placeholder='사이트 캐릭터 이름';to.id='to-'+i;to.setAttribute('aria-label',(i+1)+'번 사이트 이름');
- to.value=canonical(init[i]||'');
+ to.value=canonical(init[i]||'');to.setAttribute('list','lineup-names');
  from.value=foreignSuggestions(to.value);
  row.append(label,from,to);$('lineup').append(row);
 }
+$('lineup-confirm').checked=confirmed;
 const sourceNames=()=>Array.from({length:5},(_,i)=>$('from-'+i).value.trim());
 const koreanNames=()=>Array.from({length:5},(_,i)=>canonical($('to-'+i).value));
 const lineupReady=()=>validTacticLineup(koreanNames())
