@@ -177,7 +177,7 @@ body{font-size:16px}
 /* Work recovery: mobile's 100% preference is already readable by default.
    Do not multiply a user's explicit 120–200% choice by the new baseline.
    The eight-button bottom menu receives its own slightly larger 115% type. */
-.recent-battle-table .member-cell{min-width:0;max-width:0}
+.recent-battle-table .member-cell{min-width:0}
 .recent-battle-table .member-cell strong{
   display:block;
   width:100%;
