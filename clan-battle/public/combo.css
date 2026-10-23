@@ -79,7 +79,6 @@
 .combo-mini-unit.is-support .combo-mini-avatar {box-shadow:0 0 0 2px #d9869a}
 .combo-planner-empty {line-height:1.8;font-size:13px}
 @media(max-width:1000px) {
- .combo-distribution-list {grid-template-columns:minmax(0,1fr)}
  .combo-plan-table .combo-mini-party {max-width:400px;margin:auto}
  .combo-mini-layout {grid-template-columns:40px minmax(170px,1fr) minmax(85px,130px) 58px 26px 42px;gap:7px}
  .combo-mini-score strong {font-size:21px}
@@ -87,6 +86,10 @@
  .combo-plan-table .plan-party-col {width:56%}
  .combo-plan-table .plan-damage-col {width:13%}
  .combo-plan-table .plan-support-col {width:21%}
+}
+/* Keep the two side-by-side plans until a narrower screen width. */
+@media(max-width:900px) {
+ .combo-distribution-list {grid-template-columns:minmax(0,1fr)}
 }
 @media(max-width:680px) {
  .combo-workspace-toolbar {gap:8px}
@@ -136,7 +139,7 @@
 }
 
 /* Compact recommendations: portraits and individual stars, with matching fact chips. */
-.combo-compact-list{grid-template-columns:repeat(auto-fit,minmax(min(100%,570px),1fr));gap:10px}
+.combo-compact-list{grid-template-columns:repeat(auto-fit,minmax(min(100%,465px),1fr));gap:10px}
 .combo-compact-row{container:combo-card / inline-size;background:linear-gradient(105deg,#fff 88%,var(--boss-bg,#f7f3fb))}
 .combo-compact-row .combo-mini-layout,.combo-compact-row.is-stage3 .combo-mini-layout{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"header score" "party party";align-items:center;gap:7px 10px;padding:11px 12px}
 .combo-mini-header{grid-area:header;display:flex;align-items:center;gap:6px;min-width:0;align-self:center}
@@ -188,7 +191,7 @@
 }
 
 /* Enlarged personal text may use more lines while portraits and names stay grouped. */
-html[data-text-scale]:not([data-text-scale="100"]) .combo-compact-list{grid-template-columns:minmax(0,1fr)}
+html[data-text-scale]:not([data-text-scale="100"]) .combo-compact-list{grid-template-columns:repeat(auto-fit,minmax(min(100%,495px),1fr))}
 html[data-text-scale]:not([data-text-scale="100"]) .combo-mini-facts{flex-wrap:wrap;max-width:100%}
 html[data-text-scale]:not([data-text-scale="100"]) .combo-mini-chip{max-width:100%;white-space:normal;overflow-wrap:anywhere}
 html[data-text-scale]:not([data-text-scale="100"]) .combo-mini-header{flex-wrap:wrap}
