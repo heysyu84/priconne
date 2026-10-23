@@ -172,3 +172,54 @@ body{font-size:16px}
 @media(max-width:360px){
   :is(.recent-battle-table,.battle-sheet.compact-battle-sheet){--battle-log-font-size:11.5px}
 }
+
+
+/* Work recovery: mobile's 100% preference is already readable by default.
+   Do not multiply a user's explicit 120–200% choice by the new baseline.
+   The eight-button bottom menu receives its own slightly larger 115% type. */
+.recent-battle-table .member-cell{min-width:0;max-width:0}
+.recent-battle-table .member-cell strong{
+  display:block;
+  width:100%;
+  white-space:nowrap!important;
+  word-break:keep-all;
+  overflow-wrap:normal!important;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+@media(max-width:800px){
+  .recent-battle-table .member-heading{width:19%}
+  .recent-battle-table .member-cell strong{font-size:inherit}
+  html[data-text-scale="100"] body{font-size:16px;line-height:1.6}
+  html[data-text-scale="100"] .panel .sub,
+  html[data-text-scale="100"] .small,
+  html[data-text-scale="100"] .muted.small{font-size:13px}
+  html[data-text-scale="100"] .panel-head h2{font-size:16px}
+  html[data-text-scale="100"] .btn{font-size:13px}
+  html[data-text-scale="100"] .btn.sm{font-size:12px}
+  html[data-text-scale="100"] .metric .k,
+  html[data-text-scale="100"] .metric .d{font-size:13px}
+  html[data-text-scale="100"] .datatable thead th{font-size:12px}
+  html[data-text-scale="100"] .datatable tbody td,
+  html[data-text-scale="100"] .datatable tbody th{font-size:13px}
+  html[data-text-scale="100"] .tw-card-title{font-size:13px}
+  html[data-text-scale="100"] .tw-card small{font-size:12px}
+  html[data-text-scale="100"] .combo-mini-unit strong{font-size:12px}
+  html[data-text-scale="100"] .combo-mini-chip{font-size:12px}
+  html[data-text-scale="100"] .combo-mini-score small{font-size:12px}
+  html[data-text-scale="100"] .combo-mini-note{font-size:12px}
+  html[data-text-scale="100"] .tw-carry-state{font-size:11px}
+  html[data-text-scale="100"] .mobile-nav button{
+    font-size:11px;
+    letter-spacing:-.3px;
+    line-height:1.3;
+    white-space:nowrap;
+  }
+  html[data-text-scale="100"] .recent-battle-table thead th{font-size:12px}
+  html[data-text-scale="100"] .recent-battle-table tbody td{font-size:13px}
+  /* Tactic body and checkbox hit targets intentionally retain their sizes. */
+  html[data-text-scale="100"] .tw-grid .tw-text-cell>[data-tw-text]{font-size:16px!important}
+}
+@media(max-width:360px){
+  html[data-text-scale="100"] .mobile-nav button{font-size:10.5px;letter-spacing:-.5px}
+}
