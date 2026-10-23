@@ -1,4 +1,4 @@
-import {convertForeignTactic,foreignSuggestions} from './tactic-converter.mjs?v=20261024-priority02';
+import {convertForeignTactic,foreignSuggestions} from './tactic-converter.mjs?v=20261024-bosssequence03';
 import {colorRuns} from './tactics-model.mjs?v=20261023-check-sync01';
 import {serializeTacticTransfer,validTacticLineup} from './tactic-transfer.mjs?v=20261023-slots01';
 
@@ -15,7 +15,7 @@ try{
  }
 }catch{}
 const foreignPairs=Object.entries(preferred);
-let catalog=[],current=null,convertedRaw=null;
+let catalog=[],bossCatalog=[],current=null,convertedRaw=null;
 const params=new URLSearchParams(location.search);
 const init=(params.get('lineup')||'').split('|').map(s=>s.trim());
 let confirmed=init.length===5&&init.every(Boolean);
@@ -75,6 +75,37 @@ fetch('./characters.json').then(r=>{if(!r.ok)throw new Error('캐릭터 DB');ret
    }));
    if(current)render();
  }).catch(()=>notice('캐릭터 목록을 자동으로 불러오지 못했습니다. 이름과 순서를 확인해 주세요.'));
+// Use the site's existing boss DB (all months, catalog and aliases), plus
+// the future-boss schedule, so non-literal "보스" names work automatically.
+Promise.allSettled(['./bosses.json','./future-bosses.json'].map(path=>
+ fetch(path).then(response=>{if(!response.ok)throw Error(path);return response.json();})
+)).then(results=>{
+ const [db,future]=results.map(result=>result.status==='fulfilled'?result.value:null);
+ const records=[];
+ if(db){
+   for(const [name,entry] of Object.entries(db.catalog||{}))
+     records.push({name,aliases:[...(entry.aliases||[]),entry.japaneseName].filter(Boolean)});
+   for(const [month,value] of Object.entries(db)){
+     if(!/^\d{4}-\d{2}$/.test(month))continue;
+     for(const entry of Object.values(value||{})){
+       if(entry?.name)records.push({name:entry.name,aliases:[entry.japaneseName,...(entry.aliases||[])].filter(Boolean)});
+     }
+   }
+ }
+ for(const value of Object.values(future?.months||{}))
+   for(const entry of value?.bosses||[])
+     if(entry?.name)records.push({name:entry.name,aliases:[entry.sourceName].filter(Boolean)});
+ const known=new Map();
+ for(const entry of records){
+   const key=normalize(entry.name);
+   if(!key)continue;
+   if(!known.has(key))known.set(key,{name:entry.name,aliases:[]});
+   const item=known.get(key);
+   item.aliases.push(...entry.aliases);
+ }
+ bossCatalog=[...known.values()].map(entry=>({...entry,aliases:[...new Set(entry.aliases)]}));
+ if(current)render();
+});
 function detectNames(){
  const input=$('raw').value;
  if(!input.trim()){notice('먼저 택틱 원본을 붙여넣으세요.');return;}
@@ -112,7 +143,7 @@ function paint(text){
  return holder;
 }
 function render(){
- current=convertForeignTactic($('raw').value,transferNames(),sourceNames());
+ current=convertForeignTactic($('raw').value,transferNames(),sourceNames(),bossCatalog);
  convertedRaw=$('raw').value;
  const preview=$('preview');preview.replaceChildren();
  if(!current.rows.length)preview.textContent='변환된 내용이 없습니다.';
