@@ -88,7 +88,7 @@ export function createWorkflow(api) {
   }
   function battleView() {
     prepareMonth();
-    return section('배틀로그', '', canEdit()?`<button type="button" class="btn" data-wf="undo" ${state.undo.length&&canEdit() ? '' : 'disabled'}>실행 취소 <kbd>Ctrl Z</kbd></button><button type="button" class="btn" data-action="export">JSON 백업</button>`:'')
+    return section('배틀로그', '', canEdit()?`<button type="button" class="btn" data-page="battle-import">📷 이미지 일괄 등록</button><button type="button" class="btn" data-wf="undo" ${state.undo.length&&canEdit() ? '' : 'disabled'}>실행 취소 <kbd>Ctrl Z</kbd></button><button type="button" class="btn" data-action="export">JSON 백업</button>`:'')
       + bossStrip() + quickView() + `<section class="panel sheet-panel section-spacer"><div class="panel-head"><div><h2>공격 내역 <span class="pill">${month().events.length}건</span></h2><div class="sub" ${canEdit()?'':'hidden'}>표에서 <kbd>←↑↓→</kbd> 이동 · <kbd>Enter / F2</kbd> 수정 · <kbd>Space</kbd> 이월 전환 · <kbd>Esc</kbd> 취소 · HP는 1 단위</div></div><div class="battle-view-options"><label class="switch small"><input id="wf-sequence" type="checkbox" ${sequenceVisible()?'checked':''}>순번 표시</label><label class="switch small"><input id="wf-details" type="checkbox" ${state.details ? 'checked' : ''}>상세 열</label></div></div>
       ${dayClosuresView()}<div class="filterbar"><input id="wf-log-search" aria-label="공격 기록 검색" placeholder="이름 · UID · 순번 · 보스 검색" value="${X(state.query)}"><select id="wf-day-filter" aria-label="공격 일차 필터"><option value="all">전체 일차</option>${Array.from({ length: maxDay() }, (_, i) => `<option value="${i + 1}" ${state.filterDay === String(i + 1) ? 'selected' : ''}>${i + 1}일차</option>`).join('')}</select></div><div id="wf-grid">${gridView()}</div></section>`;
   }
