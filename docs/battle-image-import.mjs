@@ -42,7 +42,8 @@ export function createBattleImageImport(api){
  const setDay=value=>{state.day=Math.min(validDays(),Math.max(1,Number(value)||1));};
  const normalized=()=>detectDuplicateRows(state.rows.map(x=>({...x,day:selectedDay()})),month().events);
  function score(row){
-  const errs=validBattleLogRow(row,{monthKey:getApp().active,members:members(),bosses:month().bosses,day:selectedDay()});
+  const errs=validBattleLogRow(row,{monthKey:getApp().active,members:members(),bosses:month().bosses,day:selectedDay()})
+   .filter(error=>error!=='중복 후보'||!row.duplicateOverride);
   if(row.stage && !/^[1-6]$/.test(String(row.stage)))errs.push('단계 표기 확인');
   return errs;
  }
@@ -65,7 +66,7 @@ export function createBattleImageImport(api){
    '<label>보스<select data-bli-field="bossId">'+bossOptions+'</select></label>'+
    '<label>기록 피해량<input data-bli-field="damage" type="text" inputmode="numeric" value="'+escapeHtml(row.damage===''?'':formatNumber(row.damage))+'" placeholder="정확한 숫자"></label>'+
    '<label class="bli-carry">이월 사용<input type="checkbox" data-bli-field="carry" '+(row.carry?'checked':'')+'></label></div>'+
-   '<div class="bli-row-note">'+(row.stage?'<span>화면 단계: '+escapeHtml(row.stage)+'단계</span>':'')+
+   '<div class="bli-row-note">'+(row.duplicate&&!row.duplicateOverride?'<button class="btn sm" type="button" data-bli-duplicate="'+escapeHtml(row.id)+'">중복이 아닌 별개 공격으로 확인</button>':'')+(row.stage?'<span>화면 단계: '+escapeHtml(row.stage)+'단계</span>':'')+
    (bad?'<strong>검토: '+escapeHtml(warnings.join(' · '))+'</strong>':'<span>등록 가능</span>')+'</div>'+
    '<details><summary>인식된 원문 확인</summary><pre>'+escapeHtml(row.rawText||'')+'</pre></details></div>';
  }
@@ -103,7 +104,7 @@ export function createBattleImageImport(api){
   if(state.processing||!editingAllowed())return;
   if(!picked.length){notify('스크린샷을 먼저 선택하세요.');return;}
   state.processing=true;state.cancel=false;state.errors=[];state.total=picked.length;state.completed=0;
-  const files=picked.splice(0);
+  const files=picked.splice(0),mode=state.mode;
   state.progress='OCR 엔진 및 한국어 모델 준비 중…';render();
   let worker=null,run=++jobId;
   try{
@@ -120,7 +121,7 @@ export function createBattleImageImport(api){
     try{
      const bitmap=await createImageBitmap(file);
      try{
-      const frames=state.mode==='detail'?detailFrames:[quickFrame];
+      const frames=mode==='detail'?detailFrames:[quickFrame];
       for(let i=0;i<frames.length;i++){
        if(state.cancel)break;
        const canvas=toCanvas(bitmap,frames[i]);
@@ -128,7 +129,7 @@ export function createBattleImageImport(api){
        canvas.width=0;canvas.height=0;
        const text=result.data?.text||'';
        const options={roster:members(),bosses:month().bosses,source:file.name+' · '+(i+1)+'행'};
-       const parsed=state.mode==='detail'? [parseBattleLogText(text,options)].filter(Boolean):
+       const parsed=mode==='detail'? [parseBattleLogText(text,options)].filter(Boolean):
          parseQuickLogText(text,options);
        for(const row of parsed){
          if(!row.damage && !row.memberName && !row.bossId && !row.gameAt)continue;
@@ -152,7 +153,7 @@ export function createBattleImageImport(api){
  function updateRows(selectNew=false){
   const checked=detectDuplicateRows(state.rows.map(x=>({...x,day:selectedDay()})),month().events);
   state.rows=checked.map(r=>{
-    const ok=validBattleLogRow(r,{monthKey:getApp().active,members:members(),bosses:month().bosses,day:selectedDay()}).length===0;
+    const ok=score(r).length===0;
     return {...r,selected:selectNew?ok&&r.selected!==false:(ok?r.selected:false)};
   });
  }
@@ -175,6 +176,18 @@ export function createBattleImageImport(api){
   const copy=structuredClone(month());
   copy.events??=[];
   copy.dayBreaks??=[];
+  // Convert legacy per-row day assignments to boundaries before enabling boundary-based replay.
+  if(!copy.dayBreaks.length&&copy.events.length){
+   let previousDay=1,previousSeq=0;
+   for(const row of [...copy.events].sort((a,b)=>a.seq-b.seq)){
+    const rowDay=Number(row.day)||1;
+    if(rowDay>previousDay){
+     copy.dayBreaks.push({afterSeq:previousSeq,nextDay:rowDay});
+     previousDay=rowDay;
+    }
+    previousSeq=Number(row.seq)||previousSeq;
+   }
+  }
   const maxSeq=Math.max(0,...copy.events.map(e=>Number(e.seq)||0));
   if(day>lastDay||(maxSeq===0&&day!==1)){
    copy.dayBreaks.push({afterSeq:maxSeq,nextDay:day});
@@ -207,7 +220,7 @@ export function createBattleImageImport(api){
   navigate('battle');
   notify('이미지에서 추출한 공격 기록 '+selection.length+'건을 등록했습니다.');
  }
- function mount(page){if(page!=='battle-import')return;}
+ function mount(page){if(page!=='battle-import'&&state.processing)state.cancel=true;}
  document.addEventListener('change',event=>{
   if(!event.target.closest('.bli-shell'))return;
   const element=event.target;
@@ -235,7 +248,7 @@ export function createBattleImageImport(api){
   if(event.target?.id==='bli-raw')state.raw=event.target.value;
  });
  document.addEventListener('click',event=>{
-  const button=event.target.closest('[data-bli],[data-bli-remove]');if(!button)return;
+  const button=event.target.closest('[data-bli],[data-bli-remove],[data-bli-duplicate]');if(!button)return;
   if(!button.closest('.bli-shell'))return;
   event.preventDefault();
   switch(button.dataset.bli){
@@ -253,6 +266,12 @@ export function createBattleImageImport(api){
    }
   }
   if(button.dataset.bliRemove){state.rows=state.rows.filter(r=>r.id!==button.dataset.bliRemove);render();}
+  if(button.dataset.bliDuplicate){
+    const row=state.rows.find(r=>r.id===button.dataset.bliDuplicate);
+    if(row&&confirm('이 기록은 기존 기록이나 다른 이미지의 기록과 동일해 보입니다. 실제로 별개의 공격이 맞나요?')){
+      row.duplicateOverride=true;row.selected=true;updateRows();render();
+    }
+  }
  });
  return {view,mount};
 }
