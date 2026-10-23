@@ -210,6 +210,43 @@ export function ensureTactics(app, metadata = {}, rowFormats = {}) {
       month.carryDamageCommaRevision = 1;
       changed = true;
     }
+    // Normalize all separators between actions in 2~5넴 carry tactics to commas.
+    // Also clean up legacy '· (중간딜 ...)' / '· 중간딜 ...' after standalone
+    // actions, using only the exact known source phrases so manual edits survive.
+    if (key === '2026-10' && Array.isArray(metadata.carryTactics) && Number(month.carryActionCommaRevision || 0) < 1) {
+      const carryRefs = new Map(metadata.carryTactics
+        .filter(seed => Number(seed.boss) >= 2 && Number(seed.boss) <= 5)
+        .map(seed => [String(seed.id), seed]));
+      for (const tactic of month.tactics || []) {
+        const seed = carryRefs.get(String(tactic.id));
+        if (!seed || groupOf(tactic) !== CARRY_GROUP || Number(tactic.boss) !== Number(seed.boss)) continue;
+        if (!Array.isArray(tactic.characters) || tactic.characters.length !== 5
+            || !tactic.characters.every((name, index) => name === seed.characters[index])) continue;
+        const stepRefs = new Map((seed.rows || []).map(step => [String(step.id), step]));
+        for (const step of tactic.rows || []) {
+          const ref = stepRefs.get(String(step.id));
+          if (!ref || typeof step.text !== 'string') continue;
+          if (ref.preActionCommaFormatText && step.text === ref.preActionCommaFormatText) {
+            step.text = ref.text;
+            delete step.runs;
+            changed = true;
+            continue;
+          }
+          // An older intermediate-damage display can still be present in
+          // persisted states that skipped an earlier metadata migration.
+          if (!ref.text.includes(' (중간딜 ') || /\b(?:ON|OFF|SET)\b/.test(ref.text)) continue;
+          const legacyParenthesis = ref.text.replace(' (중간딜 ', ' · (중간딜 ');
+          const legacyRaw = ref.preDamageCommaFormatText;
+          if (step.text === legacyParenthesis || (legacyRaw && step.text === legacyRaw)) {
+            step.text = ref.text;
+            delete step.runs;
+            changed = true;
+          }
+        }
+      }
+      month.carryActionCommaRevision = 1;
+      changed = true;
+    }
     if (!month.tacticsMetadataVersion) {
       for (const missing of metadata.missingTactics || []) {
         if (missing.month === key && !month.tactics.some(t => t.id === missing.id)) { const {month:_, ...t} = missing; month.tactics.push(structuredClone(t)); changed = true; }

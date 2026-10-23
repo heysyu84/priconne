@@ -13,13 +13,13 @@ startPresence({apiFetch,onCount:count=>{const value=document.getElementById('onl
 const Engine=await import('./engine.mjs?v=20261022-ui14');
 const {ensureRoster,syncRoster,memberLabel}=await import('./roster.mjs?v=20261022-ui14');
 const {createWorkflow}=await import('./workflow.mjs?v=20261024-admin-battle-entry01');
-const {ensureTactics,carryTacticsVisible}=await import('./tactics-model.mjs?v=20261024-carry-damage05');
+const {ensureTactics,carryTacticsVisible}=await import('./tactics-model.mjs?v=20261024-carry-punctuation06');
 const {syncTacticRecommendations}=await import('./tactic-combo-sync.mjs?v=20261024-carry-tactics01');
 const {applySourceData,remainingAttacks}=await import('./guild-model.mjs?v=20261022-hall01');
 const {createGuildWorkspace}=await import('./guild-workspace.mjs?v=20261024-carry-tactics01');
-const {createTacticWorkspace}=await import('./tactics-workspace.mjs?v=20261024-carry-damage05');
+const {createTacticWorkspace}=await import('./tactics-workspace.mjs?v=20261024-carry-punctuation06');
 const {createBattleImageImport}=await import('./battle-image-import.mjs?v=20261023-extraction03');
-const [TACTIC_META,CHARACTERS,ROW_FORMATS,BOSS_ART,GUILD_SOURCE,PORTRAIT_LIBRARY,FUTURE_BOSSES]=await Promise.all(['/tactic-metadata.json','/characters.json','/tactic-row-formats.json','/bosses.json','/guild-source.json','/portrait-library.json','/future-bosses.json'].map(async path=>{const response=await fetch(assetUrl(path)+'?v=20261024-carry-damage05');if(!response.ok)throw Error('택틱 자료를 불러오지 못했습니다.');return response.json()}));
+const [TACTIC_META,CHARACTERS,ROW_FORMATS,BOSS_ART,GUILD_SOURCE,PORTRAIT_LIBRARY,FUTURE_BOSSES]=await Promise.all(['/tactic-metadata.json','/characters.json','/tactic-row-formats.json','/bosses.json','/guild-source.json','/portrait-library.json','/future-bosses.json'].map(async path=>{const response=await fetch(assetUrl(path)+'?v=20261024-carry-punctuation06');if(!response.ok)throw Error('택틱 자료를 불러오지 못했습니다.');return response.json()}));
 const CHARACTER_CATALOG=withPortraitLibrary(CHARACTERS.characters,PORTRAIT_LIBRARY);
 const DEFAULT=JSON.parse(document.getElementById('seed-data').textContent);
 const STORAGE='nyangnyang-work-recovery-v1';
