@@ -1212,17 +1212,17 @@
       "source": "이월 택틱",
       "group": "이월 택틱",
       "characters": [
-        "사루카",
-        "수페코",
-        "수미미",
+        "수사렌",
         "수리코",
-        "수사렌"
+        "수미미",
+        "수페코",
+        "사루카"
       ],
       "stars": [
         "5",
+        "5",
+        "5",
         "6",
-        "5",
-        "5",
         "5"
       ],
       "manualCount": "",
@@ -1235,12 +1235,12 @@
       "rows": [
         {
           "id": "carry-2026-10-1-3-start",
-          "text": "AUTO OFF, 사루카, 수미미, 수리코, 수사렌 SET",
+          "text": "AUTO OFF, 수사렌, 수리코, 수미미, 사루카 SET",
           "checked": [
             true,
+            true,
+            true,
             false,
-            true,
-            true,
             true,
             false
           ],
@@ -1252,9 +1252,9 @@
           "text": "1:14 수페코 디저트 버프 후딜캔 〔↑수페코 버프 후딜캔〕",
           "checked": [
             true,
+            true,
+            true,
             false,
-            true,
-            true,
             true,
             false
           ],
@@ -1317,7 +1317,7 @@
       "sourceHeaderCell": "B40",
       "editorVersion": 1,
       "rowFormatsVersion": 1,
-      "title": "1넴 사루카 수페코 수미미 수리코 수사렌 성급 56555, 손컨 —, TP 2+, 기대딜 6,010만~6,020만"
+      "title": "1넴 수사렌 수리코 수미미 수페코 사루카 성급 55565, 손컨 —, TP 2+, 기대딜 6,010만~6,020만"
     },
     {
       "month": "2026-10",
@@ -1326,17 +1326,17 @@
       "source": "이월 택틱",
       "group": "이월 택틱",
       "characters": [
-        "수즈루",
-        "수페코",
-        "수리코",
+        "수사렌",
         "수나카",
-        "수사렌"
+        "수리코",
+        "수페코",
+        "수즈루"
       ],
       "stars": [
         "5",
+        "5",
+        "5",
         "6",
-        "5",
-        "5",
         "5"
       ],
       "manualCount": "",
@@ -1349,13 +1349,13 @@
       "rows": [
         {
           "id": "carry-2026-10-1-1-start",
-          "text": "AUTO OFF, 수나카, 수사렌 SET",
+          "text": "AUTO OFF, 수사렌, 수나카 SET",
           "checked": [
-            false,
-            false,
-            false,
             true,
             true,
+            false,
+            false,
+            false,
             false
           ],
           "manualChecks": true,
@@ -1365,11 +1365,11 @@
           "id": "carry-2026-10-1-1-r1",
           "text": "1:21 수사렌 · 수리코 ON",
           "checked": [
+            true,
+            true,
+            true,
             false,
             false,
-            true,
-            true,
-            true,
             false
           ],
           "manualChecks": true,
@@ -1415,7 +1415,7 @@
       "sourceHeaderCell": "B6",
       "editorVersion": 1,
       "rowFormatsVersion": 1,
-      "title": "1넴 수즈루 수페코 수리코 수나카 수사렌 성급 56555, 손컨 —, TP 2+, 기대딜 3,850만~3,880만"
+      "title": "1넴 수사렌 수나카 수리코 수페코 수즈루 성급 55565, 손컨 —, TP 2+, 기대딜 3,850만~3,880만"
     },
     {
       "month": "2026-10",
@@ -1424,11 +1424,11 @@
       "source": "이월 택틱",
       "group": "이월 택틱",
       "characters": [
-        "성리야",
-        "수나카",
-        "수니논",
+        "수사렌",
         "수츠네",
-        "수사렌"
+        "수니논",
+        "수나카",
+        "성리야"
       ],
       "stars": [
         "5",
@@ -1447,12 +1447,12 @@
       "rows": [
         {
           "id": "carry-2026-10-1-2-start",
-          "text": "AUTO OFF, 성리야, 수나카, 수니논, 수사렌 SET",
+          "text": "AUTO OFF, 수사렌, 수니논, 수나카, 성리야 SET",
           "checked": [
             true,
-            true,
-            true,
             false,
+            true,
+            true,
             true,
             false
           ],
@@ -1513,7 +1513,7 @@
       "sourceHeaderCell": "B23",
       "editorVersion": 1,
       "rowFormatsVersion": 1,
-      "title": "1넴 성리야 수나카 수니논 수츠네 수사렌 성급 55555, 손컨 —, TP 2+, 기대딜 2,910만~2,950만"
+      "title": "1넴 수사렌 수츠네 수니논 수나카 성리야 성급 55555, 손컨 —, TP 2+, 기대딜 2,910만~2,950만"
     },
     {
       "month": "2026-10",
@@ -1522,11 +1522,11 @@
       "source": "이월 택틱",
       "group": "이월 택틱",
       "characters": [
-        "수셰피",
-        "리리컬",
-        "게무기",
+        "수네모네",
         "파오이",
-        "수네모네"
+        "게무기",
+        "리리컬",
+        "수셰피"
       ],
       "stars": [
         "5",
@@ -1545,13 +1545,13 @@
       "rows": [
         {
           "id": "carry-2026-10-2-6-start",
-          "text": "AUTO OFF, 수셰피, 게무기, 파오이 SET",
+          "text": "AUTO OFF, 파오이, 게무기, 수셰피 SET",
           "checked": [
-            true,
             false,
             true,
             true,
             false,
+            true,
             false
           ],
           "manualChecks": true,
@@ -1561,11 +1561,11 @@
           "id": "carry-2026-10-2-6-r1",
           "text": "1:21 파오이 · 리리컬 ON",
           "checked": [
-            true,
-            true,
-            true,
-            true,
             false,
+            true,
+            true,
+            true,
+            true,
             false
           ],
           "manualChecks": true,
@@ -1577,11 +1577,11 @@
           "id": "carry-2026-10-2-6-r2",
           "text": "1:19 게무기",
           "checked": [
-            true,
-            true,
-            true,
-            true,
             false,
+            true,
+            true,
+            true,
+            true,
             false
           ],
           "manualChecks": true,
@@ -1593,11 +1593,11 @@
           "id": "carry-2026-10-2-6-r3",
           "text": "1:18 수네모네 평타 캔슬 〔←후딜캔 되니까 그냥 최대한 빠르게〕",
           "checked": [
-            true,
-            true,
-            true,
-            true,
             false,
+            true,
+            true,
+            true,
+            true,
             false
           ],
           "manualChecks": true,
@@ -1610,9 +1610,9 @@
           "text": "1:14 리리컬 · 수네모네 ON · 게무기, 리리컬 OFF",
           "checked": [
             true,
-            false,
-            false,
             true,
+            false,
+            false,
             true,
             false
           ],
@@ -1626,9 +1626,9 @@
           "text": "1:09 수네모네 · 게무기 ON · 중간딜 2750만",
           "checked": [
             true,
+            true,
+            true,
             false,
-            true,
-            true,
             true,
             false
           ],
@@ -1658,9 +1658,9 @@
           "text": "1:00 게무기 · AUTO ON · 게무기, 리리컬 OFF · 중간딜 6760만",
           "checked": [
             true,
-            false,
-            false,
             true,
+            false,
+            false,
             true,
             true
           ],
@@ -1674,9 +1674,9 @@
           "text": "0:48 게무기 후르츠 후딜캔 · 게무기 ON · AUTO OFF · 중간딜 1억 370",
           "checked": [
             true,
+            true,
+            true,
             false,
-            true,
-            true,
             true,
             false
           ],
@@ -1706,9 +1706,9 @@
           "text": "0:36 파오이 오토 · 리리컬 ON · 중간딜 1억 2890",
           "checked": [
             true,
-            true,
-            true,
             false,
+            true,
+            true,
             true,
             true
           ],
@@ -1722,9 +1722,9 @@
           "text": "0:31 게무기 → 리리컬 · 중간딜 1억 5900",
           "checked": [
             true,
-            true,
-            true,
             false,
+            true,
+            true,
             true,
             true
           ],
@@ -1739,7 +1739,7 @@
       "sourceHeaderCell": "B109",
       "editorVersion": 1,
       "rowFormatsVersion": 1,
-      "title": "2넴 수셰피 리리컬 게무기 파오이 수네모네 성급 55555, 손컨 —, TP 1.0, 기대딜 1억 5,740만~1억 6,000만"
+      "title": "2넴 수네모네 파오이 게무기 리리컬 수셰피 성급 55555, 손컨 —, TP 1.0, 기대딜 1억 5,740만~1억 6,000만"
     },
     {
       "month": "2026-10",
@@ -1748,11 +1748,11 @@
       "source": "이월 택틱",
       "group": "이월 택틱",
       "characters": [
-        "쿠루루",
-        "수네모네",
-        "드마호",
+        "성이오",
         "뉴사렌",
-        "성이오"
+        "드마호",
+        "수네모네",
+        "쿠루루"
       ],
       "stars": [
         "5",
@@ -1771,12 +1771,12 @@
       "rows": [
         {
           "id": "carry-2026-10-2-5-start",
-          "text": "AUTO ON, 드마호, 뉴사렌 SET",
+          "text": "AUTO ON, 뉴사렌, 드마호 SET",
           "checked": [
             false,
+            true,
+            true,
             false,
-            true,
-            true,
             false,
             true
           ],
@@ -1787,11 +1787,11 @@
           "id": "carry-2026-10-2-5-r1",
           "text": "1:22 드마호 · 수네모네, 쿠루루 ON",
           "checked": [
-            true,
-            true,
-            true,
-            true,
             false,
+            true,
+            true,
+            true,
+            true,
             true
           ],
           "manualChecks": true,
@@ -1803,11 +1803,11 @@
           "id": "carry-2026-10-2-5-r2",
           "text": "1:16 뉴사렌 · 성이오 ON · 뉴사렌, 수네모네, 쿠루루 OFF · AUTO OFF",
           "checked": [
-            false,
-            false,
             true,
             false,
             true,
+            false,
+            false,
             false
           ],
           "manualChecks": true,
@@ -1819,11 +1819,11 @@
           "id": "carry-2026-10-2-5-r3",
           "text": "1:11 성이오 · 수네모네 ON",
           "checked": [
-            false,
-            true,
             true,
             false,
             true,
+            true,
+            false,
             false
           ],
           "manualChecks": true,
@@ -1836,9 +1836,9 @@
           "text": "1:11 수네모네 · 쿠루루 ON",
           "checked": [
             true,
-            true,
-            true,
             false,
+            true,
+            true,
             true,
             false
           ],
@@ -1851,11 +1851,11 @@
           "id": "carry-2026-10-2-5-r5",
           "text": "1:08 뉴사렌 평타 후딜캔 · 수네모네, 쿠루루 OFF · 중간딜 3280만",
           "checked": [
-            false,
-            false,
             true,
             false,
             true,
+            false,
+            false,
             false
           ],
           "manualChecks": true,
@@ -1867,11 +1867,11 @@
           "id": "carry-2026-10-2-5-r6",
           "text": "1:02 성이오 · 수네모네 ON · 중간딜 6010만",
           "checked": [
-            false,
-            true,
             true,
             false,
             true,
+            true,
+            false,
             false
           ],
           "manualChecks": true,
@@ -1917,7 +1917,7 @@
       "sourceHeaderCell": "B87",
       "editorVersion": 1,
       "rowFormatsVersion": 1,
-      "title": "2넴 쿠루루 수네모네 드마호 뉴사렌 성이오 성급 55555, 손컨 —, TP 1.0, 기대딜 9,380만~9,740만"
+      "title": "2넴 성이오 뉴사렌 드마호 수네모네 쿠루루 성급 55555, 손컨 —, TP 1.0, 기대딜 9,380만~9,740만"
     },
     {
       "month": "2026-10",
@@ -1926,11 +1926,11 @@
       "source": "이월 택틱",
       "group": "이월 택틱",
       "characters": [
-        "엔요리",
-        "수네모네",
-        "드마호",
+        "성이오",
         "뉴사렌",
-        "성이오"
+        "드마호",
+        "수네모네",
+        "엔요리"
       ],
       "stars": [
         "5",
@@ -1949,12 +1949,12 @@
       "rows": [
         {
           "id": "carry-2026-10-2-4-start",
-          "text": "AUTO OFF, 드마호, 뉴사렌 SET",
+          "text": "AUTO OFF, 뉴사렌, 드마호 SET",
           "checked": [
             false,
+            true,
+            true,
             false,
-            true,
-            true,
             false,
             false
           ],
@@ -1965,11 +1965,11 @@
           "id": "carry-2026-10-2-4-r1",
           "text": "1:22 드마호 · 수네모네, 엔요리 ON · AUTO ON",
           "checked": [
-            true,
-            true,
-            true,
-            true,
             false,
+            true,
+            true,
+            true,
+            true,
             true
           ],
           "manualChecks": true,
@@ -2063,7 +2063,7 @@
       "sourceHeaderCell": "B67",
       "editorVersion": 1,
       "rowFormatsVersion": 1,
-      "title": "2넴 엔요리 수네모네 드마호 뉴사렌 성이오 성급 55555, 손컨 —, TP 1.0, 기대딜 8,290만~8,790만"
+      "title": "2넴 성이오 뉴사렌 드마호 수네모네 엔요리 성급 55555, 손컨 —, TP 1.0, 기대딜 8,290만~8,790만"
     },
     {
       "month": "2026-10",
@@ -2072,11 +2072,11 @@
       "source": "이월 택틱",
       "group": "이월 택틱",
       "characters": [
-        "수셰피",
-        "리조미",
-        "리리컬",
+        "파오이",
         "게무기",
-        "파오이"
+        "리리컬",
+        "리조미",
+        "수셰피"
       ],
       "stars": [
         "5",
@@ -2095,12 +2095,12 @@
       "rows": [
         {
           "id": "carry-2026-10-2-3-start",
-          "text": "AUTO OFF, 수셰피, 리조미, 파오이 SET",
+          "text": "AUTO OFF, 파오이, 리조미, 수셰피 SET",
           "checked": [
             true,
+            false,
+            false,
             true,
-            false,
-            false,
             true,
             false
           ],
@@ -2112,9 +2112,9 @@
           "text": "1:21 파오이 · 리리컬 ON",
           "checked": [
             true,
-            true,
-            true,
             false,
+            true,
+            true,
             true,
             false
           ],
@@ -2143,11 +2143,11 @@
           "id": "carry-2026-10-2-3-r3",
           "text": "1:10 파오이 · 리리컬 ON · AUTO ON · 파오이 OFF",
           "checked": [
-            true,
-            true,
-            true,
-            true,
             false,
+            true,
+            true,
+            true,
+            true,
             true
           ],
           "manualChecks": true,
@@ -2159,11 +2159,11 @@
           "id": "carry-2026-10-2-3-r4",
           "text": "1:08 리리컬 · 중간딜 2310만",
           "checked": [
-            true,
-            true,
-            true,
-            true,
             false,
+            true,
+            true,
+            true,
+            true,
             true
           ],
           "manualChecks": true,
@@ -2175,11 +2175,11 @@
           "id": "carry-2026-10-2-3-r5",
           "text": "1:04 파오이 오토 · 중간딜 3960만",
           "checked": [
-            true,
-            true,
-            true,
-            true,
             false,
+            true,
+            true,
+            true,
+            true,
             true
           ],
           "manualChecks": true,
@@ -2191,11 +2191,11 @@
           "id": "carry-2026-10-2-3-r6",
           "text": "1:01 리리컬 · 중간딜 5160만",
           "checked": [
-            true,
-            true,
-            true,
-            true,
             false,
+            true,
+            true,
+            true,
+            true,
             true
           ],
           "manualChecks": true,
@@ -2207,11 +2207,11 @@
           "id": "carry-2026-10-2-3-r7",
           "text": "0:56 게무기 → 리리컬 · 중간딜 6980만",
           "checked": [
-            true,
-            true,
-            true,
-            true,
             false,
+            true,
+            true,
+            true,
+            true,
             true
           ],
           "manualChecks": true,
@@ -2225,7 +2225,7 @@
       "sourceHeaderCell": "B46",
       "editorVersion": 1,
       "rowFormatsVersion": 1,
-      "title": "2넴 수셰피 리조미 리리컬 게무기 파오이 성급 55555, 손컨 —, TP 2.5+, 기대딜 6,880만~7,070만"
+      "title": "2넴 파오이 게무기 리리컬 리조미 수셰피 성급 55555, 손컨 —, TP 2.5+, 기대딜 6,880만~7,070만"
     },
     {
       "month": "2026-10",
@@ -2234,11 +2234,11 @@
       "source": "이월 택틱",
       "group": "이월 택틱",
       "characters": [
-        "바이올렛",
-        "워지타",
-        "호마레",
+        "루나",
         "프캬루",
-        "루나"
+        "호마레",
+        "워지타",
+        "바이올렛"
       ],
       "stars": [
         "5",
@@ -2257,13 +2257,13 @@
       "rows": [
         {
           "id": "carry-2026-10-2-1-start",
-          "text": "AUTO OFF, 바이올렛, 워지타, 호마레, 프캬루 SET",
+          "text": "AUTO OFF, 프캬루, 호마레, 워지타, 바이올렛 SET",
           "checked": [
-            true,
-            true,
-            true,
-            true,
             false,
+            true,
+            true,
+            true,
+            true,
             false
           ],
           "manualChecks": true,
@@ -2273,11 +2273,11 @@
           "id": "carry-2026-10-2-1-r1",
           "text": "1:12 프캬루",
           "checked": [
-            true,
-            true,
-            true,
-            true,
             false,
+            true,
+            true,
+            true,
+            true,
             false
           ],
           "manualChecks": true,
@@ -2323,7 +2323,7 @@
       "sourceHeaderCell": "B6",
       "editorVersion": 1,
       "rowFormatsVersion": 1,
-      "title": "2넴 바이올렛 워지타 호마레 프캬루 루나 성급 55555, 손컨 —, TP —, 기대딜 3,413만~3,417만"
+      "title": "2넴 루나 프캬루 호마레 워지타 바이올렛 성급 55555, 손컨 —, TP —, 기대딜 3,413만~3,417만"
     },
     {
       "month": "2026-10",
@@ -2332,11 +2332,11 @@
       "source": "이월 택틱",
       "group": "이월 택틱",
       "characters": [
-        "바이올렛",
-        "드마호",
-        "호마레",
+        "루나",
         "프캬루",
-        "루나"
+        "호마레",
+        "드마호",
+        "바이올렛"
       ],
       "stars": [
         "5",
@@ -2355,13 +2355,13 @@
       "rows": [
         {
           "id": "carry-2026-10-2-2-start",
-          "text": "AUTO OFF, 바이올렛, 드마호, 프캬루 SET",
+          "text": "AUTO OFF, 프캬루, 드마호, 바이올렛 SET",
           "checked": [
-            true,
-            true,
             false,
             true,
             false,
+            true,
+            true,
             false
           ],
           "manualChecks": true,
@@ -2371,11 +2371,11 @@
           "id": "carry-2026-10-2-2-r1",
           "text": "1:18 프캬루 2발째 · 프캬루 OFF",
           "checked": [
+            false,
+            false,
+            false,
             true,
             true,
-            false,
-            false,
-            false,
             false
           ],
           "manualChecks": true,
@@ -2387,11 +2387,11 @@
           "id": "carry-2026-10-2-2-r2",
           "text": "1:12 호마레 마인드 크랙 후딜캔 · 프캬루 ON",
           "checked": [
-            true,
-            true,
             false,
             true,
             false,
+            true,
+            true,
             false
           ],
           "manualChecks": true,
@@ -2453,7 +2453,7 @@
       "sourceHeaderCell": "B25",
       "editorVersion": 1,
       "rowFormatsVersion": 1,
-      "title": "2넴 바이올렛 드마호 호마레 프캬루 루나 성급 55555, 손컨 —, TP —, 기대딜 3,210만~3,216만"
+      "title": "2넴 루나 프캬루 호마레 드마호 바이올렛 성급 55555, 손컨 —, TP —, 기대딜 3,210만~3,216만"
     },
     {
       "month": "2026-10",
@@ -2462,11 +2462,11 @@
       "source": "이월 택틱",
       "group": "이월 택틱",
       "characters": [
-        "시나츠",
-        "수리아",
-        "와카나",
+        "편오이",
         "수레시아",
-        "편오이"
+        "와카나",
+        "수리아",
+        "시나츠"
       ],
       "stars": [
         "5",
@@ -2485,7 +2485,7 @@
       "rows": [
         {
           "id": "carry-2026-10-3-6-start",
-          "text": "AUTO ON, 시나츠, 와카나, 편오이 SET",
+          "text": "AUTO ON, 편오이, 와카나, 시나츠 SET",
           "checked": [
             true,
             false,
@@ -2501,11 +2501,11 @@
           "id": "carry-2026-10-3-6-r1",
           "text": "1:12 시나츠 · 수리아 ON · 시나츠 OFF",
           "checked": [
-            false,
-            true,
             true,
             false,
             true,
+            true,
+            false,
             true
           ],
           "manualChecks": true,
@@ -2517,11 +2517,11 @@
           "id": "carry-2026-10-3-6-r2",
           "text": "1:10 와카나 · 수레시아 ON · 와카나 OFF · AUTO OFF · 중간딜 1620만",
           "checked": [
+            true,
+            true,
             false,
             true,
             false,
-            true,
-            true,
             false
           ],
           "manualChecks": true,
@@ -2533,11 +2533,11 @@
           "id": "carry-2026-10-3-6-r3",
           "text": "1:03 ■보스유버 · 중간딜 3240만",
           "checked": [
+            true,
+            true,
             false,
             true,
             false,
-            true,
-            true,
             false
           ],
           "manualChecks": true,
@@ -2566,9 +2566,9 @@
           "text": "0:54 수리아 · 와카나 ON · 수리아 OFF · 중간딜 6730만",
           "checked": [
             true,
+            true,
+            true,
             false,
-            true,
-            true,
             true,
             false
           ],
@@ -2582,9 +2582,9 @@
           "text": "0:54 와카나 · 와카나 OFF",
           "checked": [
             true,
-            false,
-            false,
             true,
+            false,
+            false,
             true,
             false
           ],
@@ -2597,11 +2597,11 @@
           "id": "carry-2026-10-3-6-r7",
           "text": "0:47 시나츠 · 수레시아, 시나츠 OFF · 중간딜 10400만",
           "checked": [
-            false,
-            false,
-            false,
-            false,
             true,
+            false,
+            false,
+            false,
+            false,
             false
           ],
           "manualChecks": true,
@@ -2613,11 +2613,11 @@
           "id": "carry-2026-10-3-6-r8",
           "text": "0:44 편오이 · 수리아 ON · AUTO ON · 중간딜 11740만",
           "checked": [
-            false,
             true,
             false,
             false,
             true,
+            false,
             true
           ],
           "manualChecks": true,
@@ -2629,11 +2629,11 @@
           "id": "carry-2026-10-3-6-r9",
           "text": "0:40 와카나 · 중간딜 12950만",
           "checked": [
-            false,
             true,
             false,
             false,
             true,
+            false,
             true
           ],
           "manualChecks": true,
@@ -2645,11 +2645,11 @@
           "id": "carry-2026-10-3-6-r10",
           "text": "0:35 시나츠 십신풍 · 중간딜 13840만",
           "checked": [
-            false,
             true,
             false,
             false,
             true,
+            false,
             true
           ],
           "manualChecks": true,
@@ -2661,11 +2661,11 @@
           "id": "carry-2026-10-3-6-r11",
           "text": "0:33 수레시아 → 시나츠 · 중간딜 15600만",
           "checked": [
-            false,
             true,
             false,
             false,
             true,
+            false,
             true
           ],
           "manualChecks": true,
@@ -2677,11 +2677,11 @@
           "id": "carry-2026-10-3-6-r12",
           "text": "0:27 ■보스유버 · 중간딜 18560만",
           "checked": [
-            false,
             true,
             false,
             false,
             true,
+            false,
             true
           ],
           "manualChecks": true,
@@ -2695,7 +2695,7 @@
       "sourceHeaderCell": "B98",
       "editorVersion": 1,
       "rowFormatsVersion": 1,
-      "title": "3넴 시나츠 수리아 와카나 수레시아 편오이 성급 55555, 손컨 —, TP —, 기대딜 1억 8,560만~1억 8,630만"
+      "title": "3넴 편오이 수레시아 와카나 수리아 시나츠 성급 55555, 손컨 —, TP —, 기대딜 1억 8,560만~1억 8,630만"
     },
     {
       "month": "2026-10",
@@ -2704,11 +2704,11 @@
       "source": "이월 택틱",
       "group": "이월 택틱",
       "characters": [
-        "시나츠",
-        "와카나",
-        "수레시아",
+        "피오",
         "편오이",
-        "피오"
+        "수레시아",
+        "와카나",
+        "시나츠"
       ],
       "stars": [
         "5",
@@ -2727,13 +2727,13 @@
       "rows": [
         {
           "id": "carry-2026-10-3-5-start",
-          "text": "AUTO OFF, 와카나, 수레시아, 편오이, 피오 SET",
+          "text": "AUTO OFF, 피오, 편오이, 수레시아, 와카나 SET",
           "checked": [
+            true,
+            true,
+            true,
+            true,
             false,
-            true,
-            true,
-            true,
-            true,
             false
           ],
           "manualChecks": true,
@@ -2759,11 +2759,11 @@
           "id": "carry-2026-10-3-5-r2",
           "text": "1:16 시나츠 · 시나츠 OFF",
           "checked": [
+            true,
+            true,
+            true,
+            true,
             false,
-            true,
-            true,
-            true,
-            true,
             false
           ],
           "manualChecks": true,
@@ -2776,9 +2776,9 @@
           "text": "1:07 와카나 · 시나츠 ON · 편오이 OFF · 중간딜 3350만",
           "checked": [
             true,
-            true,
-            true,
             false,
+            true,
+            true,
             true,
             false
           ],
@@ -2791,11 +2791,11 @@
           "id": "carry-2026-10-3-5-r4",
           "text": "1:04 수레시아 · 편오이 ON · 시나츠 OFF · 중간딜 4960만",
           "checked": [
+            true,
+            true,
+            true,
+            true,
             false,
-            true,
-            true,
-            true,
-            true,
             false
           ],
           "manualChecks": true,
@@ -2807,11 +2807,11 @@
           "id": "carry-2026-10-3-5-r5",
           "text": "1:03 ■보스유버 · 중간딜 5180만",
           "checked": [
+            true,
+            true,
+            true,
+            true,
             false,
-            true,
-            true,
-            true,
-            true,
             false
           ],
           "manualChecks": true,
@@ -2839,11 +2839,11 @@
           "id": "carry-2026-10-3-5-r7",
           "text": "0:59 시나츠 · 편오이, 수레시아, 시나츠 OFF",
           "checked": [
-            false,
             true,
             false,
             false,
             true,
+            false,
             false
           ],
           "manualChecks": true,
@@ -2855,11 +2855,11 @@
           "id": "carry-2026-10-3-5-r8",
           "text": "0:50 와카나 · 편오이, 수레시아 ON · 중간딜 9990만",
           "checked": [
+            true,
+            true,
+            true,
+            true,
             false,
-            true,
-            true,
-            true,
-            true,
             false
           ],
           "manualChecks": true,
@@ -2889,7 +2889,7 @@
       "sourceHeaderCell": "B75",
       "editorVersion": 1,
       "rowFormatsVersion": 1,
-      "title": "3넴 시나츠 와카나 수레시아 편오이 피오 성급 55555, 손컨 —, TP —, 기대딜 9,930만~1억 160만"
+      "title": "3넴 피오 편오이 수레시아 와카나 시나츠 성급 55555, 손컨 —, TP —, 기대딜 9,930만~1억 160만"
     },
     {
       "month": "2026-10",
@@ -2898,11 +2898,11 @@
       "source": "이월 택틱",
       "group": "이월 택틱",
       "characters": [
-        "수리아",
-        "와카나",
-        "수레시아",
+        "피오",
         "편오이",
-        "피오"
+        "수레시아",
+        "와카나",
+        "수리아"
       ],
       "stars": [
         "5",
@@ -2921,7 +2921,7 @@
       "rows": [
         {
           "id": "carry-2026-10-3-4-start",
-          "text": "AUTO OFF, 수리아, 와카나, 수레시아, 편오이, 피오 SET",
+          "text": "AUTO OFF, 피오, 편오이, 수레시아, 와카나, 수리아 SET",
           "checked": [
             true,
             true,
@@ -2937,11 +2937,11 @@
           "id": "carry-2026-10-3-4-r1",
           "text": "1:11 수리아 · 수리아 OFF",
           "checked": [
+            true,
+            true,
+            true,
+            true,
             false,
-            true,
-            true,
-            true,
-            true,
             false
           ],
           "manualChecks": true,
@@ -2953,11 +2953,11 @@
           "id": "carry-2026-10-3-4-r2",
           "text": "1:03 ■보스유버 · 중간딜 5150만",
           "checked": [
+            true,
+            true,
+            true,
+            true,
             false,
-            true,
-            true,
-            true,
-            true,
             false
           ],
           "manualChecks": true,
@@ -2987,7 +2987,7 @@
       "sourceHeaderCell": "B58",
       "editorVersion": 1,
       "rowFormatsVersion": 1,
-      "title": "3넴 수리아 와카나 수레시아 편오이 피오 성급 55555, 손컨 —, TP —, 기대딜 5,090만~5,170만"
+      "title": "3넴 피오 편오이 수레시아 와카나 수리아 성급 55555, 손컨 —, TP —, 기대딜 5,090만~5,170만"
     },
     {
       "month": "2026-10",
@@ -2996,18 +2996,18 @@
       "source": "이월 택틱",
       "group": "이월 택틱",
       "characters": [
-        "루카",
-        "수레이",
-        "프셰피",
+        "수사렌",
         "수리코",
-        "수사렌"
+        "프셰피",
+        "수레이",
+        "루카"
       ],
       "stars": [
-        "6",
         "5",
         "5",
         "5",
-        "5"
+        "5",
+        "6"
       ],
       "manualCount": "",
       "tp": "2.0+",
@@ -3019,7 +3019,7 @@
       "rows": [
         {
           "id": "carry-2026-10-3-3-start",
-          "text": "AUTO OFF, 루카, 수사렌 SET",
+          "text": "AUTO OFF, 수사렌, 루카 SET",
           "checked": [
             true,
             false,
@@ -3036,9 +3036,9 @@
           "text": "1:21 수사렌 · 수레이 ON",
           "checked": [
             true,
+            false,
+            false,
             true,
-            false,
-            false,
             true,
             false
           ],
@@ -3101,7 +3101,7 @@
       "sourceHeaderCell": "B40",
       "editorVersion": 1,
       "rowFormatsVersion": 1,
-      "title": "3넴 루카 수레이 프셰피 수리코 수사렌 성급 65555, 손컨 —, TP 2.0+, 기대딜 4,530만~4,730만"
+      "title": "3넴 수사렌 수리코 프셰피 수레이 루카 성급 55556, 손컨 —, TP 2.0+, 기대딜 4,530만~4,730만"
     },
     {
       "month": "2026-10",
@@ -3110,11 +3110,11 @@
       "source": "이월 택틱",
       "group": "이월 택틱",
       "characters": [
-        "클요리",
-        "봄쿄카",
-        "스즈메",
+        "수리스",
         "피오",
-        "수리스"
+        "스즈메",
+        "봄쿄카",
+        "클요리"
       ],
       "stars": [
         "5",
@@ -3133,12 +3133,12 @@
       "rows": [
         {
           "id": "carry-2026-10-3-2-start",
-          "text": "AUTO OFF, 클요리, 스즈메, 피오, 수리스 SET",
+          "text": "AUTO OFF, 수리스, 피오, 스즈메, 클요리 SET",
           "checked": [
             true,
+            true,
+            true,
             false,
-            true,
-            true,
             true,
             false
           ],
@@ -3166,9 +3166,9 @@
           "text": "1:17 봄쿄카 · 봄쿄카 OFF",
           "checked": [
             true,
+            true,
+            true,
             false,
-            true,
-            true,
             true,
             false
           ],
@@ -3215,7 +3215,7 @@
       "sourceHeaderCell": "B22",
       "editorVersion": 1,
       "rowFormatsVersion": 1,
-      "title": "3넴 클요리 봄쿄카 스즈메 피오 수리스 성급 55655, 손컨 —, TP 2.0+, 기대딜 4,350만~4,540만"
+      "title": "3넴 수리스 피오 스즈메 봄쿄카 클요리 성급 55655, 손컨 —, TP 2.0+, 기대딜 4,350만~4,540만"
     },
     {
       "month": "2026-10",
@@ -3224,11 +3224,11 @@
       "source": "이월 택틱",
       "group": "이월 택틱",
       "characters": [
-        "수사렌",
-        "수네카",
-        "알라비",
+        "수메스",
         "수스미",
-        "수메스"
+        "알라비",
+        "수네카",
+        "수사렌"
       ],
       "stars": [
         "5",
@@ -3247,12 +3247,12 @@
       "rows": [
         {
           "id": "carry-2026-10-3-1-start",
-          "text": "AUTO OFF, 수사렌, 알라비, 수스미, 수메스 SET",
+          "text": "AUTO OFF, 수메스, 수스미, 알라비, 수사렌 SET",
           "checked": [
             true,
+            true,
+            true,
             false,
-            true,
-            true,
             true,
             false
           ],
@@ -3297,7 +3297,7 @@
       "sourceHeaderCell": "B6",
       "editorVersion": 1,
       "rowFormatsVersion": 1,
-      "title": "3넴 수사렌 수네카 알라비 수스미 수메스 성급 55555, 손컨 —, TP 2.0+, 기대딜 2,870만~3,200만"
+      "title": "3넴 수메스 수스미 알라비 수네카 수사렌 성급 55555, 손컨 —, TP 2.0+, 기대딜 2,870만~3,200만"
     },
     {
       "month": "2026-10",
@@ -3306,11 +3306,11 @@
       "source": "이월 택틱",
       "group": "이월 택틱",
       "characters": [
-        "린드",
-        "블룸",
-        "에로체",
+        "루이즈마리",
         "성라엘",
-        "루이즈마리"
+        "에로체",
+        "블룸",
+        "린드"
       ],
       "stars": [
         "5",
@@ -3329,13 +3329,13 @@
       "rows": [
         {
           "id": "carry-2026-10-4-4-start",
-          "text": "AUTO ON, 린드, 블룸, 에로체, 성라엘 SET",
+          "text": "AUTO ON, 성라엘, 에로체, 블룸, 린드 SET",
           "checked": [
-            true,
-            true,
-            true,
-            true,
             false,
+            true,
+            true,
+            true,
+            true,
             true
           ],
           "manualChecks": true,
@@ -3345,11 +3345,11 @@
           "id": "carry-2026-10-4-4-r1",
           "text": "1:19 성라엘 · 성라엘 OFF 〔시뮬 택틱이 원본과 밀리며, 주인장 프나강이 낮아〕",
           "checked": [
-            true,
-            true,
-            true,
             false,
             false,
+            true,
+            true,
+            true,
             true
           ],
           "manualChecks": true,
@@ -3361,11 +3361,11 @@
           "id": "carry-2026-10-4-4-r2",
           "text": "1:10 블룸 · 성라엘 ON 〔디테일한 검증을 하지 못했습니다.〕",
           "checked": [
-            true,
-            true,
-            true,
-            true,
             false,
+            true,
+            true,
+            true,
+            true,
             true
           ],
           "manualChecks": true,
@@ -3377,11 +3377,11 @@
           "id": "carry-2026-10-4-4-r3",
           "text": "0:57 루이즈마리 〔죄송합니다.〕",
           "checked": [
-            true,
-            true,
-            true,
-            true,
             false,
+            true,
+            true,
+            true,
+            true,
             true
           ],
           "manualChecks": true,
@@ -3393,11 +3393,11 @@
           "id": "carry-2026-10-4-4-r4",
           "text": "0:56 ■보스유버",
           "checked": [
-            true,
-            true,
-            true,
-            true,
             false,
+            true,
+            true,
+            true,
+            true,
             true
           ],
           "manualChecks": true,
@@ -3409,11 +3409,11 @@
           "id": "carry-2026-10-4-4-r5",
           "text": "0:48 성라엘 → 린드",
           "checked": [
-            true,
-            true,
-            true,
-            true,
             false,
+            true,
+            true,
+            true,
+            true,
             true
           ],
           "manualChecks": true,
@@ -3425,11 +3425,11 @@
           "id": "carry-2026-10-4-4-r6",
           "text": "0:41 마리 오토 → 에로체 → 블룸",
           "checked": [
-            true,
-            true,
-            true,
-            true,
             false,
+            true,
+            true,
+            true,
+            true,
             true
           ],
           "manualChecks": true,
@@ -3441,11 +3441,11 @@
           "id": "carry-2026-10-4-4-r7",
           "text": "0:38 성라엘",
           "checked": [
-            true,
-            true,
-            true,
-            true,
             false,
+            true,
+            true,
+            true,
+            true,
             true
           ],
           "manualChecks": true,
@@ -3459,7 +3459,7 @@
       "sourceHeaderCell": "B60",
       "editorVersion": 1,
       "rowFormatsVersion": 1,
-      "title": "4넴 린드 블룸 에로체 성라엘 루이즈마리 성급 55555, 손컨 —, TP 3.0+, 기대딜 1억 4,600만"
+      "title": "4넴 루이즈마리 성라엘 에로체 블룸 린드 성급 55555, 손컨 —, TP 3.0+, 기대딜 1억 4,600만"
     },
     {
       "month": "2026-10",
@@ -3468,11 +3468,11 @@
       "source": "이월 택틱",
       "group": "이월 택틱",
       "characters": [
-        "오우카",
-        "에로체",
-        "성라엘",
+        "수마호",
         "루이즈마리",
-        "수마호"
+        "성라엘",
+        "에로체",
+        "오우카"
       ],
       "stars": [
         "5",
@@ -3491,7 +3491,7 @@
       "rows": [
         {
           "id": "carry-2026-10-4-3-start",
-          "text": "AUTO OFF, 에로체, 성라엘, 루이즈마리 SET",
+          "text": "AUTO OFF, 루이즈마리, 성라엘, 에로체 SET",
           "checked": [
             false,
             true,
@@ -3621,7 +3621,7 @@
       "sourceHeaderCell": "B39",
       "editorVersion": 1,
       "rowFormatsVersion": 1,
-      "title": "4넴 오우카 에로체 성라엘 루이즈마리 수마호 성급 55555, 손컨 —, TP 2.1+, 기대딜 7,760만~7,890만"
+      "title": "4넴 수마호 루이즈마리 성라엘 에로체 오우카 성급 55555, 손컨 —, TP 2.1+, 기대딜 7,760만~7,890만"
     },
     {
       "month": "2026-10",
@@ -3630,11 +3630,11 @@
       "source": "이월 택틱",
       "group": "이월 택틱",
       "characters": [
-        "엔요리",
-        "수네모네",
-        "뉴사렌",
+        "뉴츠네",
         "라이라엘",
-        "뉴츠네"
+        "뉴사렌",
+        "수네모네",
+        "엔요리"
       ],
       "stars": [
         "5",
@@ -3653,13 +3653,13 @@
       "rows": [
         {
           "id": "carry-2026-10-4-1-start",
-          "text": "AUTO OFF, 엔요리, 수네모네, 뉴사렌 SET",
+          "text": "AUTO OFF, 뉴사렌, 수네모네, 엔요리 SET",
           "checked": [
-            true,
-            true,
-            true,
             false,
             false,
+            true,
+            true,
+            true,
             false
           ],
           "manualChecks": true,
@@ -3669,11 +3669,11 @@
           "id": "carry-2026-10-4-1-r1",
           "text": "1:22 뉴사렌 · 뉴사렌 OFF",
           "checked": [
+            false,
+            false,
+            false,
             true,
             true,
-            false,
-            false,
-            false,
             false
           ],
           "manualChecks": true,
@@ -3686,9 +3686,9 @@
           "text": "1:10 라이라엘 벽력 후딜캔 · 뉴츠네 ON 〔←뉴츠네 드림 슛 이후 번개 1틱〕 · 중간딜 2910만",
           "checked": [
             true,
+            false,
+            false,
             true,
-            false,
-            false,
             true,
             false
           ],
@@ -3702,9 +3702,9 @@
           "text": "1:10 뉴츠네 → 뉴사렌 · 뉴사렌 ON",
           "checked": [
             true,
-            true,
-            true,
             false,
+            true,
+            true,
             true,
             false
           ],
@@ -3719,7 +3719,7 @@
       "sourceHeaderCell": "B6",
       "editorVersion": 1,
       "rowFormatsVersion": 1,
-      "title": "4넴 엔요리 수네모네 뉴사렌 라이라엘 뉴츠네 성급 55555, 손컨 —, TP 1.1+, 기대딜 2,880만~2,930만"
+      "title": "4넴 뉴츠네 라이라엘 뉴사렌 수네모네 엔요리 성급 55555, 손컨 —, TP 1.1+, 기대딜 2,880만~2,930만"
     },
     {
       "month": "2026-10",
@@ -3728,18 +3728,18 @@
       "source": "이월 택틱",
       "group": "이월 택틱",
       "characters": [
-        "유카리",
-        "리조미",
-        "리리컬",
+        "성레짓타",
         "게무기",
-        "성레짓타"
+        "리리컬",
+        "리조미",
+        "유카리"
       ],
       "stars": [
-        "6",
         "5",
         "5",
         "5",
-        "5"
+        "5",
+        "6"
       ],
       "manualCount": "",
       "tp": "1.1+",
@@ -3751,13 +3751,13 @@
       "rows": [
         {
           "id": "carry-2026-10-4-2-start",
-          "text": "AUTO OFF, 리조미, 리리컬, 게무기, 성레짓타 SET",
+          "text": "AUTO OFF, 성레짓타, 게무기, 리리컬, 리조미 SET",
           "checked": [
+            true,
+            true,
+            true,
+            true,
             false,
-            true,
-            true,
-            true,
-            true,
             false
           ],
           "manualChecks": true,
@@ -3767,11 +3767,11 @@
           "id": "carry-2026-10-4-2-r1",
           "text": "1:10 리리컬 어드벤처 1타 · 중간딜 2740만",
           "checked": [
+            true,
+            true,
+            true,
+            true,
             false,
-            true,
-            true,
-            true,
-            true,
             false
           ],
           "manualChecks": true,
@@ -3785,7 +3785,7 @@
       "sourceHeaderCell": "B23",
       "editorVersion": 1,
       "rowFormatsVersion": 1,
-      "title": "4넴 유카리 리조미 리리컬 게무기 성레짓타 성급 65555, 손컨 —, TP 1.1+, 기대딜 2,880만~2,930만"
+      "title": "4넴 성레짓타 게무기 리리컬 리조미 유카리 성급 55556, 손컨 —, TP 1.1+, 기대딜 2,880만~2,930만"
     },
     {
       "month": "2026-10",
@@ -3794,18 +3794,18 @@
       "source": "이월 택틱",
       "group": "이월 택틱",
       "characters": [
-        "스즈메",
-        "피오",
-        "의치카",
+        "카마키",
         "의란파",
-        "카마키"
+        "의치카",
+        "피오",
+        "스즈메"
       ],
       "stars": [
-        "6",
         "5",
         "5",
         "5",
-        "5"
+        "5",
+        "6"
       ],
       "manualCount": "",
       "tp": "",
@@ -3817,13 +3817,13 @@
       "rows": [
         {
           "id": "carry-2026-10-5-5-start",
-          "text": "AUTO ON, 피오, 의치카, 의란파, 카마키 SET",
+          "text": "AUTO ON, 카마키, 의란파, 의치카, 피오 SET",
           "checked": [
+            true,
+            true,
+            true,
+            true,
             false,
-            true,
-            true,
-            true,
-            true,
             true
           ],
           "manualChecks": true,
@@ -3849,11 +3849,11 @@
           "id": "carry-2026-10-5-5-r2",
           "text": "0:59 카마키 · 카마키 OFF · 중간딜 5840만",
           "checked": [
-            true,
-            true,
-            true,
-            true,
             false,
+            true,
+            true,
+            true,
+            true,
             true
           ],
           "manualChecks": true,
@@ -3899,7 +3899,7 @@
       "sourceHeaderCell": "B74",
       "editorVersion": 1,
       "rowFormatsVersion": 1,
-      "title": "5넴 스즈메 피오 의치카 의란파 카마키 성급 65555, 손컨 —, TP —, 기대딜 1억 940만~1억 1,450만"
+      "title": "5넴 카마키 의란파 의치카 피오 스즈메 성급 55556, 손컨 —, TP —, 기대딜 1억 940만~1억 1,450만"
     },
     {
       "month": "2026-10",
@@ -3908,11 +3908,11 @@
       "source": "이월 택틱",
       "group": "이월 택틱",
       "characters": [
-        "바이올렛",
-        "수마레",
-        "호마레",
+        "알네카",
         "미소라",
-        "알네카"
+        "호마레",
+        "수마레",
+        "바이올렛"
       ],
       "stars": [
         "5",
@@ -3931,13 +3931,13 @@
       "rows": [
         {
           "id": "carry-2026-10-5-6-start",
-          "text": "AUTO ON, 바이올렛, 수마레, 호마레 SET",
+          "text": "AUTO ON, 호마레, 수마레, 바이올렛 SET",
           "checked": [
-            true,
-            true,
-            true,
             false,
             false,
+            true,
+            true,
+            true,
             true
           ],
           "manualChecks": true,
@@ -3947,11 +3947,11 @@
           "id": "carry-2026-10-5-6-r1",
           "text": "1:01 알네카 · AUTO OFF · 중간딜 4600만",
           "checked": [
-            true,
-            true,
-            true,
             false,
             false,
+            true,
+            true,
+            true,
             false
           ],
           "manualChecks": true,
@@ -3963,11 +3963,11 @@
           "id": "carry-2026-10-5-6-r2",
           "text": "1:00 바이올렛 · 미소라 ON · AUTO ON · 중간딜 4840만",
           "checked": [
-            true,
-            true,
-            true,
-            true,
             false,
+            true,
+            true,
+            true,
+            true,
             true
           ],
           "manualChecks": true,
@@ -3979,11 +3979,11 @@
           "id": "carry-2026-10-5-6-r3",
           "text": "0:58 수마레 · 중간딜 6420만",
           "checked": [
-            true,
-            true,
-            true,
-            true,
             false,
+            true,
+            true,
+            true,
+            true,
             true
           ],
           "manualChecks": true,
@@ -3995,11 +3995,11 @@
           "id": "carry-2026-10-5-6-r4",
           "text": "0:50 호마레 · 중간딜 8160만",
           "checked": [
-            true,
-            true,
-            true,
-            true,
             false,
+            true,
+            true,
+            true,
+            true,
             true
           ],
           "manualChecks": true,
@@ -4011,11 +4011,11 @@
           "id": "carry-2026-10-5-6-r5",
           "text": "0:45 수마레 · 중간딜 8970만",
           "checked": [
-            true,
-            true,
-            true,
-            true,
             false,
+            true,
+            true,
+            true,
+            true,
             true
           ],
           "manualChecks": true,
@@ -4027,11 +4027,11 @@
           "id": "carry-2026-10-5-6-r6",
           "text": "0:42 미소라 · 중간딜 9980만",
           "checked": [
-            true,
-            true,
-            true,
-            true,
             false,
+            true,
+            true,
+            true,
+            true,
             true
           ],
           "manualChecks": true,
@@ -4043,11 +4043,11 @@
           "id": "carry-2026-10-5-6-r7",
           "text": "0:33 수마레 · 중간딜 11340만",
           "checked": [
-            true,
-            true,
-            true,
-            true,
             false,
+            true,
+            true,
+            true,
+            true,
             true
           ],
           "manualChecks": true,
@@ -4061,7 +4061,7 @@
       "sourceHeaderCell": "B92",
       "editorVersion": 1,
       "rowFormatsVersion": 1,
-      "title": "5넴 바이올렛 수마레 호마레 미소라 알네카 성급 55555, 손컨 —, TP 4.0+, 기대딜 1억 1,230만~1억 1,430만"
+      "title": "5넴 알네카 미소라 호마레 수마레 바이올렛 성급 55555, 손컨 —, TP 4.0+, 기대딜 1억 1,230만~1억 1,430만"
     },
     {
       "month": "2026-10",
@@ -4070,17 +4070,17 @@
       "source": "이월 택틱",
       "group": "이월 택틱",
       "characters": [
-        "바이올렛",
-        "이리야",
-        "수마레",
+        "알네카",
         "호마레",
-        "알네카"
+        "수마레",
+        "이리야",
+        "바이올렛"
       ],
       "stars": [
         "5",
+        "5",
+        "5",
         "6",
-        "5",
-        "5",
         "5"
       ],
       "manualCount": "",
@@ -4093,7 +4093,7 @@
       "rows": [
         {
           "id": "carry-2026-10-5-4-start",
-          "text": "AUTO OFF, 바이올렛, 이리야, 수마레, 호마레, 알네카 SET",
+          "text": "AUTO OFF, 알네카, 호마레, 수마레, 이리야, 바이올렛 SET",
           "checked": [
             true,
             true,
@@ -4175,7 +4175,7 @@
       "sourceHeaderCell": "B56",
       "editorVersion": 1,
       "rowFormatsVersion": 1,
-      "title": "5넴 바이올렛 이리야 수마레 호마레 알네카 성급 56555, 손컨 —, TP 4.0+, 기대딜 4,510만~4,710만"
+      "title": "5넴 알네카 호마레 수마레 이리야 바이올렛 성급 55565, 손컨 —, TP 4.0+, 기대딜 4,510만~4,710만"
     },
     {
       "month": "2026-10",
@@ -4184,17 +4184,17 @@
       "source": "이월 택틱",
       "group": "이월 택틱",
       "characters": [
-        "수나카",
-        "수사렌",
-        "미소라",
+        "알네카",
         "캬루",
-        "알네카"
+        "미소라",
+        "수사렌",
+        "수나카"
       ],
       "stars": [
         "5",
-        "5",
-        "5",
         "6",
+        "5",
+        "5",
         "5"
       ],
       "manualCount": "",
@@ -4207,7 +4207,7 @@
       "rows": [
         {
           "id": "carry-2026-10-5-1-start",
-          "text": "AUTO OFF, 수나카, 수사렌, 미소라, 캬루, 알네카 SET",
+          "text": "AUTO OFF, 알네카, 캬루, 미소라, 수사렌, 수나카 SET",
           "checked": [
             true,
             true,
@@ -4241,7 +4241,7 @@
       "sourceHeaderCell": "B6",
       "editorVersion": 1,
       "rowFormatsVersion": 1,
-      "title": "5넴 수나카 수사렌 미소라 캬루 알네카 성급 55565, 손컨 —, TP 3.0+, 기대딜 3,070만~3,200만"
+      "title": "5넴 알네카 캬루 미소라 수사렌 수나카 성급 56555, 손컨 —, TP 3.0+, 기대딜 3,070만~3,200만"
     },
     {
       "month": "2026-10",
@@ -4250,11 +4250,11 @@
       "source": "이월 택틱",
       "group": "이월 택틱",
       "characters": [
-        "수나카",
-        "요리",
-        "수사렌",
+        "알네카",
         "캬루",
-        "알네카"
+        "수사렌",
+        "요리",
+        "수나카"
       ],
       "stars": [
         "5",
@@ -4273,12 +4273,12 @@
       "rows": [
         {
           "id": "carry-2026-10-5-2-start",
-          "text": "AUTO ON, 수나카, 수사렌, 캬루, 알네카 SET",
+          "text": "AUTO ON, 알네카, 캬루, 수사렌, 수나카 SET",
           "checked": [
             true,
+            true,
+            true,
             false,
-            true,
-            true,
             true,
             true
           ],
@@ -4290,9 +4290,9 @@
           "text": "1:20 요리 · AUTO OFF",
           "checked": [
             true,
+            true,
+            true,
             false,
-            true,
-            true,
             true,
             false
           ],
@@ -4306,9 +4306,9 @@
           "text": "1:15 캬루 · AUTO ON",
           "checked": [
             true,
+            true,
+            true,
             false,
-            true,
-            true,
             true,
             true
           ],
@@ -4355,7 +4355,7 @@
       "sourceHeaderCell": "B22",
       "editorVersion": 1,
       "rowFormatsVersion": 1,
-      "title": "5넴 수나카 요리 수사렌 캬루 알네카 성급 56565, 손컨 —, TP 3.0+, 기대딜 2,910만~3,050만"
+      "title": "5넴 알네카 캬루 수사렌 요리 수나카 성급 56565, 손컨 —, TP 3.0+, 기대딜 2,910만~3,050만"
     },
     {
       "month": "2026-10",
@@ -4364,18 +4364,18 @@
       "source": "이월 택틱",
       "group": "이월 택틱",
       "characters": [
-        "미미",
-        "프레이",
-        "스즈메",
+        "카마키",
         "피오",
-        "카마키"
+        "스즈메",
+        "프레이",
+        "미미"
       ],
       "stars": [
-        "6",
+        "5",
         "5",
         "6",
         "5",
-        "5"
+        "6"
       ],
       "manualCount": "",
       "tp": "",
@@ -4387,13 +4387,13 @@
       "rows": [
         {
           "id": "carry-2026-10-5-3-start",
-          "text": "AUTO OFF, 스즈메, 피오, 카마키 SET",
+          "text": "AUTO OFF, 카마키, 피오, 스즈메 SET",
           "checked": [
+            true,
+            true,
+            true,
             false,
             false,
-            true,
-            true,
-            true,
             false
           ],
           "manualChecks": true,
@@ -4403,11 +4403,11 @@
           "id": "carry-2026-10-5-3-r1",
           "text": "1:11 카마키",
           "checked": [
+            true,
+            true,
+            true,
             false,
             false,
-            true,
-            true,
-            true,
             false
           ],
           "manualChecks": true,
@@ -4420,9 +4420,9 @@
           "text": "1:10 프레이 램페이지 후딜캔 · 미미 ON · 중간딜 2170만",
           "checked": [
             true,
+            true,
+            true,
             false,
-            true,
-            true,
             true,
             false
           ],
@@ -4437,7 +4437,7 @@
       "sourceHeaderCell": "B40",
       "editorVersion": 1,
       "rowFormatsVersion": 1,
-      "title": "5넴 미미 프레이 스즈메 피오 카마키 성급 65655, 손컨 —, TP —, 기대딜 2,140만~2,200만"
+      "title": "5넴 카마키 피오 스즈메 프레이 미미 성급 55656, 손컨 —, TP —, 기대딜 2,140만~2,200만"
     }
   ]
 }

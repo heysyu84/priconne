@@ -92,6 +92,41 @@ export function ensureTactics(app, metadata = {}, rowFormats = {}) {
       month.carryStarsRevision = 1;
       changed = true;
     }
+    // Fix the October carry sheet's explicit B-to-F lineup order. The original
+    // import reversed it, so reverse character slots, stars, and the five SET
+    // checkboxes together. AUTO is the sixth column and must not move.
+    // Apply this only to known imported IDs whose lineup is still in old order.
+    if (key === '2026-10' && Array.isArray(metadata.carryTactics) && Number(month.carryLineupRevision || 0) < 1) {
+      const byId = new Map(metadata.carryTactics.map(seed => [String(seed.id), seed]));
+      const startInstruction = (characters, checked) => {
+        const auto = checked?.[5] ? 'AUTO ON' : 'AUTO OFF';
+        const setNames = characters.filter((_, index) => checked?.[index]);
+        return auto + (setNames.length ? ', ' + setNames.join(', ') + ' SET' : '');
+      };
+      for (const tactic of month.tactics || []) {
+        const corrected = byId.get(String(tactic.id));
+        if (!corrected || groupOf(tactic) !== CARRY_GROUP) continue;
+        const oldOrder = [...corrected.characters].reverse();
+        const currentOrder = (tactic.characters || []).map(name => name === '페리컬' ? '리리컬' : name);
+        if (currentOrder.length !== 5 || !currentOrder.every((name, index) => name === oldOrder[index])) continue;
+        const setup = (tactic.rows || []).find(row => row.id === tactic.id + '-start');
+        const previousInstruction = setup ? startInstruction(currentOrder, setup.checked) : '';
+        tactic.characters = [...corrected.characters];
+        tactic.stars = [...corrected.stars];
+        for (const row of tactic.rows || []) {
+          if (!Array.isArray(row.checked) || row.checked.length < 6) continue;
+          row.checked = [...row.checked.slice(0, 5).reverse(), ...row.checked.slice(5)];
+        }
+        if (setup && setup.text === previousInstruction) {
+          setup.text = startInstruction(tactic.characters, setup.checked);
+          delete setup.runs;
+        }
+        tactic.title = titleFor(tactic);
+        changed = true;
+      }
+      month.carryLineupRevision = 1;
+      changed = true;
+    }
     if (!month.tacticsMetadataVersion) {
       for (const missing of metadata.missingTactics || []) {
         if (missing.month === key && !month.tactics.some(t => t.id === missing.id)) { const {month:_, ...t} = missing; month.tactics.push(structuredClone(t)); changed = true; }
