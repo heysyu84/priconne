@@ -190,3 +190,41 @@ html[data-text-scale]:not([data-text-scale="100"]) .combo-compact-list{grid-temp
 html[data-text-scale]:not([data-text-scale="100"]) .combo-mini-facts{flex-wrap:wrap;max-width:100%}
 html[data-text-scale]:not([data-text-scale="100"]) .combo-mini-chip{max-width:100%;white-space:normal;overflow-wrap:anywhere}
 html[data-text-scale]:not([data-text-scale="100"]) .combo-mini-header{flex-wrap:wrap}
+
+
+/* Unified recommendation cards: keep the compact content, use the former
+   detailed card's visible boss-colored border and generous white breathing room. */
+.combo-compact-list{gap:12px}
+.combo-compact-row{
+  border:1px solid var(--boss-accent,#ccb6da);
+  border-top:5px solid var(--boss-accent,#ccb6da);
+  border-left:1px solid var(--boss-accent,#ccb6da);
+  border-radius:13px;
+  box-shadow:0 3px 12px #6344820b;
+  background:linear-gradient(140deg,#fff 68%,var(--boss-bg,#faf7fd));
+}
+.combo-compact-row .combo-mini-layout,
+.combo-compact-row.is-stage3 .combo-mini-layout{padding:13px 14px;row-gap:7px}
+.combo-mini-chip.is-tp{
+  box-sizing:border-box;
+  flex:0 0 68px;
+  width:68px;
+  min-width:68px;
+  padding-inline:3px;
+  font-variant-numeric:tabular-nums;
+  white-space:nowrap;
+}
+/* All 4.0, 4.2 and 4.0+ fields have the same measured width. */
+@container combo-card (max-width:569px){
+  .combo-compact-row .combo-mini-layout,
+  .combo-compact-row.is-stage3 .combo-mini-layout{padding:11px 12px;row-gap:8px}
+  .combo-mini-header{align-items:center;gap:5px}
+  .combo-mini-header>.combo-mini-boss{flex:none;order:0}
+  .combo-mini-facts{justify-content:flex-start;gap:4px;flex-wrap:wrap;align-content:center}
+  .combo-mini-facts .source-link-box{order:-1;flex:none;margin-right:2px}
+  .combo-mini-chip.is-tp{flex:0 0 64px;width:64px;min-width:64px}
+}
+@container combo-card (max-width:360px){
+  .combo-mini-facts{gap:3px}
+  .combo-mini-chip.is-tp{flex-basis:60px;width:60px;min-width:60px}
+}
