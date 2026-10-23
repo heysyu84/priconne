@@ -24,8 +24,9 @@
 | public/characters.json, public/character-portraits.mjs | 원본 327명 초상화 연결, 성급별 이미지와 기본 초상화 복구 |
 | public/responsive.css | 모바일과 중간 너비의 배치 |
 | app/api/state/, app/api/editor/, app/editor-access.ts | 서버 저장과 작성 권한 |
-| public/images/characters/, public/images/bosses/, public/images/branding/ | 사이트에서 사용하는 이미지 |
-| public/images/sheet-originals/ | 원본 시트에서 추출한 PNG 328개와 셀 위치·해시 목록 |
+| public/source-library/images/ | 캐릭터·성급·보스 이미지의 단일 기준 폴더 |
+| public/images/branding/, public/images/menu-sd/ | 로고와 메뉴 일러스트 |
+| public/source-library/sheet-provenance.json | 구형 시트 이미지의 셀 위치·해시와 현재 초상화 대응 |
 | public/fonts/ | PDF용 한글 글꼴과 라이선스 |
 | drizzle/ | D1 테이블 마이그레이션 |
 
@@ -53,7 +54,7 @@ GitHub Pages만으로 공유 저장 서버를 대체할 수는 없습니다. 서
     node --experimental-strip-types scripts/test-editor.mjs
     node scripts/test-pages.mjs
 
-원본 시트 이미지의 바이트, 해시와 위치는 public/images/sheet-originals/manifest.json에서 확인할 수 있습니다. scripts/extract-sheet-images.py로 동일한 원본 XLSX에서 다시 추출할 수 있습니다.
+원본 시트 이미지의 해시와 위치, 현재 이미지 대응은 public/source-library/sheet-provenance.json에서 확인할 수 있습니다. 구형 이미지 파일은 Git 이력과 원본 XLSX에 보존되며 배포 폴더에는 중복 저장하지 않습니다. scripts/extract-sheet-images.py로 동일한 원본 XLSX에서 다시 추출할 수 있습니다.
 
 ## 분리형 월별 아카이브 (2026-10-22 설계)
 현재 진행 중인 월은 `clan_state`에, 과거 월은 `clan_archive_months`에 별도 보관합니다.
@@ -103,3 +104,5 @@ JSON 전체 백업 시 아카이브를 함께 가져오고, 복원 시 명시적
 
 
 이미지 일괄 등록 검토 화면은 등록 체크 변경 즉시 선택 건수와 등록 버튼 상태를 갱신합니다. 검증: `node scripts/test-battle-image-import.mjs` · `node scripts/test-battle-image-parser.mjs`.
+
+이미지 정리: 캐릭터 기본·성급은 `source-library/images`만 참조합니다. 마스터 센리는 `source-library/images/Boss/4.20.webp`에 있습니다. `legacy-image-paths.mjs`는 과거 저장 데이터의 경로를 현재 이미지로 변환하는 호환 목록이며, 구형 이미지 파일을 다시 배포하지 않습니다. `clan-battle/public`과 `docs`는 소스/정적 배포 미러이므로 같은 구조를 유지합니다.

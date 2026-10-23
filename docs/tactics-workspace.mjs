@@ -1,5 +1,5 @@
-import { isBoosterCharacter, formatExpectedDamage, sourceLinkBox } from './view-settings.mjs?v=20261022-ui14';
-import { characterPortrait, portraitAttributes, portraitStarOverlay, normalizeCharacterName, findCharacter } from './character-portraits.mjs?v=20261022-ui14';
+import { isBoosterCharacter, formatExpectedDamage, sourceLinkBox } from './view-settings.mjs?v=20261023-image-cleanup01';
+import { characterPortrait, portraitAttributes, portraitStarOverlay, normalizeCharacterName, findCharacter } from './character-portraits.mjs?v=20261023-image-cleanup01';
 import { makeId, parseDamage } from './roster.mjs?v=20261022-ui14';
 import { GROUPS, groupOf, titleFor, compareTactics, newRow, checkedSix, commandState, recalculateTacticRows, replaceTacticRowText, pastedRows, richLine, parseClock, clock, escapeHtml as X } from './tactics-model.mjs?v=20261023-foreign01';
 import { shiftTimeline } from './engine.mjs?v=20261022-ui14';

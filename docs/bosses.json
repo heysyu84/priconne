@@ -619,12 +619,12 @@
     "마스터 센리": {
       "referenceKey": "4.20",
       "mappingStatus": "verified",
-      "assetSource": "/images/bosses/4.20.webp",
+      "assetSource": "/source-library/images/Boss/4.20.webp",
       "mappingNote": "Legacy clan battle boss portrait uploaded by user; preserved as a dedicated local asset",
       "koreanReference": "https://d.namu.moe/w/프린세스%20커넥트!%20Re%3ADive/퀘스트/클랜전",
       "bossContent": "clan",
       "isClanBoss": true,
-      "portrait": "/images/bosses/4.20.webp",
+      "portrait": "/source-library/images/Boss/4.20.webp",
       "sourceNote": "User-provided portrait of discontinued 4th-slot clan battle boss. Custom code 4.20 (not an upstream numbered filename)."
     },
     "사지타리우스": {

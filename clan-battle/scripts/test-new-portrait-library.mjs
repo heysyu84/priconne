@@ -9,8 +9,8 @@ const root=path.resolve(dir,'../public');
 const catalog=JSON.parse(fs.readFileSync(path.join(root,'characters.json'),'utf8')).characters;
 const library=JSON.parse(fs.readFileSync(path.join(root,'portrait-library.json'),'utf8'));
 const combined=withPortraitLibrary(catalog,library);
-assert.equal(catalog.length,352);
-assert.equal(library.characters.length,352);
+assert.equal(catalog.length,351);
+assert.equal(library.characters.length,351);
 assert.ok(combined.length>=catalog.length);
 function assertSourceExists(url){
   assert.ok(url.startsWith('/source-library/images/'),url);

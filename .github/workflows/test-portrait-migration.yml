@@ -35,3 +35,5 @@ jobs:
           node scripts/test-portraits.mjs
           node scripts/test-tactics.mjs
           node scripts/test-new-portrait-library.mjs
+          node scripts/test-image-cleanup.mjs
+

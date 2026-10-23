@@ -58,6 +58,8 @@ def main():
         if p.is_symlink() or any(part.startswith(".") for part in p.relative_to(source).parts):
             continue
         rel = p.relative_to(source)
+        if rel.as_posix() in {"images/신루카3.png", "images/신루카4.png", "images/신루카5.png"}:
+            continue
         if rel.parts[0] not in {"images", "초상화"} and len(rel.parts) != 1:
             continue
         # Include root-level standalone image files in addition to image folders.
@@ -68,6 +70,15 @@ def main():
             "category": group(rel),
             "bytes": p.stat().st_size,
             "sha256": hashlib.sha256(p.read_bytes()).hexdigest(),
+        })
+    custom = OUTPUTS[0] / "images/Boss/4.20.webp"
+    if custom.is_file():
+        images.append({
+            "path": "images/Boss/4.20.webp", "name": "4.20",
+            "filename": "4.20.webp", "category": "boss",
+            "bytes": custom.stat().st_size,
+            "sha256": hashlib.sha256(custom.read_bytes()).hexdigest(),
+            "source": "user-provided Master Senri portrait",
         })
     if len(images) < 2000:
         raise SystemExit(f"Upstream source seems incomplete: found only {len(images)} images")
@@ -84,7 +95,10 @@ def main():
             target = dest / image["path"]
             target.parent.mkdir(parents=True, exist_ok=True)
             if not target.exists() or target.stat().st_size != image["bytes"]:
-                shutil.copy2(source / image["path"], target)
+                origin = source / image["path"]
+                if not origin.is_file():
+                    origin = OUTPUTS[0] / image["path"]
+                shutil.copy2(origin, target)
         (dest / "manifest.json").write_text(
             json.dumps(manifest, ensure_ascii=False, separators=(",", ":")) + "\n",
             encoding="utf-8",

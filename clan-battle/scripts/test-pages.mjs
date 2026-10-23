@@ -34,11 +34,11 @@ const local=createApiClient({pageOrigin:backend,fetcher:async(...args)=>{calls.p
 await local('/api/editor');assert.equal(calls.at(-1)[0],'/api/editor');assert.equal(calls.at(-1)[1].credentials,'same-origin');
 
 globalThis.document={baseURI:'https://heysyu84.github.io/priconne/'};
-assert.equal(assetUrl('/images/characters/a.png'),'/priconne/images/characters/a.png');
+assert.equal(assetUrl('/source-library/images/nostar/a.png'),'/priconne/source-library/images/nostar/a.png');
 assert.equal(assetUrl('data:image/png;base64,AAAA'),'data:image/png;base64,AAAA');
-const portrait=characterPortrait([{name:'테스트',portrait:'/images/characters/a.png',byStar:{'5':'/images/characters/b.png'}}],'테스트',5);
-assert.equal(portrait.url,'/priconne/images/characters/b.png');
-const img={matches:()=>true,dataset:{portraitFallbacks:JSON.stringify(['/images/characters/a.png'])}};handlePortraitError({target:img});assert.equal(img.src,'/priconne/images/characters/a.png');
+const portrait=characterPortrait([{name:'테스트',portrait:'/source-library/images/nostar/a.png',byStar:{'5':'/source-library/images/nostar/b.png'}}],'테스트',5);
+assert.equal(portrait.url,'/priconne/source-library/images/nostar/b.png');
+const img={matches:()=>true,dataset:{portraitFallbacks:JSON.stringify(['/source-library/images/nostar/a.png'])}};handlePortraitError({target:img});assert.equal(img.src,'/priconne/source-library/images/nostar/a.png');
 delete globalThis.document;
 const dir=fs.mkdtempSync(path.join(os.tmpdir(),'nyang-pages-'));
 try {

@@ -1,4 +1,5 @@
-import { assetUrl } from './site-paths.mjs?v=20261022-ui14';
+import {legacyImagePaths} from './legacy-image-paths.mjs?v=20261023-image-cleanup01';
+import { assetUrl } from './site-paths.mjs?v=20261023-image-cleanup01';
 
 export const normalizeCharacterName = value => String(value ?? '').normalize('NFKC').replace(/\s+/g, '').toLocaleLowerCase('ko-KR');
 
@@ -40,8 +41,8 @@ export function withPortraitLibrary(catalog, library) {
 
 function safeImage(value) {
   if (typeof value !== 'string') return '';
+  value=legacyImagePaths[value]||value;
   if (/^data:image\/(?:png|jpeg|webp);base64,[a-z\d+/=]+$/i.test(value)) return value;
-  if (/^\/images\/(?:characters|sheet-originals)\/[\w.-]+$/.test(value)) return value;
   if (/^\/source-library\/images\/(?:nostar\/)?[\w%.()가-힣ㄱ-ㅎㅏ-ㅣ -]+\.png$/i.test(value)
     && !value.includes('..') && !/%2f|%5c/i.test(value)) return value;
   return '';

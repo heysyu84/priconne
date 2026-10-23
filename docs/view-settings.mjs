@@ -1,4 +1,4 @@
-import { findCharacter, normalizeCharacterName } from './character-portraits.mjs?v=20261022-ui14';
+import { findCharacter, normalizeCharacterName } from './character-portraits.mjs?v=20261023-image-cleanup01';
 
 export const CLAN_PROFILE = '__clan__';
 export function isBoosterCharacter(app, name, catalog = []) {

@@ -1,4 +1,4 @@
-import {findCharacter, normalizeCharacterName} from './character-portraits.mjs?v=20261022-ui14';
+import {findCharacter, normalizeCharacterName} from './character-portraits.mjs?v=20261023-image-cleanup01';
 
 export function characterKey(name, catalog = []) {
   return normalizeCharacterName(findCharacter(catalog, name)?.name || name);

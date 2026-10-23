@@ -55,7 +55,7 @@ def main():
     parser.add_argument("workbook", type=Path)
     parser.add_argument("--catalog", type=Path, default=root / "public/characters.json")
     parser.add_argument("--manifest", type=Path,
-                        default=root / "public/images/sheet-originals/manifest.json")
+                        default=root / "public/source-library/sheet-provenance.json")
     args = parser.parse_args()
     catalog = json.loads(args.catalog.read_text())
     manifest = json.loads(args.manifest.read_text())
@@ -88,12 +88,12 @@ def main():
         if not isinstance(name, str) or not name.strip():
             raise ValueError(f"Missing character name at 데이터!A{row}")
         if name in original:
-            if original[name]["source"]["nameCell"] != f"A{row}":
+            if original[name]["source"].get("nameCell") not in (None, f"A{row}"):
                 raise ValueError(f"Existing portrait source mismatch for {name}")
             continue
         characters.append({
             "id": f"sheet-row-{row}", "name": name, "aliases": [],
-            "portrait": "/images/sheet-originals/" + image["file"],
+            "portrait": image["portrait"],
             "byStar": {},
             "source": {
                 "type": "xlsx-embedded", "sheet": "데이터",

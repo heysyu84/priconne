@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Extract byte-identical XLSX media, with drawing/cell provenance and no cell data.
 
-Usage: python scripts/extract-sheet-images.py source.xlsx public/images/sheet-originals
+Usage: python scripts/extract-sheet-images.py source.xlsx /tmp/priconne-sheet-extraction
 """
 import argparse
 import hashlib

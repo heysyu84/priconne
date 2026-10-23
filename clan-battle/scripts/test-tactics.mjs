@@ -93,7 +93,7 @@ assert.equal(rows.length,2);assert.deepEqual(rows[0].checked,[false,true,false,t
 for(const [text,value] of [['61',61],['1:01',61],['0:00',0],['90',90]])assert.equal(parseClock(text),value);
 for(const text of ['1:99','91','-1','nan',''])assert.ok(Number.isNaN(parseClock(text)));
 
-assert.equal(catalog.length,352);let imageCount=0;
+assert.equal(catalog.length,351);let imageCount=0;
 for(const character of catalog){for(const path of [character.portrait,...Object.values(character.byStar)]){const buffer=fs.readFileSync(new URL('../public'+path,import.meta.url));assert.equal(buffer.subarray(0,8).toString('hex'),'89504e470d0a1a0a');imageCount++;}}
-assert.ok(catalog.find(c=>c.name==='수키드나'&&c.aliases.includes('에키드나')).portrait.includes('unit-row-275'));
+assert.ok(catalog.find(c=>c.name==='수키드나'&&c.aliases.includes('에키드나')).portrait.includes(encodeURIComponent('수키드나')+'.png'));
 console.log(`PASS: 39 tactics, 454 original attacks unchanged, ${preserved} rich-text rows, carry conversion, SET import, ${imageCount} PNG mappings`);

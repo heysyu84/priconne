@@ -1,6 +1,6 @@
-import {characterPortrait, portraitAttributes, portraitStarOverlay} from './character-portraits.mjs?v=20261022-ui14';
-import {isBoosterCharacter, formatExpectedDamage, sourceLinkBox, sourceLinkKind} from './view-settings.mjs?v=20261022-ui14';
-import {planThreeAttacks} from './combo-planner.mjs?v=20261023-combo01';
+import {characterPortrait, portraitAttributes, portraitStarOverlay} from './character-portraits.mjs?v=20261023-image-cleanup01';
+import {isBoosterCharacter, formatExpectedDamage, sourceLinkBox, sourceLinkKind} from './view-settings.mjs?v=20261023-image-cleanup01';
+import {planThreeAttacks} from './combo-planner.mjs?v=20261023-image-cleanup01';
 
 export function createComboWorkspace(api) {
   const {state, render, section, canEdit, characters, escapeHtml: X, notice} = api;

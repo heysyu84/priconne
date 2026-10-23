@@ -1,4 +1,4 @@
-import { sequenceVisible, setSequenceVisible } from './view-settings.mjs?v=20261022-ui14';
+import { sequenceVisible, setSequenceVisible } from './view-settings.mjs?v=20261023-image-cleanup01';
 import { makeId, memberLabel, syncRoster, matchMembers, parseDamage } from './roster.mjs?v=20261022-ui14';
 import { dayClosures, cancelDayClosure } from './battle-days.mjs?v=20261022-ui14';
 
