@@ -19,6 +19,13 @@ export function compareTactics(a, b) {
   return left === right ? 0 : left > right ? -1 : 1;
 }
 export const newRow = (checked = [], text = '') => ({id:makeId(), text, checked:checkedSix(checked), manualChecks:false});
+// Editing the instruction text switches only that row back to automatic SET mode.
+// A checkbox-only edit remains a manual override until its instruction text changes.
+export function replaceTacticRowText(row, text) {
+  row.text = text;
+  delete row.runs;
+  row.manualChecks = false;
+}
 
 export function ensureTactics(app, metadata = {}, rowFormats = {}) {
   let changed = false;
@@ -61,7 +68,7 @@ export function commandState(text, previous, characters, catalog = []) {
   const result=checkedSix(previous);
   const names=characters.map(c=>namesFor(c,characters,catalog));
   const tokens=[...new Set(names.flat())].sort((a,b)=>b.length-a.length);
-  if (!tokens.length) return result;
+  // AUTO and 전부 must still work before character slots are filled in.
   const unit=`(?:${tokens.map(regexEscape).join('|')}|AUTO|전부)`;
   const pattern=new RegExp(`((?:${unit}[\\s,，·.]*?)*${unit})\\s*(?:순으로|순서대로)?\\s*(제외\\s*(?:전부\\s*)?)?(한번만|ON|OFF|SET|오프|온)`,'gi');
   for (const match of String(text).matchAll(pattern)) {
@@ -75,6 +82,14 @@ export function commandState(text, previous, characters, catalog = []) {
     else for (const i of selected) result[i]=on;
   }
   return result;
+}
+
+export function recalculateTacticRows(rows, characters, catalog = [], start = 0) {
+  for (let index = Math.max(0, start); index < rows.length; index++) {
+    const row = rows[index];
+    if (!row.manualChecks) row.checked = commandState(row.text, rows[index - 1]?.checked || [], characters, catalog);
+  }
+  return rows;
 }
 
 export function colorRuns(text, characters, catalog = []) {

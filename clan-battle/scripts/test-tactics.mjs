@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import { ensureTactics, titleFor, compareTactics, commandState, colorRuns, pastedRows, richLine, shiftedRuns, parseClock } from '../public/tactics-model.mjs';
+import { ensureTactics, titleFor, compareTactics, commandState, colorRuns, recalculateTacticRows, replaceTacticRowText, pastedRows, richLine, shiftedRuns, parseClock } from '../public/tactics-model.mjs';
 const read=path=>JSON.parse(fs.readFileSync(new URL('../public/'+path,import.meta.url),'utf8'));
 const html=fs.readFileSync(new URL('../public/clan-shell.html',import.meta.url),'utf8');
 const app=JSON.parse(html.match(/<script id="seed-data" type="application\/json">([\s\S]*?)<\/script>/)[1]);
@@ -68,6 +68,25 @@ assert.ok(richLine({text:orderedText},orderedCharacters).includes('<span style="
 assert.deepEqual(commandState('1:10 라비, 리리컬 순서대로 OFF',[true,true,false,false,false,false],orderedCharacters),[false,false,false,false,false,false]);
 assert.deepEqual(colorRuns('라비, 리리컬 순서대로 OFF',orderedCharacters),[{text:'라비, 리리컬 순서대로 OFF',color:'#2d63bc'}]);
 assert.deepEqual(pastedRows(orderedText,[],orderedCharacters)[0].checked,[true,true,false,false,false,false]);
+const manuallyChecked={
+  text:'라비 OFF',
+  checked:[true,false,false,false,false,false],
+  manualChecks:true,
+  runs:[{text:'라비 OFF',color:'#2d63bc'}]
+};
+const following={text:'리리컬 ON',checked:[false,false,false,false,false,false],manualChecks:false};
+recalculateTacticRows([manuallyChecked,following],orderedCharacters);
+assert.equal(manuallyChecked.checked[0],true,'Checkbox-only override must be preserved');
+assert.equal(following.checked[1],true,'Following rows must inherit existing manual state');
+replaceTacticRowText(manuallyChecked,'라비, 리리컬 순으로 ON');
+assert.equal(manuallyChecked.manualChecks,false,'Editing the text must unlock automatic checkboxes');
+assert.equal('runs' in manuallyChecked,false,'Editing should invalidate the old rich text');
+recalculateTacticRows([manuallyChecked,following],orderedCharacters);
+assert.deepEqual(manuallyChecked.checked,[true,true,false,false,false,false]);
+assert.deepEqual(following.checked,[true,true,false,false,false,false]);
+assert.deepEqual(commandState('AUTO 온, 전부 SET',[],['','','','','']),[true,true,true,true,true,true],
+  'AUTO/전부 commands should work even before character names are configured');
+
 
 const rows=pastedRows('FALSE\tTRUE\tFALSE\tTRUE\tFALSE\tTRUE\t1:02 수마레 ON\n0:31 바이올렛 OFF',[false,false,false,false,false,false],chars);
 assert.equal(rows.length,2);assert.deepEqual(rows[0].checked,[false,true,false,true,false,true]);assert.equal(rows[0].manualChecks,true);assert.equal(rows[1].checked[5],true);assert.equal(rows[1].manualChecks,false);
