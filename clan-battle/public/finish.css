@@ -981,12 +981,34 @@ table.tw-grid thead th{
  }
 }
 
-/* Overview boss cards keep portrait, name and phase in this order at every width. */
-.boss-card .boss-top{
- flex-direction:column;
- align-items:flex-start;
+/* Desktop boss cards stack the name below the portrait; mobile keeps its compact row. */
+@media(min-width:801px){
+ .boss-card .boss-top{
+  flex-direction:column;
+  align-items:flex-start;
+ }
+ .boss-card .boss-top>div:last-child{
+  width:100%;
+  min-width:0;
+ }
 }
-.boss-card .boss-top>div:last-child{
- width:100%;
- min-width:0;
+
+/* Mobile tactic headings use a lineup row followed by conditions, damage and sources. */
+.tw-work .tw-title-details{display:contents}
+@media(max-width:800px){
+ .tw-work .tw-editor-head h2{
+  flex-direction:column;align-items:flex-start;row-gap:5px;
+ }
+ .tw-work .tw-title-lineup{
+  flex:0 1 auto;width:100%;column-gap:4px;row-gap:3px;
+  font-size:clamp(11px,3.8vw,15px);
+ }
+ .tw-work .tw-title-details{
+  display:flex;align-items:center;flex-wrap:nowrap;
+  column-gap:clamp(4px,1.9vw,9px);min-width:0;max-width:100%;
+ }
+ .tw-work .tw-title-details>.tw-source-summary{flex:none}
+}
+@media(max-width:360px){
+ .tw-work .tw-title-lineup{column-gap:2px}
 }

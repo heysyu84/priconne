@@ -935,3 +935,8 @@ html[data-text-scale] .tw-library .tw-card-details>span{
  font-weight:800;
  line-height:1.5;
 }
+
+/* Mobile tactic heading scale. */
+@media(max-width:800px){
+html[data-text-scale] .tw-work .tw-title-lineup{font-size:max(var(--ui-font-min,0px),round(nearest,calc((clamp(11px,3.8vw,15px)) * var(--ui-text-scale,1)),1px))!important}
+}
