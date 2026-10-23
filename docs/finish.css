@@ -964,3 +964,36 @@ html[data-text-scale] .tw-library .tw-card-details{
  display:block;width:100%;max-width:100%;min-width:0;
  box-sizing:border-box;overflow-x:auto;overscroll-behavior-x:contain;
 }
+
+/* Carry controls share the tab buttons' vertical center; the local-only notice sits
+   outside the purple tab bar so it cannot alter the controls' box height. */
+.tw-navigation .tw-tabs-with-note{
+ display:flex;flex-direction:column;gap:3px;
+ min-width:0;max-width:100%;
+}
+.tw-navigation .tw-tabs-with-note>.tw-group-tabs{
+ display:flex;align-items:center;margin:0;
+}
+.tw-navigation .tw-tabs-with-note>.tw-carry-caption{
+ display:block;align-self:flex-end;max-width:100%;
+ margin:0;padding:0 5px;text-align:right;
+ color:#947ba5;font-size:10px;line-height:1.35;
+}
+@media(min-width:801px){
+ .tw-navigation .tw-tabs-with-note .tw-group-tabs>.tw-carry-controls{
+  align-self:center;align-items:center;flex-wrap:nowrap;
+ }
+ .tw-navigation .tw-tabs-with-note .tw-carry-entry{
+  align-items:center;
+ }
+ .tw-navigation .tw-tabs-with-note .tw-carry-entry .field{
+  display:flex;flex-direction:row;align-items:center;
+ }
+}
+@media(max-width:800px){
+ .tw-navigation .tw-tabs-with-note{width:100%}
+ .tw-navigation .tw-tabs-with-note>.tw-group-tabs{
+  width:100%;flex-wrap:wrap;align-items:center;
+ }
+ .tw-navigation .tw-tabs-with-note>.tw-carry-caption{font-size:9px}
+}
