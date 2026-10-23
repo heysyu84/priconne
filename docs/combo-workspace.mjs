@@ -1,24 +1,11 @@
 import {characterPortrait, portraitAttributes, portraitStarOverlay} from './character-portraits.mjs?v=20261023-image-cleanup01';
 import {isBoosterCharacter, formatExpectedDamage, sourceLinkBox, sourceLinkKind} from './view-settings.mjs?v=20261023-image-cleanup01';
 import {planThreeAttacks} from './combo-planner.mjs?v=20261023-image-cleanup01';
-import {visibleTacticRecommendations} from './tactic-combo-sync.mjs?v=20261023-sortcount01';
+import {visibleTacticRecommendations,recommendationDisplayOrder} from './tactic-combo-sync.mjs?v=20261023-sortcount02';
 
 export function createComboWorkspace(api) {
   const {state, render, section, canEdit, characters, escapeHtml: X, notice} = api;
   let view = 'compact', lastMonth = '', selectedBosses = null, distinctBosses = true;
-  const sortDamage=combo=>{
-    const raw=String(combo.expectedDamage??'').replace(/[,\s]/g,'').replace(/억$/,'');
-    const value=Number(raw);
-    return raw&&Number.isFinite(value)&&value>=0?value:-Infinity;
-  };
-  // Primary: 1~5 boss order. Secondary: largest expected damage first.
-  // Stage 3 has no expected damage: prefer greater carryover seconds there.
-  const recommendationOrder=(a,b)=>
-    Number(a.boss)-Number(b.boss) ||
-    (Number(a.stage)===3
-      ? Number(b.remainingSeconds||0)-Number(a.remainingSeconds||0)
-      : sortDamage(b)-sortDamage(a)) ||
-    String(a.id||'').localeCompare(String(b.id||''),'ko');
   const source = combo => [combo.url, combo.video, combo.tacticUrl].find(value => sourceLinkKind(value) !== 'empty');
   // Keep stored values intact. Render integer TP levels as 4.0 / 4.0+.
   const tpLabel = value => {
@@ -64,7 +51,7 @@ export function createComboWorkspace(api) {
     const month = api.month(), key = api.app().active;
     if (key !== lastMonth) { selectedBosses = null; lastMonth = key; }
     const stage = Number(state.comboStage), currentView = stage === 3 && view === 'planner' ? 'compact' : view;
-    const rows = visibleTacticRecommendations(month).filter(combo => Number(combo.stage) === stage && (state.comboBoss === 'all' || Number(combo.boss) === Number(state.comboBoss))).sort(recommendationOrder);
+    const rows = visibleTacticRecommendations(month).filter(combo => Number(combo.stage) === stage && (state.comboBoss === 'all' || Number(combo.boss) === Number(state.comboBoss))).sort(recommendationDisplayOrder);
     const modes = stage === 4 ? [['compact', '조합 목록'], ['planner', '3타 분배']] : [];
     const filters = `<div class="combo-workspace-toolbar"><div class="tabset" aria-label="추천 조합 단계">${[['4', '4단계'], ['3', '3단계']].map(([value, label]) => `<button data-guild="combo-stage" data-value="${value}" class="${state.comboStage === value ? 'active' : ''}">${label}</button>`).join('')}</div>${modes.length ? `<div class="tabset combo-view-tabs" role="group" aria-label="조합 목록과 3타 분배 전환">${modes.map(([value, label]) => `<button data-combo-action="view" data-value="${value}" class="${currentView === value ? 'active' : ''}" aria-pressed="${currentView === value}">${label}</button>`).join('')}</div>` : ''}</div>${currentView === 'planner' ? '' : `<div class="combo-workspace-boss-filter"><div class="tabset" aria-label="보스별 조합">${[['all', '전체 보스'], ...month.bosses.map(value => [String(value.id), value.id + '넴'])].map(([value, label]) => `<button data-guild="combo-boss" data-value="${value}" data-boss-color="${value}" class="${state.comboBoss === value ? 'active' : ''}">${label}</button>`).join('')}</div><span class="small muted">${rows.length}개 조합</span></div>`}`;
     return section('추천 조합', '', canEdit() ? (stage===4?'<button class="btn primary" data-page="tactics">＋ 택틱 작업실에서 조합 추가</button>':'<button class="btn primary" data-guild="add-combo">＋ 추천 조합</button>') : '') + `<div class="recommendation-workspace">${filters}${notice()}${currentView === 'planner' ? distribution() : compactRows(rows)}</div>`;
