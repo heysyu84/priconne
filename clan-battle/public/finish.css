@@ -980,3 +980,13 @@ table.tw-grid thead th{
   display:flex;flex-direction:row;align-items:center;
  }
 }
+
+/* Overview boss cards keep portrait, name and phase in this order at every width. */
+.boss-card .boss-top{
+ flex-direction:column;
+ align-items:flex-start;
+}
+.boss-card .boss-top>div:last-child{
+ width:100%;
+ min-width:0;
+}
