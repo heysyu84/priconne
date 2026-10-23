@@ -1,0 +1,51 @@
+.display-dialog{width:min(640px,calc(100% - 24px));max-height:calc(100dvh - 32px);padding:0;margin:auto;overflow:auto;border:1px solid #d7c7e4;border-radius:16px;background:#fff;color:#594169;box-shadow:0 20px 80px #37204033;font-size:14px;line-height:1.6}
+.display-dialog::backdrop{background:#24153677;backdrop-filter:blur(3px)}
+.display-dialog-head{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 22px;border-bottom:1px solid #eee5f4}
+.display-dialog-head h2{margin:0;font-size:18px;line-height:1.35;overflow-wrap:anywhere}
+.display-dialog-head>.btn{flex-shrink:0}
+.display-dialog-body{padding:18px 22px 22px;min-width:0}
+.display-copy{margin:0 0 18px;font-size:13px;color:#7f6a8d;line-height:1.65;overflow-wrap:anywhere}
+.display-scale-label{display:flex;align-items:baseline;justify-content:space-between;gap:12px;font-size:14px;font-weight:700}
+.display-scale-label output{font-size:22px;font-weight:800;color:#7951a0}
+.display-dialog input[type=range]{display:block;width:100%;height:32px;margin:10px 0 14px;padding:0;accent-color:#9270b3;cursor:pointer}
+.display-presets{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.display-presets .btn{min-width:0;padding:9px 4px;font-size:13px;line-height:1.4}
+.display-presets .btn[aria-pressed=true]{color:#fff;background:#8660ad;border-color:#78529e}
+.display-example{display:grid;gap:8px;margin:20px 0;padding:14px;border:1px solid #e6d9ef;border-radius:10px;background:#fbf8fe;font-size:14px;overflow-wrap:anywhere;line-height:1.6}
+.display-width-info{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin:16px 0 0;font-size:12px;color:#887495}
+.display-width-info output{font-weight:700;color:#69497c}
+.display-copy-result{min-height:1.5em;margin:5px 0 12px;font-size:12px;color:#795e8e;overflow-wrap:anywhere}
+
+/* Layout follows the selected text size. Images keep their original size. */
+html[data-text-scale]:not([data-text-scale="100"]) :is(.panel,.main,.content,.tw-work,.tw-library){min-width:0}
+html[data-text-scale]:not([data-text-scale="100"]) .sidebar{grid-template-rows:56px auto;height:auto;min-height:121px}
+html[data-text-scale]:not([data-text-scale="100"]) .sidebar .nav{white-space:normal;overflow-wrap:anywhere;line-height:1.35}
+html[data-text-scale]:not([data-text-scale="100"]) .sidebar .nav .symbol{flex-shrink:0}
+html[data-text-scale]:not([data-text-scale="100"]) .topbar{height:auto}
+html[data-text-scale]:not([data-text-scale="100"]) .top-actions{flex-wrap:wrap}
+html[data-text-scale]:not([data-text-scale="100"]) .topbar .top-actions .month{height:auto;min-height:36px;width:auto!important;min-width:0!important;max-width:100%;line-height:1.4}
+html[data-text-scale]:not([data-text-scale="100"]) .top-actions .status{height:auto;max-width:none;line-height:1.4}
+html[data-text-scale]:not([data-text-scale="100"]) .admin-menu>div{width:max-content;max-width:calc(100vw - 24px)}
+html[data-text-scale]:not([data-text-scale="100"]) .admin-menu>div .btn{white-space:normal}
+html[data-text-scale]:not([data-text-scale="100"]) :is(.quick-grid,.quick-secondary,.tw-carry-entry) input:not([type=checkbox]),
+html[data-text-scale]:not([data-text-scale="100"]) :is(.quick-grid,.quick-secondary) select,
+html[data-text-scale]:not([data-text-scale="100"]) .quick-submit{height:auto;min-height:39px;line-height:1.45}
+html[data-text-scale]:not([data-text-scale="100"]) .tw-carry-entry #tw-carry{width:calc(76px * var(--user-text-scale));max-width:100%}
+html[data-text-scale]:not([data-text-scale="100"]) .battle-sheet.compact-battle-sheet{min-width:calc(720px * var(--user-text-scale))}
+html[data-text-scale]:not([data-text-scale="100"]) .battle-sheet.compact-battle-sheet.with-details{min-width:calc(1100px * var(--user-text-scale))}
+html[data-text-scale]:not([data-text-scale="100"]) .battle-sheet.compact-battle-sheet td.is-editing :is(input,select){height:auto;min-height:36px;line-height:1.4}
+@media(min-width:801px) and (max-width:1150px){
+  html[data-text-scale]:not([data-text-scale="100"]) .topbar{position:relative;top:auto;right:auto;width:100%;padding:10px 24px}
+  html[data-text-scale]:not([data-text-scale="100"]) .topbar .top-actions{justify-content:flex-end}
+}
+@media(max-width:800px){
+  .display-dialog-head{padding:14px 16px}
+  .display-dialog-body{padding:16px}
+  html[data-text-scale]:not([data-text-scale="100"]) .topbar{height:auto!important;min-height:46px}
+  html[data-text-scale]:not([data-text-scale="100"]) .topbar .top-actions{gap:6px;flex-wrap:wrap}
+  html[data-text-scale]:not([data-text-scale="100"]) .battle-sheet.compact-battle-sheet,
+  html[data-text-scale]:not([data-text-scale="100"]) .battle-sheet.compact-battle-sheet.with-details{width:calc(var(--mobile-battle-width) * var(--user-text-scale))!important;min-width:calc(var(--mobile-battle-width) * var(--user-text-scale))!important}
+  html[data-text-scale]:not([data-text-scale="100"]) .compact-battle-sheet colgroup col{width:calc(var(--mobile-col-width) * var(--user-text-scale))!important}
+  html:is([data-text-scale="150"],[data-text-scale="155"],[data-text-scale="160"],[data-text-scale="165"],[data-text-scale="170"],[data-text-scale="175"],[data-text-scale="180"],[data-text-scale="185"],[data-text-scale="190"],[data-text-scale="195"],[data-text-scale="200"]) .mobile-nav{grid-template-columns:repeat(4,minmax(0,1fr))!important;height:auto;min-height:110px}
+  html:is([data-text-scale="150"],[data-text-scale="155"],[data-text-scale="160"],[data-text-scale="165"],[data-text-scale="170"],[data-text-scale="175"],[data-text-scale="180"],[data-text-scale="185"],[data-text-scale="190"],[data-text-scale="195"],[data-text-scale="200"]) .content{padding-bottom:180px!important}
+}

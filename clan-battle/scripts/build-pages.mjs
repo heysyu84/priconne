@@ -1,9 +1,11 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
+import {buildDisplayStyles} from './build-display-styles.mjs';
 
 const root = fileURLToPath(new URL('..', import.meta.url));
 export function buildPages(output = path.join(root, 'out/pages')) {
+  buildDisplayStyles(root);
   const source = path.join(root, 'public');
   fs.mkdirSync(output, {recursive: true});
   fs.cpSync(source, output, {recursive: true});

@@ -12,7 +12,7 @@ const {startPresence}=await import('./presence.mjs?v=20261023-combo01');
 startPresence({apiFetch,onCount:count=>{const value=document.getElementById('online-count'),badge=document.getElementById('online-presence');if(!value||!badge)return;const text=count===null?'—':String(count);if(value.textContent!==text)value.textContent=text;badge.dataset.connected=String(count!==null);}});
 const Engine=await import('./engine.mjs?v=20261022-ui14');
 const {ensureRoster,syncRoster,memberLabel}=await import('./roster.mjs?v=20261022-ui14');
-const {createWorkflow}=await import('./workflow.mjs?v=20261023-readable03');
+const {createWorkflow}=await import('./workflow.mjs?v=20261023-battle-format01');
 const {ensureTactics}=await import('./tactics-model.mjs?v=20261022-ui14');
 const {applySourceData,remainingAttacks}=await import('./guild-model.mjs?v=20261022-hall01');
 const {createGuildWorkspace}=await import('./guild-workspace.mjs?v=20261023-readable03');
@@ -179,7 +179,7 @@ function overview(){const d=current(),remaining=remainingAttacks(d),day=maxDay()
 function logTable(rows,showEdit=true){
  if(!rows.length)return '<div class="empty">조회할 공격 기록이 없습니다.</div>';
  const seq=sequenceVisible();
- return `<div class="table-scroll"><table class="datatable recent-battle-table"><thead><tr>${seq?'<th>순번</th>':''}<th>일차</th><th>단계 / 회차</th><th>보스</th><th>클랜원</th><th style="text-align:right">기록 피해량</th><th style="text-align:right">실제 피해량</th><th>유형</th><th style="text-align:right">기여도</th>${showEdit&&canEdit()?'<th></th>':''}</tr></thead><tbody>${rows.map(e=>`<tr>${seq?`<td class="h-num">#${e.seq}</td>`:''}<td>${e.day}일차</td><td>${e.stage}단계 · ${e.lap}회차</td><td>${X(current().bosses[e.boss-1]?.name||e.boss+'넴')}</td><td>${X(e.member)}</td><td style="text-align:right">${nf(e.damage)}</td><td style="text-align:right">${nf(e.actual)}</td><td>${e.carry?code('blue','이월타'):e.kill?code('positive','격파'):code('gray','일반')}${e.carry&&e.kill?' '+code('positive','격파'):''}</td><td style="text-align:right">${nf(contrib(e))}</td>${showEdit&&canEdit()?`<td><button class="btn sm" data-editlog="${X(e.id)}">수정</button></td>`:''}</tr>`).join('')}</tbody></table></div>`;
+ return `<div class="table-scroll"><table class="datatable recent-battle-table"><thead><tr>${seq?'<th>순번</th>':''}<th>일차</th><th>단계 · 회차</th><th>보스</th><th>클랜원</th><th class="number">기록 피해량</th><th class="number">실제 피해량</th><th>유형</th><th class="number">기여도</th>${showEdit&&canEdit()?'<th></th>':''}</tr></thead><tbody>${rows.map(e=>`<tr>${seq?`<td class="h-num">#${e.seq}</td>`:''}<td class="battle-day-cell">${e.day}일차</td><td class="progress-cell">${e.stage}단계 · ${e.lap}회차</td><td class="boss-cell">${X(current().bosses[e.boss-1]?.name||e.boss+'넴')}</td><td class="member-cell"><strong>${X(e.member)}</strong></td><td class="number">${nf(e.damage)}</td><td class="number calculated">${nf(e.actual)}</td><td class="carry-cell">${e.carry?code('blue battle-kind','이월타'):e.kill?code('positive battle-kind','격파'):code('gray battle-kind','일반')}${e.carry&&e.kill?code('positive battle-kind','격파'):''}</td><td class="number calculated contribution-cell">${nf(contrib(e))}</td>${showEdit&&canEdit()?`<td><button class="btn sm" data-editlog="${X(e.id)}">수정</button></td>`:''}</tr>`).join('')}</tbody></table></div>`;
 }
 function battle(){return workflow.battleView()}
 function roster(){return guild.roster()}

@@ -92,3 +92,12 @@ JSON 전체 백업 시 아카이브를 함께 가져오고, 복원 시 명시적
 ## 메뉴 SD 일러스트
 
 메뉴 8개에 가로형 SD 그림을 배치합니다. 추천 조합에는 리리(서머), 스페어에는 티아를 사용합니다. 전신 11명과 전체 해상도 그림은 `public/images/menu-sd/`에 분류해 보관합니다. 메뉴별 장면, 폴더, 공식 참조와 제작 프롬프트는 [artwork/menu-sd/README.md](artwork/menu-sd/README.md)에 있습니다. 현재 메뉴의 작은 이미지 한 장만 로드합니다.
+
+## 개인 화면 설정
+
+설정 → 화면 · 글자 크기에서 100~200%를 5% 단위로 조절합니다. 선택은 해당 브라우저에만 저장되며 클랜 공유 상태나 배틀로그를 변경하지 않습니다. 기본 100%에서는 기존 글꼴과 배치를 유지합니다. 화면 정보 복사는 현재 본문 너비, 브라우저 안쪽 너비, 글자 크기를 복사합니다. 너비는 CSS px 기준이며 모니터의 물리 픽셀 수와 다를 수 있습니다.
+
+`node scripts/build-display-styles.mjs`는 HTML에 연결된 CSS의 글자 크기와 미디어 쿼리 순서를 보존해 개인 확대 스타일을 만듭니다. 상대 단위·상속·배틀로그 크기 변수는 중복 확대하지 않습니다. 기본 CSS를 바꾸면 확대 스타일도 재생성합니다. `build-pages.mjs`는 복사 전에 이 작업을 자동 실행합니다.
+
+검증: `node scripts/test-display-settings.mjs` · `node scripts/test-presentation.mjs` · `node scripts/test-workflow.mjs` · `node scripts/test-pages.mjs`.
+
