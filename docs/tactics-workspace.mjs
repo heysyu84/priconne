@@ -128,8 +128,8 @@ export function createTacticWorkspace(api) {
    if(!rows.length)return;
    remember(true);
    if(lineup){
+     if(t.customPortraits)t.customPortraits=t.customPortraits.map((value,i)=>normalizeCharacterName(t.characters[i])===normalizeCharacterName(lineup[i])?value:'');
      t.characters=[...lineup];
-     if(t.customPortraits)t.customPortraits=t.customPortraits.map((value,i)=>normalizeCharacterName(transfer.characters[i])===normalizeCharacterName(lineup[i])?value:'');
    }
    if(row)t.rows.splice(index,1,...rows);
    else t.rows.push(...rows);
