@@ -97,7 +97,7 @@ assert.ok(battleWorkflow.includes('<details class="panel quick-panel"'),
 // Mobile battle-log table must not inherit oversized desktop column minima.
 // Leave exact numeric damage and HP content intact; shrink only its layout.
 const battleWorkflow=fs.readFileSync(new URL('../public/workflow.mjs',import.meta.url),'utf8');
-assert.ok(battleWorkflow.includes("b.locked?'disabled aria-disabled=")&&battleWorkflow.includes("selectedBoss?.locked"),
+assert.ok(battleWorkflow.includes("b.locked?'disabled aria-disabled=")&&battleWorkflow.includes("selectedBoss?.locked")&&battleWorkflow.includes("b.locked?' (잠김)':''"),
   'Locked bosses should be unavailable in the quick-entry boss picker and refused at submission');
 assert.ok(battleWorkflow.includes("el.id === 'quick-damage' && (event.code === 'Space' || event.key === ' ')"),
   'The Space shortcut should work from the damage input, before Enter submits');

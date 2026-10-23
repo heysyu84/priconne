@@ -12,7 +12,7 @@ const {startPresence}=await import('./presence.mjs?v=20261023-combo01');
 startPresence({apiFetch,onCount:count=>{const value=document.getElementById('online-count'),badge=document.getElementById('online-presence');if(!value||!badge)return;const text=count===null?'—':String(count);if(value.textContent!==text)value.textContent=text;badge.dataset.connected=String(count!==null);}});
 const Engine=await import('./engine.mjs?v=20261024-boss-lap-lock01');
 const {ensureRoster,syncRoster,memberLabel}=await import('./roster.mjs?v=20261022-ui14');
-const {createWorkflow}=await import('./workflow.mjs?v=20261024-boss-lap-lock01');
+const {createWorkflow}=await import('./workflow.mjs?v=20261024-boss-lap-lock02');
 const {ensureTactics,carryTacticsVisible}=await import('./tactics-model.mjs?v=20261024-carry-punctuation06');
 const {syncTacticRecommendations}=await import('./tactic-combo-sync.mjs?v=20261024-carry-tactics01');
 const {applySourceData,remainingAttacks}=await import('./guild-model.mjs?v=20261024-boss-lap-lock01');

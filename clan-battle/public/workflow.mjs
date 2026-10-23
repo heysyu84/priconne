@@ -56,7 +56,7 @@ export function createWorkflow(api) {
       <form id="wf-quick-form" method="post"><div class="quick-grid">
       <div class="field day-current"><label>현재 일차</label><strong>${d.day}일차</strong></div>
       <div class="field"><label for="quick-member">클랜원</label>${memberInput(d.memberQuery, 'quick-member', 'data-quick="member"')}</div>
-      <div class="field"><label for="quick-boss">보스</label><select id="quick-boss" data-quick="boss">${month().bosses.map(b => `<option value="${b.id}" ${Number(d.boss) === b.id ? 'selected' : ''}>${b.id} · ${X(b.name)}</option>`).join('')}</select></div>
+      <div class="field"><label for="quick-boss">보스</label><select id="quick-boss" data-quick="boss">${(api.getBosses?.()||[]).map(b => `<option value="${b.id}" ${Number(d.boss) === b.id ? 'selected' : ''} ${b.locked?'disabled':''}>${b.id} · ${X(b.name)}${b.locked?' (잠김)':''}</option>`).join('')}</select></div>
       <div class="field"><label for="quick-damage">피해량</label><input id="quick-damage" data-quick="damage" inputmode="decimal" autocomplete="off" placeholder="2·3단계 빈칸=최대 HP / 4단계 직접 입력" value="${X(d.damage)}"></div>
       <div class="field"><label for="quick-carry">이월 사용</label><label class="carry-control"><input id="quick-carry" type="checkbox" data-quick="carry" ${d.carry ? 'checked' : ''}><span>사용 <kbd>Space</kbd></span></label></div>
       
