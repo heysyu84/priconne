@@ -848,7 +848,7 @@ table.tw-grid thead th{
 }
 
 /* Desktop: never exceed an 850px centered canvas; 800px mobile cutoff unchanged. */
-@media(min-width:801px){
+@media screen and (min-width:801px){
  .content{width:100%;max-width:850px;margin-inline:auto}
  .sidebar:not([data-nav-probe]) .nav{min-width:0;padding-inline:4px;gap:4px;letter-spacing:-.3px}
  .tw-layout{grid-template-columns:minmax(0,1fr)}
@@ -863,6 +863,6 @@ table.tw-grid thead th{
  .roster-form-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
  .roster-memo{grid-column:span 2}
 }
-@media(min-width:801px) and (max-width:850px){
+@media screen and (min-width:801px) and (max-width:850px){
  .sidebar:not([data-nav-probe]) .nav .symbol{display:none}
 }
