@@ -890,3 +890,14 @@ table.tw-grid thead th{
 
 /* Summary battle log uses the same two-line boss/progress cell as the full battle log. */
 .recent-battle-table .boss-cell small{display:block;margin-top:2px;font-size:11px;line-height:1.35;color:var(--muted)}
+
+/* Desktop tactic workspace: left tactic library 25%, right editor 75%.
+   Keep the existing stacked layout for mobile widths of 800px or less. */
+@media screen and (min-width:801px){
+ .tw-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,3fr);gap:12px;align-items:start}
+ .tw-layout>.tw-library{position:sticky;top:96px;max-height:calc(100vh - 116px);overflow:hidden;display:flex;flex-direction:column;min-width:0}
+ .tw-layout .tw-library #tw-library-list{display:block;flex:1 1 auto;min-height:0;max-height:none;overflow-y:auto;overflow-x:hidden}
+ .tw-layout .tw-library .tw-card{width:100%;min-width:0;max-width:100%;margin:0 0 7px;flex:none}
+ .tw-layout .tw-boss-label{display:block}
+ .tw-layout>.tw-work{min-width:0}
+}
