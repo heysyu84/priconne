@@ -866,6 +866,8 @@ table.tw-grid thead th{
  .raid-stats+.grid-2>.panel .table-scroll{max-width:100%;min-width:0;overflow-x:auto}
  /* Narrow only the day column of the overview's recent battle log. */
  .raid-stats+.grid-2 .recent-battle-table thead th:first-child{width:8.5%}
+ /* Leave room for boss names of roughly 9–10 characters, including spaces. */
+ .raid-stats+.grid-2 .recent-battle-table .boss-progress-heading{width:27%}
  .metrics,.archive-record-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}
  .quick-grid{grid-template-columns:70px minmax(150px,1.1fr) minmax(145px,1.1fr) minmax(130px,1fr)}
  .quick-grid .quick-submit{grid-column:4}

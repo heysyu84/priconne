@@ -74,7 +74,7 @@ export function createWorkflow(api) {
     const rows=filteredRows(),pages=Math.max(1,Math.ceil(rows.length/50)),seq=sequenceVisible();
     state.page=Math.min(state.page,pages);
     const shown=visibleRows(),warnings=new Map(replay(month()).map(w=>[w.id,w.message]));
-    const cols=[...(seq?[[42]]:[]),[44],[92],[138],[118],[64],...(state.details?[[80],[160]]:[]),[118],[142],...(state.details?[[118]]:[]),...(canEdit()?[[94]]:[])];
+    const cols=[...(seq?[[42]]:[]),[44],[92],[180],[118],[64],...(state.details?[[80],[160]]:[]),[118],[142],...(state.details?[[118]]:[]),...(canEdit()?[[94]]:[])];
     // The desktop percentages stay unchanged. Mobile gets content-sized columns
     // instead of inheriting the 720/1100px minimum table width.
     const mobileWidths=[...(seq?[34]:[]),40,78,90,84,45,...(state.details?[56,94]:[]),85,96,...(state.details?[90]:[]),...(canEdit()?[80]:[])];
