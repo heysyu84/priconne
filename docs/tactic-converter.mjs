@@ -8,9 +8,14 @@ const suggested={
 };
 export const foreignSuggestions=name=>(suggested[trim(name)]||[])[0]||'';
 export function convertForeignTactic(raw, koreanNames=[], foreignNames=[]) {
- const ko=Array.from({length:5},(_,i)=>trim(koreanNames[i])||'캐릭터'+(i+1));
+ const ko=Array.from({length:5},(_,i)=>trim(koreanNames[i])||'캐릭터 '+(i+1));
  const label=ko.map(n=>({'네피네라':'네피'}[n]||n));
- const aliases=ko.map((x,i)=>[...trim(foreignNames[i]).split(/[,，|]/),x,...(suggested[x]||[])].map(trim).filter(Boolean));
+ // Slot numbers are meaningful even if real character names were never entered.
+ const slotAlias=i=>{
+   const n=i+1, circled=['①','②','③','④','⑤'][i];
+   return ['캐릭터 '+n,'캐릭터'+n,'캐릭'+n,'キャラ'+n,'キャラ '+n,'角色'+n,'角色 '+n,n+'番',n+'号',n+'번',circled];
+ };
+ const aliases=ko.map((x,i)=>[...trim(foreignNames[i]).split(/[,，|]/),x,...(suggested[x]||[]),...slotAlias(i)].map(trim).filter(Boolean));
  const dict=aliases.flatMap((a,i)=>a.map(name=>({name,i}))).sort((a,b)=>b.name.length-a.name.length);
  const dictPattern='(?:'+[...new Set(dict.map(x=>reg(x.name)))].join('|')+')';
  const find=s=>dict.find(x=>x.name===trim(s))?.i??-1;
@@ -59,6 +64,16 @@ export function convertForeignTactic(raw, koreanNames=[], foreignNames=[]) {
    return result;
  };
  const act=(payload,actor='',initial=false)=>{
+   // Some Japanese lines put the character in one column and only ON/OFF
+   // in another. Apply the action to the actor rather than treating it as text.
+   const actorSlot=find(actor);
+   const bare=trim(payload).match(/^(SET(?:ON|OFF)?|ON|OFF|切|解除|オン|オフ|关|關|开|開)$/i);
+   if(actorSlot>=0&&bare){
+     const enable=/^(?:SET|SETON|ON|オン|开|開)$/i.test(bare[1]);
+     state[actorSlot]=enable;
+     append('',[label[actorSlot]+(enable?(initial?' SET':' ON'):' OFF')]);
+     return;
+   }
    const a=autoState(payload),before=auto;
    let rest=a.rest;
    const skill=rest.match(/(?:s1|1スキル|技能1)\s*(?:开始后|開始後|スタート後)/i);
@@ -132,10 +147,40 @@ export function convertForeignTactic(raw, koreanNames=[], foreignNames=[]) {
    }
    return true;
  };
+ // Boss cues are timing conditions, not sixth-party character names.
+ // Preserve explicit boss names (including untranslated ones) as written.
+ const bossAlias=value=>/^(?:보스|ボス|BOSS|首领|首領|敵|敌)$/i.test(trim(value));
+ const bossCue=value=>{
+   const text=trim(value);
+   const action=text.match(/^(.{1,42}?)\s*(?:の|의|が|가)?\s*(ユニオンバースト|유니온버스트|UB|유버|필살기|必殺技|奥義|오의|通常攻撃|평타|공격|攻撃|スキル|스킬)\s*(後に|の後|後|후|이후|뒤에|뒤|直後|직후|を見て)?\s*(?:[,，、:：→➡➜⇒⟶]\s*)?(.*)$/i);
+   if(action){
+     const who=trim(action[1]);
+     if(find(who)>=0)return null;
+     const kind=/^(?:UB|유버|유니온버스트|ユニオンバースト|필살기|必殺技|奥義|오의)$/i.test(action[2])?'UB':
+       /(?:공격|攻撃|평타)/.test(action[2])?'공격':'스킬';
+     const rest=trim(action[4]);
+     return {context:(bossAlias(who)?'보스':who)+' '+kind,rest,after:!!(action[3]||rest)};
+   }
+   const general=text.match(/^(보스|ボス|BOSS|首领|首領|敵|敌)\s*(?:[,，、:：→➡➜⇒⟶]\s*)?(.*)$/i);
+   if(general)return {context:'보스',rest:trim(general[2]),after:!!trim(general[2])};
+   return null;
+ };
+ const actBoss=cue=>{
+   const start=rows.length;
+   if(cue.rest)act(cue.rest,'',!rows.length&&(!time||time==='1:30'));
+   if(rows.length>start){
+     for(const row of rows.slice(start)){
+       const prefix=row.text.match(/^(?:(?:\d{1,2}:[0-5]\d|ㄴ)\s*)/)?.[0]||'';
+       row.text=prefix+cue.context+(cue.after?' 후 ':' ')+row.text.slice(prefix.length);
+     }
+   }else append('',[cue.context+(cue.after?' 후':'')]);
+ };
  const processLine=input=>{
    sourceLine=trim(input);let line=sourceLine;if(!line)return;
    const t=line.match(/^(\d{1,2}:[0-5]\d)\s*/);
    if(t){time=t[1];line=trim(line.slice(t[0].length));}
+   const boss=bossCue(line);
+   if(boss){actBoss(boss);return;}
    const parts=line.replace(/(?:[ ]{2,}|[\u3000]+)/g,'\t').split(/\t+/).map(trim).filter(Boolean);
    if(!parts.length)return;
    if(dango){
@@ -188,7 +233,7 @@ export function convertForeignTactic(raw, koreanNames=[], foreignNames=[]) {
    }
  }
  if(!rows.length)warning('변환 가능한 행을 찾지 못했습니다.');
- if(ko.some(x=>/^캐릭터[1-5]$/.test(x)))warning('캐릭터 5명의 한국어 이름을 먼저 지정해 주세요.');
+ // Positional placeholders are intentionally valid for anonymous transfers.
  return {format,rows,warnings:warn,text:rows.map(x=>x.text).join('\n'),
  pasteText:rows.map(x=>x.checked.map(b=>b?'TRUE':'FALSE').join('\t')+'\t'+x.text).join('\n')};
 }
