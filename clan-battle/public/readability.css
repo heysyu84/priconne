@@ -70,3 +70,69 @@ body{font-size:15px;line-height:1.6}
   .battle-sheet.compact-battle-sheet .number,
   .battle-sheet.compact-battle-sheet .hp-exact strong{font-size:11px}
 }
+
+/* Raise the remaining component-specific small type without widening tables. */
+body{font-size:16px}
+.panel .sub,.small,.muted.small{font-size:13px;line-height:1.6}
+.small.muted,.muted.small{color:#796786}
+.btn{font-size:13px}
+.btn.sm{font-size:12.5px}
+.datatable tbody td,.datatable tbody th{font-size:13px;line-height:1.55}
+.datatable thead th{font-size:12.5px}
+.pill{font-size:11.5px}
+.tw-card-title{font-size:14px;line-height:1.6}
+.tw-card small,.tw-boss-label{font-size:12.5px;line-height:1.5}
+.tw-grid .tw-text-cell>[data-tw-text]{font-size:15px!important;line-height:1.75}
+.tw-key-help,.tw-carry-state,.tw-more summary{font-size:12px}
+.tw-carry-controls [data-tw="original"]{color:#69457f;border-color:#bea6ce;background:#f5eefb;font-weight:750}
+.tw-group-tabs .tw-carry-controls>.btn[data-tw="original"]:disabled{opacity:1!important;color:#755e82;border-color:#d8cedd;background:#f1edf4;cursor:default}
+.tw-group-tabs .tw-carry-controls #tw-carry{font-size:16px!important;line-height:1.25;min-width:0}
+.settings-tabs{min-width:0}
+.settings-tabs button{white-space:nowrap;word-break:keep-all;min-width:0}
+.rule-table tr>:first-child{white-space:nowrap;word-break:keep-all}
+.tw-config-fieldset:disabled .tw-character-slot input{font-size:13px}
+.db-tabs button{font-size:12px;min-width:0;white-space:normal;line-height:1.4}
+.db-rate-factors .datatable th,.db-rate-factors .datatable td{font-size:12.5px}
+.db-rate-records .db-top-record-table td{font-size:12.5px}
+.db-rate-records .db-top-record-table thead .boss-chip{font-size:12px}
+.db-rate-records .db-top-record-footer,.db-rate-records .rate-summary>div{font-size:12px}
+.dashboard-totals{font-size:12px}
+.attack-slot>span:not(.boss-chip):not(.empty-slot){font-size:11.5px}
+.profile-activity-grid .daily-profile-bars .daily-stat small{font-size:12px}
+.profile-activity-grid .daily-profile-bars .daily-stat b{font-size:14px}
+.combo-plan-table .combo-mini-unit strong{font-size:11px;line-height:1.4}
+.combo-plan-table thead th,.combo-plan-support{font-size:11.5px}
+.combo-plan-table tbody th>small{font-size:10.5px}
+.combo-distribution-head>div:first-child>small,.combo-plan-total small{font-size:11.5px}
+@media(max-width:800px){
+  body{font-size:15px}
+  .tw-group-tabs .tw-carry-controls #tw-carry{font-size:16px!important;line-height:1.25;min-width:0}
+  .settings-tabs{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:4px}
+  .settings-tabs button{font-size:13px;padding:8px 3px;letter-spacing:-.25px}
+  .panel .sub,.small,.muted.small{font-size:12px}
+  .btn{font-size:12.5px}
+  .btn.sm{font-size:12px}
+  .datatable thead th{font-size:11.5px}
+  .datatable tbody td,.datatable tbody th{font-size:12px}
+  .tw-card-title{font-size:13px}
+  .tw-card small,.tw-boss-label{font-size:12px}
+  .tw-config-fieldset:disabled .tw-character-slot input{font-size:12px}
+  .tw-config-fieldset:disabled .tw-character-slot select{font-size:11.5px}
+  .mobile-nav button{font-size:10.5px;letter-spacing:-.25px}
+  .db-rate-records .db-top-record-table td{font-size:12px;letter-spacing:-.35px}
+  .db-rate-records .db-top-record-table thead .boss-chip{font-size:11.5px}
+  .db-rate-factors .datatable th,.db-rate-factors .datatable td{font-size:12px}
+  .dashboard-totals{font-size:11.5px}
+  .attack-slot>span:not(.boss-chip):not(.empty-slot){font-size:11px}
+  .profile-activity-grid .daily-profile-bars>div>.daily-stat b{font-size:13.5px}
+  .battle-sheet.compact-battle-sheet tbody td,
+  .battle-sheet.compact-battle-sheet .number,
+  .battle-sheet.compact-battle-sheet .hp-exact strong{font-size:12px;letter-spacing:-.35px}
+  .recent-battle-table tbody td{font-size:12px}
+}
+@media(max-width:360px){
+  .datatable tbody td,.datatable tbody th{font-size:11.5px}
+  .db-rate-records .db-top-record-table td{font-size:11.5px}
+  .battle-sheet.compact-battle-sheet .number,
+  .battle-sheet.compact-battle-sheet .hp-exact strong{font-size:11.5px}
+}
