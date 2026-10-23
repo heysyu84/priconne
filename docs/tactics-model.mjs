@@ -185,6 +185,31 @@ export function ensureTactics(app, metadata = {}, rowFormats = {}) {
       month.carryAfterRevision = 1;
       changed = true;
     }
+    // Keep the October carry tactic intermediate-damage suffix in parentheses
+    // and use commas for listed characters (preserving explicit action order).
+    // Only revise exactly matching imported rows from 2~5넴. User edits and
+    // all 1넴 entries are intentionally left untouched.
+    if (key === '2026-10' && Array.isArray(metadata.carryTactics) && Number(month.carryDamageCommaRevision || 0) < 1) {
+      const byId = new Map(metadata.carryTactics
+        .filter(t => Number(t.boss) >= 2 && Number(t.boss) <= 5)
+        .map(t => [String(t.id), t]));
+      for (const tactic of month.tactics || []) {
+        const seed = byId.get(String(tactic.id));
+        if (!seed || groupOf(tactic) !== CARRY_GROUP || Number(tactic.boss) !== Number(seed.boss)) continue;
+        if (!Array.isArray(tactic.characters) || tactic.characters.length !== 5
+            || !tactic.characters.every((name, index) => name === seed.characters[index])) continue;
+        const byStep = new Map((seed.rows || []).map(row => [String(row.id), row]));
+        for (const step of tactic.rows || []) {
+          const expected = byStep.get(String(step.id));
+          if (!expected?.preDamageCommaFormatText || step.text !== expected.preDamageCommaFormatText) continue;
+          step.text = expected.text;
+          delete step.runs;
+          changed = true;
+        }
+      }
+      month.carryDamageCommaRevision = 1;
+      changed = true;
+    }
     if (!month.tacticsMetadataVersion) {
       for (const missing of metadata.missingTactics || []) {
         if (missing.month === key && !month.tactics.some(t => t.id === missing.id)) { const {month:_, ...t} = missing; month.tactics.push(structuredClone(t)); changed = true; }
