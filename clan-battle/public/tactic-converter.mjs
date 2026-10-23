@@ -54,6 +54,11 @@ export function convertForeignTactic(raw, koreanNames=[], foreignNames=[]) {
    if(a.changed!==null)auto=a.changed;
    const on=[],off=[];
    const symbols=a.rest.match(/[OX〇○◯●ー－—-]{5}/i);
+   if(symbols && a.changed===null){
+     const suffix=a.rest.slice(symbols.index+symbols[0].length);
+     const bare=suffix.match(/(?:^|[\s、,，])(ON|OFF|切|オン|オフ)(?=$|[\s、,，])/i);
+     if(bare){a.changed=/^(?:ON|オン)$/i.test(bare[1]);auto=a.changed;}
+   }
    if(symbols){
      [...symbols[0].toUpperCase()].forEach((mark,i)=>{
        const next=/[O〇○◯●]/.test(mark);
