@@ -64,6 +64,16 @@ export function convertForeignTactic(raw, koreanNames=[], foreignNames=[]) {
    return result;
  };
  const act=(payload,actor='',initial=false)=>{
+   // Some Japanese lines put the character in one column and only ON/OFF
+   // in another. Apply the action to the actor rather than treating it as text.
+   const actorSlot=find(actor);
+   const bare=trim(payload).match(/^(SET(?:ON|OFF)?|ON|OFF|切|解除|オン|オフ|关|關|开|開)$/i);
+   if(actorSlot>=0&&bare){
+     const enable=/^(?:SET|SETON|ON|オン|开|開)$/i.test(bare[1]);
+     state[actorSlot]=enable;
+     append('',[label[actorSlot]+(enable?(initial?' SET':' ON'):' OFF')]);
+     return;
+   }
    const a=autoState(payload),before=auto;
    let rest=a.rest;
    const skill=rest.match(/(?:s1|1スキル|技能1)\s*(?:开始后|開始後|スタート後)/i);
