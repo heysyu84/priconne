@@ -1,4 +1,4 @@
-import {parseBattleLogText,parseQuickLogText,detectDuplicateRows,sortBattleLogRows,validBattleLogRow} from './battle-image-parser.mjs?v=20261023-image01';
+import {parseBattleLogText,parseQuickLogText,detectDuplicateRows,sortBattleLogRows,validBattleLogRow} from './battle-image-parser.mjs?v=20261023-image02';
 import {makeId,memberLabel} from './roster.mjs?v=20261022-ui14';
 
 const OCR_URL='https://cdn.jsdelivr.net/npm/tesseract.js@7.0.0/dist/tesseract.min.js';
