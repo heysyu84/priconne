@@ -12,7 +12,7 @@ const {startPresence}=await import('./presence.mjs?v=20261023-combo01');
 startPresence({apiFetch,onCount:count=>{const value=document.getElementById('online-count'),badge=document.getElementById('online-presence');if(!value||!badge)return;const text=count===null?'—':String(count);if(value.textContent!==text)value.textContent=text;badge.dataset.connected=String(count!==null);}});
 const Engine=await import('./engine.mjs?v=20261022-ui14');
 const {ensureRoster,syncRoster,memberLabel}=await import('./roster.mjs?v=20261022-ui14');
-const {createWorkflow}=await import('./workflow.mjs?v=20261023-battle-format01');
+const {createWorkflow}=await import('./workflow.mjs?v=20261023-image01');
 const {ensureTactics}=await import('./tactics-model.mjs?v=20261023-foreign01');
 const {applySourceData,remainingAttacks}=await import('./guild-model.mjs?v=20261022-hall01');
 const {createGuildWorkspace}=await import('./guild-workspace.mjs?v=20261023-work-resume01');
