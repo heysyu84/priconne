@@ -218,7 +218,7 @@ body{font-size:16px}
   html[data-text-scale="100"] .recent-battle-table thead th{font-size:12px}
   html[data-text-scale="100"] .recent-battle-table tbody td{font-size:13px}
   /* Tactic body and checkbox hit targets intentionally retain their sizes. */
-  html[data-text-scale="100"] .tw-grid .tw-text-cell>[data-tw-text]{font-size:14px}
+  html[data-text-scale="100"] .tw-grid .tw-text-cell>[data-tw-text]{font-size:16px}
 }
 @media(max-width:360px){
   html[data-text-scale="100"] .mobile-nav button{font-size:10.5px;letter-spacing:-.5px}
