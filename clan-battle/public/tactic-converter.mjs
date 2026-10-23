@@ -9,6 +9,7 @@ const suggested={
 export const foreignSuggestions=name=>(suggested[trim(name)]||[])[0]||'';
 export function convertForeignTactic(raw, koreanNames=[], foreignNames=[]) {
  const ko=Array.from({length:5},(_,i)=>trim(koreanNames[i])||'캐릭터'+(i+1));
+ const label=ko.map(n=>({'네피네라':'네피'}[n]||n));
  const aliases=ko.map((x,i)=>[trim(foreignNames[i]),x,...(suggested[x]||[])].filter(Boolean));
  const dict=aliases.flatMap((a,i)=>a.map(name=>({name,i}))).sort((a,b)=>b.name.length-a.name.length);
  const dictPattern='(?:'+[...new Set(dict.map(x=>reg(x.name)))].join('|')+')';
@@ -29,7 +30,7 @@ export function convertForeignTactic(raw, koreanNames=[], foreignNames=[]) {
  const append=(actor,cmds,condition='')=>{
    if(!cmds.length&&!actor)return;
    const head=time?(rows.length&&time===lastTime?'ㄴ ':time+' '):'';
-   const name=actor?(find(actor)>=0?ko[find(actor)]:actor)+(condition?' '+condition+' ':' 후 '):'';
+   const name=actor?(find(actor)>=0?label[find(actor)]:actor)+(condition?' '+condition+' ':' 후 '):'';
    if(actor&&find(actor)<0)warning('행동 캐릭터 명칭 확인: '+actor);
    const text=trim(head+name+(cmds.join(', ')||'(SET 변경 없음)'));
    rows.push({text,checked:[...state,auto]});lastTime=time;
@@ -71,9 +72,9 @@ export function convertForeignTactic(raw, koreanNames=[], foreignNames=[]) {
        warning('명령 확인 필요: '+trim(a.rest).slice(0,70));
      }
    }
-   const order=xs=>[...new Set(xs)].sort((a,b)=>b-a).map(i=>ko[i]).join(', ');
+   const order=xs=>[...new Set(xs)].sort((a,b)=>b-a).map(i=>label[i]).join(', ');
    const cmds=[];
-   if(on.length)cmds.push(on.length>=2&&state.every(Boolean)?'전부 ON':order(on)+(initial?' SET':' ON'));
+   if(on.length)cmds.push(on.length>=2&&state.every(Boolean)?(initial?'전부 SET':'전부 ON'):order(on)+(initial?' SET':' ON'));
    if(off.length)cmds.push(off.length>=3&&state.every(x=>!x)?'전부 OFF':order(off)+' OFF');
    if(a.changed!==null && (auto!==before||initial||!rows.length))cmds.push('AUTO '+(auto?'온':'오프'));
    if(!rows.length && !actor && initial){cmds.sort((x,y)=>x.startsWith('AUTO')?-1:y.startsWith('AUTO')?1:0);}
@@ -92,7 +93,7 @@ export function convertForeignTactic(raw, koreanNames=[], foreignNames=[]) {
        const rawActor=trim(merged.slice(0,s.index));
        const a=actorStart(rawActor);
        let actor=a?.name||rawActor;
-       if(!t && !rows.length&&!actor)time='';
+       if(!rows.length&&!actor&&(time==='1:30'||!t))time='';
        act(merged.slice(s.index),actor,!rows.length);
      }else{
        const a=actorStart(merged);
