@@ -390,5 +390,5 @@ export function createWorkflow(api) {
     if (event.key.length === 1 && !event.ctrlKey && !event.metaKey && col !== 'carry') { event.preventDefault(); beginEdit(cell, event.key); }
   });
   window.addEventListener('scroll', event => { if (state.picker && !event.target.closest?.('#wf-member-list')) closePicker(); }, true);
-  return { battleView, mount, clearUndo:()=>{state.undo=[];}, hasDraft: () => { const d = draft(); return canEdit()&&!!(d.damage || d.memberQuery || state.editing); }, beforeNavigate: () => !state.editing || commitEditing(null, false), afterMonthChange: () => { closePicker(); state.rosterEdit = null; }, activeParticipants: () => participants(draft().day) };
+  return { battleView, mount, rememberExternal:()=>remember(), clearUndo:()=>{state.undo=[];}, hasDraft: () => { const d = draft(); return canEdit()&&!!(d.damage || d.memberQuery || state.editing); }, beforeNavigate: () => !state.editing || commitEditing(null, false), afterMonthChange: () => { closePicker(); state.rosterEdit = null; }, activeParticipants: () => participants(draft().day) };
 }
