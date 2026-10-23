@@ -1,4 +1,4 @@
-import {convertForeignTactic,foreignSuggestions} from './tactic-converter.mjs?v=20261023-emoji02';
+import {convertForeignTactic,foreignSuggestions} from './tactic-converter.mjs?v=20261023-emoji03';
 import {colorRuns} from './tactics-model.mjs?v=20261023-check-sync01';
 const $=id=>document.getElementById(id);
 const params=new URLSearchParams(location.search);
