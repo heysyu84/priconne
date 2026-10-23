@@ -18,6 +18,19 @@ export function installAdaptiveNavigation(doc=document,win=window) {
     copy.tabIndex=-1;probe.append(copy);
   }
   doc.body.append(probe);
+  const toolbar=doc.querySelector('.topbar .top-actions');
+  const logo=sidebar.querySelector('.logo');
+  const toolbarProbe=doc.createElement('header');
+  toolbarProbe.className='topbar';
+  toolbarProbe.dataset.toolbarProbe='';
+  toolbarProbe.setAttribute('aria-hidden','true');
+  toolbarProbe.inert=true;
+  if(toolbar){
+    const sample=toolbar.cloneNode(true);
+    for(const el of sample.querySelectorAll('[id]'))el.removeAttribute('id');
+    toolbarProbe.append(sample);
+    doc.body.append(toolbarProbe);
+  }
   let frame=0,compact=false;
   function measure(){
     frame=0;
@@ -34,6 +47,17 @@ export function installAdaptiveNavigation(doc=document,win=window) {
       const active=doc.activeElement,page=active?.closest?.('.nav')?.dataset.page;
       root.dataset.navLayout=layout;
       if(compact&&page)bottom.querySelector('[data-page="'+page+'"]')?.focus({preventScroll:true});
+    }
+    if(toolbar){
+      const currentStatus=toolbar.querySelector('.status')?.textContent||'';
+      const sampledStatus=toolbarProbe.querySelector('.status');
+      if(sampledStatus&&sampledStatus.textContent!==currentStatus)sampledStatus.textContent=currentStatus;
+      const intrinsicWidth=toolbarProbe.querySelector('.top-actions')?.getBoundingClientRect().width||0;
+      const wordmarkWidth=logo?.getBoundingClientRect().width||175;
+      // Measure the natural row, never its already-shrunk stacked presentation.
+      const stacked=compact&&(intrinsicWidth+wordmarkWidth+42>viewport);
+      const toolbarLayout=stacked?'stacked':'inline';
+      if(root.dataset.topbarLayout!==toolbarLayout)root.dataset.topbarLayout=toolbarLayout;
     }
     if(compact){
       // Measure intrinsic label widths independently of current grid columns.
@@ -58,13 +82,13 @@ export function installAdaptiveNavigation(doc=document,win=window) {
     root.style.setProperty('--adaptive-nav-bottom',compact?Math.ceil(bottom.getBoundingClientRect().height+24)+'px':'0px');
   }
   const schedule=()=>{if(!frame)frame=win.requestAnimationFrame(measure);};
-  const resize=new win.ResizeObserver(schedule);resize.observe(sidebar);resize.observe(bottom);
+  const resize=new win.ResizeObserver(schedule);resize.observe(sidebar);resize.observe(bottom);if(toolbar)resize.observe(toolbar);
   const mutation=new win.MutationObserver(schedule);mutation.observe(root,{attributes:true,attributeFilter:['data-text-scale']});
   win.addEventListener('resize',schedule);
   doc.fonts?.addEventListener?.('loadingdone',schedule);
   doc.fonts?.ready.then(schedule);
   measure();
-  return ()=>{resize.disconnect();mutation.disconnect();win.removeEventListener('resize',schedule);doc.fonts?.removeEventListener?.('loadingdone',schedule);if(frame)win.cancelAnimationFrame(frame);probe.remove();};
+  return ()=>{resize.disconnect();mutation.disconnect();win.removeEventListener('resize',schedule);doc.fonts?.removeEventListener?.('loadingdone',schedule);if(frame)win.cancelAnimationFrame(frame);probe.remove();toolbarProbe.remove();};
 }
 if(typeof document!=='undefined'){
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>installAdaptiveNavigation(),{once:true});
