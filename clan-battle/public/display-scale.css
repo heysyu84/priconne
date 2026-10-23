@@ -885,6 +885,35 @@ html[data-text-scale]:not([data-text-scale="100"]) :is(.recent-battle-table,.bat
 @media(max-width:360px){
 html[data-text-scale]:not([data-text-scale="100"]) :is(.recent-battle-table,.battle-sheet.compact-battle-sheet){--battle-log-font-size:calc((11.5px) * var(--user-text-scale,1))!important}
 }
+@media(max-width:800px){
+html[data-text-scale]:not([data-text-scale="100"]) .recent-battle-table .member-cell strong{font-size:inherit!important}
+html[data-text-scale]:not([data-text-scale="100"])[data-text-scale="100"] body{font-size:calc((16px) * var(--user-text-scale,1))!important}
+html[data-text-scale]:not([data-text-scale="100"])[data-text-scale="100"] .panel .sub,
+html[data-text-scale]:not([data-text-scale="100"])[data-text-scale="100"] .small,
+html[data-text-scale]:not([data-text-scale="100"])[data-text-scale="100"] .muted.small{font-size:calc((13px) * var(--user-text-scale,1))!important}
+html[data-text-scale]:not([data-text-scale="100"])[data-text-scale="100"] .panel-head h2{font-size:calc((16px) * var(--user-text-scale,1))!important}
+html[data-text-scale]:not([data-text-scale="100"])[data-text-scale="100"] .btn{font-size:calc((13px) * var(--user-text-scale,1))!important}
+html[data-text-scale]:not([data-text-scale="100"])[data-text-scale="100"] .btn.sm{font-size:calc((12px) * var(--user-text-scale,1))!important}
+html[data-text-scale]:not([data-text-scale="100"])[data-text-scale="100"] .metric .k,
+html[data-text-scale]:not([data-text-scale="100"])[data-text-scale="100"] .metric .d{font-size:calc((13px) * var(--user-text-scale,1))!important}
+html[data-text-scale]:not([data-text-scale="100"])[data-text-scale="100"] .datatable thead th{font-size:calc((12px) * var(--user-text-scale,1))!important}
+html[data-text-scale]:not([data-text-scale="100"])[data-text-scale="100"] .datatable tbody td,
+html[data-text-scale]:not([data-text-scale="100"])[data-text-scale="100"] .datatable tbody th{font-size:calc((13px) * var(--user-text-scale,1))!important}
+html[data-text-scale]:not([data-text-scale="100"])[data-text-scale="100"] .tw-card-title{font-size:calc((13px) * var(--user-text-scale,1))!important}
+html[data-text-scale]:not([data-text-scale="100"])[data-text-scale="100"] .tw-card small{font-size:calc((12px) * var(--user-text-scale,1))!important}
+html[data-text-scale]:not([data-text-scale="100"])[data-text-scale="100"] .combo-mini-unit strong{font-size:calc((12px) * var(--user-text-scale,1))!important}
+html[data-text-scale]:not([data-text-scale="100"])[data-text-scale="100"] .combo-mini-chip{font-size:calc((12px) * var(--user-text-scale,1))!important}
+html[data-text-scale]:not([data-text-scale="100"])[data-text-scale="100"] .combo-mini-score small{font-size:calc((12px) * var(--user-text-scale,1))!important}
+html[data-text-scale]:not([data-text-scale="100"])[data-text-scale="100"] .combo-mini-note{font-size:calc((12px) * var(--user-text-scale,1))!important}
+html[data-text-scale]:not([data-text-scale="100"])[data-text-scale="100"] .tw-carry-state{font-size:calc((11px) * var(--user-text-scale,1))!important}
+html[data-text-scale]:not([data-text-scale="100"])[data-text-scale="100"] .mobile-nav button{font-size:calc((11px) * var(--user-text-scale,1))!important}
+html[data-text-scale]:not([data-text-scale="100"])[data-text-scale="100"] .recent-battle-table thead th{font-size:calc((12px) * var(--user-text-scale,1))!important}
+html[data-text-scale]:not([data-text-scale="100"])[data-text-scale="100"] .recent-battle-table tbody td{font-size:calc((13px) * var(--user-text-scale,1))!important}
+html[data-text-scale]:not([data-text-scale="100"])[data-text-scale="100"] .tw-grid .tw-text-cell>[data-tw-text]{font-size:calc((16px) * var(--user-text-scale,1))!important}
+}
+@media(max-width:360px){
+html[data-text-scale]:not([data-text-scale="100"])[data-text-scale="100"] .mobile-nav button{font-size:calc((10.5px) * var(--user-text-scale,1))!important}
+}
 /* display-settings.css */
 html[data-text-scale]:not([data-text-scale="100"]) .display-dialog{font-size:calc((14px) * var(--user-text-scale,1))!important}
 html[data-text-scale]:not([data-text-scale="100"]) .display-dialog-head h2{font-size:calc((18px) * var(--user-text-scale,1))!important}
