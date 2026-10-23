@@ -4,7 +4,7 @@ const reg=s=>s.replace(/[.*+?^$()|[\]{}]/g,'\\$&');
 const suggested={
  '네피네라':['ネフィ','ネフィネラ'],'네피':['ネフィ'],
  '봉황':['ホウオウ','鳳凰'],'후부키':['フブキ'],'아이라':['アイラ'],
- '수네아':['ネア'],'라비':['ラビリスタ','ラビ'],'리리컬':['リリカル']
+ '수네아':['ネア'],'라비':['ラビリスタ','ラビ'],'리리컬':['リリカル','페리컬']
 };
 export const foreignSuggestions=name=>(suggested[trim(name)]||[])[0]||'';
 export function convertForeignTactic(raw, koreanNames=[], foreignNames=[]) {
