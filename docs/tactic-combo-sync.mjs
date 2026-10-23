@@ -9,6 +9,7 @@ export function stripTpFromMemo(note){
  if(!tpOf(source))return source;
  return source
   .replace(/\bTP\s*[:：]?\s*\d+(?:\.\d+)?\+?(?:\s*이상\s*필수|\s*이상|\s*필수)?(?:\s*\([^)]{0,160}\))?(?:\s*는\s*되야\s*돌아갈\s*것\s*같음)?/gi,'')
+  .replace(/([:：])\s*[,，;；]+\s*/g,'$1 ')
   .replace(/\s*([,，;；])\s*(?=[,，;；])/g,'')
   .replace(/^[\s,，;；·]+|[\s,，;；·]+$/g,'')
   .replace(/^\s*필수\s*[:：]\s*$/,'')
@@ -44,8 +45,8 @@ export function migrateTacticConditions(month){
  const recommendations=Array.isArray(month.recommendations)?month.recommendations:[];
  for(const tactic of month.tactics){
   const linked=recommendations.find(r=>String(r.sourceTacticId||'')===String(tactic.id));
-  const exact=recommendations.filter(r=>sameRecord(r,tactic));
-  const possible=recommendations.filter(r=>Number(r.stage)===4&&identity(r)===identity(tactic)&&sameSource(r,tactic));
+  const exact=recommendations.filter(r=>(!r.sourceTacticId||String(r.sourceTacticId)===String(tactic.id))&&sameRecord(r,tactic));
+  const possible=recommendations.filter(r=>(!r.sourceTacticId||String(r.sourceTacticId)===String(tactic.id))&&Number(r.stage)===4&&identity(r)===identity(tactic)&&sameSource(r,tactic));
   const source=linked||(exact.length===1?exact[0]:null)||(possible.length===1?possible[0]:null);
   if(tactic.manualCount===undefined||tactic.manualCount===null||tactic.manualCount===''){
    tactic.manualCount=source?.manualCount===undefined||source?.manualCount===null?'':String(source.manualCount);
@@ -54,7 +55,6 @@ export function migrateTacticConditions(month){
    tactic.tp=String(source?.tp||tpOf(tactic.note)||'');
   }
   tactic.note=stripTpFromMemo(tactic.note);
-  tactic.title=tactic.title||'';
  }
  // Legacy recommendation notes should also no longer show duplicated TP text.
  for(const record of recommendations){
