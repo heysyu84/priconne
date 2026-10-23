@@ -1,0 +1,11 @@
+import assert from 'node:assert/strict';
+import {compactNavigation} from '../public/adaptive-navigation.mjs';
+assert.equal(compactNavigation(800,900,700),true);
+assert.equal(compactNavigation(801,750,900),true);
+assert.equal(compactNavigation(1100,1052,1053),true);
+assert.equal(compactNavigation(1366,1318,1053),false);
+assert.equal(compactNavigation(1100,1052,1000),false);
+assert.equal(compactNavigation(1100,1052,1400),true);
+assert.equal(compactNavigation(1100,1058,1053,true),true);
+assert.equal(compactNavigation(1100,1065,1053,true),false);
+console.log('PASS: narrow windows, larger menu text and stable desktop restoration');
