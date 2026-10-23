@@ -244,3 +244,7 @@ html[data-text-scale]:not([data-text-scale="100"]) .combo-mini-header{flex-wrap:
   border-radius:7px;
   box-shadow:none;
 }
+
+/* Existing recommendations remain manageable in the unified list. */
+.combo-mini-admin{grid-column:1/-1;grid-row:4;display:flex;justify-content:flex-end;flex-wrap:wrap;gap:8px;padding-top:4px}
+.combo-mini-admin .btn{min-height:36px}
