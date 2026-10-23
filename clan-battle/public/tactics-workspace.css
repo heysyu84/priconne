@@ -24,3 +24,20 @@
 .tw-title-condition{white-space:nowrap;font-variant-numeric:tabular-nums}
 @media(max-width:1050px){.tw-meta{grid-template-columns:repeat(3,minmax(0,1fr))}.tw-meta>.field:last-child{grid-column:span 2}}
 @media(max-width:600px){.tw-meta{grid-template-columns:repeat(2,minmax(0,1fr))}.tw-meta>.field:last-child{grid-column:1/-1}}
+
+/* Prominent note from the tactic's editable memo, directly below its heading. */
+.tw-detail-note[hidden]{display:none!important}
+.tw-detail-note{
+ display:flex;align-items:baseline;flex-wrap:wrap;column-gap:10px;row-gap:3px;
+ min-width:0;margin:-4px 0 16px;padding:0 0 12px;
+ border-bottom:1px solid #eae5ef;
+ color:#b1263c;font-size:15px;font-weight:750;line-height:1.7;
+ word-break:keep-all;overflow-wrap:anywhere;
+}
+.tw-detail-note-label{flex:none;font-size:15px;font-weight:900;letter-spacing:-.02em}
+.tw-detail-note-text{flex:1 1 280px;min-width:0;white-space:pre-wrap;overflow-wrap:anywhere;word-break:keep-all}
+@media(max-width:600px){
+ .tw-detail-note{margin:-3px 0 13px;padding-bottom:10px;row-gap:2px;font-size:15px}
+ .tw-detail-note-label{font-size:14px}
+ .tw-detail-note-text{flex-basis:100%}
+}
