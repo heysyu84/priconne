@@ -377,7 +377,7 @@ input:focus,select:focus,textarea:focus {border-color:#9872bf;box-shadow:0 0 0 3
 }
 
 /* Wide-screen density: constrain the canvas and pair complementary data cards. */
-.content{width:100%;max-width:850px;margin-inline:auto}
+.content{width:100%;max-width:900px;margin-inline:auto}
 .db-rates-layout,.profile-activity-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:16px;align-items:start}
 .db-rates-layout>.panel,.profile-activity-grid>.panel{min-width:0;margin:0}
 .db-rate-factors .table-scroll,.db-rate-records .table-scroll{max-width:100%;overflow-x:auto}
@@ -406,7 +406,7 @@ input:focus,select:focus,textarea:focus {border-color:#9872bf;box-shadow:0 0 0 3
 }
 @media(min-width:1560px){
  .sidebar{grid-template-columns:repeat(8,minmax(0,148px));justify-content:center}
- .topbar{right:max(24px,calc((100vw - 850px)/2 + 24px))}
+ .topbar{right:max(24px,calc((100vw - 900px)/2 + 24px))}
 }
 @media(max-width:800px){
  .db-rates-layout,.profile-activity-grid{gap:12px}
@@ -470,12 +470,12 @@ input:focus,select:focus,textarea:focus {border-color:#9872bf;box-shadow:0 0 0 3
  .combo-summary-stage3 .combo-time strong,.combo-summary-stage3 .combo-operation strong{font-size:10px}
 }
 
-/* Readable desktop canvas: bounded at 850px. */
-.content{max-width:850px}
+/* Readable desktop canvas: bounded at 900px. */
+.content{max-width:900px}
 @media(min-width:801px){
  .content{padding-inline:24px!important}
- .sidebar{padding-inline:max(24px,calc((100vw - 850px)/2 + 24px));grid-template-columns:repeat(8,minmax(0,1fr))}
- .topbar{right:max(24px,calc((100vw - 850px)/2 + 24px))}
+ .sidebar{padding-inline:max(24px,calc((100vw - 900px)/2 + 24px));grid-template-columns:repeat(8,minmax(0,1fr))}
+ .topbar{right:max(24px,calc((100vw - 900px)/2 + 24px))}
  .panel{padding:18px}
  .dashboard-panel{padding:0}
  .sheet-panel,.tw-work{padding:16px}
@@ -847,9 +847,9 @@ table.tw-grid thead th{
   .profile-activity-grid .daily-profile-bars>div>.daily-stat b{font-size:12px;line-height:1.4}
 }
 
-/* Desktop: never exceed an 850px centered canvas; 800px mobile cutoff unchanged. */
+/* Desktop: never exceed an 900px centered canvas; 800px mobile cutoff unchanged. */
 @media screen and (min-width:801px){
- .content{width:100%;max-width:850px;margin-inline:auto}
+ .content{width:100%;max-width:900px;margin-inline:auto}
  .sidebar:not([data-nav-probe]) .nav{min-width:0;padding-inline:4px;gap:4px;letter-spacing:-.3px}
  .tw-layout{grid-template-columns:minmax(0,1fr)}
  .tw-library{position:relative;top:auto;max-height:none;overflow:visible}
