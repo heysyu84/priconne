@@ -213,7 +213,7 @@ export function createGuildWorkspace(api){
   function editCombo(id){
     const c=month().recommendations.find(x=>x.id===id),stage=Number(c?.stage||state.comboStage),stage3=stage===3;
     const timeFields=[{name:'requiredSeconds',label:'필요시간(초)',type:'number',value:c?.requiredSeconds??''},{name:'remainingSeconds',label:'이월시간(초)',type:'number',value:c?.remainingSeconds??''}];
-    openForm(c?.sourceTacticId?'추천 조합 · 택틱 작업실 연동 (편성·기대딜은 택틱에서 수정)':'추천 조합',[{name:'stage',label:'단계',type:'number',value:stage,required:true},{name:'boss',label:'보스 번호',type:'number',value:c?.boss||1,required:true},{name:'characters',label:'캐릭터 5명 · 쉼표 구분',value:c?.characters.join(', ')||'',required:true},{name:'stars',label:'성급 5자리',value:c?.stars.join('')||'55555',required:true},...(stage3?[...timeFields,{name:'tactic',label:'조작택틱',value:c?.tactic?.trim()||'전부 SET'}]:[{name:'expectedDamage',label:'기대딜',value:c?.expectedDamage??''},...timeFields,{name:'manualCount',label:'손컨 횟수',type:'number',value:c?.manualCount??''},{name:'tp',label:'TP',value:c?.tp||''},{name:'tactic',label:'조작·택틱',value:c?.tactic||''},{name:'url',label:'영상·택틱 링크',type:'url',value:c?.url||c?.video||''}]),{name:'note',label:'비고',value:c?.note||''}],v=>{
+    openForm(c?.sourceTacticId?'추천 조합 · 택틱 작업실 연동 (편성·기대딜은 택틱에서 수정)':'추천 조합',[{name:'stage',label:'단계',type:'number',value:stage,required:true},{name:'boss',label:'보스 번호',type:'number',value:c?.boss||1,required:true},{name:'characters',label:'캐릭터 5명 · 쉼표 구분',value:c?.characters.join(', ')||'',required:true},{name:'stars',label:'성급 5자리',value:c?.stars.join('')||'55555',required:true},...(stage3?[...timeFields,{name:'tactic',label:'조작택틱',value:c?.tactic?.trim()||'전부 SET'}]:[{name:'expectedDamage',label:'기대딜',value:c?.expectedDamage??''},...timeFields,{name:'manualCount',label:'손컨 횟수',type:'number',value:c?.manualCount??''},{name:'tp',label:'TP',value:c?.tp||''},{name:'tactic',label:'조작·택틱',value:c?.tactic||''},{name:'url',label:'영상·택틱 링크',type:'url',value:c?.url||c?.video||''}]),{name:'note',label:c?.sourceTacticId?'메모 (택틱 작업실 연동)':'비고',value:c?.note||''}],v=>{
       const chars=v.characters.split(/[,，]/).map(n=>n.trim()).filter(Boolean);
       if(chars.length!==5||!(/^[1-6]{5}$/).test(v.stars))throw Error('캐릭터 5명과 성급 5자리를 입력하세요.');
       if(![3,4].includes(Number(v.stage))||![1,2,3,4,5].includes(Number(v.boss)))throw Error('단계는 3~4, 보스는 1~5입니다.');
@@ -223,7 +223,7 @@ export function createGuildWorkspace(api){
       if(data.stage===4&&v.manualCount!==''&&!/^(?:[0-9])(?:\.5)?$/.test(v.manualCount))throw Error('손컨은 0~9.5까지 0.5 단위로 입력하세요.');
       if(c?.sourceTacticId){
         const sourceTactic=month().tactics.find(t=>String(t.id)===String(c.sourceTacticId));
-        if(sourceTactic){sourceTactic.manualCount=v.manualCount;sourceTactic.tp=v.tp;}
+        if(sourceTactic){sourceTactic.manualCount=v.manualCount;sourceTactic.tp=v.tp;sourceTactic.note=v.note;}
       }
       if(c)Object.assign(c,data);else month().recommendations.push(data);persist();render();
     });

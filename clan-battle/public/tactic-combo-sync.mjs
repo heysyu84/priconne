@@ -105,8 +105,14 @@ export function syncTacticRecommendations(month){
   const mayUpdate=prior!==undefined?current.url===prior:!current.url;
   if(mayUpdate&&current.url!==incoming.url){current.url=incoming.url;changed=true;}
   if(current.tacticSourceUrl!==incoming.url){current.tacticSourceUrl=incoming.url;changed=true;}
-  // Existing manually curated recommendation commentary is preserved.
-  if((current.note===undefined||current.note===null||current.note==='')&&incoming.note){current.note=incoming.note;changed=true;}
+  // The linked tactic is canonical for the displayed memo. Reflect edits and clearing
+  // immediately; retain a legacy recommendation-only memo for recovery.
+  if(String(current.note??'')!==incoming.note){
+   if(current.note&&!Object.prototype.hasOwnProperty.call(current,'legacyRecommendationNote'))
+    current.legacyRecommendationNote=String(current.note);
+   current.note=incoming.note;
+   changed=true;
+  }
  }
  // Do not leave orphaned automatically-linked records when source is deleted/incomplete.
  const active=new Set(month.tactics.filter(t=>tacticReady(t)&&!hidden.has(String(t.id))).map(t=>String(t.id)));
