@@ -1,4 +1,4 @@
-import {convertForeignTactic,foreignSuggestions} from './tactic-converter.mjs?v=20261023-autolineup04';
+import {convertForeignTactic,foreignSuggestions} from './tactic-converter.mjs?v=20261023-extraction03';
 import {colorRuns} from './tactics-model.mjs?v=20261023-check-sync01';
 import {serializeTacticTransfer,validTacticLineup} from './tactic-transfer.mjs?v=20261023-autolineup04';
 
@@ -15,7 +15,7 @@ try{
  }
 }catch{}
 const foreignPairs=Object.entries(preferred);
-let catalog=[],current=null;
+let catalog=[],current=null,convertedRaw=null;
 const params=new URLSearchParams(location.search);
 const init=(params.get('lineup')||'').split('|').map(s=>s.trim());
 let confirmed=init.length===5&&init.every(Boolean);
@@ -110,6 +110,7 @@ function paint(text){
 }
 function render(){
  current=convertForeignTactic($('raw').value,koreanNames(),sourceNames());
+ convertedRaw=$('raw').value;
  const preview=$('preview');preview.replaceChildren();
  if(!current.rows.length)preview.textContent='변환된 내용이 없습니다.';
  for(const item of current.rows){
@@ -119,6 +120,11 @@ function render(){
      const dot=document.createElement('span');dot.textContent=value?'●':'○';dot.className=value?'on':'off';state.append(dot);
    });
    const body=document.createElement('div');body.className='preview-text';body.append(paint(item.text));
+   const comparison=document.createElement('details');comparison.className='source-comparison';
+   const summary=document.createElement('summary');summary.textContent=item.text.includes('[원문 확인:')?'⚠ 원문 대조 · 조건 확인 필요':'원문 대조';
+   const original=document.createElement('pre');original.textContent=item.source||'';
+   comparison.append(summary,original);body.append(comparison);
+   if(item.text.includes('[원문 확인:'))row.classList.add('needs-review');
    row.append(state,body);preview.append(row);
  }
  const problems=[];
@@ -150,12 +156,12 @@ $('clear').addEventListener('click',()=>{
  $('messages').textContent='';$('copy-with-set').disabled=$('copy-text').disabled=true;
 });
 $('copy-with-set').addEventListener('click',()=>{
- if(!lineupReady()||!confirmed||!current?.rows.length)return;
+ if(!lineupReady()||!confirmed||!current?.rows.length||convertedRaw!==$('raw').value)return;
  try{copy(serializeTacticTransfer(koreanNames(),current.pasteText));}
  catch(error){$('messages').textContent=error.message;}
 });
 $('copy-text').addEventListener('click',()=>{
- if(!lineupReady()||!confirmed||!current?.rows.length)return;
+ if(!lineupReady()||!confirmed||!current?.rows.length||convertedRaw!==$('raw').value)return;
  copy(current.text);
 });
 document.querySelectorAll('#lineup input').forEach(input=>input.addEventListener('change',()=>{
@@ -167,3 +173,10 @@ document.querySelectorAll('#lineup input').forEach(input=>input.addEventListener
  notice('배치나 이름이 바뀌었습니다. 1~5번 순서를 다시 확인해 주세요.');
  if(current)render();
 }));
+
+$('raw').addEventListener('input',()=>{
+ if(current&&convertedRaw!==$('raw').value){
+   $('copy-with-set').disabled=$('copy-text').disabled=true;
+   $('messages').textContent='원문이 변경되었습니다. 다시 변환한 뒤 복사하세요.';
+ }
+});

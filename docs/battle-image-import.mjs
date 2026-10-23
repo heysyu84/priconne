@@ -1,4 +1,4 @@
-import {parseBattleLogText,parseQuickLogText,detectDuplicateRows,sortBattleLogRows,validBattleLogRow} from './battle-image-parser.mjs?v=20261023-image02';
+import {parseBattleLogText,parseQuickLogText,detectDuplicateRows,sortBattleLogRows,validBattleLogRow} from './battle-image-parser.mjs?v=20261023-extraction03';
 import {makeId,memberLabel} from './roster.mjs?v=20261022-ui14';
 
 const OCR_URL='https://cdn.jsdelivr.net/npm/tesseract.js@7.0.0/dist/tesseract.min.js';
@@ -32,7 +32,7 @@ const escapeHtml=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;'
 const formatNumber=n=>Number(n||0).toLocaleString('ko-KR');
 export function createBattleImageImport(api){
  const {getApp,getMonth,persist,render,navigate,notify,canEdit,unlock,replay,beforeCommit}=api;
- const state={rows:[],processing:false,cancel:false,progress:'',mode:'detail',ocrStatus:'',errors:[],day:null,raw:'',completed:0,total:0};
+ const state={cropOpen:false,cropIndex:0,cropFrames:{detail:structuredClone(detailFrames),quick:[structuredClone(quickFrame)]},rows:[],processing:false,cancel:false,progress:'',mode:'detail',ocrStatus:'',errors:[],day:null,raw:'',completed:0,total:0};
  const $=id=>document.getElementById(id);
  const month=()=>getMonth();
  const members=()=>getApp().roster.filter(p=>(month().memberIds||[]).includes(p.id));
@@ -52,13 +52,14 @@ export function createBattleImageImport(api){
  function options(rows,value,blank='선택하세요'){
   return '<option value="">'+escapeHtml(blank)+'</option>'+rows.map(o=>'<option value="'+escapeHtml(o.id)+'" '+(String(o.id)===String(value)?'selected':'')+'>'+escapeHtml(o.name)+'</option>').join('');
  }
- function itemHtml(row,index){
+ function itemHtml(row,index,orderedRows){
   const warnings=score(row),bad=warnings.length>0;
   const memberOptions=options(members().map(p=>({id:p.id,name:memberLabel(p,getApp().roster)})),row.memberId,'클랜원 확인');
   const bossOptions=options(month().bosses.map(b=>({id:b.id,name:b.id+'넴 · '+b.name})),row.bossId,'보스 확인');
   return '<div class="bli-row '+(bad?'needs-check':'')+'" data-bli-id="'+escapeHtml(row.id)+'">'+
    '<div class="bli-row-top"><label><input type="checkbox" data-bli-field="selected" '+(row.selected?'checked':'')+' '+(bad?'disabled':'')+'> 등록</label>'+
    '<strong>#'+(index+1)+'</strong><span>'+escapeHtml(row.source||'입력')+'</span>'+
+   (orderedRows.some((r,i)=>i!==index&&r.gameAt&&r.gameAt===row.gameAt)?'<span class="bli-order">동일 시각 · 순서 확인 <button class="btn sm" type="button" data-bli-shift="'+escapeHtml(row.id)+'" data-direction="-1" aria-label="공격 순서 위로" '+(index===0||orderedRows[index-1].gameAt!==row.gameAt?'disabled':'')+'>↑</button><button class="btn sm" type="button" data-bli-shift="'+escapeHtml(row.id)+'" data-direction="1" aria-label="공격 순서 아래로" '+(index===orderedRows.length-1||orderedRows[index+1].gameAt!==row.gameAt?'disabled':'')+'>↓</button></span>':'')+
    '<button class="btn sm" type="button" data-bli-remove="'+escapeHtml(row.id)+'">삭제</button></div>'+
    '<div class="bli-fields">'+
    '<label>공격 일시<input data-bli-field="gameAt" type="datetime-local" value="'+escapeHtml(row.gameAt||'')+'"></label>'+
@@ -84,6 +85,7 @@ export function createBattleImageImport(api){
    '<div class="bli-controls"><button type="button" class="btn" data-bli="analyze" '+(state.processing?'disabled':'')+'>선택 이미지 분석 시작</button>'+
    (state.processing?'<button type="button" class="btn" data-bli="cancel">다음 이미지부터 중단</button>':'')+
    '<button type="button" class="btn" data-bli="clear" '+(state.processing?'disabled':'')+'>미리보기 비우기</button></div>'+
+   cropEditor()+
    '<p class="bli-progress" id="bli-progress" role="status">'+escapeHtml(state.progress||'파일은 분석 전까지 브라우저 메모리에만 보관합니다.')+'</p></div>'+
    '<details class="bli-manual"><summary>OCR 텍스트 직접 붙여넣기 · 잘못 인식된 화면 재분석</summary>'+
    '<p class="muted">이미지 인식이 실패했으면 추출한 텍스트를 직접 입력해 기록을 추가할 수 있습니다. 행 별 값은 아래에서 편집 가능합니다.</p>'+
@@ -93,18 +95,29 @@ export function createBattleImageImport(api){
    '<div class="bli-review-controls"><label>적용 일차<select id="bli-day">'+Array.from({length:validDays()},(_,i)=>'<option value="'+(i+1)+'" '+(i+1===day?'selected':'')+'>'+(i+1)+'일차</option>').join('')+'</select></label>'+
    '<span class="muted">현재 '+escapeHtml(getApp().active)+'월 기록 · 등록 시 맨 뒤에 시간순 추가</span></div>'+
    (state.errors.length?'<div class="bli-warning">'+escapeHtml(state.errors.join('\n'))+'</div>':'')+
-   (rows.length?rows.map(itemHtml).join(''):'<p class="muted">인식된 기록이 없습니다. 이미지를 선택해 분석하거나 텍스트를 추가해 주세요.</p>')+
+   (rows.length?rows.map((row,index)=>itemHtml(row,index,rows)).join(''):'<p class="muted">인식된 기록이 없습니다. 이미지를 선택해 분석하거나 텍스트를 추가해 주세요.</p>')+
    '<div class="bli-bottom"><strong>등록 가능한 선택 기록 '+count+'건</strong><button class="btn primary" type="button" data-bli="commit" '+(!count||state.processing?'disabled':'')+'>검토한 '+count+'건 일괄 등록</button></div>'+
    '<p class="muted">날짜·닉네임·피해량·보스는 반드시 확인하세요. 중복 또는 현재 클전 월과 다른 기록은 자동으로 등록하지 않습니다. 이월 여부는 직접 지정해야 합니다.</p></div></section>';
  }
  // Excludes screenshots from persistence: File/Bitmap/Canvas are not serialized.
- let picked=[];
+ let picked=[],previewUrl='',drag=null;
+ function clearPreview(){if(previewUrl)URL.revokeObjectURL(previewUrl);previewUrl='';}
+ function cropEditor(){
+  if(!previewUrl)return '';
+  const frames=state.cropFrames[state.mode],index=Math.min(state.cropIndex,frames.length-1),frame=frames[index];
+  return '<details class="bli-crop" '+(state.cropOpen?'open':'')+'><summary>인식 영역 지정 · 화면 비율이 다를 때</summary><p>행을 선택하고 이미지 위에서 드래그하여 이름·보스·피해량·일시가 모두 들어오게 지정하세요. 지정 영역은 이번 분석의 모든 이미지에 적용됩니다.</p><label>영역 <select id="bli-crop-index" '+(state.processing?'disabled':'')+'>'+frames.map((_,i)=>'<option value="'+i+'" '+(index===i?'selected':'')+'>'+(state.mode==='detail'?(i+1)+'번째 공격':'우측 간단 로그')+'</option>').join('')+'</select></label><button class="btn sm" type="button" data-bli="reset-crop" '+(state.processing?'disabled':'')+'>기본 영역</button><div class="bli-crop-image" data-bli-crop-surface><img src="'+escapeHtml(previewUrl)+'" alt="선택한 첫 스크린샷의 OCR 영역 미리보기" draggable="false"><span class="bli-crop-box" style="left:'+frame.x*100+'%;top:'+frame.y*100+'%;width:'+frame.w*100+'%;height:'+frame.h*100+'%"></span></div><div class="bli-crop-numbers">'+[['x','왼쪽'],['y','위쪽'],['w','너비'],['h','높이']].map(([key,label])=>'<label>'+label+' %<input type="number" inputmode="decimal" min="0" max="100" step="0.1" data-bli-crop-field="'+key+'" value="'+(frame[key]*100).toFixed(1)+'" '+(state.processing?'disabled':'')+'></label>').join('')+'</div></details>';
+ }
+ function constrainFrame(frame){
+  frame.x=Math.max(0,Math.min(.99,frame.x));frame.y=Math.max(0,Math.min(.99,frame.y));
+  frame.w=Math.max(.01,Math.min(1-frame.x,frame.w));frame.h=Math.max(.01,Math.min(1-frame.y,frame.h));return frame;
+ }
+ function currentFrame(){return state.cropFrames[state.mode][Math.min(state.cropIndex,state.cropFrames[state.mode].length-1)];}
  let jobId=0;
  async function analyze(){
   if(state.processing||!editingAllowed())return;
   if(!picked.length){notify('스크린샷을 먼저 선택하세요.');return;}
   state.processing=true;state.cancel=false;state.errors=[];state.total=picked.length;state.completed=0;
-  const files=picked.splice(0),mode=state.mode;
+  const files=picked.splice(0),mode=state.mode,frames=structuredClone(state.cropFrames[state.mode]),contextMonth=getApp().active;
   state.progress='OCR 엔진 및 한국어 모델 준비 중…';render();
   let worker=null,run=++jobId;
   try{
@@ -121,12 +134,13 @@ export function createBattleImageImport(api){
     try{
      const bitmap=await createImageBitmap(file);
      try{
-      const frames=mode==='detail'?detailFrames:[quickFrame];
+      if(getApp().active!==contextMonth){state.cancel=true;break;}
       for(let i=0;i<frames.length;i++){
        if(state.cancel)break;
        const canvas=toCanvas(bitmap,frames[i]);
        const result=await worker.recognize(canvas);
        canvas.width=0;canvas.height=0;
+       if(state.cancel||getApp().active!==contextMonth){state.cancel=true;break;}
        const text=result.data?.text||'';
        const options={roster:members(),bosses:month().bosses,source:file.name+' · '+(i+1)+'행'};
        const parsed=mode==='detail'? [parseBattleLogText(text,options)].filter(Boolean):
@@ -226,14 +240,17 @@ export function createBattleImageImport(api){
  document.addEventListener('change',event=>{
   if(!event.target.closest('.bli-shell'))return;
   const element=event.target;
-  if(element.id==='bli-mode'){state.mode=element.value;render();return;}
+  if(element.id==='bli-mode'){if(state.processing)return;state.mode=element.value;state.cropIndex=0;render();return;}
+  if(element.id==='bli-crop-index'){state.cropIndex=Number(element.value);render();return;}
+  if(element.dataset?.bliCropField){if(state.processing)return;const value=Number(element.value);if(!Number.isFinite(value))return;currentFrame()[element.dataset.bliCropField]=value/100;constrainFrame(currentFrame());render();return;}
   if(element.id==='bli-files'){
    picked=Array.from(element.files||[]).slice(0,60);
    if(Array.from(element.files||[]).length>60||picked.some(f=>f.size>25*1024*1024||!/^image\/(png|jpeg|webp)$/.test(f.type))){
     picked=[];notify('최대 60장, 장당 25MB 이하의 PNG·JPG·WebP만 선택하세요.');return;
    }
+   clearPreview();if(picked[0])previewUrl=URL.createObjectURL(picked[0]);
    state.progress=picked.length+'장 선택됨 · 분석 시작을 누르세요.';
-   const status=$('bli-progress');if(status)status.textContent=state.progress;
+   const status=$('bli-progress');if(status)status.textContent=state.progress;render();
    return;
   }
   if(element.id==='bli-day'){setDay(element.value);updateRows();render();return;}
@@ -250,14 +267,15 @@ export function createBattleImageImport(api){
   if(event.target?.id==='bli-raw')state.raw=event.target.value;
  });
  document.addEventListener('click',event=>{
-  const button=event.target.closest('[data-bli],[data-bli-remove],[data-bli-duplicate]');if(!button)return;
+  const button=event.target.closest('[data-bli],[data-bli-remove],[data-bli-duplicate],[data-bli-shift]');if(!button)return;
   if(!button.closest('.bli-shell'))return;
   event.preventDefault();
   switch(button.dataset.bli){
    case 'unlock':unlock?.();break;
    case 'analyze':void analyze();break;
    case 'cancel':state.cancel=true;state.progress='현재 OCR 처리 후 중단합니다.';break;
-   case 'clear':if(state.processing)return;state.rows=[];state.errors=[];picked=[];state.progress='미리보기를 비웠습니다.';render();break;
+   case 'reset-crop':if(state.processing)return;state.cropFrames={detail:structuredClone(detailFrames),quick:[structuredClone(quickFrame)]};render();break;
+   case 'clear':if(state.processing)return;clearPreview();state.rows=[];state.errors=[];picked=[];state.progress='미리보기를 비웠습니다.';render();break;
    case 'commit':commit();break;
    case 'parse-text':{
     const v=$('bli-raw')?.value||'';
@@ -267,6 +285,13 @@ export function createBattleImageImport(api){
     state.raw='';updateRows(true);render();break;
    }
   }
+  if(button.dataset.bliShift){
+    if(state.processing)return;
+    const ordered=sortBattleLogRows(state.rows),index=ordered.findIndex(r=>r.id===button.dataset.bliShift),next=index+Number(button.dataset.direction);
+    if(index>=0&&next>=0&&next<ordered.length&&ordered[index].gameAt&&ordered[index].gameAt===ordered[next].gameAt){
+      [ordered[index],ordered[next]]=[ordered[next],ordered[index]];ordered.forEach((r,i)=>r.order=i);render();
+    }
+  }
   if(button.dataset.bliRemove){state.rows=state.rows.filter(r=>r.id!==button.dataset.bliRemove);render();}
   if(button.dataset.bliDuplicate){
     const row=state.rows.find(r=>r.id===button.dataset.bliDuplicate);
@@ -275,5 +300,20 @@ export function createBattleImageImport(api){
     }
   }
  });
+ document.addEventListener('toggle',event=>{if(event.target.matches?.('.bli-crop'))state.cropOpen=event.target.open;},true);
+ document.addEventListener('pointerdown',event=>{
+  const surface=event.target.closest?.('[data-bli-crop-surface]');if(!surface||state.processing)return;
+  event.preventDefault();const rect=surface.getBoundingClientRect();
+  drag={surface,rect,x:Math.max(0,Math.min(1,(event.clientX-rect.left)/rect.width)),y:Math.max(0,Math.min(1,(event.clientY-rect.top)/rect.height))};
+  surface.setPointerCapture?.(event.pointerId);
+ });
+ document.addEventListener('pointermove',event=>{
+  if(!drag)return;
+  const x=Math.max(0,Math.min(1,(event.clientX-drag.rect.left)/drag.rect.width)),y=Math.max(0,Math.min(1,(event.clientY-drag.rect.top)/drag.rect.height));
+  drag.frame=constrainFrame({x:Math.min(x,drag.x),y:Math.min(y,drag.y),w:Math.abs(x-drag.x),h:Math.abs(y-drag.y)});
+  const box=drag.surface.querySelector('.bli-crop-box');if(box)Object.assign(box.style,{left:drag.frame.x*100+'%',top:drag.frame.y*100+'%',width:drag.frame.w*100+'%',height:drag.frame.h*100+'%'});
+ });
+ document.addEventListener('pointerup',()=>{if(!drag)return;if(drag.frame)Object.assign(currentFrame(),drag.frame);drag=null;render();});
+ document.addEventListener('pointercancel',()=>{drag=null;});
  return {view,mount};
 }

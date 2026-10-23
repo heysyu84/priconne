@@ -66,7 +66,7 @@ export function parseQuickLogText(input,options={}){
  for(const line of lines){
    if(/^(?:전투\s*로그|상세|도움말|클랜전)/.test(line))continue;
    ongoing.push(line);
-   if(/(?:데미지|대미지|damage)\s*$/i.test(line)||/\d{7,12}\s*(?:데미지|대미지)/i.test(line)){
+   if(detectDamage(ongoing.join('\n'))!==null && (/(?:데미지|대미지|damage)\s*$/i.test(line)||/[\d][\d,. ]{5,}/.test(line))){
      blocks.push(ongoing.join('\n'));ongoing=[];
    }
  }

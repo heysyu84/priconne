@@ -39,3 +39,10 @@ assert.ok(quick.every(row=>!row.gameAt));
 assert.ok(quick.every(row=>validBattleLogRow(row,{monthKey:'2026-09',members:roster,bosses,day:1})
  .includes('공격 시각 미확인')));
 console.log('Battle screenshot parser regression tests: passed');
+
+for(const damage of ['189633896','189,633,896']){
+ const split=parseQuickLogText('다람이 님이\n데미카리드 몬스터를\n입힌 데미지\n'+damage,{roster,bosses});
+ assert.equal(split.length,1);assert.equal(split[0].memberId,'p1');assert.equal(split[0].damage,189633896);
+}
+const wrapped=parseQuickLogText('다람이\n데미카리드\n입힌 데미지\n189633896\n쁘띠어피치\n마담 엘렉트라\n272557284\n데미지',{roster,bosses});
+assert.equal(wrapped.length,2);assert.deepEqual(wrapped.map(r=>r.damage),[189633896,272557284]);
