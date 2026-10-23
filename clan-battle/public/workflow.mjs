@@ -9,6 +9,8 @@ export function createWorkflow(api) {
   const $ = s => document.querySelector(s);
   const canEdit=()=>api.canEdit?.()??true;
   const guard=()=>{if(canEdit())return true;api.unlock?.();return false;};
+  const canSubmit=()=>canEdit()||!!api.canSubmitBattle?.();
+  let publicSubmitting=false;
   const maxDay = () => Number(month().options.days || 5);
   const recentDay = () => Math.min(maxDay(), Math.max(1, ...month().events.map(e => Number(e.day) || 1),...(month().dayBreaks||[]).map(b=>b.nextDay)));
   const person = id => app().roster.find(p => p.id === id);
@@ -46,10 +48,10 @@ export function createWorkflow(api) {
   }
 
   function quickView() {
-    if(!canEdit())return '';
+    if(!canSubmit())return '';
     const d = draft();
     return `<details class="panel quick-panel" ${state.inputOpen?'open':''} aria-label="배틀로그 입력"><summary>배틀로그 입력</summary><div class="panel-head"><div><div class="sub">이름 일부 입력 후 <kbd>↑↓</kbd> 선택 · <kbd>Tab</kbd> 다음 칸 · <kbd>Enter</kbd> 등록</div></div><button type="button" class="btn sm" data-wf="focus-quick">입력으로 이동 <kbd>/</kbd></button></div>
-      ${d.beforeId ? `<div class="insert-banner">#${X(month().events.find(e => e.id === d.beforeId)?.seq || '')} 앞에 삽입합니다. <button type="button" class="textbutton" data-wf="cancel-insert">맨 뒤 입력으로 변경</button></div>` : ''}
+      ${canEdit()&&d.beforeId ? `<div class="insert-banner">#${X(month().events.find(e => e.id === d.beforeId)?.seq || '')} 앞에 삽입합니다. <button type="button" class="textbutton" data-wf="cancel-insert">맨 뒤 입력으로 변경</button></div>` : ''}
       <form id="wf-quick-form" method="post"><div class="quick-grid">
       <div class="field day-current"><label>현재 일차</label><strong>${d.day}일차</strong></div>
       <div class="field"><label for="quick-member">클랜원</label>${memberInput(d.memberQuery, 'quick-member', 'data-quick="member"')}</div>
@@ -58,7 +60,7 @@ export function createWorkflow(api) {
       <div class="field"><label for="quick-carry">이월 사용</label><label class="carry-control"><input id="quick-carry" type="checkbox" data-quick="carry" ${d.carry ? 'checked' : ''}><span>사용 <kbd>Space</kbd></span></label></div>
       
       <button class="btn primary quick-submit" type="submit">등록 <kbd>Enter</kbd></button></div>
-      <div class="quick-auto"><label><input type="checkbox" data-quick="autoDamage" ${d.autoDamage?'checked':''}>2·3단계 최대 HP 자동 입력</label><small>직접 피해량을 입력하면 수동 기록</small>${d.day<maxDay()?`<button type="button" class="btn sm" data-wf="next-day">${d.day}일차 마감 → ${d.day+1}일차</button>`:''}</div><div class="quick-secondary"><div class="field"><label for="quick-bonus">가산점 (만)</label><input id="quick-bonus" data-quick="bonus" inputmode="decimal" value="${X(d.bonus)}"></div><div class="field"><label for="quick-memo">메모</label><input id="quick-memo" data-quick="memo" value="${X(d.memo)}" placeholder="선통·후통 확인사항 등"></div><div id="quick-usage" class="small muted">${d.memberId && person(d.memberId) ? X(usage(person(d.memberId), d.day)) : '등록 후 이름 입력 칸으로 돌아옵니다.'}</div></div></form></details>`;
+      <div class="quick-auto"><label><input type="checkbox" data-quick="autoDamage" ${d.autoDamage?'checked':''}>2·3단계 최대 HP 자동 입력</label><small>직접 피해량을 입력하면 수동 기록</small>${canEdit()&&d.day<maxDay()?`<button type="button" class="btn sm" data-wf="next-day">${d.day}일차 마감 → ${d.day+1}일차</button>`:''}</div><div class="quick-secondary"><div class="field"><label for="quick-bonus">가산점 (만)</label><input id="quick-bonus" data-quick="bonus" inputmode="decimal" value="${X(d.bonus)}"></div><div class="field"><label for="quick-memo">메모</label><input id="quick-memo" data-quick="memo" value="${X(d.memo)}" placeholder="선통·후통 확인사항 등"></div><div id="quick-usage" class="small muted">${d.memberId && person(d.memberId) ? X(usage(person(d.memberId), d.day)) : '등록 후 이름 입력 칸으로 돌아옵니다.'}</div></div></form></details>`;
   }
   function bossStrip(){return `<div class="battle-boss-strip" aria-label="보스별 남은 HP">${(api.getBosses?.()||[]).map(b=>`<button type="button" data-wf="pick-boss" data-boss-color="${b.id}" data-id="${b.id}" aria-pressed="${Number(draft().boss)===b.id}" title="${b.id}넴으로 공격 입력"><span class="mini-boss-art">${api.bossPortrait?.(b.id)?`<img src="${X(api.bossPortrait(b.id))}" alt="${X(b.name)}">`:b.id}</span><span class="mini-boss-data"><span class="mini-boss-original">${b.id}넴 · ${b.stage}단계 ${b.lap}회차</span><span class="mini-boss-inline"><b class="mini-boss-slot">${b.id}넴</b><b class="mini-boss-name">${X(b.name)}</b><span class="mini-boss-progress">${b.stage}단계 ${b.lap}회차</span></span><strong>${nf(b.hp)}</strong><small>${X(b.name)}</small></span></button>`).join('')}</div>`;}
 
@@ -165,8 +167,8 @@ export function createWorkflow(api) {
     ri = Math.max(0, Math.min(rows.length - 1, ri + dr));
     return { row: rows[ri]?.id || row, col: cols[ci] || col };
   }
-  function submitQuick() {
-    if(!guard())return;
+  async function submitQuick() {
+    if(!canSubmit()||publicSubmitting)return;
     const d = draft();
     const input = $('#quick-member');
     const member = person(d.memberId) && input?.value === label(person(d.memberId)) ? person(d.memberId) : selectedMember(input);
@@ -176,6 +178,27 @@ export function createWorkflow(api) {
     if (!member) { notify('참가 클랜원을 선택하세요. 이름 일부나 UID로 검색할 수 있습니다.'); focusQuick(); showPicker(input, 'quick'); return; }
     if (!Number.isFinite(damage)) { notify('피해량은 1 단위까지 정확한 숫자 또는 만·억 단위로 입력하세요. 소수점은 반올림하지 않습니다.'); return focusQuick('damage'); }
     if (!Number.isFinite(bonus)) { notify('가산점을 숫자로 입력하세요.'); return focusQuick('bonus'); }
+    if(!canEdit()){
+      publicSubmitting=true;
+      const submit=$('#wf-quick-form .quick-submit');
+      if(submit)submit.disabled=true;
+      try{
+        d.publicId ||= makeId();
+        await api.submitPublicBattle({
+          month:app().active,clientId:d.publicId,memberId:member.id,
+          boss:Number(d.boss),day:Number(d.day),damage,
+          damageMode:automatic?'max':'manual',carry:!!d.carry,bonus,memo:String(d.memo||'')
+        });
+        Object.assign(d,{memberId:'',memberQuery:'',damage:'',carry:false,autoDamage:true,bonus:'0',memo:'',beforeId:null,publicId:null});
+        state.page=1;
+        update({quick:true});
+        notify('공격을 등록하고 서버에 저장했습니다. 다음 이름을 입력하세요.');
+      }catch(error){
+        notify(error?.message||'공격을 저장하지 못했습니다. 입력한 내용은 유지됩니다.');
+        if(submit)submit.disabled=false;
+      }finally{publicSubmitting=false;}
+      return;
+    }
     remember();
     const before = month().events.find(e => e.id === d.beforeId);
     const seq = before ? before.seq : Math.max(0, ...month().events.map(e => e.seq)) + 1;
@@ -312,7 +335,7 @@ export function createWorkflow(api) {
       case 'split-day':finishDay(b.dataset.id);break;
       case 'reopen-day':reopenDay(b.dataset.id);break;
       case 'focus-quick': focusQuick(); break;
-      case 'pick-boss': draft().boss=Number(b.dataset.id);update(state.inputOpen&&canEdit()?{quick:true,field:draft().memberId?'damage':'member'}:null);break;
+      case 'pick-boss': draft().boss=Number(b.dataset.id);update(state.inputOpen&&canSubmit()?{quick:true,field:draft().memberId?'damage':'member'}:null);break;
       case 'undo': undo(); break;
       case 'previous': state.page = Math.max(1, state.page - 1); update(); break;
       case 'next': state.page++; update(); break;
@@ -390,5 +413,5 @@ export function createWorkflow(api) {
     if (event.key.length === 1 && !event.ctrlKey && !event.metaKey && col !== 'carry') { event.preventDefault(); beginEdit(cell, event.key); }
   });
   window.addEventListener('scroll', event => { if (state.picker && !event.target.closest?.('#wf-member-list')) closePicker(); }, true);
-  return { battleView, mount, rememberExternal:()=>remember(), clearUndo:()=>{state.undo=[];}, hasDraft: () => { const d = draft(); return canEdit()&&!!(d.damage || d.memberQuery || state.editing); }, beforeNavigate: () => !state.editing || commitEditing(null, false), afterMonthChange: () => { closePicker(); state.rosterEdit = null; }, activeParticipants: () => participants(draft().day) };
+  return { battleView, mount, rememberExternal:()=>remember(), clearUndo:()=>{state.undo=[];}, hasDraft: () => { const d = draft(); return !!(d.damage || d.memberQuery || publicSubmitting || state.editing); }, beforeNavigate: () => !state.editing || commitEditing(null, false), afterMonthChange: () => { closePicker(); state.rosterEdit = null; }, activeParticipants: () => participants(draft().day) };
 }

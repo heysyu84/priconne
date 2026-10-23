@@ -6,13 +6,13 @@ const {sequenceVisible}=await import('./view-settings.mjs?v=20261023-image-clean
 const {installPortraitFallback,withPortraitLibrary,findCharacter,normalizeCharacterName}=await import('./character-portraits.mjs?v=20261023-image-cleanup01');
 installPortraitFallback();
 const {assetUrl}=await import('./site-paths.mjs?v=20261023-image-cleanup01');
-const {browserApiClient}=await import('./api-client.mjs?v=20261023-combo01');
+const {browserApiClient}=await import('./api-client.mjs?v=20261024-public-battle-append01');
 const apiFetch=browserApiClient();
 const {startPresence}=await import('./presence.mjs?v=20261023-combo01');
 startPresence({apiFetch,onCount:count=>{const value=document.getElementById('online-count'),badge=document.getElementById('online-presence');if(!value||!badge)return;const text=count===null?'—':String(count);if(value.textContent!==text)value.textContent=text;badge.dataset.connected=String(count!==null);}});
 const Engine=await import('./engine.mjs?v=20261022-ui14');
 const {ensureRoster,syncRoster,memberLabel}=await import('./roster.mjs?v=20261022-ui14');
-const {createWorkflow}=await import('./workflow.mjs?v=20261024-bossstrip5-swapcols01');
+const {createWorkflow}=await import('./workflow.mjs?v=20261024-public-battle-append01');
 const {ensureTactics}=await import('./tactics-model.mjs?v=20261023-foreign01');
 const {syncTacticRecommendations}=await import('./tactic-combo-sync.mjs?v=20261023-sortcount03');
 const {applySourceData,remainingAttacks}=await import('./guild-model.mjs?v=20261022-hall01');
@@ -109,7 +109,7 @@ const archiveHash=location.hash.match(/^#archive(?:=(\d{4}-\d{2}))?$/);
 if(archiveHash){ui.page='archive';ui.archiveMonth=archiveHash[1]||null;}
 const current=()=>monthView.record();
 const money=n=>nf(Math.round(n));
-const workflow=createWorkflow({getApp:monthView.app,getMonth:current,setApp:value=>{app=value;syncRoster(app);for(const d of Object.values(app.months))Engine.replayMonth(d)},persist,replay:Engine.replayMonth,render,notify:notice,navigate:goto,section,nf,escapeHtml:X,contribution:contrib,formatContribution,getBosses:()=>bossStatus(),bossPortrait:id=>bossPortrait(id),canEdit,unlock:unlock,openForm});
+const workflow=createWorkflow({getApp:monthView.app,getMonth:current,setApp:value=>{app=value;syncRoster(app);for(const d of Object.values(app.months))Engine.replayMonth(d)},persist,replay:Engine.replayMonth,render,notify:notice,navigate:goto,section,nf,escapeHtml:X,contribution:contrib,formatContribution,getBosses:()=>bossStatus(),bossPortrait:id=>bossPortrait(id),canEdit,canSubmitBattle:()=>!monthView.isPast(),submitPublicBattle,unlock:unlock,openForm});
 const tacticWorkspace=createTacticWorkspace({getApp:monthView.app,getMonth:current,persist:()=>{workflow.clearUndo();persist()},render,notify:notice,navigate:goto,section,copyText,estimateCarry:Engine.estimateCarry,catalog:CHARACTER_CATALOG,bossStatus:()=>bossStatus(),bossPortrait:id=>bossPortrait(id),canEdit,unlock:unlock,openForm});
 const guild=createGuildWorkspace({getApp:monthView.app,getMonth:current,persist,render,notify:notice,navigate:goto,section,nf,escapeHtml:X,aggregates,contribution:contrib,formatContribution,replay:Engine.replayMonth,characters:CHARACTER_CATALOG,canEdit,unlock,openForm,archiveView:archiveRecords,getArchiveMonth:key=>archiveCache.get(key)||app.months[key],loadHistoryMonth:key=>monthView.load(key),openArchive:()=>goto('archive'),onDbTabChange:()=>{if(location.hash.startsWith('#archive'))window.history.replaceState(null,'',location.pathname+location.search);}});
 const imageImporter=createBattleImageImport({getApp:monthView.app,getMonth:current,persist,render,navigate:goto,notify:notice,canEdit,unlock,replay:Engine.replayMonth,beforeCommit:()=>workflow.rememberExternal()});
@@ -118,6 +118,22 @@ function persist(){
   syncTacticRecommendations(app.months[app.active]);
   try{localStorage.setItem(STORAGE,JSON.stringify(app))}catch{}
   dirty++;saveStatus('saving');clearTimeout(saveTimer);saveTimer=setTimeout(flushSave,450);
+}
+async function submitPublicBattle(entry){
+ if(monthView.isPast())throw Error('과거 클랜전에는 공격을 등록할 수 없습니다.');
+ if(editor)throw Error('관리자 입력은 기존 등록 경로를 이용해 주세요.');
+ const response=await apiFetch('/api/battle-entry',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(entry)});
+ let result={};try{result=await response.json()}catch{}
+ if(!response.ok)throw Error(result.error||'공격 등록 서버에 연결하지 못했습니다. 입력값은 유지됩니다.');
+ if(!result.data?.months||!Number.isSafeInteger(result.revision))throw Error('저장 결과를 확인할 수 없습니다. 새로고침해 중복 등록 여부를 확인해 주세요.');
+ app=result.data;
+ ensureRoster(app,DEFAULT.rosterSeed||[]);
+ ensureTactics(app,TACTIC_META,ROW_FORMATS);
+ applySourceData(app,GUILD_SOURCE);
+ for(const record of Object.values(app.months))syncTacticRecommendations(record);
+ for(const record of Object.values(app.months))Engine.replayMonth(record);
+ revision=result.revision;
+ saveStatus('saved');
 }
 function saveStatus(state){const el=$('#sync-state');if(!el)return;el.dataset.state=state;el.textContent={saved:'● 저장 완료',saving:'저장 중…',error:'다시 저장',conflict:'변경 충돌'}[state]||'연결 중';}
 async function flushSave(){
