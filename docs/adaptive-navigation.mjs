@@ -19,7 +19,6 @@ export function installAdaptiveNavigation(doc=document,win=window) {
   }
   doc.body.append(probe);
   const toolbar=doc.querySelector('.topbar .top-actions');
-  const logo=sidebar.querySelector('.logo');
   const toolbarProbe=doc.createElement('header');
   toolbarProbe.className='topbar';
   toolbarProbe.dataset.toolbarProbe='';
@@ -41,7 +40,12 @@ export function installAdaptiveNavigation(doc=document,win=window) {
     const gap=parseFloat(style.columnGap)||0;
     const widestLabel=Math.max(0,...[...probe.children].map(b=>Math.max(b.getBoundingClientRect().width,b.scrollWidth)));
     const needed=Math.ceil(widestLabel*buttons.length+gap*Math.max(0,buttons.length-1)+buttons.length*5);
-    compact=compactNavigation(viewport,available,needed,compact);
+    // Reserve room for both the brand mark and all four toolbar controls.
+    // Measure on a permanently wide, hidden copy to avoid compact/wide flicker.
+    const toolbarRequired=toolbarProbe.querySelector('.top-actions')?.getBoundingClientRect().width||0;
+    const desktopBrandRequired=214;
+    const topRowRequired=Math.ceil(desktopBrandRequired+toolbarRequired+60);
+    compact=compactNavigation(viewport,available,needed,compact)||viewport<topRowRequired+(compact?12:0);
     const layout=compact?'compact':'wide';
     if(root.dataset.navLayout!==layout){
       const active=doc.activeElement,page=active?.closest?.('.nav')?.dataset.page;
@@ -51,13 +55,9 @@ export function installAdaptiveNavigation(doc=document,win=window) {
     if(toolbar){
       const currentStatus=toolbar.querySelector('.status')?.textContent||'';
       const sampledStatus=toolbarProbe.querySelector('.status');
-      if(sampledStatus&&sampledStatus.textContent!==currentStatus)sampledStatus.textContent=currentStatus;
-      const intrinsicWidth=toolbarProbe.querySelector('.top-actions')?.getBoundingClientRect().width||0;
-      const wordmarkWidth=logo?.getBoundingClientRect().width||175;
-      // Measure the natural row, never its already-shrunk stacked presentation.
-      const stacked=compact&&(intrinsicWidth+wordmarkWidth+42>viewport);
-      const toolbarLayout=stacked?'stacked':'inline';
-      if(root.dataset.topbarLayout!==toolbarLayout)root.dataset.topbarLayout=toolbarLayout;
+      if(sampledStatus&&sampledStatus.textContent!==currentStatus){
+        sampledStatus.textContent=currentStatus;
+      }
     }
     if(compact){
       // Measure intrinsic label widths independently of current grid columns.
