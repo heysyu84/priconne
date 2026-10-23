@@ -10,10 +10,10 @@ export function isBoosterCharacter(app, name, catalog = []) {
     return !!character && !!booster && normalizeCharacterName(character.name) === normalizeCharacterName(booster.name);
   });
 }
-export function formatExpectedDamage(value) {
+export function formatExpectedDamage(value, decimals = 1) {
   if (value === null || value === undefined || String(value).trim() === '') return '—';
   const n = Number(value);
-  return Number.isFinite(n) ? n.toFixed(1) : String(value);
+  return Number.isFinite(n) ? n.toFixed(decimals) : String(value);
 }
 export function sequenceVisible() {
   try { return localStorage.getItem('nyang-show-sequence') === '1'; } catch { return false; }

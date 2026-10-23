@@ -7,7 +7,7 @@ const suggested={
  '수네아':['ネア'],'라비':['ラビリスタ','ラビ'],'리리컬':['リリカル','페리컬']
 };
 export const foreignSuggestions=name=>(suggested[trim(name)]||[])[0]||'';
-export function convertForeignTactic(raw, koreanNames=[], foreignNames=[], bossNames=[]) {
+export function convertForeignTactic(raw, koreanNames=[], foreignNames=[], bossNames=[], characterNames=[]) {
  const ko=Array.from({length:5},(_,i)=>trim(koreanNames[i])||'캐릭터 '+(i+1));
  const label=ko.map(n=>({'네피네라':'네피'}[n]||n));
  // Slot numbers are meaningful even if real character names were never entered.
@@ -16,7 +16,20 @@ export function convertForeignTactic(raw, koreanNames=[], foreignNames=[], bossN
    return ['캐릭터 '+n,'캐릭터'+n,'캐릭'+n,'キャラ'+n,'キャラ '+n,'角色'+n,'角色 '+n,n+'番',n+'号',n+'번',circled];
  };
  const aliases=ko.map((x,i)=>[...trim(foreignNames[i]).split(/[,，|]/),x,...(suggested[x]||[]),...slotAlias(i)].map(trim).filter(Boolean));
- const dict=aliases.flatMap((a,i)=>a.map(name=>({name,i}))).sort((a,b)=>b.name.length-a.name.length);
+ // Names can be understood without assigning them to a party slot. Never infer
+ // the left-to-right party order from UB appearance order in the source text.
+ // An explicit "name SET/ON/OFF" also identifies an unregistered source name.
+ // Preserve its spelling; it still has no positional SET slot until assigned.
+ const sourceNames=[...String(raw).matchAll(/(?<![\p{L}\p{N}_])([\p{L}\p{M}][\p{L}\p{M}\d_・·]{0,23})[ \t]*(?=(?:SET(?:ON|OFF)?|ON|OFF|切|解除|オン|オフ|关|關|开|開)(?![A-Za-z]))/giu)]
+   .map(match=>match[1]).filter(name=>
+     !/^(?:AUTO|オート|오토|자동|自動|自动|手動|수동|START|시작|初動|초동|ON|OFF|SET|全員|全体|全キャラ|전부|전체|전원)$/i.test(name)&&
+     !/(?:不足|足り|場合|のみ|なら|たら|以上|以下|未満|必要|条件|조건|필요|부족|경우|이상|이하|미만|대기|지연|秒|초|만$)/.test(name));
+ const otherNames=[...characterNames,...sourceNames,...Object.entries(suggested).flatMap(([name,values])=>[name,...values])]
+   .flatMap(entry=>typeof entry==='string'?[entry]:[entry?.name,...(entry?.aliases||[])])
+   .map(trim).filter(Boolean);
+ const dict=[...aliases.flatMap((a,i)=>a.map(name=>({name,i}))),
+   ...[...new Set(otherNames)].filter(name=>!aliases.some(names=>names.includes(name))).map(name=>({name,i:-1}))]
+   .sort((a,b)=>b.name.length-a.name.length);
  const dictPattern='(?:'+[...new Set(dict.map(x=>reg(x.name)))].join('|')+')';
  const find=s=>dict.find(x=>x.name===trim(s))?.i??-1;
  const actorStart=s=>{
@@ -25,6 +38,7 @@ export function convertForeignTactic(raw, koreanNames=[], foreignNames=[], bossN
    return hit?{name:hit.name,rest:trim(v.slice(hit.name.length))}:null;
  };
  const warn=[];const warning=s=>{if(!warn.includes(s))warn.push(s);};
+ const unmappedActors=new Set();
  // Indices 1..5 follow the source left-to-right; unsorted output goes 5..1.
  const ordered=xs=>[...new Set(xs)].sort((a,b)=>b-a).map(i=>label[i]).join(', ');
  const cleanActor=s=>trim(s).replace(/[(（]\s*(?:AUTO|오토|オート|자동|自動|수동|手動|SET)\s*[)）]/gi,'')
@@ -65,11 +79,20 @@ export function convertForeignTactic(raw, koreanNames=[], foreignNames=[], bossN
    const text=trim(head+name+(cmds.join(', ')||'(SET 변경 없음)'));
    rows.push({text,checked:[...state,auto],source:sourceLine,time,actor,instruction:cmds.join(', ')});lastTime=time;
  };
- const namesIn=s=>{
-   const p=new RegExp(dictPattern,'g'),result=[]; let m;
-   while((m=p.exec(s))!==null){const i=find(m[0]);if(i>=0&&!result.includes(i))result.push(i);}
+ const actorsIn=s=>{
+   const result=[],seen=new Set();
+   for(const match of s.matchAll(new RegExp(dictPattern,'g'))){
+     const name=match[0],i=find(name),key=i>=0?'slot:'+i:'name:'+name;
+     if(!seen.has(key)){seen.add(key);result.push({name,i});}
+   }
    return result;
  };
+ const applyActors=(actors,enable)=>{
+   for(const actor of actors){if(actor.i>=0)state[actor.i]=enable;else unmappedActors.add(actor.name);}
+ };
+ const actorList=(actors,inOrder=false)=>inOrder||actors.some(actor=>actor.i<0)
+   ?actors.map(actor=>actor.i>=0?label[actor.i]:actor.name).join(', ')
+   :ordered(actors.map(actor=>actor.i));
  const autoState=rawText=>{
    let changed=null;const events=[];
    const rest=rawText.replace(/(?:AUTO|オート|오토|자동|自动|自動)\s*(?:ON|OFF|온|오프|オン|オフ|切|关|關|开|開|开启)/gi,(t,index)=>{
@@ -90,15 +113,17 @@ export function convertForeignTactic(raw, koreanNames=[], foreignNames=[], bossN
    // Some Japanese lines put the character in one column and only ON/OFF
    // in another. Apply the action to the actor rather than treating it as text.
    const actorSlot=find(actor);
+   const namedActor=actor&&dict.some(entry=>entry.name===trim(actor));
    const bare=trim(payload).match(/^(SET(?:ON|OFF)?|ON|OFF|切|解除|オン|オフ|关|關|开|開)$/i);
-   if(actorSlot>=0&&bare){
+   if(namedActor&&bare){
      const enable=/^(?:SET|SETON|ON|オン|开|開)$/i.test(bare[1]);
-     state[actorSlot]=enable;
-     append('',[label[actorSlot]+(enable?(initial?' SET':' ON'):' OFF')]);
+     applyActors([{name:actor,i:actorSlot}],enable);
+     append('',[(actorSlot>=0?label[actorSlot]:actor)+(enable?(initial?' SET':' ON'):' OFF')]);
      return;
    }
    const a=autoState(payload),before=auto;
    let rest=a.rest;
+   if(namedActor)rest=rest.replace(/^\s*(?:(?:UB|유버|ユニオンバースト)\s*)?(?:후|직후|이후|後に|の後|後|直後)\s*/i,'');
    const skill=rest.match(/(?:s1|1スキル|技能1)\s*(?:开始后|開始後|スタート後)/i);
    if(skill)rest=rest.replace(skill[0],' ');
    const commands=[];
@@ -123,42 +148,44 @@ export function convertForeignTactic(raw, koreanNames=[], foreignNames=[], bossN
    }else{
      // A leading bare ON/OFF targets the source actor, even if other commands
      // (including AUTO) follow on the same line.
-     const leading=actorSlot>=0?rest.match(/^\s*(SET(?:ON|OFF)?|ON|OFF|切|解除|オン|オフ|关|關|开|開)(?=$|[\s、,，])/i):null;
+     const leading=namedActor?rest.match(/^\s*(SET(?:ON|OFF)?|ON|OFF|切|解除|オン|オフ|关|關|开|開)(?=$|[\s、,，])/i):null;
      if(leading){
        leadingActorAction=true;
        const enable=/^(?:SET|SETON|ON|オン|开|開)$/i.test(leading[1]);
-       state[actorSlot]=enable;
-       commands.push(label[actorSlot]+(enable?(initial?' SET':' ON'):' OFF'));
+       applyActors([{name:actor,i:actorSlot}],enable);
+       commands.push((actorSlot>=0?label[actorSlot]:actor)+(enable?(initial?' SET':' ON'):' OFF'));
        rest=rest.slice(leading[0].length);
      }
      // Consume commands in source order. Arrows inside a subject list mean
      // ordered actions; arrows between commands must never reorder ON/OFF.
      const subject='(?:'+dictPattern+'|全員|全体|全キャラ|전부)';
-     const regex=new RegExp('((?:'+subject+'[\\s、,，]*(?:(?:➡|→|➜|⇒|⟶)[\\s]*)?)+)\\s*(?:順に|順番に|순으로|순서대로)?\\s*(SET(?:ON|OFF)?|ON|OFF|切|解除|オン|オフ|关|關|开|開)','gi');
+     const regex=new RegExp('(?<![\\p{L}\\p{N}_])((?:'+subject+'[\\s、,，]*(?:(?:➡|→|➜|⇒|⟶)[\\s]*)?)+)\\s*(?:順に|順番に|순으로|순서대로)?\\s*(SET(?:ON|OFF)?|ON|OFF|切|解除|オン|オフ|关|關|开|開)','giu');
      let matched=false;const events=[...a.events];
      rest=rest.replace(regex,(whole,names,command,index)=>{
        matched=true;
        const enable=/^(?:SET|SETON|ON|オン|开|開)$/i.test(command);
        const all=/(?:全員|全体|全キャラ|전부)/.test(names);
-       const ids=all?[0,1,2,3,4]:namesIn(names);
+       const actors=all?[0,1,2,3,4].map(i=>({name:label[i],i})):actorsIn(names);
        // Explicit instructions also matter when SET state is unchanged.
-       for(const i of ids)state[i]=enable;
-       const orderedAction=/[➡→➜⇒⟶]|順に|順番に|순으로|순서대로/.test(whole)&&ids.length>1;
-       events.push({index,text:(all?'전부':orderedAction?ids.map(i=>label[i]).join(', '):ordered(ids))+(orderedAction?' 순으로':'')+(enable?(initial?' SET':' ON'):' OFF')});
+       applyActors(actors,enable);
+       const orderedAction=/[➡→➜⇒⟶]|順に|順番に|순으로|순서대로/.test(whole)&&actors.length>1;
+       events.push({index,text:(all?'전부':actorList(actors,orderedAction))+(orderedAction?' 순으로':'')+(enable?(initial?' SET':' ON'):' OFF')});
        return ' ';
      });
      commands.push(...events.sort((a,b)=>a.index-b.index).map(e=>e.text));
      if(initial&&!matched){
-       const ids=namesIn(rest);
-       for(const i of ids)state[i]=true;
-       if(ids.length){commands.push(ids.length===5?'전부 SET':ordered(ids)+' SET');rest=rest.replace(new RegExp(dictPattern,'g'),' ');}
+       const actors=actorsIn(rest);
+       applyActors(actors,true);
+       if(actors.length){commands.push(actors.length===5&&actors.every(actor=>actor.i>=0)?'전부 SET':actorList(actors)+' SET');rest=rest.replace(new RegExp(dictPattern,'g'),' ');}
      }
    }
    const leftover=trim(rest.replace(/(?:初動|UBセット|お団子|시작|초동|開始|开局|初始|START)/gi,'').replace(/[\s、,，:：;；'‘’\"()[\]（）➡→➜⇒⟶]+/g,' '));
    if(leftover){warning('미해석 원문·조건 확인: '+leftover);commands.push('[원문 확인: '+leftover+']');}
    // A fully OFF initial row still establishes the initial time/state.
    if(initial&&!commands.length&&!actor)commands.push('전부 OFF');
-   append(leadingActorAction?'':actor,prioritize(onceCommands(commands),initial),skill?'1스킬 시작 후':'');
+   const combined=onceCommands(commands);
+   const explicitSequence=/[➡→➜⇒⟶]/.test(payload)&&!symbols;
+   append(leadingActorAction?'':actor,explicitSequence?combined:prioritize(combined,initial),skill?'1스킬 시작 후':'');
  };
  const arrowDango=merged=>{
    const segments=merged.split(/\s*(?:➡|→|➜|⇒|⟶)\s*/);
@@ -258,7 +285,8 @@ export function convertForeignTactic(raw, koreanNames=[], foreignNames=[], bossN
    const t=line.match(/^(\d{1,2}:[0-5]\d)\s*/);
    if(t){time=t[1];line=trim(line.slice(t[0].length));}
    const autoLine=line.match(autoOnly);
-   if(autoLine&&!/[OX〇○◯●⭕❌ー－—-]{5}/i.test(line)&&cleanActor(autoLine[1])){
+   if(autoLine&&!/[OX〇○◯●⭕❌ー－—-]{5}/i.test(line)&&cleanActor(autoLine[1])&&
+      !/(?:\b(?:SET(?:ON|OFF)?|ON|OFF)\b|切|解除|オン|オフ|关|關|开|開)/i.test(autoLine[1])){
      const rawActor=cleanActor(autoLine[1]);
      if(/(?:되자마자|보자마자|직후|즉시|見えたら|直後|すぐ)/.test(rawActor)){
        const cue=rawActor.replace(/^⭐+\s*(?:\d{1,2}:[0-5]\d)?\s*/,'');
@@ -332,6 +360,6 @@ export function convertForeignTactic(raw, koreanNames=[], foreignNames=[], bossN
  }
  if(!rows.length)warning('변환 가능한 행을 찾지 못했습니다.');
  // Positional placeholders are intentionally valid for anonymous transfers.
- return {format,rows,warnings:warn,text:rows.map(x=>x.text).join('\n'),
+ return {format,rows,warnings:warn,unmappedActors:[...unmappedActors],text:rows.map(x=>x.text).join('\n'),
  pasteText:rows.map(x=>x.checked.map(b=>b?'TRUE':'FALSE').join('\t')+'\t'+x.text).join('\n')};
 }

@@ -47,7 +47,7 @@ button:disabled{opacity:.42;cursor:not-allowed}
 <p class="lead">일본어 일반 택틱과 일본·중국식 당고(O/X, 〇/ー)를 한국어 ON/OFF 방식으로 변환합니다.</p>
 <section class="panel">
 <h2>① 덱 순서와 이름 대응</h2>
-<p class="hint">덱 번호는 화면의 왼쪽이 1번, 오른쪽이 5번입니다. 동시 조작의 출력은 5→1 역순이며, 명시적으로 순서를 지정한 행동은 원문 순서를 유지합니다. 한국어 이름 5칸을 모두 비우면 작업실에 붙여넣을 때 기존 캐릭터 이름으로 자동 치환됩니다.</p>
+<p class="hint">덱 번호는 화면의 왼쪽이 1번, 오른쪽이 5번입니다. 동시 조작의 출력은 5→1 역순이며, 명시적으로 순서를 지정한 행동은 원문 순서를 유지합니다. 당고·번호형 택틱은 한국어 이름을 비워도 번호 순서대로 복사할 수 있습니다.</p>
 <div class="form-header"><span>순서</span><span>해외 원문 이름</span><span>사이트 이름</span></div>
 <datalist id="lineup-names"></datalist>
 <div id="lineup"></div>
@@ -57,7 +57,7 @@ button:disabled{opacity:.42;cursor:not-allowed}
 <input id="lineup-confirm" type="checkbox" style="width:19px;height:19px" >
 실제 이름을 지정한 경우, 캐릭터 1~5번의 덱 순서가 정확합니다
 </label>
-<p class="hint">이름을 생략한 경우 붙여넣기 대상 택틱의 캐릭터 편성을 미리 지정해 주세요. 해외 원문 이름은 별칭까지 포함해 직접 수정할 수 있습니다.</p>
+<p class="hint">본문 변환만 할 때는 이름 입력이 필요 없습니다. 번호로 복사하는 경우 붙여넣기 대상 택틱의 편성을 미리 지정해 주세요. 해외 원문 이름은 별칭까지 포함해 직접 수정할 수 있습니다.</p>
 </section>
 <div class="columns">
 <section class="panel"><h2>② 해외 택틱 원문</h2>
@@ -66,7 +66,7 @@ button:disabled{opacity:.42;cursor:not-allowed}
 <p class="hint">시작 AUTO 설정이 없으면 AUTO 오프를 기본 적용합니다. 일반 명령과 당고가 중복 기재된 경우 일반 명령을 우선합니다. 결과는 ON → AUTO 온 → OFF → AUTO 오프를 우선하며, 초동 SET 및 명시적 조작 순서는 예외입니다. 화살표(➡)로 나뉜 서로 다른 시점의 ON은 '순으로 ON'으로 표시하고, 알려진 보스 이름은 사이트 보스 DB와 대조합니다.</p>
 </section>
 <section class="panel"><h2>③ 한국어 결과 미리보기</h2>
-<div id="preview" aria-live="polite"><span class="muted">덱 이름과 원문을 입력한 뒤 변환하기를 누르세요.</span></div>
+<div id="preview" aria-live="polite"><span class="muted">원문을 입력한 뒤 변환하기를 누르세요.</span></div>
 <div id="messages" role="status"></div>
 <div class="actions"><button id="copy-with-set" type="button" class="primary" disabled>편성·SET 포함 복사 (권장)</button><button id="copy-text" type="button" disabled>본문만 복사</button></div>
 <p id="copy-help" class="hint">변환 결과가 나오면 본문만 복사할 수 있습니다.</p>
@@ -76,11 +76,11 @@ button:disabled{opacity:.42;cursor:not-allowed}
 </div>
 <section class="panel"><h2>④ 클전 사이트에 넣는 방법</h2>
 <ol class="steps">
-<li><strong>SET 포함 복사</strong> 버튼을 누릅니다.</li>
+<li><strong>본문만 복사</strong> 또는 편성을 지정한 경우 <strong>SET 포함 복사</strong> 버튼을 누릅니다.</li>
 <li>기존 클전 사이트 → 택틱 작업실에서 작성 잠금을 해제하고 새 택틱의 첫 번째 빈 행으로 이동합니다. 실제 이름을 함께 복사했다면 5명 편성을 가져오며, 번호 모드라면 기존 편성 1~5번 이름으로 변환됩니다.</li>
 <li>첫 번째 빈 택틱 행을 클릭하고 <strong>Ctrl+V</strong> (모바일: 붙여넣기) 합니다.</li>
 <li>명령어의 빨강/파랑 표시와 캐릭터·AUTO 체크박스를 확인한 뒤 저장 상태를 확인합니다.</li>
 </ol>
 <p class="hint">변환기는 데이터베이스를 직접 수정하지 않습니다. 원문이 모호한 경우 확인 경고가 나오며, 최종 적용 전에는 원본 영상과 대조해 주세요.</p>
 </section>
-</main><script type="module" src="./tactic-converter-ui.mjs?v=20261024-bosssequence03"></script></body></html>
+</main><script type="module" src="./tactic-converter-ui.mjs?v=20261024-converter-names01"></script></body></html>

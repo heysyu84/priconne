@@ -1,4 +1,4 @@
-import {convertForeignTactic,foreignSuggestions} from './tactic-converter.mjs?v=20261024-bosssequence03';
+import {convertForeignTactic,foreignSuggestions} from './tactic-converter.mjs?v=20261024-converter-names01';
 import {colorRuns} from './tactics-model.mjs?v=20261023-check-sync01';
 import {serializeTacticTransfer,validTacticLineup} from './tactic-transfer.mjs?v=20261023-slots01';
 
@@ -143,7 +143,8 @@ function paint(text){
  return holder;
 }
 function render(){
- current=convertForeignTactic($('raw').value,transferNames(),sourceNames(),bossCatalog);
+ const knownCharacters=[...catalog,...foreignPairs.map(([alias])=>alias),...Object.keys(learned)];
+ current=convertForeignTactic($('raw').value,transferNames(),sourceNames(),bossCatalog,knownCharacters);
  convertedRaw=$('raw').value;
  const preview=$('preview');preview.replaceChildren();
  if(!current.rows.length)preview.textContent='변환된 내용이 없습니다.';
@@ -163,21 +164,24 @@ function render(){
  }
  const anonymous=unnamedLineup();
  const problems=[];
- if(!anonymous&&!lineupReady())problems.push('실명 편성 모드: 캐릭터 5명 모두 사이트 DB에 있는 이름으로 지정해야 합니다.');
- if(!anonymous&&!confirmed)problems.push('실명 편성 모드: 덱 순서를 확인한 뒤 체크해 주세요.');
+ // Lineup setup only governs copying positional SET data. Missing fields do not
+ // make an otherwise understood instruction require a source-review warning.
  problems.push(...current.warnings);
  $('messages').textContent=problems.length?'확인 필요 ('+problems.length+'건)\n'+problems.join('\n'):
    '변환 완료 · '+current.rows.length+'행 · '+(current.format==='dango'?'당고':'일반 SET')+' 형식';
  const hasRows=current.rows.length>0;
  // Anonymous transfer uses the receiving tactic's existing five slots.
- const fullCopyReady=hasRows&&(anonymous||(lineupReady()&&confirmed));
+ const needsSlots=current.unmappedActors.length>0;
+ const fullCopyReady=hasRows&&!needsSlots&&(anonymous||(lineupReady()&&confirmed));
  $('copy-with-set').disabled=!fullCopyReady;
  $('copy-text').disabled=!hasRows;
  $('copy-with-set').title=fullCopyReady?'SET 상태와 본문을 함께 복사':
    !hasRows?'먼저 원문을 변환해 주세요.':
+   needsSlots?'본문의 캐릭터 위치를 위 편성에 지정하면 SET도 함께 복사할 수 있습니다.':
    !lineupReady()?'5명의 이름을 모두 입력하거나 전부 비워 번호 모드로 사용하세요.':'덱 순서 확인란을 체크해 주세요.';
  $('copy-text').title=hasRows?'변환된 한국어 본문만 복사':'먼저 원문을 변환해 주세요.';
- $('copy-help').textContent=anonymous?
+ $('copy-help').textContent=needsSlots?
+   '편성에 없는 이름은 원문대로 유지했습니다. 본문만 복사할 수 있으며, SET까지 복사하려면 위 편성에 해당 캐릭터 위치를 지정해 주세요.':anonymous?
    '이름 생략 모드: 캐릭터 1~5번과 SET 상태를 복사합니다. 택틱 작업실에 미리 편성된 캐릭터 이름으로 붙여넣을 때 자동 치환됩니다.':
    fullCopyReady?'실명 편성 모드: 캐릭터 5명·SET 상태·본문을 함께 복사할 수 있습니다.':
    hasRows?'본문만 복사는 가능하며, SET 포함 복사는 5명 입력과 순서 확인을 마치거나 이름 5칸을 모두 비우면 됩니다.':
@@ -238,6 +242,7 @@ $('clear').addEventListener('click',()=>{
 $('copy-with-set').addEventListener('click',()=>{
  if(convertedRaw!==$('raw').value){$('messages').textContent='원문이 변경되었습니다. 다시 변환한 뒤 복사하세요.';return;}
  if(!current?.rows.length){$('messages').textContent='먼저 원문을 변환해 주세요.';return;}
+ if(current.unmappedActors.length){$('messages').textContent='본문만 복사하거나, 위 편성에 캐릭터 위치를 지정한 뒤 SET을 함께 복사해 주세요.';return;}
  if(!unnamedLineup()&&(!lineupReady()||!confirmed)){
    $('messages').textContent='캐릭터 이름을 5명 모두 지정하고 순서를 확인하거나, 이름 칸 5개를 모두 비우면 번호 모드로 복사할 수 있습니다.';
    return;
