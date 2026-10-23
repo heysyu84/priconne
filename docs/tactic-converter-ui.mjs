@@ -1,4 +1,5 @@
 import {convertForeignTactic,foreignSuggestions} from './tactic-converter.mjs?v=20261023-a';
+import {colorRuns} from './tactics-model.mjs?v=20261023-check-sync01';
 const $=id=>document.getElementById(id);
 const params=new URLSearchParams(location.search);
 const init=(params.get('lineup')||'').split('|').map(s=>s.trim());
@@ -15,15 +16,12 @@ const koreanNames=()=>Array.from({length:5},(_,i)=>$('to-'+i).value.trim());
 let current=null;
 function paint(text){
  const holder=document.createElement('span');
- // 결과에는 자동 작성된 ON/OFF/AUTO/SET 지시의 색상을 표시합니다.
- const pattern=/(?:한번만|전부 SET|전부 ON|전부 OFF|AUTO 온|AUTO 오프|[^\s,]+(?:,\s*[^\s,]+)*\s+(?:ON|OFF|SET))/g;
- let index=0;for(const match of text.matchAll(pattern)){
-   if(match.index>index)holder.append(document.createTextNode(text.slice(index,match.index)));
-   const s=document.createElement('span');s.textContent=match[0];
-   s.className=/\bOFF\b|오프/.test(match[0])?'off-text':'on-text';
-   holder.append(s);index=match.index+match[0].length;
+ for(const run of colorRuns(text,koreanNames())){
+   const s=document.createElement('span');s.textContent=run.text;
+   if(run.color){s.style.color=run.color;s.style.fontWeight='700';}
+   holder.append(s);
  }
- holder.append(document.createTextNode(text.slice(index)));return holder;
+ return holder;
 }
 function render(){
  current=convertForeignTactic($('raw').value,koreanNames(),sourceNames());
