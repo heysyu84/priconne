@@ -63,7 +63,7 @@ export function createWorkflow(api) {
       <button class="btn primary quick-submit" type="submit">등록 <kbd>Enter</kbd></button></div>
       <div class="quick-auto"><label><input type="checkbox" data-quick="autoDamage" ${d.autoDamage?'checked':''}>2·3단계 최대 HP 자동 입력</label><small>직접 피해량을 입력하면 수동 기록</small>${canEdit()&&d.day<maxDay()?`<button type="button" class="btn sm" data-wf="next-day">${d.day}일차 마감 → ${d.day+1}일차</button>`:''}</div><div class="quick-secondary"><div class="field"><label for="quick-bonus">가산점 (만)</label><input id="quick-bonus" data-quick="bonus" inputmode="decimal" value="${X(d.bonus)}"></div><div class="field"><label for="quick-memo">메모</label><input id="quick-memo" data-quick="memo" value="${X(d.memo)}" placeholder="선통·후통 확인사항 등"></div><div id="quick-usage" class="small muted">${d.memberId && person(d.memberId) ? X(usage(person(d.memberId), d.day)) : '등록 후 이름 입력 칸으로 돌아옵니다.'}</div></div></form></details>`;
   }
-  function bossStrip(){return `<div class="battle-boss-strip" aria-label="보스별 남은 HP">${(api.getBosses?.()||[]).map(b=>`<button type="button" data-wf="pick-boss" data-boss-color="${b.id}" data-id="${b.id}" aria-pressed="${Number(draft().boss)===b.id}" title="${b.id}넴으로 공격 입력"><span class="mini-boss-art">${api.bossPortrait?.(b.id)?`<img src="${X(api.bossPortrait(b.id))}" alt="${X(b.name)}">`:b.id}</span><span class="mini-boss-data"><span class="mini-boss-original">${b.id}넴 · ${b.stage}단계 ${b.lap}회차</span><span class="mini-boss-inline"><b class="mini-boss-slot">${b.id}넴</b><b class="mini-boss-name">${X(b.name)}</b><span class="mini-boss-progress">${b.stage}단계 ${b.lap}회차</span></span><strong>${nf(b.hp)}</strong><small>${X(b.name)}</small></span></button>`).join('')}</div>`;}
+  function bossStrip(){return `<div class="battle-boss-strip" aria-label="보스별 남은 HP">${(api.getBosses?.()||[]).map(b=>`<button type="button" data-wf="pick-boss" data-boss-color="${b.id}" data-id="${b.id}" aria-pressed="${Number(draft().boss)===b.id}" title="${X(b.locked?b.lockedReason:b.id+'넴으로 공격 입력')}" ${b.locked?'disabled aria-disabled="true"':''}><span class="mini-boss-art">${api.bossPortrait?.(b.id)?`<img src="${X(api.bossPortrait(b.id))}" alt="${X(b.name)}">`:b.id}</span><span class="mini-boss-data"><span class="mini-boss-original">${b.id}넴 · ${b.stage}단계 ${b.lap}회차</span><span class="mini-boss-inline"><b class="mini-boss-slot">${b.id}넴</b><b class="mini-boss-name">${X(b.name)}</b><span class="mini-boss-progress">${b.stage}단계 ${b.lap}회차</span></span><strong>${b.locked?'🔒 잠김':nf(b.hp)}</strong><small>${X(b.name)}</small></span></button>`).join('')}</div>`;}
 
   function filteredRows() {
     const query = state.query.toLowerCase();
@@ -179,6 +179,11 @@ export function createWorkflow(api) {
     if (!member) { notify('참가 클랜원을 선택하세요. 이름 일부나 UID로 검색할 수 있습니다.'); focusQuick(); showPicker(input, 'quick'); return; }
     if (!Number.isFinite(damage)) { notify('피해량은 1 단위까지 정확한 숫자 또는 만·억 단위로 입력하세요. 소수점은 반올림하지 않습니다.'); return focusQuick('damage'); }
     if (!Number.isFinite(bonus)) { notify('가산점을 숫자로 입력하세요.'); return focusQuick('bonus'); }
+    const selectedBoss=api.getBosses?.().find(b=>Number(b.id)===Number(d.boss));
+    if(!d.beforeId&&selectedBoss?.locked){
+      notify(`${selectedBoss.id}넴은 잠겨 있습니다. ${selectedBoss.lockedReason}`);
+      return focusQuick('boss');
+    }
     if(!canEdit()){
       publicSubmitting=true;
       const submit=$('#wf-quick-form .quick-submit');

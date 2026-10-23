@@ -76,11 +76,26 @@ export function replayMonth(month) {
 }
 
 export function bossProgress(month) {
-  return month.bosses.map(boss=>{
-    const records=month.events.filter(e=>Number(e.boss)===boss.id).sort((a,b)=>a.seq-b.seq);
-    const last=records.at(-1);let lap=last?.lap||1,stage=last?.stage||phaseForLap(lap,month),hp=Number(last?.after??boss.hp[stage]);
-    if(last&&last.after===0){lap++;stage=phaseForLap(lap,month);hp=Number(boss.hp[stage]);}
-    return {...boss,lap,stage,hp,max:Number(boss.hp[stage]),count:records.length};
+  // A boss may advance at most one lap beyond the slowest boss. Stages
+  // cannot coexist: all five bosses must finish the previous stage first.
+  const states=month.bosses.map(boss=>{
+    const records=month.events.filter(e=>Number(e.boss)===Number(boss.id)).sort((a,b)=>a.seq-b.seq);
+    const last=records.at(-1),lap=Number(last?.lap)||1,defeated=!!last&&Number(last.after)===0;
+    return {boss,last,lap,nextLap:lap+(defeated?1:0),defeated,count:records.length};
+  });
+  const slowest=Math.min(...states.map(state=>state.nextLap));
+  const unlockedStage=phaseForLap(slowest,month);
+  return states.map(({boss,last,lap,nextLap,defeated,count})=>{
+    const nextStage=phaseForLap(nextLap,month);
+    const stageLocked=nextStage>unlockedStage;
+    const lapLocked=nextLap>slowest+1;
+    const locked=stageLocked||lapLocked;
+    const displayLap=locked?lap:nextLap;
+    const stage=locked?(Number(last?.stage)||phaseForLap(lap,month)):nextStage;
+    const max=Number(boss.hp[stage]);
+    const hp=defeated?(locked?0:max):Number(last?.after??max);
+    const lockedReason=stageLocked?'다른 보스의 이전 단계 클리어 대기':lapLocked?'다른 보스와의 회차 차이 제한':'';
+    return {...boss,lap:displayLap,stage,hp,max,count,locked,lockedReason,nextLap};
   });
 }
 

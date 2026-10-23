@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {ensureRoster} from '../public/roster.mjs';
 import {applySourceData,tenureMonths,dashboardDay,bossTopStats,isStageFourUnlocked} from '../public/guild-model.mjs';
+import {bossProgress} from '../public/engine.mjs';
 import {replayMonth,contribution} from '../public/engine.mjs';
 const html=fs.readFileSync(new URL('../public/clan-shell.html',import.meta.url),'utf8');
 const seed=JSON.parse(html.match(/<script id="seed-data" type="application\/json">([\s\S]*?)<\/script>/)[1]);
@@ -26,7 +27,29 @@ stageTransition.events=[{id:'stage3-clear',seq:1,day:1,boss:firstBoss.id,memberI
 replayMonth(stageTransition);
 assert.equal(stageTransition.events[0].stage,3);
 assert.equal(stageTransition.events[0].kill,true);
+assert.equal(isStageFourUnlocked(stageTransition),false);
+let stageBoss=bossProgress(stageTransition).find(b=>b.id===firstBoss.id);
+assert.equal(stageBoss.locked,true);
+assert.equal(stageBoss.hp,0);
+assert.equal(stageBoss.stage,3);
+for(const boss of stageTransition.bosses.slice(1)){
+  stageTransition.events.push({id:'stage3-clear-'+boss.id,seq:stageTransition.events.length+1,day:1,boss:boss.id,memberId:'member-'+boss.id,member:'테스트',carry:false,damage:boss.hp[3]});
+}
+replayMonth(stageTransition);
 assert.equal(isStageFourUnlocked(stageTransition),true);
+assert.ok(bossProgress(stageTransition).every(b=>b.stage===4&&!b.locked&&b.hp>0));
+const lapGap=structuredClone(stageTransition);
+lapGap.levels=[{stage:3,start:1,end:6,count:6},{stage:4,start:7,end:999,count:993}];
+lapGap.events=[
+ {id:'gap-1',seq:1,day:1,boss:5,memberId:'test-5',member:'테스트',carry:false,damage:lapGap.bosses[4].hp[3]},
+ {id:'gap-2',seq:2,day:1,boss:5,memberId:'test-5',member:'테스트',carry:false,damage:lapGap.bosses[4].hp[3]}
+];
+replayMonth(lapGap);
+assert.equal(bossProgress(lapGap).find(b=>b.id===5).locked,true);
+assert.equal(bossProgress(lapGap).find(b=>b.id===5).lap,2);
+assert.equal(bossProgress(lapGap).find(b=>b.id===5).hp,0);
+lapGap.events.pop();replayMonth(lapGap);
+assert.equal(bossProgress(lapGap).find(b=>b.id===5).locked,false);
 stageTransition.events=[];
 replayMonth(stageTransition);
 assert.equal(isStageFourUnlocked(stageTransition),false);

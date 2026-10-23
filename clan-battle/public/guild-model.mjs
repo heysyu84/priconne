@@ -1,5 +1,5 @@
 import { makeId, syncRoster } from './roster.mjs?v=20261022-ui14';
-import { bossProgress } from './engine.mjs?v=20261022-ui14';
+import { bossProgress } from './engine.mjs?v=20261024-boss-lap-lock01';
 import {cleanHistoricalHistoryRow,historicalHall} from './clan-history.mjs?v=20261022-hall01';
 
 export const BOSS_COLORS=['#f4cccc','#fff2cc','#d9ead3','#cfe2f3','#d9d2e9'];
@@ -67,7 +67,7 @@ export function dashboardDay(month,memberId,day){
 // first stage-4 attack. Reuse the same replay-based progress as the boss tiles.
 export function isStageFourUnlocked(month){
   if(!month?.bosses?.length)return false;
-  return bossProgress(month).some(boss=>Number(boss.stage)>=4);
+  return bossProgress(month).some(boss=>!boss.locked&&Number(boss.stage)>=4);
 }
 export function remainingAttacks(month){
   const days=Number(month.options.days||5);
