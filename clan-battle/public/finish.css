@@ -944,3 +944,13 @@ table.tw-grid thead th{
 .tw-estimator .tw-estimate-result small{font-size:11px;color:#8a71a1;font-weight:750}
 .tw-estimator .tw-estimate-result strong{font-size:20px;color:#765298;font-variant-numeric:tabular-nums}
 .tw-estimator .tw-estimate-result[data-error=true] strong{font-size:12px;color:#a35d68}
+
+/* Battle-log outer panels follow the same 980px content canvas as other pages.
+   The attack table may scroll INSIDE its own frame, never widen the page. */
+.battle-boss-strip,.quick-panel,.sheet-panel{
+ width:100%;max-width:100%;min-width:0;box-sizing:border-box;
+}
+.sheet-panel .battle-sheet-scroll{
+ display:block;width:100%;max-width:100%;min-width:0;
+ box-sizing:border-box;overflow-x:auto;overscroll-behavior-x:contain;
+}
