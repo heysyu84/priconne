@@ -156,9 +156,9 @@ assert.ok(recentLog.indexOf('<td class="number">${nf(e.damage)}</td>') <
 assert.ok(readabilityCss.includes('white-space:nowrap!important') &&
   readabilityCss.includes('.recent-battle-table .member-heading{width:19%}'),
   'Member names must stay on a single line in mobile battle log');
-assert.ok(displayScript.includes('migrateMobileTextScale') &&
-  readabilityCss.includes('html[data-text-scale="100"] .mobile-nav button'),
-  'Only legacy mobile 115% preference migrates; default mobile menu text is readable');
-assert.ok(readabilityCss.includes('.tw-grid .tw-text-cell>[data-tw-text]{font-size:16px!important}'),
-  'Tactic text retains its old visible size at the new mobile default');
-console.log('PASS: interrupted Work changes restored, old detail preference ignored, TP and mobile log layout preserved');
+assert.ok(displayScript.includes('migrateMobileTextScale') && displayScript.includes('readTacticBaseScale'),
+  'Legacy mobile preferences retain their tactic-specific size');
+await import('./test-display-settings.mjs');
+await import('./test-battle-image-import.mjs');
+console.log('PASS: unified cards, mobile log order, consistent text scaling, tactic preservation and OCR review actions');
+
