@@ -1,5 +1,8 @@
 import assert from 'node:assert/strict';
-import {compactNavigation} from '../public/adaptive-navigation.mjs';
+import {readFileSync} from 'node:fs';
+import {compactNavigation,bottomNavigationColumns} from '../public/adaptive-navigation.mjs';
+
+// The top navigation must remain one line, with hysteresis at the switch point.
 assert.equal(compactNavigation(800,900,700),true);
 assert.equal(compactNavigation(801,750,900),true);
 assert.equal(compactNavigation(1100,1052,1053),true);
@@ -8,4 +11,20 @@ assert.equal(compactNavigation(1100,1052,1000),false);
 assert.equal(compactNavigation(1100,1052,1400),true);
 assert.equal(compactNavigation(1100,1058,1053,true),true);
 assert.equal(compactNavigation(1100,1065,1053,true),false);
-console.log('PASS: narrow windows, larger menu text and stable desktop restoration');
+
+// Eight mobile destinations must not collide with enlarged labels.
+assert.equal(bottomNavigationColumns(1300,100),8);
+assert.equal(bottomNavigationColumns(801,105),4);
+assert.equal(bottomNavigationColumns(390,72),4);
+assert.equal(bottomNavigationColumns(320,95),2);
+assert.equal(bottomNavigationColumns(900,110),8);
+assert.equal(bottomNavigationColumns(800,110),4);
+
+// Confirm the complete CSS and DOM implementation is present, not just the math.
+const css=readFileSync(new URL('../public/adaptive-navigation.css',import.meta.url),'utf8');
+const js=readFileSync(new URL('../public/adaptive-navigation.mjs',import.meta.url),'utf8');
+for(const cols of ['4','2'])assert.match(css,new RegExp('data-nav-columns="'+cols+'"'));
+assert.match(js,/createRange\(\)/);
+assert.match(js,/ResizeObserver/);
+assert.match(js,/data-text-scale/);
+console.log('PASS: measured desktop transition, hysteresis, responsive bottom columns, and scale observers');
