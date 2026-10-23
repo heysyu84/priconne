@@ -141,7 +141,7 @@ export function convertForeignTactic(raw, koreanNames=[], foreignNames=[]) {
    const actor=actorStart(rawActor)?.name||rawActor;
    const previousTime=lastTime;
    const actions=[],autoActions=[],unresolved=[];
-   const initial=!rows.length;
+   const initial=!rows.length&&(!time||time==='1:30');
    for(let j=0;j<segments.length;j++){
      const segment=segments[j],symbol=segment.match(/[OX〇○◯●⭕❌ー－—-]{5}/i);
      const before=[...state],prevAuto=auto,rowStart=rows.length;
@@ -229,15 +229,15 @@ export function convertForeignTactic(raw, koreanNames=[], foreignNames=[]) {
        const a=actorStart(rawActor);
        const actor=a?.name||rawActor;
        if(!rows.length&&!actor&&(time==='1:30'||!t))time='';
-       act(merged.slice(s.index),actor,!rows.length);
+       act(merged.slice(s.index),actor,!rows.length&&(!time||time==='1:30'));
      }else{
        const match=merged.match(autoOnly);
        if(match&&cleanActor(match[1])){
          const rawActor=cleanActor(match[1]),a=actorStart(rawActor);
-         act(match[2],a?.name||rawActor,!rows.length);
+         act(match[2],a?.name||rawActor,!rows.length&&(!time||time==='1:30'));
        }else{
          const a=actorStart(merged);
-         act(a?.rest||merged,a?.name||'',!rows.length);
+         act(a?.rest||merged,a?.name||'',!rows.length&&(!time||time==='1:30'));
        }
      }
    }else{
