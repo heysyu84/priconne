@@ -13,7 +13,7 @@ export function tacticReady(t){
   t.stars.every(x=>/^[1-6]$/.test(String(x)))&&
   Array.isArray(t.rows)&&t.rows.some(row=>String(row.text||'').trim())&&hasDamage(t.expectedDamage));
 }
-const identity=t=>[Number(t.boss),...t.characters.map(normal),...t.stars.map(String)].join('|');
+const identity=t=>[Number(t.boss),...(Array.isArray(t.characters)?t.characters:[]).map(normal),...(Array.isArray(t.stars)?t.stars:[]).map(String)].join('|');
 const sameSource=(combo,tactic)=>{
  const source=typeOf(tactic);
  return source===(/타비/.test(String(combo.tactic||''))?'타비':'택틱');
@@ -42,7 +42,7 @@ export function syncTacticRecommendations(month){
   }
   const incoming=fromTactic(tactic);
   if(!current){
-   rows.push({id:'tactic-combo-'+String(tactic.id),...incoming,manualCount:null,
+   rows.push({id:'tactic-combo-'+String(tactic.id),...incoming,tacticSourceUrl:incoming.url,manualCount:null,
     requiredSeconds:null,remainingSeconds:null});
    changed=true;continue;
   }
@@ -54,8 +54,10 @@ export function syncTacticRecommendations(month){
    if(JSON.stringify(current[field])!==JSON.stringify(next)){current[field]=next;changed=true;}
   }
   // Only refresh source-linked URL when it has not been manually changed.
-  const oldOriginal=current.tacticSourceUrl??(current.url||current.video||current.tacticUrl||'');
-  if(current.url===oldOriginal && current.url!==incoming.url){current.url=incoming.url;changed=true;}
+  const prior=current.tacticSourceUrl;
+  // A previously curated link may intentionally differ from the tactic's video.
+  const mayUpdate=prior!==undefined?current.url===prior:!current.url;
+  if(mayUpdate&&current.url!==incoming.url){current.url=incoming.url;changed=true;}
   if(current.tacticSourceUrl!==incoming.url){current.tacticSourceUrl=incoming.url;changed=true;}
   // New records with no curated TP/notes take defaults from the tactic.
   if((current.tp===undefined||current.tp===null||current.tp==='')&&incoming.tp){current.tp=incoming.tp;changed=true;}
