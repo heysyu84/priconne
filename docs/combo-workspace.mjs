@@ -1,6 +1,7 @@
 import {characterPortrait, portraitAttributes, portraitStarOverlay} from './character-portraits.mjs?v=20261023-image-cleanup01';
 import {isBoosterCharacter, formatExpectedDamage, sourceLinkBox, sourceLinkKind} from './view-settings.mjs?v=20261023-image-cleanup01';
 import {planThreeAttacks} from './combo-planner.mjs?v=20261023-image-cleanup01';
+import {isStageFourUnlocked} from './guild-model.mjs?v=20261024-auto-hide-stage3-01';
 import {visibleTacticRecommendations,recommendationDisplayOrder} from './tactic-combo-sync.mjs?v=20261024-carry-tactics01';
 
 export function createComboWorkspace(api) {
@@ -50,9 +51,12 @@ export function createComboWorkspace(api) {
   function markup() {
     const month = api.month(), key = api.app().active;
     if (key !== lastMonth) { selectedBosses = null; lastMonth = key; }
+    const stage4Open=isStageFourUnlocked(month);
+    // Never strand viewers on an automatically hidden third-stage tab.
+    if(stage4Open&&String(state.comboStage)==='3'){state.comboStage='4';view='compact';}
     const stage = Number(state.comboStage), currentView = stage === 3 && view === 'planner' ? 'compact' : view;
     const rows = visibleTacticRecommendations(month).filter(combo => Number(combo.stage) === stage && (state.comboBoss === 'all' || Number(combo.boss) === Number(state.comboBoss))).sort(recommendationDisplayOrder);
-    const menuTabs = [['3', '3단계'], ['4', '4단계'], ['planner', '3타 분배']];
+    const menuTabs = [...(stage4Open?[]:[['3', '3단계']]), ['4', '4단계'], ['planner', '3타 분배']];
     const filters = `<div class="combo-workspace-toolbar"><div class="tabset" role="group" aria-label="추천 조합 단계와 3타 분배">${menuTabs.map(([value, label]) => { const selected = value === 'planner' ? currentView === 'planner' : currentView === 'compact' && String(stage) === value; return `<button type="button" data-combo-action="tab" data-value="${value}" class="${selected ? 'active' : ''}" aria-pressed="${selected}">${label}</button>`; }).join('')}</div></div>${currentView === 'planner' ? '' : `<div class="combo-workspace-boss-filter"><div class="tabset" aria-label="보스별 조합">${[['all', '전체 보스'], ...month.bosses.map(value => [String(value.id), value.id + '넴'])].map(([value, label]) => `<button data-guild="combo-boss" data-value="${value}" data-boss-color="${value}" class="${state.comboBoss === value ? 'active' : ''}">${label}</button>`).join('')}</div><span class="small muted">${rows.length}개 조합</span></div>`}`;
     return section('추천 조합', '', canEdit() ? (stage===4?'<button class="btn primary" data-page="tactics">＋ 택틱 작업실에서 조합 추가</button>':'<button class="btn primary" data-guild="add-combo">＋ 추천 조합</button>') : '') + `<div class="recommendation-workspace">${filters}${notice()}${currentView === 'planner' ? distribution() : compactRows(rows)}</div>`;
   }
@@ -62,6 +66,7 @@ export function createComboWorkspace(api) {
     switch (button.dataset.comboAction) {
       case 'tab':
         if (!['3', '4', 'planner'].includes(button.dataset.value)) return;
+        if(button.dataset.value==='3'&&isStageFourUnlocked(api.month()))return;
         if (button.dataset.value === 'planner') {
           state.comboStage = '4';
           view = 'planner';

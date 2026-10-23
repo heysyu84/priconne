@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {ensureRoster} from '../public/roster.mjs';
-import {applySourceData,tenureMonths,dashboardDay,bossTopStats} from '../public/guild-model.mjs';
+import {applySourceData,tenureMonths,dashboardDay,bossTopStats,isStageFourUnlocked} from '../public/guild-model.mjs';
 import {replayMonth,contribution} from '../public/engine.mjs';
 const html=fs.readFileSync(new URL('../public/clan-shell.html',import.meta.url),'utf8');
 const seed=JSON.parse(html.match(/<script id="seed-data" type="application\/json">([\s\S]*?)<\/script>/)[1]);
@@ -12,6 +12,24 @@ for(const r of source.roster){const p=seed.roster.find(p=>r.uid?p.uid===r.uid:p.
 assert.equal(counts.history,87);assert.equal(counts.hall,41);assert.equal(seed.months['2026-10'].recommendations.length,18);
 assert.equal(seed.clanHistory.filter(h=>h.memberCount!==null).length,27);assert.equal(seed.clanHistory.filter(h=>h.archiveUrl).length,78);
 const json=JSON.stringify(seed);assert.equal(applySourceData(seed,source),false);assert.equal(JSON.stringify(seed),json);
+// 3단계 추천 조합은 4단계 개방 이전에만 표시해야 한다.
+// 첫 3단계 보스의 격파 직후에는 4단계 공격 기록이 없어도 개방된 상태다.
+const stageTransition=structuredClone(seed.months['2026-10']);
+stageTransition.options.startStage=3;
+stageTransition.levels=[{stage:3,start:1,end:1,count:1},{stage:4,start:2,end:999,count:998}];
+stageTransition.events=[];
+stageTransition.dayBreaks=[];
+replayMonth(stageTransition);
+assert.equal(isStageFourUnlocked(stageTransition),false);
+const firstBoss=stageTransition.bosses[0];
+stageTransition.events=[{id:'stage3-clear',seq:1,day:1,boss:firstBoss.id,memberId:stageTransition.memberIds[0],member:'테스트',carry:false,damage:firstBoss.hp[3]}];
+replayMonth(stageTransition);
+assert.equal(stageTransition.events[0].stage,3);
+assert.equal(stageTransition.events[0].kill,true);
+assert.equal(isStageFourUnlocked(stageTransition),true);
+stageTransition.events=[];
+replayMonth(stageTransition);
+assert.equal(isStageFourUnlocked(stageTransition),false);
 const september=seed.months['2026-09'];replayMonth(september);assert.deepEqual(september.events.map(e=>[e.seq,e.day,e.damage,e.bonus,e.after]),original);
 const negative=september.events.filter(e=>Number(e.bonus)<0);assert.equal(negative.length,10);assert.equal(contribution(negative[0],september),2250000);
 assert.equal(tenureMonths({periods:[{joined:'2021-05',left:'2021-05'}]},'2026-10'),1);
