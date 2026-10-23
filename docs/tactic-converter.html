@@ -41,7 +41,14 @@ button:disabled{opacity:.42;cursor:not-allowed}
 <h2>① 덱 순서와 이름 대응</h2>
 <p class="hint">왼쪽부터 실제 택틱의 1~5번 자리입니다. 원문 이름과 사이트에서 사용할 한국어 이름을 정확히 연결하세요.</p>
 <div class="form-header"><span>순서</span><span>해외 원문 이름</span><span>사이트 이름</span></div>
+<datalist id="lineup-names"></datalist>
 <div id="lineup"></div>
+<div class="actions"><button type="button" id="detect-lineup">원문에서 캐릭터 이름 찾기</button></div>
+<p class="hint" id="lineup-note">일본어·중국어·한국어 이름이 다르더라도 사이트의 정식 캐릭터 이름으로 통일합니다. 당고 기호의 1~5번 배치 순서는 직접 확인해야 합니다.</p>
+<label class="hint" style="display:flex;align-items:center;gap:8px;font-weight:700;color:#53437e">
+<input id="lineup-confirm" type="checkbox" style="width:19px;height:19px" >
+캐릭터 1~5번의 덱 순서가 정확합니다
+</label>
 <p class="hint">이름 순서가 틀리면 당고 체크 상태도 잘못 계산됩니다. 원문 이름은 별칭까지 포함해 직접 수정할 수 있습니다.</p>
 </section>
 <div class="columns">
@@ -53,17 +60,17 @@ button:disabled{opacity:.42;cursor:not-allowed}
 <section class="panel"><h2>③ 한국어 결과 미리보기</h2>
 <div id="preview" aria-live="polite"><span class="muted">덱 이름과 원문을 입력한 뒤 변환하기를 누르세요.</span></div>
 <div id="messages" role="status"></div>
-<div class="actions"><button id="copy-with-set" type="button" class="primary" disabled>SET 포함 복사 (권장)</button><button id="copy-text" type="button" disabled>본문만 복사</button></div>
-<p class="hint">SET 포함 복사는 화면에 보이지 않는 6개 체크 상태를 각 행에 포함합니다. 클전 사이트에 붙여넣으면 기존 택틱 작업실이 이를 자동 인식합니다.</p>
+<div class="actions"><button id="copy-with-set" type="button" class="primary" disabled>편성·SET 포함 복사 (권장)</button><button id="copy-text" type="button" disabled>본문만 복사</button></div>
+<p class="hint">편성·SET 포함 복사는 캐릭터 5명 및 각 행의 6개 체크 상태를 함께 전달합니다. 클전 사이트에서 초상화도 자동 지정합니다.</p>
 </section>
 </div>
 <section class="panel"><h2>④ 클전 사이트에 넣는 방법</h2>
 <ol class="steps">
 <li><strong>SET 포함 복사</strong> 버튼을 누릅니다.</li>
-<li>기존 클전 사이트 → 택틱 작업실에서 작성 잠금을 해제하고, 대상 택틱의 캐릭터 5명과 순서를 확인합니다.</li>
+<li>기존 클전 사이트 → 택틱 작업실에서 작성 잠금을 해제하고 새 택틱의 첫 번째 빈 행으로 이동합니다. 캐릭터 5명은 자동으로 가져옵니다.</li>
 <li>첫 번째 빈 택틱 행을 클릭하고 <strong>Ctrl+V</strong> (모바일: 붙여넣기) 합니다.</li>
 <li>명령어의 빨강/파랑 표시와 캐릭터·AUTO 체크박스를 확인한 뒤 저장 상태를 확인합니다.</li>
 </ol>
 <p class="hint">변환기는 데이터베이스를 직접 수정하지 않습니다. 원문이 모호한 경우 확인 경고가 나오며, 최종 적용 전에는 원본 영상과 대조해 주세요.</p>
 </section>
-</main><script type="module" src="./tactic-converter-ui.mjs?v=20261023-emoji03"></script></body></html>
+</main><script type="module" src="./tactic-converter-ui.mjs?v=20261023-autolineup02"></script></body></html>
