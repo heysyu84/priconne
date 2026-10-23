@@ -2,6 +2,7 @@ import { BOSS_ACCENTS, BOSS_INK, tenureMonths } from './guild-model.mjs?v=202610
 const W=1240,H=1754,PAD=72;
 let reportFontsReady=null;
 const nf=n=>Number.isFinite(n)?n.toLocaleString('ko-KR',{maximumFractionDigits:2}):'산정 대기';
+const formatContribution=n=>Number.isFinite(n)?Math.round(n).toLocaleString('ko-KR'):'산정 대기';
 export function pdfFromJpegs(pages){
   const encoder=new TextEncoder(),chunks=[],offsets=[0];let length=0;
   const write=value=>{const b=typeof value==='string'?encoder.encode(value):value;chunks.push(b);length+=b.length;};
@@ -29,16 +30,16 @@ export async function downloadProfilePdf(data){
     values.forEach((v,i)=>{ctx.fillStyle=BOSS_ACCENTS[i];ctx.fillRect(x+12,top+255+i*30,16,16);text(`${i+1}넴`,x+38,top+270+i*30,18);text(`${sum?(v/sum*100).toFixed(1):'0.0'}%`,x+226,top+270+i*30,18,true,BOSS_INK[i],'right');});
   }
   start();
-  [['실제 피해량',data.summary.damage],['기여도',data.summary.contribution],['인게임 스코어',data.summary.game]].forEach(([label,value],i)=>{const x=PAD+i*365;ctx.fillStyle='#f7f3fc';ctx.fillRect(x,y,350,105);text(label,x+18,y+32,20);text(nf(value),x+18,y+78,25,true,'#6a4d94');});y+=140;
+  [['실제 피해량',data.summary.damage],['기여도',data.summary.contribution],['인게임 스코어',data.summary.game]].forEach(([label,value],i)=>{const x=PAD+i*365;ctx.fillStyle='#f7f3fc';ctx.fillRect(x,y,350,105);text(label,x+18,y+32,20);text(label==='기여도'?formatContribution(value):nf(value),x+18,y+78,25,true,'#6a4d94');});y+=140;
   heading('보스별 공격 비중 · 실제 피해량 기준');
   [['종합',data.events],...[2,3,4].map(s=>[s+'단계',data.events.filter(e=>e.stage===s)])].forEach(([label,events],i)=>donuts(events,label,PAD+i*274,y));y+=435;
   heading('일차별 기록');row(['일차','실제 피해량','기여도','기본 / 이월'],[150,340,340,266],true);
-  for(let day=1;day<=data.days;day++){const events=data.events.filter(e=>e.day===day);row([day+'일차',{text:nf(events.reduce((s,e)=>s+e.actual,0)),right:true},{text:nf(events.reduce((s,e)=>s+data.contribution(e),0)),right:true},events.filter(e=>!e.carry).length+' / '+events.filter(e=>e.carry).length],[150,340,340,266]);}
+  for(let day=1;day<=data.days;day++){const events=data.events.filter(e=>e.day===day);row([day+'일차',{text:nf(events.reduce((s,e)=>s+e.actual,0)),right:true},{text:formatContribution(events.reduce((s,e)=>s+data.contribution(e),0)),right:true},events.filter(e=>!e.carry).length+' / '+events.filter(e=>e.carry).length],[150,340,340,266]);}
   heading('보스별 기록');row(['보스','공격 수','실제 피해량 합계','평균 피해량'],[260,130,360,346],true);
   for(const boss of data.bosses){const rows=data.events.filter(e=>e.boss===boss.id),sum=rows.reduce((s,e)=>s+e.actual,0);row([boss.id+'넴 · '+boss.name,rows.length,{text:nf(sum),right:true},{text:nf(rows.length?sum/rows.length:0),right:true}],[260,130,360,346],false,[BOSS_ACCENTS[boss.id-1]]);}
   if(!data.all){heading('공격 상세');
   const widths=[100,210,210,290,286];row(['일차','보스 · 단계','일반 / 이월','실제 피해량','기여도'],widths,true);
-  for(const e of data.events){if(y+52>H-85){start();heading('공격 상세 · 계속');row(['일차','보스 · 단계','일반 / 이월','실제 피해량','기여도'],widths,true);}row([e.day+'일',`${e.boss}넴 · ${e.stage}단계`,e.carry?'이월':'일반',{text:nf(e.actual),right:true},{text:nf(data.contribution(e)),right:true}],widths,false,[null,BOSS_ACCENTS[e.boss-1]]);}
+  for(const e of data.events){if(y+52>H-85){start();heading('공격 상세 · 계속');row(['일차','보스 · 단계','일반 / 이월','실제 피해량','기여도'],widths,true);}row([e.day+'일',`${e.boss}넴 · ${e.stage}단계`,e.carry?'이월':'일반',{text:nf(e.actual),right:true},{text:formatContribution(data.contribution(e)),right:true}],widths,false,[null,BOSS_ACCENTS[e.boss-1]]);}
   }
   for(const c of canvases){const encoded=c.toDataURL('image/jpeg',.94).split(',')[1];pages.push(Uint8Array.from(atob(encoded),c=>c.charCodeAt(0)));}
   const blob=new Blob([pdfFromJpegs(pages)],{type:'application/pdf'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=`냥냥클랜_리리다이브_${data.month}_${data.p?.name||data.summary.name}_이력서.pdf`;a.click();setTimeout(()=>URL.revokeObjectURL(url),3000);
