@@ -5,6 +5,15 @@ import {serializeTacticTransfer,validTacticLineup} from './tactic-transfer.mjs?v
 const $=id=>document.getElementById(id);
 const normalize=s=>String(s??'').normalize('NFKC').replace(/\s+/g,'').toLocaleLowerCase('ko-KR');
 const preferred={'페리컬':'리리컬','네피네라':'네피','ネフィ':'네피','ネフィネラ':'네피','ホウオウ':'봉황','フブキ':'후부키','アイラ':'아이라','ネア':'수네아','ラビリスタ':'라비','ラビ':'라비','リリカル':'리리컬'};
+const STORE_KEY='nyang-tactic-preferred-names-v1';
+let learned={};
+try{
+ const value=JSON.parse(localStorage.getItem(STORE_KEY)||'{}');
+ if(value&&typeof value==='object'&&!Array.isArray(value)){
+   learned=Object.fromEntries(Object.entries(value)
+     .filter(([key,target])=>typeof key==='string'&&key.length<80&&typeof target==='string'&&target.length<80));
+ }
+}catch{}
 const foreignPairs=Object.entries(preferred);
 let catalog=[],current=null;
 const params=new URLSearchParams(location.search);
@@ -12,7 +21,7 @@ const init=(params.get('lineup')||'').split('|').map(s=>s.trim());
 let confirmed=init.length===5&&init.every(Boolean);
 function canonical(name){
  const requested=String(name??'').trim();
- const named=preferred[requested]||requested;
+ const named=learned[normalize(requested)]||preferred[requested]||requested;
  const official=catalog.find(p=>normalize(p.name)===normalize(named)||p.aliases?.some(alias=>normalize(alias)===normalize(named)));
  return official?.name||named;
 }
@@ -26,12 +35,28 @@ for(let i=0;i<5;i++){
  row.append(label,from,to);$('lineup').append(row);
 }
 $('lineup-confirm').checked=confirmed;
-const sourceNames=()=>Array.from({length:5},(_,i)=>$('from-'+i).value.trim());
+const sourceNames=()=>Array.from({length:5},(_,i)=>{
+  const raw=$('from-'+i).value.trim(),target=canonical($('to-'+i).value);
+  const extras=Object.entries(learned).filter(([,name])=>canonical(name)===target).map(([name])=>name);
+  return [raw,...extras].filter(Boolean).join(',');
+});
+function learnAliases(){
+  if(!validTacticLineup(koreanNames()))return;
+  for(let i=0;i<5;i++){
+    const raw=$('from-'+i).value.trim();
+    const mapped=canonical($('to-'+i).value);
+    if(raw&&raw.length<80&&normalize(raw)!==normalize(mapped))learned[normalize(raw)]=mapped;
+  }
+  const entries=Object.entries(learned).slice(-160);
+  learned=Object.fromEntries(entries);
+  try{localStorage.setItem(STORE_KEY,JSON.stringify(learned));}catch{}
+}
 const koreanNames=()=>Array.from({length:5},(_,i)=>canonical($('to-'+i).value));
 const lineupReady=()=>validTacticLineup(koreanNames())
   && (!catalog.length||koreanNames().every(n=>catalog.some(c=>normalize(c.name)===normalize(n))));
 function setConfirmation(value){
  confirmed=!!value;
+ if(confirmed)learnAliases();
  $('lineup-confirm').checked=confirmed;
  if(current)render();
 }
@@ -52,7 +77,8 @@ function detectNames(){
  if(!input.trim()){notice('먼저 택틱 원본을 붙여넣으세요.');return;}
  const candidates=[
    ...catalog.flatMap(c=>[c.name,...(c.aliases||[])].map(alias=>({alias,name:c.name}))),
-   ...foreignPairs.map(([alias,name])=>({alias,name:canonical(name)}))
+   ...foreignPairs.map(([alias,name])=>({alias,name:canonical(name)})),
+   ...Object.entries(learned).map(([alias,name])=>({alias,name:canonical(name)}))
  ].filter(x=>x.alias.length>1).sort((a,b)=>b.alias.length-a.alias.length);
  const map=new Map();for(const candidate of candidates)if(!map.has(candidate.alias))map.set(candidate.alias,candidate);
  const combined=new RegExp([...map.keys()].map(x=>x.replace(/[.*+?^$()|[\]{}]/g,'\\$&')).join('|'),'g');
@@ -116,7 +142,7 @@ async function copy(text){
  $('messages').textContent='복사 완료! 클전 사이트 택틱 작업실의 빈 택틱 행에 붙여넣으세요.\n'+
  (current?.warnings?.length?current.warnings.join('\n'):'');
 }
-$('convert').addEventListener('click',render);
+$('convert').addEventListener('click',()=>{learnAliases();render();});
 $('detect-lineup').addEventListener('click',detectNames);
 $('lineup-confirm').addEventListener('change',event=>setConfirmation(event.target.checked));
 $('clear').addEventListener('click',()=>{
