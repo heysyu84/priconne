@@ -872,3 +872,6 @@ table.tw-grid thead th{
 @media screen and (min-width:801px) and (max-width:850px){
  .sidebar:not([data-nav-probe]) .nav .symbol{display:none}
 }
+
+/* Summary battle log uses the same two-line boss/progress cell as the full battle log. */
+.recent-battle-table .boss-cell small{display:block;margin-top:2px;font-size:11px;line-height:1.35;color:var(--muted)}
