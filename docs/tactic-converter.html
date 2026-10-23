@@ -37,6 +37,9 @@ button:disabled{opacity:.42;cursor:not-allowed}
 .source-comparison pre{white-space:pre-wrap;overflow-wrap:anywhere;margin:6px 0 0;padding:8px;background:#f6f3fa;border-radius:8px;font:inherit}
 .preview-line.needs-review{background:#fff5e5;border-radius:8px}
 .preview-text{min-width:0;overflow-wrap:anywhere}
+#manual-copy[hidden]{display:none}
+#manual-copy{margin-top:12px;padding:12px;border:1px solid #d4cbe5;border-radius:10px;background:#faf8ff}
+#manual-copy textarea{display:block;min-height:145px;max-height:300px;font-size:13px;font-family:ui-monospace,Consolas,monospace;white-space:pre;overflow:auto}
 </style></head><body>
 <header><a href="./">← 냥냥클랜 리리다이브 · 클랜전 사이트</a></header>
 <main>
@@ -66,6 +69,8 @@ button:disabled{opacity:.42;cursor:not-allowed}
 <div id="preview" aria-live="polite"><span class="muted">덱 이름과 원문을 입력한 뒤 변환하기를 누르세요.</span></div>
 <div id="messages" role="status"></div>
 <div class="actions"><button id="copy-with-set" type="button" class="primary" disabled>편성·SET 포함 복사 (권장)</button><button id="copy-text" type="button" disabled>본문만 복사</button></div>
+<p id="copy-help" class="hint">변환 결과가 나오면 본문만 복사할 수 있습니다.</p>
+<div id="manual-copy" hidden><p class="hint">자동 복사가 제한된 브라우저입니다. 아래 내용 전체를 선택한 뒤 PC는 Ctrl+C, 모바일은 복사를 눌러 주세요.</p><textarea id="manual-copy-text" spellcheck="false" readonly aria-label="직접 복사할 변환 결과"></textarea></div>
 <p class="hint">편성·SET 포함 복사는 캐릭터 5명 및 각 행의 6개 체크 상태를 함께 전달합니다. 클전 사이트에서 초상화도 자동 지정합니다.</p>
 </section>
 </div>
@@ -78,4 +83,4 @@ button:disabled{opacity:.42;cursor:not-allowed}
 </ol>
 <p class="hint">변환기는 데이터베이스를 직접 수정하지 않습니다. 원문이 모호한 경우 확인 경고가 나오며, 최종 적용 전에는 원본 영상과 대조해 주세요.</p>
 </section>
-</main><script type="module" src="./tactic-converter-ui.mjs?v=20261023-auto-default01"></script></body></html>
+</main><script type="module" src="./tactic-converter-ui.mjs?v=20261023-copyfix02"></script></body></html>
