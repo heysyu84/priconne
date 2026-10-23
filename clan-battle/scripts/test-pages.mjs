@@ -124,3 +124,41 @@ assert.match(readabilityCss,/body\{font-size:15px/,'Readable default desktop fon
 assert.match(readabilityCss,/\.battle-sheet\.compact-battle-sheet tbody td\{font-size:11\.5px/,'Improve mobile battle log text size');
 assert.ok(htmlShell.includes('readability.css?v='),'Readability stylesheet should load after other presentation styles');
 console.log('PASS: tactic library, carry reset, mobile boss progress, colored battle types, historical figures, and global text readability');
+
+
+// Resume the two nearly-finished Work edits without losing earlier features.
+const compactCombos=fs.readFileSync(new URL('../public/combo-workspace.mjs',import.meta.url),'utf8');
+const compactCss=fs.readFileSync(new URL('../public/combo.css',import.meta.url),'utf8');
+const appClient=fs.readFileSync(new URL('../public/clan.js',import.meta.url),'utf8');
+const displayScript=fs.readFileSync(new URL('../public/display-settings.mjs',import.meta.url),'utf8');
+assert.ok(!compactCombos.includes("['detail', '상세']") && !compactCombos.includes('savedView()'),
+  'Recommendation cards must no longer offer or restore the deleted detailed mode');
+assert.ok(compactCombos.includes("['compact', '조합 목록']") && compactCombos.includes("['planner', '3타 분배']"),
+  'The 3-attack optimizer remains reachable alongside the single list');
+assert.ok(compactCombos.includes('TP ${tpLabel(combo.tp)}') && compactCombos.includes('combo-mini-chip is-tp'),
+  'Integer TP values must be displayed with a decimal and fixed width');
+assert.ok(compactCss.includes('border-top:5px solid var(--boss-accent') &&
+  compactCss.includes('.combo-mini-chip.is-tp') &&
+  compactCss.includes('.combo-mini-facts .source-link-box{order:-1'),
+  'Compact cards must have visible boss-colored borders, equal TP widths and mobile video beside the boss');
+const logStart=appClient.indexOf('function logTable('),logEnd=appClient.indexOf('function battle(){',logStart);
+const recentLog=appClient.slice(logStart,logEnd);
+assert.ok(recentLog.includes('<th class="member-heading">클랜원</th>'));
+assert.ok(recentLog.indexOf('기록 피해량</th>') < recentLog.indexOf('<th>유형</th>') &&
+  recentLog.indexOf('<th>유형</th>') < recentLog.indexOf('실제 피해량</th>') &&
+  recentLog.indexOf('실제 피해량</th>') < recentLog.indexOf('기여도</th>'),
+  'Recent log columns should follow recorded damage, type, actual damage and contribution');
+assert.ok(recentLog.indexOf('<td class="number">${nf(e.damage)}</td>') <
+  recentLog.indexOf('<td class="carry-cell">') &&
+  recentLog.indexOf('<td class="carry-cell">') <
+  recentLog.indexOf('<td class="number calculated">${nf(e.actual)}</td>'),
+  'Recent log body must follow its column headings');
+assert.ok(readabilityCss.includes('white-space:nowrap!important') &&
+  readabilityCss.includes('.recent-battle-table .member-heading{width:19%}'),
+  'Member names must stay on a single line in mobile battle log');
+assert.ok(displayScript.includes('migrateMobileTextScale') &&
+  readabilityCss.includes('html[data-text-scale="100"] .mobile-nav button'),
+  'Only legacy mobile 115% preference migrates; default mobile menu text is readable');
+assert.ok(readabilityCss.includes('.tw-grid .tw-text-cell>[data-tw-text]{font-size:16px!important}'),
+  'Tactic text retains its old visible size at the new mobile default');
+console.log('PASS: interrupted Work changes restored, old detail preference ignored, TP and mobile log layout preserved');
