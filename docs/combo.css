@@ -251,3 +251,23 @@ html[data-text-scale]:not([data-text-scale="100"]) .combo-mini-header{flex-wrap:
 /* Existing recommendations remain manageable in the unified list. */
 .combo-mini-admin{grid-column:1/-1;grid-row:4;display:flex;justify-content:flex-end;flex-wrap:wrap;gap:8px;padding-top:4px}
 .combo-mini-admin .btn{min-height:36px}
+
+/* Responsive card count and portrait spacing are independent concerns.
+   Keep two recommendations until the content area is genuinely narrow,
+   but never stretch five portraits across the available card width. */
+.combo-compact-list{
+  grid-template-columns:repeat(auto-fit,minmax(min(100%,365px),1fr));
+}
+html[data-text-scale]:not([data-text-scale="100"]) .combo-compact-list{
+  grid-template-columns:repeat(auto-fit,minmax(min(100%,390px),1fr));
+}
+.combo-compact-row .combo-mini-party{
+  width:max-content;
+  max-width:100%;
+  grid-template-columns:repeat(5,minmax(0,52px));
+  justify-content:start;
+  gap:5px;
+}
+@container combo-card (max-width:360px){
+  .combo-compact-row .combo-mini-party{gap:3px}
+}
