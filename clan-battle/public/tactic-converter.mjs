@@ -7,7 +7,7 @@ const suggested={
  '수네아':['ネア'],'라비':['ラビリスタ','ラビ'],'리리컬':['リリカル','페리컬']
 };
 export const foreignSuggestions=name=>(suggested[trim(name)]||[])[0]||'';
-export function convertForeignTactic(raw, koreanNames=[], foreignNames=[]) {
+export function convertForeignTactic(raw, koreanNames=[], foreignNames=[], bossNames=[]) {
  const ko=Array.from({length:5},(_,i)=>trim(koreanNames[i])||'캐릭터 '+(i+1));
  const label=ko.map(n=>({'네피네라':'네피'}[n]||n));
  // Slot numbers are meaningful even if real character names were never entered.
@@ -29,6 +29,22 @@ export function convertForeignTactic(raw, koreanNames=[], foreignNames=[]) {
  const ordered=xs=>[...new Set(xs)].sort((a,b)=>b-a).map(i=>label[i]).join(', ');
  const cleanActor=s=>trim(s).replace(/[(（]\s*(?:AUTO|오토|オート|자동|自動|수동|手動|SET)\s*[)）]/gi,'')
    .replace(/^[\s'"‘’]+|[\s'"‘’]+$/g,'');
+ // Use the site's complete boss name and alias catalog, not only the word "보스".
+ // A small known-current fallback applies until the asynchronous catalog loads.
+ const knownBosses=[{name:'번 사우르스',aliases:['번사우르스','バーンサウルス']},...bossNames];
+ const bossTokens=[...new Set(knownBosses.flatMap(entry=>
+   typeof entry==='string'?[entry]:[entry?.name,...(entry?.aliases||[])]
+ ).map(x=>trim(x)).filter(Boolean))].sort((a,b)=>b.replace(/\s+/g,'').length-a.replace(/\s+/g,'').length);
+ const bossNameStart=text=>{
+   const source=trim(text);
+   for(const token of bossTokens){
+     // Allow whitespace variants, but avoid matching a shorter boss prefix.
+     const pattern=new RegExp('^'+reg(token).replace(/\s+/g,'\\s*')+'(?=$|[\\s\\[\\]()（）,:：、，])','i');
+     const match=source.match(pattern);
+     if(match)return {name:token,rest:trim(source.slice(match[0].length))};
+   }
+   return null;
+ };
  const autoOnly=/^(.*?)\s*['"‘’]?\s*((?:AUTO|オート|오토|자동|自動)\s*(?:ON|OFF|온|오프|オン|オフ|切|关|關|开|開|开启))\s*['"‘’]?\s*$/i;
  const orderPriority=s=>/한번만$/.test(s)?-1:/^AUTO 온$/.test(s)?1:/^AUTO 오프$/.test(s)?3:
    /(?:\sON|\sSET)$/.test(s)?0:/\sOFF$/.test(s)?2:4;
@@ -40,7 +56,7 @@ export function convertForeignTactic(raw, koreanNames=[], foreignNames=[]) {
  src=src.replace(/[\uFE0E\uFE0F\u200D]/g,'');
  const dango=/[OX〇○◯●⭕❌ー－—-]{5}/i.test(src);
  const format=dango?'dango':'commands';
- src=src.replace(/\u00a0/g,' ').replace(/[ \u3000]*(\d{1,2}:[0-5]\d)(?=[ \u3000\t]|$)/g,'\n$1 ');
+ src=src.replace(/\u00a0/g,' ').replace(/[ \u3000]+(\d{1,2}:[0-5]\d)(?=[ \u3000\t]|$)/g,'\n$1 ');
  const rows=[],state=[false,false,false,false,false];let auto=false,time='',lastTime='',sourceLine='';
  const append=(actor,cmds,condition='')=>{
    if(!cmds.length&&!actor)return;
@@ -160,7 +176,7 @@ export function convertForeignTactic(raw, koreanNames=[], foreignNames=[]) {
      // as a character number or an unknown error in the joined output.
      act(segment.slice(symbol.index),'',initial&&j===0);
      const produced=rows.splice(rowStart);
-     for(let i=0;i<5;i++)if(state[i]!==before[i])actions.push({i,on:state[i]});
+     for(let i=0;i<5;i++)if(state[i]!==before[i])actions.push({i,on:state[i],step:j});
      for(const item of produced){
        if(/AUTO 온/.test(item.instruction))autoActions.push('AUTO 온');
        if(/AUTO 오프/.test(item.instruction))autoActions.push('AUTO 오프');
@@ -171,14 +187,27 @@ export function convertForeignTactic(raw, koreanNames=[], foreignNames=[]) {
    }
    // Keep the final state, but a rapid ON -> OFF is a one-shot action.
    const on=[],off=[],once=[];
+   const finalAction=[];
    for(let i=4;i>=0;i--){
-     const events=actions.filter(e=>e.i===i).map(e=>e.on);
+     const events=actions.filter(e=>e.i===i);
      if(!events.length)continue;
-     if(events.length===2&&events[0]&&!events[1])once.push(label[i]+' 한번만');
-     else(events.at(-1)?on:off).push(i);
+     if(events.length===2&&events[0].on&&!events[1].on)once.push(label[i]+' 한번만');
+     else{
+       const latest=events.at(-1);
+       (latest.on?on:off).push(i);
+       finalAction.push(latest);
+     }
    }
+   // Arrow-separated stages are explicitly ordered. Keep their ON order,
+   // but use the usual reverse-slot order within a single stage.
+   const stepsOf=on.map(i=>finalAction.find(e=>e.i===i)?.step??0);
+   const sequentialOn=on.length>1&&new Set(stepsOf).size>1;
+   const onOrder=sequentialOn?[...on].sort((a,b)=>{
+     const sa=finalAction.find(e=>e.i===a).step,sb=finalAction.find(e=>e.i===b).step;
+     return sa-sb||b-a;
+   }):on;
    const commands=[...once];
-   if(on.length)commands.push(ordered(on)+(initial?' SET':' ON'));
+   if(on.length)commands.push(onOrder.map(i=>label[i]).join(', ')+(sequentialOn?' 순으로':'')+(initial?' SET':' ON'));
    if(off.length)commands.push(ordered(off)+' OFF');
    commands.push(...[...new Set(autoActions)]);
    commands.push(...[...new Set(unresolved)]);
@@ -194,6 +223,13 @@ export function convertForeignTactic(raw, koreanNames=[], foreignNames=[]) {
  const bossAlias=value=>/^(?:보스|ボス|BOSS|首领|首領|敵|敌)$/i.test(trim(value));
  const bossCue=value=>{
    const text=trim(value);
+   const named=bossNameStart(text);
+   if(named){
+     const cue=named.rest.match(/^(?:의|の)?\s*(UB|유버|ユニオンバースト|유니온버스트|스킬|スキル|공격|攻撃|평타|通常攻撃)\s*(?:후|後|직후|直後)?\s*(.*)$/i);
+     const kind=cue?/(?:UB|유버|유니온버스트|ユニオンバースト)/i.test(cue[1])?' UB':
+       /(?:공격|攻撃|평타)/.test(cue[1])?' 공격':' 스킬':'';
+     return {context:'보스'+kind,rest:cue?trim(cue[2]):named.rest,after:!!(cue||named.rest)};
+   }
    const action=text.match(/^(.{1,42}?)\s*(?:の|의|が|가)?\s*(ユニオンバースト|유니온버스트|UB|유버|필살기|必殺技|奥義|오의|通常攻撃|평타|공격|攻撃|スキル|스킬)\s*(後に|の後|後|후|이후|뒤에|뒤|直後|직후|を見て)?\s*(?:[,，、:：→➡➜⇒⟶]\s*)?(.*)$/i);
    if(action){
      const who=trim(action[1]);
@@ -223,8 +259,16 @@ export function convertForeignTactic(raw, koreanNames=[], foreignNames=[]) {
    if(t){time=t[1];line=trim(line.slice(t[0].length));}
    const autoLine=line.match(autoOnly);
    if(autoLine&&!/[OX〇○◯●⭕❌ー－—-]{5}/i.test(line)&&cleanActor(autoLine[1])){
-     const rawActor=cleanActor(autoLine[1]),actor=actorStart(rawActor);
-     act(autoLine[2],actor?.name||rawActor,false);
+     const rawActor=cleanActor(autoLine[1]);
+     if(/(?:되자마자|보자마자|직후|즉시|見えたら|直後|すぐ)/.test(rawActor)){
+       const cue=rawActor.replace(/^⭐+\s*(?:\d{1,2}:[0-5]\d)?\s*/,'');
+       const enabled=/(?:ON|온|オン|开|開|开启)$/i.test(autoLine[2]);
+       auto=enabled;
+       append('',[cue+' AUTO '+(enabled?'온':'오프')]);
+     }else{
+       const actor=actorStart(rawActor);
+       act(autoLine[2],actor?.name||rawActor,false);
+     }
      return;
    }
    const boss=bossCue(line);
