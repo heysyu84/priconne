@@ -73,8 +73,7 @@ export function commandState(text, previous, characters, catalog = []) {
   const pattern=new RegExp(`((?:${unit}[\\s,，·.]*?)*${unit})\\s*(?:순으로|순서대로)?\\s*(제외\\s*(?:전부\\s*)?)?(한번만|ON|OFF|SET|오프|온)`,'gi');
   for (const match of String(text).matchAll(pattern)) {
     const [,subjects,except,command]=match;
-    if (command === '한번만') continue;
-    const on=/^(ON|SET|온)$/i.test(command);
+    const on=command!=='한번만' && /^(ON|SET|온)$/i.test(command);
     const selected=names.map((aliases,i)=>aliases.some(n=>subjects.includes(n))?i:-1).filter(i=>i>=0);
     if (/AUTO/i.test(subjects)) result[5]=on;
     if (/전부/.test(subjects)) for(let i=0;i<5;i++) result[i]=on;
