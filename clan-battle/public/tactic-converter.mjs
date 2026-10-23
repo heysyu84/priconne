@@ -139,6 +139,7 @@ export function convertForeignTactic(raw, koreanNames=[], foreignNames=[]) {
    const first=segments[0].match(/[OX〇○◯●⭕❌ー－—-]{5}/i);
    const rawActor=cleanActor(segments[0].slice(0,first.index)).replace(/[\[\]]/g,' ').trim();
    const actor=actorStart(rawActor)?.name||rawActor;
+   const previousTime=lastTime;
    const actions=[],autoActions=[],unresolved=[];
    const initial=!rows.length;
    for(let j=0;j<segments.length;j++){
@@ -171,7 +172,7 @@ export function convertForeignTactic(raw, koreanNames=[], foreignNames=[]) {
    commands.push(...[...new Set(autoActions)]);
    commands.push(...[...new Set(unresolved)]);
    const instruction=prioritize(commands,initial).join(', ')||'(SET 변경 없음)';
-   const head=time?(rows.length&&time===lastTime?'ㄴ ':time+' '):'';
+   const head=time?(rows.length&&time===previousTime?'ㄴ ':time+' '):'';
    const named=actor?(find(actor)>=0?label[find(actor)]:actor)+' 후 ':'';
    rows.push({text:trim(head+named+instruction),checked:[...state,auto],source:sourceLine,time,actor,instruction});
    lastTime=time;
@@ -210,7 +211,7 @@ export function convertForeignTactic(raw, koreanNames=[], foreignNames=[]) {
    const t=line.match(/^(\d{1,2}:[0-5]\d)\s*/);
    if(t){time=t[1];line=trim(line.slice(t[0].length));}
    const autoLine=line.match(autoOnly);
-   if(autoLine&&cleanActor(autoLine[1])){
+   if(autoLine&&!/[OX〇○◯●⭕❌ー－—-]{5}/i.test(line)&&cleanActor(autoLine[1])){
      const rawActor=cleanActor(autoLine[1]),actor=actorStart(rawActor);
      act(autoLine[2],actor?.name||rawActor,false);
      return;
