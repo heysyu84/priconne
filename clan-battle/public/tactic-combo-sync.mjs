@@ -37,6 +37,13 @@ export function syncTacticRecommendations(month){
   let current=rows.find(row=>String(row.sourceTacticId||'')===String(tactic.id));
   if(!current){
    current=rows.find(row=>!row.sourceTacticId&&!linked.has(String(row.id))&&sameRecord(row,tactic));
+   if(!current){
+    // If the expectation changed in the tactic editor, match one unambiguous
+    // legacy record by boss + exact lineup + stars + tactic source.
+    const alternatives=rows.filter(row=>!row.sourceTacticId&&!linked.has(String(row.id))&&
+      Number(row.stage)===4&&identity(row)===identity(tactic)&&sameSource(row,tactic));
+    if(alternatives.length===1)current=alternatives[0];
+   }
    if(current){current.sourceTacticId=String(tactic.id);changed=true;}
   }
   const incoming=fromTactic(tactic);
@@ -65,7 +72,9 @@ export function syncTacticRecommendations(month){
  // Do not leave orphaned automatically-linked records when source is deleted/incomplete.
  const active=new Set(month.tactics.filter(t=>tacticReady(t)&&!hidden.has(String(t.id))).map(t=>String(t.id)));
  for(let i=rows.length-1;i>=0;i--)if(rows[i].sourceTacticId&&!active.has(String(rows[i].sourceTacticId))){
-  rows.splice(i,1);changed=true;
+  if(String(rows[i].id||'').startsWith('tactic-combo-'))rows.splice(i,1);
+  else delete rows[i].sourceTacticId; // Preserve manually entered recommendation details.
+  changed=true;
  }
  return changed;
 }
