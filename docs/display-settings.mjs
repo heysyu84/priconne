@@ -1,13 +1,29 @@
 const STORAGE_KEY='nyang-display-text-scale-v1';
+const MOBILE_MIGRATION_KEY='nyang-display-mobile-base-110-v1';
 export const TEXT_SCALE_PRESETS=[100,115,130,150,175,200];
 export function normalizeTextScale(value){const n=Number(value);return Number.isFinite(n)?Math.min(200,Math.max(100,Math.round(n/5)*5)):100;}
 function browserStorage(){try{return globalThis.localStorage;}catch{return null;}}
 export function readTextScale(storage=browserStorage()){try{return normalizeTextScale(storage?.getItem(STORAGE_KEY)??100);}catch{return 100;}}
+/* Earlier mobile defaults used 115% as a workaround for tiny text.
+   The new mobile baseline is readable at 100%, so migrate that one old
+   preference only once. All other personally selected percentages remain. */
+export function migrateMobileTextScale(storage=browserStorage(),isMobile=false){
+  const prior=readTextScale(storage);
+  if(!isMobile)return prior;
+  try{
+    if(storage?.getItem(MOBILE_MIGRATION_KEY)==='1')return prior;
+    const legacy=storage?.getItem(STORAGE_KEY);
+    const next=legacy!==null&&normalizeTextScale(legacy)===115?100:prior;
+    if(next!==prior)storage.setItem(STORAGE_KEY,String(next));
+    storage?.setItem(MOBILE_MIGRATION_KEY,'1');
+    return next;
+  }catch{return prior;}
+}
 export function saveTextScale(value,storage=browserStorage()){const scale=normalizeTextScale(value);try{storage?.setItem(STORAGE_KEY,String(scale));}catch{}return scale;}
 export function applyTextScale(value,root){const scale=normalizeTextScale(value);root.dataset.textScale=String(scale);root.style.setProperty('--user-text-scale',String(scale/100));return scale;}
 
 function install(){
-  let scale=applyTextScale(readTextScale(),document.documentElement),dialog;
+  let scale=applyTextScale(migrateMobileTextScale(browserStorage(),window.matchMedia('(max-width:800px)').matches),document.documentElement),dialog;
   function sync(){
     if(!dialog)return;
     dialog.querySelector('[data-display-range]').value=String(scale);
