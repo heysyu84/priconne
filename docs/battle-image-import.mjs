@@ -31,7 +31,7 @@ const quickFrame={x:.711,y:.242,w:.215,h:.565};
 const escapeHtml=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'}[c]));
 const formatNumber=n=>Number(n||0).toLocaleString('ko-KR');
 export function createBattleImageImport(api){
- const {getApp,getMonth,persist,render,navigate,notify,canEdit,unlock,replay}=api;
+ const {getApp,getMonth,persist,render,navigate,notify,canEdit,unlock,replay,beforeCommit}=api;
  const state={rows:[],processing:false,cancel:false,progress:'',mode:'detail',ocrStatus:'',errors:[],day:null,raw:'',completed:0,total:0};
  const $=id=>document.getElementById(id);
  const month=()=>getMonth();
@@ -132,7 +132,7 @@ export function createBattleImageImport(api){
          parseQuickLogText(text,options);
        for(const row of parsed){
          if(!row.damage && !row.memberName && !row.bossId && !row.gameAt)continue;
-         row.order=state.rows.length;row.selected=false;state.rows.push(row);
+         row.order=state.rows.length;row.selected=true;state.rows.push(row);
        }
       }
      }finally{bitmap.close();}
@@ -194,10 +194,12 @@ export function createBattleImageImport(api){
   const warnings=copy.events.filter(e=>imported.some(i=>i.id===e.id)&&e.carry&&!e.carryFrom);
   if(warnings.length&&!confirm('연결할 격파 기록이 없는 이월 공격이 '+warnings.length+'건 있습니다.\n그래도 등록할까요?'))return;
   // Atomic local mutation; existing app persistence handles server syncing.
+  beforeCommit?.();
+  const previousEvents=structuredClone(month().events),previousBreaks=structuredClone(month().dayBreaks||[]);
   month().events.push(...imported);
   month().dayBreaks=copy.dayBreaks;
   try{replay(month());}
-  catch(error){month().events=month().events.filter(e=>!imported.some(i=>i.id===e.id));notify('등록 취소: '+error.message);return;}
+  catch(error){month().events=previousEvents;month().dayBreaks=previousBreaks;try{replay(month());}catch{}notify('등록 취소: '+error.message);return;}
   persist();
   const insertedIds=new Set(imported.map(e=>e.gameAt+'|'+e.memberId+'|'+e.boss+'|'+e.damage));
   state.rows=state.rows.filter(r=>!insertedIds.has(r.gameAt+'|'+r.memberId+'|'+r.bossId+'|'+r.damage));
@@ -233,7 +235,7 @@ export function createBattleImageImport(api){
   if(event.target?.id==='bli-raw')state.raw=event.target.value;
  });
  document.addEventListener('click',event=>{
-  const button=event.target.closest('[data-bli]');if(!button)return;
+  const button=event.target.closest('[data-bli],[data-bli-remove]');if(!button)return;
   if(!button.closest('.bli-shell'))return;
   event.preventDefault();
   switch(button.dataset.bli){
@@ -246,7 +248,7 @@ export function createBattleImageImport(api){
     const v=$('bli-raw')?.value||'';
     const options={roster:members(),bosses:month().bosses,source:'텍스트 입력'};
     const imported=state.mode==='quick'?parseQuickLogText(v,options):[parseBattleLogText(v,options)].filter(Boolean);
-    for(const row of imported){row.selected=false;row.order=state.rows.length;state.rows.push(row);}
+    for(const row of imported){row.selected=true;row.order=state.rows.length;state.rows.push(row);}
     state.raw='';updateRows(true);render();break;
    }
   }
