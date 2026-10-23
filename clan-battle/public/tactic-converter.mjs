@@ -86,6 +86,7 @@ export function convertForeignTactic(raw, koreanNames=[], foreignNames=[]) {
    const skill=rest.match(/(?:s1|1スキル|技能1)\s*(?:开始后|開始後|スタート後)/i);
    if(skill)rest=rest.replace(skill[0],' ');
    const commands=[];
+   let leadingActorAction=false;
    if(a.changed!==null)auto=a.changed;
    const symbols=rest.match(/[OX〇○◯●⭕❌ー－—-]{5}/i);
    if(symbols){
@@ -104,6 +105,16 @@ export function convertForeignTactic(raw, koreanNames=[], foreignNames=[]) {
      if(on.length)commands.push(on.length===5?(initial?'전부 SET':'전부 ON'):ordered(on)+(initial?' SET':' ON'));
      if(off.length)commands.push(off.length===5?'전부 OFF':ordered(off)+' OFF');
    }else{
+     // A leading bare ON/OFF targets the source actor, even if other commands
+     // (including AUTO) follow on the same line.
+     const leading=actorSlot>=0?rest.match(/^\s*(SET(?:ON|OFF)?|ON|OFF|切|解除|オン|オフ|关|關|开|開)(?=$|[\s、,，])/i):null;
+     if(leading){
+       leadingActorAction=true;
+       const enable=/^(?:SET|SETON|ON|オン|开|開)$/i.test(leading[1]);
+       state[actorSlot]=enable;
+       commands.push(label[actorSlot]+(enable?(initial?' SET':' ON'):' OFF'));
+       rest=rest.slice(leading[0].length);
+     }
      // Consume commands in source order. Arrows inside a subject list mean
      // ordered actions; arrows between commands must never reorder ON/OFF.
      const subject='(?:'+dictPattern+'|全員|全体|全キャラ|전부)';
@@ -131,7 +142,7 @@ export function convertForeignTactic(raw, koreanNames=[], foreignNames=[]) {
    if(leftover){warning('미해석 원문·조건 확인: '+leftover);commands.push('[원문 확인: '+leftover+']');}
    // A fully OFF initial row still establishes the initial time/state.
    if(initial&&!commands.length&&!actor)commands.push('전부 OFF');
-   append(actor,prioritize(onceCommands(commands),initial),skill?'1스킬 시작 후':'');
+   append(leadingActorAction?'':actor,prioritize(onceCommands(commands),initial),skill?'1스킬 시작 후':'');
  };
  const arrowDango=merged=>{
    const segments=merged.split(/\s*(?:➡|→|➜|⇒|⟶)\s*/);
