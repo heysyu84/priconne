@@ -255,11 +255,16 @@ html[data-text-scale]:not([data-text-scale="100"]) .combo-mini-header{flex-wrap:
 /* Responsive card count and portrait spacing are independent concerns.
    Keep two recommendations until the content area is genuinely narrow,
    but never stretch five portraits across the available card width. */
-.combo-compact-list{
-  grid-template-columns:repeat(auto-fit,minmax(min(100%,365px),1fr));
-}
+.recommendation-workspace{container-type:inline-size}
+.combo-compact-list,
 html[data-text-scale]:not([data-text-scale="100"]) .combo-compact-list{
-  grid-template-columns:repeat(auto-fit,minmax(min(100%,390px),1fr));
+  grid-template-columns:repeat(2,minmax(0,1fr));
+}
+@container (max-width:750px){
+  .combo-compact-list,
+  html[data-text-scale]:not([data-text-scale="100"]) .combo-compact-list{
+    grid-template-columns:minmax(0,1fr);
+  }
 }
 .combo-compact-row .combo-mini-party{
   width:max-content;
