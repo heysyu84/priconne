@@ -26,7 +26,8 @@ export function installAdaptiveNavigation(doc=document,win=window) {
     const style=win.getComputedStyle(probe);
     const available=probe.clientWidth-parseFloat(style.paddingLeft||0)-parseFloat(style.paddingRight||0);
     const gap=parseFloat(style.columnGap)||0;
-    const needed=Math.max(0,...[...probe.children].map(b=>b.getBoundingClientRect().width))*buttons.length+gap*Math.max(0,buttons.length-1);
+    const widestLabel=Math.max(0,...[...probe.children].map(b=>Math.max(b.getBoundingClientRect().width,b.scrollWidth)));
+    const needed=Math.ceil(widestLabel*buttons.length+gap*Math.max(0,buttons.length-1)+buttons.length*5);
     compact=compactNavigation(viewport,available,needed,compact);
     const layout=compact?'compact':'wide';
     if(root.dataset.navLayout!==layout){
