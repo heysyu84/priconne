@@ -901,3 +901,23 @@ table.tw-grid thead th{
  .tw-layout .tw-boss-label{display:block}
  .tw-layout>.tw-work{min-width:0}
 }
+
+/* Align community links to the right of the seven boss filters on desktop. */
+@media screen and (min-width:801px){
+ .tw-navigation{align-items:stretch}
+ .tw-filter-links-row{display:flex;width:100%;min-width:0;align-items:center;justify-content:space-between;gap:10px}
+ .tw-filter-links-row>.tw-boss-tabs{display:flex;flex:0 0 auto;width:auto;min-width:0;gap:4px;flex-wrap:nowrap;overflow:visible}
+ .tw-filter-links-row .tw-boss-tabs>button{padding:7px 8px;font-size:11px;white-space:nowrap;flex:0 0 auto}
+ .tw-filter-links-row>.community-links{display:flex;flex:0 1 auto;min-width:0;align-items:center;justify-content:flex-end;gap:4px 6px;flex-wrap:wrap;margin:0}
+ .tw-filter-links-row .community-links>span{gap:2px}
+ .tw-filter-links-row .community-links .btn{font-size:10px;padding:6px 7px;white-space:nowrap}
+ .tw-filter-links-row .community-links .textbutton{padding:2px 3px}
+}
+/* Keep the mobile boss filters and community links as successive rows. */
+@media screen and (max-width:800px){
+ .tw-filter-links-row{display:flex;flex-direction:column;width:100%;min-width:0;align-items:stretch;gap:10px}
+ .tw-filter-links-row>.tw-boss-tabs{width:100%}
+ .tw-filter-links-row>.community-links{margin:0 0 17px;justify-content:flex-start}
+}
+/* An unregistered URL is indicated by an unfilled outline, without extra text. */
+.community-links .missing-link{background:transparent;border-color:#e2d6eb;box-shadow:none;color:#97889f;cursor:default}
