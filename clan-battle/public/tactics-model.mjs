@@ -63,7 +63,7 @@ export function commandState(text, previous, characters, catalog = []) {
   const tokens=[...new Set(names.flat())].sort((a,b)=>b.length-a.length);
   if (!tokens.length) return result;
   const unit=`(?:${tokens.map(regexEscape).join('|')}|AUTO|전부)`;
-  const pattern=new RegExp(`((?:${unit}[\\s,，·.]*?)*${unit})\\s*(제외\\s*(?:전부\\s*)?)?(한번만|ON|OFF|SET|오프|온)`,'gi');
+  const pattern=new RegExp(`((?:${unit}[\\s,，·.]*?)*${unit})\\s*(?:순으로|순서대로)?\\s*(제외\\s*(?:전부\\s*)?)?(한번만|ON|OFF|SET|오프|온)`,'gi');
   for (const match of String(text).matchAll(pattern)) {
     const [,subjects,except,command]=match;
     if (command === '한번만') continue;
@@ -80,7 +80,7 @@ export function commandState(text, previous, characters, catalog = []) {
 export function colorRuns(text, characters, catalog = []) {
   const tokens=[...new Set(characters.flatMap(c=>namesFor(c,characters,catalog)))].filter(Boolean).sort((a,b)=>b.length-a.length);
   const unit=`(?:${tokens.length?tokens.map(regexEscape).join('|')+'|':''}AUTO|전부)`;
-  const pattern=new RegExp(`((?:${unit}[\\s,，·.]*?)*${unit})\\s*(?:제외\\s*(?:전부\\s*)?)?(한번만|ON|OFF|SET|오프|온)`,'gi');
+  const pattern=new RegExp(`((?:${unit}[\\s,，·.]*?)*${unit})\\s*(?:순으로|순서대로)?\\s*(?:제외\\s*(?:전부\\s*)?)?(한번만|ON|OFF|SET|오프|온)`,'gi');
   const runs=[];let index=0;
   for (const match of String(text).matchAll(pattern)) {
     if(match.index>index)runs.push({text:text.slice(index,match.index)});

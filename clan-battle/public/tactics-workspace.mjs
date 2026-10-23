@@ -1,7 +1,7 @@
 import { isBoosterCharacter, formatExpectedDamage, sourceLinkBox } from './view-settings.mjs?v=20261022-ui14';
 import { characterPortrait, portraitAttributes, portraitStarOverlay, normalizeCharacterName } from './character-portraits.mjs?v=20261022-ui14';
 import { makeId, parseDamage } from './roster.mjs?v=20261022-ui14';
-import { GROUPS, groupOf, titleFor, compareTactics, newRow, checkedSix, commandState, pastedRows, richLine, parseClock, clock, escapeHtml as X } from './tactics-model.mjs?v=20261023-combo02';
+import { GROUPS, groupOf, titleFor, compareTactics, newRow, checkedSix, commandState, pastedRows, richLine, parseClock, clock, escapeHtml as X } from './tactics-model.mjs?v=20261023-order-color01';
 import { shiftTimeline } from './engine.mjs?v=20261022-ui14';
 
 export function createTacticWorkspace(api) {
