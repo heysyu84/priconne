@@ -4,6 +4,12 @@ on:
     paths:
       - '.github/workflows/test-portrait-migration.yml'
       - 'clan-battle/public/character-portraits.mjs'
+      - 'clan-battle/public/site-paths.mjs'
+      - 'clan-battle/public/legacy-image-paths.mjs'
+      - 'clan-battle/public/source-library/**'
+      - 'clan-battle/scripts/test-portraits.mjs'
+      - 'clan-battle/scripts/test-tactics.mjs'
+      - 'clan-battle/scripts/test-image-cleanup.mjs'
       - 'clan-battle/public/portrait-library.json'
       - 'clan-battle/public/characters.json'
       - 'clan-battle/public/tactics-workspace.mjs'
