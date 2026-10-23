@@ -28,7 +28,7 @@ const missingBefore=['수사렌','사키노','발즈루','무이미','뉴츠네'
 for(const name of missingBefore)assert.ok(findCharacter(catalog,name),name);
 assert.equal(findCharacter(catalog,'수사'),null);
 assert.equal(findCharacter(catalog,''),null);
-const base=findCharacter(catalog,'수사렌').portrait;
+const base=findCharacter(catalog,'수사렌').byStar['5']||findCharacter(catalog,'수사렌').portrait;
 assert.equal(characterPortrait(catalog,'수사렌',5,'javascript:alert(1)').url,base);
 const p=characterPortrait(catalog,'수페코',6,'data:image/png;base64,AAAA');
 assert.equal(p.candidates[0],'data:image/png;base64,AAAA');
