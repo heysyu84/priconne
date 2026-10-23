@@ -51,7 +51,7 @@ export function createWorkflow(api) {
   function quickView() {
     if(!canSubmit())return '';
     const d = draft();
-    return `<details class="panel quick-panel" ${state.inputOpen?'open':''} aria-label="배틀로그 입력"><summary>배틀로그 입력</summary><div class="panel-head"><div><div class="sub">이름 일부 입력 후 <kbd>↑↓</kbd> 선택 · <kbd>Tab</kbd> 다음 칸 · <kbd>Enter</kbd> 등록</div></div><button type="button" class="btn sm" data-wf="focus-quick">입력으로 이동 <kbd>/</kbd></button></div>
+    return `<details class="panel quick-panel" ${state.inputOpen?'open':''} aria-label="배틀로그 입력"><summary>배틀로그 입력</summary><div class="panel-head"><div><div class="sub">이름 일부 입력 후 <kbd>↑↓</kbd> 선택 · <kbd>Tab</kbd> 다음 칸 · 피해량에서 <kbd>Space</kbd> 이월 전환 · <kbd>Enter</kbd> 등록</div></div><button type="button" class="btn sm" data-wf="focus-quick">입력으로 이동 <kbd>/</kbd></button></div>
       ${canEdit()&&d.beforeId ? `<div class="insert-banner">#${X(month().events.find(e => e.id === d.beforeId)?.seq || '')} 앞에 삽입합니다. <button type="button" class="textbutton" data-wf="cancel-insert">맨 뒤 입력으로 변경</button></div>` : ''}
       <form id="wf-quick-form" method="post"><div class="quick-grid">
       <div class="field day-current"><label>현재 일차</label><strong>${d.day}일차</strong></div>
@@ -379,6 +379,19 @@ export function createWorkflow(api) {
       if (event.key === 'Enter' || (event.key === 'Tab' && !event.shiftKey)) { const member = selectedMember(el, p.context !== 'quick'); if (member) { event.preventDefault(); chooseMember(member, true); return; } }
     }
     if (el.closest('#wf-quick-form')) {
+      // The damage field is normally followed by Enter-to-submit, so allow
+      // toggling carry with Space here without requiring mouse/Tab focus.
+      if (el.id === 'quick-damage' && (event.code === 'Space' || event.key === ' ') && !event.altKey && !event.ctrlKey && !event.metaKey) {
+        event.preventDefault();
+        if (!event.repeat) {
+          const carry = $('#quick-carry');
+          if (carry) {
+            carry.checked = !carry.checked;
+            draft().carry = carry.checked;
+          }
+        }
+        return;
+      }
       if (event.key === 'Enter') {
         event.preventDefault();
         if (el.id === 'quick-member') { const member = selectedMember(el); if (member) { draft().memberId = member.id; draft().memberQuery = label(member); el.value = label(member); focusQuick('boss'); } else showPicker(el, 'quick'); }

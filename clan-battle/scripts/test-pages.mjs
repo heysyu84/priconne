@@ -97,6 +97,16 @@ assert.ok(battleWorkflow.includes('<details class="panel quick-panel"'),
 // Mobile battle-log table must not inherit oversized desktop column minima.
 // Leave exact numeric damage and HP content intact; shrink only its layout.
 const battleWorkflow=fs.readFileSync(new URL('../public/workflow.mjs',import.meta.url),'utf8');
+assert.ok(battleWorkflow.includes("el.id === 'quick-damage' && (event.code === 'Space' || event.key === ' ')"),
+  'The Space shortcut should work from the damage input, before Enter submits');
+assert.ok(battleWorkflow.includes("carry.checked = !carry.checked;")&&battleWorkflow.includes("draft().carry = carry.checked;"),
+  'The carry checkbox and saved quick-entry draft must toggle together');
+assert.ok(battleWorkflow.includes("if (!event.repeat)")&&battleWorkflow.includes("event.preventDefault();"),
+  'Holding Space must not repeatedly toggle carry or add spaces to the damage value');
+assert.ok(battleWorkflow.includes("피해량에서 <kbd>Space</kbd> 이월 전환"),
+  'The shortcut hint must describe where to press Space');
+assert.ok(battleWorkflow.includes("else submitQuick();"),
+  'Enter should still submit when editing the damage field');
 assert.match(battleWorkflow,/const mobileWidths=\[/,'Mobile battle log must have independent column widths');
 assert.match(battleWorkflow,/--mobile-col-width:/,'Mobile columns must be individually sized');
 assert.match(battleWorkflow,/--mobile-battle-width:/,'Mobile table width must be based on its actual columns');
