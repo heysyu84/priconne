@@ -228,3 +228,17 @@ html[data-text-scale]:not([data-text-scale="100"]) .combo-mini-header{flex-wrap:
   .combo-mini-facts{gap:3px}
   .combo-mini-chip.is-tp{flex-basis:60px;width:60px;min-width:60px}
 }
+
+/* Match the original detailed portrait's subtle white frame. */
+.combo-compact-row .combo-mini-art{
+  box-sizing:border-box;
+  border:2px solid #fff;
+  border-radius:10px;
+  box-shadow:0 0 0 1px #e7dcef;
+  background:#fff;
+  overflow:hidden;
+}
+.combo-compact-row .combo-mini-art img.combo-mini-avatar{
+  border-radius:7px;
+  box-shadow:none;
+}
