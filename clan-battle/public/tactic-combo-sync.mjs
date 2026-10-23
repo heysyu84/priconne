@@ -3,7 +3,6 @@
 const normal=s=>String(s??'').normalize('NFKC').replace(/\s+/g,'').toLocaleLowerCase('ko-KR');
 const typeOf=t=>/타비/.test(String(t.group||t.source||''))?'타비':'택틱';
 const sameNumber=(a,b)=>Number(a)===Number(b)&&Number.isFinite(Number(a));
-const hasDamage=value=>Number.isFinite(Number(String(value??'').replace(/억\s*$/,'')))&&Number(String(value??'').replace(/억\s*$/,''))>0;
 const tpOf=note=>String(note||'').match(/(?:^|[\s,])TP\s*[:：]?\s*(\d+(?:\.\d+)?\+?)/i)?.[1]||'';
 const extraNote=note=>String(note||'').replace(/(?:^|[\s,])TP\s*[:：]?\s*\d+(?:\.\d+)?\+?/ig,'').replace(/^[\s,·]+|[\s,·]+$/g,'');
 export function tacticReady(t){
@@ -11,7 +10,7 @@ export function tacticReady(t){
   Array.isArray(t.characters)&&t.characters.length===5&&t.characters.every(x=>String(x||'').trim())&&
   new Set(t.characters.map(normal)).size===5&&Array.isArray(t.stars)&&t.stars.length===5&&
   t.stars.every(x=>/^[1-6]$/.test(String(x)))&&
-  Array.isArray(t.rows)&&t.rows.some(row=>String(row.text||'').trim())&&hasDamage(t.expectedDamage));
+  Array.isArray(t.rows)&&t.rows.some(row=>String(row.text||'').trim()));
 }
 const identity=t=>[Number(t.boss),...(Array.isArray(t.characters)?t.characters:[]).map(normal),...(Array.isArray(t.stars)?t.stars:[]).map(String)].join('|');
 const sameSource=(combo,tactic)=>{
@@ -77,4 +76,20 @@ export function suppressTacticRecommendation(month,record){
  if(!month.hiddenTacticRecommendationIds.includes(key))
   month.hiddenTacticRecommendationIds.push(key);
  return true;
+}
+
+// Recommended stage-4 listings are a view of the real tactic workspace, not
+// an accumulation of legacy sheet imports and generated recommendation copies.
+// Keep old unmatched records in storage for recovery; never expose them as extra tactics.
+export function visibleTacticRecommendations(month){
+ const active=new Set((month?.tactics||[]).filter(tacticReady)
+  .filter(t=>!(month.hiddenTacticRecommendationIds||[]).includes(String(t.id)))
+  .map(t=>String(t.id)));
+ const seen=new Set();
+ return (month?.recommendations||[]).filter(row=>{
+  if(Number(row.stage)!==4)return true;
+  const id=String(row.sourceTacticId||'');
+  if(!id||!active.has(id)||seen.has(id))return false;
+  seen.add(id);return true;
+ });
 }
