@@ -1,6 +1,6 @@
-import {convertForeignTactic,foreignSuggestions} from './tactic-converter.mjs?v=20261023-auto-default01';
+import {convertForeignTactic,foreignSuggestions} from './tactic-converter.mjs?v=20261023-boss-slots02';
 import {colorRuns} from './tactics-model.mjs?v=20261023-check-sync01';
-import {serializeTacticTransfer,validTacticLineup} from './tactic-transfer.mjs?v=20261023-autolineup04';
+import {serializeTacticTransfer,validTacticLineup} from './tactic-transfer.mjs?v=20261023-slots01';
 
 const $=id=>document.getElementById(id);
 const normalize=s=>String(s??'').normalize('NFKC').replace(/\s+/g,'').toLocaleLowerCase('ko-KR');
@@ -52,6 +52,9 @@ function learnAliases(){
   try{localStorage.setItem(STORE_KEY,JSON.stringify(learned));}catch{}
 }
 const koreanNames=()=>Array.from({length:5},(_,i)=>canonical($('to-'+i).value));
+const unnamedLineup=()=>Array.from({length:5},(_,i)=>!$('to-'+i).value.trim()).every(Boolean);
+const transferNames=()=>unnamedLineup()?
+  Array.from({length:5},(_,i)=>'캐릭터 '+(i+1)):koreanNames();
 const lineupReady=()=>validTacticLineup(koreanNames())
   && (!catalog.length||koreanNames().every(n=>catalog.some(c=>normalize(c.name)===normalize(n))));
 function setConfirmation(value){
@@ -101,7 +104,7 @@ function detectNames(){
 }
 function paint(text){
  const holder=document.createElement('span');
- for(const run of colorRuns(text,koreanNames(),catalog)){
+ for(const run of colorRuns(text,transferNames(),catalog)){
    const span=document.createElement('span');span.textContent=run.text;
    if(run.color){span.style.color=run.color;span.style.fontWeight='700';}
    holder.append(span);
@@ -109,7 +112,7 @@ function paint(text){
  return holder;
 }
 function render(){
- current=convertForeignTactic($('raw').value,koreanNames(),sourceNames());
+ current=convertForeignTactic($('raw').value,transferNames(),sourceNames());
  convertedRaw=$('raw').value;
  const preview=$('preview');preview.replaceChildren();
  if(!current.rows.length)preview.textContent='변환된 내용이 없습니다.';
@@ -127,23 +130,26 @@ function render(){
    if(item.text.includes('[원문 확인:'))row.classList.add('needs-review');
    row.append(state,body);preview.append(row);
  }
+ const anonymous=unnamedLineup();
  const problems=[];
- if(!lineupReady())problems.push('캐릭터 5명 모두 사이트 DB에 있는 이름으로 지정해야 합니다.');
- if(!confirmed)problems.push('당고 슬롯 순서를 확인한 뒤 체크해 주세요.');
+ if(!anonymous&&!lineupReady())problems.push('실명 편성 모드: 캐릭터 5명 모두 사이트 DB에 있는 이름으로 지정해야 합니다.');
+ if(!anonymous&&!confirmed)problems.push('실명 편성 모드: 덱 순서를 확인한 뒤 체크해 주세요.');
  problems.push(...current.warnings);
  $('messages').textContent=problems.length?'확인 필요 ('+problems.length+'건)\n'+problems.join('\n'):
    '변환 완료 · '+current.rows.length+'행 · '+(current.format==='dango'?'당고':'일반 SET')+' 형식';
- // Plain text does not need a confirmed five-character lineup.
  const hasRows=current.rows.length>0;
- const fullCopyReady=hasRows&&lineupReady()&&confirmed;
+ // Anonymous transfer uses the receiving tactic's existing five slots.
+ const fullCopyReady=hasRows&&(anonymous||(lineupReady()&&confirmed));
  $('copy-with-set').disabled=!fullCopyReady;
  $('copy-text').disabled=!hasRows;
- $('copy-with-set').title=fullCopyReady?'캐릭터·SET 상태와 본문 전체 복사':
+ $('copy-with-set').title=fullCopyReady?'SET 상태와 본문을 함께 복사':
    !hasRows?'먼저 원문을 변환해 주세요.':
-   !lineupReady()?'캐릭터 5명의 정식 이름을 먼저 지정해 주세요.':'덱 순서 확인란을 체크해 주세요.';
+   !lineupReady()?'5명의 이름을 모두 입력하거나 전부 비워 번호 모드로 사용하세요.':'덱 순서 확인란을 체크해 주세요.';
  $('copy-text').title=hasRows?'변환된 한국어 본문만 복사':'먼저 원문을 변환해 주세요.';
- $('copy-help').textContent=fullCopyReady?'편성·SET 포함 복사와 본문만 복사 모두 사용할 수 있습니다.':
-   hasRows?'본문만 복사는 지금 사용할 수 있습니다. 편성·SET 포함 복사는 캐릭터 5명과 덱 순서 확인을 완료해야 활성화됩니다.':
+ $('copy-help').textContent=anonymous?
+   '이름 생략 모드: 캐릭터 1~5번과 SET 상태를 복사합니다. 택틱 작업실에 미리 편성된 캐릭터 이름으로 붙여넣을 때 자동 치환됩니다.':
+   fullCopyReady?'실명 편성 모드: 캐릭터 5명·SET 상태·본문을 함께 복사할 수 있습니다.':
+   hasRows?'본문만 복사는 가능하며, SET 포함 복사는 5명 입력과 순서 확인을 마치거나 이름 5칸을 모두 비우면 됩니다.':
    '변환 결과가 나오면 본문만 복사할 수 있습니다.';
  $('manual-copy').hidden=true;
 }
@@ -201,11 +207,11 @@ $('clear').addEventListener('click',()=>{
 $('copy-with-set').addEventListener('click',()=>{
  if(convertedRaw!==$('raw').value){$('messages').textContent='원문이 변경되었습니다. 다시 변환한 뒤 복사하세요.';return;}
  if(!current?.rows.length){$('messages').textContent='먼저 원문을 변환해 주세요.';return;}
- if(!lineupReady()||!confirmed){
-   $('messages').textContent='편성·SET 포함 복사는 5명 정식 이름과 덱 순서 확인이 필요합니다. 본문만 복사는 바로 가능합니다.';
+ if(!unnamedLineup()&&(!lineupReady()||!confirmed)){
+   $('messages').textContent='캐릭터 이름을 5명 모두 지정하고 순서를 확인하거나, 이름 칸 5개를 모두 비우면 번호 모드로 복사할 수 있습니다.';
    return;
  }
- try{copy(serializeTacticTransfer(koreanNames(),current.pasteText));}
+ try{copy(serializeTacticTransfer(transferNames(),current.pasteText));}
  catch(error){$('messages').textContent=error.message;}
 });
 $('copy-text').addEventListener('click',()=>{
