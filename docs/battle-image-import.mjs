@@ -189,7 +189,9 @@ export function createBattleImageImport(api){
    }
   }
   const maxSeq=Math.max(0,...copy.events.map(e=>Number(e.seq)||0));
-  if(day>lastDay||(maxSeq===0&&day!==1)){
+  const existingBoundary=copy.dayBreaks.find(b=>Number(b.afterSeq)===maxSeq);
+  if(existingBoundary&&Number(existingBoundary.nextDay)!==day){notify('이미 설정된 일차 변경 기준과 다릅니다. 일차를 확인하세요.');return;}
+  if(!existingBoundary&&(day>lastDay||(maxSeq===0&&day!==1))){
    copy.dayBreaks.push({afterSeq:maxSeq,nextDay:day});
   }
   const people=new Map(getApp().roster.map(p=>[p.id,p]));
