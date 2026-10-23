@@ -1203,5 +1203,3241 @@
         }
       ]
     }
+  ],
+  "carryTactics": [
+    {
+      "month": "2026-10",
+      "id": "carry-2026-10-1-3",
+      "boss": 1,
+      "source": "이월 택틱",
+      "group": "이월 택틱",
+      "characters": [
+        "사루카",
+        "수페코",
+        "수미미",
+        "수리코",
+        "수사렌"
+      ],
+      "stars": [
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "manualCount": "",
+      "tp": "2+",
+      "expectedDamage": "6,010만~6,020만",
+      "expectedDamageSort": 0.602,
+      "note": "필요 이월시간: 26초 · 뉴페코 미보유 가능 · 사용 TP차지: 수사렌 전2 풀강 기준 최소 2.0 이상",
+      "video": "https://www.youtube.com/watch?v=nmdYavPuE-M",
+      "tacticUrl": "",
+      "rows": [
+        {
+          "id": "carry-2026-10-1-3-start",
+          "text": "AUTO OFF, 사루카, 수미미, 수리코, 수사렌 SET",
+          "checked": [
+            true,
+            false,
+            true,
+            true,
+            true,
+            false
+          ],
+          "manualChecks": true,
+          "sourceText": "Set [OOOXO] (AUTO:❌)"
+        },
+        {
+          "id": "carry-2026-10-1-3-r1",
+          "text": "1:14 수페코 디저트 버프 후딜캔 〔↑수페코 버프 후딜캔〕",
+          "checked": [
+            true,
+            false,
+            true,
+            true,
+            true,
+            false
+          ],
+          "manualChecks": true,
+          "sourceRow": 48,
+          "sourceText": "수페코 디저트 버프 후딜캔",
+          "sourceSnapshot": ""
+        },
+        {
+          "id": "carry-2026-10-1-3-r2",
+          "text": "1:08 수페코 디저트 버프 후딜캔 · 수페코 ON · 중간딜 3080만",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            false
+          ],
+          "manualChecks": true,
+          "sourceRow": 49,
+          "sourceText": "수페코 디저트 버프 후딜캔",
+          "sourceSnapshot": "[OOOOO]"
+        },
+        {
+          "id": "carry-2026-10-1-3-r3",
+          "text": "1:05 수페코 → 사루카 · 중간딜 6020만",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            false
+          ],
+          "manualChecks": true,
+          "sourceRow": 50,
+          "sourceText": "수페코 → 사루카",
+          "sourceSnapshot": ""
+        },
+        {
+          "id": "carry-2026-10-1-3-r4",
+          "text": "1:04 ■보스유버",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            false
+          ],
+          "manualChecks": true,
+          "sourceRow": 51,
+          "sourceText": "■보스유버",
+          "sourceSnapshot": ""
+        }
+      ],
+      "type": "이월 택틱",
+      "sourceSheet": "1넴",
+      "sourceHeaderCell": "B40",
+      "editorVersion": 1,
+      "rowFormatsVersion": 1,
+      "title": "1넴 사루카 수페코 수미미 수리코 수사렌 성급 ?????, 손컨 —, TP 2+, 기대딜 6,010만~6,020만"
+    },
+    {
+      "month": "2026-10",
+      "id": "carry-2026-10-1-1",
+      "boss": 1,
+      "source": "이월 택틱",
+      "group": "이월 택틱",
+      "characters": [
+        "수즈루",
+        "수페코",
+        "수리코",
+        "수나카",
+        "수사렌"
+      ],
+      "stars": [
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "manualCount": "",
+      "tp": "2+",
+      "expectedDamage": "3,850만~3,880만",
+      "expectedDamageSort": 0.388,
+      "note": "필요 이월시간: 21초 · 뉴페코 미보유 가능 · 사용 TP차지: 수사렌 전2 풀강 기준 최소 2.0 이상",
+      "video": "https://www.youtube.com/watch?v=QykNdcsvdz0",
+      "tacticUrl": "",
+      "rows": [
+        {
+          "id": "carry-2026-10-1-1-start",
+          "text": "AUTO OFF, 수나카, 수사렌 SET",
+          "checked": [
+            false,
+            false,
+            false,
+            true,
+            true,
+            false
+          ],
+          "manualChecks": true,
+          "sourceText": "Set [OOXXX] (AUTO:❌)"
+        },
+        {
+          "id": "carry-2026-10-1-1-r1",
+          "text": "1:21 수사렌 · 수리코 ON",
+          "checked": [
+            false,
+            false,
+            true,
+            true,
+            true,
+            false
+          ],
+          "manualChecks": true,
+          "sourceRow": 14,
+          "sourceText": "수사렌",
+          "sourceSnapshot": "[OOOXX]"
+        },
+        {
+          "id": "carry-2026-10-1-1-r2",
+          "text": "1:12 수즈루 블루웨빙 후딜캔 · 수페코, 수즈루 ON",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            false
+          ],
+          "manualChecks": true,
+          "sourceRow": 15,
+          "sourceText": "수즈루 블루웨빙 후딜캔",
+          "sourceSnapshot": "[OOOOO]"
+        },
+        {
+          "id": "carry-2026-10-1-1-r3",
+          "text": "1:11~1:10 수페코 + 평타 〔↑1:12 후딜캔. 전체 버프 올라올 때〕 · 중간딜 3870만",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            false
+          ],
+          "manualChecks": true,
+          "sourceRow": 16,
+          "sourceText": "수페코 + 평타",
+          "sourceSnapshot": ""
+        }
+      ],
+      "type": "이월 택틱",
+      "sourceSheet": "1넴",
+      "sourceHeaderCell": "B6",
+      "editorVersion": 1,
+      "rowFormatsVersion": 1,
+      "title": "1넴 수즈루 수페코 수리코 수나카 수사렌 성급 ?????, 손컨 —, TP 2+, 기대딜 3,850만~3,880만"
+    },
+    {
+      "month": "2026-10",
+      "id": "carry-2026-10-1-2",
+      "boss": 1,
+      "source": "이월 택틱",
+      "group": "이월 택틱",
+      "characters": [
+        "성리야",
+        "수나카",
+        "수니논",
+        "수츠네",
+        "수사렌"
+      ],
+      "stars": [
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "manualCount": "",
+      "tp": "2+",
+      "expectedDamage": "2,910만~2,950만",
+      "expectedDamageSort": 0.295,
+      "note": "필요 이월시간: 21초 · 사용 TP차지: 수사렌 전2 풀강 기준 최소 2.5 이상",
+      "video": "https://www.youtube.com/watch?v=lLHaw-SNfrc",
+      "tacticUrl": "",
+      "rows": [
+        {
+          "id": "carry-2026-10-1-2-start",
+          "text": "AUTO OFF, 성리야, 수나카, 수니논, 수사렌 SET",
+          "checked": [
+            true,
+            true,
+            true,
+            false,
+            true,
+            false
+          ],
+          "manualChecks": true,
+          "sourceText": "Set [OXOOO] (AUTO:❌)"
+        },
+        {
+          "id": "carry-2026-10-1-2-r1",
+          "text": "1:13 수사렌 · 수츠네 ON",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            false
+          ],
+          "manualChecks": true,
+          "sourceRow": 31,
+          "sourceText": "수사렌",
+          "sourceSnapshot": "[OOOOO]"
+        },
+        {
+          "id": "carry-2026-10-1-2-r2",
+          "text": "1:11 성리야 · 중간딜 2930만",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            false
+          ],
+          "manualChecks": true,
+          "sourceRow": 32,
+          "sourceText": "성리야",
+          "sourceSnapshot": ""
+        },
+        {
+          "id": "carry-2026-10-1-2-r3",
+          "text": "1:08 ■보스유버수츠네",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            false
+          ],
+          "manualChecks": true,
+          "sourceRow": 33,
+          "sourceText": "■보스유버수츠네",
+          "sourceSnapshot": ""
+        }
+      ],
+      "type": "이월 택틱",
+      "sourceSheet": "1넴",
+      "sourceHeaderCell": "B23",
+      "editorVersion": 1,
+      "rowFormatsVersion": 1,
+      "title": "1넴 성리야 수나카 수니논 수츠네 수사렌 성급 ?????, 손컨 —, TP 2+, 기대딜 2,910만~2,950만"
+    },
+    {
+      "month": "2026-10",
+      "id": "carry-2026-10-2-6",
+      "boss": 2,
+      "source": "이월 택틱",
+      "group": "이월 택틱",
+      "characters": [
+        "수셰피",
+        "페리컬",
+        "게무기",
+        "파오이",
+        "수네모네"
+      ],
+      "stars": [
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "manualCount": "",
+      "tp": "1.0",
+      "expectedDamage": "1억 5,740만~1억 6,000만",
+      "expectedDamageSort": 1.6,
+      "note": "필요 이월시간: 60초 · 사용 TP차지: 1.0도가능",
+      "video": "https://www.youtube.com/watch?v=DyVgw1mSxe8",
+      "tacticUrl": "",
+      "rows": [
+        {
+          "id": "carry-2026-10-2-6-start",
+          "text": "AUTO OFF, 수셰피, 게무기, 파오이 SET",
+          "checked": [
+            true,
+            false,
+            true,
+            true,
+            false,
+            false
+          ],
+          "manualChecks": true,
+          "sourceText": "Set [XOOXO] (AUTO:❌)"
+        },
+        {
+          "id": "carry-2026-10-2-6-r1",
+          "text": "1:21 파오이 · 페리컬 ON",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            false,
+            false
+          ],
+          "manualChecks": true,
+          "sourceRow": 117,
+          "sourceText": "파오이",
+          "sourceSnapshot": "[XOOOO]"
+        },
+        {
+          "id": "carry-2026-10-2-6-r2",
+          "text": "1:19 게무기",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            false,
+            false
+          ],
+          "manualChecks": true,
+          "sourceRow": 118,
+          "sourceText": "게무기",
+          "sourceSnapshot": ""
+        },
+        {
+          "id": "carry-2026-10-2-6-r3",
+          "text": "1:18 수네모네 평타 캔슬 〔←후딜캔 되니까 그냥 최대한 빠르게〕",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            false,
+            false
+          ],
+          "manualChecks": true,
+          "sourceRow": 119,
+          "sourceText": "수네모네 평타 캔슬",
+          "sourceSnapshot": ""
+        },
+        {
+          "id": "carry-2026-10-2-6-r4",
+          "text": "1:14 페리컬 · 수네모네 ON · 게무기, 페리컬 OFF",
+          "checked": [
+            true,
+            false,
+            false,
+            true,
+            true,
+            false
+          ],
+          "manualChecks": true,
+          "sourceRow": 120,
+          "sourceText": "페리컬",
+          "sourceSnapshot": "[OOXXO]"
+        },
+        {
+          "id": "carry-2026-10-2-6-r5",
+          "text": "1:09 수네모네 · 게무기 ON · 중간딜 2750만",
+          "checked": [
+            true,
+            false,
+            true,
+            true,
+            true,
+            false
+          ],
+          "manualChecks": true,
+          "sourceRow": 121,
+          "sourceText": "수네모네",
+          "sourceSnapshot": "[OOOXO]"
+        },
+        {
+          "id": "carry-2026-10-2-6-r6",
+          "text": "1:09 게무기 · 페리컬 ON",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            false
+          ],
+          "manualChecks": true,
+          "sourceRow": 122,
+          "sourceText": "게무기",
+          "sourceSnapshot": "[OOOOO]"
+        },
+        {
+          "id": "carry-2026-10-2-6-r7",
+          "text": "1:00 게무기 · AUTO ON · 게무기, 페리컬 OFF · 중간딜 6760만",
+          "checked": [
+            true,
+            false,
+            false,
+            true,
+            true,
+            true
+          ],
+          "manualChecks": true,
+          "sourceRow": 123,
+          "sourceText": "게무기",
+          "sourceSnapshot": "[OOXXO] ⭕"
+        },
+        {
+          "id": "carry-2026-10-2-6-r8",
+          "text": "0:48 게무기 후르츠 후딜캔 · 게무기 ON · AUTO OFF · 중간딜 1억 370",
+          "checked": [
+            true,
+            false,
+            true,
+            true,
+            true,
+            false
+          ],
+          "manualChecks": true,
+          "sourceRow": 124,
+          "sourceText": "게무기 후르츠 후딜캔",
+          "sourceSnapshot": "[OOOXO] ❌"
+        },
+        {
+          "id": "carry-2026-10-2-6-r9",
+          "text": "0:44 수셰피 · AUTO ON · 파오이 OFF · 중간딜 1억 1220",
+          "checked": [
+            true,
+            false,
+            true,
+            false,
+            true,
+            true
+          ],
+          "manualChecks": true,
+          "sourceRow": 125,
+          "sourceText": "수셰피",
+          "sourceSnapshot": "[OXOXO] ⭕"
+        },
+        {
+          "id": "carry-2026-10-2-6-r10",
+          "text": "0:36 파오이 오토 · 페리컬 ON · 중간딜 1억 2890",
+          "checked": [
+            true,
+            true,
+            true,
+            false,
+            true,
+            true
+          ],
+          "manualChecks": true,
+          "sourceRow": 126,
+          "sourceText": "파오이 오토",
+          "sourceSnapshot": "[OXOOO]"
+        },
+        {
+          "id": "carry-2026-10-2-6-r11",
+          "text": "0:31 게무기 → 페리컬 · 중간딜 1억 5900",
+          "checked": [
+            true,
+            true,
+            true,
+            false,
+            true,
+            true
+          ],
+          "manualChecks": true,
+          "sourceRow": 127,
+          "sourceText": "게무기 → 페리컬",
+          "sourceSnapshot": ""
+        }
+      ],
+      "type": "이월 택틱",
+      "sourceSheet": "2넴",
+      "sourceHeaderCell": "B109",
+      "editorVersion": 1,
+      "rowFormatsVersion": 1,
+      "title": "2넴 수셰피 페리컬 게무기 파오이 수네모네 성급 ?????, 손컨 —, TP 1.0, 기대딜 1억 5,740만~1억 6,000만"
+    },
+    {
+      "month": "2026-10",
+      "id": "carry-2026-10-2-5",
+      "boss": 2,
+      "source": "이월 택틱",
+      "group": "이월 택틱",
+      "characters": [
+        "쿠루루",
+        "수네모네",
+        "드마호",
+        "뉴사렌",
+        "성이오"
+      ],
+      "stars": [
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "manualCount": "",
+      "tp": "1.0",
+      "expectedDamage": "9,380만~9,740만",
+      "expectedDamageSort": 0.974,
+      "note": "필요 이월시간: 37초 · 사용 TP차지: 1.0도가능",
+      "video": "https://www.youtube.com/watch?v=Vw-lF4uJaZg",
+      "tacticUrl": "",
+      "rows": [
+        {
+          "id": "carry-2026-10-2-5-start",
+          "text": "AUTO ON, 드마호, 뉴사렌 SET",
+          "checked": [
+            false,
+            false,
+            true,
+            true,
+            false,
+            true
+          ],
+          "manualChecks": true,
+          "sourceText": "Set [XOOXX] (AUTO:⭕)"
+        },
+        {
+          "id": "carry-2026-10-2-5-r1",
+          "text": "1:22 드마호 · 수네모네, 쿠루루 ON",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            false,
+            true
+          ],
+          "manualChecks": true,
+          "sourceRow": 95,
+          "sourceText": "드마호",
+          "sourceSnapshot": "[XOOOO]"
+        },
+        {
+          "id": "carry-2026-10-2-5-r2",
+          "text": "1:16 뉴사렌 · 성이오 ON · 뉴사렌, 수네모네, 쿠루루 OFF · AUTO OFF",
+          "checked": [
+            false,
+            false,
+            true,
+            false,
+            true,
+            false
+          ],
+          "manualChecks": true,
+          "sourceRow": 96,
+          "sourceText": "뉴사렌",
+          "sourceSnapshot": "[OXOXX] ❌"
+        },
+        {
+          "id": "carry-2026-10-2-5-r3",
+          "text": "1:11 성이오 · 수네모네 ON",
+          "checked": [
+            false,
+            true,
+            true,
+            false,
+            true,
+            false
+          ],
+          "manualChecks": true,
+          "sourceRow": 97,
+          "sourceText": "성이오",
+          "sourceSnapshot": "[OXOOX]"
+        },
+        {
+          "id": "carry-2026-10-2-5-r4",
+          "text": "1:11 수네모네 · 쿠루루 ON",
+          "checked": [
+            true,
+            true,
+            true,
+            false,
+            true,
+            false
+          ],
+          "manualChecks": true,
+          "sourceRow": 98,
+          "sourceText": "수네모네",
+          "sourceSnapshot": "[OXOOO]"
+        },
+        {
+          "id": "carry-2026-10-2-5-r5",
+          "text": "1:08 뉴사렌 평타 후딜캔 · 수네모네, 쿠루루 OFF · 중간딜 3280만",
+          "checked": [
+            false,
+            false,
+            true,
+            false,
+            true,
+            false
+          ],
+          "manualChecks": true,
+          "sourceRow": 99,
+          "sourceText": "뉴사렌 평타 후딜캔",
+          "sourceSnapshot": "[OXOXX]"
+        },
+        {
+          "id": "carry-2026-10-2-5-r6",
+          "text": "1:02 성이오 · 수네모네 ON · 중간딜 6010만",
+          "checked": [
+            false,
+            true,
+            true,
+            false,
+            true,
+            false
+          ],
+          "manualChecks": true,
+          "sourceRow": 100,
+          "sourceText": "성이오",
+          "sourceSnapshot": "[OXOOX]"
+        },
+        {
+          "id": "carry-2026-10-2-5-r7",
+          "text": "1:02 수네모네 → 쿠루루 → 뉴사렌 · 뉴사렌, 쿠루루 ON",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            false
+          ],
+          "manualChecks": true,
+          "sourceRow": 101,
+          "sourceText": "수네모네 → 쿠루루 → 뉴사렌",
+          "sourceSnapshot": "[OOOOO]"
+        },
+        {
+          "id": "carry-2026-10-2-5-r8",
+          "text": "0:54 뉴사렌 · 중간딜 9590만",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            false
+          ],
+          "manualChecks": true,
+          "sourceRow": 102,
+          "sourceText": "뉴사렌",
+          "sourceSnapshot": ""
+        }
+      ],
+      "type": "이월 택틱",
+      "sourceSheet": "2넴",
+      "sourceHeaderCell": "B87",
+      "editorVersion": 1,
+      "rowFormatsVersion": 1,
+      "title": "2넴 쿠루루 수네모네 드마호 뉴사렌 성이오 성급 ?????, 손컨 —, TP 1.0, 기대딜 9,380만~9,740만"
+    },
+    {
+      "month": "2026-10",
+      "id": "carry-2026-10-2-4",
+      "boss": 2,
+      "source": "이월 택틱",
+      "group": "이월 택틱",
+      "characters": [
+        "엔요리",
+        "수네모네",
+        "드마호",
+        "뉴사렌",
+        "성이오"
+      ],
+      "stars": [
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "manualCount": "",
+      "tp": "1.0",
+      "expectedDamage": "8,290만~8,790만",
+      "expectedDamageSort": 0.879,
+      "note": "필요 이월시간: 36초 · 사용 TP차지: 1.0도가능",
+      "video": "https://www.youtube.com/watch?v=WTC2UcjqWn8",
+      "tacticUrl": "",
+      "rows": [
+        {
+          "id": "carry-2026-10-2-4-start",
+          "text": "AUTO OFF, 드마호, 뉴사렌 SET",
+          "checked": [
+            false,
+            false,
+            true,
+            true,
+            false,
+            false
+          ],
+          "manualChecks": true,
+          "sourceText": "Set [XOOXX] (AUTO:❌)"
+        },
+        {
+          "id": "carry-2026-10-2-4-r1",
+          "text": "1:22 드마호 · 수네모네, 엔요리 ON · AUTO ON",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            false,
+            true
+          ],
+          "manualChecks": true,
+          "sourceRow": 75,
+          "sourceText": "드마호",
+          "sourceSnapshot": "[XOOOO] ⭕"
+        },
+        {
+          "id": "carry-2026-10-2-4-r2",
+          "text": "1:21 성이오 오토 · 성이오 ON",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "manualChecks": true,
+          "sourceRow": 76,
+          "sourceText": "성이오 오토",
+          "sourceSnapshot": "[OOOOO]"
+        },
+        {
+          "id": "carry-2026-10-2-4-r3",
+          "text": "1:10 뉴사렌 · 중간딜 2650만",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "manualChecks": true,
+          "sourceRow": 77,
+          "sourceText": "뉴사렌",
+          "sourceSnapshot": ""
+        },
+        {
+          "id": "carry-2026-10-2-4-r4",
+          "text": "1:03 뉴사렌 · 중간딜 5020만",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "manualChecks": true,
+          "sourceRow": 78,
+          "sourceText": "뉴사렌",
+          "sourceSnapshot": ""
+        },
+        {
+          "id": "carry-2026-10-2-4-r5",
+          "text": "0:58 뉴사렌 · 중간딜 7480만",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "manualChecks": true,
+          "sourceRow": 79,
+          "sourceText": "뉴사렌",
+          "sourceSnapshot": ""
+        },
+        {
+          "id": "carry-2026-10-2-4-r6",
+          "text": "0:55 드마호 볼(스턴 중) · 중간딜 8610만",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "manualChecks": true,
+          "sourceRow": 80,
+          "sourceText": "드마호 볼(스턴 중)",
+          "sourceSnapshot": ""
+        }
+      ],
+      "type": "이월 택틱",
+      "sourceSheet": "2넴",
+      "sourceHeaderCell": "B67",
+      "editorVersion": 1,
+      "rowFormatsVersion": 1,
+      "title": "2넴 엔요리 수네모네 드마호 뉴사렌 성이오 성급 ?????, 손컨 —, TP 1.0, 기대딜 8,290만~8,790만"
+    },
+    {
+      "month": "2026-10",
+      "id": "carry-2026-10-2-3",
+      "boss": 2,
+      "source": "이월 택틱",
+      "group": "이월 택틱",
+      "characters": [
+        "수셰피",
+        "리조미",
+        "페리컬",
+        "게무기",
+        "파오이"
+      ],
+      "stars": [
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "manualCount": "",
+      "tp": "2.5+",
+      "expectedDamage": "6,880만~7,070만",
+      "expectedDamageSort": 0.707,
+      "note": "필요 이월시간: 35초 · 사용 TP차지: 2.5 이상 (리조미 이슈)",
+      "video": "https://www.youtube.com/watch?v=Fvm_kk89u68",
+      "tacticUrl": "",
+      "rows": [
+        {
+          "id": "carry-2026-10-2-3-start",
+          "text": "AUTO OFF, 수셰피, 리조미, 파오이 SET",
+          "checked": [
+            true,
+            true,
+            false,
+            false,
+            true,
+            false
+          ],
+          "manualChecks": true,
+          "sourceText": "Set [OXXOO] (AUTO:❌)"
+        },
+        {
+          "id": "carry-2026-10-2-3-r1",
+          "text": "1:21 파오이 · 페리컬 ON",
+          "checked": [
+            true,
+            true,
+            true,
+            false,
+            true,
+            false
+          ],
+          "manualChecks": true,
+          "sourceRow": 54,
+          "sourceText": "파오이",
+          "sourceSnapshot": "[OXOOO]"
+        },
+        {
+          "id": "carry-2026-10-2-3-r2",
+          "text": "1:19 수셰피 · 게무기 ON · 페리컬 OFF",
+          "checked": [
+            true,
+            true,
+            false,
+            true,
+            true,
+            false
+          ],
+          "manualChecks": true,
+          "sourceRow": 55,
+          "sourceText": "수셰피",
+          "sourceSnapshot": "[OOXOO]"
+        },
+        {
+          "id": "carry-2026-10-2-3-r3",
+          "text": "1:10 파오이 · 페리컬 ON · AUTO ON · 파오이 OFF",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            false,
+            true
+          ],
+          "manualChecks": true,
+          "sourceRow": 56,
+          "sourceText": "파오이",
+          "sourceSnapshot": "[XOOOO] ⭕"
+        },
+        {
+          "id": "carry-2026-10-2-3-r4",
+          "text": "1:08 페리컬 · 중간딜 2310만",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            false,
+            true
+          ],
+          "manualChecks": true,
+          "sourceRow": 57,
+          "sourceText": "페리컬",
+          "sourceSnapshot": ""
+        },
+        {
+          "id": "carry-2026-10-2-3-r5",
+          "text": "1:04 파오이 오토 · 중간딜 3960만",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            false,
+            true
+          ],
+          "manualChecks": true,
+          "sourceRow": 58,
+          "sourceText": "파오이 오토",
+          "sourceSnapshot": ""
+        },
+        {
+          "id": "carry-2026-10-2-3-r6",
+          "text": "1:01 페리컬 · 중간딜 5160만",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            false,
+            true
+          ],
+          "manualChecks": true,
+          "sourceRow": 59,
+          "sourceText": "페리컬",
+          "sourceSnapshot": ""
+        },
+        {
+          "id": "carry-2026-10-2-3-r7",
+          "text": "0:56 게무기 → 페리컬 · 중간딜 6980만",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            false,
+            true
+          ],
+          "manualChecks": true,
+          "sourceRow": 60,
+          "sourceText": "게무기 → 페리컬",
+          "sourceSnapshot": ""
+        }
+      ],
+      "type": "이월 택틱",
+      "sourceSheet": "2넴",
+      "sourceHeaderCell": "B46",
+      "editorVersion": 1,
+      "rowFormatsVersion": 1,
+      "title": "2넴 수셰피 리조미 페리컬 게무기 파오이 성급 ?????, 손컨 —, TP 2.5+, 기대딜 6,880만~7,070만"
+    },
+    {
+      "month": "2026-10",
+      "id": "carry-2026-10-2-1",
+      "boss": 2,
+      "source": "이월 택틱",
+      "group": "이월 택틱",
+      "characters": [
+        "바이올렛",
+        "워지타",
+        "호마레",
+        "프캬루",
+        "루나"
+      ],
+      "stars": [
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "manualCount": "",
+      "tp": "",
+      "expectedDamage": "3,413만~3,417만",
+      "expectedDamageSort": 0.3417,
+      "note": "필요 이월시간: 21초 · 사전 준비: 루나 EX템 모두 해제 · 1:11에 2발 안 오면 프나강 차이 (-600) · 6페 5합 (0/0/2{1})에 속성 900 마피 90쯤 하니까 0.5차이로 성공 · 완전 전부 풀강이면 조건 맞춰도 캬루 죽으니까 4성으로 내려서 하기 · 사용 TP차지:",
+      "video": "https://www.youtube.com/watch?v=0PujANJsin0",
+      "tacticUrl": "",
+      "rows": [
+        {
+          "id": "carry-2026-10-2-1-start",
+          "text": "AUTO OFF, 바이올렛, 워지타, 호마레, 프캬루 SET",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            false,
+            false
+          ],
+          "manualChecks": true,
+          "sourceText": "Set [XOOOO] (AUTO:❌)"
+        },
+        {
+          "id": "carry-2026-10-2-1-r1",
+          "text": "1:12 프캬루",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            false,
+            false
+          ],
+          "manualChecks": true,
+          "sourceRow": 14,
+          "sourceText": "프캬루",
+          "sourceSnapshot": ""
+        },
+        {
+          "id": "carry-2026-10-2-1-r2",
+          "text": "1:11 프캬루 2발째 · 루나 ON",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            false
+          ],
+          "manualChecks": true,
+          "sourceRow": 15,
+          "sourceText": "프캬루 2발째",
+          "sourceSnapshot": "[OOOOO]"
+        },
+        {
+          "id": "carry-2026-10-2-1-r3",
+          "text": "1:11 루나",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            false
+          ],
+          "manualChecks": true,
+          "sourceRow": 16,
+          "sourceText": "루나",
+          "sourceSnapshot": ""
+        }
+      ],
+      "type": "이월 택틱",
+      "sourceSheet": "2넴",
+      "sourceHeaderCell": "B6",
+      "editorVersion": 1,
+      "rowFormatsVersion": 1,
+      "title": "2넴 바이올렛 워지타 호마레 프캬루 루나 성급 ?????, 손컨 —, TP —, 기대딜 3,413만~3,417만"
+    },
+    {
+      "month": "2026-10",
+      "id": "carry-2026-10-2-2",
+      "boss": 2,
+      "source": "이월 택틱",
+      "group": "이월 택틱",
+      "characters": [
+        "바이올렛",
+        "드마호",
+        "호마레",
+        "프캬루",
+        "루나"
+      ],
+      "stars": [
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "manualCount": "",
+      "tp": "",
+      "expectedDamage": "3,210만~3,216만",
+      "expectedDamageSort": 0.3216,
+      "note": "필요 이월시간: 21초 · 1:11에 2발 안 오면 프나강 차이 (-700) · 6페 0합 암 크뎀증에 속성 900 마피 90쯤 하니까 3차이로 찼음 · 내 프나렙이 너무 높아서 캬루가 죽으면 루나 EX 빼면 됨 · 사용 TP차지:",
+      "video": "https://www.youtube.com/watch?v=f3B4waE___w",
+      "tacticUrl": "",
+      "rows": [
+        {
+          "id": "carry-2026-10-2-2-start",
+          "text": "AUTO OFF, 바이올렛, 드마호, 프캬루 SET",
+          "checked": [
+            true,
+            true,
+            false,
+            true,
+            false,
+            false
+          ],
+          "manualChecks": true,
+          "sourceText": "Set [XOXOO] (AUTO:❌)"
+        },
+        {
+          "id": "carry-2026-10-2-2-r1",
+          "text": "1:18 프캬루 2발째 · 프캬루 OFF",
+          "checked": [
+            true,
+            true,
+            false,
+            false,
+            false,
+            false
+          ],
+          "manualChecks": true,
+          "sourceRow": 33,
+          "sourceText": "프캬루 2발째",
+          "sourceSnapshot": "[XXXOO]"
+        },
+        {
+          "id": "carry-2026-10-2-2-r2",
+          "text": "1:12 호마레 마인드 크랙 후딜캔 · 프캬루 ON",
+          "checked": [
+            true,
+            true,
+            false,
+            true,
+            false,
+            false
+          ],
+          "manualChecks": true,
+          "sourceRow": 34,
+          "sourceText": "호마레 마인드 크랙 후딜캔",
+          "sourceSnapshot": "[XOXOO]"
+        },
+        {
+          "id": "carry-2026-10-2-2-r3",
+          "text": "1:11 프캬루 2발째 · 루나, 호마레 ON",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            false
+          ],
+          "manualChecks": true,
+          "sourceRow": 35,
+          "sourceText": "프캬루 2발째",
+          "sourceSnapshot": "[OOOOO]"
+        },
+        {
+          "id": "carry-2026-10-2-2-r4",
+          "text": "1:11 루나 · 중간딜 3210만",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            false
+          ],
+          "manualChecks": true,
+          "sourceRow": 36,
+          "sourceText": "루나",
+          "sourceSnapshot": ""
+        },
+        {
+          "id": "carry-2026-10-2-2-r5",
+          "text": "1:10 ■보스 재채기(스턴)",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            false
+          ],
+          "manualChecks": true,
+          "sourceRow": 37,
+          "sourceText": "■보스 재채기(스턴)",
+          "sourceSnapshot": ""
+        }
+      ],
+      "type": "이월 택틱",
+      "sourceSheet": "2넴",
+      "sourceHeaderCell": "B25",
+      "editorVersion": 1,
+      "rowFormatsVersion": 1,
+      "title": "2넴 바이올렛 드마호 호마레 프캬루 루나 성급 ?????, 손컨 —, TP —, 기대딜 3,210만~3,216만"
+    },
+    {
+      "month": "2026-10",
+      "id": "carry-2026-10-3-6",
+      "boss": 3,
+      "source": "이월 택틱",
+      "group": "이월 택틱",
+      "characters": [
+        "시나츠",
+        "수리아",
+        "와카나",
+        "수레시아",
+        "편오이"
+      ],
+      "stars": [
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "manualCount": "",
+      "tp": "",
+      "expectedDamage": "1억 8,560만~1억 8,630만",
+      "expectedDamageSort": 1.863,
+      "note": "필요 이월시간: 63초 · 38랭 수리아일 경우 1합을 더 요구함 · (37-6 = 6페 2합 가능) 조건 안 맞으면 사용불가 · 사용 TP차지: 부스트 유닛 없음",
+      "video": "",
+      "tacticUrl": "https://docs.google.com/spreadsheets/d/e/2PACX-1vS9nNOzv3_LdGF90KkISnS3WXdJpUxc1qL1yA2MQJWPCFjXYkuhuEUrfX9MpZ295yhvZRjmCb6vyIfg/pub?gid=1679627280",
+      "rows": [
+        {
+          "id": "carry-2026-10-3-6-start",
+          "text": "AUTO ON, 시나츠, 와카나, 편오이 SET",
+          "checked": [
+            true,
+            false,
+            true,
+            false,
+            true,
+            true
+          ],
+          "manualChecks": true,
+          "sourceText": "Set [OXOXO] (AUTO:⭕)"
+        },
+        {
+          "id": "carry-2026-10-3-6-r1",
+          "text": "1:12 시나츠 · 수리아 ON · 시나츠 OFF",
+          "checked": [
+            false,
+            true,
+            true,
+            false,
+            true,
+            true
+          ],
+          "manualChecks": true,
+          "sourceRow": 106,
+          "sourceText": "시나츠",
+          "sourceSnapshot": "[OXOOX]"
+        },
+        {
+          "id": "carry-2026-10-3-6-r2",
+          "text": "1:10 와카나 · 수레시아 ON · 와카나 OFF · AUTO OFF · 중간딜 1620만",
+          "checked": [
+            false,
+            true,
+            false,
+            true,
+            true,
+            false
+          ],
+          "manualChecks": true,
+          "sourceRow": 107,
+          "sourceText": "와카나",
+          "sourceSnapshot": "[OOXOX] ❌"
+        },
+        {
+          "id": "carry-2026-10-3-6-r3",
+          "text": "1:03 ■보스유버 · 중간딜 3240만",
+          "checked": [
+            false,
+            true,
+            false,
+            true,
+            true,
+            false
+          ],
+          "manualChecks": true,
+          "sourceRow": 108,
+          "sourceText": "■보스유버",
+          "sourceSnapshot": ""
+        },
+        {
+          "id": "carry-2026-10-3-6-r4",
+          "text": "0:57 편오이 · 시나츠 ON · 중간딜 5360만",
+          "checked": [
+            true,
+            true,
+            false,
+            true,
+            true,
+            false
+          ],
+          "manualChecks": true,
+          "sourceRow": 109,
+          "sourceText": "편오이",
+          "sourceSnapshot": "[OOXOO]"
+        },
+        {
+          "id": "carry-2026-10-3-6-r5",
+          "text": "0:54 수리아 · 와카나 ON · 수리아 OFF · 중간딜 6730만",
+          "checked": [
+            true,
+            false,
+            true,
+            true,
+            true,
+            false
+          ],
+          "manualChecks": true,
+          "sourceRow": 110,
+          "sourceText": "수리아",
+          "sourceSnapshot": "[OOOXO]"
+        },
+        {
+          "id": "carry-2026-10-3-6-r6",
+          "text": "0:54 와카나 · 와카나 OFF",
+          "checked": [
+            true,
+            false,
+            false,
+            true,
+            true,
+            false
+          ],
+          "manualChecks": true,
+          "sourceRow": 111,
+          "sourceText": "와카나",
+          "sourceSnapshot": "[OOXXO]"
+        },
+        {
+          "id": "carry-2026-10-3-6-r7",
+          "text": "0:47 시나츠 · 수레시아, 시나츠 OFF · 중간딜 10400만",
+          "checked": [
+            false,
+            false,
+            false,
+            false,
+            true,
+            false
+          ],
+          "manualChecks": true,
+          "sourceRow": 112,
+          "sourceText": "시나츠",
+          "sourceSnapshot": "[OXXXX]"
+        },
+        {
+          "id": "carry-2026-10-3-6-r8",
+          "text": "0:44 편오이 · 수리아 ON · AUTO ON · 중간딜 11740만",
+          "checked": [
+            false,
+            true,
+            false,
+            false,
+            true,
+            true
+          ],
+          "manualChecks": true,
+          "sourceRow": 113,
+          "sourceText": "편오이",
+          "sourceSnapshot": "[OXXOX] ⭕"
+        },
+        {
+          "id": "carry-2026-10-3-6-r9",
+          "text": "0:40 와카나 · 중간딜 12950만",
+          "checked": [
+            false,
+            true,
+            false,
+            false,
+            true,
+            true
+          ],
+          "manualChecks": true,
+          "sourceRow": 114,
+          "sourceText": "와카나",
+          "sourceSnapshot": ""
+        },
+        {
+          "id": "carry-2026-10-3-6-r10",
+          "text": "0:35 시나츠 십신풍 · 중간딜 13840만",
+          "checked": [
+            false,
+            true,
+            false,
+            false,
+            true,
+            true
+          ],
+          "manualChecks": true,
+          "sourceRow": 115,
+          "sourceText": "시나츠 십신풍",
+          "sourceSnapshot": ""
+        },
+        {
+          "id": "carry-2026-10-3-6-r11",
+          "text": "0:33 수레시아 → 시나츠 · 중간딜 15600만",
+          "checked": [
+            false,
+            true,
+            false,
+            false,
+            true,
+            true
+          ],
+          "manualChecks": true,
+          "sourceRow": 116,
+          "sourceText": "수레시아 → 시나츠",
+          "sourceSnapshot": ""
+        },
+        {
+          "id": "carry-2026-10-3-6-r12",
+          "text": "0:27 ■보스유버 · 중간딜 18560만",
+          "checked": [
+            false,
+            true,
+            false,
+            false,
+            true,
+            true
+          ],
+          "manualChecks": true,
+          "sourceRow": 117,
+          "sourceText": "■보스유버",
+          "sourceSnapshot": ""
+        }
+      ],
+      "type": "이월 택틱",
+      "sourceSheet": "3넴",
+      "sourceHeaderCell": "B98",
+      "editorVersion": 1,
+      "rowFormatsVersion": 1,
+      "title": "3넴 시나츠 수리아 와카나 수레시아 편오이 성급 ?????, 손컨 —, TP —, 기대딜 1억 8,560만~1억 8,630만"
+    },
+    {
+      "month": "2026-10",
+      "id": "carry-2026-10-3-5",
+      "boss": 3,
+      "source": "이월 택틱",
+      "group": "이월 택틱",
+      "characters": [
+        "시나츠",
+        "와카나",
+        "수레시아",
+        "편오이",
+        "피오"
+      ],
+      "stars": [
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "manualCount": "",
+      "tp": "",
+      "expectedDamage": "9,930만~1억 160만",
+      "expectedDamageSort": 1.016,
+      "note": "필요 이월시간: 41초 · 사용 TP차지: 부스트 유닛 없음",
+      "video": "https://www.youtube.com/watch?v=oZIqC4EISoY",
+      "tacticUrl": "",
+      "rows": [
+        {
+          "id": "carry-2026-10-3-5-start",
+          "text": "AUTO OFF, 와카나, 수레시아, 편오이, 피오 SET",
+          "checked": [
+            false,
+            true,
+            true,
+            true,
+            true,
+            false
+          ],
+          "manualChecks": true,
+          "sourceText": "Set [OOOOX] (AUTO:❌)"
+        },
+        {
+          "id": "carry-2026-10-3-5-r1",
+          "text": "1:16 수레시아 · 시나츠 ON",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            false
+          ],
+          "manualChecks": true,
+          "sourceRow": 83,
+          "sourceText": "수레시아",
+          "sourceSnapshot": "[OOOOO]"
+        },
+        {
+          "id": "carry-2026-10-3-5-r2",
+          "text": "1:16 시나츠 · 시나츠 OFF",
+          "checked": [
+            false,
+            true,
+            true,
+            true,
+            true,
+            false
+          ],
+          "manualChecks": true,
+          "sourceRow": 84,
+          "sourceText": "시나츠",
+          "sourceSnapshot": "[OOOOX]"
+        },
+        {
+          "id": "carry-2026-10-3-5-r3",
+          "text": "1:07 와카나 · 시나츠 ON · 편오이 OFF · 중간딜 3350만",
+          "checked": [
+            true,
+            true,
+            true,
+            false,
+            true,
+            false
+          ],
+          "manualChecks": true,
+          "sourceRow": 85,
+          "sourceText": "와카나",
+          "sourceSnapshot": "[OXOOO]"
+        },
+        {
+          "id": "carry-2026-10-3-5-r4",
+          "text": "1:04 수레시아 · 편오이 ON · 시나츠 OFF · 중간딜 4960만",
+          "checked": [
+            false,
+            true,
+            true,
+            true,
+            true,
+            false
+          ],
+          "manualChecks": true,
+          "sourceRow": 86,
+          "sourceText": "수레시아",
+          "sourceSnapshot": "[OOOOX]"
+        },
+        {
+          "id": "carry-2026-10-3-5-r5",
+          "text": "1:03 ■보스유버 · 중간딜 5180만",
+          "checked": [
+            false,
+            true,
+            true,
+            true,
+            true,
+            false
+          ],
+          "manualChecks": true,
+          "sourceRow": 87,
+          "sourceText": "■보스유버",
+          "sourceSnapshot": ""
+        },
+        {
+          "id": "carry-2026-10-3-5-r6",
+          "text": "0:59 편오이 · 시나츠 ON · 중간딜 6130만",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            false
+          ],
+          "manualChecks": true,
+          "sourceRow": 88,
+          "sourceText": "편오이",
+          "sourceSnapshot": "[OOOOO]"
+        },
+        {
+          "id": "carry-2026-10-3-5-r7",
+          "text": "0:59 시나츠 · 편오이, 수레시아, 시나츠 OFF",
+          "checked": [
+            false,
+            true,
+            false,
+            false,
+            true,
+            false
+          ],
+          "manualChecks": true,
+          "sourceRow": 89,
+          "sourceText": "시나츠",
+          "sourceSnapshot": "[OXXOX]"
+        },
+        {
+          "id": "carry-2026-10-3-5-r8",
+          "text": "0:50 와카나 · 편오이, 수레시아 ON · 중간딜 9990만",
+          "checked": [
+            false,
+            true,
+            true,
+            true,
+            true,
+            false
+          ],
+          "manualChecks": true,
+          "sourceRow": 90,
+          "sourceText": "와카나",
+          "sourceSnapshot": "[OOOOX]"
+        },
+        {
+          "id": "carry-2026-10-3-5-r9",
+          "text": "0:50 편오이 · 시나츠 ON",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            false
+          ],
+          "manualChecks": true,
+          "sourceRow": 91,
+          "sourceText": "편오이",
+          "sourceSnapshot": "[OOOOO]"
+        }
+      ],
+      "type": "이월 택틱",
+      "sourceSheet": "3넴",
+      "sourceHeaderCell": "B75",
+      "editorVersion": 1,
+      "rowFormatsVersion": 1,
+      "title": "3넴 시나츠 와카나 수레시아 편오이 피오 성급 ?????, 손컨 —, TP —, 기대딜 9,930만~1억 160만"
+    },
+    {
+      "month": "2026-10",
+      "id": "carry-2026-10-3-4",
+      "boss": 3,
+      "source": "이월 택틱",
+      "group": "이월 택틱",
+      "characters": [
+        "수리아",
+        "와카나",
+        "수레시아",
+        "편오이",
+        "피오"
+      ],
+      "stars": [
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "manualCount": "",
+      "tp": "",
+      "expectedDamage": "5,090만~5,170만",
+      "expectedDamageSort": 0.517,
+      "note": "필요 이월시간: 28초 · 사용 TP차지: 부스트 유닛 없음",
+      "video": "https://www.youtube.com/watch?v=oZIqC4EISoY",
+      "tacticUrl": "",
+      "rows": [
+        {
+          "id": "carry-2026-10-3-4-start",
+          "text": "AUTO OFF, 수리아, 와카나, 수레시아, 편오이, 피오 SET",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            false
+          ],
+          "manualChecks": true,
+          "sourceText": "Set [OOOOO] (AUTO:❌)"
+        },
+        {
+          "id": "carry-2026-10-3-4-r1",
+          "text": "1:11 수리아 · 수리아 OFF",
+          "checked": [
+            false,
+            true,
+            true,
+            true,
+            true,
+            false
+          ],
+          "manualChecks": true,
+          "sourceRow": 66,
+          "sourceText": "수리아",
+          "sourceSnapshot": "[OOOOX]"
+        },
+        {
+          "id": "carry-2026-10-3-4-r2",
+          "text": "1:03 ■보스유버 · 중간딜 5150만",
+          "checked": [
+            false,
+            true,
+            true,
+            true,
+            true,
+            false
+          ],
+          "manualChecks": true,
+          "sourceRow": 67,
+          "sourceText": "■보스유버",
+          "sourceSnapshot": ""
+        },
+        {
+          "id": "carry-2026-10-3-4-r3",
+          "text": "1:03 수레시아 → 수리아 · 수리아 ON",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            false
+          ],
+          "manualChecks": true,
+          "sourceRow": 68,
+          "sourceText": "수레시아 → 수리아",
+          "sourceSnapshot": "[OOOOO]"
+        }
+      ],
+      "type": "이월 택틱",
+      "sourceSheet": "3넴",
+      "sourceHeaderCell": "B58",
+      "editorVersion": 1,
+      "rowFormatsVersion": 1,
+      "title": "3넴 수리아 와카나 수레시아 편오이 피오 성급 ?????, 손컨 —, TP —, 기대딜 5,090만~5,170만"
+    },
+    {
+      "month": "2026-10",
+      "id": "carry-2026-10-3-3",
+      "boss": 3,
+      "source": "이월 택틱",
+      "group": "이월 택틱",
+      "characters": [
+        "루카",
+        "수레이",
+        "프셰피",
+        "수리코",
+        "수사렌"
+      ],
+      "stars": [
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "manualCount": "",
+      "tp": "2.0+",
+      "expectedDamage": "4,530만~4,730만",
+      "expectedDamageSort": 0.473,
+      "note": "필요 이월시간: 26초 · 사용 TP차지: 2.0 이상",
+      "video": "https://www.youtube.com/watch?v=1qfSfOkBBuQ",
+      "tacticUrl": "",
+      "rows": [
+        {
+          "id": "carry-2026-10-3-3-start",
+          "text": "AUTO OFF, 루카, 수사렌 SET",
+          "checked": [
+            true,
+            false,
+            false,
+            false,
+            true,
+            false
+          ],
+          "manualChecks": true,
+          "sourceText": "Set [OXXXO] (AUTO:❌)"
+        },
+        {
+          "id": "carry-2026-10-3-3-r1",
+          "text": "1:21 수사렌 · 수레이 ON",
+          "checked": [
+            true,
+            true,
+            false,
+            false,
+            true,
+            false
+          ],
+          "manualChecks": true,
+          "sourceRow": 48,
+          "sourceText": "수사렌",
+          "sourceSnapshot": "[OXXOO]"
+        },
+        {
+          "id": "carry-2026-10-3-3-r2",
+          "text": "1:10 수레이 · 수리코, 프셰피 ON · 중간딜 2770만",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            false
+          ],
+          "manualChecks": true,
+          "sourceRow": 49,
+          "sourceText": "수레이",
+          "sourceSnapshot": "[OOOOO]"
+        },
+        {
+          "id": "carry-2026-10-3-3-r3",
+          "text": "1:05 프셰피 · 중간딜 4680만",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            false
+          ],
+          "manualChecks": true,
+          "sourceRow": 50,
+          "sourceText": "프셰피",
+          "sourceSnapshot": ""
+        },
+        {
+          "id": "carry-2026-10-3-3-r4",
+          "text": "1:04 ■보스 범위딜(수리코, 수레이) · 중간딜 4730만",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            false
+          ],
+          "manualChecks": true,
+          "sourceRow": 51,
+          "sourceText": "■보스 범위딜(수리코, 수레이)",
+          "sourceSnapshot": ""
+        }
+      ],
+      "type": "이월 택틱",
+      "sourceSheet": "3넴",
+      "sourceHeaderCell": "B40",
+      "editorVersion": 1,
+      "rowFormatsVersion": 1,
+      "title": "3넴 루카 수레이 프셰피 수리코 수사렌 성급 ?????, 손컨 —, TP 2.0+, 기대딜 4,530만~4,730만"
+    },
+    {
+      "month": "2026-10",
+      "id": "carry-2026-10-3-2",
+      "boss": 3,
+      "source": "이월 택틱",
+      "group": "이월 택틱",
+      "characters": [
+        "클요리",
+        "봄쿄카",
+        "스즈메",
+        "피오",
+        "수리스"
+      ],
+      "stars": [
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "manualCount": "",
+      "tp": "2.0+",
+      "expectedDamage": "4,350만~4,540만",
+      "expectedDamageSort": 0.454,
+      "note": "필요 이월시간: 24초 · 사용 TP차지: 2.0 이상",
+      "video": "https://www.youtube.com/watch?v=TpQaGENxOVQ",
+      "tacticUrl": "",
+      "rows": [
+        {
+          "id": "carry-2026-10-3-2-start",
+          "text": "AUTO OFF, 클요리, 스즈메, 피오, 수리스 SET",
+          "checked": [
+            true,
+            false,
+            true,
+            true,
+            true,
+            false
+          ],
+          "manualChecks": true,
+          "sourceText": "Set [OOOXO] (AUTO:❌)"
+        },
+        {
+          "id": "carry-2026-10-3-2-r1",
+          "text": "1:17 스즈메 · 봄쿄카 ON",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            false
+          ],
+          "manualChecks": true,
+          "sourceRow": 30,
+          "sourceText": "스즈메",
+          "sourceSnapshot": "[OOOOO]"
+        },
+        {
+          "id": "carry-2026-10-3-2-r2",
+          "text": "1:17 봄쿄카 · 봄쿄카 OFF",
+          "checked": [
+            true,
+            false,
+            true,
+            true,
+            true,
+            false
+          ],
+          "manualChecks": true,
+          "sourceRow": 31,
+          "sourceText": "봄쿄카",
+          "sourceSnapshot": "[OOOXO]"
+        },
+        {
+          "id": "carry-2026-10-3-2-r3",
+          "text": "1:11 스즈메 · 봄쿄카 ON",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            false
+          ],
+          "manualChecks": true,
+          "sourceRow": 32,
+          "sourceText": "스즈메",
+          "sourceSnapshot": "[OOOOO]"
+        },
+        {
+          "id": "carry-2026-10-3-2-r4",
+          "text": "1:07 봄쿄카 · 중간딜 4450만",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            false
+          ],
+          "manualChecks": true,
+          "sourceRow": 33,
+          "sourceText": "봄쿄카",
+          "sourceSnapshot": ""
+        }
+      ],
+      "type": "이월 택틱",
+      "sourceSheet": "3넴",
+      "sourceHeaderCell": "B22",
+      "editorVersion": 1,
+      "rowFormatsVersion": 1,
+      "title": "3넴 클요리 봄쿄카 스즈메 피오 수리스 성급 ?????, 손컨 —, TP 2.0+, 기대딜 4,350만~4,540만"
+    },
+    {
+      "month": "2026-10",
+      "id": "carry-2026-10-3-1",
+      "boss": 3,
+      "source": "이월 택틱",
+      "group": "이월 택틱",
+      "characters": [
+        "수사렌",
+        "수네카",
+        "알라비",
+        "수스미",
+        "수메스"
+      ],
+      "stars": [
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "manualCount": "",
+      "tp": "2.0+",
+      "expectedDamage": "2,870만~3,200만",
+      "expectedDamageSort": 0.32,
+      "note": "필요 이월시간: 21초 · 사용 TP차지: 2.0 이상",
+      "video": "https://www.youtube.com/watch?v=hIgPbmttwEE",
+      "tacticUrl": "",
+      "rows": [
+        {
+          "id": "carry-2026-10-3-1-start",
+          "text": "AUTO OFF, 수사렌, 알라비, 수스미, 수메스 SET",
+          "checked": [
+            true,
+            false,
+            true,
+            true,
+            true,
+            false
+          ],
+          "manualChecks": true,
+          "sourceText": "Set [OOOXO] (AUTO:❌)"
+        },
+        {
+          "id": "carry-2026-10-3-1-r1",
+          "text": "1:22 수메스 · 수네카 ON",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            false
+          ],
+          "manualChecks": true,
+          "sourceRow": 14,
+          "sourceText": "수메스",
+          "sourceSnapshot": "[OOOOO]"
+        },
+        {
+          "id": "carry-2026-10-3-1-r2",
+          "text": "1:10 수사렌 → 수메스 → 수네카 → 수스미 · 중간딜 2930만",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            false
+          ],
+          "manualChecks": true,
+          "sourceRow": 15,
+          "sourceText": "수사렌 → 수메스 → 수네카 → 수스미",
+          "sourceSnapshot": ""
+        }
+      ],
+      "type": "이월 택틱",
+      "sourceSheet": "3넴",
+      "sourceHeaderCell": "B6",
+      "editorVersion": 1,
+      "rowFormatsVersion": 1,
+      "title": "3넴 수사렌 수네카 알라비 수스미 수메스 성급 ?????, 손컨 —, TP 2.0+, 기대딜 2,870만~3,200만"
+    },
+    {
+      "month": "2026-10",
+      "id": "carry-2026-10-4-4",
+      "boss": 4,
+      "source": "이월 택틱",
+      "group": "이월 택틱",
+      "characters": [
+        "린드",
+        "블룸",
+        "에로체",
+        "성라엘",
+        "루이즈마리"
+      ],
+      "stars": [
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "manualCount": "",
+      "tp": "3.0+",
+      "expectedDamage": "1억 4,600만",
+      "expectedDamageSort": 1.46,
+      "note": "필요 이월시간: 52초 · 프나강 6페 1합 못 넘기면 택틱 불가능(린드 사망) · 사용 TP차지: 3.0 이상 (에로체 첫 유버)",
+      "video": "https://www.youtube.com/watch?v=mOwgsrtQp4Q",
+      "tacticUrl": "",
+      "rows": [
+        {
+          "id": "carry-2026-10-4-4-start",
+          "text": "AUTO ON, 린드, 블룸, 에로체, 성라엘 SET",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            false,
+            true
+          ],
+          "manualChecks": true,
+          "sourceText": "Set [XOOOO] (AUTO:⭕)"
+        },
+        {
+          "id": "carry-2026-10-4-4-r1",
+          "text": "1:19 성라엘 · 성라엘 OFF 〔시뮬 택틱이 원본과 밀리며, 주인장 프나강이 낮아〕",
+          "checked": [
+            true,
+            true,
+            true,
+            false,
+            false,
+            true
+          ],
+          "manualChecks": true,
+          "sourceRow": 68,
+          "sourceText": "성라엘",
+          "sourceSnapshot": "[XXOOO]"
+        },
+        {
+          "id": "carry-2026-10-4-4-r2",
+          "text": "1:10 블룸 · 성라엘 ON 〔디테일한 검증을 하지 못했습니다.〕",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            false,
+            true
+          ],
+          "manualChecks": true,
+          "sourceRow": 69,
+          "sourceText": "블룸",
+          "sourceSnapshot": "[XOOOO]"
+        },
+        {
+          "id": "carry-2026-10-4-4-r3",
+          "text": "0:57 루이즈마리 〔죄송합니다.〕",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            false,
+            true
+          ],
+          "manualChecks": true,
+          "sourceRow": 70,
+          "sourceText": "루이즈마리",
+          "sourceSnapshot": ""
+        },
+        {
+          "id": "carry-2026-10-4-4-r4",
+          "text": "0:56 ■보스유버",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            false,
+            true
+          ],
+          "manualChecks": true,
+          "sourceRow": 71,
+          "sourceText": "■보스유버",
+          "sourceSnapshot": ""
+        },
+        {
+          "id": "carry-2026-10-4-4-r5",
+          "text": "0:48 성라엘 → 린드",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            false,
+            true
+          ],
+          "manualChecks": true,
+          "sourceRow": 72,
+          "sourceText": "성라엘 → 린드",
+          "sourceSnapshot": ""
+        },
+        {
+          "id": "carry-2026-10-4-4-r6",
+          "text": "0:41 마리 오토 → 에로체 → 블룸",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            false,
+            true
+          ],
+          "manualChecks": true,
+          "sourceRow": 73,
+          "sourceText": "마리 오토 → 에로체 → 블룸",
+          "sourceSnapshot": ""
+        },
+        {
+          "id": "carry-2026-10-4-4-r7",
+          "text": "0:38 성라엘",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            false,
+            true
+          ],
+          "manualChecks": true,
+          "sourceRow": 74,
+          "sourceText": "성라엘",
+          "sourceSnapshot": ""
+        }
+      ],
+      "type": "이월 택틱",
+      "sourceSheet": "4넴",
+      "sourceHeaderCell": "B60",
+      "editorVersion": 1,
+      "rowFormatsVersion": 1,
+      "title": "4넴 린드 블룸 에로체 성라엘 루이즈마리 성급 ?????, 손컨 —, TP 3.0+, 기대딜 1억 4,600만"
+    },
+    {
+      "month": "2026-10",
+      "id": "carry-2026-10-4-3",
+      "boss": 4,
+      "source": "이월 택틱",
+      "group": "이월 택틱",
+      "characters": [
+        "오우카",
+        "에로체",
+        "성라엘",
+        "루이즈마리",
+        "수마호"
+      ],
+      "stars": [
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "manualCount": "",
+      "tp": "2.1+",
+      "expectedDamage": "7,760만~7,890만",
+      "expectedDamageSort": 0.789,
+      "note": "필요 이월시간: 38초 · 사용 TP차지: 2.1 이상",
+      "video": "https://www.youtube.com/watch?v=023A5OxJBt8",
+      "tacticUrl": "",
+      "rows": [
+        {
+          "id": "carry-2026-10-4-3-start",
+          "text": "AUTO OFF, 에로체, 성라엘, 루이즈마리 SET",
+          "checked": [
+            false,
+            true,
+            true,
+            true,
+            false,
+            false
+          ],
+          "manualChecks": true,
+          "sourceText": "Set [XOOOX] (AUTO:❌)"
+        },
+        {
+          "id": "carry-2026-10-4-3-r1",
+          "text": "1:10 성라엘 · 성라엘 OFF · 중간딜 2060만",
+          "checked": [
+            false,
+            true,
+            false,
+            true,
+            false,
+            false
+          ],
+          "manualChecks": true,
+          "sourceRow": 47,
+          "sourceText": "성라엘",
+          "sourceSnapshot": "[XOXOX]"
+        },
+        {
+          "id": "carry-2026-10-4-3-r2",
+          "text": "1:01 에로체 · 성라엘 ON · AUTO ON · 중간딜 4130만",
+          "checked": [
+            false,
+            true,
+            true,
+            true,
+            false,
+            true
+          ],
+          "manualChecks": true,
+          "sourceRow": 48,
+          "sourceText": "에로체",
+          "sourceSnapshot": "[XOOOX] ⭕"
+        },
+        {
+          "id": "carry-2026-10-4-3-r3",
+          "text": "0:59 루이즈마리 · 중간딜 5780만",
+          "checked": [
+            false,
+            true,
+            true,
+            true,
+            false,
+            true
+          ],
+          "manualChecks": true,
+          "sourceRow": 49,
+          "sourceText": "루이즈마리",
+          "sourceSnapshot": ""
+        },
+        {
+          "id": "carry-2026-10-4-3-r4",
+          "text": "0:58 수마호 프렌즈 버프 후딜캔 · 중간딜 6530만",
+          "checked": [
+            false,
+            true,
+            true,
+            true,
+            false,
+            true
+          ],
+          "manualChecks": true,
+          "sourceRow": 50,
+          "sourceText": "수마호 프렌즈 버프 후딜캔",
+          "sourceSnapshot": "〃"
+        },
+        {
+          "id": "carry-2026-10-4-3-r5",
+          "text": "0:57 ■보스유버 · 중간딜 6710만",
+          "checked": [
+            false,
+            true,
+            true,
+            true,
+            false,
+            true
+          ],
+          "manualChecks": true,
+          "sourceRow": 51,
+          "sourceText": "■보스유버",
+          "sourceSnapshot": ""
+        },
+        {
+          "id": "carry-2026-10-4-3-r6",
+          "text": "0:55 오우카 · 중간딜 7000만",
+          "checked": [
+            false,
+            true,
+            true,
+            true,
+            false,
+            true
+          ],
+          "manualChecks": true,
+          "sourceRow": 52,
+          "sourceText": "오우카",
+          "sourceSnapshot": ""
+        },
+        {
+          "id": "carry-2026-10-4-3-r7",
+          "text": "0:53 성라엘 충뢰 + 수마호 블로섬 · 중간딜 7820만",
+          "checked": [
+            false,
+            true,
+            true,
+            true,
+            false,
+            true
+          ],
+          "manualChecks": true,
+          "sourceRow": 53,
+          "sourceText": "성라엘 충뢰 + 수마호 블로섬",
+          "sourceSnapshot": ""
+        }
+      ],
+      "type": "이월 택틱",
+      "sourceSheet": "4넴",
+      "sourceHeaderCell": "B39",
+      "editorVersion": 1,
+      "rowFormatsVersion": 1,
+      "title": "4넴 오우카 에로체 성라엘 루이즈마리 수마호 성급 ?????, 손컨 —, TP 2.1+, 기대딜 7,760만~7,890만"
+    },
+    {
+      "month": "2026-10",
+      "id": "carry-2026-10-4-1",
+      "boss": 4,
+      "source": "이월 택틱",
+      "group": "이월 택틱",
+      "characters": [
+        "엔요리",
+        "수네모네",
+        "뉴사렌",
+        "라이라엘",
+        "뉴츠네"
+      ],
+      "stars": [
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "manualCount": "",
+      "tp": "1.1+",
+      "expectedDamage": "2,880만~2,930만",
+      "expectedDamageSort": 0.293,
+      "note": "필요 이월시간: 21초 · 사용 TP차지: 1.1 이상",
+      "video": "https://www.youtube.com/watch?v=jw7eNG4WVmA",
+      "tacticUrl": "",
+      "rows": [
+        {
+          "id": "carry-2026-10-4-1-start",
+          "text": "AUTO OFF, 엔요리, 수네모네, 뉴사렌 SET",
+          "checked": [
+            true,
+            true,
+            true,
+            false,
+            false,
+            false
+          ],
+          "manualChecks": true,
+          "sourceText": "Set [XXOOO] (AUTO:❌)"
+        },
+        {
+          "id": "carry-2026-10-4-1-r1",
+          "text": "1:22 뉴사렌 · 뉴사렌 OFF",
+          "checked": [
+            true,
+            true,
+            false,
+            false,
+            false,
+            false
+          ],
+          "manualChecks": true,
+          "sourceRow": 14,
+          "sourceText": "뉴사렌",
+          "sourceSnapshot": "[XXXOO]"
+        },
+        {
+          "id": "carry-2026-10-4-1-r2",
+          "text": "1:10 라이라엘 벽력 후딜캔 · 뉴츠네 ON 〔←뉴츠네 드림 슛 이후 번개 1틱〕 · 중간딜 2910만",
+          "checked": [
+            true,
+            true,
+            false,
+            false,
+            true,
+            false
+          ],
+          "manualChecks": true,
+          "sourceRow": 15,
+          "sourceText": "라이라엘 벽력 후딜캔",
+          "sourceSnapshot": "[OXXOO]"
+        },
+        {
+          "id": "carry-2026-10-4-1-r3",
+          "text": "1:10 뉴츠네 → 뉴사렌 · 뉴사렌 ON",
+          "checked": [
+            true,
+            true,
+            true,
+            false,
+            true,
+            false
+          ],
+          "manualChecks": true,
+          "sourceRow": 16,
+          "sourceText": "뉴츠네 → 뉴사렌",
+          "sourceSnapshot": "[OXOOO]"
+        }
+      ],
+      "type": "이월 택틱",
+      "sourceSheet": "4넴",
+      "sourceHeaderCell": "B6",
+      "editorVersion": 1,
+      "rowFormatsVersion": 1,
+      "title": "4넴 엔요리 수네모네 뉴사렌 라이라엘 뉴츠네 성급 ?????, 손컨 —, TP 1.1+, 기대딜 2,880만~2,930만"
+    },
+    {
+      "month": "2026-10",
+      "id": "carry-2026-10-4-2",
+      "boss": 4,
+      "source": "이월 택틱",
+      "group": "이월 택틱",
+      "characters": [
+        "유카리",
+        "리조미",
+        "페리컬",
+        "게무기",
+        "성레짓타"
+      ],
+      "stars": [
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "manualCount": "",
+      "tp": "1.1+",
+      "expectedDamage": "2,880만~2,930만",
+      "expectedDamageSort": 0.293,
+      "note": "필요 이월시간: 22초 · 유카리는 유버 안 씀 · 조작없음 · 사용 TP차지: 1.1 이상",
+      "video": "https://www.youtube.com/watch?v=2GXyKTdpsC4",
+      "tacticUrl": "",
+      "rows": [
+        {
+          "id": "carry-2026-10-4-2-start",
+          "text": "AUTO OFF, 리조미, 페리컬, 게무기, 성레짓타 SET",
+          "checked": [
+            false,
+            true,
+            true,
+            true,
+            true,
+            false
+          ],
+          "manualChecks": true,
+          "sourceText": "Set [OOOOX] (AUTO:❌)"
+        },
+        {
+          "id": "carry-2026-10-4-2-r1",
+          "text": "1:10 페리컬 어드벤처 1타 · 중간딜 2740만",
+          "checked": [
+            false,
+            true,
+            true,
+            true,
+            true,
+            false
+          ],
+          "manualChecks": true,
+          "sourceRow": 31,
+          "sourceText": "페리컬 어드벤처 1타",
+          "sourceSnapshot": ""
+        }
+      ],
+      "type": "이월 택틱",
+      "sourceSheet": "4넴",
+      "sourceHeaderCell": "B23",
+      "editorVersion": 1,
+      "rowFormatsVersion": 1,
+      "title": "4넴 유카리 리조미 페리컬 게무기 성레짓타 성급 ?????, 손컨 —, TP 1.1+, 기대딜 2,880만~2,930만"
+    },
+    {
+      "month": "2026-10",
+      "id": "carry-2026-10-5-5",
+      "boss": 5,
+      "source": "이월 택틱",
+      "group": "이월 택틱",
+      "characters": [
+        "스즈메",
+        "피오",
+        "의치카",
+        "의란파",
+        "카마키"
+      ],
+      "stars": [
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "manualCount": "",
+      "tp": "",
+      "expectedDamage": "1억 940만~1억 1,450만",
+      "expectedDamageSort": 1.145,
+      "note": "필요 이월시간: 53초 · 6페 1합 필수 (카마키 생존 노드) · 사용 TP차지: 부스트 유닛 없음",
+      "video": "https://www.youtube.com/watch?v=e0zhEz5lsxw",
+      "tacticUrl": "",
+      "rows": [
+        {
+          "id": "carry-2026-10-5-5-start",
+          "text": "AUTO ON, 피오, 의치카, 의란파, 카마키 SET",
+          "checked": [
+            false,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "manualChecks": true,
+          "sourceText": "Set [OOOOX] (AUTO:⭕)"
+        },
+        {
+          "id": "carry-2026-10-5-5-r1",
+          "text": "1:14 스즈메 오토 · 스즈메 ON",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "manualChecks": true,
+          "sourceRow": 82,
+          "sourceText": "스즈메 오토",
+          "sourceSnapshot": "[OOOOO]"
+        },
+        {
+          "id": "carry-2026-10-5-5-r2",
+          "text": "0:59 카마키 · 카마키 OFF · 중간딜 5840만",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            false,
+            true
+          ],
+          "manualChecks": true,
+          "sourceRow": 83,
+          "sourceText": "카마키",
+          "sourceSnapshot": "[XOOOO]"
+        },
+        {
+          "id": "carry-2026-10-5-5-r3",
+          "text": "0:45 스즈메 · 카마키 ON · 중간딜 9140만",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "manualChecks": true,
+          "sourceRow": 84,
+          "sourceText": "스즈메",
+          "sourceSnapshot": "[OOOOO]"
+        },
+        {
+          "id": "carry-2026-10-5-5-r4",
+          "text": "0:38 의란파 · 중간딜 11200만",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "manualChecks": true,
+          "sourceRow": 85,
+          "sourceText": "의란파",
+          "sourceSnapshot": ""
+        }
+      ],
+      "type": "이월 택틱",
+      "sourceSheet": "5넴",
+      "sourceHeaderCell": "B74",
+      "editorVersion": 1,
+      "rowFormatsVersion": 1,
+      "title": "5넴 스즈메 피오 의치카 의란파 카마키 성급 ?????, 손컨 —, TP —, 기대딜 1억 940만~1억 1,450만"
+    },
+    {
+      "month": "2026-10",
+      "id": "carry-2026-10-5-6",
+      "boss": 5,
+      "source": "이월 택틱",
+      "group": "이월 택틱",
+      "characters": [
+        "바이올렛",
+        "수마레",
+        "호마레",
+        "미소라",
+        "알네카"
+      ],
+      "stars": [
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "manualCount": "",
+      "tp": "4.0+",
+      "expectedDamage": "1억 1,230만~1억 1,430만",
+      "expectedDamageSort": 1.143,
+      "note": "필요 이월시간: 58초 · 사용 TP차지: 4.0 이상",
+      "video": "https://www.youtube.com/watch?v=RB8KTDWkjp8",
+      "tacticUrl": "",
+      "rows": [
+        {
+          "id": "carry-2026-10-5-6-start",
+          "text": "AUTO ON, 바이올렛, 수마레, 호마레 SET",
+          "checked": [
+            true,
+            true,
+            true,
+            false,
+            false,
+            true
+          ],
+          "manualChecks": true,
+          "sourceText": "Set [XXOOO] (AUTO:⭕)"
+        },
+        {
+          "id": "carry-2026-10-5-6-r1",
+          "text": "1:01 알네카 · AUTO OFF · 중간딜 4600만",
+          "checked": [
+            true,
+            true,
+            true,
+            false,
+            false,
+            false
+          ],
+          "manualChecks": true,
+          "sourceRow": 100,
+          "sourceText": "알네카",
+          "sourceSnapshot": "〃 ❌"
+        },
+        {
+          "id": "carry-2026-10-5-6-r2",
+          "text": "1:00 바이올렛 · 미소라 ON · AUTO ON · 중간딜 4840만",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            false,
+            true
+          ],
+          "manualChecks": true,
+          "sourceRow": 101,
+          "sourceText": "바이올렛",
+          "sourceSnapshot": "[XOOOO] ⭕"
+        },
+        {
+          "id": "carry-2026-10-5-6-r3",
+          "text": "0:58 수마레 · 중간딜 6420만",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            false,
+            true
+          ],
+          "manualChecks": true,
+          "sourceRow": 102,
+          "sourceText": "수마레",
+          "sourceSnapshot": ""
+        },
+        {
+          "id": "carry-2026-10-5-6-r4",
+          "text": "0:50 호마레 · 중간딜 8160만",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            false,
+            true
+          ],
+          "manualChecks": true,
+          "sourceRow": 103,
+          "sourceText": "호마레",
+          "sourceSnapshot": ""
+        },
+        {
+          "id": "carry-2026-10-5-6-r5",
+          "text": "0:45 수마레 · 중간딜 8970만",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            false,
+            true
+          ],
+          "manualChecks": true,
+          "sourceRow": 104,
+          "sourceText": "수마레",
+          "sourceSnapshot": ""
+        },
+        {
+          "id": "carry-2026-10-5-6-r6",
+          "text": "0:42 미소라 · 중간딜 9980만",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            false,
+            true
+          ],
+          "manualChecks": true,
+          "sourceRow": 105,
+          "sourceText": "미소라",
+          "sourceSnapshot": ""
+        },
+        {
+          "id": "carry-2026-10-5-6-r7",
+          "text": "0:33 수마레 · 중간딜 11340만",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            false,
+            true
+          ],
+          "manualChecks": true,
+          "sourceRow": 106,
+          "sourceText": "수마레",
+          "sourceSnapshot": ""
+        }
+      ],
+      "type": "이월 택틱",
+      "sourceSheet": "5넴",
+      "sourceHeaderCell": "B92",
+      "editorVersion": 1,
+      "rowFormatsVersion": 1,
+      "title": "5넴 바이올렛 수마레 호마레 미소라 알네카 성급 ?????, 손컨 —, TP 4.0+, 기대딜 1억 1,230만~1억 1,430만"
+    },
+    {
+      "month": "2026-10",
+      "id": "carry-2026-10-5-4",
+      "boss": 5,
+      "source": "이월 택틱",
+      "group": "이월 택틱",
+      "characters": [
+        "바이올렛",
+        "이리야",
+        "수마레",
+        "호마레",
+        "알네카"
+      ],
+      "stars": [
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "manualCount": "",
+      "tp": "4.0+",
+      "expectedDamage": "4,510만~4,710만",
+      "expectedDamageSort": 0.471,
+      "note": "필요 이월시간: 29초 · 조작없음 · 사용 TP차지: 4.0이상",
+      "video": "https://www.youtube.com/watch?v=Zo6QMatUh-w",
+      "tacticUrl": "",
+      "rows": [
+        {
+          "id": "carry-2026-10-5-4-start",
+          "text": "AUTO OFF, 바이올렛, 이리야, 수마레, 호마레, 알네카 SET",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            false
+          ],
+          "manualChecks": true,
+          "sourceText": "Set [OOOOO] (AUTO:❌)"
+        },
+        {
+          "id": "carry-2026-10-5-4-r1",
+          "text": "1:09 알네카 티타니아 · 중간딜 1210만",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            false
+          ],
+          "manualChecks": true,
+          "sourceRow": 64,
+          "sourceText": "알네카 티타니아",
+          "sourceSnapshot": ""
+        },
+        {
+          "id": "carry-2026-10-5-4-r2",
+          "text": "1:07 수마레 · 중간딜 1900만",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            false
+          ],
+          "manualChecks": true,
+          "sourceRow": 65,
+          "sourceText": "수마레",
+          "sourceSnapshot": ""
+        },
+        {
+          "id": "carry-2026-10-5-4-r3",
+          "text": "1:04 알네카 → 호마레 · 중간딜 3840만",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            false
+          ],
+          "manualChecks": true,
+          "sourceRow": 66,
+          "sourceText": "알네카 → 호마레",
+          "sourceSnapshot": ""
+        },
+        {
+          "id": "carry-2026-10-5-4-r4",
+          "text": "1:02 이리야 · 중간딜 4620만",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            false
+          ],
+          "manualChecks": true,
+          "sourceRow": 67,
+          "sourceText": "이리야",
+          "sourceSnapshot": ""
+        }
+      ],
+      "type": "이월 택틱",
+      "sourceSheet": "5넴",
+      "sourceHeaderCell": "B56",
+      "editorVersion": 1,
+      "rowFormatsVersion": 1,
+      "title": "5넴 바이올렛 이리야 수마레 호마레 알네카 성급 ?????, 손컨 —, TP 4.0+, 기대딜 4,510만~4,710만"
+    },
+    {
+      "month": "2026-10",
+      "id": "carry-2026-10-5-1",
+      "boss": 5,
+      "source": "이월 택틱",
+      "group": "이월 택틱",
+      "characters": [
+        "수나카",
+        "수사렌",
+        "미소라",
+        "캬루",
+        "알네카"
+      ],
+      "stars": [
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "manualCount": "",
+      "tp": "3.0+",
+      "expectedDamage": "3,070만~3,200만",
+      "expectedDamageSort": 0.32,
+      "note": "필요 이월시간: 21초 · 4페 6합 HP노드 필수(없으면 수나카 죽음) · 조작없음 · 사용 TP차지: 3.0 이상",
+      "video": "https://www.youtube.com/watch?v=rn-nnzq3CA4",
+      "tacticUrl": "",
+      "rows": [
+        {
+          "id": "carry-2026-10-5-1-start",
+          "text": "AUTO OFF, 수나카, 수사렌, 미소라, 캬루, 알네카 SET",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            false
+          ],
+          "manualChecks": true,
+          "sourceText": "Set [OOOOO] (AUTO:❌)"
+        },
+        {
+          "id": "carry-2026-10-5-1-r1",
+          "text": "1:07 ■광역기 + 보스유버(수나카,캬루,알네카) · 중간딜 3140만",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            false
+          ],
+          "manualChecks": true,
+          "sourceRow": 14,
+          "sourceText": "■광역기 + 보스유버(수나카,캬루,알네카)",
+          "sourceSnapshot": ""
+        }
+      ],
+      "type": "이월 택틱",
+      "sourceSheet": "5넴",
+      "sourceHeaderCell": "B6",
+      "editorVersion": 1,
+      "rowFormatsVersion": 1,
+      "title": "5넴 수나카 수사렌 미소라 캬루 알네카 성급 ?????, 손컨 —, TP 3.0+, 기대딜 3,070만~3,200만"
+    },
+    {
+      "month": "2026-10",
+      "id": "carry-2026-10-5-2",
+      "boss": 5,
+      "source": "이월 택틱",
+      "group": "이월 택틱",
+      "characters": [
+        "수나카",
+        "요리",
+        "수사렌",
+        "캬루",
+        "알네카"
+      ],
+      "stars": [
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "manualCount": "",
+      "tp": "3.0+",
+      "expectedDamage": "2,910만~3,050만",
+      "expectedDamageSort": 0.305,
+      "note": "필요 이월시간: 21초 · 4페 6합 HP노드 필수(없으면 수나카 죽음) · 사용 TP차지: 3.0 이상",
+      "video": "https://www.youtube.com/watch?v=5KDfemIFwso",
+      "tacticUrl": "",
+      "rows": [
+        {
+          "id": "carry-2026-10-5-2-start",
+          "text": "AUTO ON, 수나카, 수사렌, 캬루, 알네카 SET",
+          "checked": [
+            true,
+            false,
+            true,
+            true,
+            true,
+            true
+          ],
+          "manualChecks": true,
+          "sourceText": "Set [OOOXO] (AUTO:⭕)"
+        },
+        {
+          "id": "carry-2026-10-5-2-r1",
+          "text": "1:20 요리 · AUTO OFF",
+          "checked": [
+            true,
+            false,
+            true,
+            true,
+            true,
+            false
+          ],
+          "manualChecks": true,
+          "sourceRow": 30,
+          "sourceText": "요리",
+          "sourceSnapshot": "〃 ❌"
+        },
+        {
+          "id": "carry-2026-10-5-2-r2",
+          "text": "1:15 캬루 · AUTO ON",
+          "checked": [
+            true,
+            false,
+            true,
+            true,
+            true,
+            true
+          ],
+          "manualChecks": true,
+          "sourceRow": 31,
+          "sourceText": "캬루",
+          "sourceSnapshot": "〃 ⭕"
+        },
+        {
+          "id": "carry-2026-10-5-2-r3",
+          "text": "1:14 요리 · 요리 ON",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "manualChecks": true,
+          "sourceRow": 32,
+          "sourceText": "요리",
+          "sourceSnapshot": "[OOOOO]"
+        },
+        {
+          "id": "carry-2026-10-5-2-r4",
+          "text": "1:10 요리 · 중간딜 2980만",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "manualChecks": true,
+          "sourceRow": 33,
+          "sourceText": "요리",
+          "sourceSnapshot": ""
+        }
+      ],
+      "type": "이월 택틱",
+      "sourceSheet": "5넴",
+      "sourceHeaderCell": "B22",
+      "editorVersion": 1,
+      "rowFormatsVersion": 1,
+      "title": "5넴 수나카 요리 수사렌 캬루 알네카 성급 ?????, 손컨 —, TP 3.0+, 기대딜 2,910만~3,050만"
+    },
+    {
+      "month": "2026-10",
+      "id": "carry-2026-10-5-3",
+      "boss": 5,
+      "source": "이월 택틱",
+      "group": "이월 택틱",
+      "characters": [
+        "미미",
+        "프레이",
+        "스즈메",
+        "피오",
+        "카마키"
+      ],
+      "stars": [
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "manualCount": "",
+      "tp": "",
+      "expectedDamage": "2,140만~2,200만",
+      "expectedDamageSort": 0.22,
+      "note": "필요 이월시간: 21초 · 5페 6합 HP노드 필수(없으면 미미 사망) · 사용 TP차지: 부스트 유닛 없음",
+      "video": "https://www.youtube.com/watch?v=NFg-vhJpvzU",
+      "tacticUrl": "",
+      "rows": [
+        {
+          "id": "carry-2026-10-5-3-start",
+          "text": "AUTO OFF, 스즈메, 피오, 카마키 SET",
+          "checked": [
+            false,
+            false,
+            true,
+            true,
+            true,
+            false
+          ],
+          "manualChecks": true,
+          "sourceText": "Set [OOOXX] (AUTO:❌)"
+        },
+        {
+          "id": "carry-2026-10-5-3-r1",
+          "text": "1:11 카마키",
+          "checked": [
+            false,
+            false,
+            true,
+            true,
+            true,
+            false
+          ],
+          "manualChecks": true,
+          "sourceRow": 48,
+          "sourceText": "카마키",
+          "sourceSnapshot": ""
+        },
+        {
+          "id": "carry-2026-10-5-3-r2",
+          "text": "1:10 프레이 램페이지 후딜캔 · 미미 ON · 중간딜 2170만",
+          "checked": [
+            true,
+            false,
+            true,
+            true,
+            true,
+            false
+          ],
+          "manualChecks": true,
+          "sourceRow": 49,
+          "sourceText": "프레이 램페이지 후딜캔",
+          "sourceSnapshot": "[OOOXO]"
+        }
+      ],
+      "type": "이월 택틱",
+      "sourceSheet": "5넴",
+      "sourceHeaderCell": "B40",
+      "editorVersion": 1,
+      "rowFormatsVersion": 1,
+      "title": "5넴 미미 프레이 스즈메 피오 카마키 성급 ?????, 손컨 —, TP —, 기대딜 2,140만~2,200만"
+    }
   ]
 }

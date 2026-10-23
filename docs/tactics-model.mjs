@@ -13,6 +13,7 @@ export function compareTactics(a, b) {
   const boss = tactic => Number(tactic.boss) > 0 ? Number(tactic.boss) : Infinity;
   if (boss(a) !== boss(b)) return boss(a) < boss(b) ? -1 : 1;
   const damage = tactic => {
+    if (Number.isFinite(Number(tactic.expectedDamageSort)) && Number(tactic.expectedDamageSort) > 0) return Number(tactic.expectedDamageSort);
     const match = String(tactic.expectedDamage ?? '').replace(/[,\s]/g, '').match(/^(\d+(?:\.\d+)?)(억|만)?$/);
     if (!match) return -Infinity;
     const value = Number(match[1]) / (match[2] === '만' ? 10000 : 1);
@@ -33,6 +34,18 @@ export function replaceTacticRowText(row, text) {
 export function ensureTactics(app, metadata = {}, rowFormats = {}) {
   let changed = false;
   for (const [key, month] of Object.entries(app.months)) {
+    // Import current-month carry tactics exactly once per ID while respecting edits and deletions.
+    if (key === '2026-10' && Array.isArray(metadata.carryTactics)) {
+      const purged = new Set(Array.isArray(month.purgedTactics) ? month.purgedTactics : []);
+      const known = new Set((month.tactics || []).map(t => String(t.id)));
+      for (const seed of metadata.carryTactics) {
+        if (seed.month !== key || known.has(seed.id) || purged.has(seed.id)) continue;
+        const {month: _, ...tactic} = seed;
+        month.tactics.push(structuredClone(tactic));
+        known.add(seed.id);
+        changed = true;
+      }
+    }
     if (!month.tacticsMetadataVersion) {
       for (const missing of metadata.missingTactics || []) {
         if (missing.month === key && !month.tactics.some(t => t.id === missing.id)) { const {month:_, ...t} = missing; month.tactics.push(structuredClone(t)); changed = true; }
