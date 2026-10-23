@@ -2,6 +2,11 @@
 export function compactNavigation(viewport, available, required, compact=false) {
   return viewport<=800 || available<required+(compact?12:0);
 }
+// Keep all eight destinations readable even when desktop UI text is enlarged.
+export function bottomNavigationColumns(availableWidth, itemWidth) {
+  const perItem=Math.max(1,itemWidth);
+  return availableWidth>=8*perItem+8?8:availableWidth>=4*perItem+8?4:2;
+}
 export function installAdaptiveNavigation(doc=document,win=window) {
   const sidebar=doc.querySelector('.sidebar'),bottom=doc.querySelector('.mobile-nav');
   if(!sidebar||!bottom)return;
@@ -28,6 +33,26 @@ export function installAdaptiveNavigation(doc=document,win=window) {
       const active=doc.activeElement,page=active?.closest?.('.nav')?.dataset.page;
       root.dataset.navLayout=layout;
       if(compact&&page)bottom.querySelector('[data-page="'+page+'"]')?.focus({preventScroll:true});
+    }
+    if(compact){
+      // Measure intrinsic label widths independently of current grid columns.
+      // A DOM range remains accurate if a wide label overflows its grid cell.
+      const bottomStyle=win.getComputedStyle(bottom);
+      const bottomWidth=bottom.clientWidth-(parseFloat(bottomStyle.paddingLeft)||0)-(parseFloat(bottomStyle.paddingRight)||0);
+      const itemWidth=Math.ceil(Math.max(0,...[...bottom.querySelectorAll('button')].map(button=>{
+        const textNode=[...button.childNodes].find(node=>node.nodeType===3&&node.textContent.trim());
+        const range=doc.createRange();
+        if(textNode)range.selectNodeContents(textNode);
+        else range.selectNodeContents(button);
+        const labelWidth=range.getBoundingClientRect().width;
+        const iconWidth=button.querySelector('span')?.getBoundingClientRect().width||0;
+        const buttonStyle=win.getComputedStyle(button);
+        return Math.max(labelWidth,iconWidth)+(parseFloat(buttonStyle.paddingLeft)||0)+(parseFloat(buttonStyle.paddingRight)||0)+4;
+      })));
+      const columns=bottomNavigationColumns(bottomWidth,itemWidth);
+      if(bottom.dataset.navColumns!==String(columns))bottom.dataset.navColumns=String(columns);
+    }else{
+      delete bottom.dataset.navColumns;
     }
     root.style.setProperty('--adaptive-nav-bottom',compact?Math.ceil(bottom.getBoundingClientRect().height+24)+'px':'0px');
   }
