@@ -127,6 +127,39 @@ export function ensureTactics(app, metadata = {}, rowFormats = {}) {
       month.carryLineupRevision = 1;
       changed = true;
     }
+    // Apply the right-to-left command order and empty-hand-control default to
+    // existing 2~5넴 carry tactics; preserve 1넴 and user-edited rows.
+    if (key === '2026-10' && Array.isArray(metadata.carryTactics) && Number(month.carryCommandRevision || 0) < 1) {
+      const byId = new Map(metadata.carryTactics.filter(seed => Number(seed.boss) >= 2 && Number(seed.boss) <= 5)
+        .map(seed => [String(seed.id), seed]));
+      for (const tactic of month.tactics || []) {
+        const seed = byId.get(String(tactic.id));
+        if (!seed || groupOf(tactic) !== CARRY_GROUP || Number(tactic.boss) !== Number(seed.boss)) continue;
+        let updated = false;
+        if (tactic.manualCount === '' || tactic.manualCount == null) {
+          tactic.manualCount = '0';
+          updated = true;
+        }
+        const sameLineup = Array.isArray(tactic.characters) && tactic.characters.length === 5
+          && tactic.characters.every((name, i) => name === seed.characters[i]);
+        if (sameLineup) {
+          const referenceRows = new Map((seed.rows || []).map(row => [String(row.id), row]));
+          for (const row of tactic.rows || []) {
+            const reference = referenceRows.get(String(row.id));
+            if (!reference?.preRightToLeftText || row.text !== reference.preRightToLeftText) continue;
+            row.text = reference.text;
+            delete row.runs;
+            updated = true;
+          }
+        }
+        if (updated) {
+          tactic.title = titleFor(tactic);
+          changed = true;
+        }
+      }
+      month.carryCommandRevision = 1;
+      changed = true;
+    }
     if (!month.tacticsMetadataVersion) {
       for (const missing of metadata.missingTactics || []) {
         if (missing.month === key && !month.tactics.some(t => t.id === missing.id)) { const {month:_, ...t} = missing; month.tactics.push(structuredClone(t)); changed = true; }

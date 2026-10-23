@@ -1535,7 +1535,7 @@
         "5",
         "5"
       ],
-      "manualCount": "",
+      "manualCount": "0",
       "tp": "1.0",
       "expectedDamage": "1억 5,740만~1억 6,000만",
       "expectedDamageSort": 1.6,
@@ -1545,7 +1545,7 @@
       "rows": [
         {
           "id": "carry-2026-10-2-6-start",
-          "text": "AUTO OFF, 파오이, 게무기, 수셰피 SET",
+          "text": "AUTO OFF, 수셰피, 게무기, 파오이 SET",
           "checked": [
             false,
             true,
@@ -1555,7 +1555,8 @@
             false
           ],
           "manualChecks": true,
-          "sourceText": "Set [XOOXO] (AUTO:❌)"
+          "sourceText": "Set [XOOXO] (AUTO:❌)",
+          "preRightToLeftText": "AUTO OFF, 파오이, 게무기, 수셰피 SET"
         },
         {
           "id": "carry-2026-10-2-6-r1",
@@ -1607,7 +1608,7 @@
         },
         {
           "id": "carry-2026-10-2-6-r4",
-          "text": "1:14 리리컬 · 수네모네 ON · 게무기, 리리컬 OFF",
+          "text": "1:14 리리컬 · 수네모네 ON · 리리컬, 게무기 OFF",
           "checked": [
             true,
             true,
@@ -1619,7 +1620,8 @@
           "manualChecks": true,
           "sourceRow": 120,
           "sourceText": "리리컬",
-          "sourceSnapshot": "[OOXXO]"
+          "sourceSnapshot": "[OOXXO]",
+          "preRightToLeftText": "1:14 리리컬 · 수네모네 ON · 게무기, 리리컬 OFF"
         },
         {
           "id": "carry-2026-10-2-6-r5",
@@ -1655,7 +1657,7 @@
         },
         {
           "id": "carry-2026-10-2-6-r7",
-          "text": "1:00 게무기 · AUTO ON · 게무기, 리리컬 OFF · 중간딜 6760만",
+          "text": "1:00 게무기 · AUTO ON · 리리컬, 게무기 OFF · 중간딜 6760만",
           "checked": [
             true,
             true,
@@ -1667,7 +1669,8 @@
           "manualChecks": true,
           "sourceRow": 123,
           "sourceText": "게무기",
-          "sourceSnapshot": "[OOXXO] ⭕"
+          "sourceSnapshot": "[OOXXO] ⭕",
+          "preRightToLeftText": "1:00 게무기 · AUTO ON · 게무기, 리리컬 OFF · 중간딜 6760만"
         },
         {
           "id": "carry-2026-10-2-6-r8",
@@ -1739,7 +1742,7 @@
       "sourceHeaderCell": "B109",
       "editorVersion": 1,
       "rowFormatsVersion": 1,
-      "title": "2넴 수네모네 파오이 게무기 리리컬 수셰피 성급 55555, 손컨 —, TP 1.0, 기대딜 1억 5,740만~1억 6,000만"
+      "title": "2넴 수네모네 파오이 게무기 리리컬 수셰피 성급 55555, 손컨 0, TP 1.0, 기대딜 1억 5,740만~1억 6,000만"
     },
     {
       "month": "2026-10",
@@ -1761,7 +1764,7 @@
         "5",
         "5"
       ],
-      "manualCount": "",
+      "manualCount": "0",
       "tp": "1.0",
       "expectedDamage": "9,380만~9,740만",
       "expectedDamageSort": 0.974,
@@ -1771,7 +1774,7 @@
       "rows": [
         {
           "id": "carry-2026-10-2-5-start",
-          "text": "AUTO ON, 뉴사렌, 드마호 SET",
+          "text": "AUTO ON, 드마호, 뉴사렌 SET",
           "checked": [
             false,
             true,
@@ -1781,11 +1784,12 @@
             true
           ],
           "manualChecks": true,
-          "sourceText": "Set [XOOXX] (AUTO:⭕)"
+          "sourceText": "Set [XOOXX] (AUTO:⭕)",
+          "preRightToLeftText": "AUTO ON, 뉴사렌, 드마호 SET"
         },
         {
           "id": "carry-2026-10-2-5-r1",
-          "text": "1:22 드마호 · 수네모네, 쿠루루 ON",
+          "text": "1:22 드마호 · 쿠루루, 수네모네 ON",
           "checked": [
             false,
             true,
@@ -1797,11 +1801,12 @@
           "manualChecks": true,
           "sourceRow": 95,
           "sourceText": "드마호",
-          "sourceSnapshot": "[XOOOO]"
+          "sourceSnapshot": "[XOOOO]",
+          "preRightToLeftText": "1:22 드마호 · 수네모네, 쿠루루 ON"
         },
         {
           "id": "carry-2026-10-2-5-r2",
-          "text": "1:16 뉴사렌 · 성이오 ON · 뉴사렌, 수네모네, 쿠루루 OFF · AUTO OFF",
+          "text": "1:16 뉴사렌 · 성이오 ON · 쿠루루, 수네모네, 뉴사렌 OFF · AUTO OFF",
           "checked": [
             true,
             false,
@@ -1813,7 +1818,8 @@
           "manualChecks": true,
           "sourceRow": 96,
           "sourceText": "뉴사렌",
-          "sourceSnapshot": "[OXOXX] ❌"
+          "sourceSnapshot": "[OXOXX] ❌",
+          "preRightToLeftText": "1:16 뉴사렌 · 성이오 ON · 뉴사렌, 수네모네, 쿠루루 OFF · AUTO OFF"
         },
         {
           "id": "carry-2026-10-2-5-r3",
@@ -1849,7 +1855,7 @@
         },
         {
           "id": "carry-2026-10-2-5-r5",
-          "text": "1:08 뉴사렌 평타 후딜캔 · 수네모네, 쿠루루 OFF · 중간딜 3280만",
+          "text": "1:08 뉴사렌 평타 후딜캔 · 쿠루루, 수네모네 OFF · 중간딜 3280만",
           "checked": [
             true,
             false,
@@ -1861,7 +1867,8 @@
           "manualChecks": true,
           "sourceRow": 99,
           "sourceText": "뉴사렌 평타 후딜캔",
-          "sourceSnapshot": "[OXOXX]"
+          "sourceSnapshot": "[OXOXX]",
+          "preRightToLeftText": "1:08 뉴사렌 평타 후딜캔 · 수네모네, 쿠루루 OFF · 중간딜 3280만"
         },
         {
           "id": "carry-2026-10-2-5-r6",
@@ -1881,7 +1888,7 @@
         },
         {
           "id": "carry-2026-10-2-5-r7",
-          "text": "1:02 수네모네 → 쿠루루 → 뉴사렌 · 뉴사렌, 쿠루루 ON",
+          "text": "1:02 수네모네 → 쿠루루 → 뉴사렌 · 쿠루루, 뉴사렌 순으로 ON",
           "checked": [
             true,
             true,
@@ -1893,7 +1900,8 @@
           "manualChecks": true,
           "sourceRow": 101,
           "sourceText": "수네모네 → 쿠루루 → 뉴사렌",
-          "sourceSnapshot": "[OOOOO]"
+          "sourceSnapshot": "[OOOOO]",
+          "preRightToLeftText": "1:02 수네모네 → 쿠루루 → 뉴사렌 · 뉴사렌, 쿠루루 ON"
         },
         {
           "id": "carry-2026-10-2-5-r8",
@@ -1917,7 +1925,7 @@
       "sourceHeaderCell": "B87",
       "editorVersion": 1,
       "rowFormatsVersion": 1,
-      "title": "2넴 성이오 뉴사렌 드마호 수네모네 쿠루루 성급 55555, 손컨 —, TP 1.0, 기대딜 9,380만~9,740만"
+      "title": "2넴 성이오 뉴사렌 드마호 수네모네 쿠루루 성급 55555, 손컨 0, TP 1.0, 기대딜 9,380만~9,740만"
     },
     {
       "month": "2026-10",
@@ -1939,7 +1947,7 @@
         "5",
         "5"
       ],
-      "manualCount": "",
+      "manualCount": "0",
       "tp": "1.0",
       "expectedDamage": "8,290만~8,790만",
       "expectedDamageSort": 0.879,
@@ -1949,7 +1957,7 @@
       "rows": [
         {
           "id": "carry-2026-10-2-4-start",
-          "text": "AUTO OFF, 뉴사렌, 드마호 SET",
+          "text": "AUTO OFF, 드마호, 뉴사렌 SET",
           "checked": [
             false,
             true,
@@ -1959,11 +1967,12 @@
             false
           ],
           "manualChecks": true,
-          "sourceText": "Set [XOOXX] (AUTO:❌)"
+          "sourceText": "Set [XOOXX] (AUTO:❌)",
+          "preRightToLeftText": "AUTO OFF, 뉴사렌, 드마호 SET"
         },
         {
           "id": "carry-2026-10-2-4-r1",
-          "text": "1:22 드마호 · 수네모네, 엔요리 ON · AUTO ON",
+          "text": "1:22 드마호 · 엔요리, 수네모네 ON · AUTO ON",
           "checked": [
             false,
             true,
@@ -1975,7 +1984,8 @@
           "manualChecks": true,
           "sourceRow": 75,
           "sourceText": "드마호",
-          "sourceSnapshot": "[XOOOO] ⭕"
+          "sourceSnapshot": "[XOOOO] ⭕",
+          "preRightToLeftText": "1:22 드마호 · 수네모네, 엔요리 ON · AUTO ON"
         },
         {
           "id": "carry-2026-10-2-4-r2",
@@ -2063,7 +2073,7 @@
       "sourceHeaderCell": "B67",
       "editorVersion": 1,
       "rowFormatsVersion": 1,
-      "title": "2넴 성이오 뉴사렌 드마호 수네모네 엔요리 성급 55555, 손컨 —, TP 1.0, 기대딜 8,290만~8,790만"
+      "title": "2넴 성이오 뉴사렌 드마호 수네모네 엔요리 성급 55555, 손컨 0, TP 1.0, 기대딜 8,290만~8,790만"
     },
     {
       "month": "2026-10",
@@ -2085,7 +2095,7 @@
         "5",
         "5"
       ],
-      "manualCount": "",
+      "manualCount": "0",
       "tp": "2.5+",
       "expectedDamage": "6,880만~7,070만",
       "expectedDamageSort": 0.707,
@@ -2095,7 +2105,7 @@
       "rows": [
         {
           "id": "carry-2026-10-2-3-start",
-          "text": "AUTO OFF, 파오이, 리조미, 수셰피 SET",
+          "text": "AUTO OFF, 수셰피, 리조미, 파오이 SET",
           "checked": [
             true,
             false,
@@ -2105,7 +2115,8 @@
             false
           ],
           "manualChecks": true,
-          "sourceText": "Set [OXXOO] (AUTO:❌)"
+          "sourceText": "Set [OXXOO] (AUTO:❌)",
+          "preRightToLeftText": "AUTO OFF, 파오이, 리조미, 수셰피 SET"
         },
         {
           "id": "carry-2026-10-2-3-r1",
@@ -2225,7 +2236,7 @@
       "sourceHeaderCell": "B46",
       "editorVersion": 1,
       "rowFormatsVersion": 1,
-      "title": "2넴 파오이 게무기 리리컬 리조미 수셰피 성급 55555, 손컨 —, TP 2.5+, 기대딜 6,880만~7,070만"
+      "title": "2넴 파오이 게무기 리리컬 리조미 수셰피 성급 55555, 손컨 0, TP 2.5+, 기대딜 6,880만~7,070만"
     },
     {
       "month": "2026-10",
@@ -2247,7 +2258,7 @@
         "5",
         "5"
       ],
-      "manualCount": "",
+      "manualCount": "0",
       "tp": "",
       "expectedDamage": "3,413만~3,417만",
       "expectedDamageSort": 0.3417,
@@ -2257,7 +2268,7 @@
       "rows": [
         {
           "id": "carry-2026-10-2-1-start",
-          "text": "AUTO OFF, 프캬루, 호마레, 워지타, 바이올렛 SET",
+          "text": "AUTO OFF, 바이올렛, 워지타, 호마레, 프캬루 SET",
           "checked": [
             false,
             true,
@@ -2267,7 +2278,8 @@
             false
           ],
           "manualChecks": true,
-          "sourceText": "Set [XOOOO] (AUTO:❌)"
+          "sourceText": "Set [XOOOO] (AUTO:❌)",
+          "preRightToLeftText": "AUTO OFF, 프캬루, 호마레, 워지타, 바이올렛 SET"
         },
         {
           "id": "carry-2026-10-2-1-r1",
@@ -2323,7 +2335,7 @@
       "sourceHeaderCell": "B6",
       "editorVersion": 1,
       "rowFormatsVersion": 1,
-      "title": "2넴 루나 프캬루 호마레 워지타 바이올렛 성급 55555, 손컨 —, TP —, 기대딜 3,413만~3,417만"
+      "title": "2넴 루나 프캬루 호마레 워지타 바이올렛 성급 55555, 손컨 0, TP —, 기대딜 3,413만~3,417만"
     },
     {
       "month": "2026-10",
@@ -2345,7 +2357,7 @@
         "5",
         "5"
       ],
-      "manualCount": "",
+      "manualCount": "0",
       "tp": "",
       "expectedDamage": "3,210만~3,216만",
       "expectedDamageSort": 0.3216,
@@ -2355,7 +2367,7 @@
       "rows": [
         {
           "id": "carry-2026-10-2-2-start",
-          "text": "AUTO OFF, 프캬루, 드마호, 바이올렛 SET",
+          "text": "AUTO OFF, 바이올렛, 드마호, 프캬루 SET",
           "checked": [
             false,
             true,
@@ -2365,7 +2377,8 @@
             false
           ],
           "manualChecks": true,
-          "sourceText": "Set [XOXOO] (AUTO:❌)"
+          "sourceText": "Set [XOXOO] (AUTO:❌)",
+          "preRightToLeftText": "AUTO OFF, 프캬루, 드마호, 바이올렛 SET"
         },
         {
           "id": "carry-2026-10-2-2-r1",
@@ -2401,7 +2414,7 @@
         },
         {
           "id": "carry-2026-10-2-2-r3",
-          "text": "1:11 프캬루 2발째 · 루나, 호마레 ON",
+          "text": "1:11 프캬루 2발째 · 호마레, 루나 ON",
           "checked": [
             true,
             true,
@@ -2413,7 +2426,8 @@
           "manualChecks": true,
           "sourceRow": 35,
           "sourceText": "프캬루 2발째",
-          "sourceSnapshot": "[OOOOO]"
+          "sourceSnapshot": "[OOOOO]",
+          "preRightToLeftText": "1:11 프캬루 2발째 · 루나, 호마레 ON"
         },
         {
           "id": "carry-2026-10-2-2-r4",
@@ -2453,7 +2467,7 @@
       "sourceHeaderCell": "B25",
       "editorVersion": 1,
       "rowFormatsVersion": 1,
-      "title": "2넴 루나 프캬루 호마레 드마호 바이올렛 성급 55555, 손컨 —, TP —, 기대딜 3,210만~3,216만"
+      "title": "2넴 루나 프캬루 호마레 드마호 바이올렛 성급 55555, 손컨 0, TP —, 기대딜 3,210만~3,216만"
     },
     {
       "month": "2026-10",
@@ -2475,7 +2489,7 @@
         "5",
         "5"
       ],
-      "manualCount": "",
+      "manualCount": "0",
       "tp": "",
       "expectedDamage": "1억 8,560만~1억 8,630만",
       "expectedDamageSort": 1.863,
@@ -2485,7 +2499,7 @@
       "rows": [
         {
           "id": "carry-2026-10-3-6-start",
-          "text": "AUTO ON, 편오이, 와카나, 시나츠 SET",
+          "text": "AUTO ON, 시나츠, 와카나, 편오이 SET",
           "checked": [
             true,
             false,
@@ -2495,7 +2509,8 @@
             true
           ],
           "manualChecks": true,
-          "sourceText": "Set [OXOXO] (AUTO:⭕)"
+          "sourceText": "Set [OXOXO] (AUTO:⭕)",
+          "preRightToLeftText": "AUTO ON, 편오이, 와카나, 시나츠 SET"
         },
         {
           "id": "carry-2026-10-3-6-r1",
@@ -2595,7 +2610,7 @@
         },
         {
           "id": "carry-2026-10-3-6-r7",
-          "text": "0:47 시나츠 · 수레시아, 시나츠 OFF · 중간딜 10400만",
+          "text": "0:47 시나츠 · 시나츠, 수레시아 OFF · 중간딜 10400만",
           "checked": [
             true,
             false,
@@ -2607,7 +2622,8 @@
           "manualChecks": true,
           "sourceRow": 112,
           "sourceText": "시나츠",
-          "sourceSnapshot": "[OXXXX]"
+          "sourceSnapshot": "[OXXXX]",
+          "preRightToLeftText": "0:47 시나츠 · 수레시아, 시나츠 OFF · 중간딜 10400만"
         },
         {
           "id": "carry-2026-10-3-6-r8",
@@ -2695,7 +2711,7 @@
       "sourceHeaderCell": "B98",
       "editorVersion": 1,
       "rowFormatsVersion": 1,
-      "title": "3넴 편오이 수레시아 와카나 수리아 시나츠 성급 55555, 손컨 —, TP —, 기대딜 1억 8,560만~1억 8,630만"
+      "title": "3넴 편오이 수레시아 와카나 수리아 시나츠 성급 55555, 손컨 0, TP —, 기대딜 1억 8,560만~1억 8,630만"
     },
     {
       "month": "2026-10",
@@ -2717,7 +2733,7 @@
         "5",
         "5"
       ],
-      "manualCount": "",
+      "manualCount": "0",
       "tp": "",
       "expectedDamage": "9,930만~1억 160만",
       "expectedDamageSort": 1.016,
@@ -2727,7 +2743,7 @@
       "rows": [
         {
           "id": "carry-2026-10-3-5-start",
-          "text": "AUTO OFF, 피오, 편오이, 수레시아, 와카나 SET",
+          "text": "AUTO OFF, 와카나, 수레시아, 편오이, 피오 SET",
           "checked": [
             true,
             true,
@@ -2737,7 +2753,8 @@
             false
           ],
           "manualChecks": true,
-          "sourceText": "Set [OOOOX] (AUTO:❌)"
+          "sourceText": "Set [OOOOX] (AUTO:❌)",
+          "preRightToLeftText": "AUTO OFF, 피오, 편오이, 수레시아, 와카나 SET"
         },
         {
           "id": "carry-2026-10-3-5-r1",
@@ -2837,7 +2854,7 @@
         },
         {
           "id": "carry-2026-10-3-5-r7",
-          "text": "0:59 시나츠 · 편오이, 수레시아, 시나츠 OFF",
+          "text": "0:59 시나츠 · 시나츠, 수레시아, 편오이 OFF",
           "checked": [
             true,
             false,
@@ -2849,11 +2866,12 @@
           "manualChecks": true,
           "sourceRow": 89,
           "sourceText": "시나츠",
-          "sourceSnapshot": "[OXXOX]"
+          "sourceSnapshot": "[OXXOX]",
+          "preRightToLeftText": "0:59 시나츠 · 편오이, 수레시아, 시나츠 OFF"
         },
         {
           "id": "carry-2026-10-3-5-r8",
-          "text": "0:50 와카나 · 편오이, 수레시아 ON · 중간딜 9990만",
+          "text": "0:50 와카나 · 수레시아, 편오이 ON · 중간딜 9990만",
           "checked": [
             true,
             true,
@@ -2865,7 +2883,8 @@
           "manualChecks": true,
           "sourceRow": 90,
           "sourceText": "와카나",
-          "sourceSnapshot": "[OOOOX]"
+          "sourceSnapshot": "[OOOOX]",
+          "preRightToLeftText": "0:50 와카나 · 편오이, 수레시아 ON · 중간딜 9990만"
         },
         {
           "id": "carry-2026-10-3-5-r9",
@@ -2889,7 +2908,7 @@
       "sourceHeaderCell": "B75",
       "editorVersion": 1,
       "rowFormatsVersion": 1,
-      "title": "3넴 피오 편오이 수레시아 와카나 시나츠 성급 55555, 손컨 —, TP —, 기대딜 9,930만~1억 160만"
+      "title": "3넴 피오 편오이 수레시아 와카나 시나츠 성급 55555, 손컨 0, TP —, 기대딜 9,930만~1억 160만"
     },
     {
       "month": "2026-10",
@@ -2911,7 +2930,7 @@
         "5",
         "5"
       ],
-      "manualCount": "",
+      "manualCount": "0",
       "tp": "",
       "expectedDamage": "5,090만~5,170만",
       "expectedDamageSort": 0.517,
@@ -2921,7 +2940,7 @@
       "rows": [
         {
           "id": "carry-2026-10-3-4-start",
-          "text": "AUTO OFF, 피오, 편오이, 수레시아, 와카나, 수리아 SET",
+          "text": "AUTO OFF, 수리아, 와카나, 수레시아, 편오이, 피오 SET",
           "checked": [
             true,
             true,
@@ -2931,7 +2950,8 @@
             false
           ],
           "manualChecks": true,
-          "sourceText": "Set [OOOOO] (AUTO:❌)"
+          "sourceText": "Set [OOOOO] (AUTO:❌)",
+          "preRightToLeftText": "AUTO OFF, 피오, 편오이, 수레시아, 와카나, 수리아 SET"
         },
         {
           "id": "carry-2026-10-3-4-r1",
@@ -2987,7 +3007,7 @@
       "sourceHeaderCell": "B58",
       "editorVersion": 1,
       "rowFormatsVersion": 1,
-      "title": "3넴 피오 편오이 수레시아 와카나 수리아 성급 55555, 손컨 —, TP —, 기대딜 5,090만~5,170만"
+      "title": "3넴 피오 편오이 수레시아 와카나 수리아 성급 55555, 손컨 0, TP —, 기대딜 5,090만~5,170만"
     },
     {
       "month": "2026-10",
@@ -3009,7 +3029,7 @@
         "5",
         "6"
       ],
-      "manualCount": "",
+      "manualCount": "0",
       "tp": "2.0+",
       "expectedDamage": "4,530만~4,730만",
       "expectedDamageSort": 0.473,
@@ -3019,7 +3039,7 @@
       "rows": [
         {
           "id": "carry-2026-10-3-3-start",
-          "text": "AUTO OFF, 수사렌, 루카 SET",
+          "text": "AUTO OFF, 루카, 수사렌 SET",
           "checked": [
             true,
             false,
@@ -3029,7 +3049,8 @@
             false
           ],
           "manualChecks": true,
-          "sourceText": "Set [OXXXO] (AUTO:❌)"
+          "sourceText": "Set [OXXXO] (AUTO:❌)",
+          "preRightToLeftText": "AUTO OFF, 수사렌, 루카 SET"
         },
         {
           "id": "carry-2026-10-3-3-r1",
@@ -3049,7 +3070,7 @@
         },
         {
           "id": "carry-2026-10-3-3-r2",
-          "text": "1:10 수레이 · 수리코, 프셰피 ON · 중간딜 2770만",
+          "text": "1:10 수레이 · 프셰피, 수리코 ON · 중간딜 2770만",
           "checked": [
             true,
             true,
@@ -3061,7 +3082,8 @@
           "manualChecks": true,
           "sourceRow": 49,
           "sourceText": "수레이",
-          "sourceSnapshot": "[OOOOO]"
+          "sourceSnapshot": "[OOOOO]",
+          "preRightToLeftText": "1:10 수레이 · 수리코, 프셰피 ON · 중간딜 2770만"
         },
         {
           "id": "carry-2026-10-3-3-r3",
@@ -3101,7 +3123,7 @@
       "sourceHeaderCell": "B40",
       "editorVersion": 1,
       "rowFormatsVersion": 1,
-      "title": "3넴 수사렌 수리코 프셰피 수레이 루카 성급 55556, 손컨 —, TP 2.0+, 기대딜 4,530만~4,730만"
+      "title": "3넴 수사렌 수리코 프셰피 수레이 루카 성급 55556, 손컨 0, TP 2.0+, 기대딜 4,530만~4,730만"
     },
     {
       "month": "2026-10",
@@ -3123,7 +3145,7 @@
         "5",
         "5"
       ],
-      "manualCount": "",
+      "manualCount": "0",
       "tp": "2.0+",
       "expectedDamage": "4,350만~4,540만",
       "expectedDamageSort": 0.454,
@@ -3133,7 +3155,7 @@
       "rows": [
         {
           "id": "carry-2026-10-3-2-start",
-          "text": "AUTO OFF, 수리스, 피오, 스즈메, 클요리 SET",
+          "text": "AUTO OFF, 클요리, 스즈메, 피오, 수리스 SET",
           "checked": [
             true,
             true,
@@ -3143,7 +3165,8 @@
             false
           ],
           "manualChecks": true,
-          "sourceText": "Set [OOOXO] (AUTO:❌)"
+          "sourceText": "Set [OOOXO] (AUTO:❌)",
+          "preRightToLeftText": "AUTO OFF, 수리스, 피오, 스즈메, 클요리 SET"
         },
         {
           "id": "carry-2026-10-3-2-r1",
@@ -3215,7 +3238,7 @@
       "sourceHeaderCell": "B22",
       "editorVersion": 1,
       "rowFormatsVersion": 1,
-      "title": "3넴 수리스 피오 스즈메 봄쿄카 클요리 성급 55655, 손컨 —, TP 2.0+, 기대딜 4,350만~4,540만"
+      "title": "3넴 수리스 피오 스즈메 봄쿄카 클요리 성급 55655, 손컨 0, TP 2.0+, 기대딜 4,350만~4,540만"
     },
     {
       "month": "2026-10",
@@ -3237,7 +3260,7 @@
         "5",
         "5"
       ],
-      "manualCount": "",
+      "manualCount": "0",
       "tp": "2.0+",
       "expectedDamage": "2,870만~3,200만",
       "expectedDamageSort": 0.32,
@@ -3247,7 +3270,7 @@
       "rows": [
         {
           "id": "carry-2026-10-3-1-start",
-          "text": "AUTO OFF, 수메스, 수스미, 알라비, 수사렌 SET",
+          "text": "AUTO OFF, 수사렌, 알라비, 수스미, 수메스 SET",
           "checked": [
             true,
             true,
@@ -3257,7 +3280,8 @@
             false
           ],
           "manualChecks": true,
-          "sourceText": "Set [OOOXO] (AUTO:❌)"
+          "sourceText": "Set [OOOXO] (AUTO:❌)",
+          "preRightToLeftText": "AUTO OFF, 수메스, 수스미, 알라비, 수사렌 SET"
         },
         {
           "id": "carry-2026-10-3-1-r1",
@@ -3297,7 +3321,7 @@
       "sourceHeaderCell": "B6",
       "editorVersion": 1,
       "rowFormatsVersion": 1,
-      "title": "3넴 수메스 수스미 알라비 수네카 수사렌 성급 55555, 손컨 —, TP 2.0+, 기대딜 2,870만~3,200만"
+      "title": "3넴 수메스 수스미 알라비 수네카 수사렌 성급 55555, 손컨 0, TP 2.0+, 기대딜 2,870만~3,200만"
     },
     {
       "month": "2026-10",
@@ -3319,7 +3343,7 @@
         "5",
         "5"
       ],
-      "manualCount": "",
+      "manualCount": "0",
       "tp": "3.0+",
       "expectedDamage": "1억 4,600만",
       "expectedDamageSort": 1.46,
@@ -3329,7 +3353,7 @@
       "rows": [
         {
           "id": "carry-2026-10-4-4-start",
-          "text": "AUTO ON, 성라엘, 에로체, 블룸, 린드 SET",
+          "text": "AUTO ON, 린드, 블룸, 에로체, 성라엘 SET",
           "checked": [
             false,
             true,
@@ -3339,7 +3363,8 @@
             true
           ],
           "manualChecks": true,
-          "sourceText": "Set [XOOOO] (AUTO:⭕)"
+          "sourceText": "Set [XOOOO] (AUTO:⭕)",
+          "preRightToLeftText": "AUTO ON, 성라엘, 에로체, 블룸, 린드 SET"
         },
         {
           "id": "carry-2026-10-4-4-r1",
@@ -3459,7 +3484,7 @@
       "sourceHeaderCell": "B60",
       "editorVersion": 1,
       "rowFormatsVersion": 1,
-      "title": "4넴 루이즈마리 성라엘 에로체 블룸 린드 성급 55555, 손컨 —, TP 3.0+, 기대딜 1억 4,600만"
+      "title": "4넴 루이즈마리 성라엘 에로체 블룸 린드 성급 55555, 손컨 0, TP 3.0+, 기대딜 1억 4,600만"
     },
     {
       "month": "2026-10",
@@ -3481,7 +3506,7 @@
         "5",
         "5"
       ],
-      "manualCount": "",
+      "manualCount": "0",
       "tp": "2.1+",
       "expectedDamage": "7,760만~7,890만",
       "expectedDamageSort": 0.789,
@@ -3491,7 +3516,7 @@
       "rows": [
         {
           "id": "carry-2026-10-4-3-start",
-          "text": "AUTO OFF, 루이즈마리, 성라엘, 에로체 SET",
+          "text": "AUTO OFF, 에로체, 성라엘, 루이즈마리 SET",
           "checked": [
             false,
             true,
@@ -3501,7 +3526,8 @@
             false
           ],
           "manualChecks": true,
-          "sourceText": "Set [XOOOX] (AUTO:❌)"
+          "sourceText": "Set [XOOOX] (AUTO:❌)",
+          "preRightToLeftText": "AUTO OFF, 루이즈마리, 성라엘, 에로체 SET"
         },
         {
           "id": "carry-2026-10-4-3-r1",
@@ -3621,7 +3647,7 @@
       "sourceHeaderCell": "B39",
       "editorVersion": 1,
       "rowFormatsVersion": 1,
-      "title": "4넴 수마호 루이즈마리 성라엘 에로체 오우카 성급 55555, 손컨 —, TP 2.1+, 기대딜 7,760만~7,890만"
+      "title": "4넴 수마호 루이즈마리 성라엘 에로체 오우카 성급 55555, 손컨 0, TP 2.1+, 기대딜 7,760만~7,890만"
     },
     {
       "month": "2026-10",
@@ -3643,7 +3669,7 @@
         "5",
         "5"
       ],
-      "manualCount": "",
+      "manualCount": "0",
       "tp": "1.1+",
       "expectedDamage": "2,880만~2,930만",
       "expectedDamageSort": 0.293,
@@ -3653,7 +3679,7 @@
       "rows": [
         {
           "id": "carry-2026-10-4-1-start",
-          "text": "AUTO OFF, 뉴사렌, 수네모네, 엔요리 SET",
+          "text": "AUTO OFF, 엔요리, 수네모네, 뉴사렌 SET",
           "checked": [
             false,
             false,
@@ -3663,7 +3689,8 @@
             false
           ],
           "manualChecks": true,
-          "sourceText": "Set [XXOOO] (AUTO:❌)"
+          "sourceText": "Set [XXOOO] (AUTO:❌)",
+          "preRightToLeftText": "AUTO OFF, 뉴사렌, 수네모네, 엔요리 SET"
         },
         {
           "id": "carry-2026-10-4-1-r1",
@@ -3719,7 +3746,7 @@
       "sourceHeaderCell": "B6",
       "editorVersion": 1,
       "rowFormatsVersion": 1,
-      "title": "4넴 뉴츠네 라이라엘 뉴사렌 수네모네 엔요리 성급 55555, 손컨 —, TP 1.1+, 기대딜 2,880만~2,930만"
+      "title": "4넴 뉴츠네 라이라엘 뉴사렌 수네모네 엔요리 성급 55555, 손컨 0, TP 1.1+, 기대딜 2,880만~2,930만"
     },
     {
       "month": "2026-10",
@@ -3741,7 +3768,7 @@
         "5",
         "6"
       ],
-      "manualCount": "",
+      "manualCount": "0",
       "tp": "1.1+",
       "expectedDamage": "2,880만~2,930만",
       "expectedDamageSort": 0.293,
@@ -3751,7 +3778,7 @@
       "rows": [
         {
           "id": "carry-2026-10-4-2-start",
-          "text": "AUTO OFF, 성레짓타, 게무기, 리리컬, 리조미 SET",
+          "text": "AUTO OFF, 리조미, 리리컬, 게무기, 성레짓타 SET",
           "checked": [
             true,
             true,
@@ -3761,7 +3788,8 @@
             false
           ],
           "manualChecks": true,
-          "sourceText": "Set [OOOOX] (AUTO:❌)"
+          "sourceText": "Set [OOOOX] (AUTO:❌)",
+          "preRightToLeftText": "AUTO OFF, 성레짓타, 게무기, 리리컬, 리조미 SET"
         },
         {
           "id": "carry-2026-10-4-2-r1",
@@ -3785,7 +3813,7 @@
       "sourceHeaderCell": "B23",
       "editorVersion": 1,
       "rowFormatsVersion": 1,
-      "title": "4넴 성레짓타 게무기 리리컬 리조미 유카리 성급 55556, 손컨 —, TP 1.1+, 기대딜 2,880만~2,930만"
+      "title": "4넴 성레짓타 게무기 리리컬 리조미 유카리 성급 55556, 손컨 0, TP 1.1+, 기대딜 2,880만~2,930만"
     },
     {
       "month": "2026-10",
@@ -3807,7 +3835,7 @@
         "5",
         "6"
       ],
-      "manualCount": "",
+      "manualCount": "0",
       "tp": "",
       "expectedDamage": "1억 940만~1억 1,450만",
       "expectedDamageSort": 1.145,
@@ -3817,7 +3845,7 @@
       "rows": [
         {
           "id": "carry-2026-10-5-5-start",
-          "text": "AUTO ON, 카마키, 의란파, 의치카, 피오 SET",
+          "text": "AUTO ON, 피오, 의치카, 의란파, 카마키 SET",
           "checked": [
             true,
             true,
@@ -3827,7 +3855,8 @@
             true
           ],
           "manualChecks": true,
-          "sourceText": "Set [OOOOX] (AUTO:⭕)"
+          "sourceText": "Set [OOOOX] (AUTO:⭕)",
+          "preRightToLeftText": "AUTO ON, 카마키, 의란파, 의치카, 피오 SET"
         },
         {
           "id": "carry-2026-10-5-5-r1",
@@ -3899,7 +3928,7 @@
       "sourceHeaderCell": "B74",
       "editorVersion": 1,
       "rowFormatsVersion": 1,
-      "title": "5넴 카마키 의란파 의치카 피오 스즈메 성급 55556, 손컨 —, TP —, 기대딜 1억 940만~1억 1,450만"
+      "title": "5넴 카마키 의란파 의치카 피오 스즈메 성급 55556, 손컨 0, TP —, 기대딜 1억 940만~1억 1,450만"
     },
     {
       "month": "2026-10",
@@ -3921,7 +3950,7 @@
         "5",
         "5"
       ],
-      "manualCount": "",
+      "manualCount": "0",
       "tp": "4.0+",
       "expectedDamage": "1억 1,230만~1억 1,430만",
       "expectedDamageSort": 1.143,
@@ -3931,7 +3960,7 @@
       "rows": [
         {
           "id": "carry-2026-10-5-6-start",
-          "text": "AUTO ON, 호마레, 수마레, 바이올렛 SET",
+          "text": "AUTO ON, 바이올렛, 수마레, 호마레 SET",
           "checked": [
             false,
             false,
@@ -3941,7 +3970,8 @@
             true
           ],
           "manualChecks": true,
-          "sourceText": "Set [XXOOO] (AUTO:⭕)"
+          "sourceText": "Set [XXOOO] (AUTO:⭕)",
+          "preRightToLeftText": "AUTO ON, 호마레, 수마레, 바이올렛 SET"
         },
         {
           "id": "carry-2026-10-5-6-r1",
@@ -4061,7 +4091,7 @@
       "sourceHeaderCell": "B92",
       "editorVersion": 1,
       "rowFormatsVersion": 1,
-      "title": "5넴 알네카 미소라 호마레 수마레 바이올렛 성급 55555, 손컨 —, TP 4.0+, 기대딜 1억 1,230만~1억 1,430만"
+      "title": "5넴 알네카 미소라 호마레 수마레 바이올렛 성급 55555, 손컨 0, TP 4.0+, 기대딜 1억 1,230만~1억 1,430만"
     },
     {
       "month": "2026-10",
@@ -4083,7 +4113,7 @@
         "6",
         "5"
       ],
-      "manualCount": "",
+      "manualCount": "0",
       "tp": "4.0+",
       "expectedDamage": "4,510만~4,710만",
       "expectedDamageSort": 0.471,
@@ -4093,7 +4123,7 @@
       "rows": [
         {
           "id": "carry-2026-10-5-4-start",
-          "text": "AUTO OFF, 알네카, 호마레, 수마레, 이리야, 바이올렛 SET",
+          "text": "AUTO OFF, 바이올렛, 이리야, 수마레, 호마레, 알네카 SET",
           "checked": [
             true,
             true,
@@ -4103,7 +4133,8 @@
             false
           ],
           "manualChecks": true,
-          "sourceText": "Set [OOOOO] (AUTO:❌)"
+          "sourceText": "Set [OOOOO] (AUTO:❌)",
+          "preRightToLeftText": "AUTO OFF, 알네카, 호마레, 수마레, 이리야, 바이올렛 SET"
         },
         {
           "id": "carry-2026-10-5-4-r1",
@@ -4175,7 +4206,7 @@
       "sourceHeaderCell": "B56",
       "editorVersion": 1,
       "rowFormatsVersion": 1,
-      "title": "5넴 알네카 호마레 수마레 이리야 바이올렛 성급 55565, 손컨 —, TP 4.0+, 기대딜 4,510만~4,710만"
+      "title": "5넴 알네카 호마레 수마레 이리야 바이올렛 성급 55565, 손컨 0, TP 4.0+, 기대딜 4,510만~4,710만"
     },
     {
       "month": "2026-10",
@@ -4197,7 +4228,7 @@
         "5",
         "5"
       ],
-      "manualCount": "",
+      "manualCount": "0",
       "tp": "3.0+",
       "expectedDamage": "3,070만~3,200만",
       "expectedDamageSort": 0.32,
@@ -4207,7 +4238,7 @@
       "rows": [
         {
           "id": "carry-2026-10-5-1-start",
-          "text": "AUTO OFF, 알네카, 캬루, 미소라, 수사렌, 수나카 SET",
+          "text": "AUTO OFF, 수나카, 수사렌, 미소라, 캬루, 알네카 SET",
           "checked": [
             true,
             true,
@@ -4217,7 +4248,8 @@
             false
           ],
           "manualChecks": true,
-          "sourceText": "Set [OOOOO] (AUTO:❌)"
+          "sourceText": "Set [OOOOO] (AUTO:❌)",
+          "preRightToLeftText": "AUTO OFF, 알네카, 캬루, 미소라, 수사렌, 수나카 SET"
         },
         {
           "id": "carry-2026-10-5-1-r1",
@@ -4241,7 +4273,7 @@
       "sourceHeaderCell": "B6",
       "editorVersion": 1,
       "rowFormatsVersion": 1,
-      "title": "5넴 알네카 캬루 미소라 수사렌 수나카 성급 56555, 손컨 —, TP 3.0+, 기대딜 3,070만~3,200만"
+      "title": "5넴 알네카 캬루 미소라 수사렌 수나카 성급 56555, 손컨 0, TP 3.0+, 기대딜 3,070만~3,200만"
     },
     {
       "month": "2026-10",
@@ -4263,7 +4295,7 @@
         "6",
         "5"
       ],
-      "manualCount": "",
+      "manualCount": "0",
       "tp": "3.0+",
       "expectedDamage": "2,910만~3,050만",
       "expectedDamageSort": 0.305,
@@ -4273,7 +4305,7 @@
       "rows": [
         {
           "id": "carry-2026-10-5-2-start",
-          "text": "AUTO ON, 알네카, 캬루, 수사렌, 수나카 SET",
+          "text": "AUTO ON, 수나카, 수사렌, 캬루, 알네카 SET",
           "checked": [
             true,
             true,
@@ -4283,7 +4315,8 @@
             true
           ],
           "manualChecks": true,
-          "sourceText": "Set [OOOXO] (AUTO:⭕)"
+          "sourceText": "Set [OOOXO] (AUTO:⭕)",
+          "preRightToLeftText": "AUTO ON, 알네카, 캬루, 수사렌, 수나카 SET"
         },
         {
           "id": "carry-2026-10-5-2-r1",
@@ -4355,7 +4388,7 @@
       "sourceHeaderCell": "B22",
       "editorVersion": 1,
       "rowFormatsVersion": 1,
-      "title": "5넴 알네카 캬루 수사렌 요리 수나카 성급 56565, 손컨 —, TP 3.0+, 기대딜 2,910만~3,050만"
+      "title": "5넴 알네카 캬루 수사렌 요리 수나카 성급 56565, 손컨 0, TP 3.0+, 기대딜 2,910만~3,050만"
     },
     {
       "month": "2026-10",
@@ -4377,7 +4410,7 @@
         "5",
         "6"
       ],
-      "manualCount": "",
+      "manualCount": "0",
       "tp": "",
       "expectedDamage": "2,140만~2,200만",
       "expectedDamageSort": 0.22,
@@ -4387,7 +4420,7 @@
       "rows": [
         {
           "id": "carry-2026-10-5-3-start",
-          "text": "AUTO OFF, 카마키, 피오, 스즈메 SET",
+          "text": "AUTO OFF, 스즈메, 피오, 카마키 SET",
           "checked": [
             true,
             true,
@@ -4397,7 +4430,8 @@
             false
           ],
           "manualChecks": true,
-          "sourceText": "Set [OOOXX] (AUTO:❌)"
+          "sourceText": "Set [OOOXX] (AUTO:❌)",
+          "preRightToLeftText": "AUTO OFF, 카마키, 피오, 스즈메 SET"
         },
         {
           "id": "carry-2026-10-5-3-r1",
@@ -4437,7 +4471,7 @@
       "sourceHeaderCell": "B40",
       "editorVersion": 1,
       "rowFormatsVersion": 1,
-      "title": "5넴 카마키 피오 스즈메 프레이 미미 성급 55656, 손컨 —, TP —, 기대딜 2,140만~2,200만"
+      "title": "5넴 카마키 피오 스즈메 프레이 미미 성급 55656, 손컨 0, TP —, 기대딜 2,140만~2,200만"
     }
   ]
 }
