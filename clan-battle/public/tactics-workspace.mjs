@@ -3,7 +3,7 @@ import { characterPortrait, portraitAttributes, portraitStarOverlay, normalizeCh
 import { makeId, parseDamage } from './roster.mjs?v=20261022-ui14';
 import { GROUPS, groupOf, titleFor, compareTactics, newRow, checkedSix, commandState, recalculateTacticRows, replaceTacticRowText, pastedRows, richLine, parseClock, clock, escapeHtml as X } from './tactics-model.mjs?v=20261023-foreign01';
 import { shiftTimeline } from './engine.mjs?v=20261022-ui14';
-import { parseTacticTransfer } from './tactic-transfer.mjs?v=20261023-autolineup01';
+import { parseTacticTransfer, validTacticLineup, hasTacticSlots, resolveTacticSlots } from './tactic-transfer.mjs?v=20261023-slots01';
 
 export function createTacticWorkspace(api) {
   const { getApp, getMonth, persist, render, notify, navigate, section, copyText, catalog = [] } = api;
@@ -106,8 +106,19 @@ export function createTacticWorkspace(api) {
    try{transfer=parseTacticTransfer(text);}
    catch(error){notify(error.message||'복사한 택틱 정보를 확인하세요.');return;}
    let lineup=null;
-   if(transfer){
-     // 별칭을 정식 DB 이름으로 통일해야 초상화와 부스터 정보가 자동으로 따라옵니다.
+   let body=transfer?.text||text;
+   const slotPaste=transfer?.mode==='slots'||(!transfer&&hasTacticSlots(body));
+   if(slotPaste){
+     // Slot names are replaced with the CURRENT tactic's characters.
+     // Existing lineup, portraits, star ratings, and 6-column checks remain intact.
+     if(!validTacticLineup(t.characters)){
+       notify('캐릭터 1~5를 치환하려면 택틱 작업실에서 캐릭터 5명의 이름을 먼저 지정해 주세요.');
+       return;
+     }
+     try{body=resolveTacticSlots(body,t.characters);}
+     catch(error){notify(error.message);return;}
+   }else if(transfer){
+     // Explicit names can update the lineup after user confirmation.
      lineup=transfer.characters.map(name=>findCharacter(catalog,name)?.name||null);
      if(lineup.some(name=>!name)){
        notify('사이트 캐릭터 DB에서 확인되지 않는 이름: '+transfer.characters.filter((name,i)=>!lineup[i]).join(', ')+' · 변환기의 한국어 이름을 확인하세요.');
@@ -124,7 +135,7 @@ export function createTacticWorkspace(api) {
    const row=rowFor(el,false);
    const index=row?t.rows.indexOf(row):t.rows.length;
    const previous=t.rows[index-1]?.checked||[];
-   const rows=pastedRows(transfer?.text||text,previous,lineup||t.characters,catalog);
+   const rows=pastedRows(body,previous,lineup||t.characters,catalog);
    if(!rows.length)return;
    remember(true);
    if(lineup){
@@ -137,7 +148,7 @@ export function createTacticWorkspace(api) {
    save();
    if(transfer)redraw({row:rows.at(-1).id});
    else redrawRows(rows.at(-1).id);
-   notify(transfer?`${rows.length}행과 캐릭터 5명·초상화·SET 상태를 가져왔습니다.`:`${rows.length}행을 붙여넣었습니다.`);
+   notify(slotPaste?`${rows.length}행을 기존 캐릭터 1~5번 이름으로 치환했습니다. 편성 및 SET 상태는 유지됩니다.`:transfer?`${rows.length}행과 캐릭터 5명·초상화·SET 상태를 가져왔습니다.`:`${rows.length}행을 붙여넣었습니다.`);
  }
   async function uploadPortrait(el){if(!canEdit())return;
     const file=el.files?.[0];if(!file||!/^image\/(png|jpeg|webp)$/.test(file.type))return notify('PNG·JPG·WebP 이미지를 선택하세요.');
