@@ -26,10 +26,10 @@ export function convertForeignTactic(raw, koreanNames=[], foreignNames=[]) {
  const format=dango?'dango':'commands';
  src=src.replace(/\u00a0/g,' ').replace(/[ \u3000]*(\d{1,2}:[0-5]\d)(?=[ \u3000\t]|$)/g,'\n$1 ');
  const rows=[],state=[false,false,false,false,false];let auto=false,time='',lastTime='';
- const append=(actor,cmds)=>{
+ const append=(actor,cmds,condition='')=>{
    if(!cmds.length&&!actor)return;
    const head=time?(rows.length&&time===lastTime?'ㄴ ':time+' '):'';
-   const name=actor?(find(actor)>=0?ko[find(actor)]:actor)+' 후 ':'';
+   const name=actor?(find(actor)>=0?ko[find(actor)]:actor)+(condition?' '+condition+' ':' 후 '):'';
    if(actor&&find(actor)<0)warning('행동 캐릭터 명칭 확인: '+actor);
    const text=trim(head+name+(cmds.join(', ')||'(SET 변경 없음)'));
    rows.push({text,checked:[...state,auto]});lastTime=time;
@@ -48,6 +48,8 @@ export function convertForeignTactic(raw, koreanNames=[], foreignNames=[]) {
  };
  const act=(payload,actor='',initial=false)=>{
    const a=autoState(payload);const before=auto;
+   const skill=a.rest.match(/(?:s1|1スキル|技能1)\s*(?:开始后|開始後|スタート後)/i);
+   if(skill)a.rest=a.rest.replace(skill[0],' ');
    if(a.changed!==null)auto=a.changed;
    const on=[],off=[];
    const symbols=a.rest.match(/[OX〇○◯●ー－—-]{5}/i);
@@ -75,7 +77,7 @@ export function convertForeignTactic(raw, koreanNames=[], foreignNames=[]) {
    if(off.length)cmds.push(off.length>=3&&state.every(x=>!x)?'전부 OFF':order(off)+' OFF');
    if(a.changed!==null && (auto!==before||initial||!rows.length))cmds.push('AUTO '+(auto?'온':'오프'));
    if(!rows.length && !actor && initial){cmds.sort((x,y)=>x.startsWith('AUTO')?-1:y.startsWith('AUTO')?1:0);}
-   append(actor,cmds);
+   append(actor,cmds,skill?'1스킬 시작 후':'');
  };
  const processLine=input=>{
    let line=trim(input);if(!line)return;
