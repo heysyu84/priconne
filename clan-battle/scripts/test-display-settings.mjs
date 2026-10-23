@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import {readTextScale,saveTextScale,normalizeTextScale,applyTextScale} from '../public/display-settings.mjs';
+import {readTextScale,saveTextScale,normalizeTextScale,applyTextScale,migrateMobileTextScale} from '../public/display-settings.mjs';
 import {scaleStyles,buildDisplayStyles} from './build-display-styles.mjs';
 
 const saved=new Map([['clan-records','unchanged']]);
@@ -16,6 +16,19 @@ assert.equal(readTextScale(denied),100);assert.equal(saveTextScale(175,denied),1
 const properties=new Map(),root={dataset:{},style:{setProperty:(name,value)=>properties.set(name,value)}};
 applyTextScale(150,root);assert.equal(root.dataset.textScale,'150');assert.equal(properties.get('--user-text-scale'),'1.5');
 applyTextScale(100,root);assert.equal(root.dataset.textScale,'100');assert.equal(properties.get('--user-text-scale'),'1');
+
+
+const mobileSaved=new Map([['nyang-display-text-scale-v1','115']]);
+const mobileStore={getItem:key=>mobileSaved.get(key)??null,setItem:(key,value)=>mobileSaved.set(key,value)};
+assert.equal(migrateMobileTextScale(mobileStore,false),115,'Desktop must preserve 115%');
+assert.equal(migrateMobileTextScale(mobileStore,true),100,'Only the old 115% mobile default migrates');
+assert.equal(mobileSaved.get('nyang-display-mobile-base-110-v1'),'1');
+assert.equal(migrateMobileTextScale(mobileStore,true),100,'Migration does not run twice');
+saveTextScale(115,mobileStore);
+assert.equal(migrateMobileTextScale(mobileStore,true),115,'A deliberate new 115% choice is preserved');
+const customStore=new Map([['nyang-display-text-scale-v1','150']]);
+const personal={getItem:key=>customStore.get(key)??null,setItem:(key,val)=>customStore.set(key,val)};
+assert.equal(migrateMobileTextScale(personal,true),150,'Other personal text preferences must remain');
 
 const css=scaleStyles('html,body{font-size:16px}.a{font-size:1em}.a strong{font-size:inherit}@media(max-width:800px){.a{font:700 12px/1.5 sans-serif}.b{--battle-log-font-size:13px;font-size:var(--battle-log-font-size)}}');
 assert.ok(css.includes('calc((16px) * var(--user-text-scale,1))'));
