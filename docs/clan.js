@@ -98,7 +98,7 @@ const archiveKeys=()=>{const latest=Object.keys(app.months).sort().at(-1);return
 const rosterMigrated=ensureRoster(app,DEFAULT.rosterSeed||[]);
 const tacticsMigrated=ensureTactics(app,TACTIC_META,ROW_FORMATS);
 const guildMigrated=applySourceData(app,GUILD_SOURCE);
-const comboSynced=syncTacticRecommendations(app.months[Object.keys(app.months).sort().at(-1)]);
+const comboSynced=Object.values(app.months).map(syncTacticRecommendations).some(Boolean);
 app.active=Object.keys(app.months).sort().at(-1);
 let editor=false;try{const result=await apiFetch('/api/editor',{cache:'no-store'});editor=!!(await result.json()).editor;}catch{}
 let revision=boot.revision,dirty=0,saving=false,saveTimer=null,blocked=false;
@@ -363,7 +363,7 @@ async function refreshShared(){
     ensureRoster(app,DEFAULT.rosterSeed||[]);
     ensureTactics(app,TACTIC_META,ROW_FORMATS);
     applySourceData(app,GUILD_SOURCE);
-    syncTacticRecommendations(app.months[app.active]);
+    for(const record of Object.values(app.months))syncTacticRecommendations(record);
     if(app.months[active])app.active=active;
     for(const month of Object.values(app.months))Engine.replayMonth(month);
     revision=next.revision;
