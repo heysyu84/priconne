@@ -26,50 +26,97 @@ html[data-nav-layout="compact"] .mobile-nav[data-nav-columns="2"]{display:grid!i
 
 @media print{.sidebar[data-nav-probe],html[data-nav-layout="compact"] .mobile-nav{display:none!important}}
 
-/* The save/presence/month/settings toolbar is a single fixed top-row group,
-   regardless of user text size or the navigation's wide/compact mode. */
-html .topbar:not([data-toolbar-probe]),
-html[data-text-scale] .topbar:not([data-toolbar-probe]){
+/* Toolbar layout contract:
+   wide navigation => right of the wordmark, in the top row;
+   compact/mobile navigation => its OWN full-width row immediately below the wordmark.
+   Neither mode may flow onto a second line or overlap the logo. */
+html:not([data-nav-layout="compact"]) .topbar:not([data-toolbar-probe]){
   position:fixed!important;
-  top:14px!important;
+  top:17px!important;
   right:max(24px,calc((100vw - 1360px)/2 + 24px))!important;
   left:auto!important;
   width:max-content!important;
+  max-width:calc(100vw - 24px)!important;
   height:40px!important;
   min-height:0!important;
   padding:0!important;
   border:0!important;
   background:transparent!important;
   box-shadow:none!important;
-  z-index:45!important;
+  z-index:30!important;
 }
-html .topbar:not([data-toolbar-probe]) .top-actions,
-html[data-text-scale] .topbar:not([data-toolbar-probe]) .top-actions{
+html:not([data-nav-layout="compact"]) .topbar:not([data-toolbar-probe]) .top-actions{
   display:flex!important;
-  width:max-content!important;
-  max-width:none!important;
   align-items:center!important;
   justify-content:flex-end!important;
+  gap:clamp(5px,.65vw,9px)!important;
+  width:max-content!important;
+  max-width:none!important;
   flex-wrap:nowrap!important;
-  gap:clamp(4px,.65vw,9px)!important;
+}
+html:not([data-nav-layout="compact"]) .topbar:not([data-toolbar-probe]) .top-actions .month{
+  /* 2026년 10월 must fit, including its arrow and larger PC menu text. */
+  box-sizing:border-box!important;
+  width:max(165px,calc(8em + 26px))!important;
+  min-width:max(165px,calc(8em + 26px))!important;
+  max-width:none!important;
+  padding-inline:11px 24px!important;
+  text-overflow:clip!important;
 }
 html .topbar:not([data-toolbar-probe]) .top-actions>*{
   flex:0 0 auto;
   white-space:nowrap;
 }
-html .topbar:not([data-toolbar-probe]) .top-actions .month,
-html[data-text-scale] .topbar:not([data-toolbar-probe]) .top-actions .month{
-  width:clamp(98px,9vw,130px)!important;
-  min-width:0!important;
-  max-width:none!important;
-}
 html .topbar:not([data-toolbar-probe]) .admin-menu>summary{white-space:nowrap}
-html[data-nav-layout="compact"] .topbar:not([data-toolbar-probe]),
-html[data-nav-layout="compact"][data-text-scale] .topbar:not([data-toolbar-probe]){
-  top:12px!important;
-  right:14px!important;
+
+/* Compact state uses normal document flow so the header can never cover
+   the wordmark, including at 801px+ and when browser zoom changes. */
+html[data-nav-layout="compact"] .topbar:not([data-toolbar-probe]){
+  position:sticky!important;
+  top:64px!important;
+  left:auto!important;
+  right:auto!important;
+  width:100%!important;
+  max-width:100%!important;
+  min-width:0!important;
+  height:46px!important;
+  min-height:46px!important;
+  padding:5px 12px!important;
+  margin:0!important;
+  background:#fffefc!important;
+  border:0!important;
+  border-bottom:1px solid #e2d9ef!important;
+  box-shadow:none!important;
+  z-index:26!important;
 }
-/* Hidden measurement copy avoids a breakpoint loop when the live row compacts. */
+html[data-nav-layout="compact"] .topbar:not([data-toolbar-probe]) .top-actions{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:flex-end!important;
+  flex-wrap:nowrap!important;
+  gap:6px!important;
+  width:100%!important;
+  max-width:100%!important;
+  min-width:0!important;
+  overflow:visible!important;
+}
+html[data-nav-layout="compact"] .topbar:not([data-toolbar-probe]) .top-actions .status{
+  margin-right:auto!important;
+}
+html[data-nav-layout="compact"] .topbar:not([data-toolbar-probe]) .top-actions .month{
+  box-sizing:border-box!important;
+  width:clamp(114px,28vw,158px)!important;
+  min-width:114px!important;
+  max-width:none!important;
+  padding-inline:6px 20px!important;
+  text-overflow:clip!important;
+}
+html[data-nav-layout="compact"] .topbar:not([data-toolbar-probe]) .online-presence .presence-current{
+  display:none;
+}
+
+/* Treat a narrow desktop window as compact (rather than squeezing the
+   four actions into the wordmark). Probe always measures wide-mode widths. */
 .topbar[data-toolbar-probe]{
   position:fixed!important;
   top:-10000px!important;
@@ -78,6 +125,7 @@ html[data-nav-layout="compact"][data-text-scale] .topbar:not([data-toolbar-probe
   width:max-content!important;
   height:40px!important;
   padding:0!important;
+  display:flex!important;
   visibility:hidden!important;
   pointer-events:none!important;
   overflow:visible!important;
@@ -88,57 +136,45 @@ html[data-nav-layout="compact"][data-text-scale] .topbar:not([data-toolbar-probe
 .topbar[data-toolbar-probe] .top-actions{
   display:flex!important;
   width:max-content!important;
+  max-width:none!important;
   flex-wrap:nowrap!important;
-  gap:clamp(4px,.65vw,9px)!important;
+  align-items:center!important;
+  gap:clamp(5px,.65vw,9px)!important;
 }
-.topbar[data-toolbar-probe] .top-actions>*{flex:0 0 auto;white-space:nowrap}
-.topbar[data-toolbar-probe] .month{width:clamp(98px,9vw,130px)!important;min-width:0!important}
+.topbar[data-toolbar-probe] .top-actions>*{flex:0 0 auto!important;white-space:nowrap!important}
+.topbar[data-toolbar-probe] .top-actions .month{
+  box-sizing:border-box!important;
+  width:max(165px,calc(8em + 26px))!important;
+  min-width:max(165px,calc(8em + 26px))!important;
+  max-width:none!important;
+  padding-inline:11px 24px!important;
+}
 @media(max-width:800px){
-  html .topbar:not([data-toolbar-probe]),
-  html[data-text-scale] .topbar:not([data-toolbar-probe]){
-    top:11px!important;
-    right:12px!important;
+  html[data-nav-layout="compact"] .topbar:not([data-toolbar-probe]){
+    top:64px!important;
+    height:46px!important;
+    min-height:46px!important;
+    padding:5px 10px!important;
+  }
+  html[data-nav-layout="compact"] .topbar:not([data-toolbar-probe]) .top-actions{
+    gap:5px!important;
+  }
+  html[data-nav-layout="compact"] .topbar:not([data-toolbar-probe]) .top-actions .month{
+    width:clamp(112px,29vw,130px)!important;
+    min-width:112px!important;
   }
 }
-/* Only when the complete toolbar plus wordmark will not fit side-by-side,
-   reserve the topmost row for the toolbar and move the wordmark below it. */
-html[data-topbar-layout="stacked"] .sidebar:not([data-nav-probe]){
-  height:113px!important;
-  min-height:113px!important;
-  padding-top:53px!important;
+@media(max-width:375px){
+  html[data-nav-layout="compact"] .topbar:not([data-toolbar-probe]) .top-actions{gap:4px!important}
+  html[data-nav-layout="compact"] .topbar:not([data-toolbar-probe]) .online-presence>span{display:none}
+  html[data-nav-layout="compact"] .topbar:not([data-toolbar-probe]) .top-actions .status{padding-inline:5px!important}
+  html[data-nav-layout="compact"] .topbar:not([data-toolbar-probe]) .top-actions .month{
+    min-width:108px!important;
+    width:108px!important;
+    padding-inline:4px 17px!important;
+  }
+  html[data-nav-layout="compact"] .topbar:not([data-toolbar-probe]) .admin-menu>summary{
+    padding-inline:6px!important;
+  }
 }
-html[data-topbar-layout="stacked"] .topbar:not([data-toolbar-probe]),
-html[data-topbar-layout="stacked"][data-text-scale] .topbar:not([data-toolbar-probe]){
-  top:0!important;
-  right:0!important;
-  left:0!important;
-  width:100%!important;
-  height:49px!important;
-  padding:6px 10px!important;
-  border-bottom:1px solid #e2d9ef!important;
-  background:#fffefc!important;
-}
-html[data-topbar-layout="stacked"] .topbar:not([data-toolbar-probe]) .top-actions{
-  width:100%!important;
-  max-width:100%!important;
-  gap:4px!important;
-}
-html[data-topbar-layout="stacked"] .topbar:not([data-toolbar-probe]) .top-actions .month{
-  width:clamp(84px,23vw,110px)!important;
-  padding-inline:4px!important;
-}
-html[data-topbar-layout="stacked"] .topbar:not([data-toolbar-probe]) :is(.status,.month,.online-presence,.admin-menu>summary){
-  font-size:clamp(11px,2.9vw,13px)!important;
-}
-html[data-topbar-layout="stacked"] .topbar:not([data-toolbar-probe]) .online-presence{
-  padding-inline:5px;
-}
-html[data-topbar-layout="stacked"] .topbar:not([data-toolbar-probe]) .online-presence .presence-current{display:none}
-@media(max-width:400px){
-  html[data-topbar-layout="stacked"] .topbar:not([data-toolbar-probe]) .online-presence>span{display:none}
-  html[data-topbar-layout="stacked"] .topbar:not([data-toolbar-probe]) .status{padding-inline:5px}
-  html[data-topbar-layout="stacked"] .topbar:not([data-toolbar-probe]) .admin-menu>summary{padding-inline:6px}
-}
-@media print{
-  .topbar[data-toolbar-probe]{display:none!important}
-}
+@media print{.topbar[data-toolbar-probe]{display:none!important}}
