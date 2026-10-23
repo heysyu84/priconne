@@ -48,6 +48,50 @@ export function ensureTactics(app, metadata = {}, rowFormats = {}) {
         changed = true;
       }
     }
+    // Apply the October 2026 maximum-rarity and Lyrical-name correction once to
+    // records already stored by the live app, not only to newly imported seeds.
+    // Other tactic groups, deletions, notes, and manually edited steps stay intact.
+    if (key === '2026-10' && Array.isArray(metadata.carryTactics) && Number(month.carryStarsRevision || 0) < 1) {
+      const carrySeeds = new Map(metadata.carryTactics.map(t => [String(t.id), t]));
+      for (const t of month.tactics || []) {
+        const seed = carrySeeds.get(String(t.id));
+        if (!seed || groupOf(t) !== CARRY_GROUP) continue;
+        const normalized = (t.characters || []).map(name => name === '페리컬' ? '리리컬' : name);
+        if (JSON.stringify(normalized) !== JSON.stringify(t.characters)) { t.characters = normalized; changed = true; }
+        // Only apply the seed rarity when the character in every slot is still
+        // the original one. This avoids assigning a different character's stars
+        // to a lineup that the site administrator has already customized.
+        if (normalized.length === 5 && normalized.every((name, i) => name === seed.characters[i])
+            && JSON.stringify(t.stars) !== JSON.stringify(seed.stars)) {
+          t.stars = [...seed.stars];
+          changed = true;
+        }
+        for (const row of t.rows || []) {
+          for (const field of ['text', 'sourceText']) {
+            if (typeof row[field] === 'string' && row[field].includes('페리컬')) {
+              row[field] = row[field].replace(/페리컬/g, '리리컬');
+              changed = true;
+            }
+          }
+          if (Array.isArray(row.runs)) for (const run of row.runs) {
+            if (typeof run.text === 'string' && run.text.includes('페리컬')) {
+              run.text = run.text.replace(/페리컬/g, '리리컬');
+              changed = true;
+            }
+          }
+        }
+        for (const field of ['note', 'originalTitle']) {
+          if (typeof t[field] === 'string' && t[field].includes('페리컬')) {
+            t[field] = t[field].replace(/페리컬/g, '리리컬');
+            changed = true;
+          }
+        }
+        const revisedTitle = titleFor(t);
+        if (t.title !== revisedTitle) { t.title = revisedTitle; changed = true; }
+      }
+      month.carryStarsRevision = 1;
+      changed = true;
+    }
     if (!month.tacticsMetadataVersion) {
       for (const missing of metadata.missingTactics || []) {
         if (missing.month === key && !month.tactics.some(t => t.id === missing.id)) { const {month:_, ...t} = missing; month.tactics.push(structuredClone(t)); changed = true; }
