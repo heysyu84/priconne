@@ -51,7 +51,7 @@ html[data-text-scale] .battle-sheet.compact-battle-sheet td.is-editing :is(input
   html[data-text-scale] .topbar{height:auto!important;min-height:46px}
   html[data-text-scale] .topbar .top-actions{gap:6px;flex-wrap:wrap}
   html[data-text-scale] .battle-sheet.compact-battle-sheet,
-  html[data-text-scale] .battle-sheet.compact-battle-sheet.with-details{width:calc(var(--mobile-battle-width) * var(--layout-text-scale))!important;min-width:calc(var(--mobile-battle-width) * var(--layout-text-scale))!important}
+  html[data-text-scale] .battle-sheet.compact-battle-sheet.with-details{width:100%!important;min-width:calc(var(--mobile-battle-width) * var(--layout-text-scale))!important}
   html[data-text-scale] .compact-battle-sheet colgroup col{width:calc(var(--mobile-col-width) * var(--layout-text-scale))!important}
   html:is([data-text-scale="150"],[data-text-scale="155"],[data-text-scale="160"],[data-text-scale="165"],[data-text-scale="170"],[data-text-scale="175"],[data-text-scale="180"],[data-text-scale="185"],[data-text-scale="190"],[data-text-scale="195"],[data-text-scale="200"]) .mobile-nav{grid-template-columns:repeat(4,minmax(0,1fr))!important;height:auto;min-height:110px}
   html:is([data-text-scale="150"],[data-text-scale="155"],[data-text-scale="160"],[data-text-scale="165"],[data-text-scale="170"],[data-text-scale="175"],[data-text-scale="180"],[data-text-scale="185"],[data-text-scale="190"],[data-text-scale="195"],[data-text-scale="200"]) .content{padding-bottom:180px!important}
