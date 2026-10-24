@@ -139,6 +139,7 @@ export function suppressTacticRecommendation(month,record){
 // Keep old unmatched records in storage for recovery; never expose them as extra tactics.
 export function visibleTacticRecommendations(month){
  const active=new Set((month?.tactics||[]).filter(tacticReady)
+  .filter(t=>!t.hidden)
   .filter(t=>!(month.hiddenTacticRecommendationIds||[]).includes(String(t.id)))
   .map(t=>String(t.id)));
  const seen=new Set();
