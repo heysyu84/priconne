@@ -591,7 +591,7 @@ input:focus,select:focus,textarea:focus {border-color:#9872bf;box-shadow:0 0 0 3
 @media(max-width:800px){
   .battle-sheet.compact-battle-sheet,
   .battle-sheet.compact-battle-sheet.with-details{
-    width:var(--mobile-battle-width)!important;
+    width:100%!important;
     min-width:var(--mobile-battle-width)!important;
     max-width:none;
     table-layout:fixed;
@@ -1122,5 +1122,18 @@ table.tw-grid thead th{
   .battle-sheet.compact-battle-sheet .boss-cell{
     white-space:normal;
     overflow-wrap:anywhere;
+  }
+}
+
+/* Responsive battle log: use the available width on 600–800px tablet windows,
+   preserve intrinsic widths and internal scrolling on narrow phones. */
+@media(max-width:800px){
+  .battle-sheet.compact-battle-sheet .boss-cell .battle-boss-label{
+    display:block;
+    width:100%;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    word-break:keep-all;
   }
 }
