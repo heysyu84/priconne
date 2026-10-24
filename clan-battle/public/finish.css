@@ -866,16 +866,19 @@ table.tw-grid thead th{
  .battle-boss-strip .mini-boss-data>strong{white-space:normal;overflow-wrap:anywhere;line-height:1.25}
  .battle-boss-strip .mini-boss-data>small{overflow-wrap:anywhere}
  .grid-2,.profile-activity-grid{grid-template-columns:minmax(0,1fr)}
- /* Situation board: recent battle logs 80%, contribution leaders 20%. */
- .raid-stats+.grid-2{grid-template-columns:minmax(0,4fr) minmax(0,1fr);gap:12px;align-items:start}
+ /* Situation board: give contribution leaders a readable third of the desktop row. */
+ .raid-stats+.grid-2{grid-template-columns:minmax(0,2fr) minmax(280px,1fr);gap:12px;align-items:start}
  .raid-stats+.grid-2>.panel{min-width:0}
  .raid-stats+.grid-2>.panel .table-scroll{max-width:100%;min-width:0;overflow-x:auto}
  /* Narrow only the day column of the overview's recent battle log. */
  .raid-stats+.grid-2 .recent-battle-table .day-heading{width:8.5%}
  .raid-stats+.grid-2 .recent-battle-table .type-heading{width:8%}
- /* The slim ranking should wrap rather than overflow when rounded values gain digits. */
- .raid-stats+.grid-2 .rank-head{flex-wrap:wrap;gap:2px 4px}
- .raid-stats+.grid-2 .rank-data{font-size:11px;min-width:0;overflow-wrap:anywhere}
+ /* Keep each ranking name and its full contribution value on one line. */
+ .raid-stats+.grid-2 .rank-head{display:grid;grid-template-columns:minmax(0,1fr) max-content;gap:8px;align-items:center;white-space:nowrap}
+ .raid-stats+.grid-2 .rank-data{font-size:11px;min-width:0;white-space:nowrap;overflow-wrap:normal}
+ .raid-stats+.grid-2 .rank-name{min-width:0;white-space:nowrap}
+ .raid-stats+.grid-2>.panel:last-child .panel-head{flex-wrap:nowrap;gap:8px}
+ .raid-stats+.grid-2>.panel:last-child .panel-head h2,.raid-stats+.grid-2>.panel:last-child .panel-head .btn{white-space:nowrap}
  /* Leave room for boss names of roughly 9–10 characters, including spaces. */
  .raid-stats+.grid-2 .recent-battle-table .boss-progress-heading{width:21%}
  .metrics,.archive-record-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}
