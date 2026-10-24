@@ -1260,8 +1260,12 @@ table.tw-grid thead th{
  color:#c0273e!important;
 }
 
-/* Slightly denser SET / action rows, preserving the existing text size. */
-.tw-work .tw-grid .tw-text-cell>[data-tw-text]{min-height:39px;padding-top:7px;padding-bottom:7px;line-height:1.65}
+/* Compact SET / action rows with a 13px baseline and scaled text support. */
+.tw-work .tw-grid .tw-text-cell>[data-tw-text]{min-height:28px;padding-top:4px;padding-bottom:4px;font-size:13px!important;line-height:1.5}
+
+html[data-text-scale] .tw-work .tw-grid .tw-text-cell>[data-tw-text]{font-size:calc(13px * var(--tactic-text-scale,1))!important}
+.tw-work table.tw-grid thead th{height:32px;padding-top:2px;padding-bottom:2px}
+
 
 /* Dashboard: sort remaining normal attacks / unused carry attacks via header buttons. */
 .dashboard-table th .dashboard-sort-head{

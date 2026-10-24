@@ -52,10 +52,10 @@ app.roster=[{id:'m1',name:'리온'},{id:'m2',name:'질풍리온'},{id:'m3',name:
 month.memberIds=app.roster.map(p=>p.id);
 const readings=[
  '2026/10/23 12:30\n리온\n테스트보스 입힌 데미지 233831766',
- '_ 질풍리온','테스트보스','333831766',
+ '실전','_ 질풍리온','333831766','테스트보스',
  '모의전 2026/10/23 12:31\n슈\n테스트보스 입힌 데미지 336598960',
  '2026/10/23 12:32\n리온\n테스트보스 입힌 데미지 322316115',
- '직풍리온','테스트보스','322316115','슈'
+ '실전','직풍리온','슈','322316115','테스트보스'
 ];
 let terminated=false,closed=false;
 globalThis.Tesseract={createWorker:async()=>({
@@ -63,7 +63,7 @@ globalThis.Tesseract={createWorker:async()=>({
  terminate:async()=>{terminated=true;}
 })};
 globalThis.createImageBitmap=async()=>({width:1536,height:709,close(){closed=true;}});
-document.createElement=()=>({width:0,height:0,getContext:()=>({drawImage(){},getImageData:()=>({data:new Uint8ClampedArray(4)}),putImageData(){}})});
+document.createElement=()=>({width:0,height:0,getContext:()=>({drawImage(){},fillRect(){},getImageData:()=>({data:new Uint8ClampedArray(4)}),putImageData(){}})});
 for(const fn of listeners.change)fn({target:{id:'bli-files',files:[image],closest:()=>({})}});
 action('analyze');
 for(let tries=0;tries<100&&!terminated;tries++)await new Promise(resolve=>setImmediate(resolve));
@@ -76,3 +76,22 @@ assert.match(html,/<option value="m2" selected>질풍리온/);
 assert.match(html,/<option value="m3" selected>슈/);
 assert.deepEqual(month.events,[],'OCR analysis must not register records automatically');
 console.log('PASS: field OCR, full nickname matching/retry, damage correction and practice exclusion');
+
+action('clear');terminated=false;
+readings.push(
+ '2026/10/23 12:30\n입힌 데미지 333831766','실전','아메스','아메스','아메스','333831766','테스트보스',
+ '2026/10/23 12:31\n입힌 데미지 336598960','모의전',
+ '2026/10/23 12:32\n입힌 데미지 322316115','실전','아메스','아메스','아메스','322316115','테스트보스'
+);
+for(const fn of listeners.change)fn({target:{id:'bli-files',files:[image],closest:()=>({})}});
+action('analyze');for(let tries=0;tries<100&&!terminated;tries++)await new Promise(resolve=>setImmediate(resolve));
+assert.ok(terminated);assert.equal(readings.length,0);
+assert.match(html,/등록 가능한 선택 기록 0건/);
+assert.match(html,/data-bli-name-map="아메스"/);
+assert.match(html,/모의전 1건 제외/);
+for(const fn of listeners.change)fn({target:{dataset:{bliNameMap:'아메스'},value:'m3',closest:()=>({})}});
+assert.match(html,/등록 가능한 선택 기록 2건/,'One nickname mapping must resolve and select every matching valid row');
+assert.equal(app.roster.find(p=>p.id==='m3').name,'슈','Mapping must preserve the canonical site name');
+assert.deepEqual(app.roster.find(p=>p.id==='m3').aliases,undefined,'A temporary game nickname must not silently become a permanent alias');
+assert.deepEqual(month.events,[]);
+console.log('PASS: practice badge OCR and one-time nickname mapping across the batch without changing site names');

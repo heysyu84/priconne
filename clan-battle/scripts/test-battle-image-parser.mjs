@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import {
   parseBattleLogText,parseQuickLogText,sortBattleLogRows,
-  detectDuplicateRows,validBattleLogRow
+  detectDuplicateRows,validBattleLogRow,matchBossReadings,matchBossPortrait
 } from '../public/battle-image-parser.mjs';
 
 const roster=[
@@ -54,3 +54,13 @@ assert.equal(wrapped.length,2);assert.deepEqual(wrapped.map(r=>r.damage),[189633
 
 assert.equal(parseBattleLogText('직풍리온',{roster:[{id:'short',name:'리온'},{id:'long',name:'질풍리온'}],memberField:true}).memberId,'');
 assert.equal(parseBattleLogText('_ 질풍리온',{roster:[{id:'short',name:'리온'},{id:'long',name:'질풍리온'}],memberField:true}).memberId,'long');
+
+const nameCases=[['` 질풍리온',[{id:'a',name:'질풍리온'}],'a'],['ㆍ 아메스',[{id:'a',name:'아메스'}],'a'],['쁘띠어피치',[{id:'a',name:'쁘띠'}],'a'],['다른슈',[{id:'a',name:'슈'}],'']];
+for(const [text,roster,id] of nameCases)assert.equal(parseBattleLogText(text,{roster,memberField:true}).memberId,id);
+const monthlyBosses=[{id:1,name:'프로스트 하운드'},{id:2,name:'랜드 슬로스'},{id:3,name:'번사우르스'},{id:4,name:'다크 가고일'},{id:5,name:'글러튼'}];
+for(const [text,id] of [['[래대스로으',2],['다크마모일',4],['글러트',5],['프로스트하운',1]])assert.equal(matchBossReadings([{text,confidence:90}],monthlyBosses)?.id,id);
+assert.equal(matchBossReadings([{text:'아메스',confidence:95}],monthlyBosses),null);
+assert.equal(matchBossReadings([{text:'다크가고일',confidence:95}],[{id:1,name:'다크 가고일'},{id:2,name:'다크 가고일 2'}]),null);
+assert.equal(matchBossPortrait([.2,.3,.4],[{bossId:3,bossReadScore:1,bossVisual:[.21,.31,.41]},{bossId:4,bossReadScore:1,bossVisual:[.7,.6,.9]}]),3);
+assert.equal(matchBossPortrait([.2,.3,.4],[{bossId:3,bossReadScore:1,bossVisual:[.21,.31,.41]},{bossId:4,bossReadScore:1,bossVisual:[.22,.32,.42]}]),null);
+console.log('PASS: OCR icon noise, abbreviated names, conservative boss matching and portrait ambiguity');

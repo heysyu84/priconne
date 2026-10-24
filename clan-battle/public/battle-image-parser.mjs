@@ -37,6 +37,56 @@ function bestMatch(text,items){
  // Two independently named members/bosses within one row is ambiguous.
  return distinct.length===1?matched[0]:null;
 }
+export function cleanOcrName(value){
+ return String(value??'').normalize('NFKC').replace(/^[\s\p{P}\p{S}ㆍ·]+|[\s\p{P}\p{S}ㆍ·]+$/gu,'').trim();
+}
+function fieldMember(text,candidates){
+ const normalized=key(cleanOcrName(text));
+ const exact=candidates.filter(c=>c.key===normalized),ids=new Set(exact.map(c=>c.id));
+ if(ids.size)return ids.size===1?exact[0]:null;
+ // The site may use an abbreviated nickname. Never infer one-letter names,
+ // or select a short name when another registered full name also contains it.
+ const partial=candidates.filter(c=>c.key.length>=2&&normalized.includes(c.key)&&!candidates.some(other=>other.id!==c.id&&other.key.includes(c.key)));
+ return new Set(partial.map(c=>c.id)).size===1?partial[0]:null;
+}
+function editDistance(a,b){
+ let previous=Array.from({length:b.length+1},(_,i)=>i);
+ for(let i=0;i<a.length;i++){
+  const next=[i+1];for(let j=0;j<b.length;j++)next.push(Math.min(next[j]+1,previous[j+1]+1,previous[j]+(a[i]===b[j]?0:1)));
+  previous=next;
+ }
+ return previous[b.length];
+}
+export function matchBossReadings(readings,bosses=[]){
+ const letters=value=>String(value??'').normalize('NFKC').replace(/[^\p{L}\p{N}]/gu,'').toLowerCase();
+ const ranked=bosses.map(boss=>{
+  const aliases=[boss.name,...(boss.aliases||[])].map(letters);
+  let score=0,raw='';
+  for(const reading of readings){
+   const value=letters(reading.text),confidence=Number(reading.confidence??100);
+   if(!value||value.length<3)continue;
+   for(const alias of aliases){
+    let similarity=0;
+    if(value.includes(alias))similarity=1;
+    else if(value.length>=3&&alias.startsWith(value)&&confidence>=20)similarity=.94;
+    else if(confidence>=40&&value.length>=Math.max(3,alias.length-1)){
+     const a=value.normalize('NFD'),b=alias.normalize('NFD');
+     similarity=1-editDistance(a,b)/Math.max(a.length,b.length);
+    }
+    if(similarity>score){score=similarity;raw=reading.text;}
+   }
+  }
+  return {id:Number(boss.id),name:boss.name,score,raw};
+ }).sort((a,b)=>b.score-a.score);
+ const best=ranked[0],next=ranked[1]?.score||0;
+ return best&&best.score>=.62&&best.score-next>=.25?best:null;
+}
+export function matchBossPortrait(visual,rows=[]){
+ if(!Array.isArray(visual)||!visual.length)return null;
+ const ranked=rows.filter(row=>row.bossId&&row.bossReadScore===1&&row.bossVisual?.length===visual.length).map(row=>({id:Number(row.bossId),distance:row.bossVisual.reduce((sum,value,i)=>sum+(value-visual[i])**2,0)/visual.length})).sort((a,b)=>a.distance-b.distance);
+ const best=ranked[0],different=ranked.find(row=>row.id!==best?.id);
+ return best&&best.distance<=.012&&(!different||different.distance-best.distance>=.012)?best.id:null;
+}
 export function memberCandidates(roster=[]){
  return roster.flatMap(person=>[person.name,...(person.aliases||[])].filter(Boolean)
    .map(name=>({id:person.id,name:person.name,alias:name,key:key(name)})));
@@ -53,7 +103,7 @@ export function parseBattleLogText(input,{roster=[],bosses=[],mode='detail',sour
  const nameLines=lines.map(line=>line.replace(/^(?:클랜원|닉네임|플레이어)\s*[:：]\s*/,'').replace(/\s*님이.*$/,'').trim());
  const exact=nameLines.flatMap(line=>candidates.filter(candidate=>candidate.key===key(line)));
  const exactIds=new Set(exact.map(candidate=>candidate.id));
- const detectedMember=exactIds.size===1?exact[0]:exactIds.size>1||memberField?null:bestMatch(text,candidates);
+ const detectedMember=memberField?fieldMember(text,candidates):exactIds.size===1?exact[0]:exactIds.size>1?null:bestMatch(text,candidates);
  const detectedBoss=bestMatch(text,bossCandidates(bosses));
  const date=dateFromText(text);
  const damage=detectDamage(text);

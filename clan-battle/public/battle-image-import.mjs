@@ -1,4 +1,4 @@
-import {parseBattleLogText,parseQuickLogText,detectDuplicateRows,sortBattleLogRows,validBattleLogRow} from './battle-image-parser.mjs?v=20261025-ocr-tactic01';
+import {parseBattleLogText,parseQuickLogText,detectDuplicateRows,sortBattleLogRows,validBattleLogRow,cleanOcrName,matchBossReadings,matchBossPortrait} from './battle-image-parser.mjs?v=20261025-ocr-fields02';
 import {makeId,memberLabel} from './roster.mjs?v=20261022-ui14';
 
 const OCR_URL='https://cdn.jsdelivr.net/npm/tesseract.js@7.0.0/dist/tesseract.min.js';
@@ -28,19 +28,43 @@ const detailFrames=[
  {x:.133,y:.252,w:.563,h:.176},{x:.133,y:.438,w:.563,h:.172},{x:.133,y:.623,w:.563,h:.165}
 ];
 const quickFrame={x:.711,y:.242,w:.215,h:.565};
-// Read the small labels separately; portrait artwork must not compete with names.
-const detailFields={member:{x:.32,y:.35,w:.28,h:.34},boss:{x:.02,y:.66,w:.27,h:.33},damage:{x:.72,y:.02,w:.26,h:.30}};
-function nameContrast(canvas){
- const ctx=canvas.getContext('2d',{willReadFrequently:true}),image=ctx.getImageData(0,0,canvas.width,canvas.height);
- for(let i=0;i<image.data.length;i+=4){const value=Math.max(image.data[i],image.data[i+1],image.data[i+2])<145?0:255;image.data[i]=image.data[i+1]=image.data[i+2]=value;}
- ctx.putImageData(image,0,0);return canvas;
-}
+// Narrow label crops exclude the portrait, reset icon and date underline.
+const detailFields={member:{x:.33,y:.44,w:.25,h:.19},damage:{x:.72,y:.02,w:.26,h:.30},date:{x:.365,y:.65,w:.225,h:.28},kind:{x:.30,y:.07,w:.19,h:.25}};
 function fieldFrame(row,field){return {x:row.x+row.w*field.x,y:row.y+row.h*field.y,w:row.w*field.w,h:row.h*field.h};}
+function labelCanvas(bitmap,row,box,style='raw'){
+ const crop=toCanvas(bitmap,fieldFrame(row,box),5),ctx=crop.getContext('2d',{willReadFrequently:true});
+ if(style!=='raw'){
+  const image=ctx.getImageData(0,0,crop.width,crop.height);
+  for(let i=0;i<image.data.length;i+=4){
+   const r=image.data[i],g=image.data[i+1],b=image.data[i+2];
+   const ink=style==='white'?Math.min(r,g,b)>180:Math.max(r,g,b)<145;
+   image.data[i]=image.data[i+1]=image.data[i+2]=ink?0:255;
+  }
+  ctx.putImageData(image,0,0);
+ }
+ const padded=document.createElement('canvas');padded.width=crop.width+50;padded.height=crop.height+50;
+ const target=padded.getContext('2d');target.fillStyle='white';target.fillRect(0,0,padded.width,padded.height);target.drawImage(crop,25,25);crop.width=crop.height=0;
+ return padded;
+}
+function portraitFingerprint(bitmap,row){
+ const canvas=document.createElement('canvas');canvas.width=12;canvas.height=8;const ctx=canvas.getContext('2d',{willReadFrequently:true});
+ const width=bitmap.width*row.w;
+ ctx.drawImage(bitmap,bitmap.width*(row.x+row.w*.02),bitmap.height*row.y+width*.008,width*.235,width*.075,0,0,12,8);
+ const data=ctx.getImageData(0,0,12,8).data,values=[];
+ for(let i=0;i<data.length;i+=4)values.push(data[i]/255,data[i+1]/255,data[i+2]/255);
+ canvas.width=canvas.height=0;return values;
+}
+async function readLabel(worker,bitmap,row,box,style='raw',whitelist=''){
+ await worker.setParameters({tessedit_pageseg_mode:'7',tessedit_char_whitelist:whitelist});
+ const crop=labelCanvas(bitmap,row,box,style);
+ try{const result=await worker.recognize(crop);return {text:String(result.data?.text||'').trim(),confidence:Number(result.data?.confidence||0)};}
+ finally{crop.width=crop.height=0;}
+}
 const escapeHtml=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'}[c]));
 const formatNumber=n=>Number(n||0).toLocaleString('ko-KR');
 export function createBattleImageImport(api){
  const {getApp,getMonth,persist,render,navigate,notify,canEdit,unlock,replay,beforeCommit}=api;
- const state={cropOpen:false,cropIndex:0,cropFrames:{detail:structuredClone(detailFrames),quick:[structuredClone(quickFrame)]},rows:[],processing:false,cancel:false,progress:'',mode:'detail',ocrStatus:'',errors:[],day:null,raw:'',completed:0,total:0};
+ const state={cropOpen:false,cropIndex:0,cropFrames:{detail:structuredClone(detailFrames),quick:[structuredClone(quickFrame)]},rows:[],processing:false,cancel:false,progress:'',mode:'detail',ocrStatus:'',errors:[],day:null,raw:'',completed:0,total:0,nameMatches:{}};
  const $=id=>document.getElementById(id);
  const month=()=>getMonth();
  const members=()=>getApp().roster.filter(p=>(month().memberIds||[]).includes(p.id));
@@ -71,13 +95,21 @@ export function createBattleImageImport(api){
    '<button class="btn sm" type="button" data-bli-remove="'+escapeHtml(row.id)+'">삭제</button></div>'+
    '<div class="bli-fields">'+
    '<label>공격 일시<input data-bli-field="gameAt" type="datetime-local" value="'+escapeHtml(row.gameAt||'')+'"></label>'+
-   '<label>클랜원<select data-bli-field="memberId">'+memberOptions+'</select></label>'+
+   '<label>클랜원<select data-bli-field="memberId">'+memberOptions+'</select>'+(row.ocrName?'<small>인식: '+escapeHtml(row.ocrName)+(row.memberId?'':' · 명단에서 선택')+'</small>':'')+'</label>'+
    '<label>보스<select data-bli-field="bossId">'+bossOptions+'</select></label>'+
    '<label>기록 피해량<input data-bli-field="damage" type="text" inputmode="numeric" value="'+escapeHtml(row.damage===''?'':formatNumber(row.damage))+'" placeholder="정확한 숫자"></label>'+
    '<label class="bli-carry">이월 사용<input type="checkbox" data-bli-field="carry" '+(row.carry?'checked':'')+'></label></div>'+
    '<div class="bli-row-note">'+(row.duplicate&&!row.duplicateOverride?'<button class="btn sm" type="button" data-bli-duplicate="'+escapeHtml(row.id)+'">중복이 아닌 별개 공격으로 확인</button>':'')+(row.stage?'<span>화면 단계: '+escapeHtml(row.stage)+'단계</span>':'')+
    (bad?'<strong>검토: '+escapeHtml(warnings.join(' · '))+'</strong>':'<span>등록 가능</span>')+'</div>'+
    '<details><summary>인식된 원문 확인</summary><pre>'+escapeHtml(row.rawText||'')+'</pre></details></div>';
+ }
+ function nameMapping(){
+  const names=[...new Set(state.rows.map(row=>row.ocrName).filter(Boolean))];
+  if(!names.length)return '';
+  return '<details class="bli-name-map" open><summary>인게임 닉네임 → 사이트 클랜원 연결</summary><p class="muted">사이트 이름은 바뀌지 않습니다. 이번 분석의 같은 닉네임 기록에 함께 적용합니다.</p><div class="bli-fields">'+names.map(name=>{
+   const rows=state.rows.filter(row=>row.ocrName===name),ids=new Set(rows.map(row=>row.memberId)),value=ids.size===1?rows[0].memberId:'';
+   return '<label>'+escapeHtml(name)+' · '+rows.length+'건<select data-bli-name-map="'+escapeHtml(name)+'">'+options(members().map(p=>({id:p.id,name:memberLabel(p,getApp().roster)})),value,'사이트 클랜원 선택')+'</select></label>';
+  }).join('')+'</div></details>';
  }
  function view(){
   if(!editingAllowed())return '<section class="panel bli-shell"><h2>이미지 일괄 등록</h2><p>관리자 작성 잠금을 해제해야 사용할 수 있습니다.</p><button class="btn" type="button" data-bli="unlock">작성 잠금 해제</button><button class="btn" type="button" data-page="battle">배틀로그로 돌아가기</button></section>';
@@ -101,7 +133,8 @@ export function createBattleImageImport(api){
    '<button class="btn sm" type="button" data-bli="parse-text">텍스트 분석하여 추가</button></details>'+
    '<div class="bli-review"><h3>등록 전 확인 <span class="pill">'+rows.length+'건</span></h3>'+
    '<div class="bli-review-controls"><label>적용 일차<select id="bli-day">'+Array.from({length:validDays()},(_,i)=>'<option value="'+(i+1)+'" '+(i+1===day?'selected':'')+'>'+(i+1)+'일차</option>').join('')+'</select></label>'+
-   '<span class="muted">현재 '+escapeHtml(getApp().active)+'월 기록 · 등록 시 맨 뒤에 시간순 추가</span></div>'+
+   '<span class="muted">현재 '+escapeHtml(getApp().active)+'월 기록 · 등록 시 맨 뒤에 시간순 추가</span></div><p class="muted">게임 닉네임과 명단 이름이 다르면 클랜원을 한 번 선택하세요. 이번 분석에서 같은 인식 이름에 함께 적용합니다.</p>'+
+   nameMapping()+
    (state.errors.length?'<div class="bli-warning">'+escapeHtml(state.errors.join('\n'))+'</div>':'')+
    (rows.length?rows.map((row,index)=>itemHtml(row,index,rows)).join(''):'<p class="muted">인식된 기록이 없습니다. 이미지를 선택해 분석하거나 텍스트를 추가해 주세요.</p>')+
    '<div class="bli-bottom"><strong>등록 가능한 선택 기록 '+count+'건</strong><button class="btn primary" type="button" data-bli="commit" '+(!count||state.processing?'disabled':'')+'>검토한 '+count+'건 일괄 등록</button></div>'+
@@ -126,12 +159,13 @@ export function createBattleImageImport(api){
   if(!picked.length){notify('스크린샷을 먼저 선택하세요.');return;}
   state.processing=true;state.cancel=false;state.errors=[];state.total=picked.length;state.completed=0;
   const files=picked.splice(0),mode=state.mode,frames=structuredClone(state.cropFrames[state.mode]),contextMonth=getApp().active;
+  let practiceCount=0;
   state.progress='OCR 엔진 및 한국어 모델 준비 중…';render();
   let worker=null,run=++jobId;
   try{
    const Tesseract=await loadOcr();
    if(run!==jobId||state.cancel)return;
-   worker=await Tesseract.createWorker('kor+eng',1,{
+   worker=await Tesseract.createWorker('kor',1,{
      logger:message=>{if(run!==jobId)return;if(message.status==='recognizing text'){
        const percent=Math.round(Number(message.progress||0)*100);
        const el=$('bli-progress');if(el)el.textContent='이미지 '+(state.completed+1)+'/'+state.total+' · 문자 분석 '+percent+'%';
@@ -150,41 +184,55 @@ export function createBattleImageImport(api){
        canvas.width=0;canvas.height=0;
        if(state.cancel||getApp().active!==contextMonth){state.cancel=true;break;}
        const text=result.data?.text||'';
-       if(mode==='detail'&&/모의\s*전/.test(text))continue;
+       if(mode==='detail'&&/모의\s*전/.test(text)){practiceCount++;continue;}
        const options={roster:members(),bosses:month().bosses,source:file.name+' · '+(i+1)+'행'};
        const parsed=mode==='detail'? [parseBattleLogText(text,options)].filter(Boolean):
          parseQuickLogText(text,options);
        if(mode==='detail'&&parsed.length){
         const row=parsed[0],reads={};
         try{
-         await worker.setParameters({tessedit_pageseg_mode:'7'});
-         for(const [field,box] of Object.entries(detailFields)){
-          if(state.cancel)break;
-          const crop=toCanvas(bitmap,fieldFrame(frames[i],box),5);
-          try{
-           const result=await worker.recognize(crop);
-           reads[field]=String(result.data?.text||'').trim();
-          }finally{crop.width=0;crop.height=0;}
+         reads.kind=await readLabel(worker,bitmap,frames[i],detailFields.kind,'white');
+         if(/모의\s*전/.test(reads.kind.text)){practiceCount++;continue;}
+         const names=[];
+         names.push(await readLabel(worker,bitmap,frames[i],detailFields.member));
+         let name=parseBattleLogText(names[0].text,{...options,bosses:[],memberField:true});
+         if(!name?.memberId&&!state.cancel){
+          names.push(await readLabel(worker,bitmap,frames[i],detailFields.member,'black'));
+          name=parseBattleLogText(names.at(-1).text,{...options,bosses:[],memberField:true});
          }
-        }finally{await worker.setParameters({tessedit_pageseg_mode:'3'});}
-        let name=parseBattleLogText(reads.member||'',{...options,bosses:[],memberField:true});
-        if(!name?.memberId&&!state.cancel){
-         const crop=nameContrast(toCanvas(bitmap,fieldFrame(frames[i],{x:.33,y:.44,w:.25,h:.19}),5));
-         try{
-          await worker.setParameters({tessedit_pageseg_mode:'7'});
-          const retry=await worker.recognize(crop);
-          reads.memberRetry=String(retry.data?.text||'').trim();
-          name=parseBattleLogText(reads.memberRetry,{...options,bosses:[],memberField:true});
-         }finally{crop.width=0;crop.height=0;await worker.setParameters({tessedit_pageseg_mode:'3'});}
-        }
-        const boss=parseBattleLogText(reads.boss||'',{...options,roster:[]});
-        const damage=parseBattleLogText('입힌 데미지 '+(reads.damage||''),{roster:[],bosses:[]});
-        // Dedicated fields take precedence over accidental matches in the whole card.
-        row.memberId=name?.memberId||'';row.memberName=name?.memberName||'';
-        row.bossId=boss?.bossId||row.bossId;
-        if(damage?.damage)row.damage=damage.damage;
-        row.rawText+='\n\n개별 영역 인식\n클랜원: '+(reads.member||'미인식')+(reads.memberRetry?' / 재인식: '+reads.memberRetry:'')+'\n보스: '+(reads.boss||'미인식')+'\n피해량: '+(reads.damage||'미인식');
-
+         if(!name?.memberId&&!state.cancel){
+          names.push(await readLabel(worker,bitmap,frames[i],{x:.32,y:.35,w:.28,h:.34}));
+          name=parseBattleLogText(names.at(-1).text,{...options,bosses:[],memberField:true});
+         }
+         const recognized=names.map(read=>({...read,text:cleanOcrName(read.text)})).filter(read=>read.text).sort((a,b)=>b.confidence-a.confidence)[0];
+         row.bossVisual=portraitFingerprint(bitmap,frames[i]);
+         row.ocrName=name?.memberName?cleanOcrName(names.at(-1).text):recognized?.text||'';
+         row.memberId=name?.memberId||state.nameMatches[row.ocrName]||'';row.memberName=name?.memberName||'';
+         reads.member=names.map(r=>r.text).join(' / ');
+         reads.damage=await readLabel(worker,bitmap,frames[i],detailFields.damage);
+         const damage=parseBattleLogText('입힌 데미지 '+reads.damage.text,{roster:[],bosses:[]});
+         if(damage?.damage)row.damage=damage.damage;
+         if(!row.gameAt){
+          reads.date=await readLabel(worker,bitmap,frames[i],detailFields.date,'raw','0123456789/: .-');
+          row.gameAt=parseBattleLogText(reads.date.text,{roster:[],bosses:[]})?.gameAt||'';
+         }
+         const bossReads=[],lengths=[...new Set(month().bosses.map(b=>cleanOcrName(b.name).replace(/\s/g,'').length))].sort((a,b)=>a-b);
+         const whitelist=month().bosses.map(b=>b.name).join(' ');
+         let boss=null;
+         for(const length of lengths){
+          if(state.cancel)break;
+          const box={x:.04,y:.75,w:Math.min(.25,length*.0195+.005),h:.19};
+          bossReads.push(await readLabel(worker,bitmap,frames[i],box));
+          boss=matchBossReadings(bossReads,month().bosses);
+          if(boss?.score===1)break;
+          bossReads.push(await readLabel(worker,bitmap,frames[i],box,'white',whitelist));
+          boss=matchBossReadings(bossReads,month().bosses);
+          if(boss?.score===1)break;
+         }
+         if(boss){row.bossId=boss.id;row.bossReadScore=boss.score;}
+         reads.boss=bossReads.map(r=>r.text).filter(Boolean).join(' / ');
+         row.rawText+='\n\n개별 영역 인식\n클랜원: '+(reads.member||'미인식')+'\n보스: '+(reads.boss||'미인식')+(boss?' → '+boss.name:'')+'\n피해량: '+reads.damage.text+'\n전투 유형: '+reads.kind.text+(reads.date?'\n일시: '+reads.date.text:'');
+        }finally{await worker.setParameters({tessedit_pageseg_mode:'3',tessedit_char_whitelist:''});}
        }
        if(state.cancel||getApp().active!==contextMonth){state.cancel=true;break;}
        for(const row of parsed){
@@ -202,8 +250,9 @@ export function createBattleImageImport(api){
    if(worker)await worker.terminate().catch(()=>{});
    files.length=0;picked.length=0;
    state.processing=false;state.cancel=false;
+   for(const row of state.rows)if(!row.bossId){const inferred=matchBossPortrait(row.bossVisual,state.rows);if(inferred){row.bossId=inferred;row.rawText+='\n보스: 같은 분석 내 일치하는 보스 초상화로 확인';}}
    updateRows(true);
-   state.progress+= ' · 수정할 기록을 확인한 뒤 등록하세요.';render();
+   state.progress+=(practiceCount?' · 모의전 '+practiceCount+'건 제외':'')+' · 수정할 기록을 확인한 뒤 등록하세요.';render();
   }
  }
  function updateRows(selectNew=false){
@@ -282,6 +331,11 @@ export function createBattleImageImport(api){
  document.addEventListener('change',event=>{
   if(!event.target.closest('.bli-shell'))return;
   const element=event.target;
+  if(element.dataset?.bliNameMap){
+   const name=element.dataset.bliNameMap;state.nameMatches[name]=element.value;
+   for(const row of state.rows)if(row.ocrName===name){row.memberId=element.value;row.selected=true;}
+   updateRows(true);render();return;
+  }
   if(element.id==='bli-mode'){if(state.processing)return;state.mode=element.value;state.cropIndex=0;render();return;}
   if(element.id==='bli-crop-index'){state.cropIndex=Number(element.value);render();return;}
   if(element.dataset?.bliCropField){if(state.processing)return;const value=Number(element.value);if(!Number.isFinite(value))return;currentFrame()[element.dataset.bliCropField]=value/100;constrainFrame(currentFrame());render();return;}
@@ -303,6 +357,10 @@ export function createBattleImageImport(api){
   if(field==='selected'){row.selected=element.checked;render();return;}
   if(field==='carry'){row.carry=element.checked;return;}
   row[field]=field==='damage'?Number(String(element.value).replace(/[^\d]/g,''))||'':element.value;
+  if(field==='memberId'&&row.ocrName){
+   state.nameMatches[row.ocrName]=row.memberId;
+   for(const other of state.rows)if(other.ocrName===row.ocrName){other.memberId=row.memberId;other.selected=true;}
+  }
   updateRows();render();
  });
  document.addEventListener('input',event=>{
@@ -317,7 +375,7 @@ export function createBattleImageImport(api){
    case 'analyze':void analyze();break;
    case 'cancel':state.cancel=true;state.progress='현재 OCR 처리 후 중단합니다.';break;
    case 'reset-crop':if(state.processing)return;state.cropFrames={detail:structuredClone(detailFrames),quick:[structuredClone(quickFrame)]};render();break;
-   case 'clear':if(state.processing)return;clearPreview();state.rows=[];state.errors=[];picked=[];state.progress='미리보기를 비웠습니다.';render();break;
+   case 'clear':if(state.processing)return;clearPreview();state.rows=[];state.nameMatches={};state.errors=[];picked=[];state.progress='미리보기를 비웠습니다.';render();break;
    case 'commit':commit();break;
    case 'parse-text':{
     const v=$('bli-raw')?.value||'';
