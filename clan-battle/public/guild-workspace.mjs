@@ -13,7 +13,7 @@ const SCORES=[['damage','피해량'],['contribution','기여도'],['game','인�
 export function createGuildWorkspace(api){
   const {getApp,getMonth,render,persist,section,nf,formatContribution,escapeHtml:X,notify,openForm}=api;
   const app=()=>getApp(),month=()=>getMonth(),canEdit=()=>api.canEdit(),person=id=>app().roster.find(p=>p.id===id);
-  const state={db:'rates',search:'',profile:CLAN_PROFILE,day:null,dashboardDay:null,sort:'contribution',boss:1,comboStage:'4',comboBoss:'all'};
+  const state={db:'rates',search:'',profile:CLAN_PROFILE,day:null,dashboardDay:null,dashboardSort:null,dashboardDescending:true,sort:'contribution',boss:1,comboStage:'4',comboBoss:'all'};
   const comboWorkspace=createComboWorkspace({state,app,month,render,section,canEdit,characters:api.characters,escapeHtml:X,notice:comboNotice,detailedRows:comboCards});
   const days=()=>Number(month().options.days||5),latestDay=()=>Math.max(1,...month().events.map(e=>Number(e.day)||1),...(month().dayBreaks||[]).map(b=>b.nextDay));
   const selectedDay=()=>state.day===null?Math.min(days(),latestDay()):Number(state.day);
@@ -25,9 +25,28 @@ export function createGuildWorkspace(api){
   function table(headers,rows,klass=''){return `<div class="table-scroll"><table class="datatable ${klass}"><thead><tr>${headers.map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>${rows.join('')||`<tr><td colspan="${headers.length}" class="empty">기록이 없습니다.</td></tr>`}</tbody></table></div>`;}
   function dashboard(){
     const d=month(),day=state.dashboardDay??Math.min(days(),latestDay()),ids=[...new Set([...(d.memberIds||[]),...d.events.map(e=>e.memberId)])].filter(Boolean),count=Number(d.options.dailyAttacks||3);
-    const headers=['클랜원',...Array.from({length:count},(_,i)=>`${i+1}타`),'사용','남은 타수','이월'];
-    const rows=ids.map(id=>{
-      const p=person(id),result=dashboardDay(d,id,day),membership=d.membership?.[id],unavailable=membership&&(day<membership.fromDay||day>(membership.toDay??days()));
+    const sortHeader=(key,label)=>{
+      const active=state.dashboardSort===key;
+      const arrow=active?(state.dashboardDescending?'▼':'▲'):'↕';
+      const nextDescending=!active||!state.dashboardDescending;
+      return `<button type="button" class="dashboard-sort-head ${active?'active':''}" data-guild="dashboard-sort" data-value="${key}" aria-pressed="${active}" title="${label} ${nextDescending?'많은':'적은'} 순으로 정렬">${label}<span class="dashboard-sort-arrow" aria-hidden="true">${arrow}</span></button>`;
+    };
+    const headers=['클랜원',...Array.from({length:count},(_,i)=>`${i+1}타`),'사용',sortHeader('remaining','남은 타수'),sortHeader('pending','이월')];
+    const entries=ids.map((id,index)=>{
+      const membership=d.membership?.[id];
+      const unavailable=!!(membership&&(day<Number(membership.fromDay||1)||day>Number(membership.toDay??days())));
+      return {id,index,unavailable,result:dashboardDay(d,id,day)};
+    });
+    if(state.dashboardSort){
+      const field=state.dashboardSort==='remaining'?'remaining':'pending';
+      entries.sort((a,b)=>{
+        if(a.unavailable!==b.unavailable)return a.unavailable?1:-1;
+        const difference=Number(a.result[field]||0)-Number(b.result[field]||0);
+        return !a.unavailable&&difference?(state.dashboardDescending?-difference:difference):a.index-b.index;
+      });
+    }
+    const rows=entries.map(({id,result,unavailable})=>{
+      const p=person(id);
       const name=`<th><button class="textbutton" data-guild="profile" data-id="${X(id)}">${X(p?.name||d.events.find(e=>e.memberId===id)?.member||'미등록')}</button></th>`;
       if(unavailable)return `<tr>${name}<td class="day-unavailable" colspan="${count+3}">—</td></tr>`;
       const slots=Array.from({length:count},(_,i)=>{
@@ -242,6 +261,7 @@ export function createGuildWorkspace(api){
   document.addEventListener('click',async event=>{const b=event.target.closest('[data-guild]');if(!b)return;const key=b.dataset.guild;if(['add-member','edit-member','toggle-member','add-combo','edit-combo','delete-combo','edit-factor','add-history','edit-history','close-month','edit-combo-notice'].includes(key)&&!canEdit()){api.unlock();return;}switch(key){
     case 'day':state.day=Number(b.dataset.value);render();break;
     case 'dashboard-day':state.dashboardDay=Number(b.dataset.value);render();break;
+    case 'dashboard-sort':if(!['remaining','pending'].includes(b.dataset.value))break;if(state.dashboardSort===b.dataset.value)state.dashboardDescending=!state.dashboardDescending;else{state.dashboardSort=b.dataset.value;state.dashboardDescending=true;}render();break;
     case 'sort':state.sort=b.dataset.value;render();break;
     case 'profile':state.profile=b.dataset.id;api.navigate('profile');break;
     case 'pdf':try{await downloadProfilePdf(profileData());notify('이력서 PDF를 저장했습니다.');}catch(e){notify('PDF 생성에 실패했습니다: '+e.message);}break;
@@ -260,5 +280,5 @@ export function createGuildWorkspace(api){
   }});
   document.addEventListener('change',e=>{if(e.target.id==='guild-profile'){state.profile=e.target.value;render();}});
   document.addEventListener('input',e=>{if(e.target.id==='guild-roster-search'){state.search=e.target.value;document.querySelector('#guild-roster-table').innerHTML=rosterTable(!!document.querySelector('[data-roster-active]'));}});
-  return {openArchive:()=>{state.db='archive';},isArchiveOpen:()=>state.db==='archive',dashboard,ranking,profile,roster:()=>roster().replace('guild-roster-table','guild-roster-table" data-roster-active="true'),db,combos,afterMonthChange:()=>{state.day=null;state.dashboardDay=null;state.comboStage='4';state.profile=CLAN_PROFILE;},profileData};
+  return {openArchive:()=>{state.db='archive';},isArchiveOpen:()=>state.db==='archive',dashboard,ranking,profile,roster:()=>roster().replace('guild-roster-table','guild-roster-table" data-roster-active="true'),db,combos,afterMonthChange:()=>{state.day=null;state.dashboardDay=null;state.dashboardSort=null;state.dashboardDescending=true;state.comboStage='4';state.profile=CLAN_PROFILE;},profileData};
 }
