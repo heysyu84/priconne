@@ -1101,13 +1101,26 @@ table.tw-grid thead th{
  .tw-external-column textarea[readonly]{min-height:280px}
 }
 
-/* Battle-log columns: desktop separates progress and boss; mobile keeps the original combined column. */
-.battle-sheet.compact-battle-sheet .mobile-boss-head,
-.battle-sheet.compact-battle-sheet .mobile-boss-progress{display:none}
+/* Battle log: separate stage/lap from boss on desktop and mobile.
+   Keep the column visible rather than collapsing a fixed-layout table cell. */
 @media(max-width:800px){
-  .battle-sheet.compact-battle-sheet .battle-progress-cell{display:none!important}
-  .battle-sheet.compact-battle-sheet col.battle-progress-col{width:0!important;visibility:collapse}
-  .battle-sheet.compact-battle-sheet .desktop-boss-head{display:none}
-  .battle-sheet.compact-battle-sheet .mobile-boss-head{display:inline}
-  .battle-sheet.compact-battle-sheet .mobile-boss-progress{display:block;font-weight:400}
+  .battle-sheet.compact-battle-sheet .battle-progress-cell{
+    display:table-cell;
+    text-align:center;
+    vertical-align:middle;
+    white-space:nowrap;
+  }
+  .battle-sheet.compact-battle-sheet .battle-progress-cell strong{
+    display:block;
+    line-height:1.25;
+  }
+  .battle-sheet.compact-battle-sheet .battle-progress-cell small{
+    display:block;
+    line-height:1.25;
+    white-space:nowrap;
+  }
+  .battle-sheet.compact-battle-sheet .boss-cell{
+    white-space:normal;
+    overflow-wrap:anywhere;
+  }
 }
