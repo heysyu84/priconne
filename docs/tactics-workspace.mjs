@@ -3,7 +3,7 @@ import { characterPortrait, portraitAttributes, portraitStarOverlay, normalizeCh
 import { makeId, parseDamage } from './roster.mjs?v=20261022-ui14';
 import { GROUPS, CARRY_GROUP, tacticGroupsFor, groupOf, titleFor, compareTactics, newRow, checkedSix, commandState, recalculateTacticRows, replaceTacticRowText, pastedRows, richLine, parseClock, clock, escapeHtml as X } from './tactics-model.mjs?v=20261024-carry-punctuation06';
 import { shiftTimeline } from './engine.mjs?v=20261022-ui14';
-import { parseTacticTransfer, validTacticLineup, hasTacticSlots, resolveTacticSlots } from './tactic-transfer.mjs?v=20261023-slots01';
+import { parseTacticTransfer, validTacticLineup, hasTacticSlots, resolveTacticSlots } from './tactic-transfer.mjs?v=20261024-carry-sheet01';
 import { createExternalTacticCarry } from './external-tactic-carry.mjs?v=20261024-external-carry02';
 
 const EXTERNAL_GROUP = '외부 택틱';
@@ -124,6 +124,22 @@ export function createTacticWorkspace(api) {
       if(runs.some(r=>r.color)&&runs.map(r=>r.text).join('')===rows[i].text)rows[i].runs=runs;
     }
   }
+  function importCarrySheet(transfer){
+    if(!tacticGroupsFor(month()).includes(CARRY_GROUP))return notify('설정 → 규칙·월별 설정에서 이월 택틱 메뉴 표시를 켜 주세요.');
+    const characters=transfer.characters.map(name=>findCharacter(catalog,name)?.name||null);
+    if(characters.some(name=>!name))return notify('캐릭터 DB에서 확인되지 않는 이름이 있습니다. 변환기의 편성을 확인하세요.');
+    if(!validTacticLineup(characters))return notify('편성에 중복된 캐릭터가 있습니다. 변환기에서 캐릭터 5명을 확인하세요.');
+    const rows=pastedRows(transfer.text,[],characters,catalog);if(!rows.length)return;
+    remember(true);
+    const selected=current(),blank=selected&&!selected.rows.some(r=>r.text?.trim())&&!selected.characters.some(c=>c?.trim())&&!selected.note&&!selected.video&&!selected.expectedDamage&&!selected.tp&&!(Number(selected.manualCount)>0);
+    const {kind,...metadata}=transfer.metadata;
+    const tactic={id:blank?selected.id:makeId(),...metadata,characters,source:CARRY_GROUP,rows,type:'이월 택틱',editorVersion:1,rowFormatsVersion:1};
+    tactic.title=titleFor(tactic);
+    if(blank)all().splice(all().indexOf(selected),1,tactic);else all().unshift(tactic);
+    state.group=CARRY_GROUP;state.selected=tactic.id;state.boss='all';state.remaining=null;state.personalId=null;state.trash=false;
+    persist();redraw({row:rows[0].id});
+    notify(`새 이월 택틱 ${rows.length}행과 편성·성급·기대딜·TP·메모·영상을 가져왔습니다.`);
+  }
   function paste(event){
    const el=event.target.closest('[data-tw-text]');
    if(!el||readOnly())return;
@@ -134,6 +150,7 @@ export function createTacticWorkspace(api) {
    let transfer=null;
    try{transfer=parseTacticTransfer(text);}
    catch(error){notify(error.message||'복사한 택틱 정보를 확인하세요.');return;}
+   if(transfer?.metadata?.kind==='carry-sheet'){importCarrySheet(transfer);return;}
    let lineup=null;
    let body=transfer?.text||text;
    const slotPaste=transfer?.mode==='slots'||(!transfer&&hasTacticSlots(body));

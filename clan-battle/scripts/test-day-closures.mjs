@@ -50,7 +50,7 @@ const empty={events:[],dayBreaks:[{id:'empty',afterSeq:0,nextDay:2}]};cancelDayC
 
 // Exercise the actual UI handlers, including the code gate and undo behavior.
 let listeners={},editor=false,saves=0,unlocks=0,answer=true;
-globalThis.document={addEventListener(type,fn){(listeners[type]||=[]).push(fn);},querySelector:()=>null,querySelectorAll:()=>[],activeElement:null};
+globalThis.document={addEventListener(type,fn){(listeners[type]||=[]).push(fn);},getElementById:()=>null,createElement:()=>({}),head:{append(){}},querySelector:()=>null,querySelectorAll:()=>[],activeElement:null};
 globalThis.window={addEventListener(){}};
 globalThis.confirm=()=>answer;
 function workflow() {
@@ -78,3 +78,4 @@ click('reopen-day','latest');assert.deepEqual(app.months['2026-10'].dayBreaks.ma
 assert.deepEqual(inputs(app.months['2026-10']),originalInputs);
 click('next-day');assert.equal(app.months['2026-10'].dayBreaks.length,2);assert.equal(app.months['2026-10'].dayBreaks.at(-1).afterSeq,6);
 console.log('PASS: saved close cancellation after reload, empty/latest/middle/skipped days, intact attacks and exact HP, membership ranges, daily hits/carry relinking, editor gate, confirmation, undo and re-closing');
+

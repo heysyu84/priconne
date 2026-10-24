@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>해외 택틱 변환기 · 냥냥클랜</title><meta name="color-scheme" content="light">
+<title>택틱 변환기 · 냥냥클랜</title><meta name="color-scheme" content="light">
 <style>
 :root{font-family:system-ui,-apple-system,"Malgun Gothic",sans-serif;color:#24243b;background:#f5f3fb}
 *{box-sizing:border-box}body{margin:0;font-size:15px;line-height:1.55}button,input,textarea{font:inherit}
@@ -40,10 +40,37 @@ button:disabled{opacity:.42;cursor:not-allowed}
 #manual-copy[hidden]{display:none}
 #manual-copy{margin-top:12px;padding:12px;border:1px solid #d4cbe5;border-radius:10px;background:#faf8ff}
 #manual-copy textarea{display:block;min-height:145px;max-height:300px;font-size:13px;font-family:ui-monospace,Consolas,monospace;white-space:pre;overflow:auto}
+[hidden]{display:none!important}
+.converter-menu{display:flex;gap:7px;background:#eae5f5;padding:5px;border-radius:12px;margin:16px 0 20px;max-width:430px}
+.converter-menu button{flex:1;background:transparent;border-color:transparent;white-space:nowrap;padding:10px 12px}
+.converter-menu button[aria-selected="true"]{background:#fff;color:#50368d;border-color:#ddd4ee;box-shadow:0 2px 6px #43305b0d}
+.carry-upload{display:flex;flex-wrap:wrap;gap:10px;align-items:center}.carry-upload input{max-width:100%;font-size:14px}
+#carry-status{color:#5b4c78;white-space:pre-wrap;margin-top:10px;font-size:14px}
+.carry-grid{display:grid;grid-template-columns:minmax(245px,.82fr) minmax(0,2fr);gap:16px;align-items:start}
+.carry-list-head{display:flex;gap:8px;justify-content:space-between;align-items:center;margin-bottom:10px}.carry-list-head h2{margin:0}
+.carry-list-head select,.carry-meta-grid select,.carry-lineup select{font:inherit;border:1px solid #ccc5dc;border-radius:8px;padding:7px;background:white;min-width:0}
+#carry-list{display:grid;gap:8px;max-height:720px;overflow:auto;padding-right:3px}
+.carry-card{text-align:left;padding:12px;width:100%;font-size:13px;background:#faf8ff;border-color:#e3ddee;overflow-wrap:anywhere}
+.carry-card.active{border-color:#8c70b7;background:#eee7f8;box-shadow:inset 3px 0 #8160ac}.carry-card strong{display:block;color:#514168;font-size:14px}.carry-card span{display:block;margin-top:5px;line-height:1.6}
+.carry-review-label,.carry-row-warning{color:#926015}.carry-source-range{font-size:12px;color:#777085;margin:0 0 14px;overflow-wrap:anywhere}
+.carry-meta-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.carry-meta-grid label,.carry-meta-label{display:flex;flex-direction:column;gap:4px;font-size:13px;color:#635673;font-weight:650}
+.carry-meta-grid input,.carry-meta-label input{width:100%;min-width:0}.carry-tp-field{grid-column:1/-1}.carry-meta-label{margin-top:10px}.carry-meta-label textarea{min-height:72px;font-size:14px}
+.carry-lineup-settings{margin:12px 0;padding:10px 0;border-top:1px solid #eee8f3;border-bottom:1px solid #eee8f3}.carry-lineup-settings summary{cursor:pointer;font-size:13px;font-weight:650;color:#655077}
+.carry-lineup{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px;margin-top:9px}.carry-lineup label{display:grid;gap:5px;min-width:0}.carry-lineup span{font-size:11px;color:#73697d}.carry-lineup input{min-width:0;width:100%;padding:7px;font-size:13px}.carry-lineup select{font-size:13px;padding:6px}
+.carry-row-heading{display:flex;gap:9px;align-items:baseline;margin:20px 0 5px}.carry-row-heading h3{font-size:15px;margin:0}.carry-row-heading span{font-size:11px;color:#7a6c88}
+.carry-preview-line{display:flex;gap:10px;border-bottom:1px solid #ece6f2;padding:10px 0}.carry-preview-line.is-checkpoint{background:#faf9fc}.carry-preview-line.needs-review{background:#fff5e5}
+.carry-state{flex:0 0 91px;min-width:0}.carry-state small{display:block;color:#807489;font-size:11px;margin-bottom:6px}.carry-state>div{display:flex;gap:3px}.carry-state input{appearance:none;flex:0 0 12px;height:12px;width:12px;margin:0;border-radius:50%;padding:0;border-color:#cfc8d7;cursor:pointer}.carry-state input:checked{background:#527c61;border-color:#527c61;box-shadow:inset 0 0 0 2px white}
+.carry-row-content{flex:1;min-width:0}.carry-row-content>textarea{min-height:37px;width:100%;resize:vertical;font-size:14px;line-height:1.65;padding:4px 7px;border-color:transparent;background:transparent;overflow:hidden}.carry-row-content>textarea:hover{border-color:#ddd2e9}.carry-row-content .source-comparison{font-size:12px;margin-top:3px}.carry-row-warning{font-size:12px;white-space:pre-wrap}
+#carry-tactic-warnings{white-space:pre-wrap;color:#926015;font-size:13px;margin:9px 0}#carry-tactic-warnings:empty{display:none}
+#carry-manual-copy{padding:10px;background:#f7f3fc;border-radius:9px;margin-top:12px}#carry-manual-copy textarea{min-height:140px;font-size:12px}
+.carry-notices{margin-top:12px;font-size:13px;color:#695e75}.carry-notices summary{cursor:pointer}.carry-notices pre{white-space:pre-wrap;overflow-wrap:anywhere;font:inherit;background:#f8f5fc;padding:12px;border-radius:8px}
+@media(max-width:760px){.carry-grid{grid-template-columns:1fr}#carry-list{max-height:265px}.carry-lineup{grid-template-columns:1fr}.carry-lineup label{grid-template-columns:70px minmax(0,1fr) 70px;align-items:center}.carry-state{flex-basis:80px}.carry-state>div{gap:2px}.carry-state input{flex-basis:11px;width:11px;height:11px}.carry-preview-line{gap:5px}.carry-meta-grid{gap:7px}.carry-upload input{width:100%}.converter-menu{max-width:none}.carry-grid>.panel{min-width:0}}
 </style></head><body>
 <header><a href="./">← 냥냥클랜 리리다이브 · 클랜전 사이트</a></header>
 <main>
-<h1>해외 택틱 자동 변환기</h1>
+<h1>택틱 변환기</h1>
+<nav class="converter-menu" role="tablist" aria-label="변환기 메뉴"><button type="button" id="foreign-tab" role="tab" aria-controls="foreign-panel" aria-selected="true" data-converter-menu="foreign">해외 택틱</button><button type="button" id="carry-sheet-tab" role="tab" aria-controls="carry-sheet-panel" aria-selected="false" tabindex="-1" data-converter-menu="carry-sheet">이월 시트</button></nav>
+<div id="foreign-panel" role="tabpanel" aria-labelledby="foreign-tab">
 <p class="lead">일본어 일반 택틱과 일본·중국식 당고(O/X, 〇/ー)를 한국어 ON/OFF 방식으로 변환합니다.</p>
 <section class="panel">
 <h2>① 덱 순서와 이름 대응</h2>
@@ -83,4 +110,11 @@ button:disabled{opacity:.42;cursor:not-allowed}
 </ol>
 <p class="hint">변환기는 데이터베이스를 직접 수정하지 않습니다. 원문이 모호한 경우 확인 경고가 나오며, 최종 적용 전에는 원본 영상과 대조해 주세요.</p>
 </section>
-</main><script type="module" src="./tactic-converter-ui.mjs?v=20261024-converter-names01"></script></body></html>
+</div>
+<div id="carry-sheet-panel" role="tabpanel" aria-labelledby="carry-sheet-tab" hidden>
+<section class="panel"><h2>① 이월 모음 엑셀 불러오기</h2><p class="hint">보스별 1넴~5넴 탭과 SET 표가 있는 .xlsx 원본을 선택하세요. 글자색과 SET·AUTO 상태를 함께 읽어 조작과 딜 확인 구간을 구분합니다.</p><div class="carry-upload"><label for="carry-file">엑셀 파일</label><input id="carry-file" type="file" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"></div><p class="hint">파일은 이 브라우저에서만 읽습니다. 기대딜은 최소값을 억 단위 소수점 두 자리로 내림하고, TP 조건은 메모에서 분리합니다.</p><div id="carry-status" role="status" aria-live="polite">엑셀 파일을 선택하면 택틱별 결과가 표시됩니다.</div><details id="carry-notices" class="carry-notices" hidden><summary>시트 공통 안내 보기</summary><pre id="carry-notices-text"></pre></details></section>
+<datalist id="carry-character-names"></datalist>
+<div id="carry-results" class="carry-grid" hidden><aside class="panel"><div class="carry-list-head"><h2>택틱 <span id="carry-list-count"></span></h2><select id="carry-boss-filter" aria-label="이월 시트 보스 필터"><option value="all">전체 보스</option><option value="1">1넴</option><option value="2">2넴</option><option value="3">3넴</option><option value="4">4넴</option><option value="5">5넴</option></select></div><div id="carry-list"></div></aside>
+<section class="panel" id="carry-detail" hidden><h2 id="carry-result-title">② 변환 결과</h2><p class="carry-source-range" id="carry-source-range"></p><div id="carry-meta"></div><div id="carry-tactic-warnings" role="status"></div><div class="carry-row-heading"><h3>본문 · SET</h3><span>왼쪽부터 캐릭터 1~5 · AUTO</span></div><p class="hint">본문과 체크 상태를 직접 수정할 수 있습니다. 원문 대조를 펼치면 해당 셀의 내용이 보입니다.</p><div id="carry-rows"></div><div class="actions"><button type="button" class="primary" id="carry-copy-all">편성·SET·정보 복사</button><button type="button" id="carry-copy-body">본문만 복사</button></div><p class="hint" id="carry-copy-help"></p><div id="carry-manual-copy" hidden><label for="carry-manual-copy-text" class="hint">아래 내용 전체를 선택하여 복사하세요.</label><textarea id="carry-manual-copy-text" readonly spellcheck="false"></textarea></div></section></div>
+</div>
+</main><script type="module" src="./tactic-converter-ui.mjs?v=20261024-converter-names01"></script><script type="module" src="./carry-sheet-ui.mjs?v=20261024-carry-sheet01"></script></body></html>

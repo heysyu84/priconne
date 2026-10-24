@@ -6,8 +6,13 @@ export function contribution(event, month) {
   if (!(event.actual > 0)) return Number(event.bonus || 0) * 10000;
   const multiplier = month.bosses.find(b => b.id === event.boss)?.contribution?.[event.stage];
   if (multiplier === null || multiplier === undefined || !Number.isFinite(Number(multiplier))) return NaN;
-  // Stage 2/3 source coefficients already include half a hit and the 5% bonus.
+  // Stage 2/3 automatic coefficients include half a hit and the 5% bonus.
   return event.actual * Number(multiplier) + Number(event.bonus || 0) * 10000;
+}
+
+export function earlyStageContributionMultiplier(hp,baseline=30000000){
+  const health=Number(hp),reference=Number(baseline);
+  return health>0&&Number.isFinite(health)&&reference>0&&Number.isFinite(reference)?reference*0.5*1.05/health:null;
 }
 
 export function validateBattleNumbers(month) {
@@ -21,6 +26,12 @@ export function validateBattleNumbers(month) {
 
 export function replayMonth(month) {
   validateBattleNumbers(month);
+  // A full stage-2/3 boss is half a hit plus 5%, independent of its HP.
+  const baseline=Number(month.options.contributionBaseline||30000000);
+  for(const boss of month.bosses){
+    boss.contribution??={};
+    for(const stage of [2,3])boss.contribution[stage]=earlyStageContributionMultiplier(boss.hp[stage],baseline);
+  }
   const bossState = new Map(month.bosses.map(b => [b.id, { lap: 1, hp: Number(b.hp[phaseForLap(1, month)]) }]));
   const people = new Map();
   const warnings = [];
