@@ -30,6 +30,9 @@ export function createTacticWorkspace(api) {
   const imageUrl=(t,i)=>imageData(t,i).url;
   const manualLabel=t=>t.manualCount===null||t.manualCount===undefined||t.manualCount===''?'—':String(t.manualCount);
   const damageLabel=t=>formatExpectedDamage(t.expectedDamage,groupOf(t)===CARRY_GROUP?2:1);
+  const warningManual=value=>value!==null&&value!==undefined&&String(value).trim()!==''&&Number.isFinite(Number(value))&&Number(value)!==0;
+  const warningTp=value=>String(value??'').includes('+');
+  const starMarkup=stars=>(stars||[]).map(raw=>{const star=String(raw||'?');return /^\d$/.test(star)&&star!=='5'&&star!=='6'?'<span class="tactic-warning">'+X(star)+'</span>':X(star);}).join('');
   const tpLabel=t=>{
     const raw=String(t.tp??'').trim();
     if(!raw)return '—';
@@ -56,9 +59,9 @@ export function createTacticWorkspace(api) {
   }
   function libraryCardContent(t){
     const name=(t.boss?t.boss+'넴':'보스 미분류')+' '+(t.characters||[]).map(c=>c||'미선택').join(' ');
-    const stars=(t.stars||[]).map(s=>s||'?').join('');
+    const stars=starMarkup(t.stars);
     const memo=String(t.note||'').trim();
-    return `<span class="tw-card-title">${X(name)}${t.hidden&&canEdit()?' <span class="pill gray">숨김</span>':''}</span><span class="tw-card-details"><span>성급 ${X(stars)}</span><span>손컨 ${X(manualLabel(t))}</span><span>TP ${X(tpLabel(t))}</span><span>기대딜 ${X(damageLabel(t))}</span></span>${memo?`<small class="tw-card-note">${X(memo)}</small>`:''}`;
+    return `<span class="tw-card-title">${X(name)}${t.hidden&&canEdit()?' <span class="pill gray">숨김</span>':''}</span><span class="tw-card-details"><span>성급 ${stars}</span><span class="${warningManual(t.manualCount)?'tactic-warning':''}">손컨 ${X(manualLabel(t))}</span><span class="${warningTp(t.tp)?'tactic-warning':''}">TP ${X(tpLabel(t))}</span><span>기대딜 ${X(damageLabel(t))}</span></span>${memo?`<small class="tw-card-note">${X(memo)}</small>`:''}`;
   }
   function libraryCards(groups=null){
     if(!groups){groups=new Map();for(const t of visible()){const key=t.boss||'none';if(!groups.has(key))groups.set(key,[]);groups.get(key).push(t);}}
@@ -210,9 +213,9 @@ export function createTacticWorkspace(api) {
   function editorTitle(t){
     const boss=t.boss?t.boss+'넴':'보스 미분류';
     const members=t.characters.map(name=>`<span class="tw-title-character">${X(name||'미선택')}</span>`).join('');
-    const stars=t.stars.map(star=>star||'?').join('');
+    const stars=starMarkup(t.stars);
     const video=validURL(t.video),link=validURL(t.tacticUrl),links=[...new Set([video,link].filter(Boolean))];
-    return `<span class="tw-title-lineup"><span class="tw-title-boss">${X(boss)}</span>${members}<span class="tw-title-stars">${X(stars)}</span></span><span class="tw-title-details"><span class="tw-title-condition">손컨 ${X(manualLabel(t))}</span><span class="tw-title-condition">TP ${X(tpLabel(t))}</span><span class="tw-source-summary"><small>기대딜</small><strong>${X(damageLabel(t))}</strong><span class="source-link-group">${links.length?links.map(sourceLinkBox).join(''):sourceLinkBox('')}</span></span></span>`;
+    return `<span class="tw-title-lineup"><span class="tw-title-boss">${X(boss)}</span>${members}<span class="tw-title-stars">${stars}</span></span><span class="tw-title-details"><span class="tw-title-condition ${warningManual(t.manualCount)?'tactic-warning':''}">손컨 ${X(manualLabel(t))}</span><span class="tw-title-condition ${warningTp(t.tp)?'tactic-warning':''}">TP ${X(tpLabel(t))}</span><span class="tw-source-summary"><small>기대딜</small><strong>${X(damageLabel(t))}</strong><span class="source-link-group">${links.length?links.map(sourceLinkBox).join(''):sourceLinkBox('')}</span></span></span>`;
   }
   function tacticLinks(t){return canEdit()?'<div class="tw-links"><button class="btn sm" type="button" data-tw="link-edit">영상·사이트 링크 수정</button></div>':'';}
   function communityLinks(){const links=month().communityLinks||[];return `<div class="community-links" aria-label="커뮤니티 자료 링크">${links.map(l=>`<span>${validURL(l.url)?`<a class="btn sm" href="${X(validURL(l.url))}" target="_blank" rel="noopener noreferrer">↗ ${X(l.label)}</a>`:`<span class="btn sm missing-link">${X(l.label)}</span>`}${canEdit()?`<button type="button" class="textbutton" data-tw="community-edit" data-id="${X(l.id)}" aria-label="${X(l.label)} 링크 수정">✎</button><button type="button" class="textbutton" data-tw="community-delete" data-id="${X(l.id)}" aria-label="${X(l.label)} 링크 삭제">×</button>`:''}</span>`).join('')}${canEdit()?'<button class="btn sm" type="button" data-tw="community-add">＋ 커뮤니티 링크</button>':''}</div>`;}
