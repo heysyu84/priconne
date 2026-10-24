@@ -1,4 +1,4 @@
-import {parseBattleLogText,parseQuickLogText,detectDuplicateRows,sortBattleLogRows,validBattleLogRow} from './battle-image-parser.mjs?v=20261023-extraction03';
+import {parseBattleLogText,parseQuickLogText,detectDuplicateRows,sortBattleLogRows,validBattleLogRow} from './battle-image-parser.mjs?v=20261025-ocr-tactic01';
 import {makeId,memberLabel} from './roster.mjs?v=20261022-ui14';
 
 const OCR_URL='https://cdn.jsdelivr.net/npm/tesseract.js@7.0.0/dist/tesseract.min.js';
@@ -14,9 +14,9 @@ function loadOcr(){
  }).catch(e=>{ocrPromise=null;throw e;});
  return ocrPromise;
 }
-function toCanvas(bitmap,frame){
+function toCanvas(bitmap,frame,maximumScale=2.4){
  const width=Math.floor(bitmap.width*frame.w),height=Math.floor(bitmap.height*frame.h);
- const scale=Math.min(2.4,2100/Math.max(1,width),720/Math.max(1,height));
+ const scale=Math.min(maximumScale,2100/Math.max(1,width),720/Math.max(1,height));
  const canvas=document.createElement('canvas');
  canvas.width=Math.max(1,Math.round(width*scale));canvas.height=Math.max(1,Math.round(height*scale));
  const ctx=canvas.getContext('2d',{willReadFrequently:true});
@@ -28,6 +28,14 @@ const detailFrames=[
  {x:.133,y:.252,w:.563,h:.176},{x:.133,y:.438,w:.563,h:.172},{x:.133,y:.623,w:.563,h:.165}
 ];
 const quickFrame={x:.711,y:.242,w:.215,h:.565};
+// Read the small labels separately; portrait artwork must not compete with names.
+const detailFields={member:{x:.32,y:.35,w:.28,h:.34},boss:{x:.02,y:.66,w:.27,h:.33},damage:{x:.72,y:.02,w:.26,h:.30}};
+function nameContrast(canvas){
+ const ctx=canvas.getContext('2d',{willReadFrequently:true}),image=ctx.getImageData(0,0,canvas.width,canvas.height);
+ for(let i=0;i<image.data.length;i+=4){const value=Math.max(image.data[i],image.data[i+1],image.data[i+2])<145?0:255;image.data[i]=image.data[i+1]=image.data[i+2]=value;}
+ ctx.putImageData(image,0,0);return canvas;
+}
+function fieldFrame(row,field){return {x:row.x+row.w*field.x,y:row.y+row.h*field.y,w:row.w*field.w,h:row.h*field.h};}
 const escapeHtml=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'}[c]));
 const formatNumber=n=>Number(n||0).toLocaleString('ko-KR');
 export function createBattleImageImport(api){
@@ -142,9 +150,43 @@ export function createBattleImageImport(api){
        canvas.width=0;canvas.height=0;
        if(state.cancel||getApp().active!==contextMonth){state.cancel=true;break;}
        const text=result.data?.text||'';
+       if(mode==='detail'&&/모의\s*전/.test(text))continue;
        const options={roster:members(),bosses:month().bosses,source:file.name+' · '+(i+1)+'행'};
        const parsed=mode==='detail'? [parseBattleLogText(text,options)].filter(Boolean):
          parseQuickLogText(text,options);
+       if(mode==='detail'&&parsed.length){
+        const row=parsed[0],reads={};
+        try{
+         await worker.setParameters({tessedit_pageseg_mode:'7'});
+         for(const [field,box] of Object.entries(detailFields)){
+          if(state.cancel)break;
+          const crop=toCanvas(bitmap,fieldFrame(frames[i],box),5);
+          try{
+           const result=await worker.recognize(crop);
+           reads[field]=String(result.data?.text||'').trim();
+          }finally{crop.width=0;crop.height=0;}
+         }
+        }finally{await worker.setParameters({tessedit_pageseg_mode:'3'});}
+        let name=parseBattleLogText(reads.member||'',{...options,bosses:[],memberField:true});
+        if(!name?.memberId&&!state.cancel){
+         const crop=nameContrast(toCanvas(bitmap,fieldFrame(frames[i],{x:.33,y:.44,w:.25,h:.19}),5));
+         try{
+          await worker.setParameters({tessedit_pageseg_mode:'7'});
+          const retry=await worker.recognize(crop);
+          reads.memberRetry=String(retry.data?.text||'').trim();
+          name=parseBattleLogText(reads.memberRetry,{...options,bosses:[],memberField:true});
+         }finally{crop.width=0;crop.height=0;await worker.setParameters({tessedit_pageseg_mode:'3'});}
+        }
+        const boss=parseBattleLogText(reads.boss||'',{...options,roster:[]});
+        const damage=parseBattleLogText('입힌 데미지 '+(reads.damage||''),{roster:[],bosses:[]});
+        // Dedicated fields take precedence over accidental matches in the whole card.
+        row.memberId=name?.memberId||'';row.memberName=name?.memberName||'';
+        row.bossId=boss?.bossId||row.bossId;
+        if(damage?.damage)row.damage=damage.damage;
+        row.rawText+='\n\n개별 영역 인식\n클랜원: '+(reads.member||'미인식')+(reads.memberRetry?' / 재인식: '+reads.memberRetry:'')+'\n보스: '+(reads.boss||'미인식')+'\n피해량: '+(reads.damage||'미인식');
+
+       }
+       if(state.cancel||getApp().active!==contextMonth){state.cancel=true;break;}
        for(const row of parsed){
          if(!row.damage && !row.memberName && !row.bossId && !row.gameAt)continue;
          row.order=state.rows.length;row.selected=true;state.rows.push(row);

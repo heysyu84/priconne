@@ -1044,6 +1044,12 @@ table.tw-grid thead th{
 
 /* Mobile tactic headings use a lineup row followed by conditions, damage and sources. */
 .tw-work .tw-title-details{display:contents}
+@media(min-width:801px){
+ .tw-work .tw-editor-head h2{flex-direction:column;align-items:flex-start;row-gap:5px}
+ .tw-work .tw-title-lineup{flex:none;width:100%;flex-wrap:nowrap;column-gap:7px}
+ .tw-work .tw-title-details{display:flex;align-items:center;flex-wrap:nowrap;column-gap:12px;min-width:0;max-width:100%}
+ .tw-work .tw-title-details>.tw-source-summary{flex:none}
+}
 @media(max-width:800px){
  .tw-work .tw-editor-head h2{
   flex-direction:column;align-items:flex-start;row-gap:5px;
@@ -1253,3 +1259,6 @@ table.tw-grid thead th{
 .combo-card .tactic-warning{
  color:#c0273e!important;
 }
+
+/* Slightly denser SET / action rows, preserving the existing text size. */
+.tw-work .tw-grid .tw-text-cell>[data-tw-text]{min-height:39px;padding-top:7px;padding-bottom:7px;line-height:1.65}

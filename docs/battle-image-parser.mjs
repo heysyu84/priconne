@@ -23,7 +23,15 @@ function detectDamage(text){
  return numbers.length===1?numbers[0]:null;
 }
 function bestMatch(text,items){
- const matched=items.filter(x=>x.key&&key(text).includes(x.key)).sort((a,b)=>b.key.length-a.key.length);
+ const normalized=key(text);
+ const occurrences=items.flatMap(item=>{
+  if(!item.key)return [];
+  const spans=[];let from=0,index;
+  while((index=normalized.indexOf(item.key,from))!==-1){spans.push({...item,start:index,end:index+item.key.length});from=index+1;}
+  return spans;
+ });
+ // A short nickname inside a longer nickname is one occurrence, not two people.
+ const matched=occurrences.filter(a=>!occurrences.some(b=>b.key.length>a.key.length&&b.start<=a.start&&b.end>=a.end));
  if(!matched.length)return null;
  const distinct=[...new Set(matched.map(x=>x.id))];
  // Two independently named members/bosses within one row is ambiguous.
@@ -37,11 +45,15 @@ export function bossCandidates(bosses=[]){
  return bosses.flatMap(boss=>[boss.name,String(boss.id)+'넴',String(boss.id)+'번째'].filter(Boolean)
    .map(name=>({id:Number(boss.id),name:boss.name,alias:name,key:key(name)})));
 }
-export function parseBattleLogText(input,{roster=[],bosses=[],mode='detail',source=''}={}){
+export function parseBattleLogText(input,{roster=[],bosses=[],mode='detail',source='',memberField=false}={}){
  const text=clean(input);
  if(!text)return null;
  const lines=String(input).split(/\n+/).map(clean).filter(Boolean);
- const detectedMember=bestMatch(text,memberCandidates(roster));
+ const candidates=memberCandidates(roster);
+ const nameLines=lines.map(line=>line.replace(/^(?:클랜원|닉네임|플레이어)\s*[:：]\s*/,'').replace(/\s*님이.*$/,'').trim());
+ const exact=nameLines.flatMap(line=>candidates.filter(candidate=>candidate.key===key(line)));
+ const exactIds=new Set(exact.map(candidate=>candidate.id));
+ const detectedMember=exactIds.size===1?exact[0]:exactIds.size>1||memberField?null:bestMatch(text,candidates);
  const detectedBoss=bestMatch(text,bossCandidates(bosses));
  const date=dateFromText(text);
  const damage=detectDamage(text);

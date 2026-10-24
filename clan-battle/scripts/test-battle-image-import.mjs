@@ -46,3 +46,33 @@ assert.match(html,/left:10%;top:20%;width:60/);assert.match(html,/data-bli-crop-
 action('reset-crop');assert.match(html,/left:13.3%/);
 action('clear');assert.ok(!html.includes('data-bli-crop-surface'));assert.deepEqual(month.events,[]);
 console.log('PASS: same-minute order and local crop selection/reset');
+
+// Exercise the actual asynchronous image pipeline without downloading an OCR model.
+app.roster=[{id:'m1',name:'리온'},{id:'m2',name:'질풍리온'},{id:'m3',name:'슈'}];
+month.memberIds=app.roster.map(p=>p.id);
+const readings=[
+ '2026/10/23 12:30\n리온\n테스트보스 입힌 데미지 233831766',
+ '_ 질풍리온','테스트보스','333831766',
+ '모의전 2026/10/23 12:31\n슈\n테스트보스 입힌 데미지 336598960',
+ '2026/10/23 12:32\n리온\n테스트보스 입힌 데미지 322316115',
+ '직풍리온','테스트보스','322316115','슈'
+];
+let terminated=false,closed=false;
+globalThis.Tesseract={createWorker:async()=>({
+ setParameters:async()=>{},recognize:async()=>({data:{text:readings.shift()}}),
+ terminate:async()=>{terminated=true;}
+})};
+globalThis.createImageBitmap=async()=>({width:1536,height:709,close(){closed=true;}});
+document.createElement=()=>({width:0,height:0,getContext:()=>({drawImage(){},getImageData:()=>({data:new Uint8ClampedArray(4)}),putImageData(){}})});
+for(const fn of listeners.change)fn({target:{id:'bli-files',files:[image],closest:()=>({})}});
+action('analyze');
+for(let tries=0;tries<100&&!terminated;tries++)await new Promise(resolve=>setImmediate(resolve));
+assert.ok(terminated&&closed,'The OCR worker and bitmap must be released');
+assert.equal(readings.length,0,'Read individual fields and retry an unresolved full nickname');
+assert.match(html,/등록 가능한 선택 기록 2건/);
+assert.match(html,/333,831,766/,'Use the dedicated damage crop, including the correct first digit');
+assert.ok(!html.includes('336,598,960'),'Do not offer a recognized practice battle for registration');
+assert.match(html,/<option value="m2" selected>질풍리온/);
+assert.match(html,/<option value="m3" selected>슈/);
+assert.deepEqual(month.events,[],'OCR analysis must not register records automatically');
+console.log('PASS: field OCR, full nickname matching/retry, damage correction and practice exclusion');

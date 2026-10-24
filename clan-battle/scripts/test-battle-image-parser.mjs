@@ -39,6 +39,11 @@ assert.ok(quick.every(row=>!row.gameAt));
 assert.ok(quick.every(row=>validBattleLogRow(row,{monthKey:'2026-09',members:roster,bosses,day:1})
  .includes('공격 시각 미확인')));
 console.log('Battle screenshot parser regression tests: passed');
+const overlapping=[{id:'short',name:'다람',aliases:[]},{id:'long',name:'다람이',aliases:[]}];
+assert.equal(parseBattleLogText('다람이\n입힌 데미지 410562280',{roster:overlapping}).memberId,'long');
+assert.equal(parseBattleLogText('다람\n다람이\n입힌 데미지 410562280',{roster:overlapping}).memberId,'');
+assert.equal(parseBattleLogText('다람 님이 공격',{roster:overlapping}).memberId,'short');
+assert.equal(parseBattleLogText('질풍리온',{roster:[{id:'a',name:'리온'},{id:'b',name:'질풍리온'}]}).memberId,'b');
 
 for(const damage of ['189633896','189,633,896']){
  const split=parseQuickLogText('다람이 님이\n데미카리드 몬스터를\n입힌 데미지\n'+damage,{roster,bosses});
@@ -46,3 +51,6 @@ for(const damage of ['189633896','189,633,896']){
 }
 const wrapped=parseQuickLogText('다람이\n데미카리드\n입힌 데미지\n189633896\n쁘띠어피치\n마담 엘렉트라\n272557284\n데미지',{roster,bosses});
 assert.equal(wrapped.length,2);assert.deepEqual(wrapped.map(r=>r.damage),[189633896,272557284]);
+
+assert.equal(parseBattleLogText('직풍리온',{roster:[{id:'short',name:'리온'},{id:'long',name:'질풍리온'}],memberField:true}).memberId,'');
+assert.equal(parseBattleLogText('_ 질풍리온',{roster:[{id:'short',name:'리온'},{id:'long',name:'질풍리온'}],memberField:true}).memberId,'long');
