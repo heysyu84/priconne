@@ -16,7 +16,7 @@ const {createWorkflow}=await import('./workflow.mjs?v=20261024-carry-only-type01
 const {ensureTactics,carryTacticsVisible}=await import('./tactics-model.mjs?v=20261024-carry-punctuation06');
 const {syncTacticRecommendations}=await import('./tactic-combo-sync.mjs?v=20261024-tactic-hidden01');
 const {applySourceData,remainingAttacks}=await import('./guild-model.mjs?v=20261024-boss-lap-lock01');
-const {createGuildWorkspace}=await import('./guild-workspace.mjs?v=20261024-tactic-warning01');
+const {createGuildWorkspace}=await import('./guild-workspace.mjs?v=20261025-dashboard-sort01');
 const {createTacticWorkspace}=await import('./tactics-workspace.mjs?v=20261024-tactic-warning01');
 const {createBattleImageImport}=await import('./battle-image-import.mjs?v=20261025-ocr-tactic01');
 const [TACTIC_META,CHARACTERS,ROW_FORMATS,BOSS_ART,GUILD_SOURCE,PORTRAIT_LIBRARY,FUTURE_BOSSES]=await Promise.all(['/tactic-metadata.json','/characters.json','/tactic-row-formats.json','/bosses.json','/guild-source.json','/portrait-library.json','/future-bosses.json'].map(async path=>{const response=await fetch(assetUrl(path)+'?v=20261024-carry-punctuation06');if(!response.ok)throw Error('택틱 자료를 불러오지 못했습니다.');return response.json()}));
