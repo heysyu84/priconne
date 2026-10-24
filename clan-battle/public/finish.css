@@ -873,17 +873,12 @@ table.tw-grid thead th{
  .raid-stats+.grid-2{grid-template-columns:minmax(0,2fr) minmax(280px,1fr);gap:12px;align-items:start}
  .raid-stats+.grid-2>.panel{min-width:0}
  .raid-stats+.grid-2>.panel .table-scroll{max-width:100%;min-width:0;overflow-x:auto}
- /* Narrow only the day column of the overview's recent battle log. */
- .raid-stats+.grid-2 .recent-battle-table .day-heading{width:8.5%}
- .raid-stats+.grid-2 .recent-battle-table .type-heading{width:8%}
  /* Keep each ranking name and its full contribution value on one line. */
  .raid-stats+.grid-2 .rank-head{display:grid;grid-template-columns:minmax(0,1fr) max-content;gap:8px;align-items:center;white-space:nowrap}
  .raid-stats+.grid-2 .rank-data{font-size:11px;min-width:0;white-space:nowrap;overflow-wrap:normal}
  .raid-stats+.grid-2 .rank-name{min-width:0;white-space:nowrap}
  .raid-stats+.grid-2>.panel:last-child .panel-head{flex-wrap:nowrap;gap:8px}
  .raid-stats+.grid-2>.panel:last-child .panel-head h2,.raid-stats+.grid-2>.panel:last-child .panel-head .btn{white-space:nowrap}
- /* Leave room for boss names of roughly 9–10 characters, including spaces. */
- .raid-stats+.grid-2 .recent-battle-table .boss-progress-heading{width:21%}
  .metrics,.archive-record-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}
  .quick-grid{grid-template-columns:70px minmax(150px,1.1fr) minmax(145px,1.1fr) minmax(130px,1fr)}
  .quick-grid .quick-submit{grid-column:4}
@@ -894,8 +889,56 @@ table.tw-grid thead th{
  .sidebar:not([data-nav-probe]) .nav .symbol{display:none}
 }
 
-/* Summary battle log uses the same two-line boss/progress cell as the full battle log. */
-.recent-battle-table .boss-cell small{display:block;margin-top:2px;font-size:11px;line-height:1.35;color:var(--muted)}
+/* Overview: separate progress on desktop and reuse its space for readable records. */
+.raid-stats+.grid-2 .recent-battle-table{table-layout:fixed;min-width:0;width:100%}
+.raid-stats+.grid-2 .recent-battle-table th,
+.raid-stats+.grid-2 .recent-battle-table td{white-space:normal;overflow-wrap:anywhere}
+.raid-stats+.grid-2 .recent-battle-table .recent-mobile-label,
+.raid-stats+.grid-2 .recent-battle-table .recent-mobile-progress{display:none}
+.raid-stats+.grid-2 .recent-battle-table td.number{overflow-wrap:normal;word-break:normal}
+.raid-stats+.grid-2 .recent-battle-table .progress-cell{white-space:nowrap}
+.raid-stats+.grid-2 .recent-battle-table .progress-cell strong{display:block;font-size:inherit;line-height:1.35}
+.raid-stats+.grid-2 .recent-battle-table .progress-cell small{display:block;margin-top:2px;font-size:.85em;line-height:1.35;color:var(--muted)}
+.raid-stats+.grid-2 .recent-battle-table .day-heading{width:10%}
+.raid-stats+.grid-2 .recent-battle-table .progress-heading{width:12%}
+.raid-stats+.grid-2 .recent-battle-table .boss-heading{width:27%}
+.raid-stats+.grid-2 .recent-battle-table .member-heading{width:20%}
+.raid-stats+.grid-2 .recent-battle-table .damage-heading{width:21%}
+.raid-stats+.grid-2 .recent-battle-table .type-heading{width:10%}
+.raid-stats+.grid-2 .recent-battle-table .battle-kind{padding-inline:3px}
+.raid-stats+.grid-2 .recent-battle-table.has-sequence .sequence-heading{width:8%}
+.raid-stats+.grid-2 .recent-battle-table.has-sequence .day-heading{width:9%}
+.raid-stats+.grid-2 .recent-battle-table.has-sequence .progress-heading{width:11%}
+.raid-stats+.grid-2 .recent-battle-table.has-sequence .boss-heading{width:23%}
+.raid-stats+.grid-2 .recent-battle-table.has-sequence .member-heading{width:19%}
+.raid-stats+.grid-2 .recent-battle-table.has-sequence .damage-heading{width:20%}
+@media(max-width:800px){
+ .raid-stats+.grid-2 .recent-battle-table .recent-progress-column,
+ .raid-stats+.grid-2 .recent-battle-table .recent-desktop-label{display:none}
+ .raid-stats+.grid-2 .recent-battle-table .recent-mobile-label{display:inline}
+ .raid-stats+.grid-2 .recent-battle-table .recent-mobile-progress{display:block;margin-top:2px;font-size:.85em;line-height:1.35;color:var(--muted)}
+ .raid-stats+.grid-2 .recent-battle-table .day-heading{width:12%}
+ .raid-stats+.grid-2 .recent-battle-table .boss-heading{width:26%}
+ .raid-stats+.grid-2 .recent-battle-table .member-heading{width:24%}
+ .raid-stats+.grid-2 .recent-battle-table .damage-heading{width:24%}
+ .raid-stats+.grid-2 .recent-battle-table .type-heading{width:14%}
+ .raid-stats+.grid-2 .recent-battle-table .battle-kind{padding-inline:2px}
+ .raid-stats+.grid-2 .recent-battle-table.has-sequence .day-heading{width:12%}
+ .raid-stats+.grid-2 .recent-battle-table.has-sequence .boss-heading{width:25%}
+ .raid-stats+.grid-2 .recent-battle-table.has-sequence .member-heading{width:18%}
+ .raid-stats+.grid-2 .recent-battle-table.has-sequence .damage-heading{width:23%}
+}
+@media(max-width:360px){
+ .raid-stats+.grid-2 .recent-battle-table .battle-kind{padding-inline:0}
+ .raid-stats+.grid-2 .recent-battle-table .day-heading{width:14%}
+ .raid-stats+.grid-2 .recent-battle-table .boss-heading{width:22%}
+ .raid-stats+.grid-2 .recent-battle-table .member-heading{width:23%}
+ .raid-stats+.grid-2 .recent-battle-table .type-heading{width:17%}
+ .raid-stats+.grid-2 .recent-battle-table.has-sequence .day-heading{width:14%}
+ .raid-stats+.grid-2 .recent-battle-table.has-sequence .boss-heading{width:20%}
+ .raid-stats+.grid-2 .recent-battle-table.has-sequence .member-heading{width:18%}
+ .raid-stats+.grid-2 .recent-battle-table.has-sequence .type-heading{width:17%}
+}
 
 /* Desktop tactic workspace: left tactic library 35%, right editor 65%.
    Keep the existing stacked layout for mobile widths of 800px or less. */
