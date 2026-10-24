@@ -1,0 +1,5 @@
+{
+  "hosts": ["live.pcr.kakaogame.com"],
+  "listen": "127.0.0.1",
+  "port": 8877
+}

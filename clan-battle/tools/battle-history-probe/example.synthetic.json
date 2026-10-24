@@ -1,0 +1,14 @@
+{
+  "_probe_fixture": true,
+  "data_headers": {"result_code": 1},
+  "data": {
+    "clan_id": 999001,
+    "clan_battle_id": 999002,
+    "clan_battle_mode": 0,
+    "damage_history": [
+      {"history_id": 101, "name": "예제 클랜원 A", "damage": 123456789, "order_num": 1, "lap_num": 23, "create_time": 1792800000, "is_carry_over": 0},
+      {"history_id": 102, "name": "예제 클랜원 B", "damage": 32000000, "order_num": 2, "lap_num": 24, "create_time": 1792800123},
+      {"history_id": 103, "name": "예제 클랜원 C", "damage": 48000000, "order_num": 3, "lap_num": 24, "create_time": 1792800150, "is_carry_over": 1}
+    ]
+  }
+}

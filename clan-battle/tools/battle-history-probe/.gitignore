@@ -1,0 +1,9 @@
+.venv/
+.certs/
+output/
+config.json
+__pycache__/
+*.har
+*.log
+*.pem
+*.key
