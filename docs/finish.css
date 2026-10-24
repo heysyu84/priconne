@@ -1100,3 +1100,14 @@ table.tw-grid thead th{
  .tw-external-column textarea{min-height:240px;font-size:16px;padding:11px}
  .tw-external-column textarea[readonly]{min-height:280px}
 }
+
+/* Battle-log columns: desktop separates progress and boss; mobile keeps the original combined column. */
+.battle-sheet.compact-battle-sheet .mobile-boss-head,
+.battle-sheet.compact-battle-sheet .mobile-boss-progress{display:none}
+@media(max-width:800px){
+  .battle-sheet.compact-battle-sheet .battle-progress-cell{display:none!important}
+  .battle-sheet.compact-battle-sheet col.battle-progress-col{width:0!important;visibility:collapse}
+  .battle-sheet.compact-battle-sheet .desktop-boss-head{display:none}
+  .battle-sheet.compact-battle-sheet .mobile-boss-head{display:inline}
+  .battle-sheet.compact-battle-sheet .mobile-boss-progress{display:block;font-weight:400}
+}
