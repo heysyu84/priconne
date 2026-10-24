@@ -16,19 +16,22 @@ export function createComboWorkspace(api) {
     return X(match ? match[1] + '.' + (match[2] || '0') + (match[3] || '') : raw);
   };
   const seconds = value => value === null || value === undefined || value === '' ? '—' : X(value) + '초';
+  const warningManual = value => value !== null && value !== undefined && String(value).trim() !== '' && Number.isFinite(Number(value)) && Number(value) !== 0;
+  const warningTp = value => String(value ?? '').includes('+');
+  const starMarkup = value => { const star=String(value||'?'); return /^\d$/.test(star)&&star!=='5'&&star!=='6'?'<span class="tactic-warning">'+X(star)+'</span>':X(star); };
   const boss = value => `<span class="combo-mini-boss" data-boss-color="${X(value)}">${X(value)}넴</span>`;
   function party(combo, supportIndex = -1, compact = false) {
     return `<div class="combo-mini-party">${Array.from({length: 5}, (_, index) => {
       const name = combo.characters?.[index] || '미선택', borrowed = index === supportIndex;
       const portrait = characterPortrait(characters, name, combo.stars?.[index]);
-      return `<span class="combo-mini-unit${borrowed ? ' is-support' : ''}" title="${X(name)} · ${X(combo.stars?.[index] || '?')}성${borrowed ? ' · 서포트' : ''}"><span class="combo-mini-art">${portrait.url ? `<img class="combo-mini-avatar" src="${X(portrait.url)}" ${portraitAttributes(portrait)} alt="${X(name)}" loading="lazy">${portraitStarOverlay(portrait)}` : '<span class="combo-mini-missing">?</span>'}${borrowed ? '<span class="combo-support-mark" aria-label="서포트">S</span>' : ''}</span><strong class="${isBoosterCharacter(api.app(), name, characters) ? 'is-booster' : ''}"${compact ? ` style="--combo-name-length:${Math.max(1, Array.from(name).length)}"` : ''}>${borrowed ? '[' + X(name) + ']' : X(name)}</strong>${compact ? `<small class="combo-mini-unit-star" aria-label="${X(combo.stars?.[index] || '?')}성">★${X(combo.stars?.[index] || '?')}</small>` : ''}</span>`;
+      return `<span class="combo-mini-unit${borrowed ? ' is-support' : ''}" title="${X(name)} · ${X(combo.stars?.[index] || '?')}성${borrowed ? ' · 서포트' : ''}"><span class="combo-mini-art">${portrait.url ? `<img class="combo-mini-avatar" src="${X(portrait.url)}" ${portraitAttributes(portrait)} alt="${X(name)}" loading="lazy">${portraitStarOverlay(portrait)}` : '<span class="combo-mini-missing">?</span>'}${borrowed ? '<span class="combo-support-mark" aria-label="서포트">S</span>' : ''}</span><strong class="${isBoosterCharacter(api.app(), name, characters) ? 'is-booster' : ''}"${compact ? ` style="--combo-name-length:${Math.max(1, Array.from(name).length)}"` : ''}>${borrowed ? '[' + X(name) + ']' : X(name)}</strong>${compact ? `<small class="combo-mini-unit-star" aria-label="${X(combo.stars?.[index] || '?')}성">★${starMarkup(combo.stars?.[index])}</small>` : ''}</span>`;
     }).join('')}</div>`;
   }
   function metadata(combo) {
     if (Number(combo.stage) === 3) return `<span class="combo-mini-chip"><small>필요</small> ${seconds(combo.requiredSeconds)}</span><span class="combo-mini-chip is-tactic">${X(combo.tactic?.trim() || '전부 SET')}</span>`;
     const type = /타비/.test(combo.tactic || '') ? '타비' : /택틱/.test(combo.tactic || '') ? '택틱' : combo.tactic || '—';
     const manual = combo.manualCount === null || combo.manualCount === undefined || combo.manualCount === '' ? '—' : combo.manualCount;
-    return `<span class="combo-mini-chip ${type === '택틱' ? 'is-tactic' : type === '타비' ? 'is-tabi' : ''}">${X(type)}</span><span class="combo-mini-chip${Number(manual) > 0 ? ' has-manual' : ''}">손컨 ${X(manual)}</span><span class="combo-mini-chip is-tp">TP ${tpLabel(combo.tp)}</span>`;
+    return `<span class="combo-mini-chip ${type === '택틱' ? 'is-tactic' : type === '타비' ? 'is-tabi' : ''}">${X(type)}</span><span class="combo-mini-chip${warningManual(combo.manualCount) ? ' has-manual tactic-warning' : ''}">손컨 ${X(manual)}</span><span class="combo-mini-chip is-tp${warningTp(combo.tp)?' tactic-warning':''}">TP ${tpLabel(combo.tp)}</span>`;
   }
   function compactRows(rows) {
     if (!rows.length) return '<div class="panel empty">등록된 추천 조합이 없습니다.</div>';
