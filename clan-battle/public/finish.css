@@ -1138,17 +1138,9 @@ table.tw-grid thead th{
   }
 }
 
-/* Battle log on small screens: the day is already shown in each day divider.
-   Show the per-attack day column only when '상세 열' is enabled. */
+/* Keep both attack-type badges on one line on mobile.
+   The day column is omitted from the default mobile table HTML, never collapsed. */
 @media(max-width:800px){
-  .battle-sheet.compact-battle-sheet.mobile-day-hidden col.battle-day-col{
-    visibility:collapse!important;
-    width:0!important;
-  }
-  .battle-sheet.compact-battle-sheet.mobile-day-hidden .battle-day-heading,
-  .battle-sheet.compact-battle-sheet.mobile-day-hidden .battle-day-cell{
-    display:none!important;
-  }
   .battle-sheet.compact-battle-sheet .carry-cell{
     white-space:nowrap!important;
   }
