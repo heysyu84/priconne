@@ -1137,3 +1137,24 @@ table.tw-grid thead th{
     word-break:keep-all;
   }
 }
+
+/* Battle log on small screens: the day is already shown in each day divider.
+   Show the per-attack day column only when '상세 열' is enabled. */
+@media(max-width:800px){
+  .battle-sheet.compact-battle-sheet.mobile-day-hidden col.battle-day-col{
+    visibility:collapse!important;
+    width:0!important;
+  }
+  .battle-sheet.compact-battle-sheet.mobile-day-hidden .battle-day-heading,
+  .battle-sheet.compact-battle-sheet.mobile-day-hidden .battle-day-cell{
+    display:none!important;
+  }
+  .battle-sheet.compact-battle-sheet .carry-cell{
+    white-space:nowrap!important;
+  }
+  .battle-sheet.compact-battle-sheet .carry-cell .battle-kind{
+    white-space:nowrap!important;
+    display:inline-block;
+    padding-inline:2px;
+  }
+}
