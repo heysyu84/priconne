@@ -3,7 +3,7 @@ import {AUTOMATIC_HISTORY_FROM,monthlyBattleSummary,confirmMonthlyResult,resultN
 import { CLAN_PROFILE, isBoosterCharacter, formatExpectedDamage, comboNoticeHidden, setComboNoticeHidden, sourceLinkBox } from './view-settings.mjs?v=20261023-image-cleanup01';
 import { characterPortrait, portraitAttributes, portraitStarOverlay } from './character-portraits.mjs?v=20261023-image-cleanup01';
 import { BOSS_COLORS, BOSS_ACCENTS, BOSS_INK, tenureMonths, monthOnly, thisMonth, dashboardDay, bossTopStats } from './guild-model.mjs?v=20261024-boss-lap-lock01';
-import { makeId, matchMembers, upsertMember, syncRoster } from './roster.mjs?v=20261022-ui14';
+import { makeId, matchMembers, upsertMember, syncRoster } from './roster.mjs?v=20261024-db-stage-ranges01';
 import { downloadProfilePdf } from './report-pdf.mjs?v=20261023-contribution-round-width980-01';
 import { createComboWorkspace } from './combo-workspace.mjs?v=20261024-boss-lap-lock01';
 import {suppressTacticRecommendation} from './tactic-combo-sync.mjs?v=20261024-carry-tactics01';
@@ -112,7 +112,7 @@ export function createGuildWorkspace(api){
   function rates(){
     const d=month(),tops=d.bosses.map(b=>bossTopStats(d,b.id));
     const compact=value=>value===null||value===undefined||!Number.isFinite(Number(value))?'-':(Number(value)/10000).toLocaleString('ko-KR',{maximumFractionDigits:1});
-    return `<div class="db-rates-layout"><section class="panel db-rate-factors"><div class="panel-head"><h2>단계별 보스 기여도 배율</h2></div>${table(['단계',...d.bosses.map(b=>chip(b.id,b.id+'넴'))],[1,2,3,4].filter(stage=>d.levels.some(l=>l.stage===stage&&l.count>0)).map(stage=>`<tr><th>${stage}단계</th>${d.bosses.map(b=>`<td class="number">${rate(b.contribution[stage])}</td>`).join('')}</tr>`))}<p class="small muted">2·3단계 관통의 반타·5% 가산은 위 배율에 포함됩니다.</p></section><section class="panel db-rate-records"><div class="panel-head"><h2>4단계 상위 기록 · 전체 보스</h2><span class="small muted">피해량 단위: 만</span></div>${table(['순위',...d.bosses.map(b=>chip(b.id,b.id+'넴'))],[
+    return `<div class="db-rates-layout"><section class="panel db-rate-factors"><div class="panel-head"><h2>단계별 보스 기여도 배율</h2></div>${table(['단계 · 회차',...d.bosses.map(b=>chip(b.id,b.id+'넴'))],[1,2,3,4].map(stage=>d.levels.find(l=>l.stage===stage&&l.count>0)).filter(Boolean).map(level=>`<tr><th scope="row" class="db-stage-range"><span class="db-stage-name">${level.stage}단계</span><span class="db-stage-laps">${nf(level.start)}~${nf(level.end)}회차</span></th>${d.bosses.map(b=>`<td class="number">${rate(b.contribution[level.stage])}</td>`).join('')}</tr>`))}<p class="small muted">2·3단계 관통의 반타·5% 가산은 위 배율에 포함됩니다.</p></section><section class="panel db-rate-records"><div class="panel-head"><h2>4단계 상위 기록 · 전체 보스</h2><span class="small muted">피해량 단위: 만</span></div>${table(['순위',...d.bosses.map(b=>chip(b.id,b.id+'넴'))],[
     ...Array.from({length:10},(_,i)=>`<tr><th>${i+1}위</th>${tops.map(top=>`<td class="number" title="${top.samples[i]?nf(top.samples[i].damage):'-'}">${compact(top.samples[i]?.damage)}</td>`).join('')}</tr>`),
     `<tr class="db-top-average"><th>평균</th>${tops.map(top=>`<td class="number" title="${top.mean===null?'-':nf(top.mean)}">${compact(top.mean)}</td>`).join('')}</tr>`,
     `<tr class="db-top-corrected"><th>보정 평균</th>${tops.map(top=>`<td class="number" title="${top.corrected===null?'-':nf(top.corrected)}">${compact(top.corrected)}</td>`).join('')}</tr>`

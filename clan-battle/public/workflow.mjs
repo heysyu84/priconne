@@ -1,5 +1,5 @@
 import { sequenceVisible, setSequenceVisible } from './view-settings.mjs?v=20261023-image-cleanup01';
-import { makeId, memberLabel, syncRoster, matchMembers, parseDamage } from './roster.mjs?v=20261022-ui14';
+import { makeId, memberLabel, syncRoster, matchMembers, parseDamage } from './roster.mjs?v=20261024-db-stage-ranges01';
 import { dayClosures, cancelDayClosure } from './battle-days.mjs?v=20261022-ui14';
 import { planBattleRowMove, installBattleRowDragging } from './battle-row-order.mjs?v=20261024-carry-sheet01';
 
@@ -47,7 +47,7 @@ export function createWorkflow(api) {
     return `기본 ${normal}/${month().options.dailyAttacks || 3} · 미사용 이월 ${pending}`;
   }
   function memberInput(value, id, extra = '') {
-    return `<input id="${id}" class="member-combobox" role="combobox" aria-label="${id === 'quick-member' ? '클랜원 이름 검색' : '클랜원 수정'}" aria-autocomplete="list" aria-expanded="false" aria-controls="wf-member-list" autocomplete="off" spellcheck="false" placeholder="이름 한 글자 · 초성 · UID" value="${X(value)}" ${extra}>`;
+    return `<input id="${id}" type="text" inputmode="text" lang="ko" autocapitalize="off" autocorrect="off" class="member-combobox" role="combobox" aria-label="${id === 'quick-member' ? '클랜원 이름 검색' : '클랜원 수정'}" aria-autocomplete="list" aria-expanded="false" aria-controls="wf-member-list" autocomplete="off" spellcheck="false" placeholder="이름 한 글자 · 초성 · UID" value="${X(value)}" ${extra}>`;
   }
 
   function quickView() {
@@ -60,7 +60,7 @@ export function createWorkflow(api) {
       <div class="field"><label for="quick-member">클랜원</label>${memberInput(d.memberQuery, 'quick-member', 'data-quick="member"')}</div>
       <div class="field"><label for="quick-boss">보스</label><select id="quick-boss" data-quick="boss">${(api.getBosses?.()||[]).map(b => `<option value="${b.id}" ${Number(d.boss) === b.id ? 'selected' : ''} ${b.locked?'disabled':''}>${b.id} · ${X(b.name)}${b.locked?' (잠김)':''}</option>`).join('')}</select></div>
       <div class="field"><label for="quick-damage">피해량</label><input id="quick-damage" data-quick="damage" inputmode="decimal" autocomplete="off" placeholder="2·3단계 빈칸=최대 HP / 4단계 직접 입력" value="${X(d.damage)}"></div>
-      <div class="field"><label for="quick-carry">이월 사용</label><label class="carry-control"><input id="quick-carry" type="checkbox" data-quick="carry" ${d.carry ? 'checked' : ''}><span>사용 <kbd>Space</kbd></span></label></div>
+      <div class="field"><label for="quick-carry">이월 사용</label><label class="carry-control"><input id="quick-carry" type="checkbox" data-quick="carry" aria-label="이월 사용" ${d.carry ? 'checked' : ''}><span class="carry-control-text"><span class="carry-state-off">미사용</span><span class="carry-state-on">사용 중</span><kbd>Space</kbd></span></label></div>
       
       <button class="btn primary quick-submit" type="submit">등록 <kbd>Enter</kbd></button></div>
       <div class="quick-auto"><label><input type="checkbox" data-quick="autoDamage" ${d.autoDamage?'checked':''}>2·3단계 최대 HP 자동 입력</label><small>직접 피해량을 입력하면 수동 기록</small>${canEdit()&&d.day<maxDay()?`<button type="button" class="btn sm" data-wf="next-day">${d.day}일차 마감 → ${d.day+1}일차</button>`:''}</div><div class="quick-secondary"><div class="field"><label for="quick-bonus">가산점 (만)</label><input id="quick-bonus" data-quick="bonus" inputmode="decimal" value="${X(d.bonus)}"></div><div class="field"><label for="quick-memo">메모</label><input id="quick-memo" data-quick="memo" value="${X(d.memo)}" placeholder="선통·후통 확인사항 등"></div><div id="quick-usage" class="small muted">${d.memberId && person(d.memberId) ? X(usage(person(d.memberId), d.day)) : '등록 후 이름 입력 칸으로 돌아옵니다.'}</div></div></form></details>`;

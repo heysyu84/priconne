@@ -383,7 +383,10 @@ input:focus,select:focus,textarea:focus {border-color:#9872bf;box-shadow:0 0 0 3
 .db-rate-factors .table-scroll,.db-rate-records .table-scroll{max-width:100%;overflow-x:auto}
 .db-rate-factors .datatable,.db-rate-records .datatable{width:100%;table-layout:fixed}
 .db-rate-factors .datatable th,.db-rate-factors .datatable td{padding:10px 6px;text-align:center;font-variant-numeric:tabular-nums}
-.db-rate-factors .datatable th:first-child{width:17%}
+.db-rate-factors .datatable th:first-child{width:30%}
+.db-rate-factors .db-stage-name,.db-rate-factors .db-stage-laps{display:inline-block;white-space:nowrap}
+.db-rate-factors .db-stage-laps{margin-left:8px;font-weight:500;color:var(--muted)}
+@media(max-width:800px){.db-rate-factors .db-stage-laps{display:block;margin-left:0;margin-top:3px}}
 .db-rate-factors .datatable th .boss-chip{white-space:nowrap}
 .db-rate-records .datatable th:nth-child(1){width:13%}
 .db-rate-records .datatable th:nth-child(2){width:32%}
@@ -1153,3 +1156,17 @@ table.tw-grid thead th{
     padding-inline:2px;
   }
 }
+
+/* Distinct carry selection for both mouse/touch and the damage-field Space shortcut. */
+.quick-grid .carry-control{display:flex;align-items:center;gap:8px;width:100%;max-width:170px;min-height:42px;box-sizing:border-box;padding:8px 10px;border:1px solid #cdbddb;border-radius:9px;background:#f5f1f8;color:#695773;cursor:pointer}
+.quick-grid .carry-control input{width:18px;height:18px;flex:0 0 18px;margin:0;accent-color:#75469b}
+.quick-grid .carry-control-text{display:inline-flex;align-items:center;gap:6px;font-weight:700;white-space:nowrap}
+.quick-grid .carry-control .carry-state-on{display:none}
+.quick-grid .carry-control:has(input:checked){background:#8556a8;border-color:#71438f;box-shadow:inset 0 0 0 1px #71438f;color:#fff}
+.quick-grid .carry-control:has(input:checked) input{accent-color:#fff}
+.quick-grid .carry-control:has(input:checked) kbd{background:rgba(255,255,255,.18);border-color:rgba(255,255,255,.45);color:#fff}
+.quick-grid .carry-control:has(input:checked) .carry-state-off{display:none}
+.quick-grid .carry-control:has(input:checked) .carry-state-on{display:inline}
+@media(max-width:800px){.quick-grid .carry-control kbd{display:none}}
+
+@media(min-width:801px){.quick-grid>.field:has(#quick-carry){grid-column:span 2;min-width:0}}

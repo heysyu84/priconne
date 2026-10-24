@@ -85,6 +85,19 @@ export function initials(text) {
   return [...clean(text)].map(c => { const n = c.charCodeAt(0) - 0xac00; return n >= 0 && n <= 11171 ? INITIALS[Math.floor(n / 588)] : c; }).join('');
 }
 
+// Match Korean names typed on an English two-beolsik keyboard without changing the entered text.
+const KEY_INITIALS=['r','R','s','e','E','f','a','q','Q','t','T','d','w','W','c','z','x','v','g'];
+const KEY_VOWELS=['k','o','i','O','j','p','u','P','h','hk','ho','hl','y','n','nj','np','nl','b','m','ml','l'];
+const KEY_FINALS=['','r','R','rt','s','sw','sg','e','f','fr','fa','fq','ft','fx','fv','fg','a','q','qt','t','T','d','w','c','z','x','v','g'];
+function keyboardKeys(text){
+  return [...String(text??'').normalize('NFC')].map(char=>{
+    const n=char.charCodeAt(0)-0xac00;
+    if(n>=0&&n<=11171)return KEY_INITIALS[Math.floor(n/588)]+KEY_VOWELS[Math.floor(n%588/28)]+KEY_FINALS[n%28];
+    const initial=INITIALS.indexOf(char);
+    return initial>=0?KEY_INITIALS[initial]:char;
+  }).join('').toLowerCase();
+}
+
 export function matchMembers(members, query) {
   const q = clean(query).toLowerCase();
   if (!q) return members;
@@ -94,6 +107,13 @@ export function matchMembers(members, query) {
     if (name.startsWith(q)) return 1;
     if (initials(name).startsWith(q)) return 2;
     if ([name, p.uid, initials(name), ...(p.aliases || [])].some(s => String(s).toLowerCase().includes(q))) return 3;
+    if (/^[a-z0-9 _-]+$/i.test(q) && /[a-z]/i.test(q)) {
+      const keys=keyboardKeys(p.name),initialKeys=keyboardKeys(initials(p.name));
+      if(keys===q)return 4;
+      if(keys.startsWith(q))return 5;
+      if(initialKeys.startsWith(q))return 6;
+      if([keys,initialKeys,...(p.aliases||[]).map(keyboardKeys)].some(s=>s.includes(q)))return 7;
+    }
     return 99;
   };
   return members.map((p, i) => ({ p, rank: rank(p), i })).filter(x => x.rank < 99).sort((a, b) => a.rank - b.rank || a.i - b.i).map(x => x.p);

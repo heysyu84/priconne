@@ -1,0 +1,16 @@
+import assert from 'node:assert/strict';
+import {matchMembers} from '../public/roster.mjs';
+const people=[{name:'뉴비',uid:'123456789',aliases:[]},{name:'미나즈키',uid:'234567890',aliases:[]},{name:'메이코패스',uid:'345678901',aliases:['한글']},{name:'Queenk',uid:'456789012',aliases:[]},{name:'sbql',uid:'567890123',aliases:[]},{name:'가나 2호기',uid:'678901234',aliases:[]}];
+const names=q=>matchMembers(people,q).map(p=>p.name);
+assert.deepEqual(names('뉴비'),['뉴비']);
+assert.deepEqual(names('ㄴㅂ'),['뉴비']);
+assert.deepEqual(names('123456789'),['뉴비']);
+assert.deepEqual(names('sbql'),['sbql','뉴비'],'literal English names must remain first');
+assert.ok(names('alskwmzl').includes('미나즈키'));
+assert.ok(names('apdlzhvotm').includes('메이코패스'));
+assert.ok(names('gksrmf').includes('메이코패스'),'Korean aliases support English-keyboard input');
+assert.ok(names('sq').includes('뉴비'),'initial-consonant input also works');
+assert.deepEqual(names('Queenk'),['Queenk']);
+assert.ok(names('rksk 2ghrl').includes('가나 2호기'),'names may contain spaces and numbers');
+assert.deepEqual(names(''),people.map(p=>p.name));
+console.log('PASS: English-layout Korean names/initials/aliases, literal-English priority, normal Korean and UID searches');
