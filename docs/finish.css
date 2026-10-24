@@ -1262,3 +1262,19 @@ table.tw-grid thead th{
 
 /* Slightly denser SET / action rows, preserving the existing text size. */
 .tw-work .tw-grid .tw-text-cell>[data-tw-text]{min-height:39px;padding-top:7px;padding-bottom:7px;line-height:1.65}
+
+/* Dashboard: sort remaining normal attacks / unused carry attacks via header buttons. */
+.dashboard-table th .dashboard-sort-head{
+  display:inline-flex;align-items:center;justify-content:center;gap:5px;
+  padding:3px 4px;margin:0;border:0;border-radius:5px;
+  background:transparent;color:inherit;font:inherit;font-weight:inherit;
+  white-space:nowrap;cursor:pointer;line-height:1.4;
+}
+.dashboard-table th .dashboard-sort-head:hover,
+.dashboard-table th .dashboard-sort-head.active{
+  color:#725098;background:#e9dff3;
+}
+.dashboard-table th .dashboard-sort-arrow{
+  font-size:11px;line-height:1;color:#937bac;
+}
+.dashboard-table th .dashboard-sort-head.active .dashboard-sort-arrow{color:#725098}
