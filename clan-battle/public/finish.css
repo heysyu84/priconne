@@ -1213,3 +1213,35 @@ table.tw-grid thead th{
 @media(max-width:800px){.quick-grid .carry-control kbd{display:none}}
 
 @media(min-width:801px){.quick-grid>.field:has(#quick-carry){grid-column:span 2;min-width:0}}
+
+/* Daily history: paired damage/contribution tracks with average comparison in color. */
+.profile-activity-grid .daily-profile-bars>.daily-record-row{
+ display:grid;grid-template-columns:44px minmax(0,1fr);grid-template-rows:auto;
+ gap:10px;align-items:start;min-width:0;
+}
+.profile-activity-grid .daily-profile-bars>.daily-record-row>strong{
+ grid-column:1;grid-row:1;align-self:start;padding-top:2px;white-space:nowrap;
+}
+.profile-activity-grid .daily-profile-bars .daily-record-metrics{
+ grid-column:2;grid-row:1;display:grid;gap:11px;min-width:0;
+}
+.profile-activity-grid .daily-profile-bars .daily-metric{display:grid;gap:5px;min-width:0}
+.profile-activity-grid .daily-profile-bars .daily-metric>.daily-stat{
+ display:flex;flex-direction:row;justify-content:space-between;align-items:baseline;
+ gap:12px;min-width:0;padding:0;border:0;border-radius:0;background:transparent;
+}
+.profile-activity-grid .daily-profile-bars .daily-metric>.daily-stat small,
+.profile-activity-grid .daily-profile-bars .daily-metric>.daily-stat b{white-space:nowrap}
+.profile-activity-grid .daily-profile-bars .daily-metric>.track{
+ display:flex;height:10px;min-width:0;margin:0;overflow:hidden;border-radius:6px;background:#eee8f4;
+}
+.profile-activity-grid .daily-profile-bars .daily-damage-track>.bar{
+ height:100%;background:linear-gradient(90deg,#c8b3de,#a184bc);
+}
+.profile-activity-grid .daily-profile-bars .daily-contribution-track>span{height:100%;flex:none}
+.profile-activity-grid .daily-profile-bars .daily-contribution-base{background:#b7a0d1}
+.profile-activity-grid .daily-profile-bars .daily-contribution-shortfall{background:#e1a3b5}
+.profile-activity-grid .daily-profile-bars .daily-contribution-excess{background:#80b69d}
+@media(max-width:360px){
+ .profile-activity-grid .daily-profile-bars>.daily-record-row{grid-template-columns:40px minmax(0,1fr);gap:8px}
+}
