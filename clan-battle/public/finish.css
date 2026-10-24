@@ -1245,3 +1245,11 @@ table.tw-grid thead th{
 @media(max-width:360px){
  .profile-activity-grid .daily-profile-bars>.daily-record-row{grid-template-columns:40px minmax(0,1fr);gap:8px}
 }
+
+/* Highlight only exceptional tactic requirements and non-5/6 star digits. */
+.tw-library .tactic-warning,
+.tw-work .tactic-warning,
+.combo-compact-list .tactic-warning,
+.combo-card .tactic-warning{
+ color:#c0273e!important;
+}
