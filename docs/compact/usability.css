@@ -85,6 +85,7 @@ h1,h2,h3,strong,b{font-weight:700}
 .tactic-intro-links{display:flex;flex-wrap:wrap;gap:6px}.tactic-intro-links:empty{display:none}
 .source-link{background:var(--accent-wash);color:var(--accent)}
 .tactic-reading-note{border-radius:7px;background:color-mix(in srgb,var(--surface) 82%,var(--accent-wash));border:1px solid var(--line);border-left:3px solid color-mix(in srgb,var(--boss) 60%,var(--line))!important}
+.tactic-reading-head>.tactic-reading-note{margin-top:12px;margin-bottom:12px}
 .set-grid .instruction-cell{font-weight:500}.set-grid th{font-weight:700}
 .tactic-active-row .instruction-cell{box-shadow:inset 3px 0 var(--accent)}
 
@@ -789,3 +790,4 @@ h1,h2,h3,strong,b{font-weight:700}
  .header-controls:has(.online-presence) .month-select{width:84px;max-width:84px}
 }
 @media print{.online-presence{display:none}}
+

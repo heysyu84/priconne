@@ -5,7 +5,7 @@ import {fileURLToPath} from 'node:url';
 const root=fileURLToPath(new URL('..',import.meta.url));
 export const API_ORIGIN='https://nyang-clan-manager.heysyu457310.chatgpt.site';
 export const PUBLIC_ORIGIN='https://priconne.pages.dev';
-export const RELEASE='20261026-redive-ui07';
+export const RELEASE='20261026-redive-ui08';
 export function canonicalHead(legacy=false){
   const page=legacy?'/legacy.html':'/';
   return `<link rel="canonical" href="${PUBLIC_ORIGIN}${page}"><script>if(location.hostname==='heysyu84.github.io'){location.replace('${PUBLIC_ORIGIN}'+(location.pathname.replace(/^\\/priconne(?=\\/|$)/,'')||'/')+location.search+location.hash)}</script>`;
@@ -47,4 +47,5 @@ if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.ur
   const legacy=process.argv[3]?fs.readFileSync(path.resolve(process.argv[3]),'utf8'):undefined;
   console.log('New interface static files: '+buildRedivePages(output,{legacyHtml:legacy}));
 }
+
 

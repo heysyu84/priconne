@@ -201,6 +201,13 @@ document.addEventListener('change',async event=>{const el=event.target,kind=el.d
 });
 document.addEventListener('keydown',event=>{if((event.ctrlKey||event.metaKey)&&event.key==='Enter'&&drawer.open){const form=drawer.querySelector('form');if(form){event.preventDefault();form.requestSubmit();}}});
 drawer.addEventListener('click',event=>{if(event.target===drawer){const r=drawer.getBoundingClientRect();if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)closeDrawer();}});
+function skipToMain(event){
+  if(!event.target.closest('a.skip-link'))return;
+  const main=document.getElementById('main');if(!main)return;
+  event.preventDefault();main.setAttribute('tabindex','-1');
+  main.focus({preventScroll:true});main.scrollIntoView({block:'start'});
+}
+document.addEventListener('click',skipToMain);
 window.addEventListener('popstate',()=>{parseHash();render();});window.addEventListener('hashchange',()=>{parseHash();render();});
 
 
@@ -427,7 +434,7 @@ function tacticReadingHeader(t){
  const received=carry?`<section class="carry-summary"><div><span>필요 이월</span><strong>${needed===null?'—':needed+'초'}</strong></div><div class="field"><label for="carry-main-received">받은 이월 · 초</label><input id="carry-main-received" type="number" min="1" max="90" inputmode="numeric" data-input="ops-carry-received" value="${ui.carry}"></div><p class="carry-warning danger" ${warning?'':'hidden'}>필요 이월보다 짧습니다.</p></section>`:'';
  const links=[...(t.video?[{label:'원본 영상',url:t.video}]:[]),...(t.links||[])];
  const video=links.length?`<div class="tactic-intro-links">${links.map(link=>`<a class="button" href="${X(link.url)}" target="_blank" rel="noopener noreferrer">${X(link.label)}</a>`).join('')}</div>`:'';
- return `<div class="work-editor-head tactic-reading-head ${carry?'is-carry':''}">${carry?`<div class="tactic-intro-top">${received}${memo}</div>`:memo}<div class="tactic-summary-row"><div class="tactic-identity"><h2>${t.boss?t.boss+'넴 · '+X(bossBy(t.boss).name):'미분류'}</h2><div class="tactic-metadata"><span class="${t.hands?'danger':''}">손컨 ${tacticHands(t)}</span> · <span class="${t.tp.includes('+')?'danger':''}">TP ${X(t.tp||'—')}</span> · <span>기대딜 <strong>${tacticDamageLabel(t)}</strong></span></div>${video}</div><div class="tactic-header-party">${party(t)}</div></div>${data.settings.editable?`<div class="work-actions">${simpleButton('편성 수정','edit-tactic',t.id)}${simpleButton(t.hidden?'다시 표시':'숨기기','hide-tactic',t.id)}${simpleButton('복제','duplicate-tactic',t.id)}${simpleButton('삭제','delete-tactic',t.id,'danger')}</div>`:''}</div>`;
+ return `<div class="work-editor-head tactic-reading-head ${carry?'is-carry':''}">${carry?`<div class="tactic-intro-top">${received}</div>`:''}<div class="tactic-summary-row"><div class="tactic-identity"><h2>${t.boss?t.boss+'넴 · '+X(bossBy(t.boss).name):'미분류'}</h2><div class="tactic-metadata"><span class="${t.hands?'danger':''}">손컨 ${tacticHands(t)}</span> · <span class="${t.tp.includes('+')?'danger':''}">TP ${X(t.tp||'—')}</span> · <span>기대딜 <strong>${tacticDamageLabel(t)}</strong></span></div>${video}</div><div class="tactic-header-party">${party(t)}</div></div>${memo}${data.settings.editable?`<div class="work-actions">${simpleButton('편성 수정','edit-tactic',t.id)}${simpleButton(t.hidden?'다시 표시':'숨기기','hide-tactic',t.id)}${simpleButton('복제','duplicate-tactic',t.id)}${simpleButton('삭제','delete-tactic',t.id,'danger')}</div>`:''}</div>`;
 }
 function workEditor(t){
  const carry=t.category==='carry';
@@ -526,7 +533,15 @@ function bossArt(boss){
   if(!b)return null;
   if(b.portraitKey==='none')return null;
   if(b.portraitUrl)return {image:b.portraitUrl,name:b.name};
-  return GAME_ASSETS.bosses[b.portraitKey]||Object.values(GAME_ASSETS.bosses).find(a=>a.name===b.name)||null;
+  // Older shared records may retain a slot's original portrait key after
+  // the monthly boss name changes. Resolve the current name before that key.
+  const lineups=[selectedFutureLineup(ui.month),...Object.values(data.futureOverrides||{}),...Object.values((ext.futureCatalog||FUTURE_REFERENCE).months)];
+  for(const lineup of lineups){
+    const reference=lineup?.bosses.find(source=>source.name===b.name);
+    const image=reference&&localFuturePortrait(reference);
+    if(image)return {image,name:b.name};
+  }
+  return Object.values(GAME_ASSETS.bosses).find(a=>a.name===b.name)||GAME_ASSETS.bosses[b.portraitKey]||null;
 }
 function bossFace(boss,cls=''){
   const b=typeof boss==='object'?boss:data.bossSettings.find(b=>b.id===Number(boss)),art=bossArt(b);
@@ -1490,7 +1505,7 @@ tacticReadingHeader=t=>{
   const received=carry?`<section class="carry-summary"><div><span>필요 이월</span><strong>${needed===null?'—':needed+'초'}</strong></div><div class="field"><label for="carry-main-received">받은 이월 · 초</label><input id="carry-main-received" type="number" min="1" max="90" inputmode="numeric" data-input="ops-carry-received" value="${ui.carry}"></div><p class="carry-warning danger" ${warning?'':'hidden'}>필요 이월보다 짧습니다.</p></section>`:'';
   const links=(t.links||[]).filter(link=>/^https?:\/\//i.test(link.url||''));
   const sources=links.length?`<div class="tactic-intro-links">${links.map(link=>`<a class="button source-link" href="${X(link.url)}" target="_blank" rel="noopener noreferrer">${X(link.label)}</a>`).join('')}</div>`:'';
-  return `<div class="work-editor-head tactic-reading-head ${carry?'is-carry':''}">${carry?`<div class="tactic-intro-top">${received}${memo}</div>`:memo}<div class="tactic-summary-row"><div class="tactic-identity"><h2>${t.boss?t.boss+'넴 · '+X(bossBy(t.boss).name):'미분류'}</h2><div class="tactic-metadata"><span class="${t.hands?'danger':''}">손컨 <b>${tacticHands(t)}</b></span> · <span class="${t.tp.includes('+')?'danger':''}">TP <b>${X(t.tp||'—')}</b></span> · <span class="tactic-damage-group"><span class="tactic-damage-meta">기대딜 <strong>${tacticDamageLabel(t)}</strong></span>${videoButton(t)}</span></div>${sources}</div><div class="tactic-header-party">${party(t)}</div></div>${adminMode()?`<div class="work-actions">${simpleButton('편성 수정','edit-tactic',t.id)}${simpleButton(t.hidden?'다시 표시':'숨기기','hide-tactic',t.id)}${simpleButton('복제','duplicate-tactic',t.id)}${simpleButton('삭제','delete-tactic',t.id,'danger')}</div>`:''}</div>`;
+  return `<div class="work-editor-head tactic-reading-head ${carry?'is-carry':''}">${carry?`<div class="tactic-intro-top">${received}</div>`:''}<div class="tactic-summary-row"><div class="tactic-identity"><h2>${t.boss?t.boss+'넴 · '+X(bossBy(t.boss).name):'미분류'}</h2><div class="tactic-metadata"><span class="${t.hands?'danger':''}">손컨 <b>${tacticHands(t)}</b></span> · <span class="${t.tp.includes('+')?'danger':''}">TP <b>${X(t.tp||'—')}</b></span> · <span class="tactic-damage-group"><span class="tactic-damage-meta">기대딜 <strong>${tacticDamageLabel(t)}</strong></span>${videoButton(t)}</span></div>${sources}</div><div class="tactic-header-party">${party(t)}</div></div>${memo}${adminMode()?`<div class="work-actions">${simpleButton('편성 수정','edit-tactic',t.id)}${simpleButton(t.hidden?'다시 표시':'숨기기','hide-tactic',t.id)}${simpleButton('복제','duplicate-tactic',t.id)}${simpleButton('삭제','delete-tactic',t.id,'danger')}</div>`:''}</div>`;
 };
 comboDetailBody=t=>`<div class="combo-detail-controls"><label>이월 받은 시간 <input aria-label="이월 받은 시간" data-input="ops-combo-carry" data-id="${t.id}" value="${fmtTime(ui.carry)}" inputmode="numeric"></label>${simpleButton('본문 복사','copy-tactic',t.id)}${t.recommendationOnly?'':simpleButton('작업실에서 열기','v2-open-workspace',t.id)}${videoButton(t)}</div>${displayTacticNote(t)?`<p class="tactic-note">${X(displayTacticNote(t)).replace(/\n/g,'<br>')}</p>`:''}${renderTacticGrid(t,false)}`;
 
