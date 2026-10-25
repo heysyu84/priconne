@@ -42,7 +42,10 @@ jobs:
           test -s docs/clan.js
           test -s docs/combo-workspace.mjs
           test -s docs/presence.mjs
-          grep -q 'id="online-presence"' docs/index.html
+          test -s docs/legacy.html
+          test -s docs/compact/app.js
+          grep -q 'name="nyang-legacy-api-origin"' docs/index.html
+          grep -q 'id="online-presence"' docs/legacy.html
           grep -q 'combo-workspace' docs/guild-workspace.mjs
 
       - name: Deploy directly to existing Cloudflare Pages project
@@ -54,3 +57,4 @@ jobs:
 
       - name: Confirm deployment
         run: echo "Published docs/ to the existing priconne.pages.dev project."
+

@@ -1,0 +1,258 @@
+{
+  "revision": 1432,
+  "month": "2026-10",
+  "sourceUrl": "https://nyang-clan-manager.heysyu457310.chatgpt.site/api/state?compact=1",
+  "tactic": {
+    "id": "a8244c97-ada4-442e-8afb-0b95b875d515",
+    "boss": 3,
+    "group": "택틱정리",
+    "source": "택틱정리",
+    "characters": [
+      "성치카",
+      "수레시아",
+      "와카나",
+      "수리아",
+      "시나츠"
+    ],
+    "stars": [
+      "5",
+      "5",
+      "5",
+      "5",
+      "5"
+    ],
+    "expectedDamage": "4.4",
+    "note": "",
+    "video": "https://www.youtube.com/watch?v=TniE6fa8fk0",
+    "type": "세미오토",
+    "rows": [
+      {
+        "id": "c2d9a855-c7d5-4c6b-b86c-73c6552dd1d4",
+        "text": "AUTO 온, 수레시아 ON",
+        "checked": [
+          false,
+          true,
+          false,
+          false,
+          false,
+          true
+        ],
+        "manualChecks": false
+      },
+      {
+        "id": "215aa2ae-cea5-4b4a-b4d2-7e8d88fb80ad",
+        "text": "1:17 수리아 후 수리아 ON, AUTO 오프",
+        "checked": [
+          false,
+          true,
+          false,
+          true,
+          false,
+          false
+        ],
+        "manualChecks": false
+      },
+      {
+        "id": "26f843a9-611f-48b6-9b1e-ce3995e15410",
+        "text": "1:09 시간 되자마자 (와카나 말풍선 보자마자) AUTO 온",
+        "checked": [
+          false,
+          true,
+          false,
+          true,
+          false,
+          true
+        ],
+        "manualChecks": false
+      },
+      {
+        "id": "2804adf0-15f9-4d69-a32b-871edd930f92",
+        "text": "1:08 시나츠 후 시나츠 ON, 수리아 OFF, AUTO 오프",
+        "checked": [
+          false,
+          true,
+          false,
+          false,
+          true,
+          false
+        ],
+        "manualChecks": true
+      },
+      {
+        "id": "25d29b3f-2e93-4be1-b9b6-ded14fe647db",
+        "text": "1:03 보스 후 와카나, 성치카 ON",
+        "checked": [
+          true,
+          true,
+          true,
+          false,
+          true,
+          false
+        ],
+        "manualChecks": false
+      },
+      {
+        "id": "4a4b98c5-faf9-4fd0-8faa-3deb1c5f4a9a",
+        "text": "ㄴ 수레시아 후 수리아 ON, 성치카 OFF",
+        "checked": [
+          false,
+          true,
+          true,
+          true,
+          true,
+          false
+        ],
+        "manualChecks": true
+      },
+      {
+        "id": "0986a629-146e-42f8-b90a-a2a1799baa7c",
+        "text": "0:53 수레시아 후 성치카 한번만",
+        "checked": [
+          false,
+          true,
+          true,
+          true,
+          true,
+          false
+        ],
+        "manualChecks": true
+      },
+      {
+        "id": "959ea31a-a8b7-4bbe-beaf-8dd84654510c",
+        "text": "0:39 시나츠 후 수리아, 와카나 OFF",
+        "checked": [
+          false,
+          true,
+          false,
+          false,
+          true,
+          false
+        ],
+        "manualChecks": true
+      },
+      {
+        "id": "581743e8-5e21-47d7-9de9-752628c1f491",
+        "text": "0:37 수레시아 후 성치카 한번만, 수리아 ON, AUTO 온, 수레시아 OFF",
+        "checked": [
+          false,
+          false,
+          false,
+          true,
+          true,
+          true
+        ],
+        "manualChecks": true
+      },
+      {
+        "id": "ad3c9d66-59c8-48fa-b053-f375551906fb",
+        "text": "0:35 와카나 후 와카나 ON, AUTO 오프",
+        "checked": [
+          false,
+          false,
+          true,
+          true,
+          true,
+          false
+        ],
+        "manualChecks": true
+      },
+      {
+        "id": "7ead17ce-0066-45ea-bdea-21b4b57d62d0",
+        "text": "0:25 와카나 후 성치카. 수레시아 순으로 ON, 시나츠 OFF",
+        "checked": [
+          true,
+          true,
+          true,
+          true,
+          false,
+          false
+        ],
+        "manualChecks": false
+      },
+      {
+        "id": "1ae59a01-9504-4c67-b869-61722c7a91ed",
+        "text": "0:23 수리아 후 시나츠 ON, 와카나, 성치카 OFF",
+        "checked": [
+          false,
+          true,
+          false,
+          true,
+          true,
+          false
+        ],
+        "manualChecks": false
+      },
+      {
+        "id": "f77534c3-0406-44a9-9e56-e2073f0ffc5a",
+        "text": "0:19 수리아 후 AUTO 온",
+        "checked": [
+          false,
+          true,
+          false,
+          true,
+          true,
+          true
+        ],
+        "manualChecks": true
+      },
+      {
+        "id": "500e4085-5d72-4762-bfac-04b232ec0937",
+        "text": "0:17 와카나 후 AUTO 오프",
+        "checked": [
+          false,
+          true,
+          false,
+          true,
+          true,
+          false
+        ],
+        "manualChecks": true
+      },
+      {
+        "id": "8c5cb5bd-76ab-4b64-92f4-8153099659ff",
+        "text": "0:10 보스 후 시나츠, 수리아 OFF",
+        "checked": [
+          false,
+          true,
+          false,
+          false,
+          false,
+          false
+        ],
+        "manualChecks": false
+      },
+      {
+        "id": "b4e6fed6-2aa8-4154-969c-a82cbf1bb75f",
+        "text": "0:09 수레시아 후 성치카, 수리아, 와카나 순으로 ON",
+        "checked": [
+          true,
+          true,
+          true,
+          true,
+          false,
+          false
+        ],
+        "manualChecks": false
+      },
+      {
+        "id": "9dd2a060-018e-4d10-8fd0-879678a31ba5",
+        "text": "0:02 성치카 후 시나츠 ON",
+        "checked": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          false
+        ],
+        "manualChecks": true
+      }
+    ],
+    "editorVersion": 1,
+    "title": "3넴 성치카 수레시아 와카나 수리아 시나츠 성급 55555, 손컨 1, TP —, 기대딜 4.4",
+    "tacticUrl": "",
+    "rowFormatsVersion": 1,
+    "manualCount": "1",
+    "tp": ""
+  }
+}

@@ -1,0 +1,448 @@
+{
+  "게무기": {
+    "name": "게무기",
+    "aliases": [],
+    "sourceName": "게무기"
+  },
+  "네네카": {
+    "name": "네네카",
+    "aliases": [],
+    "sourceName": "네네카"
+  },
+  "네피": {
+    "name": "네피",
+    "aliases": [
+      "네피네라"
+    ],
+    "sourceName": "네피"
+  },
+  "뉴사렌": {
+    "name": "뉴사렌",
+    "aliases": [],
+    "sourceName": "뉴사렌"
+  },
+  "뉴츠네": {
+    "name": "뉴츠네",
+    "aliases": [],
+    "sourceName": "뉴츠네"
+  },
+  "느우카": {
+    "name": "느우카",
+    "aliases": [],
+    "sourceName": "느우카"
+  },
+  "드마호": {
+    "name": "드마호",
+    "aliases": [],
+    "sourceName": "드마호"
+  },
+  "라비": {
+    "name": "라비",
+    "aliases": [],
+    "sourceName": "라비"
+  },
+  "라이라엘": {
+    "name": "라이라엘",
+    "aliases": [],
+    "sourceName": "라이라엘"
+  },
+  "란파": {
+    "name": "란파",
+    "aliases": [],
+    "sourceName": "란파"
+  },
+  "루나": {
+    "name": "루나",
+    "aliases": [],
+    "sourceName": "루나"
+  },
+  "루카": {
+    "name": "루카",
+    "aliases": [],
+    "sourceName": "루카"
+  },
+  "리리컬": {
+    "name": "리리컬",
+    "aliases": [],
+    "sourceName": "리리컬"
+  },
+  "리조미": {
+    "name": "리조미",
+    "aliases": [],
+    "sourceName": "리조미"
+  },
+  "린드": {
+    "name": "린드",
+    "aliases": [],
+    "sourceName": "린드"
+  },
+  "마리": {
+    "name": "마리",
+    "aliases": [
+      "루이즈",
+      "루이즈마리"
+    ],
+    "sourceName": "마리"
+  },
+  "무이미": {
+    "name": "무이미",
+    "aliases": [],
+    "sourceName": "무이미"
+  },
+  "미미": {
+    "name": "미미",
+    "aliases": [],
+    "sourceName": "미미"
+  },
+  "미소라": {
+    "name": "미소라",
+    "aliases": [],
+    "sourceName": "미소라"
+  },
+  "바이올렛": {
+    "name": "바이올렛",
+    "aliases": [],
+    "sourceName": "바이올렛"
+  },
+  "발즈루": {
+    "name": "발즈루",
+    "aliases": [],
+    "sourceName": "발즈루"
+  },
+  "봄쿄카": {
+    "name": "봄쿄카",
+    "aliases": [],
+    "sourceName": "봄쿄카"
+  },
+  "봉황": {
+    "name": "봉황",
+    "aliases": [],
+    "sourceName": "봉황"
+  },
+  "블룸": {
+    "name": "블룸",
+    "aliases": [],
+    "sourceName": "블룸"
+  },
+  "사루카": {
+    "name": "사루카",
+    "aliases": [],
+    "sourceName": "사루카"
+  },
+  "사키노": {
+    "name": "사키노",
+    "aliases": [],
+    "sourceName": "사키노"
+  },
+  "성라엘": {
+    "name": "성라엘",
+    "aliases": [],
+    "sourceName": "성라엘"
+  },
+  "성리야": {
+    "name": "성리야",
+    "aliases": [],
+    "sourceName": "성리야"
+  },
+  "성이오": {
+    "name": "성이오",
+    "aliases": [],
+    "sourceName": "성이오"
+  },
+  "성짓타": {
+    "name": "성짓타",
+    "aliases": [
+      "성레짓타"
+    ],
+    "sourceName": "성짓타"
+  },
+  "성치카": {
+    "name": "성치카",
+    "aliases": [],
+    "sourceName": "성치카"
+  },
+  "수나카": {
+    "name": "수나카",
+    "aliases": [],
+    "sourceName": "수나카"
+  },
+  "수네모네": {
+    "name": "수네모네",
+    "aliases": [],
+    "sourceName": "수네모네"
+  },
+  "수네아": {
+    "name": "수네아",
+    "aliases": [],
+    "sourceName": "수네아"
+  },
+  "수네카": {
+    "name": "수네카",
+    "aliases": [],
+    "sourceName": "수네카"
+  },
+  "수니논": {
+    "name": "수니논",
+    "aliases": [],
+    "sourceName": "수니논"
+  },
+  "수레시아": {
+    "name": "수레시아",
+    "aliases": [],
+    "sourceName": "수레시아"
+  },
+  "수레이": {
+    "name": "수레이",
+    "aliases": [],
+    "sourceName": "수레이"
+  },
+  "수루카": {
+    "name": "수루카",
+    "aliases": [],
+    "sourceName": "수루카"
+  },
+  "수리스": {
+    "name": "수리스",
+    "aliases": [],
+    "sourceName": "수리스"
+  },
+  "수리아": {
+    "name": "수리아",
+    "aliases": [],
+    "sourceName": "수리아"
+  },
+  "수리코": {
+    "name": "수리코",
+    "aliases": [],
+    "sourceName": "수리코"
+  },
+  "수마레": {
+    "name": "수마레",
+    "aliases": [],
+    "sourceName": "수마레"
+  },
+  "수마호": {
+    "name": "수마호",
+    "aliases": [],
+    "sourceName": "수마호"
+  },
+  "수메스": {
+    "name": "수메스",
+    "aliases": [],
+    "sourceName": "수메스"
+  },
+  "수미미": {
+    "name": "수미미",
+    "aliases": [],
+    "sourceName": "수미미"
+  },
+  "수사렌": {
+    "name": "수사렌",
+    "aliases": [],
+    "sourceName": "수사렌"
+  },
+  "수셰피": {
+    "name": "수셰피",
+    "aliases": [],
+    "sourceName": "수셰피"
+  },
+  "수스미": {
+    "name": "수스미",
+    "aliases": [],
+    "sourceName": "수스미"
+  },
+  "수즈루": {
+    "name": "수즈루",
+    "aliases": [],
+    "sourceName": "수즈루"
+  },
+  "수츠네": {
+    "name": "수츠네",
+    "aliases": [],
+    "sourceName": "수츠네"
+  },
+  "수페코": {
+    "name": "수페코",
+    "aliases": [],
+    "sourceName": "수페코"
+  },
+  "스즈메": {
+    "name": "스즈메",
+    "aliases": [],
+    "sourceName": "스즈메"
+  },
+  "시나츠": {
+    "name": "시나츠",
+    "aliases": [],
+    "sourceName": "시나츠"
+  },
+  "시오리": {
+    "name": "시오리",
+    "aliases": [],
+    "sourceName": "시오리"
+  },
+  "아오이": {
+    "name": "아오이",
+    "aliases": [],
+    "sourceName": "아오이"
+  },
+  "아이라": {
+    "name": "아이라",
+    "aliases": [],
+    "sourceName": "아이라"
+  },
+  "알네카": {
+    "name": "알네카",
+    "aliases": [],
+    "sourceName": "알네카"
+  },
+  "알라비": {
+    "name": "알라비",
+    "aliases": [],
+    "sourceName": "알라비"
+  },
+  "알리스": {
+    "name": "알리스",
+    "aliases": [],
+    "sourceName": "알리스"
+  },
+  "에로체": {
+    "name": "에로체",
+    "aliases": [],
+    "sourceName": "에로체"
+  },
+  "에리스": {
+    "name": "에리스",
+    "aliases": [],
+    "sourceName": "에리스"
+  },
+  "엔요리": {
+    "name": "엔요리",
+    "aliases": [
+      "앤요리"
+    ],
+    "sourceName": "앤요리"
+  },
+  "오우카": {
+    "name": "오우카",
+    "aliases": [],
+    "sourceName": "오우카"
+  },
+  "와카나": {
+    "name": "와카나",
+    "aliases": [],
+    "sourceName": "와카나"
+  },
+  "요리": {
+    "name": "요리",
+    "aliases": [],
+    "sourceName": "요리"
+  },
+  "워지타": {
+    "name": "워지타",
+    "aliases": [],
+    "sourceName": "워지타"
+  },
+  "유카리": {
+    "name": "유카리",
+    "aliases": [],
+    "sourceName": "유카리"
+  },
+  "의란파": {
+    "name": "의란파",
+    "aliases": [],
+    "sourceName": "의란파"
+  },
+  "의치카": {
+    "name": "의치카",
+    "aliases": [],
+    "sourceName": "의치카"
+  },
+  "이로하": {
+    "name": "이로하",
+    "aliases": [],
+    "sourceName": "이로하"
+  },
+  "이리야": {
+    "name": "이리야",
+    "aliases": [],
+    "sourceName": "이리야"
+  },
+  "지타": {
+    "name": "지타",
+    "aliases": [],
+    "sourceName": "지타"
+  },
+  "카마키": {
+    "name": "카마키",
+    "aliases": [],
+    "sourceName": "카마키"
+  },
+  "캬루": {
+    "name": "캬루",
+    "aliases": [],
+    "sourceName": "캬루"
+  },
+  "쿠루루": {
+    "name": "쿠루루",
+    "aliases": [],
+    "sourceName": "쿠루루"
+  },
+  "크리스": {
+    "name": "크리스",
+    "aliases": [],
+    "sourceName": "크리스"
+  },
+  "클요리": {
+    "name": "클요리",
+    "aliases": [
+      "성요리"
+    ],
+    "sourceName": "클요리"
+  },
+  "파오이": {
+    "name": "파오이",
+    "aliases": [],
+    "sourceName": "파오이"
+  },
+  "편오이": {
+    "name": "편오이",
+    "aliases": [],
+    "sourceName": "편오이"
+  },
+  "프레이": {
+    "name": "프레이",
+    "aliases": [],
+    "sourceName": "프레이"
+  },
+  "프셰피": {
+    "name": "프셰피",
+    "aliases": [],
+    "sourceName": "프셰피"
+  },
+  "프캬루": {
+    "name": "프캬루",
+    "aliases": [],
+    "sourceName": "프캬루"
+  },
+  "프코로": {
+    "name": "프코로",
+    "aliases": [],
+    "sourceName": "프코로"
+  },
+  "피오": {
+    "name": "피오",
+    "aliases": [],
+    "sourceName": "피오"
+  },
+  "호마레": {
+    "name": "호마레",
+    "aliases": [],
+    "sourceName": "호마레"
+  },
+  "후부키": {
+    "name": "후부키",
+    "aliases": [],
+    "sourceName": "후부키"
+  }
+}

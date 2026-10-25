@@ -1,0 +1,2818 @@
+{
+  "version": 1,
+  "source": "https://www.pcrdfans.com/en/battle",
+  "sourceRepository": "https://github.com/peterli110/pcrdfans_statics/tree/1792775170",
+  "sourceBlob": "812b82c786dbf5aa4712534c46612c59b32dff31",
+  "retrievedAt": "2026-10-26",
+  "displayOrder": "back-to-front: descending position; the rightmost slot is the frontmost character",
+  "units": [
+    {
+      "unitId": 100101,
+      "japanese": "ヒヨリ",
+      "english": "Hiyori",
+      "position": 200,
+      "place": 1,
+      "maxRarity": 6
+    },
+    {
+      "unitId": 100201,
+      "japanese": "ユイ",
+      "english": "Yui",
+      "position": 800,
+      "place": 3,
+      "maxRarity": 6
+    },
+    {
+      "unitId": 100301,
+      "japanese": "レイ",
+      "english": "Rei",
+      "position": 250,
+      "place": 1,
+      "maxRarity": 6
+    },
+    {
+      "unitId": 100401,
+      "japanese": "ミソギ",
+      "english": "Misogi",
+      "position": 205,
+      "place": 1,
+      "maxRarity": 6
+    },
+    {
+      "unitId": 100501,
+      "japanese": "マツリ",
+      "english": "Matsuri",
+      "position": 185,
+      "place": 1,
+      "maxRarity": 6
+    },
+    {
+      "unitId": 100601,
+      "japanese": "アカリ",
+      "english": "Akari",
+      "position": 570,
+      "place": 2,
+      "maxRarity": 6
+    },
+    {
+      "unitId": 100701,
+      "japanese": "ミヤコ",
+      "english": "Miyako",
+      "position": 125,
+      "place": 1,
+      "maxRarity": 6
+    },
+    {
+      "unitId": 100801,
+      "japanese": "ユキ",
+      "english": "Yuki",
+      "position": 805,
+      "place": 3,
+      "maxRarity": 6
+    },
+    {
+      "unitId": 100901,
+      "japanese": "アンナ",
+      "english": "Anna",
+      "position": 440,
+      "place": 2,
+      "maxRarity": 6
+    },
+    {
+      "unitId": 101001,
+      "japanese": "マホ",
+      "english": "Maho",
+      "position": 795,
+      "place": 3,
+      "maxRarity": 6
+    },
+    {
+      "unitId": 101101,
+      "japanese": "リノ",
+      "english": "Rino",
+      "position": 700,
+      "place": 3,
+      "maxRarity": 6
+    },
+    {
+      "unitId": 101201,
+      "japanese": "ハツネ",
+      "english": "Hatsune",
+      "position": 755,
+      "place": 3,
+      "maxRarity": 6
+    },
+    {
+      "unitId": 101301,
+      "japanese": "ナナカ",
+      "english": "Nanaka",
+      "position": 740,
+      "place": 3,
+      "maxRarity": 6
+    },
+    {
+      "unitId": 101401,
+      "japanese": "カスミ",
+      "english": "Kasumi",
+      "position": 730,
+      "place": 3,
+      "maxRarity": 6
+    },
+    {
+      "unitId": 101501,
+      "japanese": "ミサト",
+      "english": "Misato",
+      "position": 735,
+      "place": 3,
+      "maxRarity": 6
+    },
+    {
+      "unitId": 101601,
+      "japanese": "スズナ",
+      "english": "Suzuna",
+      "position": 705,
+      "place": 3,
+      "maxRarity": 6
+    },
+    {
+      "unitId": 101701,
+      "japanese": "カオリ",
+      "english": "Kaori",
+      "position": 145,
+      "place": 1,
+      "maxRarity": 6
+    },
+    {
+      "unitId": 101801,
+      "japanese": "イオ",
+      "english": "Io",
+      "position": 715,
+      "place": 3,
+      "maxRarity": 6
+    },
+    {
+      "unitId": 102001,
+      "japanese": "ミミ",
+      "english": "Mimi",
+      "position": 360,
+      "place": 2,
+      "maxRarity": 6
+    },
+    {
+      "unitId": 102101,
+      "japanese": "クルミ",
+      "english": "Kurumi",
+      "position": 197,
+      "place": 1,
+      "maxRarity": 6
+    },
+    {
+      "unitId": 102201,
+      "japanese": "ヨリ",
+      "english": "Yori",
+      "position": 575,
+      "place": 2,
+      "maxRarity": 6
+    },
+    {
+      "unitId": 102301,
+      "japanese": "アヤネ",
+      "english": "Ayane",
+      "position": 210,
+      "place": 1,
+      "maxRarity": 6
+    },
+    {
+      "unitId": 102501,
+      "japanese": "スズメ",
+      "english": "Suzume",
+      "position": 720,
+      "place": 3,
+      "maxRarity": 6
+    },
+    {
+      "unitId": 102601,
+      "japanese": "リン",
+      "english": "Rin",
+      "position": 550,
+      "place": 2,
+      "maxRarity": 6
+    },
+    {
+      "unitId": 102701,
+      "japanese": "エリコ",
+      "english": "Eriko",
+      "position": 230,
+      "place": 1,
+      "maxRarity": 6
+    },
+    {
+      "unitId": 102801,
+      "japanese": "サレン",
+      "english": "Saren",
+      "position": 430,
+      "place": 2,
+      "maxRarity": 6
+    },
+    {
+      "unitId": 102901,
+      "japanese": "ノゾミ",
+      "english": "Nozomi",
+      "position": 160,
+      "place": 1,
+      "maxRarity": 6
+    },
+    {
+      "unitId": 103001,
+      "japanese": "ニノン",
+      "english": "Ninon",
+      "position": 415,
+      "place": 2,
+      "maxRarity": 6
+    },
+    {
+      "unitId": 103101,
+      "japanese": "シノブ",
+      "english": "Shinobu",
+      "position": 365,
+      "place": 2,
+      "maxRarity": 6
+    },
+    {
+      "unitId": 103201,
+      "japanese": "アキノ",
+      "english": "Akino",
+      "position": 180,
+      "place": 1,
+      "maxRarity": 6
+    },
+    {
+      "unitId": 103301,
+      "japanese": "マヒル",
+      "english": "Mahiru",
+      "position": 395,
+      "place": 2,
+      "maxRarity": 6
+    },
+    {
+      "unitId": 103401,
+      "japanese": "ユカリ",
+      "english": "Yukari",
+      "position": 405,
+      "place": 2,
+      "maxRarity": 6
+    },
+    {
+      "unitId": 103601,
+      "japanese": "キョウカ",
+      "english": "Kyoka",
+      "position": 810,
+      "place": 3,
+      "maxRarity": 6
+    },
+    {
+      "unitId": 103701,
+      "japanese": "トモ",
+      "english": "Tomo",
+      "position": 220,
+      "place": 1,
+      "maxRarity": 6
+    },
+    {
+      "unitId": 103801,
+      "japanese": "シオリ",
+      "english": "Shiori",
+      "position": 710,
+      "place": 3,
+      "maxRarity": 6
+    },
+    {
+      "unitId": 104001,
+      "japanese": "アオイ",
+      "english": "Aoi",
+      "position": 785,
+      "place": 3,
+      "maxRarity": 6
+    },
+    {
+      "unitId": 104201,
+      "japanese": "チカ",
+      "english": "Chika",
+      "position": 790,
+      "place": 3,
+      "maxRarity": 6
+    },
+    {
+      "unitId": 104301,
+      "japanese": "マコト",
+      "english": "Makoto",
+      "position": 165,
+      "place": 1,
+      "maxRarity": 6
+    },
+    {
+      "unitId": 104401,
+      "japanese": "イリヤ",
+      "english": "Illya",
+      "position": 425,
+      "place": 2,
+      "maxRarity": 6
+    },
+    {
+      "unitId": 104501,
+      "japanese": "クウカ",
+      "english": "Kuka",
+      "position": 130,
+      "place": 1,
+      "maxRarity": 6
+    },
+    {
+      "unitId": 104601,
+      "japanese": "タマキ",
+      "english": "Tamaki",
+      "position": 215,
+      "place": 1,
+      "maxRarity": 6
+    },
+    {
+      "unitId": 104701,
+      "japanese": "ジュン",
+      "english": "Jun",
+      "position": 135,
+      "place": 1,
+      "maxRarity": 6
+    },
+    {
+      "unitId": 104801,
+      "japanese": "ミフユ",
+      "english": "Mifuyu",
+      "position": 420,
+      "place": 2,
+      "maxRarity": 6
+    },
+    {
+      "unitId": 104901,
+      "japanese": "シズル",
+      "english": "Shizuru",
+      "position": 285,
+      "place": 1,
+      "maxRarity": 6
+    },
+    {
+      "unitId": 105001,
+      "japanese": "ミサキ",
+      "english": "Misaki",
+      "position": 760,
+      "place": 3,
+      "maxRarity": 6
+    },
+    {
+      "unitId": 105101,
+      "japanese": "ミツキ",
+      "english": "Mitsuki",
+      "position": 565,
+      "place": 2,
+      "maxRarity": 6
+    },
+    {
+      "unitId": 105201,
+      "japanese": "リマ",
+      "english": "Lima",
+      "position": 105,
+      "place": 1,
+      "maxRarity": 6
+    },
+    {
+      "unitId": 105301,
+      "japanese": "モニカ",
+      "english": "Monika",
+      "position": 410,
+      "place": 2,
+      "maxRarity": 6
+    },
+    {
+      "unitId": 105401,
+      "japanese": "ツムギ",
+      "english": "Tsumugi",
+      "position": 195,
+      "place": 1,
+      "maxRarity": 6
+    },
+    {
+      "unitId": 105501,
+      "japanese": "アユミ",
+      "english": "Ayumi",
+      "position": 510,
+      "place": 2,
+      "maxRarity": 6
+    },
+    {
+      "unitId": 105601,
+      "japanese": "ルカ",
+      "english": "Ruka",
+      "position": 158,
+      "place": 1,
+      "maxRarity": 6
+    },
+    {
+      "unitId": 105701,
+      "japanese": "ジータ",
+      "english": "Djeeta",
+      "position": 245,
+      "place": 1,
+      "maxRarity": 6
+    },
+    {
+      "unitId": 105801,
+      "japanese": "ペコリーヌ",
+      "english": "Pecorine",
+      "position": 155,
+      "place": 1,
+      "maxRarity": 6
+    },
+    {
+      "unitId": 105901,
+      "japanese": "コッコロ",
+      "english": "Kokkoro",
+      "position": 500,
+      "place": 2,
+      "maxRarity": 6
+    },
+    {
+      "unitId": 106001,
+      "japanese": "キャル",
+      "english": "Karyl",
+      "position": 750,
+      "place": 3,
+      "maxRarity": 6
+    },
+    {
+      "unitId": 106101,
+      "japanese": "ムイミ",
+      "english": "Muimi",
+      "position": 162,
+      "place": 1,
+      "maxRarity": 6
+    },
+    {
+      "unitId": 106301,
+      "japanese": "アリサ",
+      "english": "Arisa",
+      "position": 625,
+      "place": 3,
+      "maxRarity": 6
+    },
+    {
+      "unitId": 106401,
+      "japanese": "シェフィ",
+      "english": "",
+      "position": 368,
+      "place": 2,
+      "maxRarity": 6
+    },
+    {
+      "unitId": 106501,
+      "japanese": "カヤ",
+      "english": "Kaya",
+      "position": 168,
+      "place": 1,
+      "maxRarity": 6
+    },
+    {
+      "unitId": 106601,
+      "japanese": "イノリ",
+      "english": "",
+      "position": 197,
+      "place": 1,
+      "maxRarity": 6
+    },
+    {
+      "unitId": 106701,
+      "japanese": "ホマレ",
+      "english": "",
+      "position": 727,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 106801,
+      "japanese": "ラビリスタ",
+      "english": "",
+      "position": 560,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 106901,
+      "japanese": "カイザーインサイト",
+      "english": "",
+      "position": 660,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 107001,
+      "japanese": "ネネカ",
+      "english": "Neneka",
+      "position": 660,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 107101,
+      "japanese": "クリスティーナ",
+      "english": "Christina",
+      "position": 290,
+      "place": 1,
+      "maxRarity": 6
+    },
+    {
+      "unitId": 107501,
+      "japanese": "ペコリーヌ（サマー）",
+      "english": "Pecorine (Summer)",
+      "position": 235,
+      "place": 1,
+      "maxRarity": 6
+    },
+    {
+      "unitId": 107601,
+      "japanese": "コッコロ（サマー）",
+      "english": "Kokkoro (Summer)",
+      "position": 535,
+      "place": 2,
+      "maxRarity": 6
+    },
+    {
+      "unitId": 107701,
+      "japanese": "スズメ（サマー）",
+      "english": "Suzume (Summer)",
+      "position": 775,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 107801,
+      "japanese": "キャル（サマー）",
+      "english": "Karyl (Summer)",
+      "position": 780,
+      "place": 3,
+      "maxRarity": 6
+    },
+    {
+      "unitId": 107901,
+      "japanese": "タマキ（サマー）",
+      "english": "Tamaki (Summer)",
+      "position": 225,
+      "place": 1,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 108001,
+      "japanese": "ミフユ（サマー）",
+      "english": "Mifuyu (Summer)",
+      "position": 495,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 108101,
+      "japanese": "シノブ（ハロウィン）",
+      "english": "Shinobu (Halloween)",
+      "position": 440,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 108201,
+      "japanese": "ミヤコ（ハロウィン）",
+      "english": "Miyako (Halloween)",
+      "position": 590,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 108301,
+      "japanese": "ミサキ（ハロウィン）",
+      "english": "Misaki (Halloween)",
+      "position": 815,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 108401,
+      "japanese": "チカ（クリスマス）",
+      "english": "Chika (Holiday)",
+      "position": 770,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 108501,
+      "japanese": "クルミ（クリスマス）",
+      "english": "Kurumi (Holiday)",
+      "position": 295,
+      "place": 1,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 108601,
+      "japanese": "アヤネ（クリスマス）",
+      "english": "Ayane (Holiday)",
+      "position": 190,
+      "place": 1,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 108701,
+      "japanese": "ヒヨリ（ニューイヤー）",
+      "english": "Hiyori (New Year)",
+      "position": 170,
+      "place": 1,
+      "maxRarity": 6
+    },
+    {
+      "unitId": 108801,
+      "japanese": "ユイ（ニューイヤー）",
+      "english": "Yui (New Year)",
+      "position": 745,
+      "place": 3,
+      "maxRarity": 6
+    },
+    {
+      "unitId": 108901,
+      "japanese": "レイ（ニューイヤー）",
+      "english": "Rei (New Year)",
+      "position": 153,
+      "place": 1,
+      "maxRarity": 6
+    },
+    {
+      "unitId": 109001,
+      "japanese": "エリコ（バレンタイン）",
+      "english": "Eriko (Valentine)",
+      "position": 187,
+      "place": 1,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 109101,
+      "japanese": "シズル（バレンタイン）",
+      "english": "Shizuru (Valentine)",
+      "position": 385,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 109201,
+      "japanese": "アン",
+      "english": "Anne",
+      "position": 630,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 109301,
+      "japanese": "ルゥ",
+      "english": "Lou",
+      "position": 640,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 109401,
+      "japanese": "グレア",
+      "english": "Grea",
+      "position": 525,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 109501,
+      "japanese": "クウカ（オーエド）",
+      "english": "Kuka (Oedo)",
+      "position": 140,
+      "place": 1,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 109601,
+      "japanese": "ニノン（オーエド）",
+      "english": "Ninon (Oedo)",
+      "position": 175,
+      "place": 1,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 109701,
+      "japanese": "レム",
+      "english": "Rem",
+      "position": 540,
+      "place": 2,
+      "maxRarity": 6
+    },
+    {
+      "unitId": 109801,
+      "japanese": "ラム",
+      "english": "Ram",
+      "position": 545,
+      "place": 2,
+      "maxRarity": 6
+    },
+    {
+      "unitId": 109901,
+      "japanese": "エミリア",
+      "english": "Emilia",
+      "position": 725,
+      "place": 3,
+      "maxRarity": 6
+    },
+    {
+      "unitId": 110001,
+      "japanese": "スズナ（サマー）",
+      "english": "Suzuna (Summer)",
+      "position": 705,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 110101,
+      "japanese": "イオ（サマー）",
+      "english": "Io (Summer)",
+      "position": 715,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 110301,
+      "japanese": "サレン（サマー）",
+      "english": "Saren (Summer)",
+      "position": 585,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 110401,
+      "japanese": "マコト（サマー）",
+      "english": "Makoto (Summer)",
+      "position": 180,
+      "place": 1,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 110501,
+      "japanese": "カオリ（サマー）",
+      "english": "Kaori (Summer)",
+      "position": 425,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 110601,
+      "japanese": "マホ（サマー）",
+      "english": "Maho (Summer)",
+      "position": 792,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 110701,
+      "japanese": "アオイ（編入生）",
+      "english": "Aoi (Student)",
+      "position": 680,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 110801,
+      "japanese": "クロエ",
+      "english": "Chloe",
+      "position": 185,
+      "place": 1,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 110901,
+      "japanese": "チエル",
+      "english": "Chieru",
+      "position": 222,
+      "place": 1,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 111001,
+      "japanese": "ユニ",
+      "english": "Yuni",
+      "position": 807,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 111101,
+      "japanese": "キョウカ（ハロウィン）",
+      "english": "Kyoka (Halloween)",
+      "position": 820,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 111201,
+      "japanese": "ミソギ（ハロウィン）",
+      "english": "Misogi (Halloween)",
+      "position": 212,
+      "place": 1,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 111301,
+      "japanese": "ミミ（ハロウィン）",
+      "english": "Mimi (Halloween)",
+      "position": 365,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 111401,
+      "japanese": "ルナ",
+      "english": "Luna",
+      "position": 765,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 111501,
+      "japanese": "クリスティーナ（クリスマス）",
+      "english": "Christina (Holiday)",
+      "position": 265,
+      "place": 1,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 111601,
+      "japanese": "ノゾミ（クリスマス）",
+      "english": "Nozomi (Holiday)",
+      "position": 418,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 111701,
+      "japanese": "イリヤ（クリスマス）",
+      "english": "Illya (Holiday)",
+      "position": 255,
+      "place": 1,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 111801,
+      "japanese": "ペコリーヌ（ニューイヤー）",
+      "english": "",
+      "position": 248,
+      "place": 1,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 111901,
+      "japanese": "コッコロ（ニューイヤー）",
+      "english": "Kokkoro (New Year)",
+      "position": 159,
+      "place": 1,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 112001,
+      "japanese": "キャル（ニューイヤー）",
+      "english": "Karyl (New Year)",
+      "position": 690,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 112101,
+      "japanese": "スズメ（ニューイヤー）",
+      "english": "Suzume (New Year)",
+      "position": 722,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 112201,
+      "japanese": "カスミ（マジカル）",
+      "english": "Kasumi (Magical)",
+      "position": 730,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 112301,
+      "japanese": "シオリ（マジカル）",
+      "english": "Shiori (Magical)",
+      "position": 712,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 112401,
+      "japanese": "ウヅキ（デレマス）",
+      "english": "Uzuki (IM@S CG)",
+      "position": 453,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 112501,
+      "japanese": "リン（デレマス）",
+      "english": "Rin (IM@S CG)",
+      "position": 153,
+      "place": 1,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 112601,
+      "japanese": "ミオ（デレマス）",
+      "english": "Mio (IM@S CG)",
+      "position": 695,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 112701,
+      "japanese": "リン（レンジャー）",
+      "english": "Rin (Ranger)",
+      "position": 422,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 112801,
+      "japanese": "マヒル（レンジャー）",
+      "english": "Mahiru (Ranger)",
+      "position": 390,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 112901,
+      "japanese": "リノ（ワンダー）",
+      "english": "",
+      "position": 730,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 113001,
+      "japanese": "アユミ（ワンダー）",
+      "english": "",
+      "position": 508,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 113101,
+      "japanese": "ルカ（サマー）",
+      "english": "",
+      "position": 192,
+      "place": 1,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 113201,
+      "japanese": "アンナ（サマー）",
+      "english": "",
+      "position": 256,
+      "place": 1,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 113301,
+      "japanese": "ナナカ（サマー）",
+      "english": "",
+      "position": 468,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 113401,
+      "japanese": "ハツネ（サマー）",
+      "english": "",
+      "position": 567,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 113501,
+      "japanese": "ミサト（サマー）",
+      "english": "",
+      "position": 697,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 113601,
+      "japanese": "ジュン（サマー）",
+      "english": "",
+      "position": 182,
+      "place": 1,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 113701,
+      "japanese": "アカリ（エンジェル）",
+      "english": "",
+      "position": 530,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 113801,
+      "japanese": "ヨリ（エンジェル）",
+      "english": "",
+      "position": 531,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 113901,
+      "japanese": "ツムギ（ハロウィン）",
+      "english": "",
+      "position": 152,
+      "place": 1,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 114001,
+      "japanese": "レイ（ハロウィン）",
+      "english": "",
+      "position": 375,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 114101,
+      "japanese": "マツリ（ハロウィン）",
+      "english": "",
+      "position": 186,
+      "place": 1,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 114201,
+      "japanese": "モニカ（マジカル）",
+      "english": "",
+      "position": 528,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 114301,
+      "japanese": "トモ（マジカル）",
+      "english": "",
+      "position": 402,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 114401,
+      "japanese": "アキノ（クリスマス）",
+      "english": "",
+      "position": 189,
+      "place": 1,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 114501,
+      "japanese": "サレン（クリスマス）",
+      "english": "",
+      "position": 150,
+      "place": 1,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 114601,
+      "japanese": "ユカリ（クリスマス）",
+      "english": "",
+      "position": 408,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 114701,
+      "japanese": "ムイミ（ニューイヤー）",
+      "english": "",
+      "position": 138,
+      "place": 1,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 115001,
+      "japanese": "ネネカ（ニューイヤー）",
+      "english": "",
+      "position": 562,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 115501,
+      "japanese": "コッコロ（儀装束）",
+      "english": "",
+      "position": 533,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 115601,
+      "japanese": "ユイ（儀装束）",
+      "english": "",
+      "position": 578,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 115701,
+      "japanese": "カスミ（サマー）",
+      "english": "",
+      "position": 738,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 115801,
+      "japanese": "リマ（シンデレラ）",
+      "english": "",
+      "position": 173,
+      "place": 1,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 115901,
+      "japanese": "マコト（シンデレラ）",
+      "english": "",
+      "position": 166,
+      "place": 1,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 116001,
+      "japanese": "マホ（シンデレラ）",
+      "english": "",
+      "position": 645,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 116201,
+      "japanese": "クロエ（聖学祭）",
+      "english": "",
+      "position": 184,
+      "place": 1,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 116301,
+      "japanese": "チエル（聖学祭）",
+      "english": "",
+      "position": 223,
+      "place": 1,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 116401,
+      "japanese": "ユニ（聖学祭）",
+      "english": "",
+      "position": 808,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 116501,
+      "japanese": "イノリ（タイムトラベル）",
+      "english": "",
+      "position": 252,
+      "place": 1,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 116601,
+      "japanese": "カヤ（タイムトラベル）",
+      "english": "",
+      "position": 169,
+      "place": 1,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 116701,
+      "japanese": "アオイ（作業服）",
+      "english": "",
+      "position": 527,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 116801,
+      "japanese": "タマキ（作業服）",
+      "english": "",
+      "position": 216,
+      "place": 1,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 116901,
+      "japanese": "ミフユ（作業服）",
+      "english": "",
+      "position": 275,
+      "place": 1,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 117001,
+      "japanese": "エリコ（サマー）",
+      "english": "",
+      "position": 407,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 117101,
+      "japanese": "シズル（サマー）",
+      "english": "",
+      "position": 163,
+      "place": 1,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 117201,
+      "japanese": "ノゾミ（サマー）",
+      "english": "",
+      "position": 417,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 117301,
+      "japanese": "チカ（サマー）",
+      "english": "",
+      "position": 520,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 117401,
+      "japanese": "ツムギ（サマー）",
+      "english": "",
+      "position": 355,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 117501,
+      "japanese": "ミツキ（オーエド）",
+      "english": "",
+      "position": 552,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 117601,
+      "japanese": "ユキ（オーエド）",
+      "english": "",
+      "position": 798,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 117701,
+      "japanese": "カオリ（ハロウィン）",
+      "english": "",
+      "position": 156,
+      "place": 1,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 117801,
+      "japanese": "ニノン（ハロウィン）",
+      "english": "",
+      "position": 518,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 117901,
+      "japanese": "スズナ（ハロウィン）",
+      "english": "",
+      "position": 761,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 118001,
+      "japanese": "クレジッタ",
+      "english": "",
+      "position": 751,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 118101,
+      "japanese": "ランファ",
+      "english": "",
+      "position": 782,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 118201,
+      "japanese": "ミソラ",
+      "english": "",
+      "position": 730,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 118501,
+      "japanese": "カリン",
+      "english": "",
+      "position": 787,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 118601,
+      "japanese": "ネビア",
+      "english": "",
+      "position": 826,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 119001,
+      "japanese": "イオ（ノワール）",
+      "english": "",
+      "position": 714,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 119101,
+      "japanese": "クウカ（ノワール）",
+      "english": "",
+      "position": 143,
+      "place": 1,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 119201,
+      "japanese": "マヒル（クリスマス）",
+      "english": "",
+      "position": 397,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 119301,
+      "japanese": "リノ（クリスマス）",
+      "english": "",
+      "position": 762,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 119901,
+      "japanese": "ミヤコ（クリスマス）",
+      "english": "",
+      "position": 302,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 120001,
+      "japanese": "シズル（ノワール）",
+      "english": "",
+      "position": 190,
+      "place": 1,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 120701,
+      "japanese": "シェフィ（ニューイヤー）",
+      "english": "",
+      "position": 283,
+      "place": 1,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 120801,
+      "japanese": "ルカ（ニューイヤー）",
+      "english": "",
+      "position": 193,
+      "place": 1,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 120901,
+      "japanese": "イリヤ（ニューイヤー）",
+      "english": "",
+      "position": 424,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 121001,
+      "japanese": "ペコリーヌ（オーバーロード）",
+      "english": "",
+      "position": 164,
+      "place": 1,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 121101,
+      "japanese": "キャル（オーバーロード）",
+      "english": "",
+      "position": 588,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 121201,
+      "japanese": "ラビリスタ（オーバーロード）",
+      "english": "",
+      "position": 260,
+      "place": 1,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 121301,
+      "japanese": "クルミ（ステージ）",
+      "english": "",
+      "position": 731,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 121401,
+      "japanese": "ミサキ（ステージ）",
+      "english": "",
+      "position": 742,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 121501,
+      "japanese": "アユミ（怪盗）",
+      "english": "",
+      "position": 590,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 121601,
+      "japanese": "イノリ（怪盗）",
+      "english": "",
+      "position": 292,
+      "place": 1,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 121901,
+      "japanese": "アンナ（パイレーツ）",
+      "english": "",
+      "position": 293,
+      "place": 1,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 122001,
+      "japanese": "シノブ（パイレーツ）",
+      "english": "",
+      "position": 380,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 122101,
+      "japanese": "アオイ（キャンプ）",
+      "english": "",
+      "position": 731,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 122201,
+      "japanese": "ユカリ（キャンプ）",
+      "english": "",
+      "position": 419,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 122301,
+      "japanese": "ヴァンピィ",
+      "english": "",
+      "position": 564,
+      "place": 2,
+      "maxRarity": 6
+    },
+    {
+      "unitId": 122401,
+      "japanese": "ヒヨリ（サマー）",
+      "english": "",
+      "position": 264,
+      "place": 1,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 122501,
+      "japanese": "レイ（サマー）",
+      "english": "",
+      "position": 250,
+      "place": 1,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 122601,
+      "japanese": "ユイ（サマー）",
+      "english": "",
+      "position": 554,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 122701,
+      "japanese": "キョウカ（サマー）",
+      "english": "",
+      "position": 812,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 122801,
+      "japanese": "ミソギ（サマー）",
+      "english": "",
+      "position": 237,
+      "place": 1,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 122901,
+      "japanese": "ミミ（サマー）",
+      "english": "",
+      "position": 361,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 123001,
+      "japanese": "アメス",
+      "english": "",
+      "position": 746,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 123101,
+      "japanese": "マホ（エクスプローラー）",
+      "english": "",
+      "position": 793,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 123201,
+      "japanese": "アヤネ（エクスプローラー）",
+      "english": "",
+      "position": 256,
+      "place": 1,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 123301,
+      "japanese": "ネア",
+      "english": "",
+      "position": 350,
+      "place": 2,
+      "maxRarity": 6
+    },
+    {
+      "unitId": 123501,
+      "japanese": "リン（ハロウィン）",
+      "english": "",
+      "position": 583,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 123601,
+      "japanese": "トモ（ハロウィン）",
+      "english": "",
+      "position": 262,
+      "place": 1,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 123701,
+      "japanese": "ナナカ（ハロウィン）",
+      "english": "",
+      "position": 741,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 123801,
+      "japanese": "クリスティーナ（ワイルド）",
+      "english": "",
+      "position": 238,
+      "place": 1,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 123901,
+      "japanese": "マツリ（ワイルド）",
+      "english": "",
+      "position": 183,
+      "place": 1,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 124001,
+      "japanese": "アカリ（クリスマス）",
+      "english": "",
+      "position": 438,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 124101,
+      "japanese": "ヨリ（クリスマス）",
+      "english": "",
+      "position": 433,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 124201,
+      "japanese": "ジュン（クリスマス）",
+      "english": "",
+      "position": 144,
+      "place": 1,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 124501,
+      "japanese": "ホマレ（ニューイヤー）",
+      "english": "",
+      "position": 707,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 124601,
+      "japanese": "ミサト（ニューイヤー）",
+      "english": "",
+      "position": 698,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 124701,
+      "japanese": "ミツキ（ニューイヤー）",
+      "english": "",
+      "position": 590,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 124801,
+      "japanese": "ノゾミ（リベレイター）",
+      "english": "",
+      "position": 423,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 124901,
+      "japanese": "カヤ（リベレイター）",
+      "english": "",
+      "position": 170,
+      "place": 1,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 125001,
+      "japanese": "ムイミ（リベレイター）",
+      "english": "",
+      "position": 221,
+      "place": 1,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 125101,
+      "japanese": "タマキ（カフェ）",
+      "english": "",
+      "position": 825,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 125201,
+      "japanese": "モニカ（カフェ）",
+      "english": "",
+      "position": 463,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 125301,
+      "japanese": "コッコロ（レンジャー）",
+      "english": "",
+      "position": 752,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 125401,
+      "japanese": "シオリ（レンジャー）",
+      "english": "",
+      "position": 710,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 125501,
+      "japanese": "ジータ（ウォーロック）",
+      "english": "",
+      "position": 443,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 125601,
+      "japanese": "ビカラ",
+      "english": "",
+      "position": 267,
+      "place": 1,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 125701,
+      "japanese": "カリン（アルケミスト）",
+      "english": "",
+      "position": 579,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 125801,
+      "japanese": "リリ（フォールン）",
+      "english": "",
+      "position": 464,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 126001,
+      "japanese": "クリア（フォールン）",
+      "english": "",
+      "position": 406,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 126101,
+      "japanese": "プレシア（フォールン）",
+      "english": "",
+      "position": 480,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 126201,
+      "japanese": "イリヤ（儀装束）",
+      "english": "",
+      "position": 568,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 126301,
+      "japanese": "ユキ（儀装束）",
+      "english": "",
+      "position": 456,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 126401,
+      "japanese": "クローチェ",
+      "english": "",
+      "position": 373,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 126501,
+      "japanese": "ライラエル",
+      "english": "",
+      "position": 740,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 126601,
+      "japanese": "ネネカ（サマー）",
+      "english": "",
+      "position": 650,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 126701,
+      "japanese": "アキノ（サマー）",
+      "english": "",
+      "position": 224,
+      "place": 1,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 126801,
+      "japanese": "ユカリ（サマー）",
+      "english": "",
+      "position": 159,
+      "place": 1,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 126901,
+      "japanese": "ランファ（サマー）",
+      "english": "",
+      "position": 682,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 127001,
+      "japanese": "クウカ（サマー）",
+      "english": "",
+      "position": 133,
+      "place": 1,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 127101,
+      "japanese": "シノブ（サマー）",
+      "english": "",
+      "position": 255,
+      "place": 1,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 127201,
+      "japanese": "キャル（編入生）",
+      "english": "",
+      "position": 804,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 127301,
+      "japanese": "スズナ（編入生）",
+      "english": "",
+      "position": 750,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 127501,
+      "japanese": "サレン（サラサリア）",
+      "english": "",
+      "position": 304,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 127601,
+      "japanese": "ルカ（サラサリア）",
+      "english": "",
+      "position": 157,
+      "place": 1,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 127701,
+      "japanese": "リンド",
+      "english": "",
+      "position": 693,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 127801,
+      "japanese": "ヴルム",
+      "english": "",
+      "position": 706,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 127901,
+      "japanese": "ペコリーヌ（クリスマス）",
+      "english": "",
+      "position": 372,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 128001,
+      "japanese": "クレジッタ（クリスマス）",
+      "english": "",
+      "position": 723,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 128301,
+      "japanese": "イノリ（ニューイヤー）",
+      "english": "",
+      "position": 191,
+      "place": 1,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 128401,
+      "japanese": "ハツネ（ニューイヤー）",
+      "english": "",
+      "position": 801,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 128501,
+      "japanese": "カスミ（ニューイヤー）",
+      "english": "",
+      "position": 739,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 128701,
+      "japanese": "ヒヨリ（アストラル）",
+      "english": "",
+      "position": 226,
+      "place": 1,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 128801,
+      "japanese": "レイ（アストラル）",
+      "english": "",
+      "position": 194,
+      "place": 1,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 128901,
+      "japanese": "ユイ（アストラル）",
+      "english": "",
+      "position": 772,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 129001,
+      "japanese": "エリス",
+      "english": "",
+      "position": 800,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 129301,
+      "japanese": "ユニ（ウィンター）",
+      "english": "",
+      "position": 708,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 129401,
+      "japanese": "クロエ（ウィンター）",
+      "english": "",
+      "position": 188,
+      "place": 1,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 129501,
+      "japanese": "チエル（ウィンター）",
+      "english": "",
+      "position": 247,
+      "place": 1,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 129601,
+      "japanese": "アネモネ",
+      "english": "",
+      "position": 550,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 129701,
+      "japanese": "ネフィ＝ネラ",
+      "english": "",
+      "position": 540,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 129801,
+      "japanese": "マコト（コマンダー）",
+      "english": "",
+      "position": 269,
+      "place": 1,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 129901,
+      "japanese": "エリコ（コマンダー）",
+      "english": "",
+      "position": 294,
+      "place": 1,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 130001,
+      "japanese": "ヤマト",
+      "english": "",
+      "position": 150,
+      "place": 1,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 130101,
+      "japanese": "ワカナ",
+      "english": "",
+      "position": 535,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 130201,
+      "japanese": "フブキ",
+      "english": "",
+      "position": 371,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 130701,
+      "japanese": "キョウカ（スプリング）",
+      "english": "",
+      "position": 563,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 130801,
+      "japanese": "スズメ（スプリング）",
+      "english": "",
+      "position": 558,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 130901,
+      "japanese": "クルル",
+      "english": "",
+      "position": 440,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 131001,
+      "japanese": "マホ（ドリームパーク）",
+      "english": "",
+      "position": 702,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 131101,
+      "japanese": "ネア（サマー）",
+      "english": "",
+      "position": 165,
+      "place": 1,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 131201,
+      "japanese": "ミソラ（サマー）",
+      "english": "",
+      "position": 753,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 131601,
+      "japanese": "リリ（サマー）",
+      "english": "",
+      "position": 399,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 131701,
+      "japanese": "アメス（サマー）",
+      "english": "",
+      "position": 743,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 131801,
+      "japanese": "ホマレ（サマー）",
+      "english": "",
+      "position": 709,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 131901,
+      "japanese": "エミリア（サマー）",
+      "english": "",
+      "position": 725,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 132001,
+      "japanese": "エキドナ（サマー）",
+      "english": "",
+      "position": 775,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 132101,
+      "japanese": "レム（サマー）",
+      "english": "",
+      "position": 146,
+      "place": 1,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 132201,
+      "japanese": "ノゾミ（アルケミスト）",
+      "english": "",
+      "position": 721,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 132301,
+      "japanese": "ルイズマリー",
+      "english": "",
+      "position": 754,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 132401,
+      "japanese": "イロハ",
+      "english": "",
+      "position": 501,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 132501,
+      "japanese": "ソノ",
+      "english": "",
+      "position": 636,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 132801,
+      "japanese": "ライラエル（クリスマス）",
+      "english": "",
+      "position": 750,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 132901,
+      "japanese": "イオ（クリスマス）",
+      "english": "",
+      "position": 748,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 133001,
+      "japanese": "グレイス",
+      "english": "",
+      "position": 234,
+      "place": 1,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 133101,
+      "japanese": "ヴァイオレット",
+      "english": "",
+      "position": 154,
+      "place": 1,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 133201,
+      "japanese": "モニカ（ニューイヤー）",
+      "english": "",
+      "position": 296,
+      "place": 1,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 133501,
+      "japanese": "サレン（ニューイヤー）",
+      "english": "",
+      "position": 718,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 133601,
+      "japanese": "メドゥーサ",
+      "english": "",
+      "position": 445,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 133701,
+      "japanese": "ラビリスタ（アルファ）",
+      "english": "",
+      "position": 717,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 133801,
+      "japanese": "ネネカ（アルファ）",
+      "english": "",
+      "position": 759,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 133901,
+      "japanese": "クリスティーナ（アルファ）",
+      "english": "",
+      "position": 228,
+      "place": 1,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 134001,
+      "japanese": "フィオ",
+      "english": "",
+      "position": 746,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 134301,
+      "japanese": "ランファ（儀装束）",
+      "english": "",
+      "position": 778,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 134401,
+      "japanese": "チカ（儀装束）",
+      "english": "",
+      "position": 773,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 134501,
+      "japanese": "クローチェ（エアリアル）",
+      "english": "",
+      "position": 719,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 134601,
+      "japanese": "アオイ（パイロット）",
+      "english": "",
+      "position": 526,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 134701,
+      "japanese": "ホウオウ",
+      "english": "",
+      "position": 490,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 134801,
+      "japanese": "ツムギ（ジオ・ゲヘナ）",
+      "english": "",
+      "position": 485,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 134901,
+      "japanese": "カノン",
+      "english": "",
+      "position": 196,
+      "place": 1,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 135001,
+      "japanese": "エリス（サマー）",
+      "english": "",
+      "position": 785,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 135101,
+      "japanese": "シェフィ（サマー）",
+      "english": "",
+      "position": 143,
+      "place": 1,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 135201,
+      "japanese": "プレシア（サマー）",
+      "english": "",
+      "position": 548,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 135301,
+      "japanese": "クリア（サマー）",
+      "english": "",
+      "position": 413,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 135401,
+      "japanese": "アネモネ（サマー）",
+      "english": "",
+      "position": 553,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 135501,
+      "japanese": "アイラ",
+      "english": "",
+      "position": 213,
+      "place": 1,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 135601,
+      "japanese": "シナツ",
+      "english": "",
+      "position": 198,
+      "place": 1,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 135701,
+      "japanese": "ヒヨリ（サラサリア）",
+      "english": "",
+      "position": 291,
+      "place": 1,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 135801,
+      "japanese": "ユキノ",
+      "english": "",
+      "position": 830,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 135901,
+      "japanese": "サツキ",
+      "english": "",
+      "position": 219,
+      "place": 1,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 136001,
+      "japanese": "アラクネ",
+      "english": "",
+      "position": 732,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 136101,
+      "japanese": "サクラ",
+      "english": "",
+      "position": 432,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 136201,
+      "japanese": "ナーナ",
+      "english": "",
+      "position": 198,
+      "place": 1,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 136301,
+      "japanese": "ミソラ（クリスマス）",
+      "english": "",
+      "position": 655,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 136401,
+      "japanese": "ユイ（クリスマス）",
+      "english": "",
+      "position": 382,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 136501,
+      "japanese": "シズル（ニューイヤー）",
+      "english": "",
+      "position": 151,
+      "place": 1,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 136901,
+      "japanese": "ルルィ",
+      "english": "",
+      "position": 409,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 137101,
+      "japanese": "ニノン（サマー）",
+      "english": "",
+      "position": 566,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 137401,
+      "japanese": "カスミ（シスター）",
+      "english": "",
+      "position": 688,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 137601,
+      "japanese": "コッコロ（嚮導幼君）",
+      "english": "",
+      "position": 733,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 137901,
+      "japanese": "リノ（ニューイヤー）",
+      "english": "",
+      "position": 684,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 138001,
+      "japanese": "ヴァイオレット（イサナミ）",
+      "english": "",
+      "position": 154,
+      "place": 1,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 138101,
+      "japanese": "ライラエル（パルフェクト）",
+      "english": "",
+      "position": 729,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 138201,
+      "japanese": "ネフィ＝ネラ（鬼面仏心）",
+      "english": "",
+      "position": 502,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 138301,
+      "japanese": "ペコリーヌ（アストライア）",
+      "english": "",
+      "position": 142,
+      "place": 1,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 138701,
+      "japanese": "ワカナ（ウィンター）",
+      "english": "",
+      "position": 539,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 138801,
+      "japanese": "シオリ（ウィンター）",
+      "english": "",
+      "position": 571,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 138901,
+      "japanese": "グレイス（バニー）",
+      "english": "",
+      "position": 429,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 139001,
+      "japanese": "キョウカ（ゴシック）",
+      "english": "",
+      "position": 816,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 139101,
+      "japanese": "キャル（覇瞳天星）",
+      "english": "",
+      "position": 770,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 139201,
+      "japanese": "ミホ（ガルパン）",
+      "english": "",
+      "position": 486,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 139301,
+      "japanese": "マホ（ガルパン）",
+      "english": "",
+      "position": 700,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 139401,
+      "japanese": "エリカ（ガルパン）",
+      "english": "",
+      "position": 322,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 139501,
+      "japanese": "リリ（ヴァルキュリア）",
+      "english": "",
+      "position": 453,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 139601,
+      "japanese": "クリア（ヴァルキュリア）",
+      "english": "",
+      "position": 150,
+      "place": 1,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 139701,
+      "japanese": "プレシア（ヴァルキュリア）",
+      "english": "",
+      "position": 500,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 139801,
+      "japanese": "シェフィ（ヴァードラッヘ）",
+      "english": "",
+      "position": 386,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 139901,
+      "japanese": "ルイズマリー（サマー）",
+      "english": "",
+      "position": 757,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 140001,
+      "japanese": "クレジッタ（サマー）",
+      "english": "",
+      "position": 730,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 140101,
+      "japanese": "フブキ（サマー）",
+      "english": "",
+      "position": 376,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 140201,
+      "japanese": "ヴァンピィ（サマー）",
+      "english": "",
+      "position": 582,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 140301,
+      "japanese": "ティア",
+      "english": "",
+      "position": 744,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 140401,
+      "japanese": "リーザ",
+      "english": "",
+      "position": 780,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 140501,
+      "japanese": "ヴルム（ヴァルムドラッヘ）",
+      "english": "",
+      "position": 396,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 140601,
+      "japanese": "クローチェ（サブマリン）",
+      "english": "",
+      "position": 400,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 140701,
+      "japanese": "サレン（ガンナー）",
+      "english": "",
+      "position": 431,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 140801,
+      "japanese": "アメス（ガンナー）",
+      "english": "",
+      "position": 512,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 140901,
+      "japanese": "アグライア",
+      "english": "",
+      "position": 780,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 180101,
+      "japanese": "ヒヨリ（プリンセス）",
+      "english": "",
+      "position": 199,
+      "place": 1,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 180201,
+      "japanese": "ユイ（プリンセス）",
+      "english": "",
+      "position": 767,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 180301,
+      "japanese": "レイ（プリンセス）",
+      "english": "",
+      "position": 377,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 180401,
+      "japanese": "ペコリーヌ（プリンセス）",
+      "english": "Pecorine (Princess)",
+      "position": 155,
+      "place": 1,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 180501,
+      "japanese": "コッコロ（プリンセス）",
+      "english": "",
+      "position": 555,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 180601,
+      "japanese": "キャル（プリンセス）",
+      "english": "",
+      "position": 747,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 180701,
+      "japanese": "ハツネ＆シオリ",
+      "english": "",
+      "position": 732,
+      "place": 3,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 180801,
+      "japanese": "ミソギ＆ミミ＆キョウカ",
+      "english": "",
+      "position": 465,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 180901,
+      "japanese": "アキノ＆サレン",
+      "english": "",
+      "position": 421,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 181001,
+      "japanese": "アン＆グレア",
+      "english": "",
+      "position": 577,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 181101,
+      "japanese": "シズル＆リノ",
+      "english": "",
+      "position": 551,
+      "place": 2,
+      "maxRarity": 5
+    },
+    {
+      "unitId": 181201,
+      "japanese": "シェフィ（プリンセス）",
+      "english": "",
+      "position": 368,
+      "place": 2,
+      "maxRarity": 5
+    }
+  ]
+}

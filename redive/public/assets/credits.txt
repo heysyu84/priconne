@@ -1,0 +1,55 @@
+프린세스 커넥트! Re:Dive 캐릭터·보스 이미지: © Cygames, Inc.
+초상화·보스 이미지 출처: https://github.com/purikonekrsemi/PurikoneKrSheet
+메뉴 SD 이미지: 기존 냥냥클랜 프로젝트의 정적 이미지 사용
+2026년 10월 보스 편성과 캐릭터 편성은 기존 사이트에서 불러온 해당 월 자료를 사용합니다.
+
+Future boss portraits (verified original game assets):
+future-1.4.png https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/1.4.png
+future-2.5.png https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/2.5.png
+future-3.9.png https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/3.9.png
+future-4.2.png https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/4.2.png
+future-5.10.png https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/5.10.png
+future-1.1.png https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/1.1.png
+future-2.6.png https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/2.6.png
+future-3.8.png https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/3.8.png
+future-4.6.png https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/4.6.png
+future-5.11.png https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/5.11.png
+future-1.2.png https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/1.2.png
+future-2.4.png https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/2.4.png
+future-3.17.png https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/3.17.png
+future-4.7.png https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/4.7.png
+future-5.12.png https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/5.12.png
+future-1.5.png https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/1.5.png
+future-2.3.png https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/2.3.png
+future-3.2.png https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/3.2.png
+future-4.17.png https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/4.17.png
+future-5.1.png https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/5.1.png
+future-1.3.png https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/1.3.png
+future-2.2.png https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/2.2.png
+future-4.3.png https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/4.3.png
+future-4.8.png https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/4.8.png
+future-5.2.png https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/5.2.png
+future-3.14.png https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/3.14.png
+future-4.5.png https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/4.5.png
+future-5.3.png https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/5.3.png
+future-2.1.png https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/2.1.png
+future-3.16.png https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/3.16.png
+future-4.16.png https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/4.16.png
+future-5.4.png https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/5.4.png
+future-1.6.png https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/1.6.png
+future-3.18.png https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/3.18.png
+future-4.12.png https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/4.12.png
+future-5.5.png https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/5.5.png
+future-3.1.png https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/3.1.png
+future-4.15.png https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/4.15.png
+future-5.6.png https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/5.6.png
+future-3.19.png https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/3.19.png
+future-4.19.png https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/4.19.png
+future-5.7.png https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/5.7.png
+future-4.10.png https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/4.10.png
+future-5.8.png https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/5.8.png
+future-2.7.png https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/2.7.png
+future-3.20.png https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/3.20.png
+future-4.1.png https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/4.1.png
+future-5.9.png https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/5.9.png
+future-3.4.png https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/3.4.png
