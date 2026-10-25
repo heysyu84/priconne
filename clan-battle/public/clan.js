@@ -32,11 +32,19 @@ const abbrev=n=>{if(typeof n==='number'&&!Number.isFinite(n))return '-';n=Number
 const code=(kind,txt)=>`<span class="pill ${kind}">${X(txt)}</span>`;
 const rnumber=n=>Math.round(Number(n)||0);
 const monthFormat=m=>m.replace('-','년 ')+'월';
-const seedMonth=deepcopy(DEFAULT.months['2026-10']);
+
 let boot;
 try { const response=await apiFetch('/api/state?compact=1',{cache:'no-store',signal:AbortSignal.timeout(15000)});if(!response.ok)throw Error();boot=await response.json(); }
 catch { $('#content').innerHTML='<section class="panel"><h1>기록에 연결하지 못했습니다</h1><p class="muted">연결을 확인한 뒤 다시 시도해 주세요. 기존 기록은 변경되지 않았습니다.</p><button class="btn primary" onclick="location.reload()">다시 연결</button></section>';$('#sync-state').textContent='연결 실패';return; }
-let app=boot.data||deepcopy(DEFAULT);
+// The packaged seed is used only when the shared database is truly empty.
+ // Once a server state exists, it is authoritative; never merge packaged tactics into it.
+ const newDatabase=boot.data==null&&Number(boot.revision)===0;
+ if(!newDatabase&&(!boot.data?.months||!Object.keys(boot.data.months).length)){
+   $('#content').innerHTML='<section class="panel"><h1>저장된 클랜 데이터를 확인하지 못했습니다</h1><p class="muted">기존 기록을 초기 자료로 대체하지 않았습니다. 서버 연결과 저장 상태를 확인해 주세요.</p></section>';
+   $('#sync-state').textContent='기록 확인 실패';
+   return;
+ }
+ let app=newDatabase?deepcopy(DEFAULT):boot.data;
 let splitStorage=boot.splitStorage===true,restoreArchivesPending=false;
 const archiveCache=new Map();
 const importedArchiveMonths=Array.from({length:8},(_,i)=>'2026-'+String(i+1).padStart(2,'0'));
@@ -96,11 +104,14 @@ let detailMonthLoading='',detailMonthRequest=0;
 const canEdit=()=>editor&&!monthView.isPast();
 let archiveLoading='',archiveError='';
 const archiveKeys=()=>{const latest=Object.keys(app.months).sort().at(-1);return [...new Set([...importedArchiveMonths,...(app.archivedMonths||[]),...Object.keys(app.months).filter(k=>k!==latest)])].sort().reverse()};
-const rosterMigrated=ensureRoster(app,DEFAULT.rosterSeed||[]);
-const tacticsMigrated=ensureTactics(app,TACTIC_META,ROW_FORMATS);
-const guildMigrated=applySourceData(app,GUILD_SOURCE);
-const comboSynced=Object.values(app.months).map(syncTacticRecommendations).some(Boolean);
-app.active=Object.keys(app.months).sort().at(-1);
+// Legacy seed data and import migrations are only run on the first empty-database setup.
+ // Existing server records, including deleted/modified tactics, are never seeded again.
+ const rosterMigrated=ensureRoster(app,newDatabase?(DEFAULT.rosterSeed||[]):[]);
+ const tacticsMigrated=newDatabase?ensureTactics(app,TACTIC_META,ROW_FORMATS):false;
+ const guildMigrated=newDatabase?applySourceData(app,GUILD_SOURCE):false;
+ const comboSynced=newDatabase?Object.values(app.months).map(syncTacticRecommendations).some(Boolean):false;
+ app.active=Object.keys(app.months).sort().at(-1);
+ const seedMonth=app.months[app.active];
 let editor=false;try{const result=await apiFetch('/api/editor',{cache:'no-store'});editor=!!(await result.json()).editor;}catch{}
 let revision=boot.revision,dirty=0,saving=false,saveTimer=null,blocked=false;
 for(const month of Object.values(app.months))Engine.replayMonth(month);
@@ -127,10 +138,8 @@ async function submitPublicBattle(entry){
  if(!response.ok)throw Error(result.error||'공격 등록 서버에 연결하지 못했습니다. 입력값은 유지됩니다.');
  if(!result.data?.months||!Number.isSafeInteger(result.revision))throw Error('저장 결과를 확인할 수 없습니다. 새로고침해 중복 등록 여부를 확인해 주세요.');
  app=result.data;
- ensureRoster(app,DEFAULT.rosterSeed||[]);
- ensureTactics(app,TACTIC_META,ROW_FORMATS);
- applySourceData(app,GUILD_SOURCE);
- for(const record of Object.values(app.months))syncTacticRecommendations(record);
+ // A newly fetched revision supersedes all packaged files and stale local snapshots.
+ ensureRoster(app,[]);
  for(const record of Object.values(app.months))Engine.replayMonth(record);
  revision=result.revision;
  saveStatus('saved');
@@ -288,8 +297,8 @@ function archiveRecords(){
   return nav+metrics+`<section class="panel archive-record-ranking"><div class="panel-head"><h2>${monthFormat(key)} 월별 순위</h2></div><div class="table-scroll"><table class="datatable archive-ranking-table"><thead><tr><th>순위</th><th>클랜원</th>${columns.map(([metric,label])=>`<th><button class="sort-head ${ui.archiveSort===metric?'active':''}" data-archive-sort="${metric}" aria-pressed="${ui.archiveSort===metric}">${label}${ui.archiveSort===metric?' ↓':''}</button></th>`).join('')}</tr></thead><tbody>${sorted.map((p,i)=>`<tr><td class="h-num">${i+1}</td><th>${X(p.name)}</th>${columns.map(([metric])=>`<td class="number ${ui.archiveSort===metric?'sorted':''}">${metric==='contribution'?formatContribution(p[metric]):nf(p[metric])}</td>`).join('')}</tr>`).join('')||'<tr><td colspan="5" class="empty">기록이 없습니다.</td></tr>'}</tbody></table></div></section>`+logSection;
 }
 async function exportData(){if(!editor)return unlock();let data=app;if(splitStorage){try{const response=await apiFetch('/api/archive?all=1',{cache:'no-store'});if(!response.ok)throw Error();const archives=(await response.json()).months||{};data={...app,months:{...archives,...app.months}};}catch{notice('전체 백업에 필요한 과거 기록을 가져오지 못했습니다. 기록 손실을 막기 위해 백업을 중단했습니다.');return;}}const blob=new Blob([JSON.stringify({version:4,exportedAt:new Date().toISOString(),data},null,2)],{type:'application/json'});const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='nyangnyang-clan-'+app.active+'-backup.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1500);notice('JSON 백업 파일을 저장했습니다')}
-async function importJSON(file){if(!editor){unlock();return;}try{let data=JSON.parse(await file.text());if(!data?.data?.months||!Object.keys(data.data.months).length)throw Error('지원하지 않는 백업 형식');if(!confirm('현재 클랜 데이터를 이 백업 내용으로 교체할까요? 먼저 현재 데이터의 JSON 백업을 권장합니다.'))return;for(const d of Object.values(data.data.months)){if(!Array.isArray(d.bosses)||!Array.isArray(d.events)||!Array.isArray(d.tactics)||!Array.isArray(d.members)||!d.options)throw Error('월별 데이터가 올바르지 않습니다.');Engine.replayMonth(d);}app=data.data;monthView.reset();ensureRoster(app,DEFAULT.rosterSeed||[]);ensureTactics(app,TACTIC_META,ROW_FORMATS);applySourceData(app,GUILD_SOURCE);for(const d of Object.values(app.months))Engine.replayMonth(d);workflow.afterMonthChange();restoreArchivesPending=splitStorage;persist();ui.page='overview';notice('백업 복원 내용을 저장 중입니다. 완료 상태를 확인해 주세요.');render()}catch(e){notice('백업 파일을 읽을 수 없습니다: '+e.message)}}
-function newMonth(){if(!canEdit()){unlock();return;}if(!workflow.beforeNavigate())return;const last=Object.keys(app.months).sort().at(-1);const [y,m]=last.split('-').map(Number),next=new Date(y,m,1),key=`${next.getFullYear()}-${String(next.getMonth()+1).padStart(2,'0')}`;if(app.months[key]){app.active=key;workflow.afterMonthChange();goto('settings');return}const preview=FUTURE_BOSSES.months?.[key];const ready=preview?.bosses?.length===5&&preview.bosses.every(b=>b.status==='verified');if(!confirm(`${monthFormat(key)} 새 클랜전을 만들까요? 전월 HP·배율·단계 규칙을 복사하고 ${ready?'확인된 미래 보스 이름을 적용합니다.':'보스 이름은 전월 것을 임시 복사합니다.'} 공격 기록과 택틱은 빈 상태로 만듭니다.`))return;const prev=app.months[last],ids=app.roster.filter(p=>p.status==='active').map(p=>p.id);app.months[key]={month:key,bosses:deepcopy(prev.bosses),levels:deepcopy(prev.levels),members:[],memberIds:ids,membership:Object.fromEntries(ids.map(id=>[id,{fromDay:1,toDay:null}])),options:deepcopy(prev.options),events:[],tactics:[],recommendations:[],communityLinks:deepcopy(prev.communityLinks||[]),comboNotices:deepcopy(prev.comboNotices||GUILD_SOURCE.recommendationWarnings||{}),dayBreaks:[],guildDataVersion:1};if(ready)for(const b of preview.bosses){const dest=app.months[key].bosses.find(x=>x.id===b.slot);if(dest)dest.name=b.name;}syncRoster(app);app.active=key;workflow.afterMonthChange();guild.afterMonthChange();ui.member=current().members[0];persist();goto('settings');notice('새 클랜전을 생성했습니다. 보스와 배율을 수정하세요.')}
+async function importJSON(file){if(!editor){unlock();return;}try{let data=JSON.parse(await file.text());if(!data?.data?.months||!Object.keys(data.data.months).length)throw Error('지원하지 않는 백업 형식');if(!confirm('현재 클랜 데이터를 이 백업 내용으로 교체할까요? 먼저 현재 데이터의 JSON 백업을 권장합니다.'))return;for(const d of Object.values(data.data.months)){if(!Array.isArray(d.bosses)||!Array.isArray(d.events)||!Array.isArray(d.tactics)||!Array.isArray(d.members)||!d.options)throw Error('월별 데이터가 올바르지 않습니다.');Engine.replayMonth(d);}app=data.data;monthView.reset();ensureRoster(app,[]);for(const d of Object.values(app.months))Engine.replayMonth(d);workflow.afterMonthChange();restoreArchivesPending=splitStorage;persist();ui.page='overview';notice('백업 복원 내용을 저장 중입니다. 완료 상태를 확인해 주세요.');render()}catch(e){notice('백업 파일을 읽을 수 없습니다: '+e.message)}}
+function newMonth(){if(!canEdit()){unlock();return;}if(!workflow.beforeNavigate())return;const last=Object.keys(app.months).sort().at(-1);const [y,m]=last.split('-').map(Number),next=new Date(y,m,1),key=`${next.getFullYear()}-${String(next.getMonth()+1).padStart(2,'0')}`;if(app.months[key]){app.active=key;workflow.afterMonthChange();goto('settings');return}const preview=FUTURE_BOSSES.months?.[key];const ready=preview?.bosses?.length===5&&preview.bosses.every(b=>b.status==='verified');if(!confirm(`${monthFormat(key)} 새 클랜전을 만들까요? 전월 HP·배율·단계 규칙을 복사하고 ${ready?'확인된 미래 보스 이름을 적용합니다.':'보스 이름은 전월 것을 임시 복사합니다.'} 공격 기록과 택틱은 빈 상태로 만듭니다.`))return;const prev=app.months[last],ids=app.roster.filter(p=>p.status==='active').map(p=>p.id);app.months[key]={month:key,bosses:deepcopy(prev.bosses),levels:deepcopy(prev.levels),members:[],memberIds:ids,membership:Object.fromEntries(ids.map(id=>[id,{fromDay:1,toDay:null}])),options:deepcopy(prev.options),events:[],tactics:[],recommendations:[],communityLinks:deepcopy(prev.communityLinks||[]),comboNotices:deepcopy(prev.comboNotices||{}),dayBreaks:[],guildDataVersion:1};if(ready)for(const b of preview.bosses){const dest=app.months[key].bosses.find(x=>x.id===b.slot);if(dest)dest.name=b.name;}syncRoster(app);app.active=key;workflow.afterMonthChange();guild.afterMonthChange();ui.member=current().members[0];persist();goto('settings');notice('새 클랜전을 생성했습니다. 보스와 배율을 수정하세요.')}
 function copyText(txt){if(navigator.clipboard&&window.isSecureContext){navigator.clipboard.writeText(txt).then(()=>notice('복사했습니다')).catch(()=>fallbackCopy(txt));}else fallbackCopy(txt)}
 function fallbackCopy(txt){const ta=document.createElement('textarea');ta.value=txt;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.focus();ta.select();let ok=false;try{ok=document.execCommand('copy')}catch(e){}ta.remove();notice(ok?'복사했습니다':'복사 기능이 제한된 브라우저입니다. 직접 선택해 복사해 주세요.')}
 const pages={overview,dashboard:()=>guild.dashboard(),battle,'battle-import':()=>imageImporter.view(),roster,tactics,calculator:tactics,members,profile:()=>guild.profile(),db:()=>guild.db(),combos:()=>guild.combos(),settings,history,archive:()=>guild.db()};const labels={overview:'클랜전 상황판',dashboard:'대시보드',battle:'배틀로그','battle-import':'이미지 일괄 등록',roster:'클랜원 관리',tactics:'택틱 작업실',calculator:'택틱 작업실',members:'월간 순위',profile:'개인 이력',db:'클랜 DB',combos:'추천 조합',settings:'규칙 · 월별 설정',history:'월별 아카이브',archive:'과거 기록'};
@@ -378,10 +387,7 @@ async function refreshShared(){
     const active=app.active;
     splitStorage=next.splitStorage===true||splitStorage;
     app=next.data;
-    ensureRoster(app,DEFAULT.rosterSeed||[]);
-    ensureTactics(app,TACTIC_META,ROW_FORMATS);
-    applySourceData(app,GUILD_SOURCE);
-    for(const record of Object.values(app.months))syncTacticRecommendations(record);
+    ensureRoster(app,[]);
     if(app.months[active])app.active=active;
     for(const month of Object.values(app.months))Engine.replayMonth(month);
     revision=next.revision;
