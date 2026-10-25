@@ -6,7 +6,7 @@ import { characterPortrait, portraitAttributes, portraitStarOverlay } from './ch
 import { BOSS_COLORS, BOSS_ACCENTS, BOSS_INK, tenureMonths, monthOnly, thisMonth, dashboardDay, bossTopStats } from './guild-model.mjs?v=20261025-dashboard-carry01';
 import { makeId, matchMembers, upsertMember, syncRoster } from './roster.mjs?v=20261024-db-stage-ranges01';
 import { downloadProfilePdf } from './report-pdf.mjs?v=20261023-contribution-round-width980-01';
-import { createComboWorkspace } from './combo-workspace.mjs?v=20261024-tactic-warning01';
+import { createComboWorkspace } from './combo-workspace.mjs?v=20261026-combo-live01';
 import {suppressTacticRecommendation, visibleTacticRecommendations, updateTacticFromRecommendation} from './tactic-combo-sync.mjs?v=20261026-combo-live01';
 const SCORES=[['damage','피해량'],['contribution','기여도'],['game','인게임 스코어'],['dayDamage','일일 피해량'],['dayContribution','일일 기여도']];
 
