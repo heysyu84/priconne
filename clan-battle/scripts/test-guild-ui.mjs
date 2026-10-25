@@ -27,6 +27,25 @@ click('guild','toggle-member',{id:p.id});form.callback({month:'2026-07'});assert
 click('guild','toggle-member',{id:p.id});form.callback({month:'2026-10'});assert.equal(p.status,'active');assert.equal(p.leftAt,'');assert.equal(p.periods.length,2);assert.equal(tenureMonths(p,'2026-10'),original-2);
 assert.ok(!guild.roster().includes('<th>탈퇴월</th>'));assert.ok(!guild.roster().includes('<th>상태</th>'));
 click('guild','add-combo');const values=Object.fromEntries(form.fields.map(f=>[f.name,String(f.value||'')]));Object.assign(values,{stage:'4',boss:'5',characters:'에리스, 알네카, 미소라, 알리스, 바이올렛',stars:'55555',expectedDamage:'3.6',note:'검증'});const count=month().recommendations.length;form.callback(values);assert.equal(month().recommendations.length,count+1);assert.equal(month().recommendations.at(-1).characters.length,5);
+// 2넴 recommendation edits must persist in the canonical tactic, not be overwritten by sync.
+const linkedTactic={id:'test-linked-2',group:'택틱정리',boss:2,
+ characters:['라비','파오이','게무기','리리컬','수셰피'],stars:['5','5','5','5','5'],
+ expectedDamage:'3.1',manualCount:'0',tp:'',note:'',video:'',rows:[{id:'test-linked-row',text:'AUTO 온'}]};
+month().tactics.push(linkedTactic);
+month().recommendations.push({id:'test-linked-recommendation',sourceTacticId:linkedTactic.id,
+ stage:4,boss:2,characters:['라비','아오이','게무기','리리컬','수셰피'],
+ stars:['5','5','5','5','5'],expectedDamage:'3.1',tactic:'택틱',manualCount:'0'});
+click('guild','edit-combo',{id:'test-linked-recommendation'});
+assert.ok(form.title.includes('여기서 수정하면 원본 택틱도 변경됩니다'));
+const linkedValues=Object.fromEntries(form.fields.map(field=>[field.name,String(field.value??'')]));
+Object.assign(linkedValues,{stage:'4',boss:'2',characters:'라비, 파오이, 게무기, 리리컬, 수셰피',
+ stars:'55555',expectedDamage:'3.6',manualCount:'1',tp:'4.1+',note:'수정 확인',url:'https://example.org/linked'});
+form.callback(linkedValues);
+assert.equal(linkedTactic.characters[1],'파오이');
+assert.equal(linkedTactic.expectedDamage,'3.6');
+assert.equal(linkedTactic.tp,'4.1+');
+assert.equal(linkedTactic.tacticUrl,'https://example.org/linked');
+assert.equal(month().recommendations.find(c=>c.sourceTacticId===linkedTactic.id).characters[1],'파오이');
 const first=month().tactics[0];tactics.view();click('tw','link-edit');form.callback({video:'https://example.org/video',tacticUrl:'https://example.org/tactic'});assert.equal(first.tacticUrl,'https://example.org/tactic');
 click('tw','community-add');form.callback({label:'망령 자료',url:'https://example.org/ghost'});assert.ok(month().communityLinks.some(l=>l.label==='망령 자료'));
 click('tw','delete');assert.ok(first.trashedAt);click('tw','purge',{twId:first.id});assert.ok(!month().tactics.some(t=>t.id===first.id));assert.ok(month().purgedTactics.includes(first.id));ensureTactics(app,read('tactic-metadata.json'),read('tactic-row-formats.json'));assert.ok(!month().tactics.some(t=>t.id===first.id));
