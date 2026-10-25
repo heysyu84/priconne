@@ -22,7 +22,7 @@ const {createBattleImageImport}=await import('./battle-image-import.mjs?v=202610
 const loadAsset=async path=>{const response=await fetch(assetUrl(path)+'?v=20261024-carry-punctuation06');if(!response.ok)throw Error('택틱 자료를 불러오지 못했습니다.');return response.json()};
 const [CHARACTERS,BOSS_ART,PORTRAIT_LIBRARY,FUTURE_BOSSES]=await Promise.all(['/characters.json','/bosses.json','/portrait-library.json','/future-bosses.json'].map(loadAsset));
 const CHARACTER_CATALOG=withPortraitLibrary(CHARACTERS.characters,PORTRAIT_LIBRARY);
-const DEFAULT=JSON.parse(document.getElementById('seed-data').textContent);
+
 const STORAGE='nyangnyang-work-recovery-v1';
 const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
 const deepcopy=o=>JSON.parse(JSON.stringify(o));
@@ -46,6 +46,7 @@ catch { $('#content').innerHTML='<section class="panel"><h1>기록에 연결하�
    return;
  }
  // Source-sheet imports are not even loaded after the first successful server save.
+ const DEFAULT=newDatabase?JSON.parse(document.getElementById('seed-data').textContent):null;
  const [TACTIC_META,ROW_FORMATS,GUILD_SOURCE]=newDatabase
    ?await Promise.all(['/tactic-metadata.json','/tactic-row-formats.json','/guild-source.json'].map(loadAsset))
    :[{},{},{}];
