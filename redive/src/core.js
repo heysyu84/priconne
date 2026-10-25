@@ -5,7 +5,7 @@ const ICONS={
  tactic:'m12 3 8 5v8l-8 5-8-5V8l8-5Z|m4 8 8 5 8-5M12 13v8M8 5.5l8 5',
  chart:'M4 3v18h17M9 17v-5M14 17V8M19 17V4',
  users:'M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M17 4a4 4 0 0 1 0 8M22 21v-2a4 4 0 0 0-3-3.87|M13 7a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z',
- gear:'m9 3-1 3-3 1 1 3-2 2 2 2-1 3 3 1 1 3h6l1-3 3-1-1-3 2-2-2-2 1-3-3-1-1-3H9Z|M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z',
+ gear:'M10 2h4l.7 2.6 2.1 1.2 2.6-.7 2 3.5-1.9 1.9v3l1.9 1.9-2 3.5-2.6-.7-2.1 1.2L14 22h-4l-.7-2.6-2.1-1.2-2.6.7-2-3.5 1.9-1.9v-3L2.6 8.6l2-3.5 2.6.7 2.1-1.2Z|M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z',
  chevron:'m9 5 7 7-7 7', down:'m6 9 6 6 6-6', arrow:'M4 12h16m-6-6 6 6-6 6', plus:'M12 5v14M5 12h14', close:'m6 6 12 12M6 18 18 6',
  check:'m5 12 4 4L19 6', clock:'M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z|M12 7v5l3 2', lock:'M7 11V7a5 5 0 0 1 10 0v4M5 11h14v10H5V11Zm7 4v2',
  bolt:'m13 2-9 12h7l-1 8 10-12h-7l1-8Z', search:'M18 11a7 7 0 1 1-14 0 7 7 0 0 1 14 0Zm-2 5 5 5',
@@ -46,7 +46,7 @@ function seed(){
  return {version:1,settings:{theme:'light',large:false,compact:true,editable:true,days:5,daily:3,defaultDay:3},members,bosses,logs,tactics,rates:[[1.8,1.8,1.8,1.8,1.8],[2.4,2.4,2.4,2.4,2.4],[3.5,3.6,3.7,3.8,3.9]]};
 }
 let data;try{const saved=JSON.parse(localStorage.getItem(KEY)||'null');data=saved?.version===1?saved:seed();}catch{data=seed();}
-const ui={section:'overview',tabs:{overview:'bosses',tactics:'combos',records:'ranking',clan:'members'},day:data.settings.defaultDay,month:'2026-10',boss:0,query:'',logType:'all',page:1,memberSort:'remaining',sortDir:-1,rankSort:'contribution',profile:data.members[0].id,selectedTactic:data.tactics.find(t=>!t.hidden)?.id,library:'all',picks:[],carry:90,settingsTab:'display',memberFilter:'active',toolTab:'calculator',logReturn:null,libraryOpen:true};
+const ui={section:'overview',tabs:{overview:'bosses',tactics:'combos',records:'ranking',clan:'members'},day:data.settings.defaultDay,month:'2026-10',boss:0,query:'',logType:'all',page:1,memberSort:'remaining',sortDir:-1,rankSort:'contribution',profile:'__clan__',selectedTactic:data.tactics.find(t=>!t.hidden)?.id,library:'all',picks:[],carry:90,settingsTab:'display',memberFilter:'active',toolTab:'calculator',logReturn:null,libraryOpen:true};
 let undoState=null,toastTimer;
 const app=document.getElementById('app'),drawer=document.getElementById('drawer');
 function persist(){try{localStorage.setItem(KEY,JSON.stringify(data));}catch{toast('이 브라우저에서는 저장 공간을 사용할 수 없습니다.');}applyAppearance();}
@@ -55,7 +55,7 @@ function checkpoint(){undoState=structuredClone(data);}
 function toast(message,undo=false){clearTimeout(toastTimer);document.getElementById('toast').innerHTML=`<div class="toast-message">${icon('check')}<span>${X(message)}</span>${undo?'<button data-action="undo">되돌리기</button>':''}</div>`;toastTimer=setTimeout(()=>document.getElementById('toast').innerHTML='',4800);}
 function currentMember(id){return data.members.find(m=>m.id===id)||data.members[0];}
 function bossBy(id){return data.bosses.find(b=>b.id===Number(id))||data.bosses[0];}
-function bossStyle(id){return `--boss:var(--b${id})`;}
+function bossStyle(id){return `--boss:var(--b${id});--boss-wash:var(--b${id}-wash);--boss-ink:var(--b${id}-ink)`;}
 function isLocked(b){const min=Math.min(...data.bosses.map(x=>x.lap));return b.lap>=min+2;}
 function avatar(m,size=''){const index=data.members.findIndex(x=>x.id===m.id);const c=COLORS[(index+COLORS.length)%COLORS.length];return `<span class="avatar ${size}" style="--avatar-bg:${c[0]};--avatar-ink:${c[1]}">${X(m.name.slice(0,1))}</span>`;}
 function dayLogs(memberId=null,day=ui.day){return data.logs.filter(l=>l.day===day&&(!memberId||l.memberId===memberId));}
@@ -197,3 +197,4 @@ document.addEventListener('change',async event=>{const el=event.target,kind=el.d
 document.addEventListener('keydown',event=>{if((event.ctrlKey||event.metaKey)&&event.key==='Enter'&&drawer.open){const form=drawer.querySelector('form');if(form){event.preventDefault();form.requestSubmit();}}});
 drawer.addEventListener('click',event=>{if(event.target===drawer){const r=drawer.getBoundingClientRect();if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)closeDrawer();}});
 window.addEventListener('popstate',()=>{parseHash();render();});window.addEventListener('hashchange',()=>{parseHash();render();});
+

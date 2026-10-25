@@ -2,7 +2,7 @@
 // The private Sites preview keeps its existing storage until explicitly migrated.
 const pagesApiOrigin=document.querySelector?.('meta[name="nyang-legacy-api-origin"]')?.content;
 if(pagesApiOrigin){
- let productionClient;
+ let productionClient,productionPresence;
  const localInitializer=initializeCompletePrototype,loadedPage=renderPage;
  initializeCompletePrototype=()=>{localInitializer();data.settings.editable=false;render();};
  renderPage=()=>{
@@ -13,10 +13,11 @@ if(pagesApiOrigin){
  const siteInitializeShared=initializeSharedSync;
  initializeSharedSync=async()=>{
   try{
-   const {createLegacySharedClient}=await import('./legacy-shared-client.mjs');
+   const [{createLegacySharedClient},{startPresence},{createApiClient}]=await Promise.all([import('./legacy-shared-client.mjs'),import('./presence.mjs'),import('./compat/api-client.mjs')]);
    let storage;try{storage=sessionStorage;}catch{}
    productionClient=createLegacySharedClient({apiOrigin:pagesApiOrigin,pageOrigin:location.origin,storage,fetcher:(...args)=>fetch(...args),reference:sharedDocument(),selectedMonth:()=>ui.month});
    stateRequest=(path,options)=>productionClient.request(path,options);
+   productionPresence ||= startPresence({apiFetch:createApiClient({apiOrigin:pagesApiOrigin,pageOrigin:location.origin,storage,fetcher:(...args)=>fetch(...args)}),onCount:count=>{onlinePresenceCount=count;refreshOnlinePresence();}});
    siteInitializeShared();
   }catch(error){data.settings.editable=false;syncState.error=error.message;syncState.status='offline';render();toast('공용 서버에 연결하지 못했습니다. 새로고침해 주세요.');}
  };

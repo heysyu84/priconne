@@ -57,7 +57,7 @@ function applySharedDocument(document,{initial=false}={}){
   for(const key of SEASON_KEYS)data[key]=structuredClone(data.seasons[month][key]);
   applyGameScope();recalculateSeason();snapshotSeason();
   ui.day=Math.min(initial?(Math.max(1,...data.logs.map(e=>e.day))):ui.day,data.rules.days);
-  if(!data.members.some(m=>m.id===ui.profile))ui.profile=data.members[0]?.id||'__clan__';
+  if(ui.profile!=='__clan__'&&!data.members.some(m=>m.id===ui.profile))ui.profile='__clan__';
   if(!data.tactics.some(t=>t.id===ui.selectedTactic))ui.selectedTactic=data.tactics.find(t=>!t.hidden&&!t.deletedAt)?.id;
   ui.picks=ui.picks.filter(id=>data.tactics.some(t=>t.id===id&&!t.hidden&&!t.deletedAt));
   ext.bossDraft=null;ext.rowUndo=[];ext.rowRedo=[];
@@ -175,3 +175,4 @@ document.addEventListener('click',async event=>{
     const baseline=syncState.baseline;applySharedDocument(doc);syncState.baseline=baseline;persist();closeDrawer();render();await flushShared();
   }
 },true);
+

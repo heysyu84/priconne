@@ -49,10 +49,13 @@ fullClan=()=>{
 fullRecords=()=>titleBar('기록·통계',ui.tabs.records==='profile'?'':simpleButton('인쇄','print'))+pageTabs([['ranking','월간 순위'],['profile','개인 이력'],['archive','과거 기록'],['history','명예의 전당'],['hall','수상 횟수']])+({ranking:completeRanking,profile:completeProfile,archive:completeArchive,history:completeHistory,hall:completeHall}[ui.tabs.records]||completeRanking)();
 
 function isVideoUrl(value){try{const url=new URL(value);return /^https?:$/.test(url.protocol)&&/(^|\.)(youtube\.com|youtu\.be|nicovideo\.jp|bilibili\.com|vimeo\.com)$/.test(url.hostname);}catch{return false;}}
-function videoButton(t,small=false){
-  const label=small?'영상':'원본 영상',cls=`button video-link${small?' work-list-video':''}`;
-  if(!/^https?:\/\//i.test(t.video||''))return small?`<span class="${cls} missing" aria-label="등록된 영상 없음">${label}</span>`:'';
-  return `<a class="${cls}" href="${X(t.video)}" style="${t.boss?bossStyle(t.boss):'--boss:#7186a1'}" target="_blank" rel="noopener noreferrer" aria-label="${X(t.boss+'넴 '+t.party.join(' ')+' 원본 영상')}"><svg class="video-play" viewBox="0 0 24 18" aria-hidden="true"><rect x="1" y="1" width="22" height="16" rx="5"/><path d="m10 5 7 4-7 4Z"/></svg><span>${label}</span></a>`;
+function videoButton(t,small=false,context=''){
+  const url=/^https?:\/\//i.test(t.video||'')?t.video:'',video=isVideoUrl(url);
+  const label=video?(small?'영상':'원본 영상'):(small?'자료':'원본 자료');
+  const cls=`button video-link${small&&context!=='combo'?' work-list-video':''}${context==='combo'?' combo-source-box':''}`;
+  if(!url)return context==='combo'?`<span class="${cls} missing" aria-hidden="true"></span>`:small?`<span class="${cls} missing" aria-label="등록된 링크 없음">자료</span>`:'';
+  const glyph=video?'<svg class="video-play" viewBox="0 0 24 18" aria-hidden="true"><rect x="1" y="1" width="22" height="16" rx="5"/><path d="m10 5 7 4-7 4Z"/></svg>':'<svg class="source-document" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M14 3H6v18h12V7zM14 3v5h4M9 12h6M9 16h6"/></svg>';
+  return `<a class="${cls}" href="${X(url)}" style="${t.boss?bossStyle(t.boss):'--boss:#7186a1'}" target="_blank" rel="noopener noreferrer" aria-label="${X(t.boss+'넴 '+t.party.join(' ')+' '+label)}" title="${label}">${glyph}<span>${label}</span></a>`;
 }
 workspaceListItem=(item,selectedId)=>{
   const carry=item.category==='carry',seconds=carry?minimumCarry(item):null;
@@ -88,7 +91,7 @@ settingsDisplay=()=>`<section class="settings-sheet"><div class="setting-row"><h
 
 completeRoster=(alumni=false)=>{
   const rows=data.members.filter(m=>(alumni||m.status==='active')&&matchName(m,ext.rosterQuery)).sort((a,b)=>Number(b.status==='active')-Number(a.status==='active')||a.name.localeCompare(b.name,'ko'));
-  return `<div class="toolbar"><div class="toolbar-left"><input class="search-input" id="roster-search" data-input="v2-roster-query" aria-label="클랜원 검색" placeholder="이름 · 초성 · UID" value="${X(ext.rosterQuery)}"><span>${rows.length}명</span></div>${simpleButton('추가','add-member')}</div>`+rowTable(['클랜원','UID',...(alumni?[]:['가입']),'소속 기간'],rows.map(m=>`<tr class="${m.status==='active'?'roster-active':'graduated'}"><td>${adminMode()?`<button class="text-button member-link" data-action="edit-member" data-id="${m.id}" title="클랜원 수정">${X(m.name)}</button>`:memberLink(m)}</td><td class="numeric uid-cell">${X(m.uid||'미기재')}</td>${alumni?'':`<td class="nowrap">${X(m.joined?.slice(0,7)||'미기재')}</td>`}<td class="tenure-cell"><strong>${memberTenure(m)===null?'미기재':memberTenure(m)+'개월'}</strong>${alumni?`<small>${X(membershipPeriod(m))}</small>`:''}</td></tr>`),`roster-complete dense-table ${alumni?'alumni-compact':'members-compact'}`);
+  return `<div class="toolbar"><div class="toolbar-left"><input class="search-input" id="roster-search" data-input="v2-roster-query" aria-label="클랜원 검색" placeholder="이름 · 초성 · UID" value="${X(ext.rosterQuery)}"><span>${rows.length}명</span></div>${simpleButton('추가','add-member')}</div>`+rowTable(['클랜원','UID',...(alumni?[]:['가입']),'소속 기간'],rows.map(m=>`<tr class="${m.status==='active'?'roster-active':'graduated'}"><td>${adminMode()?`<button class="text-button member-link" data-action="edit-member" data-id="${m.id}" title="클랜원 수정">${X(m.name)}</button>`:memberLink(m)}</td><td class="numeric uid-cell">${X(m.uid||'미기재')}</td>${alumni?'':`<td class="join-cell">${X(m.joined?.slice(0,7)||'미기재')}</td>`}<td class="tenure-cell"><strong>${memberTenure(m)===null?'미기재':memberTenure(m)+'개월'}</strong>${alumni?`<small>${X(membershipPeriod(m))}</small>`:''}</td></tr>`),`roster-complete dense-table ${alumni?'alumni-compact':'members-compact'}`);
 };
 completeRates=()=>{
   const levels=seasonLevels(data.rules).filter(l=>l.count),tops=data.bossSettings.map(b=>topStats(b.id));
@@ -243,3 +246,4 @@ document.addEventListener('change',event=>{if(event.target.id?.startsWith('party
 document.addEventListener('toggle',event=>{if(event.target.matches?.('.calculator-popover')&&event.target.open)updateEstimator();},true);
 document.addEventListener('click',event=>{for(const popover of document.querySelectorAll?.('.calculator-popover[open]')||[])if(!popover.contains(event.target))popover.open=false;});
 document.addEventListener('keydown',event=>{if(event.key==='Escape')for(const popover of document.querySelectorAll?.('.calculator-popover[open]')||[])popover.open=false;});
+

@@ -1062,6 +1062,105 @@ html[data-text-scale] .header-controls .header-write,
 html[data-text-scale] .header-controls .header-settings{font-size:calc((11px) * var(--text-scale,1))!important}
 }
 html[data-text-scale] .shared-loading h1{font-size:calc((22px) * var(--text-scale,1))!important}
+html[data-text-scale] .tactic-reading-head .tactic-damage-meta .video-link{font-size:calc((11px) * var(--text-scale,1))!important}
+@media(max-width:760px){
+html[data-text-scale] input:not([type=checkbox]):not([type=radio]):not([type=file]):not([type=hidden]),
+html[data-text-scale] textarea,
+html[data-text-scale] select,
+html[data-text-scale] .field input,
+html[data-text-scale] .field select,
+html[data-text-scale] .field textarea,
+html[data-text-scale] .calculator-box input,
+html[data-text-scale] .search-picker>input[type=search],
+html[data-text-scale] .lineup-name-input{font-size:calc((16px) * var(--text-scale,1))!important}
+html[data-text-scale] .header-controls .header-write,
+html[data-text-scale] .header-controls .header-settings{font-size:calc((12px) * var(--text-scale,1))!important}
+html[data-text-scale] .tactic-reading-head .tactic-damage-meta .video-link{font-size:calc((11px) * var(--text-scale,1))!important}
+html[data-text-scale] .data-table.battle-mobile-table th,
+html[data-text-scale] .data-table.battle-mobile-table td{font-size:calc((11px) * var(--text-scale,1))!important}
+html[data-text-scale] .data-table.battle-mobile-table th{font-size:calc((10px) * var(--text-scale,1))!important}
+html[data-text-scale] .battle-mobile-table .progress-cell>span,
+html[data-text-scale] .battle-mobile-table .progress-cell>small{font-size:calc((10px) * var(--text-scale,1))!important}
+html[data-text-scale] .battle-mobile-table .progress-cell>small{font-size:calc((9px) * var(--text-scale,1))!important}
+html[data-text-scale] .battle-mobile-table .boss-tag{font-size:calc((10px) * var(--text-scale,1))!important}
+html[data-text-scale] .battle-mobile-table .member-link{font-size:calc((11px) * var(--text-scale,1))!important}
+html[data-text-scale] .battle-mobile-table .mobile-log-damage strong{font-size:calc((11px) * var(--text-scale,1))!important}
+html[data-text-scale] .battle-mobile-table .mobile-log-damage small{font-size:calc((9px) * var(--text-scale,1))!important}
+html[data-text-scale] .battle-mobile-table .type-tag{font-size:calc((10px) * var(--text-scale,1))!important}
+html[data-text-scale] .battle-mobile-table .mobile-log-actions .button{font-size:calc((10px) * var(--text-scale,1))!important}
+}
+@media(max-width:370px){
+html[data-text-scale] .battle-mobile-table .mobile-log-damage strong{font-size:calc((10px) * var(--text-scale,1))!important}
+html[data-text-scale] .battle-mobile-table .mobile-log-member .member-link{font-size:calc((10px) * var(--text-scale,1))!important}
+}
+@media(max-width:760px){
+html[data-text-scale] .data-table.battle-mobile-table th,
+html[data-text-scale] .data-table.battle-mobile-table td{font-size:calc((11px) * var(--text-scale,1))!important}
+html[data-text-scale] .data-table.battle-mobile-table th{font-size:calc((10px) * var(--text-scale,1))!important}
+html[data-text-scale] .battle-mobile-table .progress-cell>.mobile-seq{font-size:calc((10px) * var(--text-scale,1))!important}
+html[data-text-scale] .battle-mobile-table .type-tag{font-size:calc((10px) * var(--text-scale,1))!important}
+html[data-text-scale] .battle-mobile-table.mobile-detail .mobile-log-extra{font-size:calc((11px) * var(--text-scale,1))!important}
+}
+@media(min-width:761px){
+html[data-text-scale] .data-table.battle-table.expanded th,
+html[data-text-scale] .data-table.battle-table.expanded tbody td{font-size:calc((12px) * var(--text-scale,1))!important}
+html[data-text-scale] .data-table.battle-table.expanded th{font-size:calc((12px) * var(--text-scale,1))!important}
+}
+html[data-text-scale] .data-table th,
+html[data-text-scale] .data-table td,
+html[data-text-scale] .data-table.battle-table.expanded th,
+html[data-text-scale] .data-table.battle-table.expanded tbody td{font-size:calc((13px) * var(--text-scale,1))!important}
+html[data-text-scale] .data-table thead th,
+html[data-text-scale] .data-table.battle-table.expanded thead th{font-size:calc((11px) * var(--text-scale,1))!important}
+html[data-text-scale] .data-table .type-tag{font-size:calc((10px) * var(--text-scale,1))!important}
+html[data-text-scale] .tactic-reading-head .tactic-damage-group>.tactic-damage-meta{font-size:calc((12px) * var(--text-scale,1))!important}
+html[data-text-scale] .tactic-reading-head .tactic-damage-group>.video-link{font-size:calc((11px) * var(--text-scale,1))!important}
+@media(max-width:760px){
+html[data-text-scale] .data-table.battle-mobile-table th,
+html[data-text-scale] .data-table.battle-mobile-table td{font-size:calc((clamp(11px,3.2vw,13px)) * var(--text-scale,1))!important}
+html[data-text-scale] .data-table.battle-mobile-table th{font-size:calc((11px) * var(--text-scale,1))!important}
+html[data-text-scale] .data-table.battle-mobile-table .mobile-log-damage>strong{font-size:inherit!important}
+html[data-text-scale] .data-table.battle-mobile-table .mobile-log-member .member-link{font-size:inherit!important}
+html[data-text-scale] .data-table.battle-mobile-table .type-tag{font-size:calc((10px) * var(--text-scale,1))!important}
+}
+@media(min-width:761px){
+html[data-text-scale] .combo-heading .boss-tag,
+html[data-text-scale] .combo-heading .combo-category{font-size:calc((12px) * var(--text-scale,1))!important}
+html[data-text-scale] .combo-metadata .star-sequence{font-size:calc((12px) * var(--text-scale,1))!important}
+}
+@media(max-width:760px){
+html[data-text-scale] .roster-complete th{font-size:calc((10.5px) * var(--text-scale,1))!important}
+html[data-text-scale] .roster-complete .uid-cell,
+html[data-text-scale] .roster-complete .join-cell{font-size:calc((10.5px) * var(--text-scale,1))!important}
+html[data-text-scale] .roster-complete .tenure-cell strong{font-size:calc((11px) * var(--text-scale,1))!important}
+html[data-text-scale] .roster-complete .tenure-cell small{font-size:calc((9px) * var(--text-scale,1))!important}
+html[data-text-scale] .battle-mobile-table .mobile-log-actions .button{font-size:calc((11px) * var(--text-scale,1))!important}
+}
+html[data-text-scale] .dashboard-attack .dashboard-basic-boss{font-size:calc((16px) * var(--text-scale,1))!important}
+html[data-text-scale] .dashboard-attack .dashboard-carry-boss,
+html[data-text-scale] .dashboard-attack .carry-ready{font-size:calc((11px) * var(--text-scale,1))!important}
+html[data-text-scale] .dashboard-attack .carry-ready{font-size:calc((10px) * var(--text-scale,1))!important}
+html[data-text-scale] .boss-config-table .boss-art-label{font-size:calc((10px) * var(--text-scale,1))!important}
+@media(max-width:760px){
+html[data-text-scale] .combo-heading .boss-tag,
+html[data-text-scale] .combo-heading .combo-category{font-size:calc((12px) * var(--text-scale,1))!important}
+html[data-text-scale] .data-table.boss-config-table tbody th{font-size:calc((13px) * var(--text-scale,1))!important}
+html[data-text-scale] .boss-config-table .boss-name-label{font-size:calc((11px) * var(--text-scale,1))!important}
+html[data-text-scale] .boss-config-table .boss-art-label{font-size:calc((11px) * var(--text-scale,1))!important}
+html[data-text-scale] .data-table.boss-config-table input,
+html[data-text-scale] .data-table.boss-config-table select{font-size:calc((16px) * var(--text-scale,1))!important}
+}
+html[data-text-scale] .recommendation-actions .plan-selection-count{font-size:calc((12px) * var(--text-scale,1))!important}
+html[data-text-scale] .recommendation-actions .plan-selection-total{font-size:calc((12px) * var(--text-scale,1))!important}
+@media(max-width:760px){
+html[data-text-scale] .recommendation-actions .button{font-size:calc((11px) * var(--text-scale,1))!important}
+}
+html[data-text-scale] .online-presence{font-size:calc((11px) * var(--text-scale,1))!important}
+html[data-text-scale] .online-presence strong{font-size:calc((12px) * var(--text-scale,1))!important}
+@media(max-width:760px){
+html[data-text-scale] .header-controls .online-presence{font-size:calc((10px) * var(--text-scale,1))!important}
+html[data-text-scale] .header-controls .online-presence strong{font-size:calc((11px) * var(--text-scale,1))!important}
+}
 /* compat/battle-image-import.css */
 html[data-text-scale] .bli-head h2{font-size:calc((clamp(20px,2vw,25px)) * var(--text-scale,1))!important}
 html[data-text-scale] .bli-pick span,

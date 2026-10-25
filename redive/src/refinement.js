@@ -27,8 +27,8 @@ function recommendationDistribution(){
 function attackSlot(slot,index){
   if(!slot)return '<span class="slot-unused">—</span>';
   const e=slot.basic,c=slot.carry,estimated=slot.pending&&e.damage>e.before?engineEstimate({hp:e.before,second:e.damage,seconds:90}):null,seconds=estimated?.seconds,pending=Number.isInteger(seconds)&&seconds>0?seconds+'초':'*';
-  const boss=(event,carry=false)=>`<button class="dashboard-boss" style="${bossStyle(event.boss)}" data-action="edit-log" data-id="${event.id}" title="${index+1}타${carry?' 이월':''} · ${event.boss}넴">${event.boss}</button>`;
-  return `<span class="dashboard-attack">${boss(e)}${c?`<span class="slot-separator">/</span>${boss(c,true)}`:slot.pending?`<span class="slot-separator">/</span><strong class="carry-ready" title="${pending==='*'?'이월시간 계산에 필요한 오버킬 기록 없음':'오버킬 기준 예상 이월 '+pending}" aria-label="미사용 이월 ${pending==='*'?'계산 가능한 오버킬 기록 없음':pending}">${pending}</strong>`:''}</span>`;
+  const boss=(event,carry=false)=>`<button class="dashboard-boss ${carry?'dashboard-carry-boss':'dashboard-basic-boss'}" style="${bossStyle(event.boss)}" data-action="edit-log" data-id="${event.id}" title="${index+1}타${carry?' 이월':''} · ${event.boss}넴">${event.boss}</button>`;
+  return `<span class="dashboard-attack">${boss(e)}${c?`<span class="slot-separator" aria-hidden="true">/</span>${boss(c,true)}`:slot.pending?`<span class="slot-separator" aria-hidden="true">/</span><strong class="carry-ready" title="${pending==='*'?'이월시간 계산에 필요한 오버킬 기록 없음':'오버킬 기준 예상 이월 '+pending}" aria-label="미사용 이월 ${pending==='*'?'계산 가능한 오버킬 기록 없음':pending}">${pending}</strong>`:''}</span>`;
 }
 function attackEntryState(fd){
   const old=data.logs.find(e=>e.id===String(fd.get('logId')||'')),boss=bossBy(fd.get('boss'));
@@ -54,7 +54,7 @@ document.addEventListener('click',event=>{
   if(action==='v3-list-page'){listPages[b.dataset.group]=Number(b.dataset.value);render();}
   if(action==='v3-member-info')openMemberInfo(b.dataset.id);
   if(action==='v3-profile-day'){ext.profileDay=Number(b.dataset.value);chartView.boss=0;render();}
-  if(action==='v3-distribution'){ext.distributionOpen=!ext.distributionOpen;if(ext.distributionOpen){findPlans();if(ext.foundPlans?.length){ui.picks=[...ext.foundPlans[0].ids];ext.onlyPicks=true;}}render();}
+  if(action==='v3-distribution'){ext.distributionOpen=!ext.distributionOpen;if(ext.distributionOpen){findPlans();if(ext.foundPlans?.length){ui.picks=[...ext.foundPlans[0].ids];ext.selectedSupports={...(ext.foundPlans[0].supports||{})};ext.onlyPicks=true;}}render();}
   if(action==='v3-selected-only'){ext.onlyPicks=!ext.onlyPicks;render();}
   if(action==='v3-boss-tactics'){nav('tactics','combos');ui.boss=Number(b.dataset.id);ext.stage=4;render();}
 },true);

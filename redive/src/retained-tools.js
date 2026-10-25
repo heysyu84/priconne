@@ -28,7 +28,7 @@ visibleTactics=()=>rawVisibleTactics().map(t=>ui.picks.includes(t.id)&&ext.selec
 recommendationDistribution=()=>{
   if(!ext.distributionOpen)return '';
   const plans=ext.foundPlans||[];
-  return `<section class="distribution-panel"><div class="sheet-heading"><h2>추천 분배</h2>${simpleButton('닫기','v3-distribution')}</div>${plans.length?rowTable(['추천 조합 · 대여','합계 기대딜',''],plans.slice(0,5).map((p,i)=>`<tr><td>${p.ids.map(id=>{const t=tacticById(id),support=p.supports?.[id]??-1;return `<span class="distribution-team"><span class="distribution-boss" style="${bossStyle(t.boss)}">${t.boss}넴</span><small>${support>=0?X(t.party[support]):'대여 자유'}</small></span>`;}).join('')}</td><td class="right numeric"><strong>${expectedDamageValue(p.damage)}</strong></td><td class="right">${simpleButton('선택','v2-use-plan',String(i),'quiet')}</td></tr>`),'distribution-table'):'<p class="no-rows">겹치지 않는 3타 조합이 없습니다.</p>'}</section>`;
+  return `<section class="distribution-panel" aria-label="추천 분배">${plans.length?rowTable(['추천 조합 · 대여','합계 기대딜',''],plans.slice(0,5).map((p,i)=>`<tr><td>${p.ids.map(id=>{const t=tacticById(id),support=p.supports?.[id]??-1;return `<span class="distribution-team"><span class="distribution-boss" style="${bossStyle(t.boss)}">${t.boss}넴</span><small>${support>=0?X(t.party[support]):'대여 자유'}</small></span>`;}).join('')}</td><td class="right numeric"><strong>${expectedDamageValue(p.damage)}</strong></td><td class="right">${simpleButton('선택','v2-use-plan',String(i),'quiet')}</td></tr>`),'distribution-table'):'<p class="no-rows">겹치지 않는 3타 조합이 없습니다.</p>'}</section>`;
 };
 
 const logContentWithoutWarnings=battleLogContent;
@@ -185,6 +185,7 @@ document.addEventListener('change',async event=>{
 },true);
 document.addEventListener('click',event=>{
   const button=event.target.closest('[data-action]');if(!button||!button.dataset.action.startsWith('r-'))return;event.preventDefault();event.stopImmediatePropagation();
+  if(button.dataset.action==='r-clear-plan'){clearRecommendedPlan();return;}
   if(button.dataset.action==='r-image-back'){ext.importMode=false;nav('overview','logs');}
   if(button.dataset.action==='r-log-warnings'){ext.warningOnly=!ext.warningOnly;ui.page=1;render();}
   if(button.dataset.action==='r-hud-boss'){nav('overview','logs');ui.boss=Number(button.dataset.id);render();}

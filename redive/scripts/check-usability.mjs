@@ -34,8 +34,31 @@ await check('font scale 100 means the old 110 and remains a browser preference',
   app.setTextScale(90);assert.equal(app.textScale(),90);app.setTextScale(110);assert.equal(app.textScale(),110);app.setTextScale(115);assert.equal(app.textScale(),110);
   app.setTextScale(100);assert.equal(JSON.stringify(app.sharedDocument()),before);
 });
-await check('record columns keep actual damage after type in both normal and detailed views',()=>{
-  for(const details of [false,true]){app.ext.details=details;const html=app.completeLogTable(data.logs.slice(0,2));const labels=['일차·회차','보스','클랜원','기록 피해량','유형','실제 피해량'];let at=-1;for(const label of labels){const next=html.indexOf('data-label="'+label+'"',at+1);assert.ok(next>at,label);at=next;}assert.ok(html.includes('data-drag-log='));assert.ok(html.includes('data-side="before"'));assert.ok(html.includes('data-side="after"'));}
+await check('standard and detailed logs share their base columns; mobile editors retain row controls',()=>{
+  for(const details of [false,true]){
+    app.ext.details=details;const html=app.completeLogTable(data.logs.slice(0,2));
+    const labels=['일차·회차','보스','클랜원','기록 피해량','유형',...(details?['실제 피해량','가산점','기여도','인게임','이전 HP','남은 HP']:[])];
+    let at=-1;for(const label of labels){const next=html.indexOf('data-label="'+label+'"',at+1);assert.ok(next>at,label);at=next;}
+    if(details){const mobile=html.slice(html.indexOf('<div class="battle-mobile-only"'));assert.ok(mobile.includes('data-side="before"'));assert.ok(mobile.includes('data-side="after"'));assert.ok(mobile.includes('data-direction="up"'));assert.ok(mobile.includes('data-direction="down"'));}
+    else assert.ok(!html.includes('data-label="실제 피해량"'));
+  }
+});
+await check('source links distinguish videos, documents and absent or unsafe links',()=>{
+  const t={...data.tactics[0],video:'https://youtu.be/example'};assert.ok(app.videoButton(t,false,'combo').includes('class="video-play"'));
+  t.video='https://docs.google.com/document/d/example';const doc=app.videoButton(t,false,'combo');assert.ok(doc.includes('class="source-document"'));assert.ok(!doc.includes('class="video-play"'));
+  for(const url of ['', 'javascript:alert(1)']){t.video=url;const blank=app.videoButton(t,false,'combo');assert.ok(blank.includes('combo-source-box missing'));assert.ok(!blank.includes('href='));}
+});
+await check('a clan-wide profile survives polling and an intentional member selection remains selected',()=>{
+  const q=runtimeFixture(),d=q.get();assert.equal(q.ui.profile,'__clan__');q.applySharedDocument(q.sharedDocument());assert.equal(q.ui.profile,'__clan__');
+  q.ui.profile=d.members[0].id;q.applySharedDocument(q.sharedDocument());assert.equal(q.ui.profile,d.members[0].id);
+});
+await check('clearing a recommendation resets the selection, support choices and filter together',()=>{
+  const q=runtimeFixture();q.findPlans();q.applyFoundPlan(0);q.ext.distributionOpen=true;assert.equal(q.selectedParties().length,3);assert.ok(q.recommendationRows().includes('r-clear-plan'));
+  q.clearRecommendedPlan();assert.equal(q.selectedParties().length,0);assert.equal(q.ext.onlyPicks,false);assert.equal(q.ext.distributionOpen,false);assert.ok(q.recommendationRows().includes('추천 분배'));
+});
+await check('a rounded coefficient presentation never overwrites the unedited exact value',()=>{
+  const input={value:'0.11',dataset:{display:'0.11',exact:'0.1123456789'}},form={querySelector:()=>input},fd={get:()=>input.value};
+  assert.equal(app.readCoefficientDraft(form,fd,1),.1123456789);input.dataset.changed='true';assert.equal(app.readCoefficientDraft(form,fd,1),.11);
 });
 await check('row movement and insertion preserve day boundaries and exact integers',()=>{
   const records=[{id:'a',seq:1,day:1,damage:123456789},{id:'b',seq:2,day:1,damage:234567891},{id:'c',seq:3,day:2,damage:345678912}];

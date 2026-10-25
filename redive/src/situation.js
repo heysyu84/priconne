@@ -7,5 +7,7 @@ function situationHud(){
 const clanBattleWithoutHud=fullOverview;
 fullOverview=()=>{
   if(ui.tabs.overview!=='bosses'||ext.importMode)return clanBattleWithoutHud();
-  return titleBar('상황판')+pageTabs([['bosses','상황판'],['members','대시보드'],['logs','배틀로그']])+situationHud()+`<details class="fold optional-stats"><summary>일차별 흐름</summary>${overviewCharts()}</details>`;
+  return titleBar('상황판')+pageTabs([['bosses','상황판'],['members','대시보드'],['logs','배틀로그']])+situationHud()+`<details id="overview-flow" class="fold optional-stats" ${ext.overviewFlowOpen?'open':''}><summary>일차별 흐름</summary>${overviewCharts()}</details>`;
 };
+
+document.addEventListener('toggle',event=>{if(event.target.id==='overview-flow'&&event.target.isConnected)ext.overviewFlowOpen=event.target.open;},true);

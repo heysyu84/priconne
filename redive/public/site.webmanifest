@@ -1,0 +1,25 @@
+{
+  "id": "./",
+  "name": "냥냥클랜 리리다이브",
+  "short_name": "냥냥클랜",
+  "lang": "ko",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f4f1fc",
+  "theme_color": "#f4f1fc",
+  "icons": [
+    {
+      "src": "./images/branding/nyang-paw-192.png?v=20261024-nyang-pink01",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./images/branding/nyang-paw-512.png?v=20261024-nyang-pink01",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

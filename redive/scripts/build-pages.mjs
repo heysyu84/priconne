@@ -5,7 +5,7 @@ import {fileURLToPath} from 'node:url';
 const root=fileURLToPath(new URL('..',import.meta.url));
 export const API_ORIGIN='https://nyang-clan-manager.heysyu457310.chatgpt.site';
 export const PUBLIC_ORIGIN='https://priconne.pages.dev';
-export const RELEASE='20261026-redive-ui06';
+export const RELEASE='20261026-redive-ui07';
 export function canonicalHead(legacy=false){
   const page=legacy?'/legacy.html':'/';
   return `<link rel="canonical" href="${PUBLIC_ORIGIN}${page}"><script>if(location.hostname==='heysyu84.github.io'){location.replace('${PUBLIC_ORIGIN}'+(location.pathname.replace(/^\\/priconne(?=\\/|$)/,'')||'/')+location.search+location.hash)}</script>`;
@@ -25,7 +25,10 @@ export function buildRedivePages(output,{legacyHtml}={}){
   fs.writeFileSync(path.join(compact,'app.js'),app);
   let html=fs.readFileSync(path.join(root,'public/index.html'),'utf8');
   html=html.replace('<head>',`<head><meta name="nyang-legacy-api-origin" content="${API_ORIGIN}">${canonicalHead()}`);
-  html=html.replace(/((?:src|href)=")\.\/([^"?#]+)(?:\?[^"#]*)?"/g,(_,prefix,file)=>`${prefix}./compact/${file}?v=${RELEASE}"`);
+  html=html.replace(/((?:src|href)=")\.\/([^"?#]+)(?:\?[^"#]*)?"/g,(_,prefix,file)=>{
+    const branding=file.startsWith('images/branding/')||['apple-touch-icon.png','site.webmanifest'].includes(file);
+    return `${prefix}./${branding?'':'compact/'}${file}?v=${branding?'20261026-nyang-pink02':RELEASE}"`;
+  });
   fs.writeFileSync(path.join(output,'index.html'),html);
   // This is an asset directory, not a second application entry point.
   fs.rmSync(path.join(compact,'index.html'),{force:true});
@@ -44,3 +47,4 @@ if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.ur
   const legacy=process.argv[3]?fs.readFileSync(path.resolve(process.argv[3]),'utf8'):undefined;
   console.log('New interface static files: '+buildRedivePages(output,{legacyHtml:legacy}));
 }
+

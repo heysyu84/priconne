@@ -5,7 +5,7 @@ function applyImportedSnapshot(){
   data.communityLinks=imported.communityLinks;data.pinHash=null;
   data.importedSource={...imported.provenance,key:imported.key};
   data.settings.defaultDay=imported.day;data.settings.days=season.rules.days;data.settings.daily=season.rules.daily;
-  ui.month=imported.month;ui.day=imported.day;ui.picks=[];ui.profile=data.members[0]?.id||'__clan__';ui.carry=season.rules.battleSeconds||90;
+  ui.month=imported.month;ui.day=imported.day;ui.picks=[];ui.profile='__clan__';ui.carry=season.rules.battleSeconds||90;
   for(const key of SEASON_KEYS)data[key]=structuredClone(season[key]);
   ui.selectedTactic=data.tactics.find(t=>!t.hidden&&!t.deletedAt&&t.category==='main')?.id;
   ext.stage=4;recalculateSeason();
