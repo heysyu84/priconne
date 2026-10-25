@@ -242,7 +242,7 @@ export function createGuildWorkspace(api){
     }catch(error){notify('클랜전 결과를 확정하지 못했습니다: '+error.message);}
   }
   function editCombo(id){
-    const c=month().recommendations.find(x=>x.id===id)||visibleTacticRecommendations(month()).find(x=>x.id===id),stage=Number(c?.stage||state.comboStage),stage3=stage===3;
+    const c=visibleTacticRecommendations(month()).find(x=>x.id===id)||month().recommendations.find(x=>x.id===id),stage=Number(c?.stage||state.comboStage),stage3=stage===3;
     const timeFields=[{name:'requiredSeconds',label:'필요시간(초)',type:'number',value:c?.requiredSeconds??''},{name:'remainingSeconds',label:'이월시간(초)',type:'number',value:c?.remainingSeconds??''}];
     openForm(c?.sourceTacticId?'추천 조합 · 택틱 작업실 연동 (여기서 수정하면 원본 택틱도 변경됩니다)':'추천 조합',[{name:'stage',label:'단계',type:'number',value:stage,required:true},{name:'boss',label:'보스 번호',type:'number',value:c?.boss||1,required:true},{name:'characters',label:'캐릭터 5명 · 쉼표 구분',value:c?.characters.join(', ')||'',required:true},{name:'stars',label:'성급 5자리',value:c?.stars.join('')||'55555',required:true},...(stage3?[...timeFields,{name:'tactic',label:'조작택틱',value:c?.tactic?.trim()||'전부 SET'}]:[{name:'expectedDamage',label:'기대딜',value:c?.expectedDamage??''},...timeFields,{name:'manualCount',label:'손컨 횟수',type:'number',value:c?.manualCount??''},{name:'tp',label:'TP',value:c?.tp||''},...(c?.sourceTacticId?[]:[{name:'tactic',label:'조작·택틱',value:c?.tactic||''}]),{name:'url',label:'영상·택틱 링크',type:'url',value:c?.url||c?.video||''}]),{name:'note',label:c?.sourceTacticId?'메모 (택틱 작업실 연동)':'비고',value:c?.note||''}],v=>{
       const chars=v.characters.split(/[,，]/).map(n=>n.trim()).filter(Boolean);
