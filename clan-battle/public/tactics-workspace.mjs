@@ -363,5 +363,11 @@ export function createTacticWorkspace(api) {
     return `<section class="panel section-spacer tw-estimator"><h2>선통 · 후통 예상 이월 계산</h2><p class="small muted">값을 입력하면 예상 이월 시간이 즉시 표시됩니다. 실제 택틱에는 ‘위 택틱에 적용’을 눌렀을 때만 반영됩니다.</p><div class="tw-estimate-fields">${values.map(([id,label,initial])=>`<div class="field"><label for="${id}">${label}</label><input id="${id}" data-tw-estimate inputmode="decimal" value="${X(state.estimateInputs?.[id]??initial)}"></div>`).join('')}</div><div class="tw-estimate-actions"><div class="tw-estimate-result" role="status" aria-live="polite"><small>예상 이월 시간</small><strong id="tw-estimate-result">계산 중</strong></div><button type="button" class="btn primary" data-tw="estimate-apply">위 택틱에 적용</button></div></section>`;
   }
   document.addEventListener('click',event=>{const b=event.target.closest('[data-tw]');if(!b)return;if(b.dataset.tw==='open-tactic'){navigate('tactics');$('#tw-carry')?.focus();}if(b.dataset.tw==='estimate-apply'){const result=estimatedCarry();if(!result)return;refreshEstimate();if(result.error){notify(result.error);return;}if(isExternal()){if(!externalCarry.apply(String(result.seconds)))return;}else{setPersonal(result.seconds);redraw();}notify(`계산한 ${result.seconds}초를 택틱에 적용했습니다.`);}});
-  return {view,calculator:view,mount,beforeNavigate,openBoss:id=>{if(isExternal())state.group=GROUPS[0];prepare();state.boss=String(id);state.remaining=null;state.trash=false;state.selected=visible()[0]?.id||null;},hasDraft:()=>{const el=document.activeElement;return !!(el?.matches('[data-tw-text]')&&rowFor(el,false)?.text!==readText(el)&&readText(el));}};
+  return {view,calculator:view,mount,beforeNavigate,openBoss:id=>{if(isExternal())state.group=GROUPS[0];prepare();state.boss=String(id);state.remaining=null;state.trash=false;state.selected=visible()[0]?.id||null;},openTactic:id=>{
+    const t=all().find(item=>String(item.id)===String(id)&&!item.trashedAt&&(canEdit()||!item.hidden));
+    if(!t)return false;
+    state.group=groupOf(t);state.boss='all';state.selected=t.id;state.personalId=null;state.remaining=null;state.trash=false;
+    loadPersonal();loadProgress();
+    return true;
+  },hasDraft:()=>{const el=document.activeElement;return !!(el?.matches('[data-tw-text]')&&rowFor(el,false)?.text!==readText(el)&&readText(el));}};
 }
