@@ -346,3 +346,152 @@ h1,h2,h3,strong,b{font-weight:700}
   .battle-mobile-table .mobile-log-member .member-link{font-size:10px}
   .header-controls .header-settings span{display:none}
 }
+
+
+/* Situation color restraint: white surfaces, ink/neutral charts, boss colors ONLY
+   inside corresponding boss panels / boss-specific bars. No blue-gray HUD theme. */
+.battle-hud,
+:root[data-theme=dark] .battle-hud{
+  --hud-ink:#262626;
+  --hud-muted:#686868;
+  --hud-line:#e5e5e5;
+  color:#262626;
+  background:#fff!important;
+  border:1px solid #e5e5e5!important;
+  box-shadow:none!important;
+}
+.battle-hud::before{display:none!important}
+.battle-hud .hud-status-line,.battle-hud .hud-chart-heading,.battle-hud .hud-charts,.battle-hud .hud-attacks,.battle-hud .hud-deployment{
+  color:var(--hud-ink);background:transparent!important;
+}
+.battle-hud .hud-status-line,.battle-hud .hud-status-line b,.battle-hud .hud-chart-heading h2,.battle-hud .hud-bar-row>strong,.battle-hud .hud-ring strong{color:#262626}
+.battle-hud .hud-status-light{background:#686868;box-shadow:none}
+.battle-hud .raid-banner{
+  color:#262626;
+  background:color-mix(in srgb,#fff 93%,var(--boss))!important;
+  border:1px solid color-mix(in srgb,#e5e5e5 70%,var(--boss))!important;
+  border-bottom:2px solid var(--boss)!important;
+  box-shadow:none!important;
+}
+.battle-hud .raid-banner:hover{background:color-mix(in srgb,#fff 87%,var(--boss))!important}
+.battle-hud .raid-heading,.battle-hud .raid-life{background:transparent!important;border-color:transparent!important;box-shadow:none!important}
+.battle-hud .raid-name>strong,.battle-hud .raid-life>strong,.battle-hud .raid-number{color:#262626;text-shadow:none}
+.battle-hud .raid-number{color:var(--boss)}
+.battle-hud .raid-name>small,.battle-hud .raid-heading small,.battle-hud .raid-round,.battle-hud .raid-life small,.battle-hud .raid-life>span,.battle-hud .raid-status,.battle-hud .raid-phase{color:#686868!important}
+.battle-hud .raid-hp,.battle-hud .raid-hp-track,.battle-hud .raid-health-track{background:#fff!important;border-color:#e5e5e5!important}
+.battle-hud .raid-hp>i,.battle-hud .raid-hp-track>i,.battle-hud .raid-health-track>i{background:var(--boss)!important;box-shadow:none}
+.battle-hud .hud-charts{border-top-color:#e5e5e5!important}
+.battle-hud .hud-bar-row{
+  color:#262626!important;
+  background:#fff!important;
+  border-color:#e5e5e5!important;
+  box-shadow:none!important;
+}
+.battle-hud .hud-bar-row:hover{background:#fff!important;border-color:var(--boss)!important}
+.battle-hud .hud-bar-boss{color:var(--boss)!important}
+.battle-hud .hud-bar-track{background:#fff!important;border:1px solid #e5e5e5}
+.battle-hud .hud-bar-track>i:not(.hud-carry-bar){background:var(--boss)}
+.battle-hud .hud-ring-track{stroke:#e0e0e0}
+.battle-hud .hud-ring-value{stroke:#333;filter:none}
+.battle-hud .hud-used-dot{background:#777}
+.battle-hud .hud-chart-legend{color:#686868}
+.battle-hud .hud-chart-legend i{background:#888}
+.battle-hud .hud-chart-legend>span:nth-child(2)>i{background:repeating-linear-gradient(135deg,#777,#777 2px,#fff 2px,#fff 3px)}
+.battle-hud .hud-carry-bar{background:repeating-linear-gradient(135deg,var(--boss),var(--boss) 2px,#fff 2px,#fff 3px)!important}
+
+/* Member names are text links, never bordered badges, across every page. */
+.member-link,.text-button[data-action].member-link,
+.roster-complete .member-link,.battle-mobile-table .member-link{
+  border:0!important;
+  background:transparent!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+  padding:0!important;
+  min-height:0!important;
+  color:var(--text);
+  justify-content:flex-start;
+}
+.member-link:hover,.text-button[data-action].member-link:hover{
+  border:0!important;background:transparent!important;
+  text-decoration:underline!important;
+  text-underline-offset:2px;
+}
+
+/* Both mobile battle-log modes use the same font, borders, row padding and chips. */
+@media(max-width:760px){
+  .battle-mobile-only,.battle-mobile-only>.table-wrap{max-width:100%;min-width:0}
+  .battle-mobile-only>.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .data-table.battle-mobile-table{
+    border:1px solid var(--line);
+    border-collapse:collapse;
+  }
+  .data-table.battle-mobile-table th,
+  .data-table.battle-mobile-table td{
+    border-bottom:1px solid var(--line)!important;
+    border-right:0!important;
+    background:var(--surface);
+    line-height:1.35!important;
+    padding:7px 3px!important;
+    font-size:11px;
+  }
+  .data-table.battle-mobile-table th{font-size:10px}
+  .data-table.battle-mobile-table th:nth-child(4){text-align:right}
+  .battle-mobile-table .progress-cell>.mobile-seq{
+    font-weight:750;
+    display:inline-block;
+    font-size:10px;
+    color:var(--text);
+    background:transparent;
+    padding:0;
+    margin:0 0 3px;
+    white-space:nowrap;
+  }
+  .battle-mobile-table .type-tag{
+    display:inline-block;
+    padding:3px 5px!important;
+    border:1px solid var(--line)!important;
+    border-radius:5px;
+    background:var(--wash)!important;
+    color:var(--text);
+    font-size:10px!important;
+    line-height:1.25;
+    font-weight:700;
+    white-space:nowrap;
+  }
+  .battle-mobile-table .type-tag.kill{
+    background:#f8e8ed!important;
+    border-color:#ecc1ce!important;
+    color:#a55e78!important;
+  }
+  .battle-mobile-table .type-tag.carry{
+    background:#e8effa!important;
+    border-color:#c8d8ee!important;
+    color:#567fa8!important;
+  }
+  .data-table.battle-mobile-table.mobile-detail{
+    min-width:1020px!important;
+    max-width:none!important;
+    width:1020px!important;
+    table-layout:fixed!important;
+  }
+  .data-table.battle-mobile-table.mobile-detail th:nth-child(1){width:76px}
+  .data-table.battle-mobile-table.mobile-detail th:nth-child(2){width:51px}
+  .data-table.battle-mobile-table.mobile-detail th:nth-child(3){width:88px}
+  .data-table.battle-mobile-table.mobile-detail th:nth-child(4){width:130px}
+  .data-table.battle-mobile-table.mobile-detail th:nth-child(5){width:60px}
+  .data-table.battle-mobile-table.mobile-detail th:nth-child(6){width:114px}
+  .data-table.battle-mobile-table.mobile-detail th:nth-child(7){width:110px}
+  .data-table.battle-mobile-table.mobile-detail th:nth-child(8){width:110px}
+  .data-table.battle-mobile-table.mobile-detail th:nth-child(9){width:88px}
+  .data-table.battle-mobile-table.mobile-detail th:nth-child(10){width:90px}
+  .data-table.battle-mobile-table.mobile-detail th:nth-child(11){width:89px}
+  .data-table.battle-mobile-table.mobile-detail th:nth-child(12){width:65px}
+  .battle-mobile-table.mobile-detail .mobile-log-extra{white-space:nowrap;font-size:11px}
+  .battle-mobile-table.mobile-detail .mobile-log-extra .damage-edit{white-space:nowrap}
+  .battle-mobile-table.mobile-detail th:nth-child(n+6):not(:last-child){text-align:right}
+}
+/* Ordinary (desktop and mobile) battle log damage labels align with numbers. */
+.battle-table th[data-label="기록 피해량"],
+.battle-table th[data-label="실제 피해량"],
+.battle-mobile-table th[data-label="피해량"],
+.battle-mobile-table th[data-label="실제 피해량"]{text-align:right!important}
