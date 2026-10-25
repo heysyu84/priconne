@@ -56,7 +56,8 @@ assert.ok(!readonly.includes('data-tw="duplicate"'));assert.ok(!readonly.include
 for(const tag of readonly.match(/<input type="checkbox"[^>]*>/g)||[])assert.ok(tag.includes('disabled'));
 assert.ok(/tw-editor-head[\s\S]*tw-source-summary[\s\S]*source-link-box/.test(readonly));assert.ok(!readonly.includes('택틱 없음'));assert.ok(!readonly.includes('▶ 원본 영상'));
 assert.ok(!readonly.includes('tw-line-number'));assert.ok(!readonly.includes('<th>#</th>'));
-assert.ok(guild.combos().includes('data-guild="combo-stage" data-value="4" class="active"'));
+// Recommendation tabs are handled by the shared combo workspace.
+assert.ok(guild.combos().includes('data-combo-action="tab" data-value="4" class="active" aria-pressed="true"'));
 assert.ok(!guild.combos().includes('data-value="2" class='));
 app.active='2026-09';guild.afterMonthChange();
 const currentDay=Math.min(month().options.days,Math.max(1,...month().events.map(e=>Number(e.day)||1),...(month().dayBreaks||[]).map(b=>b.nextDay)));
