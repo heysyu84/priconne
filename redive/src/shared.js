@@ -140,6 +140,13 @@ function showLegacyReview(){
 function initializeSharedSync(){
   syncState.started=true;data.settings.editable=false;
   const prefs=readBrowser(SYNC_PREFS);if(prefs)Object.assign(data.settings,{theme:prefs.theme||'light',large:!!prefs.large,compact:!!prefs.compact,defaultDay:Number(prefs.defaultDay)||2});
+  // One-time rollout: reduced row spacing starts enabled, then stays user-configurable.
+  // Record the choice only in this browser, never in shared clan records.
+  if(!readBrowser('redive-compact-default-20261026')){
+    data.settings.compact=true;
+    writeBrowser('redive-compact-default-20261026',true);
+    writeBrowser(SYNC_PREFS,{...(prefs||{}),compact:true});
+  }
   const baseRender=render;render=()=>{baseRender();refreshSharedStatus();};
   const cached=readBrowser(SYNC_CACHE);if(cached?.document){syncState.revision=cached.revision;syncState.updatedAt=cached.updatedAt;applySharedDocument(cached.document,{initial:true});}
   ensureEdit=()=>{if(syncState.ready&&syncState.canEdit&&data.settings.editable&&!['conflict','error'].includes(syncState.status))return true;toast(!syncState.ready?'공용 자료를 불러온 뒤 수정할 수 있습니다.':!syncState.canEdit?'관리자 로그인 후 수정할 수 있습니다.':syncState.status==='conflict'?'다른 창의 변경을 먼저 확인하세요.':'상단에서 편집을 켜세요.');return false;};
