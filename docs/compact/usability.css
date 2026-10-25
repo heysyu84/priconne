@@ -219,3 +219,130 @@ h1,h2,h3,strong,b{font-weight:700}
 
 .drawer-host .drawer.inline-drawer{max-width:min(100%,calc(100vw - 32px));margin-left:0}.shared-loading{padding:24px 0}.shared-loading h1{font-size:22px;font-weight:700}.shared-loading .button{margin-top:12px}
 @media(max-width:760px){.roster-complete.members-compact th:nth-child(1){width:31%}.roster-complete.members-compact th:nth-child(2){width:24%}.roster-complete.members-compact th:nth-child(3){width:18%}.roster-complete.members-compact th:nth-child(4){width:27%}}
+
+
+/* 2026-10-26: consistent light-game situation panel instead of an isolated navy screen. */
+.battle-hud{
+  --hud-ink:var(--text);
+  --hud-muted:var(--muted);
+  --hud-line:var(--line);
+  color:var(--text);
+  border:1px solid color-mix(in srgb,var(--line) 76%,var(--accent));
+  background:linear-gradient(145deg,var(--surface),color-mix(in srgb,var(--surface) 86%,var(--accent-wash)));
+  box-shadow:inset 0 1px 0 color-mix(in srgb,var(--surface) 75%,white),0 3px 0 color-mix(in srgb,var(--line) 40%,transparent),0 8px 19px #40547c12;
+}
+.battle-hud:before{background:var(--accent);box-shadow:0 0 10px color-mix(in srgb,var(--accent) 25%,transparent)}
+.battle-hud .raid-banner{
+  color:var(--text);
+  background:linear-gradient(155deg,var(--surface),color-mix(in srgb,var(--surface) 84%,var(--boss)));
+  border:1px solid color-mix(in srgb,var(--line) 65%,var(--boss));
+  border-bottom:2px solid color-mix(in srgb,var(--line) 45%,var(--boss));
+  box-shadow:inset 0 1px 0 color-mix(in srgb,var(--surface) 75%,white),0 2px 4px #40547c12;
+}
+.battle-hud .raid-banner:hover{background:color-mix(in srgb,var(--surface) 72%,var(--boss));border-color:var(--boss)}
+.battle-hud .raid-name>strong,.battle-hud .raid-life>strong{color:var(--text);text-shadow:none}
+.battle-hud .raid-number{color:color-mix(in srgb,var(--boss) 77%,var(--text));text-shadow:none}
+.battle-hud .raid-name>small,.battle-hud .raid-heading small,.battle-hud .raid-round,.battle-hud .raid-life small,.battle-hud .raid-life>span,.battle-hud .raid-status,.battle-hud .raid-phase{color:var(--muted)}
+.battle-hud .raid-hp,.battle-hud .raid-hp-track,.battle-hud .raid-health-track,.hud-bar-track{background:color-mix(in srgb,var(--wash) 77%,var(--line));border-color:var(--line)}
+.battle-hud .raid-hp>i{background:linear-gradient(90deg,var(--boss),color-mix(in srgb,var(--boss) 67%,var(--surface)))}
+.hud-ring-track{stroke:color-mix(in srgb,var(--line) 72%,var(--wash))}
+.hud-ring-value{stroke:var(--accent);filter:drop-shadow(0 0 2px color-mix(in srgb,var(--accent) 25%,transparent))}
+.hud-used-dot{background:var(--muted)}
+.hud-bar-row{
+  color:var(--text);
+  background:linear-gradient(165deg,var(--surface),color-mix(in srgb,var(--surface) 90%,var(--accent-wash)));
+  border-color:var(--line);
+  box-shadow:0 1px 2px #40547c0d;
+}
+.hud-bar-row:hover{background:var(--accent-wash);border-color:var(--boss)}
+.hud-bar-boss{color:color-mix(in srgb,var(--boss) 78%,var(--text))}
+.hud-chart-legend i{background:var(--accent)}
+.hud-chart-legend>span:nth-child(2)>i{background:repeating-linear-gradient(135deg,var(--accent),var(--accent) 2px,var(--surface) 2px,var(--surface) 3px)}
+
+/* Original prototype-style read/edit status and settings, with a real gear icon. */
+.header-controls .header-write,
+.header-controls .header-settings{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:5px;
+  border:1px solid var(--line);
+  border-radius:7px;
+  min-height:32px;
+  padding:5px 10px;
+  background:linear-gradient(180deg,var(--surface),var(--wash));
+  color:var(--text);
+  box-shadow:inset 0 1px 0 color-mix(in srgb,var(--surface) 80%,white),0 2px 3px #40547c11;
+  font-weight:700;
+  line-height:1.2;
+  white-space:nowrap;
+  text-decoration:none;
+}
+.header-controls .header-write.viewer-label{cursor:default;color:var(--muted)}
+.header-controls .header-settings svg{width:17px;height:17px;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.header-controls .header-settings:hover{background:var(--accent-wash);border-color:var(--accent)}
+/* Tactic original video sits immediately to the right of expected damage. */
+.tactic-reading-head .tactic-damage-meta{display:inline-flex;align-items:center;gap:7px;flex-wrap:nowrap;white-space:nowrap}
+.tactic-reading-head .tactic-damage-meta .video-link{font-size:11px;line-height:1.2;min-height:27px;padding:3px 7px;gap:5px}
+.tactic-reading-head .tactic-damage-meta .video-link .video-play{width:20px;height:15px}
+.battle-mobile-only{display:none}
+@media(max-width:760px){
+  /* iOS Safari zooms the page when focused form controls render below 16px. */
+  input:not([type=checkbox]):not([type=radio]):not([type=file]):not([type=hidden]),
+  textarea,select,
+  .field input,.field select,.field textarea,
+  .calculator-box input,.search-picker>input[type=search],.lineup-name-input{
+    font-size:16px!important;
+  }
+  .header-controls .header-write,.header-controls .header-settings{min-height:32px;padding:5px 7px;font-size:12px}
+  .header-controls .header-settings svg{width:17px;height:17px}
+  .tactic-reading-head .tactic-damage-meta{gap:5px}
+  .tactic-reading-head .tactic-damage-meta .video-link{padding:4px 6px;min-height:27px;font-size:11px}
+  .battle-wide-table:has(+.battle-mobile-only){display:none!important}
+  .battle-mobile-only{display:block;width:100%;min-width:0}
+  .battle-mobile-only>.table-wrap{overflow-x:hidden;max-width:100%}
+  .data-table.battle-mobile-table{
+    width:100%!important;max-width:100%!important;min-width:0!important;
+    table-layout:fixed!important;border-collapse:collapse;
+  }
+  .data-table.battle-mobile-table thead{display:table-header-group!important}
+  .data-table.battle-mobile-table tbody{display:table-row-group!important}
+  .data-table.battle-mobile-table tr{display:table-row!important}
+  .data-table.battle-mobile-table th,.data-table.battle-mobile-table td{
+    display:table-cell!important;
+    min-width:0!important;max-width:100%;
+    padding:7px 3px!important;
+    font-size:11px;vertical-align:middle;white-space:normal;
+    overflow-wrap:normal;word-break:keep-all;line-height:1.35;
+  }
+  .data-table.battle-mobile-table th{font-size:10px;font-weight:700;white-space:nowrap}
+  .data-table.battle-mobile-table td::before{display:none!important}
+  .data-table.battle-mobile-table th:nth-child(1){width:18%}
+  .data-table.battle-mobile-table th:nth-child(2){width:12%}
+  .data-table.battle-mobile-table th:nth-child(3){width:20%}
+  .data-table.battle-mobile-table th:nth-child(4){width:35%}
+  .data-table.battle-mobile-table th:nth-child(5){width:15%}
+  .data-table.battle-mobile-table.can-edit th:nth-child(1){width:17%}
+  .data-table.battle-mobile-table.can-edit th:nth-child(2){width:11%}
+  .data-table.battle-mobile-table.can-edit th:nth-child(3){width:18%}
+  .data-table.battle-mobile-table.can-edit th:nth-child(4){width:30%}
+  .data-table.battle-mobile-table.can-edit th:nth-child(5){width:13%}
+  .data-table.battle-mobile-table.can-edit th:nth-child(6){width:11%}
+  .battle-mobile-table .progress-cell{min-width:0!important;white-space:normal}
+  .battle-mobile-table .progress-cell>span,.battle-mobile-table .progress-cell>small{display:block;white-space:nowrap;font-size:10px}
+  .battle-mobile-table .progress-cell>small{font-size:9px;color:var(--muted);letter-spacing:-.03em}
+  .battle-mobile-table .boss-tag{font-size:10px;white-space:nowrap;padding:2px}
+  .battle-mobile-table .mobile-log-member{overflow:hidden;text-overflow:ellipsis}
+  .battle-mobile-table .member-link{font-size:11px;white-space:nowrap;display:inline-block;max-width:100%;overflow:hidden;text-overflow:ellipsis;padding:0}
+  .battle-mobile-table .mobile-log-damage{text-align:right}
+  .battle-mobile-table .mobile-log-damage strong{display:block;white-space:nowrap;font-size:11px;font-weight:700;font-variant-numeric:tabular-nums}
+  .battle-mobile-table .mobile-log-damage small{display:block;font-size:9px;color:var(--muted);white-space:nowrap}
+  .battle-mobile-table .type-tag{font-size:10px;white-space:nowrap;padding:2px}
+  .battle-mobile-table .mobile-log-actions{text-align:center;white-space:normal}
+  .battle-mobile-table .mobile-log-actions .button{display:block;min-height:23px;padding:2px 1px;margin:1px auto;font-size:10px;line-height:1.1;width:100%;border-radius:4px}
+}
+@media(max-width:370px){
+  .battle-mobile-table .mobile-log-damage strong{font-size:10px}
+  .battle-mobile-table .mobile-log-member .member-link{font-size:10px}
+  .header-controls .header-settings span{display:none}
+}
