@@ -1080,3 +1080,13 @@ html[data-text-scale] .bli-head h2{font-size:calc((20px) * var(--text-scale,1))!
 }
 html[data-text-scale] .bli-crop-numbers input{font-size:inherit!important}
 html[data-text-scale] .bli-fields>label>small{font-size:calc((11px) * var(--text-scale,1))!important}
+
+/* iOS Safari: focused form fields must compute to at least 16px, even when text scale is 90%. */
+@media(max-width:760px){
+  html[data-text-scale] body input:not([type=checkbox]):not([type=radio]):not([type=file]):not([type=hidden]),
+  html[data-text-scale] body select,
+  html[data-text-scale] body textarea,
+  html[data-text-scale] body input:not([type=checkbox]):not([type=radio]):not([type=file]):not([type=hidden]):focus,
+  html[data-text-scale] body select:focus,
+  html[data-text-scale] body textarea:focus{font-size:max(16px,calc(14px * var(--text-scale,1)))!important}
+}
