@@ -43,7 +43,7 @@ function seed(){
   const hand=n===1?boss%3+1:0;
   tactics.push({id:`t${boss}-${n}`,boss,stage:4,title:titles[n],party,stars:[n===1?3:5,5,6,5,5],support:1,damage:Number((2.8+((boss*3+n)%8)*.16-n*.08).toFixed(1)),hands:hand,tp:boss%2===0&&n===1?'4.2+':'4.2',category:n===2?'tabi':'main',hidden:boss===5&&n===1,note:n===1?'육성 상태와 타이밍을 모의전에서 확인하세요.':'예시 조합입니다. 실제 공략으로 사용할 수 없습니다.',text:`1:30 AUTO 먼저 ON, ${party[4]}, ${party[3]} SET\n1:12 ${party[2]} 후 ${party[1]}, ${party[0]} 순으로 ON\n0:58 ${party[3]} 한번만, AUTO 오프\n0:41 ${party[1]}, ${party[4]} ON\n0:23 ${party[0]} 후 AUTO ON\n0:06 전원 SET`});
  }
- return {version:1,settings:{theme:'light',large:false,compact:false,editable:true,days:5,daily:3,defaultDay:3},members,bosses,logs,tactics,rates:[[1.8,1.8,1.8,1.8,1.8],[2.4,2.4,2.4,2.4,2.4],[3.5,3.6,3.7,3.8,3.9]]};
+ return {version:1,settings:{theme:'light',large:false,compact:true,editable:true,days:5,daily:3,defaultDay:3},members,bosses,logs,tactics,rates:[[1.8,1.8,1.8,1.8,1.8],[2.4,2.4,2.4,2.4,2.4],[3.5,3.6,3.7,3.8,3.9]]};
 }
 let data;try{const saved=JSON.parse(localStorage.getItem(KEY)||'null');data=saved?.version===1?saved:seed();}catch{data=seed();}
 const ui={section:'overview',tabs:{overview:'bosses',tactics:'combos',records:'ranking',clan:'members'},day:data.settings.defaultDay,month:'2026-10',boss:0,query:'',logType:'all',page:1,memberSort:'remaining',sortDir:-1,rankSort:'contribution',profile:data.members[0].id,selectedTactic:data.tactics.find(t=>!t.hidden)?.id,library:'all',picks:[],carry:90,settingsTab:'display',memberFilter:'active',toolTab:'calculator',logReturn:null,libraryOpen:true};
