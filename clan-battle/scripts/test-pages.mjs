@@ -43,11 +43,16 @@ delete globalThis.document;
 const dir=fs.mkdtempSync(path.join(os.tmpdir(),'nyang-pages-'));
 try {
   buildPages(dir);const html=fs.readFileSync(path.join(dir,'index.html'),'utf8');
-  assert.ok(html.includes(`name="nyang-api-origin" content="${backend}"`));
+  const legacy=fs.readFileSync(path.join(dir,'legacy.html'),'utf8');
+  assert.ok(html.includes(`name="nyang-legacy-api-origin" content="${backend}"`));
+  assert.ok(legacy.includes(`name="nyang-api-origin" content="${backend}"`));
+  assert.ok(html.includes('./compact/app.js?v='));
   assert.ok(fs.existsSync(path.join(dir,'.nojekyll')));
-  const shell=html.split('<script id="seed-data"')[0];
-  for(const match of shell.matchAll(/(?:href|src)="(\.\/[^"?#]+)(?:\?[^"#]*)?"/g))assert.ok(fs.existsSync(path.join(dir,match[1])),match[1]);
-  assert.equal(/(?:href|src)="\/(?!\/)/.test(shell),false);
+  for(const entrypoint of [html,legacy]){
+    const shell=entrypoint.split('<script id="seed-data"')[0];
+    for(const match of shell.matchAll(/(?:href|src)="(\.\/[^"?#]+)(?:\?[^"#]*)?"/g))assert.ok(fs.existsSync(path.join(dir,match[1])),match[1]);
+    assert.equal(/(?:href|src)="\/(?!\/)/.test(shell),false);
+  }
   const script=fs.readFileSync(path.join(dir,'clan.js'),'utf8');
   assert.equal(/import\('\//.test(script),false);assert.equal(/await fetch\('\/api\//.test(script),false);
   for(const name of ['characters.json','bosses.json']) {
@@ -184,7 +189,7 @@ const appClient=fs.readFileSync(new URL('../public/clan.js',import.meta.url),'ut
 const displayScript=fs.readFileSync(new URL('../public/display-settings.mjs',import.meta.url),'utf8');
 assert.ok(!compactCombos.includes("['detail', '상세']") && !compactCombos.includes('savedView()'),
   'Recommendation cards must no longer offer or restore the deleted detailed mode');
-assert.ok(compactCombos.includes("['compact', '조합 목록']") && compactCombos.includes("['planner', '3타 분배']"),
+assert.ok(compactCombos.includes("['4', '4단계']") && compactCombos.includes("['planner', '3타 분배']"),
   'The 3-attack optimizer remains reachable alongside the single list');
 assert.ok(compactCombos.includes('TP ${tpLabel(combo.tp)}') && compactCombos.includes('combo-mini-chip is-tp'),
   'Integer TP values must be displayed with a decimal and fixed width');
