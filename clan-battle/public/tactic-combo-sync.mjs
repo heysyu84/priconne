@@ -1,4 +1,4 @@
-import { CARRY_GROUP, groupOf } from './tactics-model.mjs?v=20261024-carry-tactics01';
+import { CARRY_GROUP, groupOf, titleFor } from './tactics-model.mjs?v=20261024-carry-tactics01';
 
 // Full-battle stage-4 tactics are the source for the recommendation list.
 // Keep stage-3 recommendations and historical records intact.
@@ -134,21 +134,52 @@ export function suppressTacticRecommendation(month,record){
  return true;
 }
 
-// Recommended stage-4 listings are a view of the real tactic workspace, not
-// an accumulation of legacy sheet imports and generated recommendation copies.
-// Keep old unmatched records in storage for recovery; never expose them as extra tactics.
+// Render full-battle recommendations from the live tactic source, never from a
+// potentially stale stored snapshot. Supplemental fields remain recommendation-only.
 export function visibleTacticRecommendations(month){
- const active=new Set((month?.tactics||[]).filter(tacticReady)
-  .filter(t=>!t.hidden)
-  .filter(t=>!(month.hiddenTacticRecommendationIds||[]).includes(String(t.id)))
-  .map(t=>String(t.id)));
- const seen=new Set();
- return (month?.recommendations||[]).filter(row=>{
-  if(Number(row.stage)!==4)return true;
-  const id=String(row.sourceTacticId||'');
-  if(!id||!active.has(id)||seen.has(id))return false;
-  seen.add(id);return true;
+ const stored=Array.isArray(month?.recommendations)?month.recommendations:[];
+ const stage3=stored.filter(row=>Number(row.stage)!==4);
+ const byTactic=new Map();
+ for(const row of stored){
+  if(Number(row.stage)!==4||!row.sourceTacticId)continue;
+  const key=String(row.sourceTacticId);
+  if(!byTactic.has(key))byTactic.set(key,row);
+ }
+ const suppressed=new Set((month?.hiddenTacticRecommendationIds||[]).map(String));
+ const generated=(month?.tactics||[]).filter(t=>tacticReady(t)&&!t.hidden&&!suppressed.has(String(t.id))).map(t=>{
+  const previous=byTactic.get(String(t.id));
+  const fresh=fromTactic(t);
+  const url=previous&&previous.tacticSourceUrl!==undefined&&previous.url!==previous.tacticSourceUrl
+   ?previous.url:fresh.url;
+  return {
+   id:previous?.id||'tactic-combo-'+String(t.id),
+   ...(previous||{}),
+   ...fresh,
+   url,requiredSeconds:previous?.requiredSeconds??null,remainingSeconds:previous?.remainingSeconds??null
+  };
  });
+ return [...stage3,...generated];
+}
+
+// Editing a source-linked recommendation must write to the canonical tactic;
+// otherwise the next synchronization silently replaces the user's edits.
+export function updateTacticFromRecommendation(month,sourceId,values){
+ const tactic=(month?.tactics||[]).find(t=>String(t.id)===String(sourceId)&&!t.trashedAt);
+ if(!tactic)throw Error('연결된 원본 택틱을 찾지 못했습니다. 택틱 작업실에서 확인해 주세요.');
+ if(Number(values.stage)!==4)throw Error('연동된 추천 조합은 4단계로 유지됩니다. 3단계 조합은 별도로 등록해 주세요.');
+ tactic.boss=Number(values.boss);
+ tactic.characters=[...values.characters];
+ tactic.stars=values.stars.map(String);
+ tactic.expectedDamage=String(values.expectedDamage??'');
+ tactic.manualCount=String(values.manualCount??'');
+ tactic.tp=String(values.tp??'');
+ tactic.note=String(values.note??'');
+ tactic.tacticUrl=String(values.url??'');
+ tactic.title=titleFor(tactic);
+ const linked=(month.recommendations||[]).find(row=>String(row.sourceTacticId||'')===String(sourceId));
+ if(linked){linked.url=tactic.tacticUrl;linked.tacticSourceUrl=tactic.tacticUrl;}
+ syncTacticRecommendations(month);
+ return tactic;
 }
 
 function comparableDamage(value) {
