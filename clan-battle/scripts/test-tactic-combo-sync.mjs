@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import {syncTacticRecommendations,tacticReady,suppressTacticRecommendation,visibleTacticRecommendations} from '../public/tactic-combo-sync.mjs';
+import {syncTacticRecommendations,tacticReady,suppressTacticRecommendation,visibleTacticRecommendations,updateTacticFromRecommendation} from '../public/tactic-combo-sync.mjs';
 
 const tactic=(id,source='택틱정리')=>({
  id,group:source,boss:2,characters:['라비','파오이','게무기','리리컬','수셰피'],
@@ -65,3 +65,27 @@ assert.equal(movedMonth.tactics.length,1,'the actual carry tactic is preserved')
 moving.group='택틱정리';
 syncTacticRecommendations(movedMonth);
 assert.equal(movedMonth.recommendations.length,1,'moving back restores normal recommendation sync');
+
+// Regression: a 2넴 lineup edited from 아오이 to 파오이 must render the live tactic
+// even when a previously saved recommendation still contains 아오이.
+const changedTactic=tactic('two-boss-change');
+const staleRecord={...structuredClone(match),id:'stale-two-boss',sourceTacticId:changedTactic.id,
+ characters:['라비','아오이','게무기','리리컬','수셰피']};
+const liveMonth={tactics:[changedTactic],recommendations:[staleRecord],tacticConditionsVersion:1};
+assert.equal(visibleTacticRecommendations(liveMonth)[0].characters[1],'파오이');
+assert.equal(liveMonth.recommendations[0].characters[1],'아오이','reading must not overwrite original stored data');
+syncTacticRecommendations(liveMonth);
+assert.equal(liveMonth.recommendations[0].characters[1],'파오이');
+const reverse=updateTacticFromRecommendation(liveMonth,changedTactic.id,{
+ stage:4,boss:2,characters:['라비','아오이','게무기','리리컬','수셰피'],
+ stars:['5','5','5','5','5'],expectedDamage:'3.9',manualCount:'1',tp:'4.0+',note:'수정한 비고',
+ url:'https://example.org/updated'
+});
+assert.equal(reverse.characters[1],'아오이','manual combo change must write back to source tactic');
+assert.equal(reverse.expectedDamage,'3.9');
+assert.equal(reverse.tacticUrl,'https://example.org/updated');
+assert.equal(visibleTacticRecommendations(liveMonth)[0].characters[1],'아오이');
+assert.equal(liveMonth.recommendations[0].characters[1],'아오이');
+assert.equal(liveMonth.recommendations[0].url,'https://example.org/updated');
+assert.throws(()=>updateTacticFromRecommendation(liveMonth,changedTactic.id,{stage:3}),/4단계/);
+console.log('PASS: live 2넴 character corrections and reverse-linked recommendation edits');
