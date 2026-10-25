@@ -364,6 +364,7 @@ export function createTacticWorkspace(api) {
   }
   document.addEventListener('click',event=>{const b=event.target.closest('[data-tw]');if(!b)return;if(b.dataset.tw==='open-tactic'){navigate('tactics');$('#tw-carry')?.focus();}if(b.dataset.tw==='estimate-apply'){const result=estimatedCarry();if(!result)return;refreshEstimate();if(result.error){notify(result.error);return;}if(isExternal()){if(!externalCarry.apply(String(result.seconds)))return;}else{setPersonal(result.seconds);redraw();}notify(`계산한 ${result.seconds}초를 택틱에 적용했습니다.`);}});
   return {view,calculator:view,mount,beforeNavigate,openBoss:id=>{if(isExternal())state.group=GROUPS[0];prepare();state.boss=String(id);state.remaining=null;state.trash=false;state.selected=visible()[0]?.id||null;},openTactic:id=>{
+    prepare();
     const t=all().find(item=>String(item.id)===String(id)&&!item.trashedAt&&(canEdit()||!item.hidden));
     if(!t)return false;
     state.group=groupOf(t);state.boss='all';state.selected=t.id;state.personalId=null;state.remaining=null;state.trash=false;
