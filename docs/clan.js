@@ -19,7 +19,8 @@ const {applySourceData,remainingAttacks}=await import('./guild-model.mjs?v=20261
 const {createGuildWorkspace}=await import('./guild-workspace.mjs?v=20261026-combo-source03');
 const {createTacticWorkspace}=await import('./tactics-workspace.mjs?v=20261026-combo-source04');
 const {createBattleImageImport}=await import('./battle-image-import.mjs?v=20261025-ocr-fields02');
-const [TACTIC_META,CHARACTERS,ROW_FORMATS,BOSS_ART,GUILD_SOURCE,PORTRAIT_LIBRARY,FUTURE_BOSSES]=await Promise.all(['/tactic-metadata.json','/characters.json','/tactic-row-formats.json','/bosses.json','/guild-source.json','/portrait-library.json','/future-bosses.json'].map(async path=>{const response=await fetch(assetUrl(path)+'?v=20261024-carry-punctuation06');if(!response.ok)throw Error('택틱 자료를 불러오지 못했습니다.');return response.json()}));
+const loadAsset=async path=>{const response=await fetch(assetUrl(path)+'?v=20261024-carry-punctuation06');if(!response.ok)throw Error('택틱 자료를 불러오지 못했습니다.');return response.json()};
+const [CHARACTERS,BOSS_ART,PORTRAIT_LIBRARY,FUTURE_BOSSES]=await Promise.all(['/characters.json','/bosses.json','/portrait-library.json','/future-bosses.json'].map(loadAsset));
 const CHARACTER_CATALOG=withPortraitLibrary(CHARACTERS.characters,PORTRAIT_LIBRARY);
 const DEFAULT=JSON.parse(document.getElementById('seed-data').textContent);
 const STORAGE='nyangnyang-work-recovery-v1';
@@ -44,6 +45,10 @@ catch { $('#content').innerHTML='<section class="panel"><h1>기록에 연결하�
    $('#sync-state').textContent='기록 확인 실패';
    return;
  }
+ // Source-sheet imports are not even loaded after the first successful server save.
+ const [TACTIC_META,ROW_FORMATS,GUILD_SOURCE]=newDatabase
+   ?await Promise.all(['/tactic-metadata.json','/tactic-row-formats.json','/guild-source.json'].map(loadAsset))
+   :[{},{},{}];
  let app=newDatabase?deepcopy(DEFAULT):boot.data;
 let splitStorage=boot.splitStorage===true,restoreArchivesPending=false;
 const archiveCache=new Map();
