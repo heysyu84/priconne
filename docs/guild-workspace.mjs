@@ -7,7 +7,7 @@ import { BOSS_COLORS, BOSS_ACCENTS, BOSS_INK, tenureMonths, monthOnly, thisMonth
 import { makeId, matchMembers, upsertMember, syncRoster } from './roster.mjs?v=20261024-db-stage-ranges01';
 import { downloadProfilePdf } from './report-pdf.mjs?v=20261023-contribution-round-width980-01';
 import { createComboWorkspace } from './combo-workspace.mjs?v=20261024-tactic-warning01';
-import {suppressTacticRecommendation} from './tactic-combo-sync.mjs?v=20261024-tactic-hidden01';
+import {suppressTacticRecommendation, visibleTacticRecommendations, updateTacticFromRecommendation} from './tactic-combo-sync.mjs?v=20261026-combo-live01';
 const SCORES=[['damage','피해량'],['contribution','기여도'],['game','인게임 스코어'],['dayDamage','일일 피해량'],['dayContribution','일일 기여도']];
 
 export function createGuildWorkspace(api){
@@ -242,9 +242,9 @@ export function createGuildWorkspace(api){
     }catch(error){notify('클랜전 결과를 확정하지 못했습니다: '+error.message);}
   }
   function editCombo(id){
-    const c=month().recommendations.find(x=>x.id===id),stage=Number(c?.stage||state.comboStage),stage3=stage===3;
+    const c=month().recommendations.find(x=>x.id===id)||visibleTacticRecommendations(month()).find(x=>x.id===id),stage=Number(c?.stage||state.comboStage),stage3=stage===3;
     const timeFields=[{name:'requiredSeconds',label:'필요시간(초)',type:'number',value:c?.requiredSeconds??''},{name:'remainingSeconds',label:'이월시간(초)',type:'number',value:c?.remainingSeconds??''}];
-    openForm(c?.sourceTacticId?'추천 조합 · 택틱 작업실 연동 (편성·기대딜은 택틱에서 수정)':'추천 조합',[{name:'stage',label:'단계',type:'number',value:stage,required:true},{name:'boss',label:'보스 번호',type:'number',value:c?.boss||1,required:true},{name:'characters',label:'캐릭터 5명 · 쉼표 구분',value:c?.characters.join(', ')||'',required:true},{name:'stars',label:'성급 5자리',value:c?.stars.join('')||'55555',required:true},...(stage3?[...timeFields,{name:'tactic',label:'조작택틱',value:c?.tactic?.trim()||'전부 SET'}]:[{name:'expectedDamage',label:'기대딜',value:c?.expectedDamage??''},...timeFields,{name:'manualCount',label:'손컨 횟수',type:'number',value:c?.manualCount??''},{name:'tp',label:'TP',value:c?.tp||''},{name:'tactic',label:'조작·택틱',value:c?.tactic||''},{name:'url',label:'영상·택틱 링크',type:'url',value:c?.url||c?.video||''}]),{name:'note',label:c?.sourceTacticId?'메모 (택틱 작업실 연동)':'비고',value:c?.note||''}],v=>{
+    openForm(c?.sourceTacticId?'추천 조합 · 택틱 작업실 연동 (여기서 수정하면 원본 택틱도 변경됩니다)':'추천 조합',[{name:'stage',label:'단계',type:'number',value:stage,required:true},{name:'boss',label:'보스 번호',type:'number',value:c?.boss||1,required:true},{name:'characters',label:'캐릭터 5명 · 쉼표 구분',value:c?.characters.join(', ')||'',required:true},{name:'stars',label:'성급 5자리',value:c?.stars.join('')||'55555',required:true},...(stage3?[...timeFields,{name:'tactic',label:'조작택틱',value:c?.tactic?.trim()||'전부 SET'}]:[{name:'expectedDamage',label:'기대딜',value:c?.expectedDamage??''},...timeFields,{name:'manualCount',label:'손컨 횟수',type:'number',value:c?.manualCount??''},{name:'tp',label:'TP',value:c?.tp||''},...(c?.sourceTacticId?[]:[{name:'tactic',label:'조작·택틱',value:c?.tactic||''}]),{name:'url',label:'영상·택틱 링크',type:'url',value:c?.url||c?.video||''}]),{name:'note',label:c?.sourceTacticId?'메모 (택틱 작업실 연동)':'비고',value:c?.note||''}],v=>{
       const chars=v.characters.split(/[,，]/).map(n=>n.trim()).filter(Boolean);
       if(chars.length!==5||!(/^[1-6]{5}$/).test(v.stars))throw Error('캐릭터 5명과 성급 5자리를 입력하세요.');
       if(![3,4].includes(Number(v.stage))||![1,2,3,4,5].includes(Number(v.boss)))throw Error('단계는 3~4, 보스는 1~5입니다.');
@@ -253,10 +253,11 @@ export function createGuildWorkspace(api){
       if(data.stage===3&&!data.tactic?.trim())data.tactic='전부 SET';
       if(data.stage===4&&v.manualCount!==''&&!/^(?:[0-9])(?:\.5)?$/.test(v.manualCount))throw Error('손컨은 0~9.5까지 0.5 단위로 입력하세요.');
       if(c?.sourceTacticId){
-        const sourceTactic=month().tactics.find(t=>String(t.id)===String(c.sourceTacticId));
-        if(sourceTactic){sourceTactic.manualCount=v.manualCount;sourceTactic.tp=v.tp;sourceTactic.note=v.note;}
-      }
-      if(c)Object.assign(c,data);else month().recommendations.push(data);persist();render();
+        if(new Set(chars.map(name=>name.normalize('NFKC').replace(/\s+/g,'').toLowerCase())).size!==5)throw Error('중복 없이 캐릭터 5명을 입력하세요.');
+        updateTacticFromRecommendation(month(),c.sourceTacticId,data);
+      }else if(c)Object.assign(c,data);
+      else month().recommendations.push(data);
+      persist();render();
     });
   }
   document.addEventListener('click',async event=>{const b=event.target.closest('[data-guild]');if(!b)return;const key=b.dataset.guild;if(['add-member','edit-member','toggle-member','add-combo','edit-combo','delete-combo','edit-factor','add-history','edit-history','close-month','edit-combo-notice'].includes(key)&&!canEdit()){api.unlock();return;}switch(key){
@@ -276,7 +277,7 @@ export function createGuildWorkspace(api){
     case 'add-member':editMember();break;case 'edit-member':editMember(b.dataset.id);break;case 'toggle-member':toggleMember(b.dataset.id);break;
     case 'add-history':editHistory();break;case 'edit-history':editHistory(b.dataset.value);break;case 'close-month':await closeHistoryMonth(b.dataset.value);break;
     case 'add-combo':editCombo();break;case 'edit-combo':editCombo(b.dataset.id);break;
-    case 'delete-combo':if(confirm('이 추천 조합을 삭제할까요? 택틱과 연결된 조합은 추천 조합에서만 제외합니다.')){const removing=month().recommendations.find(c=>c.id===b.dataset.id);suppressTacticRecommendation(month(),removing);month().recommendations=month().recommendations.filter(c=>c.id!==b.dataset.id);persist();render();}break;
+    case 'delete-combo':if(confirm('이 추천 조합을 삭제할까요? 택틱과 연결된 조합은 추천 조합에서만 제외합니다.')){const removing=visibleTacticRecommendations(month()).find(c=>c.id===b.dataset.id);suppressTacticRecommendation(month(),removing);month().recommendations=month().recommendations.filter(c=>c.id!==b.dataset.id);persist();render();}break;
     case 'edit-factor':openForm('평균 보정률',[{name:'factor',label:'보정률(%)',type:'number',value:Number(month().options.contributionFactor||.95)*100}],v=>{if(!(Number(v.factor)>0&&Number(v.factor)<=100))throw Error('보정률은 0 초과 100 이하입니다.');month().options.contributionFactor=Number(v.factor)/100;api.replay(month());persist();render();});break;
   }});
   document.addEventListener('change',e=>{if(e.target.id==='guild-profile'){state.profile=e.target.value;render();}});
