@@ -521,3 +521,148 @@ h1,h2,h3,strong,b{font-weight:700}
   }
   .data-table.battle-table.expanded th{font-size:12px}
 }
+
+/* Unified table system: retain the ORIGINAL expanded battle-log typography
+   as the baseline for regular/detailed logs and other data tables. */
+.data-table{
+  border-collapse:collapse!important;
+  border-top:1px solid var(--strong-line)!important;
+  border-radius:0!important;
+  background:var(--surface);
+}
+.data-table th,.data-table td,
+.data-table.battle-table.expanded th,.data-table.battle-table.expanded tbody td{
+  padding:9px 10px!important;
+  line-height:1.35!important;
+  border-bottom:1px solid var(--line)!important;
+  vertical-align:middle!important;
+  font-size:13px!important;
+}
+.data-table thead th,.data-table.battle-table.expanded thead th{
+  font-size:11px!important;
+  font-weight:700!important;
+  color:var(--muted);
+  white-space:nowrap!important;
+  background:var(--wash);
+}
+.data-table :is(td,th).right,
+.data-table td.numeric,.data-table th.numeric{
+  text-align:right!important;
+  font-variant-numeric:tabular-nums;
+}
+.data-table :is(td,th).center{text-align:center!important}
+.data-table td[data-label="일차"],
+.data-table td[data-label="일차·회차"],
+.data-table td.progress-cell,
+.data-table td.progress-cell>span,
+.data-table td.progress-cell>small{
+  white-space:nowrap!important;
+  word-break:keep-all!important;
+  overflow-wrap:normal!important;
+}
+.data-table td.progress-cell>span{
+  display:block!important;
+}
+.data-table td.progress-cell>small{display:block}
+.data-table td.progress-cell .mobile-seq{display:inline-block;white-space:nowrap!important}
+.data-table .type-tag{
+  display:inline-block;
+  font-size:10px!important;
+  font-weight:700;
+  line-height:1.25;
+  padding:3px 5px;
+  border:1px solid var(--line);
+  border-radius:5px;
+  background:var(--wash);
+  white-space:nowrap;
+}
+.data-table .type-tag.kill{color:#a55e78;background:#f8e8ed;border-color:#ecc1ce}
+.data-table .type-tag.carry{color:#567fa8;background:#e8effa;border-color:#c8d8ee}
+
+/* Expected damage and original video are distinct visual controls, never a
+   combined pill. The neutral flex wrapper only keeps them adjacent. */
+.tactic-reading-head .tactic-metadata>.tactic-damage-group{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  flex:0 0 auto;
+  white-space:nowrap;
+  max-width:100%;
+  background:none;
+  border:0;
+  padding:0;
+  box-shadow:none;
+}
+.tactic-reading-head .tactic-damage-group>.tactic-damage-meta{
+  display:inline-flex;
+  align-items:center;
+  gap:4px;
+  border:1px solid color-mix(in srgb,var(--line) 65%,var(--boss));
+  border-radius:7px;
+  padding:5px 8px;
+  background:color-mix(in srgb,var(--surface) 83%,var(--boss));
+  color:color-mix(in srgb,var(--boss) 70%,var(--text));
+  font-size:12px;
+  font-weight:650;
+  line-height:1.3;
+}
+.tactic-reading-head .tactic-damage-group>.video-link{
+  display:inline-flex;
+  flex:0 0 auto;
+  align-items:center;
+  gap:5px;
+  min-height:27px;
+  margin:0;
+  padding:3px 7px;
+  border-radius:6px;
+  font-size:11px!important;
+  line-height:1.2;
+  white-space:nowrap;
+}
+.tactic-reading-head .tactic-damage-group>.video-link .video-play{width:20px;height:15px}
+
+@media(max-width:760px){
+  /* Both views share the SAME body/header font sizes and row decoration.
+     Standard view fits the viewport; extra detailed fields scroll together. */
+  .data-table.battle-mobile-table th,
+  .data-table.battle-mobile-table td{
+    padding:8px 3px!important;
+    font-size:clamp(11px,3.2vw,13px)!important;
+    line-height:1.35!important;
+    border-bottom:1px solid var(--line)!important;
+    vertical-align:middle!important;
+  }
+  .data-table.battle-mobile-table th{font-size:11px!important}
+  .data-table.battle-mobile-table .progress-cell>span,
+  .data-table.battle-mobile-table .progress-cell>small{
+    display:block;
+    white-space:nowrap!important;
+    word-break:keep-all!important;
+  }
+  .data-table.battle-mobile-table .mobile-log-damage{
+    text-align:right!important;
+    white-space:nowrap!important;
+  }
+  .data-table.battle-mobile-table .mobile-log-damage>strong{font-size:inherit!important}
+  .data-table.battle-mobile-table .mobile-log-member .member-link{
+    max-width:100%;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap!important;
+    font-size:inherit!important;
+  }
+  .data-table.battle-mobile-table .type-tag{font-size:10px!important}
+  .data-table.battle-mobile-table:not(.mobile-detail){
+    min-width:0!important;
+    width:100%!important;
+    max-width:100%!important;
+    table-layout:fixed!important;
+  }
+  .data-table.battle-mobile-table:not(.mobile-detail) th:nth-child(1){width:19%}
+  .data-table.battle-mobile-table:not(.mobile-detail) th:nth-child(2){width:12%}
+  .data-table.battle-mobile-table:not(.mobile-detail) th:nth-child(3){width:20%}
+  .data-table.battle-mobile-table:not(.mobile-detail) th:nth-child(4){width:34%}
+  .data-table.battle-mobile-table:not(.mobile-detail) th:nth-child(5){width:15%}
+  .data-table.battle-mobile-table:not(.mobile-detail) th:nth-child(4){text-align:right!important}
+  .battle-mobile-only>.table-wrap{overflow-x:auto;max-width:100%}
+}
