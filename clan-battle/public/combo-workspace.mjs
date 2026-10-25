@@ -2,7 +2,7 @@ import {characterPortrait, portraitAttributes, portraitStarOverlay} from './char
 import {isBoosterCharacter, formatExpectedDamage, sourceLinkBox, sourceLinkKind} from './view-settings.mjs?v=20261023-image-cleanup01';
 import {planThreeAttacks} from './combo-planner.mjs?v=20261023-image-cleanup01';
 import {isStageFourUnlocked} from './guild-model.mjs?v=20261024-boss-lap-lock01';
-import {visibleTacticRecommendations,recommendationDisplayOrder} from './tactic-combo-sync.mjs?v=20261026-combo-live01';
+import {visibleTacticRecommendations,recommendationDisplayOrder} from './tactic-combo-sync.mjs?v=20261026-combo-live02';
 
 export function createComboWorkspace(api) {
   const {state, render, section, canEdit, characters, escapeHtml: X, notice} = api;
