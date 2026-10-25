@@ -155,6 +155,8 @@ html[data-text-scale] .bli-row pre{font-size:max(var(--ui-font-min,0px),round(ne
 @media(max-width:520px){
 html[data-text-scale] .bli-head h2{font-size:max(var(--ui-font-min,0px),round(nearest,calc((20px) * var(--ui-text-scale,1)),1px))!important}
 }
+html[data-text-scale] .bli-crop-numbers input{font-size:inherit!important}
+html[data-text-scale] .bli-fields>label>small{font-size:max(var(--ui-font-min,0px),round(nearest,calc((11px) * var(--ui-text-scale,1)),1px))!important}
 /* tactics-workspace.css */
 html[data-text-scale] .tw-group-tabs button{font-size:max(var(--ui-font-min,0px),round(nearest,calc((13px) * var(--ui-text-scale,1)),1px))!important}
 html[data-text-scale] .tw-group-tabs span{font-size:max(var(--ui-font-min,0px),round(nearest,calc((10px) * var(--ui-text-scale,1)),1px))!important}
@@ -218,6 +220,10 @@ html[data-text-scale] .tw-card-title{font-size:max(var(--ui-font-min,0px),round(
 }
 html[data-text-scale] .tw-portrait .source-star-text,
 html[data-text-scale] .tw-check-art .source-star-text{font-size:max(var(--ui-font-min,0px),round(nearest,calc((9px) * var(--ui-text-scale,1)),1px))!important}
+html[data-text-scale] .tw-detail-note{font-size:max(var(--ui-font-min,0px),round(nearest,calc((15px) * var(--ui-text-scale,1)),1px))!important}
+@media(max-width:600px){
+html[data-text-scale] .tw-detail-note{font-size:max(var(--ui-font-min,0px),round(nearest,calc((15px) * var(--ui-text-scale,1)),1px))!important}
+}
 /* raid.css */
 html[data-text-scale] .logo strong{font-size:max(var(--ui-font-min,0px),round(nearest,calc((20px) * var(--ui-text-scale,1)),1px))!important}
 html[data-text-scale] .logo small{font-size:max(var(--ui-font-min,0px),round(nearest,calc((8px) * var(--ui-text-scale,1)),1px))!important}
@@ -233,6 +239,7 @@ html[data-text-scale] .eyebrow{font-size:max(var(--ui-font-min,0px),round(neares
 html[data-text-scale] .foot{font-size:max(var(--ui-font-min,0px),round(nearest,calc((9px) * var(--ui-text-scale,1)),1px))!important}
 html[data-text-scale] .raid-section-label>span{font-size:max(var(--ui-font-min,0px),round(nearest,calc((10px) * var(--ui-text-scale,1)),1px))!important}
 html[data-text-scale] .raid-section-label small{font-size:max(var(--ui-font-min,0px),round(nearest,calc((10px) * var(--ui-text-scale,1)),1px))!important}
+html[data-text-scale] .boss-card .boss-lock-label{font-size:max(var(--ui-font-min,0px),round(nearest,calc((11px) * var(--ui-text-scale,1)),1px))!important}
 html[data-text-scale] .boss-art{font-size:max(var(--ui-font-min,0px),round(nearest,calc((32px) * var(--ui-text-scale,1)),1px))!important}
 html[data-text-scale] .boss-art .boss-emblem{font-size:max(var(--ui-font-min,0px),round(nearest,calc((11px) * var(--ui-text-scale,1)),1px))!important}
 html[data-text-scale] .boss-num{font-size:max(var(--ui-font-min,0px),round(nearest,calc((8px) * var(--ui-text-scale,1)),1px))!important}
@@ -401,6 +408,7 @@ html[data-text-scale] .guild-roster .btn.sm{font-size:max(var(--ui-font-min,0px)
 html[data-text-scale] .dashboard-table thead th{font-size:max(var(--ui-font-min,0px),round(nearest,calc((12px) * var(--ui-text-scale,1)),1px))!important}
 html[data-text-scale] .dashboard-table .textbutton{font-size:max(var(--ui-font-min,0px),round(nearest,calc((12px) * var(--ui-text-scale,1)),1px))!important}
 html[data-text-scale] .dashboard-table .boss-chip{font-size:max(var(--ui-font-min,0px),round(nearest,calc((12px) * var(--ui-text-scale,1)),1px))!important}
+html[data-text-scale] .dashboard-table .carry-seconds{font-size:max(var(--ui-font-min,0px),round(nearest,calc((12px) * var(--ui-text-scale,1)),1px))!important}
 @media(min-width:801px) and (max-width:1150px){
 html[data-text-scale] .boss-hp>strong{font-size:max(var(--ui-font-min,0px),round(nearest,calc((clamp(14px,1.8vw,20px)) * var(--ui-text-scale,1)),1px))!important}
 }
@@ -431,6 +439,7 @@ html[data-text-scale] .dashboard-table th,
 html[data-text-scale] .dashboard-table td{font-size:max(var(--ui-font-min,0px),round(nearest,calc((10px) * var(--ui-text-scale,1)),1px))!important}
 html[data-text-scale] .dashboard-table thead th{font-size:max(var(--ui-font-min,0px),round(nearest,calc((10px) * var(--ui-text-scale,1)),1px))!important}
 html[data-text-scale] .dashboard-table .textbutton{font-size:max(var(--ui-font-min,0px),round(nearest,calc((10px) * var(--ui-text-scale,1)),1px))!important}
+html[data-text-scale] .dashboard-table .carry-seconds{font-size:max(var(--ui-font-min,0px),round(nearest,calc((10px) * var(--ui-text-scale,1)),1px))!important}
 html[data-text-scale] .dashboard-table .boss-chip{font-size:max(var(--ui-font-min,0px),round(nearest,calc((9px) * var(--ui-text-scale,1)),1px))!important}
 html[data-text-scale] .tw-grid .tw-text-cell>[data-tw-text]{font-size:calc((14px) * var(--tactic-text-scale,1))!important}
 html[data-text-scale] .tw-group-tabs .tw-carry-controls .field label{font-size:max(var(--ui-font-min,0px),round(nearest,calc((10px) * var(--ui-text-scale,1)),1px))!important}
@@ -645,6 +654,36 @@ html[data-text-scale] .profile-activity-grid .daily-profile-bars>div>strong{font
 html[data-text-scale] .profile-activity-grid .daily-profile-bars>div>.daily-stat small{font-size:max(var(--ui-font-min,0px),round(nearest,calc((10px) * var(--ui-text-scale,1)),1px))!important}
 html[data-text-scale] .profile-activity-grid .daily-profile-bars>div>.daily-stat b{font-size:max(var(--ui-font-min,0px),round(nearest,calc((12px) * var(--ui-text-scale,1)),1px))!important}
 }
+@media screen and (min-width:801px){
+html[data-text-scale] .raid-stats+.grid-2 .rank-data{font-size:max(var(--ui-font-min,0px),round(nearest,calc((11px) * var(--ui-text-scale,1)),1px))!important}
+}
+html[data-text-scale] .raid-stats+.grid-2 .recent-battle-table .progress-cell strong{font-size:inherit!important}
+html[data-text-scale] .raid-stats+.grid-2 .recent-battle-table .progress-cell small{font-size:.85em!important}
+@media(max-width:800px){
+html[data-text-scale] .raid-stats+.grid-2 .recent-battle-table .recent-mobile-progress{font-size:.85em!important}
+}
+html[data-text-scale] .tw-library .tw-card-title,
+html[data-text-scale] .tw-library .tw-card-details{font-size:var(--tw-card-main-font-size)!important}
+html[data-text-scale] .tw-library .tw-card-details>span{font-size:inherit!important}
+html[data-text-scale] .tw-library .tw-card-note{font-size:max(var(--ui-font-min,0px),round(nearest,calc((10px) * var(--ui-text-scale,1)),1px))!important}
+html[data-text-scale] .tw-estimator .tw-estimate-result small{font-size:max(var(--ui-font-min,0px),round(nearest,calc((11px) * var(--ui-text-scale,1)),1px))!important}
+html[data-text-scale] .tw-estimator .tw-estimate-result strong{font-size:max(var(--ui-font-min,0px),round(nearest,calc((20px) * var(--ui-text-scale,1)),1px))!important}
+html[data-text-scale] .tw-estimator .tw-estimate-result[data-error=true] strong{font-size:max(var(--ui-font-min,0px),round(nearest,calc((12px) * var(--ui-text-scale,1)),1px))!important}
+@media(max-width:800px){
+html[data-text-scale] .tw-work .tw-title-lineup{font-size:max(var(--ui-font-min,0px),round(nearest,calc((clamp(11px,3.8vw,15px)) * var(--ui-text-scale,1)),1px))!important}
+}
+html[data-text-scale] .tw-toolbar .tw-carry-entry #tw-carry{font-size:max(var(--ui-font-min,0px),round(nearest,calc((16px) * var(--ui-text-scale,1)),1px))!important}
+html[data-text-scale] .tw-toolbar .tw-estimate-toggle{font-size:max(var(--ui-font-min,0px),round(nearest,calc((13px) * var(--ui-text-scale,1)),1px))!important}
+html[data-text-scale] .tw-external-head h2{font-size:max(var(--ui-font-min,0px),round(nearest,calc((19px) * var(--ui-text-scale,1)),1px))!important}
+html[data-text-scale] .tw-external-base input{font-size:max(var(--ui-font-min,0px),round(nearest,calc((16px) * var(--ui-text-scale,1)),1px))!important}
+html[data-text-scale] .tw-external-column textarea{font-size:max(var(--ui-font-min,0px),round(nearest,calc((14px) * var(--ui-text-scale,1)),1px))!important}
+@media(max-width:800px){
+html[data-text-scale] .tw-external-column textarea{font-size:max(var(--ui-font-min,0px),round(nearest,calc((16px) * var(--ui-text-scale,1)),1px))!important}
+}
+html[data-text-scale] .tw-work .tw-grid .tw-text-cell>[data-tw-text]{font-size:calc((13px) * var(--tactic-text-scale,1))!important}
+html[data-text-scale][data-text-scale] .tw-work .tw-grid .tw-text-cell>[data-tw-text]{font-size:calc((calc(13px * var(--tactic-text-scale,1))) * var(--tactic-text-scale,1))!important}
+html[data-text-scale] .dashboard-table th .dashboard-sort-head{font-size:inherit!important}
+html[data-text-scale] .dashboard-table th .dashboard-sort-arrow{font-size:max(var(--ui-font-min,0px),round(nearest,calc((11px) * var(--ui-text-scale,1)),1px))!important}
 /* menu-art.css */
 html[data-text-scale] .hero-with-art h1{font-size:max(var(--ui-font-min,0px),round(nearest,calc((26px) * var(--ui-text-scale,1)),1px))!important}
 @media(max-width:800px){
@@ -922,33 +961,8 @@ html[data-text-scale] .display-presets .btn{font-size:max(var(--ui-font-min,0px)
 html[data-text-scale] .display-example{font-size:max(var(--ui-font-min,0px),round(nearest,calc((14px) * var(--ui-text-scale,1)),1px))!important}
 html[data-text-scale] .display-width-info{font-size:max(var(--ui-font-min,0px),round(nearest,calc((12px) * var(--ui-text-scale,1)),1px))!important}
 html[data-text-scale] .display-copy-result{font-size:max(var(--ui-font-min,0px),round(nearest,calc((12px) * var(--ui-text-scale,1)),1px))!important}
-
-/* Apply the SAME scaled font to tactic character names and stars / expected damage.
-   Stronger and later than generic .tw-card-title rules, for all device widths. */
-html[data-text-scale] .tw-library .tw-card{
- --tw-card-main-font-size:max(var(--ui-font-min,0px),round(nearest,calc((13px) * var(--ui-text-scale,1)),1px));
-}
-html[data-text-scale] .tw-library .tw-card-title,
-html[data-text-scale] .tw-library .tw-card-details,
-html[data-text-scale] .tw-library .tw-card-details>span{
- font-size:var(--tw-card-main-font-size)!important;
- font-weight:800;
- line-height:1.5;
-}
-
-/* Mobile tactic heading scale. */
-@media(max-width:800px){
-html[data-text-scale] .tw-work .tw-title-lineup{font-size:max(var(--ui-font-min,0px),round(nearest,calc((clamp(11px,3.8vw,15px)) * var(--ui-text-scale,1)),1px))!important}
-}
-
-/* Tactic toolbar control scale. */
-html[data-text-scale] .tw-toolbar .tw-carry-entry #tw-carry{font-size:max(var(--ui-font-min,0px),round(nearest,calc((16px) * var(--ui-text-scale,1)),1px))!important}
-html[data-text-scale] .tw-toolbar .tw-estimate-toggle{font-size:max(var(--ui-font-min,0px),round(nearest,calc((13px) * var(--ui-text-scale,1)),1px))!important}
-
-/* External tactic carry text scale. */
-html[data-text-scale] .tw-external-head h2{font-size:max(var(--ui-font-min,0px),round(nearest,calc((19px) * var(--ui-text-scale,1)),1px))!important}
-html[data-text-scale] .tw-external-base input{font-size:max(var(--ui-font-min,0px),round(nearest,calc((16px) * var(--ui-text-scale,1)),1px))!important}
-html[data-text-scale] .tw-external-column textarea{font-size:max(var(--ui-font-min,0px),round(nearest,calc((14px) * var(--ui-text-scale,1)),1px))!important}
-@media(max-width:800px){
-html[data-text-scale] .tw-external-column textarea{font-size:max(var(--ui-font-min,0px),round(nearest,calc((16px) * var(--ui-text-scale,1)),1px))!important}
+/* adaptive-navigation.css */
+@media(min-width:801px){
+html[data-text-scale][data-nav-layout="compact"] .mobile-nav button{font-size:max(var(--menu-font-min,0px),round(nearest,calc((max(var(--menu-font-min,16px),1em)) * var(--menu-text-scale,1)),1px))!important}
+html[data-text-scale][data-nav-layout="compact"] .mobile-nav button span{font-size:1.2em!important}
 }

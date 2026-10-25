@@ -1,5 +1,5 @@
 import { makeId, syncRoster } from './roster.mjs?v=20261022-ui14';
-import { bossProgress } from './engine.mjs?v=20261024-boss-lap-lock01';
+import { bossProgress, estimateCarry } from './engine.mjs?v=20261024-boss-lap-lock01';
 import {cleanHistoricalHistoryRow,historicalHall} from './clan-history.mjs?v=20261022-hall01';
 
 export const BOSS_COLORS=['#f4cccc','#fff2cc','#d9ead3','#cfe2f3','#d9d2e9'];
@@ -61,7 +61,15 @@ export function applySourceData(app,source){
 export function dashboardDay(month,memberId,day){
   const events=month.events.filter(e=>e.memberId===memberId&&Number(e.day)===Number(day)).sort((a,b)=>a.seq-b.seq);
   const basics=events.filter(e=>!e.carry),carries=events.filter(e=>e.carry),used=new Set(carries.map(e=>e.carryFrom).filter(Boolean));
-  return {used:basics.length,remaining:Math.max(0,Number(month.options.dailyAttacks||3)-basics.length),pending:basics.filter(e=>e.kill&&!used.has(e.id)).length,slots:basics.map(e=>({basic:e,carry:carries.find(c=>c.carryFrom===e.id)||null,pending:e.kill&&!used.has(e.id)})),orphan:carries.filter(e=>!e.carryFrom)};
+  const slots=basics.map(e=>{
+    const carry=carries.find(c=>c.carryFrom===e.id)||null,pending=e.kill&&!used.has(e.id);
+    // The replayed HP before this hit includes earlier attacks on this boss.
+    // Reuse the calculator's exact rounding; capped damage cannot prove a time.
+    const estimate=pending&&e.damage>e.before?estimateCarry({hp:e.before,second:e.damage,seconds:90}):null;
+    const carrySeconds=Number.isInteger(estimate?.seconds)&&estimate.seconds>0?estimate.seconds:null;
+    return {basic:e,carry,pending,carrySeconds};
+  });
+  return {used:basics.length,remaining:Math.max(0,Number(month.options.dailyAttacks||3)-basics.length),pending:slots.filter(slot=>slot.pending).length,slots,orphan:carries.filter(e=>!e.carryFrom)};
 }
 // The 4th stage opens as soon as any boss enters it, even before the
 // first stage-4 attack. Reuse the same replay-based progress as the boss tiles.

@@ -3,7 +3,7 @@ import { summarizeArchive, sortArchiveRankings } from './archive-summary.mjs?v=2
 import {AUTOMATIC_HISTORY_FROM,monthlyBattleSummary,confirmMonthlyResult,resultNeedsReconfirm,historicalHall} from './clan-history.mjs?v=20261022-hall01';
 import { CLAN_PROFILE, isBoosterCharacter, formatExpectedDamage, comboNoticeHidden, setComboNoticeHidden, sourceLinkBox } from './view-settings.mjs?v=20261023-image-cleanup01';
 import { characterPortrait, portraitAttributes, portraitStarOverlay } from './character-portraits.mjs?v=20261023-image-cleanup01';
-import { BOSS_COLORS, BOSS_ACCENTS, BOSS_INK, tenureMonths, monthOnly, thisMonth, dashboardDay, bossTopStats } from './guild-model.mjs?v=20261024-boss-lap-lock01';
+import { BOSS_COLORS, BOSS_ACCENTS, BOSS_INK, tenureMonths, monthOnly, thisMonth, dashboardDay, bossTopStats } from './guild-model.mjs?v=20261025-dashboard-carry01';
 import { makeId, matchMembers, upsertMember, syncRoster } from './roster.mjs?v=20261024-db-stage-ranges01';
 import { downloadProfilePdf } from './report-pdf.mjs?v=20261023-contribution-round-width980-01';
 import { createComboWorkspace } from './combo-workspace.mjs?v=20261024-tactic-warning01';
@@ -50,8 +50,9 @@ export function createGuildWorkspace(api){
       const name=`<th><button class="textbutton" data-guild="profile" data-id="${X(id)}">${X(p?.name||d.events.find(e=>e.memberId===id)?.member||'미등록')}</button></th>`;
       if(unavailable)return `<tr>${name}<td class="day-unavailable" colspan="${count+3}">—</td></tr>`;
       const slots=Array.from({length:count},(_,i)=>{
-        const slot=result.slots[i],solo=!!slot&&!slot.carry&&!slot.pending;
-        return `<td><div class="attack-slot ${slot?'filled':''}${solo?' is-solo':''}">${slot?chip(slot.basic.boss):'<span class="empty-slot">—</span>'}${slot?.carry?chip(slot.carry.boss):slot?.pending?'<strong class="pending-carry" title="미사용 이월">★</strong>':slot?'':'<span class="empty-slot">—</span>'}</div></td>`;
+        const slot=result.slots[i],solo=!!slot&&!slot.carry&&!slot.pending,seconds=slot?.carrySeconds;
+        const pending=slot?.pending?`<strong class="pending-carry${seconds!==null?' carry-seconds':''}" title="${seconds!==null?'오버킬 기준 예상 이월 '+seconds+'초':'미사용 이월 · 이월시간 계산에 필요한 오버킬 기록 없음'}" aria-label="미사용 이월 ${seconds!==null?seconds+'초':'계산 가능한 오버킬 기록 없음'}">${seconds!==null?seconds+'초':'★'}</strong>`:'';
+        return `<td><div class="attack-slot ${slot?'filled':''}${solo?' is-solo':''}${slot?.pending&&seconds!==null?' has-carry-time':''}">${slot?chip(slot.basic.boss):'<span class="empty-slot">—</span>'}${slot?.carry?chip(slot.carry.boss):slot?.pending?pending:slot?'':'<span class="empty-slot">—</span>'}</div></td>`;
       }).join('');
       return `<tr>${name}${slots}<td class="dashboard-count">${result.used}/${count}</td><td class="dashboard-count">${result.remaining}</td><td class="dashboard-count ${result.pending?'pending-carry':''}">${result.pending}${result.orphan.length?'<span class="text-danger" title="이월 연결 확인"> !</span>':''}</td></tr>`;
     });
