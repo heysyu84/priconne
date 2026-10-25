@@ -495,3 +495,11 @@ h1,h2,h3,strong,b{font-weight:700}
 .battle-table th[data-label="실제 피해량"],
 .battle-mobile-table th[data-label="피해량"],
 .battle-mobile-table th[data-label="실제 피해량"]{text-align:right!important}
+
+/* All non-boss HUD status markers stay monochrome. */
+.battle-hud .raid-status .state-dot{background:#666!important;box-shadow:none!important}
+.battle-hud .hud-status-light{background:#666!important;box-shadow:none!important}
+@media(max-width:760px){
+ .data-table.battle-mobile-table.mobile-detail th[data-label="관리"]{text-align:center!important}
+ .data-table.battle-mobile-table.mobile-detail th[data-label="인게임"]{text-align:right!important}
+}
