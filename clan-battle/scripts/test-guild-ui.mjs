@@ -16,7 +16,7 @@ const app=JSON.parse(html.match(/<script id="seed-data" type="application\/json"
 const read=f=>JSON.parse(fs.readFileSync(new URL('../public/'+f,import.meta.url),'utf8'));
 applySourceData(app,read('guild-source.json'));ensureTactics(app,read('tactic-metadata.json'),read('tactic-row-formats.json'));
 app.active='2026-10';const month=()=>app.months[app.active];replayMonth(month());let editor=false,form=null,saves=0,unlocks=0;
-const api={getApp:()=>app,getMonth:month,render(){},persist(){saves++;},section:h=>`<h1>${h}</h1>`,nf:v=>String(v),escapeHtml:v=>String(v??''),notify(){},openForm:(title,fields,callback)=>{form={title,fields,callback};},canEdit:()=>editor,unlock:()=>unlocks++,navigate(){},characters:[],replay:replayMonth,aggregates:()=>[],contribution,bossStatus:()=>bossProgress(month()),estimateCarry,copyText(){}};
+const api={getApp:()=>app,getMonth:month,render(){},persist(){saves++;},section:h=>`<h1>${h}</h1>`,nf:v=>String(v),formatContribution:v=>String(v),escapeHtml:v=>String(v??''),notify(){},openForm:(title,fields,callback)=>{form={title,fields,callback};},canEdit:()=>editor,unlock:()=>unlocks++,navigate(){},characters:[],replay:replayMonth,aggregates:()=>[],contribution,bossStatus:()=>bossProgress(month()),estimateCarry,copyText(){}};
 const guild=createGuildWorkspace(api),tactics=createTacticWorkspace(api);
 const click=(attr,value,extra={})=>{const b={dataset:{[attr]:value,...extra}};for(const fn of listeners.click)fn({target:{closest:s=>s===`[data-${attr}]`?b:null},preventDefault(){}});};
 click('guild','add-member');assert.equal(unlocks,1);assert.equal(form,null);
