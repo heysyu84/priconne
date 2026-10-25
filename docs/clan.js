@@ -117,11 +117,11 @@ const archiveKeys=()=>{const latest=Object.keys(app.months).sort().at(-1);return
  const guildMigrated=newDatabase?applySourceData(app,GUILD_SOURCE):false;
  const comboSynced=newDatabase?Object.values(app.months).map(syncTacticRecommendations).some(Boolean):false;
  app.active=Object.keys(app.months).sort().at(-1);
- const seedMonth=app.months[app.active];
+ const activeMonthSnapshot=app.months[app.active];
 let editor=false;try{const result=await apiFetch('/api/editor',{cache:'no-store'});editor=!!(await result.json()).editor;}catch{}
 let revision=boot.revision,dirty=0,saving=false,saveTimer=null,blocked=false;
 for(const month of Object.values(app.months))Engine.replayMonth(month);
-let ui={page:'overview',day:'all',filter:'',boss:'all',member:seedMonth.members[0],rank:'damage',tactic:seedMonth.tactics[0]?.id||'',tacticSearch:'',editor:false,editLog:null,calcSeconds:61,calcText:'',calcResult:null,configStage:4,historyMonth:null,logPage:1,archiveSort:'contribution'};
+let ui={page:'overview',day:'all',filter:'',boss:'all',member:activeMonthSnapshot.members[0],rank:'damage',tactic:activeMonthSnapshot.tactics[0]?.id||'',tacticSearch:'',editor:false,editLog:null,calcSeconds:61,calcText:'',calcResult:null,configStage:4,historyMonth:null,logPage:1,archiveSort:'contribution'};
 const archiveHash=location.hash.match(/^#archive(?:=(\d{4}-\d{2}))?$/);
 if(archiveHash){ui.page='archive';ui.archiveMonth=archiveHash[1]||null;}
 const current=()=>monthView.record();
