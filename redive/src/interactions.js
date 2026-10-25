@@ -40,7 +40,7 @@ document.addEventListener('click',async event=>{const button=event.target.closes
  if(action==='v2-import-carry'){carryImportDialog();return;}if(action==='v2-carry-template'){downloadCsv([['보스','편성','성급','손컨','TP','기대딜','원본시간','본문','영상','메모'],['1','유이 콧코로 페코린느 레이 사렌','55655','0','4.2','1.8','1:00','1:00 AUTO 오프\n0:30 전원 SET','','']],'이월택틱_양식.csv');return;}
  if(action==='v2-preview-carry'){try{ext.carryImport=parseCarrySheet(document.getElementById('carry-sheet-paste').value.split('\n').filter(Boolean).map(line=>line.split('\t')));renderCarryPreview();}catch(error){toast(error.message);}return;}
  if(action==='v2-commit-carry'){commitCompatibleCarry();return;}
- if(action==='v2-import-images'){ext.importMode=true;render();return;}if(action==='v2-close-import'){ext.importMode=false;render();return;}if(action==='v2-active-image'){ext.activeImage=Number(value);render();return;}
+ if(action==='v2-analyze-images'){void v2AnalyzeImages();return;}if(action==='v2-import-images'){ext.importMode=true;render();return;}if(action==='v2-close-import'){if(ext.ocrBusy){toast('OCR 분석 중입니다.');return;}ext.importMode=false;for(const image of ext.images)URL.revokeObjectURL(image.url);ext.images=[];render();return;}if(action==='v2-active-image'){ext.activeImage=Number(value);render();return;}
  if(action==='v2-add-import-row'){ext.importRows.push(newImportRow());render();return;}if(action==='v2-import-delete'){ext.importRows=ext.importRows.filter(r=>r.id!==id);render();return;}
  if(action==='v2-import-up'||action==='v2-import-down'){const i=ext.importRows.findIndex(r=>r.id===id),j=i+(action.endsWith('up')?-1:1);if(j>=0&&j<ext.importRows.length)[ext.importRows[i],ext.importRows[j]]=[ext.importRows[j],ext.importRows[i]];render();return;}
  if(action==='v2-parse-batch'){ext.importRows.push(...parseBatchText(document.getElementById('batch-source-text').value));render();return;}if(action==='v2-commit-batch'){commitBatchRows();return;}
@@ -70,7 +70,100 @@ document.addEventListener('click',async event=>{const button=event.target.closes
 },true);
 function initializeAwards(){for(const season of Object.values(data.seasons))if(season.result.sealed&&!season.result.winners){season.result.winners=winnersFrom(season.logs);season.result.fingerprint=resultFingerprint(season.logs);}}
 function renderCarryPreview(){document.getElementById('carry-import-preview').innerHTML=rowTable(['보스','편성','기대딜','행 수'],(ext.carryImport||[]).map(r=>`<tr><td>${r.boss}넴</td><td>${X(r.party.join(' '))}</td><td>${r.damage}억</td><td>${r.text.split('\n').length}</td></tr>`));}
-function commitBatchRows(){if(!ensureEdit())return;if(data.dayClosures.some(c=>c.day===ui.day)){toast('마감을 취소한 뒤 등록하세요.');return;}const rows=ext.importRows.filter(r=>r.selected);if(!rows.length){toast('등록할 행을 선택하세요.');return;}if(rows.some(r=>!r.memberId||!data.bossSettings.some(b=>b.id===Number(r.boss))||!Number.isSafeInteger(numberValue(r.damage))||numberValue(r.damage)<=0)){toast('클랜원·보스·피해량을 확인하세요.');return;}if(rows.some(isImportDuplicate)){toast('중복 가능 행은 선택을 해제하거나 내용을 확인하세요.');return;}checkpoint();const before=structuredClone(data.logs);let seq=Math.max(0,...data.logs.map(e=>e.seq));for(const r of (rows.every(r=>r.gameAt)?[...rows].sort((a,b)=>a.gameAt.localeCompare(b.gameAt)):rows))data.logs.push({id:uid(),seq:++seq,day:ui.day,boss:Number(r.boss),memberId:r.memberId,damage:numberValue(r.damage),carry:r.carry,usesCarry:r.carry,gameAt:r.gameAt,note:'',bonus:0});recalculateSeason();const newIds=new Set(data.logs.filter(e=>e.seq>Math.max(0,...before.map(e=>e.seq))).map(e=>e.id));if(data.replayWarnings.some(w=>newIds.has(w.id))){data.logs=before;recalculateSeason();toast('기본 타수 또는 이월 연결을 확인하세요.');return;}persist();ext.importRows=[];ext.importMode=false;render();toast(rows.length+'건 등록',true);}
+
+let v2OcrSdk=null;
+async function v2LoadOcr(){
+ if(globalThis.Tesseract?.createWorker)return globalThis.Tesseract;
+ if(!v2OcrSdk)v2OcrSdk=new Promise((resolve,reject)=>{
+  const s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/tesseract.js@7.0.0/dist/tesseract.min.js';s.async=true;
+  s.onload=()=>globalThis.Tesseract?.createWorker?resolve(globalThis.Tesseract):reject(new Error('OCR 엔진 로드 실패'));
+  s.onerror=()=>reject(new Error('OCR 엔진 다운로드 실패 · 인터넷 연결을 확인하세요.'));
+  document.head.appendChild(s);
+ }).catch(e=>{v2OcrSdk=null;throw e;});
+ return v2OcrSdk;
+}
+function v2Crop(bitmap,frame,field=null){
+ const f=field?{x:frame.x+frame.w*field.x,y:frame.y+frame.h*field.y,w:frame.w*field.w,h:frame.h*field.h}:frame;
+ const w=Math.max(1,Math.floor(bitmap.width*f.w)),h=Math.max(1,Math.floor(bitmap.height*f.h));
+ const z=Math.min(field?5:2.5,2100/w,720/h),c=document.createElement('canvas');
+ c.width=Math.max(1,Math.round(w*z));c.height=Math.max(1,Math.round(h*z));
+ const ctx=c.getContext('2d',{willReadFrequently:true});if(!ctx)throw Error('Canvas 생성 실패');
+ ctx.imageSmoothingQuality='high';
+ ctx.drawImage(bitmap,bitmap.width*f.x,bitmap.height*f.y,w,h,0,0,c.width,c.height);return c;
+}
+async function v2ReadOcr(worker,bitmap,frame,field){
+ const canvas=v2Crop(bitmap,frame,field);
+ try{
+  await worker.setParameters({tessedit_pageseg_mode:field?'7':'3',tessedit_char_whitelist:''});
+  const result=await worker.recognize(canvas);
+  return {text:String(result.data?.text||'').trim(),confidence:Number(result.data?.confidence||0)};
+ }finally{canvas.width=canvas.height=0;}
+}
+async function v2AnalyzeImages(){
+ if(ext.ocrBusy)return;
+ const images=ext.images.filter(item=>item.file);
+ if(!images.length){toast('분석할 스크린샷을 선택하세요.');return;}
+ const month=ui.month,job=uid();ext.ocrBusy=true;ext.ocrJob=job;ext.ocrErrors=[];ext.ocrStatus='OCR 분석 준비 중…';render();
+ const progress=value=>{if(ext.ocrJob!==job)return;ext.ocrStatus=value;const el=document.getElementById('v2-ocr-status');if(el)el.textContent=value;};
+ let worker=null,found=0;
+ try{
+  if(typeof createImageBitmap!=='function')throw Error('브라우저가 이미지 OCR을 지원하지 않습니다.');
+  const [{parseBattleLogText,parseQuickLogText,matchBossReadings,cleanOcrName},sdk]=await Promise.all([import('./compat/battle-image-parser.mjs'),v2LoadOcr()]);
+  const roster=data.members.filter(memberSeasonActive).map(m=>({id:m.id,name:m.name,aliases:Array.isArray(m.aliases)?m.aliases:[]}));
+  const bosses=data.bossSettings.map(b=>({id:b.id,name:b.name,aliases:Array.isArray(b.aliases)?b.aliases:[]}));
+  progress('한국어 OCR 모델 준비 중…');
+  worker=await sdk.createWorker('kor',1,{logger:e=>{if(e.status==='recognizing text')progress('문자 인식 중 '+Math.round(Number(e.progress||0)*100)+'%');}});
+  const frames=ext.ocrMode==='quick'?[{x:.711,y:.242,w:.215,h:.565}]:[{x:.133,y:.252,w:.563,h:.176},{x:.133,y:.438,w:.563,h:.172},{x:.133,y:.623,w:.563,h:.165}];
+  const fields={member:{x:.33,y:.44,w:.25,h:.19},damage:{x:.72,y:.02,w:.26,h:.30},date:{x:.365,y:.65,w:.225,h:.28},boss:{x:.04,y:.75,w:.25,h:.19}};
+  for(let i=0;i<images.length;i++){
+   if(ext.ocrJob!==job||month!==ui.month||!ext.importMode)break;
+   const item=images[i];progress((i+1)+'/'+images.length+'장 분석 중');
+   let bitmap=null;
+   try{
+    bitmap=await createImageBitmap(item.file);
+    for(let j=0;j<frames.length;j++){
+     const frame=frames[j],full=await v2ReadOcr(worker,bitmap,frame);
+     if(!full.text||/모의\s*전/.test(full.text))continue;
+     const opts={roster,bosses,source:item.name+' · '+(j+1)+'행'};
+     const parsed=ext.ocrMode==='quick'?parseQuickLogText(full.text,opts):[parseBattleLogText(full.text,opts)].filter(Boolean);
+     for(const extracted of parsed){
+      if(ext.ocrMode!=='quick'){
+       const member=await v2ReadOcr(worker,bitmap,frame,fields.member);
+       const candidate=parseBattleLogText(member.text,{roster,bosses:[],memberField:true});
+       extracted.ocrName=cleanOcrName(member.text);
+       if(candidate?.memberId){extracted.memberId=candidate.memberId;extracted.memberName=candidate.memberName;}
+       const damage=await v2ReadOcr(worker,bitmap,frame,fields.damage);
+       const d=parseBattleLogText('입힌 데미지 '+damage.text,{roster:[],bosses:[]});
+       if(Number.isSafeInteger(d?.damage)&&d.damage>0)extracted.damage=d.damage;
+       if(!extracted.gameAt){
+        const date=await v2ReadOcr(worker,bitmap,frame,fields.date);
+        extracted.gameAt=parseBattleLogText(date.text,{roster:[],bosses:[]})?.gameAt||'';
+       }
+       if(!extracted.bossId){
+        const boss=await v2ReadOcr(worker,bitmap,frame,fields.boss);
+        const match=matchBossReadings([boss],bosses);
+        if(match)extracted.bossId=match.id;
+       }
+       extracted.rawText+='\n\n개별 인식\n클랜원: '+member.text+'\n피해량: '+damage.text;
+      }
+      if(!extracted.memberId&&!extracted.bossId&&!extracted.damage&&!extracted.gameAt)continue;
+      const ok=!!extracted.memberId&&!!extracted.bossId&&Number.isSafeInteger(Number(extracted.damage))&&Number(extracted.damage)>0&&!!extracted.gameAt;
+      const warnings=[...(!extracted.memberId?['클랜원']:[]),...(!extracted.bossId?['보스']:[]),...(!extracted.damage?['피해량']:[]),...(!extracted.gameAt?['공격 일시']:[])];
+      ext.importRows.push({...newImportRow(),memberId:extracted.memberId||'',boss:extracted.bossId||'',damage:extracted.damage||'',gameAt:extracted.gameAt||'',selected:ok,warnings,rawText:extracted.rawText||''});
+      found++;
+     }
+    }
+   }catch(error){ext.ocrErrors.push(item.name+': '+(error.message||String(error)));}
+   finally{bitmap?.close?.();}
+   progress((i+1)+'/'+images.length+'장 분석 완료');
+  }
+  ext.ocrStatus=images.length+'장 OCR 완료 · '+found+'건 인식. 내용을 확인한 뒤 선택한 기록만 등록하세요.';
+  if(!found&&!ext.ocrErrors.length)ext.ocrStatus='인식된 기록이 없습니다. 스크린샷 형식 또는 화면 구성을 확인하세요.';
+ }catch(error){ext.ocrErrors.push(error.message||String(error));ext.ocrStatus='OCR 분석 실패';}
+ finally{if(worker)await worker.terminate().catch(()=>{});if(ext.ocrJob===job){ext.ocrBusy=false;if(ext.importMode)render();}}
+}
+
+function commitBatchRows(){if(ext.ocrBusy){toast('OCR 분석이 끝난 뒤 등록하세요.');return;}if(!ensureEdit())return;if(data.dayClosures.some(c=>c.day===ui.day)){toast('마감을 취소한 뒤 등록하세요.');return;}const rows=ext.importRows.filter(r=>r.selected);if(!rows.length){toast('등록할 행을 선택하세요.');return;}if(rows.some(r=>!r.memberId||!data.bossSettings.some(b=>b.id===Number(r.boss))||!Number.isSafeInteger(numberValue(r.damage))||numberValue(r.damage)<=0)){toast('클랜원·보스·피해량을 확인하세요.');return;}if(rows.some(isImportDuplicate)){toast('중복 가능 행은 선택을 해제하거나 내용을 확인하세요.');return;}checkpoint();const before=structuredClone(data.logs);let seq=Math.max(0,...data.logs.map(e=>e.seq));for(const r of (rows.every(r=>r.gameAt)?[...rows].sort((a,b)=>a.gameAt.localeCompare(b.gameAt)):rows))data.logs.push({id:uid(),seq:++seq,day:ui.day,boss:Number(r.boss),memberId:r.memberId,damage:numberValue(r.damage),carry:r.carry,usesCarry:r.carry,gameAt:r.gameAt,note:'',bonus:0});recalculateSeason();const newIds=new Set(data.logs.filter(e=>e.seq>Math.max(0,...before.map(e=>e.seq))).map(e=>e.id));if(data.replayWarnings.some(w=>newIds.has(w.id))){data.logs=before;recalculateSeason();toast('기본 타수 또는 이월 연결을 확인하세요.');return;}persist();ext.importRows=[];ext.importMode=false;render();toast(rows.length+'건 등록',true);}
 function backupValid(incoming){return incoming?.schema===2&&(incoming.monthExport?incoming.season?.logs&&incoming.season?.bossSettings:incoming.seasons&&Array.isArray(incoming.members));}
 function restorePreparedBackup(){const editable=data.settings.editable;const incoming=ext.pendingRestore;if(!backupValid(incoming))return;checkpoint();const previous=structuredClone(data);try{if(incoming.monthExport){snapshotSeason();data.seasons[incoming.month]=incoming.season;for(const m of incoming.members||[])if(!data.members.some(p=>p.id===m.id))data.members.push(m);activateSeason(incoming.month);}else{data=incoming;if(syncState.started)data.settings.editable=!!(editable&&syncState.canEdit);ui.month=data.activeMonth||Object.keys(data.seasons).sort().at(-1);for(const key of SEASON_KEYS)data[key]=structuredClone(data.seasons[ui.month][key]);recalculateSeason();}persist();closeDrawer();nav('overview','bosses');toast('백업 복원',true);}catch{data=previous;recalculateSeason();toast('백업 형식을 확인하세요.');}}
 document.addEventListener('submit',event=>{const form=event.target.closest('form[data-form]');if(!form||!form.dataset.form.startsWith('v2-'))return;event.preventDefault();event.stopImmediatePropagation();const kind=form.dataset.form,fd=new FormData(form);if(kind==='v2-unlock'){if(sha256Text(String(fd.get('pin')))!==data.pinHash){toast('비밀번호가 일치하지 않습니다.');return;}data.settings.editable=true;persist();closeDrawer();render();return;}if(!ensureEdit())return;
@@ -100,7 +193,8 @@ document.addEventListener('change',async event=>{const el=event.target,key=el.da
  if(key==='v2-row-check'){if(!ensureEdit())return;const t=activeTactic();rememberRows(t);const row=tacticRows(t).find(r=>r.id===el.dataset.row);row.manualChecks=true;row.checked[Number(el.dataset.column)]=el.checked;saveGridText(t);return;}
  if(key==='v2-editable'){if(syncState.started){el.checked=false;toggleWriter();return;}if(!data.settings.editable&&data.pinHash){el.checked=false;toggleWriter();return;}data.settings.editable=el.checked;persist();render();return;}if(key==='v2-default-day'){data.settings.defaultDay=Number(el.value);persist();return;}
  if(key==='v2-carry-sheet'&&el.files[0]){try{const file=el.files[0],rows=file.name.toLowerCase().endsWith('.xlsx')?await xlsxRows(file):parseDelimited(await file.text(),file.name.toLowerCase().endsWith('.tsv')?'\t':',');ext.carryImport=parseCarrySheet(rows);renderCarryPreview();}catch(error){toast(error.message);}return;}
- if(key==='v2-batch-images'){for(const file of el.files)if(file.type.startsWith('image/'))ext.images.push({id:uid(),url:URL.createObjectURL(file),name:file.name});ext.activeImage=0;if(!ext.importRows.length)ext.importRows.push(newImportRow());render();return;}
+ if(key==='v2-ocr-mode'){ext.ocrMode=el.value;return;}
+ if(key==='v2-batch-images'){if(ext.ocrBusy){toast('분석 후 추가해 주세요.');return;}const items=Array.from(el.files||[]);if(ext.images.length+items.length>60||items.some(file=>!/^image\/(png|jpeg|webp)$/.test(file.type)||file.size>25*1024*1024)){toast('최대 60장, 장당 25MB 이하의 PNG·JPG·WebP만 선택하세요.');return;}for(const file of items)ext.images.push({id:uid(),url:URL.createObjectURL(file),name:file.name,file});ext.activeImage=ext.images.length-items.length;ext.ocrStatus=ext.images.length+'장 선택됨 · OCR 자동 분석 시작을 누르세요.';render();return;}
  if(key==='v2-restore'&&el.files[0]){try{const incoming=await prepareCompatibleBackup(JSON.parse(await el.files[0].text()));if(!backupValid(incoming))throw new Error();ext.pendingRestore=incoming;openDrawer('백업 복원',`<p>${incoming.monthExport?incoming.month.replace('-','.')+'월':Object.keys(incoming.seasons).length+'개월'} 백업으로 복원합니다.</p>`,simpleButton('취소','close-drawer')+simpleButton('복원','v2-confirm-restore','','primary'));}catch(error){toast(error.message||'백업 JSON을 확인하세요.');}return;}
  if(key==='v2-portrait-file'&&el.files[0]){const image=new Image();image.onload=()=>{ext.cropImage=image;document.getElementById('portrait-zoom').value=1;document.getElementById('portrait-x').value=0;document.getElementById('portrait-y').value=0;drawPortraitCrop();};image.src=URL.createObjectURL(el.files[0]);return;}
  if(key==='v2-portrait-star'){if(ext.cropImage){ext.pendingImages[ext.previousPortraitStar||'5']=document.getElementById('portrait-canvas').toDataURL('image/jpeg',.87);ext.cropImage=null;}ext.previousPortraitStar=el.value;showStoredPortrait();return;}

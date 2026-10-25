@@ -511,8 +511,21 @@ function openCharacter(id=null){if(!ensureEdit())return;const c=data.characters.
 function showStoredPortrait(){const canvas=document.getElementById('portrait-canvas');if(!canvas)return;const ctx=canvas.getContext('2d');ctx.clearRect(0,0,200,200);const star=document.getElementById('portrait-star').value,c=data.characters.find(c=>c.id===ext.editCharacterId),base=GAME_ASSETS.characters[c?.name],url=ext.pendingImages?.[star]||ext.pendingImages?.default||base?.[star]||base?.default;if(url){const image=new Image();image.onload=()=>{ctx.clearRect(0,0,200,200);ctx.drawImage(image,0,0,200,200);};image.src=url;}}
 function drawPortraitCrop(){const image=ext.cropImage,canvas=document.getElementById('portrait-canvas');if(!image||!canvas)return;const zoom=Number(document.getElementById('portrait-zoom').value),scale=Math.max(200/image.width,200/image.height)*zoom,w=image.width*scale,h=image.height*scale,x=(200-w)/2+Number(document.getElementById('portrait-x').value),y=(200-h)/2+Number(document.getElementById('portrait-y').value);const ctx=canvas.getContext('2d');ctx.clearRect(0,0,200,200);ctx.drawImage(image,x,y,w,h);}
 function saveCharacter(form){const fd=new FormData(form),id=String(fd.get('characterId')),name=String(fd.get('name')).trim();if(!name||data.characters.some(c=>c.id!==id&&c.name===name)){toast('이름이 비었거나 중복됩니다.');return;}checkpoint();if(ext.cropImage){const canvas=document.getElementById('portrait-canvas');ext.pendingImages[document.getElementById('portrait-star').value]=canvas.toDataURL('image/jpeg',.87);}const old=data.characters.find(c=>c.id===id),value={id:id||uid(),name,aliases:String(fd.get('aliases')).split(/[,，]/).map(s=>s.trim()).filter(Boolean),booster:fd.has('booster'),images:ext.pendingImages||{}};if(old){const previous=old.name;Object.assign(old,value);for(const season of Object.values(data.seasons))for(const t of season.tactics)t.party=t.party.map(n=>n===previous?name:n);for(const t of data.tactics)t.party=t.party.map(n=>n===previous?name:n);}else{data.characters.push(value);if(!CHARACTERS.includes(name))CHARACTERS.push(name);}persist();closeDrawer();render();toast('캐릭터 저장',true);}
-function batchImportPage(){return titleBar('배틀로그 이미지 등록',simpleButton('배틀로그로','v2-close-import'))+`<div class="image-import-layout"><section class="image-import-source"><label class="image-upload-label">이미지 선택<input type="file" accept="image/*" multiple data-input="v2-batch-images" aria-label="배틀로그 이미지 선택"></label>${ext.images.length?`<div class="image-thumbnails">${ext.images.map((image,i)=>`<button class="${ext.activeImage===i?'active':''}" data-action="v2-active-image" data-value="${i}">${i+1}</button>`).join('')}</div><img class="battle-source-image" src="${ext.images[ext.activeImage||0].url}" alt="참고할 배틀로그 스크린샷">`:'<div class="no-rows">선택한 이미지 없음</div>'}<details class="fold"><summary>텍스트·표 붙여넣기</summary><textarea id="batch-source-text" rows="8" placeholder="클랜원&#9;보스&#9;피해량&#9;이월&#9;공격 일시"></textarea>${simpleButton('행으로 읽기','v2-parse-batch')}</details><p class="field-help">이미지 자동 인식은 연결하지 않았습니다. 이미지와 대조해 입력하거나 추출한 텍스트를 붙여넣을 수 있습니다.</p></section><section class="image-import-rows"><div class="sheet-heading"><h2>등록 전 확인 <small>${ext.importRows.length}건</small></h2><div>${simpleButton('행 추가','v2-add-import-row')}${simpleButton('선택 기록 등록','v2-commit-batch','','primary')}</div></div>${ext.importRows.map((row,i)=>batchRowForm(row,i)).join('')||'<p class="no-rows">행을 추가하세요.</p>'}</section></div>`;}
-function batchRowForm(r,i){const duplicate=isImportDuplicate(r);return `<div class="import-row ${duplicate?'duplicate':''}"><div class="import-row-head"><label class="inline-check"><input type="checkbox" data-input="v2-import-field" data-id="${r.id}" data-field="selected" ${r.selected?'checked':''}>${i+1}번</label><span>${duplicate?'중복 가능':''}</span><div>${simpleButton('↑','v2-import-up',r.id)}${simpleButton('↓','v2-import-down',r.id)}${simpleButton('삭제','v2-import-delete',r.id)}</div></div><div class="field-row"><div class="field"><label>클랜원</label><select data-input="v2-import-field" data-id="${r.id}" data-field="memberId"><option value="">선택</option>${data.members.filter(m=>memberSeasonActive(m)).map(m=>`<option value="${m.id}" ${r.memberId===m.id?'selected':''}>${X(m.name)}</option>`).join('')}</select></div><div class="field"><label>보스</label><select data-input="v2-import-field" data-id="${r.id}" data-field="boss">${data.bossSettings.map(b=>`<option value="${b.id}" ${r.boss===b.id?'selected':''}>${b.id}넴</option>`).join('')}</select></div></div><div class="field"><label>기록 피해량 · 전체 숫자</label><input data-input="v2-import-field" data-id="${r.id}" data-field="damage" value="${X(r.damage||'')}" inputmode="numeric"></div><div class="field-row"><div class="field"><label>공격 일시</label><input type="datetime-local" data-input="v2-import-field" data-id="${r.id}" data-field="gameAt" value="${X(r.gameAt||'')}"></div><label class="inline-check"><input type="checkbox" data-input="v2-import-field" data-id="${r.id}" data-field="carry" ${r.carry?'checked':''}>이월 사용</label></div></div>`;}
+function batchImportPage(){
+ return titleBar('배틀로그 이미지 등록',simpleButton('배틀로그로','v2-close-import'))+
+ '<div class="image-import-layout"><section class="image-import-source">'+
+ '<label class="image-upload-label">이미지 선택<input type="file" accept="image/png,image/jpeg,image/webp" multiple data-input="v2-batch-images" aria-label="배틀로그 이미지 선택"></label>'+
+ (ext.images.length?'<div class="image-thumbnails">'+ext.images.map((image,i)=>'<button class="'+(ext.activeImage===i?'active':'')+'" data-action="v2-active-image" data-value="'+i+'">'+(i+1)+'</button>').join('')+'</div><img class="battle-source-image" src="'+ext.images[ext.activeImage||0].url+'" alt="분석할 스크린샷">':'<div class="no-rows">선택한 이미지 없음</div>')+
+ '<div class="field"><label>스크린샷 형식</label><select data-input="v2-ocr-mode"><option value="detail" '+(ext.ocrMode==='quick'?'':'selected')+'>상세 이력 (3행)</option><option value="quick" '+(ext.ocrMode==='quick'?'selected':'')+'>간단 로그</option></select></div>'+
+ simpleButton(ext.ocrBusy?'OCR 분석 중…':'OCR 자동 분석 시작','v2-analyze-images','','primary')+
+ '<p id="v2-ocr-status" role="status" aria-live="polite" class="field-help">'+X(ext.ocrStatus||'첫 분석 시 한국어 OCR 언어 모델을 다운로드합니다.')+'</p>'+
+ (ext.ocrErrors?.length?'<details class="fold" open><summary>인식 오류 '+ext.ocrErrors.length+'건</summary>'+ext.ocrErrors.map(e=>'<p class="field-help">'+X(e)+'</p>').join('')+'</details>':'')+
+ '<details class="fold"><summary>텍스트·표 붙여넣기</summary><textarea id="batch-source-text" rows="8" placeholder="클랜원&#9;보스&#9;피해량&#9;이월&#9;공격 일시"></textarea>'+simpleButton('행으로 읽기','v2-parse-batch')+'</details>'+
+ '<p class="field-help">이미지 문자 자동 분석 후 클랜원·보스·피해량·공격 일시를 검토하고 이월 여부를 직접 지정하세요. 확인 전에는 자동 등록되지 않습니다.</p></section>'+
+ '<section class="image-import-rows"><div class="sheet-heading"><h2>등록 전 확인 <small>'+ext.importRows.length+'건</small></h2><div>'+simpleButton('행 추가','v2-add-import-row')+simpleButton('선택 기록 등록','v2-commit-batch','','primary')+'</div></div>'+
+ (ext.importRows.map((row,i)=>batchRowForm(row,i)).join('')||'<p class="no-rows">인식 결과가 없습니다.</p>')+'</section></div>';
+}
+function batchRowForm(r,i){const duplicate=isImportDuplicate(r);const review=r.warnings?.length?'<p class="field-help">OCR 확인: '+X(r.warnings.join(' · '))+'</p>':'';return `<div class="import-row ${duplicate?'duplicate':''}"><div class="import-row-head"><label class="inline-check"><input type="checkbox" data-input="v2-import-field" data-id="${r.id}" data-field="selected" ${r.selected?'checked':''}>${i+1}번</label><span>${duplicate?'중복 가능':''}</span><div>${simpleButton('↑','v2-import-up',r.id)}${simpleButton('↓','v2-import-down',r.id)}${simpleButton('삭제','v2-import-delete',r.id)}</div></div>${review}<div class="field-row"><div class="field"><label>클랜원</label><select data-input="v2-import-field" data-id="${r.id}" data-field="memberId"><option value="">선택</option>${data.members.filter(m=>memberSeasonActive(m)).map(m=>`<option value="${m.id}" ${r.memberId===m.id?'selected':''}>${X(m.name)}</option>`).join('')}</select></div><div class="field"><label>보스</label><select data-input="v2-import-field" data-id="${r.id}" data-field="boss"><option value="" ${!r.boss?'selected':''}>보스 확인</option>${data.bossSettings.map(b=>`<option value="${b.id}" ${r.boss===b.id?'selected':''}>${b.id}넴</option>`).join('')}</select></div></div><div class="field"><label>기록 피해량 · 전체 숫자</label><input data-input="v2-import-field" data-id="${r.id}" data-field="damage" value="${X(r.damage||'')}" inputmode="numeric"></div><div class="field-row"><div class="field"><label>공격 일시</label><input type="datetime-local" data-input="v2-import-field" data-id="${r.id}" data-field="gameAt" value="${X(r.gameAt||'')}"></div><label class="inline-check"><input type="checkbox" data-input="v2-import-field" data-id="${r.id}" data-field="carry" ${r.carry?'checked':''}>이월 사용</label></div></div>`;}
 function isImportDuplicate(r){return r.memberId&&Number(r.damage)>0&&data.logs.some(e=>e.day===ui.day&&e.memberId===r.memberId&&e.boss===Number(r.boss)&&e.damage===numberValue(r.damage)&&(!r.gameAt||e.gameAt===r.gameAt));}
 function newImportRow(){return {id:uid(),selected:true,memberId:'',boss:1,damage:'',carry:false,gameAt:''};}
 function parseBatchText(text){const rows=text.replace(/\r/g,'').split('\n').filter(Boolean);return rows.map(line=>{const cells=line.split('\t');if(/클랜원|피해량/.test(cells[0])&&/보스/.test(line))return null;const member=data.members.find(m=>m.name===cells[0]||m.uid===cells[0]);return {...newImportRow(),memberId:member?.id||'',boss:Number(String(cells[1]||'1').replace(/\D/g,''))||1,damage:numberValue(cells[2]),carry:/true|1|이월|사용/i.test(cells[3]||''),gameAt:cells[4]||''};}).filter(Boolean);}
@@ -1353,7 +1366,7 @@ document.addEventListener('click',async event=>{const button=event.target.closes
  if(action==='v2-import-carry'){carryImportDialog();return;}if(action==='v2-carry-template'){downloadCsv([['보스','편성','성급','손컨','TP','기대딜','원본시간','본문','영상','메모'],['1','유이 콧코로 페코린느 레이 사렌','55655','0','4.2','1.8','1:00','1:00 AUTO 오프\n0:30 전원 SET','','']],'이월택틱_양식.csv');return;}
  if(action==='v2-preview-carry'){try{ext.carryImport=parseCarrySheet(document.getElementById('carry-sheet-paste').value.split('\n').filter(Boolean).map(line=>line.split('\t')));renderCarryPreview();}catch(error){toast(error.message);}return;}
  if(action==='v2-commit-carry'){commitCompatibleCarry();return;}
- if(action==='v2-import-images'){ext.importMode=true;render();return;}if(action==='v2-close-import'){ext.importMode=false;render();return;}if(action==='v2-active-image'){ext.activeImage=Number(value);render();return;}
+ if(action==='v2-analyze-images'){void v2AnalyzeImages();return;}if(action==='v2-import-images'){ext.importMode=true;render();return;}if(action==='v2-close-import'){if(ext.ocrBusy){toast('OCR 분석 중입니다.');return;}ext.importMode=false;for(const image of ext.images)URL.revokeObjectURL(image.url);ext.images=[];render();return;}if(action==='v2-active-image'){ext.activeImage=Number(value);render();return;}
  if(action==='v2-add-import-row'){ext.importRows.push(newImportRow());render();return;}if(action==='v2-import-delete'){ext.importRows=ext.importRows.filter(r=>r.id!==id);render();return;}
  if(action==='v2-import-up'||action==='v2-import-down'){const i=ext.importRows.findIndex(r=>r.id===id),j=i+(action.endsWith('up')?-1:1);if(j>=0&&j<ext.importRows.length)[ext.importRows[i],ext.importRows[j]]=[ext.importRows[j],ext.importRows[i]];render();return;}
  if(action==='v2-parse-batch'){ext.importRows.push(...parseBatchText(document.getElementById('batch-source-text').value));render();return;}if(action==='v2-commit-batch'){commitBatchRows();return;}
@@ -1383,7 +1396,100 @@ document.addEventListener('click',async event=>{const button=event.target.closes
 },true);
 function initializeAwards(){for(const season of Object.values(data.seasons))if(season.result.sealed&&!season.result.winners){season.result.winners=winnersFrom(season.logs);season.result.fingerprint=resultFingerprint(season.logs);}}
 function renderCarryPreview(){document.getElementById('carry-import-preview').innerHTML=rowTable(['보스','편성','기대딜','행 수'],(ext.carryImport||[]).map(r=>`<tr><td>${r.boss}넴</td><td>${X(r.party.join(' '))}</td><td>${r.damage}억</td><td>${r.text.split('\n').length}</td></tr>`));}
-function commitBatchRows(){if(!ensureEdit())return;if(data.dayClosures.some(c=>c.day===ui.day)){toast('마감을 취소한 뒤 등록하세요.');return;}const rows=ext.importRows.filter(r=>r.selected);if(!rows.length){toast('등록할 행을 선택하세요.');return;}if(rows.some(r=>!r.memberId||!data.bossSettings.some(b=>b.id===Number(r.boss))||!Number.isSafeInteger(numberValue(r.damage))||numberValue(r.damage)<=0)){toast('클랜원·보스·피해량을 확인하세요.');return;}if(rows.some(isImportDuplicate)){toast('중복 가능 행은 선택을 해제하거나 내용을 확인하세요.');return;}checkpoint();const before=structuredClone(data.logs);let seq=Math.max(0,...data.logs.map(e=>e.seq));for(const r of (rows.every(r=>r.gameAt)?[...rows].sort((a,b)=>a.gameAt.localeCompare(b.gameAt)):rows))data.logs.push({id:uid(),seq:++seq,day:ui.day,boss:Number(r.boss),memberId:r.memberId,damage:numberValue(r.damage),carry:r.carry,usesCarry:r.carry,gameAt:r.gameAt,note:'',bonus:0});recalculateSeason();const newIds=new Set(data.logs.filter(e=>e.seq>Math.max(0,...before.map(e=>e.seq))).map(e=>e.id));if(data.replayWarnings.some(w=>newIds.has(w.id))){data.logs=before;recalculateSeason();toast('기본 타수 또는 이월 연결을 확인하세요.');return;}persist();ext.importRows=[];ext.importMode=false;render();toast(rows.length+'건 등록',true);}
+
+let v2OcrSdk=null;
+async function v2LoadOcr(){
+ if(globalThis.Tesseract?.createWorker)return globalThis.Tesseract;
+ if(!v2OcrSdk)v2OcrSdk=new Promise((resolve,reject)=>{
+  const s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/tesseract.js@7.0.0/dist/tesseract.min.js';s.async=true;
+  s.onload=()=>globalThis.Tesseract?.createWorker?resolve(globalThis.Tesseract):reject(new Error('OCR 엔진 로드 실패'));
+  s.onerror=()=>reject(new Error('OCR 엔진 다운로드 실패 · 인터넷 연결을 확인하세요.'));
+  document.head.appendChild(s);
+ }).catch(e=>{v2OcrSdk=null;throw e;});
+ return v2OcrSdk;
+}
+function v2Crop(bitmap,frame,field=null){
+ const f=field?{x:frame.x+frame.w*field.x,y:frame.y+frame.h*field.y,w:frame.w*field.w,h:frame.h*field.h}:frame;
+ const w=Math.max(1,Math.floor(bitmap.width*f.w)),h=Math.max(1,Math.floor(bitmap.height*f.h));
+ const z=Math.min(field?5:2.5,2100/w,720/h),c=document.createElement('canvas');
+ c.width=Math.max(1,Math.round(w*z));c.height=Math.max(1,Math.round(h*z));
+ const ctx=c.getContext('2d',{willReadFrequently:true});if(!ctx)throw Error('Canvas 생성 실패');
+ ctx.imageSmoothingQuality='high';
+ ctx.drawImage(bitmap,bitmap.width*f.x,bitmap.height*f.y,w,h,0,0,c.width,c.height);return c;
+}
+async function v2ReadOcr(worker,bitmap,frame,field){
+ const canvas=v2Crop(bitmap,frame,field);
+ try{
+  await worker.setParameters({tessedit_pageseg_mode:field?'7':'3',tessedit_char_whitelist:''});
+  const result=await worker.recognize(canvas);
+  return {text:String(result.data?.text||'').trim(),confidence:Number(result.data?.confidence||0)};
+ }finally{canvas.width=canvas.height=0;}
+}
+async function v2AnalyzeImages(){
+ if(ext.ocrBusy)return;
+ const images=ext.images.filter(item=>item.file);
+ if(!images.length){toast('분석할 스크린샷을 선택하세요.');return;}
+ const month=ui.month,job=uid();ext.ocrBusy=true;ext.ocrJob=job;ext.ocrErrors=[];ext.ocrStatus='OCR 분석 준비 중…';render();
+ const progress=value=>{if(ext.ocrJob!==job)return;ext.ocrStatus=value;const el=document.getElementById('v2-ocr-status');if(el)el.textContent=value;};
+ let worker=null,found=0;
+ try{
+  if(typeof createImageBitmap!=='function')throw Error('브라우저가 이미지 OCR을 지원하지 않습니다.');
+  const [{parseBattleLogText,parseQuickLogText,matchBossReadings,cleanOcrName},sdk]=await Promise.all([import('./compat/battle-image-parser.mjs'),v2LoadOcr()]);
+  const roster=data.members.filter(memberSeasonActive).map(m=>({id:m.id,name:m.name,aliases:Array.isArray(m.aliases)?m.aliases:[]}));
+  const bosses=data.bossSettings.map(b=>({id:b.id,name:b.name,aliases:Array.isArray(b.aliases)?b.aliases:[]}));
+  progress('한국어 OCR 모델 준비 중…');
+  worker=await sdk.createWorker('kor',1,{logger:e=>{if(e.status==='recognizing text')progress('문자 인식 중 '+Math.round(Number(e.progress||0)*100)+'%');}});
+  const frames=ext.ocrMode==='quick'?[{x:.711,y:.242,w:.215,h:.565}]:[{x:.133,y:.252,w:.563,h:.176},{x:.133,y:.438,w:.563,h:.172},{x:.133,y:.623,w:.563,h:.165}];
+  const fields={member:{x:.33,y:.44,w:.25,h:.19},damage:{x:.72,y:.02,w:.26,h:.30},date:{x:.365,y:.65,w:.225,h:.28},boss:{x:.04,y:.75,w:.25,h:.19}};
+  for(let i=0;i<images.length;i++){
+   if(ext.ocrJob!==job||month!==ui.month||!ext.importMode)break;
+   const item=images[i];progress((i+1)+'/'+images.length+'장 분석 중');
+   let bitmap=null;
+   try{
+    bitmap=await createImageBitmap(item.file);
+    for(let j=0;j<frames.length;j++){
+     const frame=frames[j],full=await v2ReadOcr(worker,bitmap,frame);
+     if(!full.text||/모의\s*전/.test(full.text))continue;
+     const opts={roster,bosses,source:item.name+' · '+(j+1)+'행'};
+     const parsed=ext.ocrMode==='quick'?parseQuickLogText(full.text,opts):[parseBattleLogText(full.text,opts)].filter(Boolean);
+     for(const extracted of parsed){
+      if(ext.ocrMode!=='quick'){
+       const member=await v2ReadOcr(worker,bitmap,frame,fields.member);
+       const candidate=parseBattleLogText(member.text,{roster,bosses:[],memberField:true});
+       extracted.ocrName=cleanOcrName(member.text);
+       if(candidate?.memberId){extracted.memberId=candidate.memberId;extracted.memberName=candidate.memberName;}
+       const damage=await v2ReadOcr(worker,bitmap,frame,fields.damage);
+       const d=parseBattleLogText('입힌 데미지 '+damage.text,{roster:[],bosses:[]});
+       if(Number.isSafeInteger(d?.damage)&&d.damage>0)extracted.damage=d.damage;
+       if(!extracted.gameAt){
+        const date=await v2ReadOcr(worker,bitmap,frame,fields.date);
+        extracted.gameAt=parseBattleLogText(date.text,{roster:[],bosses:[]})?.gameAt||'';
+       }
+       if(!extracted.bossId){
+        const boss=await v2ReadOcr(worker,bitmap,frame,fields.boss);
+        const match=matchBossReadings([boss],bosses);
+        if(match)extracted.bossId=match.id;
+       }
+       extracted.rawText+='\n\n개별 인식\n클랜원: '+member.text+'\n피해량: '+damage.text;
+      }
+      if(!extracted.memberId&&!extracted.bossId&&!extracted.damage&&!extracted.gameAt)continue;
+      const ok=!!extracted.memberId&&!!extracted.bossId&&Number.isSafeInteger(Number(extracted.damage))&&Number(extracted.damage)>0&&!!extracted.gameAt;
+      const warnings=[...(!extracted.memberId?['클랜원']:[]),...(!extracted.bossId?['보스']:[]),...(!extracted.damage?['피해량']:[]),...(!extracted.gameAt?['공격 일시']:[])];
+      ext.importRows.push({...newImportRow(),memberId:extracted.memberId||'',boss:extracted.bossId||'',damage:extracted.damage||'',gameAt:extracted.gameAt||'',selected:ok,warnings,rawText:extracted.rawText||''});
+      found++;
+     }
+    }
+   }catch(error){ext.ocrErrors.push(item.name+': '+(error.message||String(error)));}
+   finally{bitmap?.close?.();}
+   progress((i+1)+'/'+images.length+'장 분석 완료');
+  }
+  ext.ocrStatus=images.length+'장 OCR 완료 · '+found+'건 인식. 내용을 확인한 뒤 선택한 기록만 등록하세요.';
+  if(!found&&!ext.ocrErrors.length)ext.ocrStatus='인식된 기록이 없습니다. 스크린샷 형식 또는 화면 구성을 확인하세요.';
+ }catch(error){ext.ocrErrors.push(error.message||String(error));ext.ocrStatus='OCR 분석 실패';}
+ finally{if(worker)await worker.terminate().catch(()=>{});if(ext.ocrJob===job){ext.ocrBusy=false;if(ext.importMode)render();}}
+}
+
+function commitBatchRows(){if(ext.ocrBusy){toast('OCR 분석이 끝난 뒤 등록하세요.');return;}if(!ensureEdit())return;if(data.dayClosures.some(c=>c.day===ui.day)){toast('마감을 취소한 뒤 등록하세요.');return;}const rows=ext.importRows.filter(r=>r.selected);if(!rows.length){toast('등록할 행을 선택하세요.');return;}if(rows.some(r=>!r.memberId||!data.bossSettings.some(b=>b.id===Number(r.boss))||!Number.isSafeInteger(numberValue(r.damage))||numberValue(r.damage)<=0)){toast('클랜원·보스·피해량을 확인하세요.');return;}if(rows.some(isImportDuplicate)){toast('중복 가능 행은 선택을 해제하거나 내용을 확인하세요.');return;}checkpoint();const before=structuredClone(data.logs);let seq=Math.max(0,...data.logs.map(e=>e.seq));for(const r of (rows.every(r=>r.gameAt)?[...rows].sort((a,b)=>a.gameAt.localeCompare(b.gameAt)):rows))data.logs.push({id:uid(),seq:++seq,day:ui.day,boss:Number(r.boss),memberId:r.memberId,damage:numberValue(r.damage),carry:r.carry,usesCarry:r.carry,gameAt:r.gameAt,note:'',bonus:0});recalculateSeason();const newIds=new Set(data.logs.filter(e=>e.seq>Math.max(0,...before.map(e=>e.seq))).map(e=>e.id));if(data.replayWarnings.some(w=>newIds.has(w.id))){data.logs=before;recalculateSeason();toast('기본 타수 또는 이월 연결을 확인하세요.');return;}persist();ext.importRows=[];ext.importMode=false;render();toast(rows.length+'건 등록',true);}
 function backupValid(incoming){return incoming?.schema===2&&(incoming.monthExport?incoming.season?.logs&&incoming.season?.bossSettings:incoming.seasons&&Array.isArray(incoming.members));}
 function restorePreparedBackup(){const editable=data.settings.editable;const incoming=ext.pendingRestore;if(!backupValid(incoming))return;checkpoint();const previous=structuredClone(data);try{if(incoming.monthExport){snapshotSeason();data.seasons[incoming.month]=incoming.season;for(const m of incoming.members||[])if(!data.members.some(p=>p.id===m.id))data.members.push(m);activateSeason(incoming.month);}else{data=incoming;if(syncState.started)data.settings.editable=!!(editable&&syncState.canEdit);ui.month=data.activeMonth||Object.keys(data.seasons).sort().at(-1);for(const key of SEASON_KEYS)data[key]=structuredClone(data.seasons[ui.month][key]);recalculateSeason();}persist();closeDrawer();nav('overview','bosses');toast('백업 복원',true);}catch{data=previous;recalculateSeason();toast('백업 형식을 확인하세요.');}}
 document.addEventListener('submit',event=>{const form=event.target.closest('form[data-form]');if(!form||!form.dataset.form.startsWith('v2-'))return;event.preventDefault();event.stopImmediatePropagation();const kind=form.dataset.form,fd=new FormData(form);if(kind==='v2-unlock'){if(sha256Text(String(fd.get('pin')))!==data.pinHash){toast('비밀번호가 일치하지 않습니다.');return;}data.settings.editable=true;persist();closeDrawer();render();return;}if(!ensureEdit())return;
@@ -1413,7 +1519,8 @@ document.addEventListener('change',async event=>{const el=event.target,key=el.da
  if(key==='v2-row-check'){if(!ensureEdit())return;const t=activeTactic();rememberRows(t);const row=tacticRows(t).find(r=>r.id===el.dataset.row);row.manualChecks=true;row.checked[Number(el.dataset.column)]=el.checked;saveGridText(t);return;}
  if(key==='v2-editable'){if(syncState.started){el.checked=false;toggleWriter();return;}if(!data.settings.editable&&data.pinHash){el.checked=false;toggleWriter();return;}data.settings.editable=el.checked;persist();render();return;}if(key==='v2-default-day'){data.settings.defaultDay=Number(el.value);persist();return;}
  if(key==='v2-carry-sheet'&&el.files[0]){try{const file=el.files[0],rows=file.name.toLowerCase().endsWith('.xlsx')?await xlsxRows(file):parseDelimited(await file.text(),file.name.toLowerCase().endsWith('.tsv')?'\t':',');ext.carryImport=parseCarrySheet(rows);renderCarryPreview();}catch(error){toast(error.message);}return;}
- if(key==='v2-batch-images'){for(const file of el.files)if(file.type.startsWith('image/'))ext.images.push({id:uid(),url:URL.createObjectURL(file),name:file.name});ext.activeImage=0;if(!ext.importRows.length)ext.importRows.push(newImportRow());render();return;}
+ if(key==='v2-ocr-mode'){ext.ocrMode=el.value;return;}
+ if(key==='v2-batch-images'){if(ext.ocrBusy){toast('분석 후 추가해 주세요.');return;}const items=Array.from(el.files||[]);if(ext.images.length+items.length>60||items.some(file=>!/^image\/(png|jpeg|webp)$/.test(file.type)||file.size>25*1024*1024)){toast('최대 60장, 장당 25MB 이하의 PNG·JPG·WebP만 선택하세요.');return;}for(const file of items)ext.images.push({id:uid(),url:URL.createObjectURL(file),name:file.name,file});ext.activeImage=ext.images.length-items.length;ext.ocrStatus=ext.images.length+'장 선택됨 · OCR 자동 분석 시작을 누르세요.';render();return;}
  if(key==='v2-restore'&&el.files[0]){try{const incoming=await prepareCompatibleBackup(JSON.parse(await el.files[0].text()));if(!backupValid(incoming))throw new Error();ext.pendingRestore=incoming;openDrawer('백업 복원',`<p>${incoming.monthExport?incoming.month.replace('-','.')+'월':Object.keys(incoming.seasons).length+'개월'} 백업으로 복원합니다.</p>`,simpleButton('취소','close-drawer')+simpleButton('복원','v2-confirm-restore','','primary'));}catch(error){toast(error.message||'백업 JSON을 확인하세요.');}return;}
  if(key==='v2-portrait-file'&&el.files[0]){const image=new Image();image.onload=()=>{ext.cropImage=image;document.getElementById('portrait-zoom').value=1;document.getElementById('portrait-x').value=0;document.getElementById('portrait-y').value=0;drawPortraitCrop();};image.src=URL.createObjectURL(el.files[0]);return;}
  if(key==='v2-portrait-star'){if(ext.cropImage){ext.pendingImages[ext.previousPortraitStar||'5']=document.getElementById('portrait-canvas').toDataURL('image/jpeg',.87);ext.cropImage=null;}ext.previousPortraitStar=el.value;showStoredPortrait();return;}
