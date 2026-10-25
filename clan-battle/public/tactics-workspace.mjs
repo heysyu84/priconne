@@ -10,7 +10,7 @@ const EXTERNAL_GROUP = '외부 택틱';
 
 export function createTacticWorkspace(api) {
   const { getApp, getMonth, persist, render, notify, navigate, section, copyText, catalog = [] } = api;
-  const state={estimateInputs:null,month:null,group:'택틱정리',boss:'all',selected:null,remaining:null,trash:false,restore:null,undo:[],rememberedAt:0,more:false};
+  const state={estimateInputs:null,month:null,group:'택틱정리',boss:'all',selected:null,remaining:null,trash:false,restore:null,undo:[],rememberedAt:0,more:false,progressKey:null,progressRow:null};
   const $=selector=>document.querySelector(selector);
   const month=()=>getMonth(), base=()=>Number(month().options.battleSeconds||90);
   const externalCarry=createExternalTacticCarry({baseSeconds:base,escapeHtml:X,copyText,notify});
@@ -23,6 +23,30 @@ export function createTacticWorkspace(api) {
   const viewing=()=>state.remaining!==null;
   const readOnly=()=>viewing()||!canEdit();
   const personalKey=()=>`nyang-personal-carry:${getApp().active}:${state.selected}`;
+  // Tactic progress is personal browser state, never shared with the clan or saved to the server.
+  const progressKey=()=>`nyang-tactic-progress:${getApp().active}:${state.selected}`;
+  function loadProgress(){
+    const key=progressKey();
+    if(state.progressKey===key)return;
+    state.progressKey=key;
+    try{
+      const stored=localStorage.getItem(key);
+      state.progressRow=current()?.rows.some(r=>r.id===stored)?stored:null;
+    }catch{state.progressRow=null;}
+  }
+  function trackProgress(id){
+    const t=current();
+    if(!t?.rows.some(r=>r.id===id))return;
+    loadProgress();
+    state.progressRow=id;
+    try{localStorage.setItem(progressKey(),id);}catch{}
+    document.querySelectorAll('#tw-rows [data-tw-text]').forEach(el=>{
+      const active=el.dataset.twText===id;
+      el.classList.toggle('tw-current-step',active);
+      if(active)el.setAttribute('aria-current','step');
+      else el.removeAttribute('aria-current');
+    });
+  }
   function loadPersonal(){if(state.personalId===personalKey())return;state.personalId=personalKey();try{const saved=localStorage.getItem(personalKey()),n=Number(saved);state.remaining=saved!==null&&n>=0&&n<=Number(month().options.carryMaxSeconds||base())&&n!==base()?n:null;}catch{state.remaining=null;}}
   function setPersonal(n){state.remaining=n===base()?null:n;state.personalId=personalKey();try{if(state.remaining===null)localStorage.removeItem(personalKey());else localStorage.setItem(personalKey(),String(state.remaining));}catch{}}
   const validURL=u=>{try{const v=new URL(u);return ['https:','http:'].includes(v.protocol)?v.href:'';}catch{return '';}};
@@ -43,7 +67,7 @@ export function createTacticWorkspace(api) {
     if(state.month!==getApp().active){state.month=getApp().active;state.selected=null;state.boss='all';state.remaining=null;state.trash=false;state.undo=[];state.estimateInputs=null;}
     if(!groups().includes(state.group)){state.group=GROUPS[0];state.selected=null;state.personalId=null;state.boss='all';state.remaining=null;state.trash=false;}
     if(isExternal())return;
-    if(!visible().some(t=>t.id===state.selected))state.selected=visible()[0]?.id||null;loadPersonal();
+    if(!visible().some(t=>t.id===state.selected))state.selected=visible()[0]?.id||null;loadPersonal();loadProgress();
   }
   function remember(force=false){
     if(!force&&state.rememberedEl===document.activeElement&&Date.now()-state.rememberedAt<1200)return;
@@ -77,7 +101,7 @@ export function createTacticWorkspace(api) {
   function rowHtml(row,index,t,blank=false){
     const text=viewing()?shiftTimeline(row.text,state.remaining,base()):row.text;
     const expired=viewing()&&/\d+:\d{2}/.test(row.text)&&!text.match(/\d+:\d{2}/);
-    return `<tr data-tw-row="${X(row.id)}" class="${blank?'tw-blank ':''}${expired?'tw-expired':''}">${checkedSix(row.checked).map((checked,i)=>`<td class="tw-check-cell ${i===5?'tw-auto-cell':''}"><input type="checkbox" data-tw-check="${i}" aria-label="${blank?'새 행':(index+1)+'행'} ${i===5?'AUTO':X(t.characters[i]||'캐릭터 '+(i+1))} SET" ${checked?'checked':''} ${readOnly()?'disabled':''}></td>`).join('')}<td class="tw-text-cell"><div role="textbox" aria-multiline="true" aria-label="${blank?'새 택틱 행':(index+1)+'행 택틱'}" data-tw-text="${X(row.id)}" ${readOnly()?'tabindex="0" aria-readonly="true"':'contenteditable="true" spellcheck="false"'} data-placeholder="${blank?'여기에 바로 입력 · Enter로 다음 행 · 여러 행 붙여넣기':''}">${richLine(row,t.characters,catalog,state.remaining,base())}</div></td><td class="tw-row-tools">${!readOnly()&&!blank?`<button type="button" data-tw="row-delete" data-row="${X(row.id)}" aria-label="${index+1}행 삭제" title="행 삭제 (Ctrl Shift K)">×</button>`:''}</td></tr>`;
+    return `<tr data-tw-row="${X(row.id)}" class="${blank?'tw-blank ':''}${expired?'tw-expired':''}">${checkedSix(row.checked).map((checked,i)=>`<td class="tw-check-cell ${i===5?'tw-auto-cell':''}"><input type="checkbox" data-tw-check="${i}" aria-label="${blank?'새 행':(index+1)+'행'} ${i===5?'AUTO':X(t.characters[i]||'캐릭터 '+(i+1))} SET" ${checked?'checked':''} ${readOnly()?'disabled':''}></td>`).join('')}<td class="tw-text-cell"><div role="textbox" aria-multiline="true" aria-label="${blank?'새 택틱 행':(index+1)+'행 택틱'}" data-tw-text="${X(row.id)}" class="${!blank&&state.progressRow===row.id?'tw-current-step':''}" ${!blank&&state.progressRow===row.id?'aria-current="step"':''} ${readOnly()?'tabindex="0" aria-readonly="true"':'contenteditable="true" spellcheck="false"'} data-placeholder="${blank?'여기에 바로 입력 · Enter로 다음 행 · 여러 행 붙여넣기':''}">${richLine(row,t.characters,catalog,state.remaining,base())}</div></td><td class="tw-row-tools">${!readOnly()&&!blank?`<button type="button" data-tw="row-delete" data-row="${X(row.id)}" aria-label="${index+1}행 삭제" title="행 삭제 (Ctrl Shift K)">×</button>`:''}</td></tr>`;
   }
   function checkPortrait(t,i){const data=imageData(t,i),url=data.url;return url?`<span class="tw-check-art"><img class="tw-check-portrait" ${portraitAttributes(data)} src="${X(url)}" alt="${X(t.characters[i]||'캐릭터')}" title="${X(t.characters[i]||'캐릭터')}">${portraitStarOverlay(data)}</span>`:'<span class="tw-check-portrait missing">?</span>';}
   function grid(t){
@@ -236,6 +260,11 @@ export function createTacticWorkspace(api) {
     if(el.dataset.twMeta||el.dataset.twChar!==undefined){if(!canEdit())return;mutateMeta(el);if(el.dataset.twChar!==undefined&&!event.isComposing)showCharacters(el);}
   });
   document.addEventListener('compositionend',event=>{if(event.target.matches('[data-tw-text]'))editText(event.target);});
+  // Keep the highlighted instruction even if this browser loses focus to the game window.
+  document.addEventListener('focusin',event=>{
+    const el=event.target.closest?.('#tw-rows [data-tw-text]');
+    if(el&&$('#tw-title')&&!isExternal())trackProgress(el.dataset.twText);
+  });
   document.addEventListener('focusout',event=>{
     const el=event.target,t=current();if(el.matches('[data-tw-text]')&&t&&!viewing()){editText(el);const r=rowFor(el,false);if(r)el.innerHTML=richLine(r,t.characters,catalog);}
     if(el.dataset.twChar!==undefined){refreshPortrait(Number(el.dataset.twChar));refreshLabels();}
@@ -289,16 +318,21 @@ export function createTacticWorkspace(api) {
     if(el.id==='tw-lineup'&&event.key==='Enter'){event.preventDefault();applyLineup();return;}
     if(el.id==='tw-stars'&&event.key==='Enter'){event.preventDefault();applyStars();return;}
     if(el.getAttribute('role')==='tab'&&['ArrowLeft','ArrowRight'].includes(event.key)){event.preventDefault();const tabs=[...el.parentNode.querySelectorAll('[role="tab"]')],index=tabs.indexOf(el),next=tabs[(index+(event.key==='ArrowRight'?1:-1)+tabs.length)%tabs.length];const type=next.dataset.tw;state[type==='group'?'group':'boss']=next.dataset.value;state.personalId=null;state.remaining=null;state.trash=false;redraw();$(`[data-tw="${type}"][data-value="${CSS.escape(next.dataset.value)}"]`)?.focus();return;}
-    // Read-only viewers can track their current instruction with the existing focused-row outline.
-    // Editing keeps its native caret arrows and Ctrl+arrow row navigation.
-    if(readOnly()&&t&&el.matches('[data-tw-text]')&&!event.altKey&&!event.ctrlKey&&!event.metaKey&&!event.shiftKey&&['ArrowUp','ArrowDown'].includes(event.key)){
+    // Read-only progress is independent of :focus, so it survives Alt+Tab and window switching.
+    // Do not hijack arrow keys from text inputs, buttons, dialogs or editing fields.
+    const onRow=el.closest?.('#tw-rows [data-tw-text]');
+    const onPage=el===document.body||el===document.documentElement;
+    if(readOnly()&&t&&!isExternal()&&(!event.altKey&&!event.ctrlKey&&!event.metaKey&&!event.shiftKey)&&['ArrowUp','ArrowDown'].includes(event.key)&&(onRow||(onPage&&state.progressRow))){
       const rows=[...document.querySelectorAll('#tw-rows [data-tw-text]')];
-      const index=rows.indexOf(el);
+      const index=rows.findIndex(row=>row.dataset.twText===(onRow?.dataset.twText||state.progressRow));
       if(index!==-1){
         event.preventDefault();
         const next=rows[Math.max(0,Math.min(rows.length-1,index+(event.key==='ArrowDown'?1:-1)))];
-        next?.focus({preventScroll:true});
-        next?.closest('[data-tw-row]')?.scrollIntoView({block:'nearest',inline:'nearest',behavior:'smooth'});
+        if(next){
+          trackProgress(next.dataset.twText);
+          next.focus({preventScroll:true});
+          next.closest('[data-tw-row]')?.scrollIntoView({block:'nearest',inline:'nearest',behavior:'smooth'});
+        }
       }
       return;
     }
