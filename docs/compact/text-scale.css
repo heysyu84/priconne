@@ -1090,3 +1090,22 @@ html[data-text-scale] .bli-fields>label>small{font-size:calc((11px) * var(--text
   html[data-text-scale] body select:focus,
   html[data-text-scale] body textarea:focus{font-size:max(16px,calc(14px * var(--text-scale,1)))!important}
 }
+
+
+/* Shared table typography follows the historical expanded battle-log design. */
+html[data-text-scale] .data-table thead th,
+html[data-text-scale] .data-table.battle-table.expanded thead th{
+  font-size:calc(11px * var(--text-scale,1))!important;
+}
+html[data-text-scale] .data-table tbody td,
+html[data-text-scale] .data-table.battle-table.expanded tbody td{
+  font-size:calc(13px * var(--text-scale,1))!important;
+}
+@media(max-width:760px){
+  html[data-text-scale] .data-table.battle-mobile-table thead th{
+    font-size:calc(11px * var(--text-scale,1))!important;
+  }
+  html[data-text-scale] .data-table.battle-mobile-table tbody td{
+    font-size:clamp(calc(11px * var(--text-scale,1)),calc(3.2vw * var(--text-scale,1)),calc(13px * var(--text-scale,1)))!important;
+  }
+}
