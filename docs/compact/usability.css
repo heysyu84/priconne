@@ -503,3 +503,21 @@ h1,h2,h3,strong,b{font-weight:700}
  .data-table.battle-mobile-table.mobile-detail th[data-label="관리"]{text-align:center!important}
  .data-table.battle-mobile-table.mobile-detail th[data-label="인게임"]{text-align:right!important}
 }
+
+/* Desktop: expanded log changes columns only, not type, font or table chrome. */
+@media(min-width:761px){
+  .data-table.battle-table,
+  .data-table.battle-table.expanded{
+    border-collapse:collapse;
+    border:1px solid var(--line);
+    border-radius:0;
+  }
+  .data-table.battle-table.expanded th,
+  .data-table.battle-table.expanded tbody td{
+    padding:8px 7px!important;
+    line-height:1.35!important;
+    font-size:12px;
+    border-bottom:1px solid var(--line);
+  }
+  .data-table.battle-table.expanded th{font-size:12px}
+}
