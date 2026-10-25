@@ -30,6 +30,7 @@ on:
       - 'clan-battle/public/finish.css'
       - 'docs/finish.css'
       - 'clan-battle/scripts/test-pages.mjs'
+      - 'clan-battle/scripts/test-guild-ui.mjs'
   workflow_dispatch:
 
 permissions:
