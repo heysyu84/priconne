@@ -127,10 +127,11 @@ async function readDamageWithEvidence(worker,bitmap,frame,original){
  const ranked=[...votes].sort((a,b)=>b[1]-a[1]);
  const full=hasOriginal?Number(original):0;
  const agreed=ranked.find(item=>item[1]>=2)?.[0]||0;
- // If none of the crops agree, retain the old full-row value as a suggestion,
- // never certify an unverified damage value as safe to batch-register.
- const chosen=agreed||full||ranked[0]?.[0]||0;
- const review=!!chosen&&(chosen<1000000||(!agreed&&(votes.get(full)||0)<1));
+ // Prefer a full-row reading when at least one targeted number crop independently confirms it.
+ // Otherwise require agreement across cropped readings or leave a manual-review warning.
+ const fullSupported=!!full&&(votes.get(full)||0)>0;
+ const chosen=(fullSupported?full:agreed||full||ranked[0]?.[0])||0;
+ const review=!!chosen&&(chosen<1000000||(!agreed&&!fullSupported));
  const conflicted=!!chosen&&(ranked.length>1||full&&agreed&&full!==agreed);
  return {damage:chosen||'',review:review||conflicted&&(!agreed||full&&full!==agreed),
    candidates:[...new Set([full,...ranked.map(([value])=>value)].filter(Boolean))],
