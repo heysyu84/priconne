@@ -18,7 +18,7 @@ export function pdfFromJpegs(pages){
   const bytes=new Uint8Array(length);let at=0;for(const c of chunks){bytes.set(c,at);at+=c.length;}return bytes;
 }
 // The personal report uses one A4 sheet, following the original report's
-// identity, totals, four phase charts, daily/boss statistics and attack details.
+// identity, totals, phase charts, daily trends, boss contributions and summary.
 export async function createProfilePdf(data){
   if(typeof FontFace!=='undefined'){
     reportFontsReady??=(async()=>{const face=new FontFace('Nyang Report',`url(${new URL('./fonts/NanumGothic-Regular.ttf',import.meta.url).href})`);await face.load();document.fonts.add(face);})();
@@ -52,11 +52,23 @@ export async function createProfilePdf(data){
   for(let day=1;day<=data.days;day++){const events=data.events.filter(e=>e.day===day);tableRow([day+'일차',{text:nf(events.reduce((sum,e)=>sum+e.actual,0)),right:true},{text:formatContribution(events.reduce((sum,e)=>sum+data.contribution(e),0)),right:true},events.filter(e=>!e.carry).length+' / '+events.filter(e=>e.carry).length],dailyWidths,PAD,tableTop+rowHeight*day,rowHeight,false,null,16);}
   tableRow(['보스','타수','피해량 합계','평균 피해량'],bossWidths,rightX,tableTop,rowHeight,true,null,16);
   data.bosses.forEach((boss,i)=>{const events=data.events.filter(e=>e.boss===boss.id),sum=events.reduce((total,e)=>total+e.actual,0);tableRow([boss.id+'넴 · '+boss.name,events.length,{text:nf(sum),right:true},{text:nf(events.length?sum/events.length:0),right:true}],bossWidths,rightX,tableTop+rowHeight*(i+1),rowHeight,false,BOSS_ACCENTS[i],16);});
-  if(!data.all){
-    const top=tableTop+rowHeight*(Math.max(data.days,data.bosses.length)+1)+48,tableY=top+17,widths=[82,260,145,310,bodyWidth-797],height=Math.min(34,(H-86-tableY)/(data.events.length+1)),size=Math.min(19,height*.72);
-    heading('공격 상세 · '+data.events.length+'건',PAD,top);tableRow(['일차','보스 · 단계 · 회차','일반 / 이월','실제 피해량','기여도'],widths,PAD,tableY,height,true,null,size);
-    data.events.forEach((e,i)=>tableRow([e.day+'일차',`${e.boss}넴 · ${e.stage}단계 · ${e.lap}회차`,e.carry?'이월':'일반',{text:nf(e.actual),right:true},{text:formatContribution(data.contribution(e)),right:true}],widths,PAD,tableY+height*(i+1),height,false,null,size));
-  }
+  const compact=n=>Math.abs(n)>=100000000?(n/100000000).toFixed(1)+'억':Math.abs(n)>=10000?nf(Math.round(n/10000))+'만':nf(Math.round(n));
+  const chartTop=tableTop+rowHeight*(Math.max(data.days,data.bosses.length)+1)+57;
+  const daily=Array.from({length:data.days},(_,i)=>{const events=data.events.filter(e=>e.day===i+1);return {day:i+1,damage:events.reduce((s,e)=>s+e.actual,0),contribution:events.reduce((s,e)=>s+data.contribution(e),0)};});
+  const dailyChart=(label,key,x,color)=>{
+    heading(label,x,chartTop);
+    const left=x+57,right=x+leftWidth-16,top=chartTop+49,bottom=chartTop+233,height=bottom-top,max=Math.max(1,...daily.map(d=>d[key]));
+    for(let i=0;i<=3;i++){const y=bottom-height*i/3;rule(left,y,right-left);text(compact(max*i/3),left-9,y+5,14,false,muted,'right',52);}
+    const step=(right-left)/Math.max(1,daily.length),bar=Math.min(46,step*.58);
+    daily.forEach((d,i)=>{const cx=left+step*(i+.5),h=Math.max(0,d[key])/max*height;ctx.fillStyle=color;ctx.fillRect(cx-bar/2,bottom-h,bar,h);text(compact(d[key]),cx,bottom-h-11,15,true,ink,'center',step-5);text(d.day+'일차',cx,bottom+28,16,false,muted,'center');});
+  };
+  dailyChart('일차별 피해량','damage',PAD,'#b19bd6');dailyChart('일차별 기여도','contribution',rightX,'#8eb8be');
+  const lowerTop=chartTop+326;
+  heading('보스별 기여도',PAD,lowerTop);heading('공격 요약',rightX,lowerTop);
+  const bossContributions=data.bosses.map(b=>data.events.filter(e=>e.boss===b.id).reduce((s,e)=>s+data.contribution(e),0)),maxBoss=Math.max(1,...bossContributions);
+  data.bosses.forEach((b,i)=>{const y=lowerTop+43+i*43,barX=PAD+51,barWidth=leftWidth-170;ctx.fillStyle='#f2edf8';ctx.fillRect(barX,y-17,barWidth,21);ctx.fillStyle=BOSS_ACCENTS[i];ctx.fillRect(barX,y-17,barWidth*Math.max(0,bossContributions[i])/maxBoss,21);text(b.id+'넴',PAD,y,17,true,BOSS_INK[i]);text(compact(bossContributions[i]),PAD+leftWidth,y,17,true,ink,'right',108);});
+  const attacks=data.events.length,basics=data.events.filter(e=>!e.carry).length,carries=data.events.filter(e=>e.carry).length,kills=data.events.filter(e=>e.kill).length;
+  [['총 공격',attacks+'타'],['기본 공격',basics+'타'],['이월 사용',carries+'타'],['보스 격파',kills+'회'],['타당 평균 피해량',compact(attacks?data.summary.damage/attacks:0)],['타당 평균 기여도',compact(attacks?data.summary.contribution/attacks:0)]].forEach(([label,value],i)=>{const width=(leftWidth-14)/2,x=rightX+(i%2)*(width+14),y=lowerTop+24+Math.floor(i/2)*77;ctx.fillStyle='#f7f3fc';ctx.fillRect(x,y,width,65);text(label,x+12,y+24,16,false,muted);text(value,x+12,y+51,23,true,purple,'left',width-24);});
   text('1 / 1',W/2,H-35,16,false,'#9b90a7','center');
   const jpeg=Uint8Array.from(atob(canvas.toDataURL('image/jpeg',.95).split(',')[1]),char=>char.charCodeAt(0)),bytes=pdfFromJpegs([jpeg]);
   return {bytes,filename:`냥냥클랜_리리다이브_${data.month}_${data.p?.name||data.summary.name}_이력서.pdf`,pages:1};

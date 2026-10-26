@@ -88,7 +88,7 @@ completeProfile=()=>{
 };
 async function downloadCurrentProfile(target,preview=false){
   const events=wholeProfileEvents(),all=ui.profile==='__clan__',m=all?null:currentMember(ui.profile);
-  const module=await import('./report-pdf.mjs?v=operations-3');
+  const module=await import('./report-pdf.mjs?v=20261027-summary04');
   return module[preview?'previewProfilePdf':'downloadProfilePdf']({target,downloadLabel:copyFor('PDF 저장'),copy:copyFor,month:ui.month,day:data.rules.days,days:data.rules.days,all,p:m?{...m,tenureMonths:memberTenure(m)}:null,bosses:data.bossSettings,events,contribution:e=>e.contribution||0,summary:{name:all?'클랜 전체':m.name,damage:events.reduce((s,e)=>s+e.actual,0),contribution:events.reduce((s,e)=>s+(e.contribution||0),0),game:events.reduce((s,e)=>s+e.game,0)}});
 }
 
@@ -189,7 +189,7 @@ printPage=()=>{
     const oldDay=ext.profileDay,oldStage=ext.profileStage;ext.profileDay=0;ext.profileStage=0;
     let report=document.getElementById('profile-print');if(!report){report=document.createElement('section');report.id='profile-print';document.body.append(report);}
     report.innerHTML=`<h1>${X(ui.profile==='__clan__'?'클랜 전체':currentMember(ui.profile).name)} · ${ui.month} 개인 이력</h1>`+completeProfile();
-    for(const detail of report.querySelectorAll('details'))detail.open=true;
+    for(const detail of report.querySelectorAll('details')){if(detail.querySelector('summary')?.textContent.startsWith('공격 상세'))detail.remove();else detail.open=true;}
     ext.profileDay=oldDay;ext.profileStage=oldStage;document.body.classList.add('printing-profile');window.print();document.body.classList.remove('printing-profile');
   }else regularPrint();
 };
