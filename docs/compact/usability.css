@@ -730,12 +730,13 @@ h1,h2,h3,strong,b{font-weight:700}
 .header-controls .header-settings svg{display:block;width:18px!important;height:18px!important;min-width:18px;min-height:18px;flex:0 0 18px;aspect-ratio:1;overflow:visible}
 .winner-cell .winner-person{display:inline-flex;align-items:baseline;gap:4px;white-space:nowrap}
 .winner-cell .winner-separator{display:inline-block;padding:0 8px;color:var(--muted);font-weight:400}
-.dashboard-attack{--attack-box-width:31px;--attack-box-height:33px;display:inline-flex;align-items:center;gap:3px;min-height:35px;white-space:nowrap}
+.dashboard-attack{--attack-box-width:31px;--attack-box-height:33px;--attack-box-gap:3px;display:inline-flex;align-items:center;gap:var(--attack-box-gap);width:calc(var(--attack-box-width) * 2 + var(--attack-box-gap));min-height:35px;white-space:nowrap}
 .dashboard-attack .dashboard-basic-boss,.dashboard-attack .dashboard-carry-boss,.dashboard-attack .carry-ready{display:inline-flex;align-items:center;justify-content:center;width:var(--attack-box-width);height:var(--attack-box-height);min-width:var(--attack-box-width);min-height:var(--attack-box-height);padding:0;border:1px solid var(--boss);border-radius:5px;background:var(--boss-wash);color:var(--boss-ink);font-size:16px;font-weight:750;line-height:1;box-sizing:border-box;flex:none}
+.dashboard-attack .dashboard-basic-boss:only-child{width:100%;min-width:100%}
 .dashboard-attack .carry-ready{color:var(--text);font-size:10px;background:var(--surface);border-color:var(--line);letter-spacing:-.03em}
 .dashboard-attack .slot-separator{display:none}
 @media(max-width:760px){
- .dashboard-attack{--attack-box-width:26px;--attack-box-height:30px;gap:2px;min-height:30px}
+ .dashboard-attack{--attack-box-width:26px;--attack-box-height:30px;--attack-box-gap:2px;min-height:30px}
  .dashboard-attack .dashboard-boss{font-size:14px}
  .data-table.attack-dashboard th,.data-table.attack-dashboard td{padding-left:3px!important;padding-right:3px!important}
  .data-table.attack-dashboard th:first-child{width:25%!important}
@@ -749,7 +750,7 @@ h1,h2,h3,strong,b{font-weight:700}
  .data-table.roster-complete .member-link{font-size:11px!important}
 }
 @media(max-width:370px){
- .dashboard-attack{--attack-box-width:23px;--attack-box-height:28px;gap:1px;min-height:28px}
+ .dashboard-attack{--attack-box-width:23px;--attack-box-height:28px;--attack-box-gap:1px;min-height:28px}
  .dashboard-attack .dashboard-boss{font-size:13px}.dashboard-attack .carry-ready{font-size:9px}
  .data-table.roster-complete .member-link{font-size:10px!important}
 }
