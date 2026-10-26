@@ -2051,7 +2051,7 @@ function screenshotImporter(){
 }
 batchImportPage=()=>screenshotImporter().view().replace(/\bclass="btn/g,'class="button').replace(/data-page="battle"/g,'data-action="r-image-back"').replace('← 배틀로그','배틀로그');
 const afterRetainedRender=afterOperationalRender;
-afterOperationalRender=()=>{afterRetainedRender();if(ext.importMode&&adminMode())screenshotImporter().mount();};
+afterOperationalRender=()=>{afterRetainedRender();if(ext.importMode&&adminMode())screenshotImporter().mount('battle-import');else imageImportController?.mount(null);};
 
 async function readCompatibleCarryFile(file){
   if(file.name.toLowerCase().endsWith('.xlsx')){
