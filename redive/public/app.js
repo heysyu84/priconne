@@ -2,7 +2,7 @@ import {replayMonth as engineReplay,bossProgress as engineProgress,contribution 
 import {convertForeignTactic,foreignSuggestions} from './tactic-parser.mjs';
 import * as partyTools from './party-tools.mjs';
 import * as logOrder from './log-order.mjs';
-import * as legacyTools from './legacy-tools.mjs?v=20261026-ocr-lifecycle02';
+import * as legacyTools from './legacy-tools.mjs?v=20261026-ocr-network03';
 const ICONS={
  cat:'M4 18V6l5 4 3-2 3 2 5-4v12c-3 4-13 4-16 0Z|M8 16h.1M16 16h.1M10 20l2 1 2-1',
  compass:'M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z|m15.5 8.5-2 5-5 2 2-5 5-2Z',
