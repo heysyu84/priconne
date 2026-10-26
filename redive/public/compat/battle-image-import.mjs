@@ -1,5 +1,7 @@
 import {parseBattleLogText,parseQuickLogText,detectDuplicateRows,sortBattleLogRows,validBattleLogRow,cleanOcrName,matchBossReadings,matchBossPortrait} from './battle-image-parser.mjs';
 import {makeId,memberLabel} from './roster.mjs';
+import {detectBattleLogFrames} from './battle-image-ocr.mjs';
+import {reliableOcrNickname,selectNicknameReading,selectDamageReading} from './battle-image-readings.mjs';
 
 const OCR_SOURCES=[
  'https://cdn.jsdelivr.net/npm/tesseract.js@7.0.0/dist/tesseract.min.js',
@@ -51,7 +53,7 @@ const detailFrames=[
 ];
 const quickFrame={x:.711,y:.242,w:.215,h:.565};
 // Narrow label crops exclude the portrait, reset icon and date underline.
-const detailFields={member:{x:.33,y:.44,w:.25,h:.19},damage:{x:.72,y:.02,w:.26,h:.30},date:{x:.365,y:.65,w:.225,h:.28},kind:{x:.30,y:.07,w:.19,h:.25}};
+const detailFields={member:{x:.33,y:.44,w:.25,h:.19},damage:{x:.79,y:.02,w:.19,h:.30},date:{x:.365,y:.65,w:.225,h:.28},kind:{x:.30,y:.07,w:.19,h:.25}};
 function fieldFrame(row,field){return {x:row.x+row.w*field.x,y:row.y+row.h*field.y,w:row.w*field.w,h:row.h*field.h};}
 function labelCanvas(bitmap,row,box,style='raw'){
  const crop=toCanvas(bitmap,fieldFrame(row,box),5),ctx=crop.getContext('2d',{willReadFrequently:true});
@@ -60,7 +62,8 @@ function labelCanvas(bitmap,row,box,style='raw'){
   for(let i=0;i<image.data.length;i+=4){
    const r=image.data[i],g=image.data[i+1],b=image.data[i+2];
    const ink=style==='white'?Math.min(r,g,b)>180:Math.max(r,g,b)<145;
-   image.data[i]=image.data[i+1]=image.data[i+2]=ink?0:255;
+   const gray=Math.round(.299*r+.587*g+.114*b);
+   image.data[i]=image.data[i+1]=image.data[i+2]=style==='gray'?Math.max(0,Math.min(255,(gray-90)*2)):ink?0:255;
   }
   ctx.putImageData(image,0,0);
  }
@@ -85,69 +88,26 @@ async function readLabel(worker,bitmap,row,box,style='raw',whitelist='',psm='7')
 const escapeHtml=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'}[c]));
 const formatNumber=n=>Number(n||0).toLocaleString('ko-KR');
 
-// OCR accuracy: prefer repeated numeric readings from the damage region rather than guessing from the whole log.
-// Full-row OCR also includes dates, lap numbers and boss HP, so its longest number is not always damage.
-function damageDigitCandidates(text){
- const value=String(text||'').normalize('NFKC')
-  .replace(/(?<=\d)[oO〇○](?=\d)/g,'0').replace(/(?<=\d)[Il|](?=\d)/g,'1');
- const matches=[...value.matchAll(/(?<!\d)(?:\d[\d,.\u00a0 ]{5,15}\d|\d{6,12})(?!\d)/g)];
- const unique=new Set();
- for(const match of matches){
-  const digits=match[0].replace(/\D/g,'');
-  if(digits.length<6||digits.length>12)continue;
-  const n=Number(digits);
-  if(Number.isSafeInteger(n)&&n>=100000&&n<=1000000000000)unique.add(n);
+// Read only the isolated number line: portraits, dates and the blue label are excluded.
+async function readDamageWithEvidence(worker,bitmap,frame,box){
+ const readings=[];
+ for(const [style,psm] of [['raw','7'],['black','7'],['gray','13']]){
+  const result=await readLabel(worker,bitmap,frame,box,style,'0123456789, ',psm);
+  readings.push({...result,source:style+' 숫자 영역'});
  }
- return [...unique];
+ return selectDamageReading(readings);
 }
-async function readDamageWithEvidence(worker,bitmap,frame,original){
- const evidence=[],add=(read,source)=>{
-  const values=damageDigitCandidates(read.text);
-  if(values.length===1)evidence.push({value:values[0],source,confidence:read.confidence});
- };
- const hasOriginal=Number.isSafeInteger(Number(original))&&Number(original)>=100000;
- const probes=[
-  {name:'좁은 숫자영역',box:detailFields.damage,style:'raw',psm:'7'},
-  {name:'확장 숫자영역',box:{x:.49,y:.00,w:.50,h:.48},style:'raw',psm:'6'},
-  {name:'검정 글씨 대비',box:{x:.49,y:.00,w:.50,h:.48},style:'black',psm:'6'},
-  {name:'흰 글씨 대비',box:{x:.49,y:.00,w:.50,h:.48},style:'white',psm:'6'},
-  {name:'하단 숫자영역',box:{x:.42,y:.26,w:.57,h:.52},style:'raw',psm:'6'}
- ];
- for(let i=0;i<probes.length;i++){
-  const p=probes[i];
-  const result=await readLabel(worker,bitmap,frame,p.box,p.style,'0123456789, ',p.psm);
-  add(result,p.name);
-  const counts=new Map();
-  for(const e of evidence)counts.set(e.value,(counts.get(e.value)||0)+1);
-  if([...counts.values()].some(n=>n>=2))break;
-  if(i===0&&hasOriginal&&evidence.some(e=>e.value===Number(original)))break;
- }
- const votes=new Map();
- for(const item of evidence)votes.set(item.value,(votes.get(item.value)||0)+1);
- const ranked=[...votes].sort((a,b)=>b[1]-a[1]);
- const full=hasOriginal?Number(original):0;
- const agreed=ranked.find(item=>item[1]>=2)?.[0]||0;
- // Prefer a full-row reading when at least one targeted number crop independently confirms it.
- // Otherwise require agreement across cropped readings or leave a manual-review warning.
- const fullSupported=!!full&&(votes.get(full)||0)>0;
- const chosen=(fullSupported?full:agreed||full||ranked[0]?.[0])||0;
- const review=!!chosen&&(chosen<1000000||(!agreed&&!fullSupported));
- const conflicted=!!chosen&&(ranked.length>1||full&&agreed&&full!==agreed);
- return {damage:chosen||'',review:review||conflicted&&(!agreed||full&&full!==agreed),
-   candidates:[...new Set([full,...ranked.map(([value])=>value)].filter(Boolean))],
-   details:evidence.map(e=>e.source+': '+e.value.toLocaleString('ko-KR')).join(' / ')||'숫자 추출 실패'};
-}
-
-function reliableOcrNickname(value){
- const name=cleanOcrName(value);
- if(!name||name.length>20||/[\r\n]/.test(name)||/\d{4,}/.test(name))return false;
- const letters=(name.match(/\p{L}/gu)||[]).length;
- const symbols=(name.match(/[^\p{L}\p{N}\s]/gu)||[]).length;
- return letters>=2&&symbols<=Math.max(1,Math.floor(name.length/3))&&!/(?:데미지|대미지|피해량|전투로그|단계째|입힌)/.test(name);
+function automaticFrames(bitmap){
+ const scale=Math.min(1,1600/bitmap.width,1200/bitmap.height);
+ const canvas=document.createElement('canvas');
+ canvas.width=Math.max(1,Math.round(bitmap.width*scale));canvas.height=Math.max(1,Math.round(bitmap.height*scale));
+ const ctx=canvas.getContext('2d',{willReadFrequently:true});
+ try{ctx.drawImage(bitmap,0,0,canvas.width,canvas.height);return detectBattleLogFrames(ctx.getImageData(0,0,canvas.width,canvas.height));}
+ finally{canvas.width=canvas.height=0;}
 }
 export function createBattleImageImport(api){
  const {getApp,getMonth,persist,render,navigate,notify,canEdit,unlock,replay,beforeCommit,saveNicknameAlias,removeNicknameAlias}=api;
- const state={cropOpen:false,cropIndex:0,cropFrames:{detail:structuredClone(detailFrames),quick:[structuredClone(quickFrame)]},rows:[],processing:false,cancel:false,progress:'',mode:'detail',ocrStatus:'',errors:[],day:null,raw:'',completed:0,total:0,nameMatches:{}};
+ const state={autoCrop:true,cropOpen:false,cropIndex:0,cropFrames:{detail:structuredClone(detailFrames),quick:[structuredClone(quickFrame)]},rows:[],processing:false,cancel:false,progress:'',mode:'detail',ocrStatus:'',errors:[],day:null,raw:'',completed:0,total:0,nameMatches:{}};
  const $=id=>document.getElementById(id);
  const month=()=>getMonth();
  const members=()=>getApp().roster.filter(p=>(month().memberIds||[]).includes(p.id));
@@ -188,7 +148,7 @@ export function createBattleImageImport(api){
    '<details><summary>인식된 원문 확인</summary><pre>'+escapeHtml(row.rawText||'')+'</pre></details></div>';
  }
  function nameMapping(){
-  const names=[...new Set(state.rows.map(row=>row.ocrName).filter(name=>reliableOcrNickname(name)))];
+  const names=[...new Set(state.rows.map(row=>row.ocrName).filter(Boolean))];
   const uncertain=state.rows.filter(row=>!row.ocrName&&row.ocrRawName).length;
   const roster=members(),choices=roster.map(p=>({id:p.id,name:memberLabel(p,getApp().roster)}));
   const saved=roster.flatMap(person=>(person.aliases||[]).map(alias=>({alias,person})));
@@ -214,11 +174,12 @@ export function createBattleImageImport(api){
    '<p class="muted">이미지는 브라우저에서만 임시 처리합니다. 서버에는 확정한 공격 기록만 저장하며, OCR은 첫 사용 시 언어 모델을 내려받습니다.</p></div>'+
    '<button class="btn sm" type="button" data-page="battle">← 배틀로그</button></div>'+
    '<div class="bli-upload">'+
-   '<label class="field"><span>스크린샷 형식</span><select id="bli-mode"><option value="detail" '+(state.mode==='detail'?'selected':'')+'>전투 로그 상세 (추천 · 이미지당 약 3건)</option><option value="quick" '+(state.mode==='quick'?'selected':'')+'>우측 간단 로그 (공격 시각 수동 확인)</option></select></label>'+
+   '<label class="field"><span>스크린샷 형식</span><select id="bli-mode"><option value="detail" '+(state.mode==='detail'?'selected':'')+'>전투 로그 상세 (추천 · 행 자동 감지)</option><option value="quick" '+(state.mode==='quick'?'selected':'')+'>우측 간단 로그 (공격 시각 수동 확인)</option></select></label>'+
    '<div class="bli-pick"><label class="btn primary" for="bli-files">＋ 스크린샷 여러 장 선택</label><input type="file" id="bli-files" accept="image/png,image/jpeg,image/webp" multiple hidden><span>PNG · JPG · WebP / 1회 최대 60장, 장당 25MB</span></div>'+
    '<div class="bli-controls"><button type="button" class="btn" data-bli="analyze" '+(state.processing?'disabled':'')+'>선택 이미지 분석 시작</button>'+
    (state.processing?'<button type="button" class="btn" data-bli="cancel">다음 이미지부터 중단</button>':'')+
    '<button type="button" class="btn" data-bli="clear" '+(state.processing?'disabled':'')+'>미리보기 비우기</button></div>'+
+   (state.mode==='detail'?'<label class="field"><input id="bli-auto-crop" type="checkbox" '+(state.autoCrop?'checked':'')+' '+(state.processing?'disabled':'')+'> 전투 행 자동 감지 · 화면 크기에 맞춰 인식</label>':'')+
    cropEditor()+
    '<p class="bli-progress" id="bli-progress" role="status">'+escapeHtml(state.progress||'파일은 분석 전까지 브라우저 메모리에만 보관합니다.')+'</p></div>'+
    '<details class="bli-manual"><summary>OCR 텍스트 직접 붙여넣기 · 잘못 인식된 화면 재분석</summary>'+
@@ -240,7 +201,7 @@ export function createBattleImageImport(api){
  function cropEditor(){
   if(!previewUrl)return '';
   const frames=state.cropFrames[state.mode],index=Math.min(state.cropIndex,frames.length-1),frame=frames[index];
-  return '<details class="bli-crop" '+(state.cropOpen?'open':'')+'><summary>인식 영역 지정 · 화면 비율이 다를 때</summary><p>행을 선택하고 이미지 위에서 드래그하여 이름·보스·피해량·일시가 모두 들어오게 지정하세요. 지정 영역은 이번 분석의 모든 이미지에 적용됩니다.</p><label>영역 <select id="bli-crop-index" '+(state.processing?'disabled':'')+'>'+frames.map((_,i)=>'<option value="'+i+'" '+(index===i?'selected':'')+'>'+(state.mode==='detail'?(i+1)+'번째 공격':'우측 간단 로그')+'</option>').join('')+'</select></label><button class="btn sm" type="button" data-bli="reset-crop" '+(state.processing?'disabled':'')+'>기본 영역</button><div class="bli-crop-image" data-bli-crop-surface><img src="'+escapeHtml(previewUrl)+'" alt="선택한 첫 스크린샷의 OCR 영역 미리보기" draggable="false"><span class="bli-crop-box" style="left:'+frame.x*100+'%;top:'+frame.y*100+'%;width:'+frame.w*100+'%;height:'+frame.h*100+'%"></span></div><div class="bli-crop-numbers">'+[['x','왼쪽'],['y','위쪽'],['w','너비'],['h','높이']].map(([key,label])=>'<label>'+label+' %<input type="number" inputmode="decimal" min="0" max="100" step="0.1" data-bli-crop-field="'+key+'" value="'+(frame[key]*100).toFixed(1)+'" '+(state.processing?'disabled':'')+'></label>').join('')+'</div></details>';
+  return '<details class="bli-crop" '+(state.cropOpen?'open':'')+'><summary>인식 영역 지정 · 화면 비율이 다를 때</summary><p>행을 선택하고 이미지 위에서 드래그하여 이름·보스·피해량·일시가 모두 들어오게 지정하세요. 직접 영역을 변경하면 자동 감지가 꺼집니다. 지정 영역은 이번 분석의 모든 이미지에 적용됩니다.</p><label>영역 <select id="bli-crop-index" '+(state.processing?'disabled':'')+'>'+frames.map((_,i)=>'<option value="'+i+'" '+(index===i?'selected':'')+'>'+(state.mode==='detail'?(i+1)+'번째 공격':'우측 간단 로그')+'</option>').join('')+'</select></label><button class="btn sm" type="button" data-bli="reset-crop" '+(state.processing?'disabled':'')+'>기본 영역</button><div class="bli-crop-image" data-bli-crop-surface><img src="'+escapeHtml(previewUrl)+'" alt="선택한 첫 스크린샷의 OCR 영역 미리보기" draggable="false"><span class="bli-crop-box" style="left:'+frame.x*100+'%;top:'+frame.y*100+'%;width:'+frame.w*100+'%;height:'+frame.h*100+'%"></span></div><div class="bli-crop-numbers">'+[['x','왼쪽'],['y','위쪽'],['w','너비'],['h','높이']].map(([key,label])=>'<label>'+label+' %<input type="number" inputmode="decimal" min="0" max="100" step="0.1" data-bli-crop-field="'+key+'" value="'+(frame[key]*100).toFixed(1)+'" '+(state.processing?'disabled':'')+'></label>').join('')+'</div></details>';
  }
  function constrainFrame(frame){
   frame.x=Math.max(0,Math.min(.99,frame.x));frame.y=Math.max(0,Math.min(.99,frame.y));
@@ -254,6 +215,7 @@ export function createBattleImageImport(api){
   state.processing=true;state.cancel=false;state.cancelReason='';state.errors=[];state.total=picked.length;state.completed=0;
   const files=picked.slice(),mode=state.mode,frames=structuredClone(state.cropFrames[state.mode]),contextMonth=getApp().active;
   let practiceCount=0;
+  const useAutoCrop=mode==='detail'&&state.autoCrop;
   state.progress='OCR 엔진 및 한국어 모델 준비 중…';render();
   let worker=null,run=++jobId;
   try{
@@ -314,67 +276,54 @@ export function createBattleImageImport(api){
      const bitmap=await createImageBitmap(file);
      try{
       if(getApp().active!==contextMonth){state.cancel=true;break;}
-      for(let i=0;i<frames.length;i++){
+      const fileFrames=useAutoCrop?automaticFrames(bitmap):frames;
+      if(!fileFrames.length)throw new Error('전투 행을 찾지 못했습니다. 전투 로그 상세 화면인지 확인하거나 자동 감지를 끄고 인식 영역을 지정하세요.');
+      if(useAutoCrop&&state.completed===0){state.cropFrames.detail=structuredClone(fileFrames);state.cropIndex=0;}
+      for(let i=0;i<fileFrames.length;i++){
        if(state.cancel)break;
-       const canvas=toCanvas(bitmap,frames[i]);
-       const result=await worker.recognize(canvas);
-       canvas.width=0;canvas.height=0;
-       if(state.cancel||getApp().active!==contextMonth){state.cancel=true;break;}
-       const text=result.data?.text||'';
-       if(mode==='detail'&&/모의\s*전/.test(text)){practiceCount++;continue;}
+       const frame=fileFrames[i],fields=frame.fields||detailFields;
        const options={roster:members(),bosses:month().bosses,source:file.name+' · '+(i+1)+'행'};
-       const parsed=mode==='detail'? [parseBattleLogText(text||'문자 인식 실패',options)].filter(Boolean):
-         parseQuickLogText(text,options);
-       if(mode==='detail'&&parsed.length){
-        const row=parsed[0],reads={};
+       let parsed=[];
+       if(mode==='quick'){
+        await worker.setParameters({tessedit_pageseg_mode:'3',tessedit_char_whitelist:''});
+        const canvas=toCanvas(bitmap,frame);
+        try{const result=await worker.recognize(canvas);parsed=parseQuickLogText(result.data?.text||'',options);}
+        finally{canvas.width=canvas.height=0;}
+       }else{
         try{
-         reads.kind=await readLabel(worker,bitmap,frames[i],detailFields.kind,'white');
-         if(/모의\s*전/.test(reads.kind.text)){practiceCount++;continue;}
+         const kind=await readLabel(worker,bitmap,frame,fields.kind,'white');
+         if(/모의\s*전/.test(kind.text)){practiceCount++;continue;}
          const names=[];
-         names.push(await readLabel(worker,bitmap,frames[i],detailFields.member));
-         let name=parseBattleLogText(names[0].text,{...options,bosses:[],memberField:true});
-         if(!name?.memberId&&!state.cancel){
-          names.push(await readLabel(worker,bitmap,frames[i],detailFields.member,'black'));
-          name=parseBattleLogText(names.at(-1).text,{...options,bosses:[],memberField:true});
-         }
-         if(!name?.memberId&&!state.cancel){
-          names.push(await readLabel(worker,bitmap,frames[i],{x:.32,y:.35,w:.28,h:.34}));
-          name=parseBattleLogText(names.at(-1).text,{...options,bosses:[],memberField:true});
-         }
-         const readings=names.map(read=>({...read,text:cleanOcrName(read.text)})).filter(read=>read.text).sort((a,b)=>b.confidence-a.confidence);
-         const recognized=readings.find(read=>reliableOcrNickname(read.text));
-         row.bossVisual=portraitFingerprint(bitmap,frames[i]);
-         row.ocrName=recognized?.text||'';
-         row.ocrRawName=recognized?'':(readings[0]?.text||'').slice(0,80);
-         const confirmed=recognized?parseBattleLogText(recognized.text,{...options,bosses:[],memberField:true}):null;
-         row.memberId=recognized?(confirmed?.memberId||state.nameMatches[row.ocrName]||''):'';
-         row.memberName=row.memberId?(members().find(m=>m.id===row.memberId)?.name||''):'';
-         reads.member=names.map(r=>r.text).join(' / ');
-         const damageRead=await readDamageWithEvidence(worker,bitmap,frames[i],row.damage);
-         row.damage=damageRead.damage;
-         row.damageCandidates=damageRead.candidates;
-         row.damageReview=!!damageRead.review;
-         reads.damage=damageRead.details;
-         if(!row.gameAt){
-          reads.date=await readLabel(worker,bitmap,frames[i],detailFields.date,'raw','0123456789/: .-');
-          row.gameAt=parseBattleLogText(reads.date.text,{roster:[],bosses:[]})?.gameAt||'';
-         }
-         const bossReads=[],lengths=[...new Set(month().bosses.map(b=>cleanOcrName(b.name).replace(/\s/g,'').length))].sort((a,b)=>a-b);
-         const whitelist=month().bosses.map(b=>b.name).join(' ');
-         let boss=null;
-         for(const length of lengths){
+         for(const style of ['raw','black','gray']){
           if(state.cancel)break;
-          const box={x:.04,y:.75,w:Math.min(.25,length*.0195+.005),h:.19};
-          bossReads.push(await readLabel(worker,bitmap,frames[i],box));
-          boss=matchBossReadings(bossReads,month().bosses);
-          if(boss?.score===1)break;
-          bossReads.push(await readLabel(worker,bitmap,frames[i],box,'white',whitelist));
-          boss=matchBossReadings(bossReads,month().bosses);
-          if(boss?.score===1)break;
+          names.push(await readLabel(worker,bitmap,frame,fields.member,style));
          }
-         if(boss){row.bossId=boss.id;row.bossReadScore=boss.score;}
-         reads.boss=bossReads.map(r=>r.text).filter(Boolean).join(' / ');
-         row.rawText+='\n\n개별 영역 인식\n클랜원: '+(reads.member||'미인식')+'\n보스: '+(reads.boss||'미인식')+(boss?' → '+boss.name:'')+'\n피해량: '+reads.damage.text+'\n전투 유형: '+reads.kind.text+(reads.date?'\n일시: '+reads.date.text:'');
+         const recognized=selectNicknameReading(names,members());
+         const damage=await readDamageWithEvidence(worker,bitmap,frame,fields.damage);
+         const date=await readLabel(worker,bitmap,frame,fields.date,'raw','0123456789/: .-');
+         const stage=await readLabel(worker,bitmap,frame,fields.stage||{x:.49,y:.07,w:.10,h:.25},'white','123456');
+         const bossReads=[];
+         let boss=null;
+         const boxes=fields.boss?[fields.boss]:[{x:.04,y:.75,w:.25,h:.19}];
+         for(const box of boxes){
+          if(state.cancel)break;
+          bossReads.push(await readLabel(worker,bitmap,frame,box));
+          bossReads.push(await readLabel(worker,bitmap,frame,box,'white'));
+          boss=matchBossReadings(bossReads,month().bosses);
+         }
+         const row=parseBattleLogText('일시 '+date.text,{...options,roster:[],bosses:[]});
+         row.ocrName=recognized?.text||'';
+         row.ocrRawName=recognized?'':(names.filter(r=>r.text).sort((a,b)=>b.confidence-a.confidence)[0]?.text||'').slice(0,80);
+         row.memberId=recognized?.memberId||state.nameMatches[row.ocrName]||'';
+         row.memberName=members().find(m=>m.id===row.memberId)?.name||'';
+         row.damage=damage.damage;row.damageCandidates=damage.candidates;row.damageReview=!!damage.review;
+         row.bossId=boss?.id||'';row.bossReadScore=boss?.score||0;
+         row.bossVisual=portraitFingerprint(bitmap,frame);
+         row.stage=/^[1-6]$/.test(stage.text.trim())?stage.text.trim():'';
+         row.rawText='클랜원: '+names.map(r=>r.text||'미인식').join(' / ')+
+          '\n보스: '+bossReads.map(r=>r.text||'미인식').join(' / ')+
+          '\n피해량: '+damage.details+'\n일시: '+date.text+'\n전투 유형: '+kind.text+'\n단계: '+stage.text;
+         row.selected=true;parsed=[row];
         }finally{await worker.setParameters({tessedit_pageseg_mode:'3',tessedit_char_whitelist:''});}
        }
        if(state.cancel||getApp().active!==contextMonth){state.cancel=true;break;}
@@ -483,14 +432,15 @@ export function createBattleImageImport(api){
   const element=event.target;
   if(element.dataset?.bliNameMap){
    const name=element.dataset.bliNameMap;
-   if(!reliableOcrNickname(name))return;
+   if(!state.rows.some(row=>row.ocrName===name))return;
    state.nameMatches[name]=element.value;
    for(const row of state.rows)if(row.ocrName===name){row.memberId=element.value;row.selected=!!element.value;}
    updateRows(true);render();return;
   }
+  if(element.id==='bli-auto-crop'){if(state.processing)return;state.autoCrop=element.checked;render();return;}
   if(element.id==='bli-mode'){if(state.processing)return;state.mode=element.value;state.cropIndex=0;render();return;}
   if(element.id==='bli-crop-index'){state.cropIndex=Number(element.value);render();return;}
-  if(element.dataset?.bliCropField){if(state.processing)return;const value=Number(element.value);if(!Number.isFinite(value))return;currentFrame()[element.dataset.bliCropField]=value/100;constrainFrame(currentFrame());render();return;}
+  if(element.dataset?.bliCropField){if(state.processing)return;const value=Number(element.value);if(!Number.isFinite(value))return;state.autoCrop=false;currentFrame()[element.dataset.bliCropField]=value/100;constrainFrame(currentFrame());render();return;}
   if(element.id==='bli-files'){
    picked=Array.from(element.files||[]).slice(0,60);
    if(Array.from(element.files||[]).length>60||picked.some(f=>f.size>25*1024*1024||!/^image\/(png|jpeg|webp)$/.test(f.type))){
@@ -527,7 +477,7 @@ export function createBattleImageImport(api){
    case 'unlock':unlock?.();break;
    case 'remember-alias':{
     const alias=button.dataset.alias||'';
-    if(!reliableOcrNickname(alias)){notify('불확실한 OCR 글자는 자동 기억할 수 없습니다. 정확한 닉네임을 직접 등록해 주세요.');break;}
+    if(!state.rows.some(row=>row.ocrName===alias&&row.memberId)&&!reliableOcrNickname(alias)){notify('불확실한 OCR 글자는 자동 기억할 수 없습니다. 정확한 닉네임을 직접 등록해 주세요.');break;}
     const group=state.rows.filter(row=>row.ocrName===alias);
     const linked=[...new Set(group.map(row=>row.memberId).filter(Boolean))];
     if(linked.length!==1||group.some(row=>row.memberId!==linked[0])){notify('이 이름의 모든 기록이 같은 클랜원인지 먼저 확인하세요.');break;}
@@ -556,7 +506,7 @@ export function createBattleImageImport(api){
    }
    case 'analyze':void analyze();break;
    case 'cancel':state.cancelReason='사용자가 분석 중단을 선택했습니다.';state.cancel=true;state.progress='현재 OCR 처리 후 중단합니다.';break;
-   case 'reset-crop':if(state.processing)return;state.cropFrames={detail:structuredClone(detailFrames),quick:[structuredClone(quickFrame)]};render();break;
+   case 'reset-crop':if(state.processing)return;state.autoCrop=true;state.cropFrames={detail:structuredClone(detailFrames),quick:[structuredClone(quickFrame)]};render();break;
    case 'clear':if(state.processing)return;clearPreview();state.rows=[];state.nameMatches={};state.errors=[];picked=[];state.progress='미리보기를 비웠습니다.';render();break;
    case 'commit':commit();break;
    case 'parse-text':{
@@ -603,7 +553,8 @@ export function createBattleImageImport(api){
   drag.frame=constrainFrame({x:Math.min(x,drag.x),y:Math.min(y,drag.y),w:Math.abs(x-drag.x),h:Math.abs(y-drag.y)});
   const box=drag.surface.querySelector('.bli-crop-box');if(box)Object.assign(box.style,{left:drag.frame.x*100+'%',top:drag.frame.y*100+'%',width:drag.frame.w*100+'%',height:drag.frame.h*100+'%'});
  });
- document.addEventListener('pointerup',()=>{if(!drag)return;if(drag.frame)Object.assign(currentFrame(),drag.frame);drag=null;render();});
+ document.addEventListener('pointerup',()=>{if(!drag)return;if(drag.frame){state.autoCrop=false;Object.assign(currentFrame(),drag.frame);}drag=null;render();});
  document.addEventListener('pointercancel',()=>{drag=null;});
  return {view,mount};
 }
+
