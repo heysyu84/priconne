@@ -99,11 +99,11 @@ async function v2ReadOcr(worker,bitmap,frame,field){
   return {text:String(result.data?.text||'').trim(),confidence:Number(result.data?.confidence||0)};
  }finally{canvas.width=canvas.height=0;}
 }
-async function v2AnalyzeImages(){
+async function v2AnalyzeImages(force=true){
  if(ext.ocrBusy)return;
- const images=ext.images.filter(item=>item.file);
- if(!images.length){toast('분석할 스크린샷을 선택하세요.');return;}
- const month=ui.month,job=uid();ext.ocrBusy=true;ext.ocrJob=job;ext.ocrErrors=[];ext.ocrStatus='OCR 분석 준비 중…';render();
+ const images=ext.images.filter(item=>item.file&&(force||!item.ocrDone));
+ if(!images.length){ext.ocrStatus='새로 분석할 이미지가 없습니다. 이미 선택된 이미지의 결과를 확인하세요.';render();return;}
+ const month=ui.month,job=uid();ext.ocrBusy=true;ext.ocrJob=job;ext.ocrErrors=[];ext.ocrStatus='OCR 엔진 및 한국어 모델을 준비 중입니다…';render();
  const progress=value=>{if(ext.ocrJob!==job)return;ext.ocrStatus=value;const el=document.getElementById('v2-ocr-status');if(el)el.textContent=value;};
  let worker=null,found=0;
  try{
@@ -117,7 +117,10 @@ async function v2AnalyzeImages(){
   const fields={member:{x:.33,y:.44,w:.25,h:.19},damage:{x:.72,y:.02,w:.26,h:.30},date:{x:.365,y:.65,w:.225,h:.28},boss:{x:.04,y:.75,w:.25,h:.19}};
   for(let i=0;i<images.length;i++){
    if(ext.ocrJob!==job||month!==ui.month||!ext.importMode)break;
-   const item=images[i];progress((i+1)+'/'+images.length+'장 분석 중');
+   const item=images[i];
+   const oldRows=ext.importRows.filter(r=>r.ocrImageId===item.id);
+   if(force&&oldRows.length)ext.importRows=ext.importRows.filter(r=>r.ocrImageId!==item.id);
+   progress((i+1)+'/'+images.length+'장 분석 중: '+item.name);
    let bitmap=null;
    try{
     bitmap=await createImageBitmap(item.file);
@@ -149,15 +152,16 @@ async function v2AnalyzeImages(){
       if(!extracted.memberId&&!extracted.bossId&&!extracted.damage&&!extracted.gameAt)continue;
       const ok=!!extracted.memberId&&!!extracted.bossId&&Number.isSafeInteger(Number(extracted.damage))&&Number(extracted.damage)>0&&!!extracted.gameAt;
       const warnings=[...(!extracted.memberId?['클랜원']:[]),...(!extracted.bossId?['보스']:[]),...(!extracted.damage?['피해량']:[]),...(!extracted.gameAt?['공격 일시']:[])];
-      ext.importRows.push({...newImportRow(),memberId:extracted.memberId||'',boss:extracted.bossId||'',damage:extracted.damage||'',gameAt:extracted.gameAt||'',selected:ok,warnings,rawText:extracted.rawText||''});
+      ext.importRows.push({...newImportRow(),memberId:extracted.memberId||'',boss:extracted.bossId||'',damage:extracted.damage||'',gameAt:extracted.gameAt||'',selected:ok,warnings,rawText:extracted.rawText||'',ocrImageId:item.id,ocrName:extracted.ocrName||'',source:extracted.source||''});
       found++;
      }
     }
-   }catch(error){ext.ocrErrors.push(item.name+': '+(error.message||String(error)));}
+   item.ocrDone=true;
+   }catch(error){ext.ocrErrors.push(item.name+': '+(error.message||String(error)));item.ocrDone=false;}
    finally{bitmap?.close?.();}
    progress((i+1)+'/'+images.length+'장 분석 완료');
   }
-  ext.ocrStatus=images.length+'장 OCR 완료 · '+found+'건 인식. 내용을 확인한 뒤 선택한 기록만 등록하세요.';
+  ext.ocrStatus=images.length+'장 OCR 완료 · '+found+'건 인식'+(ext.ocrErrors.length?' · 오류 '+ext.ocrErrors.length+'건':'')+'. 내용을 확인한 뒤 선택한 기록만 등록하세요.';
   if(!found&&!ext.ocrErrors.length)ext.ocrStatus='인식된 기록이 없습니다. 스크린샷 형식 또는 화면 구성을 확인하세요.';
  }catch(error){ext.ocrErrors.push(error.message||String(error));ext.ocrStatus='OCR 분석 실패';}
  finally{if(worker)await worker.terminate().catch(()=>{});if(ext.ocrJob===job){ext.ocrBusy=false;if(ext.importMode)render();}}
@@ -194,7 +198,20 @@ document.addEventListener('change',async event=>{const el=event.target,key=el.da
  if(key==='v2-editable'){if(syncState.started){el.checked=false;toggleWriter();return;}if(!data.settings.editable&&data.pinHash){el.checked=false;toggleWriter();return;}data.settings.editable=el.checked;persist();render();return;}if(key==='v2-default-day'){data.settings.defaultDay=Number(el.value);persist();return;}
  if(key==='v2-carry-sheet'&&el.files[0]){try{const file=el.files[0],rows=file.name.toLowerCase().endsWith('.xlsx')?await xlsxRows(file):parseDelimited(await file.text(),file.name.toLowerCase().endsWith('.tsv')?'\t':',');ext.carryImport=parseCarrySheet(rows);renderCarryPreview();}catch(error){toast(error.message);}return;}
  if(key==='v2-ocr-mode'){ext.ocrMode=el.value;return;}
- if(key==='v2-batch-images'){if(ext.ocrBusy){toast('분석 후 추가해 주세요.');return;}const items=Array.from(el.files||[]);if(ext.images.length+items.length>60||items.some(file=>!/^image\/(png|jpeg|webp)$/.test(file.type)||file.size>25*1024*1024)){toast('최대 60장, 장당 25MB 이하의 PNG·JPG·WebP만 선택하세요.');return;}for(const file of items)ext.images.push({id:uid(),url:URL.createObjectURL(file),name:file.name,file});ext.activeImage=ext.images.length-items.length;ext.ocrStatus=ext.images.length+'장 선택됨 · OCR 자동 분석 시작을 누르세요.';render();return;}
+ if(key==='v2-batch-images'){
+  if(ext.ocrBusy){toast('OCR 분석 완료 후 이미지를 추가하세요.');return;}
+  const items=Array.from(el.files||[]);
+  if(!items.length)return;
+  if(ext.images.length+items.length>60||items.some(file=>!/^image\/(png|jpeg|webp)$/.test(file.type)||file.size>25*1024*1024)){
+    toast('최대 60장, 장당 25MB 이하의 PNG·JPG·WebP만 선택하세요.');return;
+  }
+  for(const file of items)ext.images.push({id:uid(),url:URL.createObjectURL(file),name:file.name,file,ocrDone:false});
+  ext.activeImage=ext.images.length-items.length;
+  ext.ocrStatus=ext.images.length+'장 선택됨 · OCR 자동 분석을 시작합니다.';
+  render();
+  void v2AnalyzeImages(false);
+  return;
+ }
  if(key==='v2-restore'&&el.files[0]){try{const incoming=await prepareCompatibleBackup(JSON.parse(await el.files[0].text()));if(!backupValid(incoming))throw new Error();ext.pendingRestore=incoming;openDrawer('백업 복원',`<p>${incoming.monthExport?incoming.month.replace('-','.')+'월':Object.keys(incoming.seasons).length+'개월'} 백업으로 복원합니다.</p>`,simpleButton('취소','close-drawer')+simpleButton('복원','v2-confirm-restore','','primary'));}catch(error){toast(error.message||'백업 JSON을 확인하세요.');}return;}
  if(key==='v2-portrait-file'&&el.files[0]){const image=new Image();image.onload=()=>{ext.cropImage=image;document.getElementById('portrait-zoom').value=1;document.getElementById('portrait-x').value=0;document.getElementById('portrait-y').value=0;drawPortraitCrop();};image.src=URL.createObjectURL(el.files[0]);return;}
  if(key==='v2-portrait-star'){if(ext.cropImage){ext.pendingImages[ext.previousPortraitStar||'5']=document.getElementById('portrait-canvas').toDataURL('image/jpeg',.87);ext.cropImage=null;}ext.previousPortraitStar=el.value;showStoredPortrait();return;}
