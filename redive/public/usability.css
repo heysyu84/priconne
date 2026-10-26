@@ -734,8 +734,8 @@ form[data-form="v2-tactic"] #tactic-text{display:block;width:100%;min-width:0;mi
 /* Header icons retain their square proportions at every text scale. */
 .brand-nyang{display:block;width:32px;height:32px;flex:0 0 32px;object-fit:contain}
 .header-controls .header-settings svg{display:block;width:18px!important;height:18px!important;min-width:18px;min-height:18px;flex:0 0 18px;aspect-ratio:1;overflow:visible}
-.winner-cell .winner-person{display:inline-flex;align-items:baseline;gap:4px;white-space:nowrap}
-.winner-cell .winner-separator{display:inline-block;padding:0 8px;color:var(--muted);font-weight:400}
+.winner-cell .winner-person{display:flex;align-items:baseline;gap:4px;white-space:nowrap}
+.award-count-table .award-place,.hall-table .award-place{display:block;white-space:nowrap;line-height:1.5}
 .data-table.attack-dashboard{--attack-box-height:26px}
 .dashboard-attack{--attack-box-width:31px;--attack-box-gap:3px;display:inline-flex;align-items:center;gap:var(--attack-box-gap);width:calc(var(--attack-box-width) * 2 + var(--attack-box-gap));height:var(--attack-box-height);min-height:var(--attack-box-height);vertical-align:middle;white-space:nowrap}
 .dashboard-attack .dashboard-basic-boss,.dashboard-attack .dashboard-carry-boss,.dashboard-attack .carry-ready{display:inline-flex;align-items:center;justify-content:center;width:var(--attack-box-width);height:var(--attack-box-height);min-width:var(--attack-box-width);min-height:var(--attack-box-height);padding:0;border:1px solid var(--boss);border-radius:5px;background:var(--boss-wash);color:var(--boss-ink);font-size:16px;font-weight:750;line-height:1;box-sizing:border-box;flex:none}

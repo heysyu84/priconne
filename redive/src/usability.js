@@ -132,7 +132,7 @@ function awardRows(){
   }
   return [...map.values()].sort((a,b)=>b.total-a.total||a.name.localeCompare(b.name,'ko'));
 }
-completeHall=()=>`<div class="table-tools"><span>확정한 월별 결과 기준</span></div>`+rowTable(['클랜원','인게임 1위 / 2위','기여도 1위 / 2위','피해량 1위 / 2위','총 수상'],awardRows().map(p=>`<tr><td><button class="text-button member-link" data-action="u-award-history" data-name="${X(p.name)}">${X(p.name)}</button></td>${RESULT_METRICS.map(([metric])=>`<td class="center numeric">${p[metric]?.[0]||0} / ${p[metric]?.[1]||0}</td>`).join('')}<td class="center numeric"><strong>${p.total}</strong></td></tr>`),'hall-table award-count-table exact-table');
+completeHall=()=>`<div class="table-tools"><span>확정한 월별 결과 기준</span></div>`+rowTable(['클랜원','인게임 1·2위','기여도 1·2위','피해량 1·2위','총 수상'],awardRows().map(p=>`<tr><td><button class="text-button member-link" data-action="u-award-history" data-name="${X(p.name)}">${X(p.name)}</button></td>${RESULT_METRICS.map(([metric])=>`<td class="center numeric"><span class="award-place">1위 ${p[metric]?.[0]||0}</span><span class="award-place">2위 ${p[metric]?.[1]||0}</span></td>`).join('')}<td class="center numeric"><strong>${p.total}</strong></td></tr>`),'hall-table award-count-table exact-table');
 
 function sealResult(month){
   if(!ensureEdit())return false;const season=historySeason(month);if(!season)return false;
