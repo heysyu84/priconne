@@ -54,6 +54,8 @@ export function replayMonth(month) {
     const key = `${e.day}:${e.memberId || e.member}`;
     if (!people.has(key)) people.set(key, { shots: 0, carries: [] });
     const person = people.get(key);
+    // Replay must discard links left by a carry-to-normal edit.
+    delete e.carryFrom;
     e.killIndex = -1;
     e.carryIndex = -1;
     if (e.carry) {
