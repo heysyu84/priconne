@@ -191,28 +191,51 @@ export function createBattleImageImport(api){
    });
    if(run!==jobId||state.cancel){state.cancelReason||='모델 준비 중 화면이 변경됐습니다.';return;}
    state.progress='한국어 OCR 모델 초기화 중…';const status=$('bli-progress');if(status)status.textContent=state.progress;
-   let startTimer=null,abandoned=false;
-   const pendingWorker=Tesseract.createWorker('kor',1,{
-    logger:message=>{
-     if(run!==jobId||state.cancel)return;
-     const stages={'loading tesseract core':'문자인식 엔진 불러오는 중','initializing tesseract':'문자인식 엔진 초기화 중','loading language traineddata':'한국어 모델 다운로드 중','initializing api':'한국어 모델 적용 중','recognizing text':'문자 분석 중'};
-     const phase=stages[message.status]||String(message.status||'OCR 처리 중');
-     const percent=Math.round(Math.min(1,Math.max(0,Number(message.progress)||0))*100);
-     state.progress=(message.status==='recognizing text'?'이미지 '+(state.completed+1)+'/'+state.total+' · ':'')+phase+' '+percent+'%';
-     const el=$('bli-progress');if(el)el.textContent=state.progress;
-    }
-   }).then(async value=>{
-    if(abandoned){await value.terminate().catch(()=>{});throw new Error('OCR 초기화 제한시간 초과');}
-    return value;
-   });
-   try{
-    worker=await Promise.race([
-     pendingWorker,
-     new Promise((_,reject)=>{startTimer=setTimeout(()=>{
-      abandoned=true;reject(new Error('한국어 OCR 모델 준비가 75초를 초과했습니다. CDN 접속 상태를 확인하고 다시 시도하세요.'));
-     },75000);})
-    ]);
-   }finally{clearTimeout(startTimer);}
+   const sources=[
+    {name:'기본 CDN',options:{}},
+    {name:'대체 CDN',options:{
+     workerPath:'https://cdnjs.cloudflare.com/ajax/libs/tesseract.js/7.0.0/worker.min.js',
+     corePath:'https://unpkg.com/tesseract.js-core@7.0.0',
+     langPath:'https://unpkg.com/@tesseract.js-data/kor@1.0.0/4.0.0_best_int'
+    }}
+   ];
+   let initializationError=null;
+   for(let attempt=0;attempt<sources.length&&!worker;attempt++){
+    if(state.cancel)break;
+    const source=sources[attempt];
+    state.progress='한국어 OCR 모델 준비 중 ('+(attempt+1)+'/'+sources.length+') · '+source.name;
+    const stage=$('bli-progress');if(stage)stage.textContent=state.progress;
+    let startTimer=null,abandoned=false;
+    try{
+     const pendingWorker=Tesseract.createWorker('kor',1,{
+      ...source.options,
+      logger:message=>{
+       if(run!==jobId||state.cancel)return;
+       const stages={'loading tesseract core':'문자인식 엔진 불러오는 중','initializing tesseract':'문자인식 엔진 초기화 중','loading language traineddata':'한국어 모델 다운로드 중','initializing api':'한국어 모델 적용 중','recognizing text':'문자 분석 중'};
+       const phase=stages[message.status]||String(message.status||'OCR 처리 중');
+       const percent=Math.round(Math.min(1,Math.max(0,Number(message.progress)||0))*100);
+       state.progress=(message.status==='recognizing text'?'이미지 '+(state.completed+1)+'/'+state.total+' · ':'')+phase+' '+percent+'%';
+       const el=$('bli-progress');if(el)el.textContent=state.progress;
+      }
+     }).then(async value=>{
+      if(abandoned){await value.terminate().catch(()=>{});throw new Error('OCR 초기화 제한시간 초과');}
+      return value;
+     });
+     worker=await Promise.race([
+      pendingWorker,
+      new Promise((_,reject)=>{startTimer=setTimeout(()=>{
+       abandoned=true;reject(new Error('한국어 OCR 모델 준비가 75초를 초과했습니다.'));
+      },75000);})
+     ]);
+    }catch(error){
+     initializationError=error;
+     if(attempt+1<sources.length&&!state.cancel){
+      state.progress='한국어 OCR 모델 초기화 실패 · 대체 다운로드 경로를 시도합니다.';
+      const el=$('bli-progress');if(el)el.textContent=state.progress;
+     }
+    }finally{clearTimeout(startTimer);}
+   }
+   if(!worker)throw initializationError||new Error('OCR 모델 초기화가 중단됐습니다.');
    for(const file of files){
     if(state.cancel||run!==jobId)break;
     try{
