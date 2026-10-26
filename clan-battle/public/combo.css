@@ -287,3 +287,7 @@ html[data-text-scale]:not([data-text-scale="100"]) .combo-compact-list{
 .combo-planner-actions>.btn.active{background:#eee3f6;color:#79519a;border-color:#ccb6df}
 .combo-planner-help{margin-bottom:12px;padding:12px 14px;font-size:12px;line-height:1.7;color:#826a96}
 @media(max-width:600px){.combo-workspace-toolbar{flex-wrap:wrap;gap:6px}.combo-workspace-toolbar>.tabset{width:100%;flex:1 1 100%}.combo-planner-actions{width:100%;margin-left:0;grid-template-columns:minmax(0,1fr) minmax(0,.7fr) minmax(0,.7fr)}.combo-planner-actions>.btn{min-height:34px}}
+
+/* Put count badges over compact/mobile icons without adding a third menu row. */
+.mobile-nav button[data-page="tactics"],.mobile-nav button[data-page="combos"]{position:relative}
+.mobile-nav button .nav-count{position:absolute;top:-2px;right:2px;pointer-events:none}
