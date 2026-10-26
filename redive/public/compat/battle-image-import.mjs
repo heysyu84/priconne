@@ -92,7 +92,7 @@ function reliableOcrNickname(value){
  return letters>=2&&symbols<=Math.max(1,Math.floor(name.length/3))&&!/(?:데미지|대미지|피해량|전투로그|단계째|입힌)/.test(name);
 }
 export function createBattleImageImport(api){
- const {getApp,getMonth,persist,render,navigate,notify,canEdit,unlock,replay,beforeCommit}=api;
+ const {getApp,getMonth,persist,render,navigate,notify,canEdit,unlock,replay,beforeCommit,saveNicknameAlias,removeNicknameAlias}=api;
  const state={cropOpen:false,cropIndex:0,cropFrames:{detail:structuredClone(detailFrames),quick:[structuredClone(quickFrame)]},rows:[],processing:false,cancel:false,progress:'',mode:'detail',ocrStatus:'',errors:[],day:null,raw:'',completed:0,total:0,nameMatches:{}};
  const $=id=>document.getElementById(id);
  const month=()=>getMonth();
@@ -135,11 +135,20 @@ export function createBattleImageImport(api){
  function nameMapping(){
   const names=[...new Set(state.rows.map(row=>row.ocrName).filter(name=>reliableOcrNickname(name)))];
   const uncertain=state.rows.filter(row=>!row.ocrName&&row.ocrRawName).length;
-  if(!names.length&&!uncertain)return '';
-  return '<details class="bli-name-map" open><summary>인게임 닉네임 → 사이트 클랜원 연결</summary><p class="muted">확실한 이름만 묶어 표시합니다. 숫자·기호 등 인식 불확실 '+uncertain+'건은 자동 연결하지 않습니다. 아래 개별 기록에서 이름을 확인해 주세요.</p>'+(names.length?'<div class="bli-fields">'+names.map(name=>{
-   const rows=state.rows.filter(row=>row.ocrName===name),ids=new Set(rows.map(row=>row.memberId)),value=ids.size===1?rows[0].memberId:'';
-   return '<label>'+escapeHtml(name)+' · '+rows.length+'건<select data-bli-name-map="'+escapeHtml(name)+'">'+options(members().map(p=>({id:p.id,name:memberLabel(p,getApp().roster)})),value,'사이트 클랜원 선택')+'</select></label>';
-  }).join('')+'</div>':'')+(uncertain?'<details class="bli-uncertain"><summary>인식 불확실 '+uncertain+'건 (개별 확인 필수)</summary><p>OCR이 글자가 아닌 숫자나 피해량을 이름처럼 읽었습니다. 같은 문자열도 서로 다른 사람일 수 있으므로 묶어 연결하지 않습니다.</p></details>':'')+'</details>';
+  const roster=members(),choices=roster.map(p=>({id:p.id,name:memberLabel(p,getApp().roster)}));
+  const saved=roster.flatMap(person=>(person.aliases||[]).map(alias=>({alias,person})));
+  return '<details class="bli-name-map" open><summary>인게임 닉네임 → 사이트 클랜원 연결</summary>'+
+   '<p class="muted">OCR 이름이 불확실한 '+uncertain+'건은 자동 연결에서 제외합니다. 아래에서 개별 확인하세요. 연결만 하면 이번 분석에 적용되며, 정확한 별칭은 별도로 저장할 수 있습니다.</p>'+
+   (names.length?'<div class="bli-fields">'+names.map(name=>{
+    const rows=state.rows.filter(row=>row.ocrName===name),ids=new Set(rows.map(row=>row.memberId)),value=ids.size===1?rows[0].memberId:'';
+    const already=roster.some(p=>p.id===value&&[p.name,...(p.aliases||[])].some(alias=>alias.normalize('NFKC').toLowerCase()===name.normalize('NFKC').toLowerCase()));
+    return '<div class="bli-name-item"><label><span class="bli-name-text" title="'+escapeHtml(name)+'">'+escapeHtml(name)+' · '+rows.length+'건</span><select data-bli-name-map="'+escapeHtml(name)+'">'+options(choices,value,'사이트 클랜원 선택')+'</select></label>'+(value&&!already?'<button class="btn sm" type="button" data-bli="remember-alias" data-alias="'+escapeHtml(name)+'">확인한 별칭 기억하기</button>':'')+'</div>';
+   }).join('')+'</div>':'')+
+   (uncertain?'<details class="bli-uncertain"><summary>인식 불확실 '+uncertain+'건 · 개별 확인</summary><p>숫자, 기호, 화면의 다른 문구를 이름으로 잘못 읽은 기록입니다. 같은 숫자라도 동일인물이라는 뜻이 아니므로 자동으로 묶지 않습니다.</p></details>':'')+
+   '<details class="bli-alias-manager"><summary>인게임 별칭 직접 등록 · 삭제</summary><p class="muted">게임에서 실제로 확인한 닉네임만 입력하세요. 시트 클랜원 이름은 변경되지 않습니다.</p>'+
+   '<div class="bli-alias-add"><input id="bli-alias-name" type="text" maxlength="40" aria-label="정확한 인게임 닉네임" placeholder="인게임 닉네임"><select id="bli-alias-member" aria-label="사이트 클랜원 선택">'+options(choices,'','클랜원 선택')+'</select><button class="btn sm" type="button" data-bli="save-alias">별칭 저장</button></div>'+
+   (saved.length?'<div class="bli-saved-aliases">'+saved.map(({alias,person})=>'<span class="bli-saved-alias"><span>'+escapeHtml(alias)+' → '+escapeHtml(person.name)+'</span><button class="btn sm" type="button" data-bli="remove-alias" data-member-id="'+escapeHtml(person.id)+'" data-alias="'+escapeHtml(alias)+'">삭제</button></span>').join('')+'</div>':'')+
+   '</details></details>';
  }
  function view(){
   if(!editingAllowed())return '<section class="panel bli-shell"><h2>이미지 일괄 등록</h2><p>관리자 작성 잠금을 해제해야 사용할 수 있습니다.</p><button class="btn" type="button" data-bli="unlock">작성 잠금 해제</button><button class="btn" type="button" data-page="battle">배틀로그로 돌아가기</button></section>';
@@ -458,6 +467,34 @@ export function createBattleImageImport(api){
   event.preventDefault();
   switch(button.dataset.bli){
    case 'unlock':unlock?.();break;
+   case 'remember-alias':{
+    const alias=button.dataset.alias||'';
+    if(!reliableOcrNickname(alias)){notify('불확실한 OCR 글자는 자동 기억할 수 없습니다. 정확한 닉네임을 직접 등록해 주세요.');break;}
+    const linked=[...new Set(state.rows.filter(row=>row.ocrName===alias).map(row=>row.memberId))].filter(Boolean);
+    if(linked.length!==1){notify('먼저 한 명의 클랜원을 선택하세요.');break;}
+    if(!confirm('"'+alias+'"을(를) 정확한 인게임 닉네임으로 확인했나요? 다음 분석에서도 자동 연결됩니다.'))break;
+    const result=saveNicknameAlias?.(linked[0],alias);
+    if(result?.ok){notify('인게임 별칭을 기억했습니다.');render();}
+    else notify(result?.error||'별칭 저장에 실패했습니다.');
+    break;
+   }
+   case 'save-alias':{
+    const alias=($('bli-alias-name')?.value||'').normalize('NFKC').trim();
+    const memberId=$('bli-alias-member')?.value||'';
+    if(!alias||!memberId){notify('정확한 닉네임과 연결할 클랜원을 입력해 주세요.');break;}
+    if(!confirm('"'+alias+'"을(를) 선택한 클랜원의 인게임 닉네임으로 저장할까요?'))break;
+    const result=saveNicknameAlias?.(memberId,alias);
+    if(result?.ok){state.nameMatches[alias]=memberId;for(const row of state.rows)if(row.ocrName===alias)row.memberId=memberId;updateRows(true);notify('인게임 별칭을 저장했습니다.');render();}
+    else notify(result?.error||'별칭 저장에 실패했습니다.');
+    break;
+   }
+   case 'remove-alias':{
+    if(!confirm('이 별칭의 자동 연결을 삭제할까요?'))break;
+    const result=removeNicknameAlias?.(button.dataset.memberId,button.dataset.alias);
+    if(result?.ok){notify('별칭을 삭제했습니다.');render();}
+    else notify(result?.error||'별칭 삭제에 실패했습니다.');
+    break;
+   }
    case 'analyze':void analyze();break;
    case 'cancel':state.cancelReason='사용자가 분석 중단을 선택했습니다.';state.cancel=true;state.progress='현재 OCR 처리 후 중단합니다.';break;
    case 'reset-crop':if(state.processing)return;state.cropFrames={detail:structuredClone(detailFrames),quick:[structuredClone(quickFrame)]};render();break;
