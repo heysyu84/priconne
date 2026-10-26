@@ -45,8 +45,8 @@ function batchImportPage(){
  '<label class="image-upload-label">이미지 선택<input type="file" accept="image/png,image/jpeg,image/webp" multiple data-input="v2-batch-images" aria-label="배틀로그 이미지 선택"></label>'+
  (ext.images.length?'<div class="image-thumbnails">'+ext.images.map((image,i)=>'<button class="'+(ext.activeImage===i?'active':'')+'" data-action="v2-active-image" data-value="'+i+'">'+(i+1)+'</button>').join('')+'</div><img class="battle-source-image" src="'+ext.images[ext.activeImage||0].url+'" alt="분석할 스크린샷">':'<div class="no-rows">선택한 이미지 없음</div>')+
  '<div class="field"><label>스크린샷 형식</label><select data-input="v2-ocr-mode"><option value="detail" '+(ext.ocrMode==='quick'?'':'selected')+'>상세 이력 (3행)</option><option value="quick" '+(ext.ocrMode==='quick'?'selected':'')+'>간단 로그</option></select></div>'+
- simpleButton(ext.ocrBusy?'OCR 분석 중…':'OCR 자동 분석 시작','v2-analyze-images','','primary')+
- '<p id="v2-ocr-status" role="status" aria-live="polite" class="field-help">'+X(ext.ocrStatus||'첫 분석 시 한국어 OCR 언어 모델을 다운로드합니다.')+'</p>'+
+ simpleButton(ext.ocrBusy?'OCR 분석 중…':'선택한 이미지 다시 분석','v2-analyze-images','','primary')+
+ '<p id="v2-ocr-status" role="status" aria-live="polite" class="field-help">'+X(ext.ocrStatus||'OCR v2.1 · 이미지를 선택하면 자동으로 인식합니다. 첫 사용 시 한국어 모델을 다운로드합니다.')+'</p>'+
  (ext.ocrErrors?.length?'<details class="fold" open><summary>인식 오류 '+ext.ocrErrors.length+'건</summary>'+ext.ocrErrors.map(e=>'<p class="field-help">'+X(e)+'</p>').join('')+'</details>':'')+
  '<details class="fold"><summary>텍스트·표 붙여넣기</summary><textarea id="batch-source-text" rows="8" placeholder="클랜원&#9;보스&#9;피해량&#9;이월&#9;공격 일시"></textarea>'+simpleButton('행으로 읽기','v2-parse-batch')+'</details>'+
  '<p class="field-help">이미지 문자 자동 분석 후 클랜원·보스·피해량·공격 일시를 검토하고 이월 여부를 직접 지정하세요. 확인 전에는 자동 등록되지 않습니다.</p></section>'+
