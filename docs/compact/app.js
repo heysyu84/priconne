@@ -85,10 +85,10 @@ function overviewPage(){const stats=allStats(),remaining=stats.reduce((s,m)=>s+m
  return html+`<div class="overview-main"><div class="stat-strip">${stat('남은 공격',`${remaining}<small>/ ${stats.length*data.settings.daily}타</small>`,'기본 공격 기준','bolt')}${stat('이월 보유',`${carry}<small>명</small>`,'격파 후 남은 이월','clock')}${stat('공격 완료',`${complete}<small>/ ${stats.length}명</small>`,`<em>${Math.round(complete/stats.length*100)}%</em> 진행`,'users')}${stat('누적 피해량',`${eok(total)}<small>억</small>`,'초과 피해를 제외한 합계','chart')}</div><section class="boss-section"><div class="section-head"><h2>보스 진행 현황</h2><div class="section-meta">${icon('info')}보스를 누르면 공격 기록으로 연결</div></div><div class="boss-grid">${data.bosses.map(bossCard).join('')}</div></section></div><div class="overview-bottom"><section class="panel"><div class="panel-head"><div><h2>최근 배틀로그</h2><p>가장 최근에 등록한 공격</p></div><button class="text-button" data-action="nav" data-value="battle">전체 보기 ${icon('arrow')}</button></div>${logTable([...data.logs].filter(l=>l.day<=ui.day).reverse().slice(0,6),true)}</section><section class="panel"><div class="panel-head"><div><h2>남은 공격</h2><p>${ui.day}일차 · 남은 타수 순</p></div><button class="text-button" data-action="overview-members">${icon('arrow')}<span class="sr-only">클랜원 현황 전체 보기</span></button></div><div class="waiting-list">${stats.filter(m=>m.remaining).sort((a,b)=>b.remaining-a.remaining||b.carry-a.carry).slice(0,5).map(m=>`<button class="waiting-row" data-action="profile" data-id="${m.member.id}">${avatar(m.member)}<span class="waiting-name">${X(m.member.name)}<small>${m.carry?`이월 ${m.carry}타 보유`:'기본 공격 대기'}</small></span><span class="remaining-dots">${Array.from({length:3},(_,i)=>`<i class="${i<m.remaining?'on':''}"></i>`).join('')}</span><span class="remaining-value numeric">${m.remaining}타</span></button>`).join('')}</div><div class="panel-note">이월 공격은 기본 타수와 별도로 표시합니다.</div></section></div>`;
 }
 function bossCard(b){const percent=b.hp/b.max*100,locked=isLocked(b);return `<button class="boss-card ${locked?'locked':''}" style="${bossStyle(b.id)}" data-action="boss-log" data-id="${b.id}" aria-label="${b.id}넴 ${X(b.name)}, 남은 HP ${nf(b.hp)}, ${locked?'회차 대기':'공격 기록'}"><div class="boss-top"><span class="boss-emblem">${icon(b.icon)}</span><span class="boss-index">BOSS ${String(b.id).padStart(2,'0')}</span></div><h3 class="boss-name">${X(b.name)}</h3><div class="boss-round"><span>${b.stage}단계</span><span>·</span><span>${b.lap}회차</span></div><div class="boss-hp numeric"><small>남은 HP</small>${nf(b.hp)}</div><div class="progress" role="progressbar" aria-label="${X(b.name)} 남은 HP 비율" aria-valuenow="${Math.round(percent)}" aria-valuemin="0" aria-valuemax="100"><span style="width:${percent}%"></span></div><div class="boss-foot">${locked?`<span class="locked">${icon('lock')}회차 대기</span>`:`<span>${b.hp<400000000?'격파권 진입':'공격 가능'}</span>`}<strong class="numeric">${percent.toFixed(1)}%</strong></div></button>`;}
-function memberDashboard(){let rows=allStats();rows.sort((a,b)=>{if(ui.memberSort==='name')return a.member.name.localeCompare(b.member.name,'ko')*ui.sortDir;return ((a[ui.memberSort]||0)-(b[ui.memberSort]||0))*ui.sortDir;});return `<div class="toolbar"><p class="member-summary">${ui.day}일차 남은 기본 공격과 이월을 함께 확인하세요.</p><div class="toolbar-right"><button class="button sm" data-action="export-csv">${icon('download')}표 내보내기</button></div></div><section class="panel"><div class="table-wrap"><table class="member-table"><thead><tr><th>${memberSort('name','클랜원')}</th>${Array.from({length:data.settings.days},(_,i)=>`<th class="center hide-mobile">${i+1}일차</th>`).join('')}<th class="right">${memberSort('remaining','남은 타수')}</th><th class="right">${memberSort('carry','이월')}</th><th class="right hide-mobile">${memberSort('dayDamage','오늘 피해량')}</th></tr></thead><tbody>${rows.map(m=>`<tr><td><div class="member-name">${avatar(m.member)}<button class="text-button" data-action="profile" data-id="${m.member.id}">${X(m.member.name)}</button></div></td>${Array.from({length:data.settings.days},(_,i)=>{const used=dayLogs(m.member.id,i+1).filter(l=>l.type!=='carry'&&!l.usesCarry).length;return `<td class="center hide-mobile"><span class="daily-use" aria-label="${i+1}일차 ${used}타">${Array.from({length:data.settings.daily},(_,n)=>`<i class="${n<used?'used':''}"></i>`).join('')}</span></td>`;}).join('')}<td class="right"><span class="${m.remaining?'':'muted'} numeric">${m.remaining?`<strong>${m.remaining}</strong>타`:'완료'}</span></td><td class="right">${m.carry?`<span class="badge amber">${m.carry}타</span>`:'<span class="faint">—</span>'}</td><td class="right hide-mobile numeric">${nf(m.dayDamage)}</td></tr>`).join('')}</tbody></table></div></section>`;}
+function memberDashboard(){let rows=allStats();rows.sort((a,b)=>{if(ui.memberSort==='name')return a.member.name.localeCompare(b.member.name,'ko')*ui.sortDir;return ((a[ui.memberSort]||0)-(b[ui.memberSort]||0))*ui.sortDir;});return `<div class="toolbar"><p class="member-summary">${ui.day}일차 남은 기본 공격과 이월을 함께 확인하세요.</p><div class="toolbar-right"><button class="button sm" data-action="export-csv">${icon('download')}표 내보내기</button></div></div><section class="panel"><div class="table-wrap"><table class="member-table"><thead><tr><th>${memberSort('name','클랜원')}</th>${Array.from({length:data.settings.days},(_,i)=>`<th class="center hide-mobile">${i+1}일차</th>`).join('')}<th class="right">${memberSort('remaining','남은 타수')}</th><th class="right">${memberSort('carry','이월')}</th><th class="right hide-mobile">${memberSort('dayDamage','오늘 피해량')}</th></tr></thead><tbody>${rows.map(m=>`<tr><td><div class="member-name">${avatar(m.member)}<button class="text-button member-link" data-action="profile" data-id="${m.member.id}">${X(m.member.name)}</button></div></td>${Array.from({length:data.settings.days},(_,i)=>{const used=dayLogs(m.member.id,i+1).filter(l=>l.type!=='carry'&&!l.usesCarry).length;return `<td class="center hide-mobile"><span class="daily-use" aria-label="${i+1}일차 ${used}타">${Array.from({length:data.settings.daily},(_,n)=>`<i class="${n<used?'used':''}"></i>`).join('')}</span></td>`;}).join('')}<td class="right"><span class="${m.remaining?'':'muted'} numeric">${m.remaining?`<strong>${m.remaining}</strong>타`:'완료'}</span></td><td class="right">${m.carry?`<span class="badge amber">${m.carry}타</span>`:'<span class="faint">—</span>'}</td><td class="right hide-mobile numeric">${nf(m.dayDamage)}</td></tr>`).join('')}</tbody></table></div></section>`;}
 function memberSort(key,label){return `<button class="sort-button ${ui.memberSort===key?'active':''}" data-action="member-sort" data-value="${key}">${label}${icon('sort')}</button>`;}
 const logTypeLabel=t=>({normal:'일반',carry:'이월타',kill:'격파'}[t]||'일반');
-function logTable(logs,mini=false){return `<div class="table-wrap"><table class="log-table"><thead><tr>${mini?'':'<th class="hide-mobile">진행</th>'}<th>보스</th><th>클랜원</th><th class="right">실제 피해량</th><th class="center">유형</th>${mini?'':'<th class="hide-mobile right">관리</th>'}</tr></thead><tbody>${logs.length?logs.map(l=>{const m=currentMember(l.memberId);return `<tr>${mini?'':`<td class="hide-mobile">${l.day}일차<small>${l.stage}단계 · ${l.lap}회차</small></td>`}<td><span class="boss-dot" style="${bossStyle(l.boss)}"><i></i>${l.boss}넴<span class="hide-mobile"> · ${X(bossBy(l.boss).name.slice(0,6))}</span></span>${mini?`<small>${l.day}일차 · ${l.lap}회차</small>`:''}</td><td class="name"><button class="text-button" data-action="profile" data-id="${m.id}">${X(m.name)}</button></td><td class="numeric right">${mini?nf(l.actual):`<button class="damage-edit numeric" data-action="edit-log" data-id="${l.id}" aria-label="${X(m.name)}의 ${l.seq}번 공격 피해량 ${nf(l.actual)} 수정">${nf(l.actual)}</button>`}</td><td class="center"><span class="badge ${l.type==='carry'?'blue':l.type==='kill'?'green':''}">${logTypeLabel(l.type)}</span></td>${mini?'':`<td class="right hide-mobile"><button class="text-button" data-action="edit-log" data-id="${l.id}" aria-label="${X(m.name)}의 ${l.seq}번 공격 수정">${icon('edit')}</button></td>`}</tr>`;}).join(''):'<tr><td colspan="6">'+empty('공격 기록이 없습니다.','다른 일차나 보스를 선택하거나 새 기록을 추가해보세요.')+'</td></tr>'}</tbody></table></div>`;}
+function logTable(logs,mini=false){return `<div class="table-wrap"><table class="log-table"><thead><tr>${mini?'':'<th class="hide-mobile">진행</th>'}<th>보스</th><th>클랜원</th><th class="right">실제 피해량</th><th class="center">유형</th>${mini?'':'<th class="hide-mobile right">관리</th>'}</tr></thead><tbody>${logs.length?logs.map(l=>{const m=currentMember(l.memberId);return `<tr>${mini?'':`<td class="hide-mobile">${l.day}일차<small>${l.stage}단계 · ${l.lap}회차</small></td>`}<td><span class="boss-dot" style="${bossStyle(l.boss)}"><i></i>${l.boss}넴<span class="hide-mobile"> · ${X(bossBy(l.boss).name.slice(0,6))}</span></span>${mini?`<small>${l.day}일차 · ${l.lap}회차</small>`:''}</td><td class="name"><button class="text-button member-link" data-action="profile" data-id="${m.id}">${X(m.name)}</button></td><td class="numeric right">${mini?nf(l.actual):`<button class="damage-edit numeric" data-action="edit-log" data-id="${l.id}" aria-label="${X(m.name)}의 ${l.seq}번 공격 피해량 ${nf(l.actual)} 수정">${nf(l.actual)}</button>`}</td><td class="center"><span class="badge ${l.type==='carry'?'blue':l.type==='kill'?'green':''}">${logTypeLabel(l.type)}</span></td>${mini?'':`<td class="right hide-mobile"><button class="text-button" data-action="edit-log" data-id="${l.id}" aria-label="${X(m.name)}의 ${l.seq}번 공격 수정">${icon('edit')}</button></td>`}</tr>`;}).join(''):'<tr><td colspan="6">'+empty('공격 기록이 없습니다.','다른 일차나 보스를 선택하거나 새 기록을 추가해보세요.')+'</td></tr>'}</tbody></table></div>`;}
 function filteredLogs(){return data.logs.filter(l=>l.day===ui.day&&(!ui.boss||l.boss===ui.boss)&&(ui.logType==='all'||l.type===ui.logType)&&(!ui.query||currentMember(l.memberId).name.includes(ui.query)||String(l.seq)===ui.query)).sort((a,b)=>b.seq-a.seq);}
 function compactBosses(){return `<div class="compact-bosses">${data.bosses.map(b=>`<button class="compact-boss" style="${bossStyle(b.id)}" data-action="boss-log" data-id="${b.id}"><span class="boss-emblem">${icon(b.icon)}</span><div><small>${b.id}넴 <span>· ${b.lap}회차</span></small><strong class="numeric">${short(b.hp)}</strong></div></button>`).join('')}</div>`;}
 function bossFilter(){return `<div class="filter-group boss-filter" role="group" aria-label="보스 필터">${[0,1,2,3,4,5].map(id=>`<button data-action="boss-filter" data-value="${id}" ${id?`style="${bossStyle(id)}"`:''} class="${ui.boss===id?'active':''}" aria-pressed="${ui.boss===id}">${id?id+'넴':'전체'}</button>`).join('')}</div>`;}
@@ -109,7 +109,7 @@ function carryPage(){return `<div class="tool-grid"><section class="panel"><div 
 function updateCarryTool(){const remaining=timeToSec(document.getElementById('carry-remaining')?.value||''),bonus=Number(document.getElementById('carry-bonus')?.value||0),result=document.getElementById('carry-result');if(result)result.textContent=Number.isFinite(remaining)&&remaining<=90&&remaining>=0?fmtTime(Math.min(90,remaining+Math.max(0,bonus))):'시간 확인';const field=document.getElementById('external-carry'),output=document.getElementById('external-output');if(field&&output){const s=timeToSec(field.value);output.textContent=Number.isFinite(s)&&s>0&&s<=90?adjustedText(document.getElementById('external-text').value,s):'0:01부터 1:30 사이의 시간을 입력하세요.';}}
 function recordsPage(){return pageHeading('클랜의 기록','RECORDS & INSIGHTS','이번 달의 성과부터 함께 쌓은 기록까지.','')+pageTabs([['ranking','월간 순위'],['profile','개인 이력'],['archive','지난 클랜전'],['hall','명예의 전당']])+({ranking:rankingPage,profile:profilePage,archive:archivePage,hall:hallPage}[ui.tabs.records]||rankingPage)();}
 function rankHead(key,label){return `<button class="sort-button ${ui.rankSort===key?'active':''}" data-action="rank-sort" data-value="${key}">${label}${icon('sort')}</button>`;}
-function rankingPage(){const rows=allStats().sort((a,b)=>b[ui.rankSort]-a[ui.rankSort]);return `<div class="toolbar"><div class="toolbar-left"><span class="member-summary">${ui.day}일차까지 누적 · 항목을 눌러 정렬</span></div><div class="toolbar-right"><button class="button sm" data-action="print">${icon('print')}PDF · 인쇄</button></div></div><section class="panel"><div class="table-wrap"><table class="ranking-table"><thead><tr><th class="center">순위</th><th>클랜원</th><th class="right">${rankHead('contribution','기여도')}</th><th class="right hide-mobile">${rankHead('damage','실제 피해량')}</th><th class="right hide-mobile">${rankHead('average','평균 기여도')}</th><th class="right">${rankHead('shots','공격 수')}</th></tr></thead><tbody>${rows.map((m,i)=>`<tr><td class="center"><span class="rank-mark ${i===0?'first':i<3?'second':''}">${i+1}</span></td><td><div class="member-name">${avatar(m.member)}<button class="text-button" data-action="profile" data-id="${m.member.id}">${X(m.member.name)}</button></div></td><td class="right numeric"><strong>${short(m.contribution)}</strong></td><td class="right numeric hide-mobile">${short(m.damage)}</td><td class="right numeric hide-mobile">${short(m.average)}</td><td class="right numeric">${m.shots}<span class="faint">타</span></td></tr>`).join('')}</tbody></table></div></section><p class="helper">이 시제품의 기여도는 예시 배율을 적용한 수치입니다. 실제 기록이나 순위가 아닙니다.</p>`;}
+function rankingPage(){const rows=allStats().sort((a,b)=>b[ui.rankSort]-a[ui.rankSort]);return `<div class="toolbar"><div class="toolbar-left"><span class="member-summary">${ui.day}일차까지 누적 · 항목을 눌러 정렬</span></div><div class="toolbar-right"><button class="button sm" data-action="print">${icon('print')}PDF · 인쇄</button></div></div><section class="panel"><div class="table-wrap"><table class="ranking-table"><thead><tr><th class="center">순위</th><th>클랜원</th><th class="right">${rankHead('contribution','기여도')}</th><th class="right hide-mobile">${rankHead('damage','실제 피해량')}</th><th class="right hide-mobile">${rankHead('average','평균 기여도')}</th><th class="right">${rankHead('shots','공격 수')}</th></tr></thead><tbody>${rows.map((m,i)=>`<tr><td class="center"><span class="rank-mark ${i===0?'first':i<3?'second':''}">${i+1}</span></td><td><div class="member-name">${avatar(m.member)}<button class="text-button member-link" data-action="profile" data-id="${m.member.id}">${X(m.member.name)}</button></div></td><td class="right numeric"><strong>${short(m.contribution)}</strong></td><td class="right numeric hide-mobile">${short(m.damage)}</td><td class="right numeric hide-mobile">${short(m.average)}</td><td class="right numeric">${m.shots}<span class="faint">타</span></td></tr>`).join('')}</tbody></table></div></section><p class="helper">이 시제품의 기여도는 예시 배율을 적용한 수치입니다. 실제 기록이나 순위가 아닙니다.</p>`;}
 function profilePage(){const m=currentMember(ui.profile),stats=memberStats(m),daily=Array.from({length:data.settings.days},(_,i)=>({day:i+1,damage:dayLogs(m.id,i+1).reduce((s,l)=>s+l.actual,0)})),max=Math.max(...daily.map(d=>d.damage),1),bossTotal=stats.damage||1;return `<div class="profile-header"><div class="profile-identity">${avatar(m)}<div><h2>${X(m.name)}</h2><p>${X(m.uid)} · ${ui.day}일차까지</p></div></div><select class="select-field" aria-label="개인 이력 클랜원" data-input="profile-member">${data.members.map(p=>`<option value="${p.id}" ${p.id===m.id?'selected':''}>${X(p.name)}</option>`).join('')}</select></div><div class="stat-strip">${stat('누적 피해량',`${eok(stats.damage)}<small>억</small>`,'실제 피해량 합계')}${stat('기여도',`${eok(stats.contribution)}<small>억</small>`,'예시 배율 적용')}${stat('공격 횟수',`${stats.shots}<small>타</small>`,'기본 공격 + 이월')}${stat('공격당 평균',`${eok(stats.average)}<small>억</small>`,'평균 기여도')}</div><div class="profile-grid"><section class="panel"><div class="panel-head"><div><h2>일차별 피해량</h2><p>각 일차 실제 피해량의 합계</p></div></div><div class="daily-chart" role="img" aria-label="${X(m.name)} 일차별 피해량: ${daily.map(d=>d.day+'일차 '+nf(d.damage)).join(', ')}">${daily.map(d=>`<div class="daily-bar"><span class="bar-value numeric">${d.damage?eok(d.damage)+'억':'—'}</span><div class="bar-track"><span style="height:${d.damage/max*100}%;opacity:${d.day===ui.day?1:.65}"></span></div><span class="bar-label">${d.day}일차</span></div>`).join('')}</div><div class="panel-body" style="padding-top:20px"><button class="text-button" data-action="print">${icon('print')}개인 이력 PDF · 인쇄</button></div></section><section class="panel"><div class="panel-head"><div><h2>보스별 공격 비중</h2><p>누적 실제 피해량 기준</p></div></div><div class="share-list">${data.bosses.map(b=>{const amount=stats.logs.filter(l=>l.boss===b.id).reduce((s,l)=>s+l.actual,0);return `<div class="share-row" style="${bossStyle(b.id)}"><div><span>${b.id}넴 · ${X(b.name)}</span><strong class="numeric">${(amount/bossTotal*100).toFixed(0)}%</strong></div><div class="progress"><span style="width:${amount/bossTotal*100}%"></span></div></div>`;}).join('')}</div></section></div><section class="panel" style="margin-top:20px"><div class="panel-head"><h2>최근 공격</h2><button class="text-button" data-action="member-log" data-id="${m.id}">로그에서 보기 ${icon('arrow')}</button></div>${logTable([...stats.logs].reverse().slice(0,5),true)}</section>`;}
 const ARCHIVES=[{month:'2026-09',rank:128,damage:72900000000,lap:41,attacks:443},{month:'2026-08',rank:136,damage:68100000000,lap:38,attacks:438},{month:'2026-07',rank:154,damage:62400000000,lap:35,attacks:431}];
 function archivePage(){return `<div class="info-line">${icon('info')}<span>아래는 화면 구성을 확인하기 위한 과거 기록 예시입니다. 현재 전황과 분리해 열립니다.</span></div><div class="archive-grid">${ARCHIVES.map(a=>`<article class="panel archive-card"><div class="section-head"><span class="archive-year">${a.month.slice(0,4)} SEASON</span><span class="badge">5일차 완료</span></div><div class="archive-month">${Number(a.month.slice(5))}월 클랜전</div><div class="archive-stats"><div>클랜 순위<strong class="numeric">${a.rank}<small>위</small></strong></div><div>총 피해량<strong class="numeric">${eok(a.damage)}<small>억</small></strong></div></div><button class="button full" data-action="archive-detail" data-id="${a.month}">기록 열기 ${icon('arrow')}</button></article>`).join('')}</div>`;}
@@ -255,11 +255,11 @@ function seasonSummary(key){const season=key===ui.month?Object.fromEntries(SEASO
 function initializeSeasons(){if(data.schema!==2){const display={...data.settings};data=seed();data.members=data.members.map((m,i)=>({...m,name:'클랜원 '+String(i+1).padStart(2,'0'),note:'',periods:[{from:'2026-06',to:null}]}));data.members.push({id:'alumni-1',name:'이전 클랜원',uid:'DEMO-9001',status:'graduated',joined:'2026-03-01',left:'2026-08-31',periods:[{from:'2026-03',to:'2026-08'}],note:''});data.schema=2;data.settings={...data.settings,theme:display.theme||'light',large:!!display.large,compact:!!display.compact};data.characters=CHARACTERS.map((name,i)=>({id:'c'+i,name,aliases:[],booster:i%7===0,images:{}}));data.communityLinks=[];data.pinHash=null;data.seasons={};data.activeMonth='2026-10';for(const key of ['2026-08','2026-09','2026-10'])data.seasons[key]=fixtureSeason(key,data.members.filter(m=>m.status==='active').map(m=>m.id),key==='2026-10'?3:5);ui.month='2026-10';for(const k of SEASON_KEYS)data[k]=structuredClone(data.seasons[ui.month][k]);for(const key of ['2026-08','2026-09']){const active=Object.fromEntries(SEASON_KEYS.map(k=>[k,data[k]]));for(const k of SEASON_KEYS)data[k]=structuredClone(data.seasons[key][k]);recalculateSeason();data.result.rank=key==='2026-08'?136:128;data.result.sealed=true;data.seasons[key]=Object.fromEntries(SEASON_KEYS.map(k=>[k,structuredClone(data[k])]));for(const k of SEASON_KEYS)data[k]=active[k];}}else{ui.month=data.activeMonth||'2026-10';for(const k of SEASON_KEYS)if(data.seasons[ui.month]?.[k])data[k]=structuredClone(data.seasons[ui.month][k]);}recalculateSeason();ui.day=Math.min(data.settings.defaultDay||3,data.rules.days);ui.selectedTactic=data.tactics.find(t=>!t.deletedAt&&!t.hidden)?.id;ui.profile='__clan__';}
 function saveComplete(){snapshotSeason();if(syncState.started){persistShared();}else if(typeof fetch!=='function'){try{localStorage.setItem(KEY,JSON.stringify(data));}catch{toast('저장 공간이 부족합니다. 초상화 크기를 줄이거나 백업을 저장하세요.');}}applyAppearance();}
 function rowTable(headers,rows,cls=''){
- const labels=headers.map(h=>String(h).replace(/<[^>]+>/g,'').trim());
+ const labels=headers.map(h=>typeof h==='object'?String(h.label):String(h).replace(/<[^>]+>/g,'').trim());
  const cells=[...(rows[0]||'').matchAll(/<(?:td|th)([^>]*)>/g)];
  const align=headers.map((h,i)=>/class="[^"]*\bright\b/.test(cells[i]?.[1]||'')?'right':/class="[^"]*\bcenter\b/.test(cells[i]?.[1]||'')?'center':'');
  rows=rows.map(row=>{let index=0;return row.replace(/<(td|th)(\s[^>]*)?>/g,(full,tag,attrs='')=>{const label=labels[index++]||'';return attrs.includes('data-label=')?full:`<${tag}${attrs} data-label="${X(label)}">`;});});
- return `<div class="table-wrap"><table class="data-table ${cls}"><thead><tr>${headers.map((h,i)=>`<th class="${align[i]}" data-label="${X(labels[i])}">${h}</th>`).join('')}</tr></thead><tbody>${rows.length?rows.join(''):`<tr><td colspan="${headers.length}" class="no-rows">기록 없음</td></tr>`}</tbody></table></div>`;
+ return `<div class="table-wrap"><table class="data-table ${cls}"><thead><tr>${headers.map((h,i)=>`<th class="${align[i]}" data-label="${X(labels[i])}"${typeof h==='object'&&h.sort?` aria-sort="${X(h.sort)}"`:''}>${typeof h==='object'?h.html??X(h.label):h}</th>`).join('')}</tr></thead><tbody>${rows.length?rows.join(''):`<tr><td colspan="${headers.length}" class="no-rows">기록 없음</td></tr>`}</tbody></table></div>`;
 }
 
 function simpleButton(text,action,id='',cls=''){if(syncState.started&&writerActions.has(action)&&!data.settings.editable)return '';return `<button type="button" class="button ${cls}" data-action="${action}" ${id?`data-id="${X(id)}"`:''}>${text}</button>`;}
@@ -334,8 +334,9 @@ function slotHtml(slot,index){if(!slot)return `<span class="unused-slot">${index
 function fullDashboard(){
  const rows=allSeasonStats();rows.sort((a,b)=>ui.memberSort==='name'?a.member.name.localeCompare(b.member.name,'ko')*ui.sortDir:(a[ui.memberSort]-b[ui.memberSort])*ui.sortDir);
  const page=pagedList(rows,'dashboard');
- const toolbar=`<div class="toolbar"><div class="toolbar-left">${[['remaining','남은 타수'],['carry','이월']].map(([key,name])=>`<button class="button ${ui.memberSort===key?'selected':''}" data-action="member-sort" data-value="${key}">${name} ${ui.memberSort===key?(ui.sortDir<0?'↓':'↑'):''}</button>`).join('')}</div><div class="toolbar-right">${simpleButton('CSV','v2-dashboard-csv')}</div></div>`;
- return toolbar+rowTable(['클랜원','1타','2타','3타','잔여','이월'],page.rows.map(s=>`<tr><td class="dashboard-member">${memberLink(s.member)}</td>${[0,1,2].map(i=>`<td class="slot-cell center">${s.active?attackSlot(s.slots[i],i):'—'}</td>`).join('')}<td class="right numeric"><strong>${s.remaining}</strong></td><td class="right numeric">${s.carry||'—'}</td></tr>`),'attack-dashboard dense-table')+page.footer;
+ const heading=(key,label)=>({label,sort:ui.memberSort===key?(ui.sortDir<0?'descending':'ascending'):'none',html:`<button type="button" class="table-sort" data-action="member-sort" data-value="${key}">${label}<span aria-hidden="true">${ui.memberSort===key?(ui.sortDir<0?'↓':'↑'):'↕'}</span></button>`});
+ const toolbar=`<div class="toolbar"><div class="toolbar-right push">${simpleButton('CSV','v2-dashboard-csv')}</div></div>`;
+ return toolbar+rowTable([heading('name','클랜원'),'1타','2타','3타',heading('remaining','잔여'),heading('carry','이월')],page.rows.map(s=>`<tr data-dashboard-member="${s.member.id}"><td class="dashboard-member">${memberLink(s.member)}</td>${[0,1,2].map(i=>`<td class="slot-cell center">${s.active?attackSlot(s.slots[i],i):'—'}</td>`).join('')}<td class="center numeric"><strong>${s.remaining}</strong></td><td class="center numeric">${s.carry||'—'}</td></tr>`),'attack-dashboard dense-table')+page.footer;
 }
 
 function getFilteredCompleteLogs(){return data.logs.filter(e=>(ext.allDays||e.day===ui.day)&&(!ui.boss||e.boss===ui.boss)&&(ui.logType==='all'||(ui.logType==='kill'?e.kill:e.type===ui.logType))&&(!ui.query||matchName(currentMember(e.memberId),ui.query)||String(e.seq)===ui.query)).sort((a,b)=>ext.logOrder==='asc'?a.seq-b.seq:b.seq-a.seq);}
@@ -367,7 +368,7 @@ function winnersFrom(logs){const stats=data.members.map(m=>{const rows=logs.filt
 function resultFingerprint(logs){return logs.map(e=>`${e.id}:${e.damage}:${e.boss}:${e.memberId}:${e.bonus}`).join('|');}
 function winnerText(winners,metric){return (winners?.[metric]||[]).map((p,i)=>`<span class="winner-person"><b>${i+1}위</b> ${X(p.name)}</span>`).join('<span class="winner-separator" aria-hidden="true">/</span>')||'—';}
 function completeHistory(){return rowTable(['월','클랜 순위','참가','피해량 1·2위','기여도 1·2위','인게임 1·2위','확정'],Object.keys(data.seasons).sort().reverse().map(key=>{const season=key===ui.month?data:data.seasons[key],summary=seasonSummary(key),changed=season.result.sealed&&season.result.fingerprint!==resultFingerprint(season.logs);return `<tr><td>${key.replace('-','.')}</td><td><button class="text-button" data-action="v2-history-rank" data-id="${key}">${summary.rank?summary.rank+'위':'입력'}</button></td><td>${summary.count}명</td>${['damage','contribution','game'].map(metric=>`<td class="winner-cell">${winnerText(season.result.winners||summary.winners,metric)}</td>`).join('')}<td>${simpleButton(changed?'재확인':summary.sealed?'확정됨':'결과 확정','v2-confirm-season',key,'quiet')}</td></tr>`;}),'history-table');}
-function completeHall(){const map=new Map();for(const [key,season]of Object.entries(data.seasons)){const result=key===ui.month?data.result:season.result;if(!result.sealed||!result.winners)continue;for(const metric of ['damage','contribution','game'])result.winners[metric].forEach((person,index)=>{if(!map.has(person.id))map.set(person.id,{id:person.id,name:person.name,damage:[0,0],contribution:[0,0],game:[0,0],total:0,months:[]});const p=map.get(person.id);p[metric][index]++;p.total++;p.months.push({month:key,metric,place:index+1});});}const rows=[...map.values()].sort((a,b)=>b.total-a.total);return `<div class="table-tools"><span>확정한 월별 결과 기준</span></div>`+rowTable(['클랜원','피해량 1위 / 2위','기여도 1위 / 2위','인게임 1위 / 2위','총 수상'],rows.map(p=>`<tr><td><button class="text-button" data-action="v2-award-detail" data-id="${p.id}">${X(p.name)}</button></td>${['damage','contribution','game'].map(k=>`<td class="center numeric">${p[k][0]} / ${p[k][1]}</td>`).join('')}<td class="center numeric"><strong>${p.total}</strong></td></tr>`),'hall-table');}
+function completeHall(){const map=new Map();for(const [key,season]of Object.entries(data.seasons)){const result=key===ui.month?data.result:season.result;if(!result.sealed||!result.winners)continue;for(const metric of ['damage','contribution','game'])result.winners[metric].forEach((person,index)=>{if(!map.has(person.id))map.set(person.id,{id:person.id,name:person.name,damage:[0,0],contribution:[0,0],game:[0,0],total:0,months:[]});const p=map.get(person.id);p[metric][index]++;p.total++;p.months.push({month:key,metric,place:index+1});});}const rows=[...map.values()].sort((a,b)=>b.total-a.total);return `<div class="table-tools"><span>확정한 월별 결과 기준</span></div>`+rowTable(['클랜원','피해량 1위 / 2위','기여도 1위 / 2위','인게임 1위 / 2위','총 수상'],rows.map(p=>`<tr><td><button class="text-button member-link" data-action="v2-award-detail" data-id="${p.id}">${X(p.name)}</button></td>${['damage','contribution','game'].map(k=>`<td class="center numeric">${p[k][0]} / ${p[k][1]}</td>`).join('')}<td class="center numeric"><strong>${p.total}</strong></td></tr>`),'hall-table');}
 function topStats(boss){const samples=data.logs.filter(e=>e.stage===4&&e.boss===boss&&e.damage>0).sort((a,b)=>b.damage-a.damage).slice(0,data.rules.samples);const mean=samples.length?samples.reduce((s,e)=>s+Math.floor(e.damage/10000),0)/samples.length*10000:0;return {samples,mean,corrected:mean*data.rules.factor};}
 function completeRates(){
  const levels=seasonLevels(data.rules).filter(l=>l.count),tops=data.bossSettings.map(b=>topStats(b.id));
@@ -1694,7 +1695,7 @@ function awardRows(){
   }
   return [...map.values()].sort((a,b)=>b.total-a.total||a.name.localeCompare(b.name,'ko'));
 }
-completeHall=()=>`<div class="table-tools"><span>확정한 월별 결과 기준</span></div>`+rowTable(['클랜원','인게임 1위 / 2위','기여도 1위 / 2위','피해량 1위 / 2위','총 수상'],awardRows().map(p=>`<tr><td><button class="text-button" data-action="u-award-history" data-name="${X(p.name)}">${X(p.name)}</button></td>${RESULT_METRICS.map(([metric])=>`<td class="center numeric">${p[metric]?.[0]||0} / ${p[metric]?.[1]||0}</td>`).join('')}<td class="center numeric"><strong>${p.total}</strong></td></tr>`),'hall-table award-count-table exact-table');
+completeHall=()=>`<div class="table-tools"><span>확정한 월별 결과 기준</span></div>`+rowTable(['클랜원','인게임 1위 / 2위','기여도 1위 / 2위','피해량 1위 / 2위','총 수상'],awardRows().map(p=>`<tr><td><button class="text-button member-link" data-action="u-award-history" data-name="${X(p.name)}">${X(p.name)}</button></td>${RESULT_METRICS.map(([metric])=>`<td class="center numeric">${p[metric]?.[0]||0} / ${p[metric]?.[1]||0}</td>`).join('')}<td class="center numeric"><strong>${p.total}</strong></td></tr>`),'hall-table award-count-table exact-table');
 
 function sealResult(month){
   if(!ensureEdit())return false;const season=historySeason(month);if(!season)return false;
@@ -1834,10 +1835,12 @@ attackEntryState=fd=>{
 };
 const originalEntryItems=entryItems;
 entryItems=(kind,picker)=>{
-  if(kind==='member')return originalEntryItems(kind,picker);
+  const inline=picker?.closest?.('tr[data-inline-log]');
+  if(kind==='member'){if(inline)return data.members.filter(m=>memberSeasonActive(m,Number(inline.dataset.day))||m.id===picker.dataset.selected).map(m=>({value:m.id,label:m.name,member:m}));return originalEntryItems(kind,picker);}
   const form=picker?.closest?.('form[data-form="v2-log"]');
   let bosses=data.bosses;
   if(form)bosses=entryLogContext(new FormData(form)).bosses;
+  else if(inline){const draft=ext.inlineLogDraft;bosses=inline.dataset.inlineLog==='draft'&&draft?logPositionContext(null,draft.anchor,draft.insertSide).bosses:logPositionContext(inline.dataset.inlineLog).bosses;}
   return bosses.map(b=>({value:String(b.id),label:b.id+' · '+b.name,disabled:b.locked&&picker?.dataset.allowLocked!=='1'}));
 };
 const originalLogEntry=openCompleteLog;
@@ -1856,11 +1859,13 @@ openCompleteLog=(id=null,bossId=null)=>{
   }
   completeLogPreview();
 };
+function chronologicalLogSide(side){return ext.logOrder==='asc'?side:side==='before'?'after':'before';}
 function openInsertedLog(id,side){
   if(!ensureEdit())return;const anchor=data.logs.find(row=>row.id===id);if(!anchor)return;
   if(data.dayClosures.some(boundary=>boundary.day===anchor.day)){toast('마감을 취소한 뒤 추가하세요.');return;}
-  ext.logInsertion={id,side:side==='after'?'after':'before'};
-  openLog(null,anchor.boss);
+  const insertSide=chronologicalLogSide(side),context=logPositionContext(null,id,insertSide),boss=context.bosses.find(b=>b.id===anchor.boss&&!b.locked)||context.bosses.find(b=>!b.locked);
+  ext.inlineLogDraft={anchor:id,side,insertSide,month:ui.month,day:anchor.day,memberId:anchor.memberId,boss:boss?.id||anchor.boss,damage:'',bonus:'0',carry:false};
+  render();document.querySelector('[data-inline-log="draft"] [data-entry-search="member"]')?.focus();
 }
 completeLogPreview=()=>{
   const form=drawer.querySelector('form[data-form="v2-log"]');if(!form)return;
@@ -1872,7 +1877,7 @@ completeLogPreview=()=>{
 };
 saveCompleteLog=form=>{
   if(!ensureEdit())return false;
-  const fd=new FormData(form),id=String(fd.get('logId')||''),old=data.logs.find(row=>row.id===id),entry=attackEntryState(fd);
+  const fd=typeof form?.get==='function'&&typeof form?.has==='function'?form:new FormData(form),id=String(fd.get('logId')||''),old=data.logs.find(row=>row.id===id),entry=attackEntryState(fd);
   const memberId=String(fd.get('memberId')||''),boss=Number(fd.get('boss')),day=Number(fd.get('day')),carry=fd.has('usesCarry'),bonus=numberValue(fd.get('bonus')||0),damage=entry.damage;
   if(!Number.isSafeInteger(damage)||damage<=0){toast('피해량은 1 단위의 양의 정수로 입력하세요.');return false;}
   if(!Number.isSafeInteger(bonus)){toast('가산점은 양수 또는 음수의 정수로 입력하세요.');return false;}
@@ -1893,7 +1898,7 @@ saveCompleteLog=form=>{
   checkpoint();if(old){Object.assign(old,value);next=data.logs;}data.logs=next;data.dayClosures=logOrder.refreshClosures(data.dayClosures,next);recalculateSeason();
   const saved=data.logs.find(row=>row.id===record.id);
   if(!old){ext.entryMember=memberId;ext.entryBoss=boss;ext.entryCarry=saved.kill&&!saved.carry&&!data.logs.some(row=>row.carryFrom===saved.id);ext.entryFeedback=currentMember(memberId).name+' · '+boss+'넴 '+nf(saved.damage)+' 등록';}
-  persist();if(drawer.open)closeDrawer();ext.logInsertion=null;render();
+  persist();if(drawer.open)closeDrawer();ext.logInsertion=null;if(!old)ext.inlineLogDraft=null;render();
   if(!old){const input=document.getElementById('quick-damage');if(input&&!input.readOnly)input.focus();}
   toast(old?'기록 수정':'기록 등록',true);return true;
 };
@@ -1904,38 +1909,124 @@ function moveLogRecord(id,anchorId,side){
   let next;try{next=logOrder.moveRecord(data.logs,id,anchorId,side);}catch(error){toast(error.message);return false;}
   checkpoint();data.logs=next;data.dayClosures=logOrder.refreshClosures(data.dayClosures,next);recalculateSeason();persist();render();toast('기록 순서 변경',true);return true;
 }
-function logDetailCells(e,editing,mobile=false){
-  const cls=mobile?'mobile-log-extra':'extra-cell';
-  const bonus=nf(Math.round((e.bonus||0)*10000));
-  return `<td class="right numeric ${cls} actual-damage">${nf(e.actual)}</td><td class="right numeric ${cls}">${editing?`<button class="damage-edit" data-action="edit-log" data-id="${e.id}">${bonus}</button>`:bonus}</td><td class="right numeric ${cls}">${points(e.contribution)}</td><td class="right numeric ${cls}">${nf(Math.round(e.game))}</td><td class="right numeric ${cls}">${nf(e.before)}</td><td class="right numeric ${cls}">${nf(e.after)}</td>`;
+function inlineLogFields(values){return {get:key=>values[key]??null,has:key=>Object.hasOwn(values,key)};}
+function updateInlineLog(id,field,value){
+  if(!ensureEdit())return false;
+  if(!['memberId','boss','damage','bonus','carry'].includes(field))return false;
+  const current=data.logs.find(row=>row.id===id);if(!current){toast('공격 기록을 찾지 못했습니다.');return false;}
+  const canonical=field==='carry'?(value===true||value==='carry'):['damage','bonus','boss'].includes(field)?numberValue(value):String(value);
+  const prior=field==='bonus'?Math.round((current.bonus||0)*10000):field==='carry'?!!current.carry:current[field];
+  if(canonical===prior)return true;
+  const values={logId:id,memberId:current.memberId,boss:current.boss,damage:current.damage,bonus:Math.round((current.bonus||0)*10000),day:current.day,unit:1,note:current.note||'',gameAt:current.gameAt||''};
+  if(current.carry)values.usesCarry='on';
+  if(current.damageMode==='max'&&field!=='damage')values.autoDamage='on';
+  if(field==='carry'){if(canonical)values.usesCarry='on';else delete values.usesCarry;}
+  else values[field]=value;
+  return saveCompleteLog(inlineLogFields(values));
 }
-function mobileLogManagement(e){
-  return `<div class="log-manage-actions">${simpleButton('수정','edit-log',e.id,'quiet')}${simpleButton('삭제','entry-delete-log',e.id,'danger quiet')}<button type="button" class="button quiet" data-action="u-insert-log" data-id="${e.id}" data-side="before" aria-label="${e.seq}번 기록 앞에 추가">+위</button><button type="button" class="button quiet" data-action="u-insert-log" data-id="${e.id}" data-side="after" aria-label="${e.seq}번 기록 뒤에 추가">+아래</button><button type="button" class="button quiet" data-action="u-move-log" data-id="${e.id}" data-direction="up" aria-label="${e.seq}번 기록 위로 이동">↑</button><button type="button" class="button quiet" data-action="u-move-log" data-id="${e.id}" data-direction="down" aria-label="${e.seq}번 기록 아래로 이동">↓</button></div>`;
+function commitInlineLogDraft(){
+  const draft=ext.inlineLogDraft;if(!draft||draft.month!==ui.month)return false;
+  return saveCompleteLog(inlineLogFields({memberId:draft.memberId,boss:draft.boss,damage:draft.damage,bonus:draft.bonus,day:draft.day,unit:1,note:'',gameAt:'',insertAnchor:draft.anchor,insertSide:draft.insertSide,...(draft.carry?{usesCarry:'on'}:{})}));
+}
+function inlineLogId(e,field,mobile){return `inline-log-${mobile?'m':'w'}-${e.inlineDraft?'draft':e.id}-${field}`;}
+function inlineLogPicker(e,field,mobile){
+  const kind=field==='memberId'?'member':'boss';
+  return `<div class="inline-log-${kind}">${entrySearch(kind,inlineLogId(e,field,mobile),field,e[field],true).replace('type="search"',`type="search" data-inline-log-field="${field}" aria-label="${e.inlineDraft?'새':e.seq+'번'} 기록 ${kind==='member'?'클랜원':'보스'}"`)}</div>`;
+}
+function inlineLogNumber(e,field,mobile){
+  const value=field==='bonus'?(e.inlineDraft?e.bonus:Math.round((e.bonus||0)*10000)):e.damage;
+  return `<input class="inline-log-number ${field==='bonus'?'inline-log-bonus':''}" id="${inlineLogId(e,field,mobile)}" data-inline-log-field="${field}" type="text" inputmode="${field==='bonus'?'decimal':'numeric'}" value="${X(typeof value==='number'?nf(value):value)}" aria-label="${e.inlineDraft?'새':e.seq+'번'} 기록 ${field==='bonus'?'가산점':'피해량'}" autocomplete="off">`;
+}
+function inlineLogType(e,mobile){return `<select class="inline-log-type" id="${inlineLogId(e,'carry',mobile)}" data-inline-log-field="carry" aria-label="${e.inlineDraft?'새':e.seq+'번'} 기록 이월 사용"><option value="normal" ${!e.carry?'selected':''}>${!e.carry&&e.role==='초월'?'초월':!e.carry&&e.kill?'격파':'일반'}</option><option value="carry" ${e.carry?'selected':''}>${e.carry&&e.kill?'관통':'이월타'}</option></select>`;}
+function visibleLogMoveTarget(id,direction){
+  const rows=getFilteredCompleteLogs(),index=rows.findIndex(row=>row.id===id),source=rows[index],target=rows[index+(direction==='up'?-1:1)];
+  return source&&target&&source.day===target.day?target:null;
+}
+function moveVisibleLog(id,direction){
+  const source=data.logs.find(row=>row.id===id),target=visibleLogMoveTarget(id,direction);
+  if(!source||!target)return false;
+  return moveLogRecord(id,target.id,target.seq<source.seq?'before':'after');
+}
+function logManagement(e){
+  if(e.inlineDraft)return `<div class="log-manage-actions">${simpleButton('등록','inline-log-add','','primary')}${simpleButton('취소','inline-log-cancel')}</div>`;
+  const closed=data.dayClosures.some(boundary=>boundary.day===e.day),disabled=closed?'disabled':'';
+  return `<div class="log-manage-actions"><button type="button" class="log-drag-handle" draggable="${!closed}" data-drag-log="${e.id}" title="이 손잡이를 끌어 순서 이동" aria-label="${e.seq}번 기록 끌어서 이동" ${disabled}>⠿</button><button type="button" class="button quiet" data-action="u-move-log" data-id="${e.id}" data-direction="up" aria-label="${e.seq}번 기록 위로 이동" ${closed||!visibleLogMoveTarget(e.id,'up')?'disabled':''}>↑</button><button type="button" class="button quiet" data-action="u-move-log" data-id="${e.id}" data-direction="down" aria-label="${e.seq}번 기록 아래로 이동" ${closed||!visibleLogMoveTarget(e.id,'down')?'disabled':''}>↓</button>${simpleButton('삭제','entry-delete-log',e.id,'danger quiet')}<button type="button" class="button quiet" data-action="u-insert-log" data-id="${e.id}" data-side="before" aria-label="${e.seq}번 기록 앞에 추가" ${disabled}>+위</button><button type="button" class="button quiet" data-action="u-insert-log" data-id="${e.id}" data-side="after" aria-label="${e.seq}번 기록 뒤에 추가" ${disabled}>+아래</button></div>`;
+}
+function logDetailCells(e,editing,mobile=false){
+  const cls=mobile?'mobile-log-extra':'extra-cell',bonus=nf(Math.round((e.bonus||0)*10000));
+  return `<td class="right numeric ${cls} actual-damage">${e.inlineDraft?'—':nf(e.actual)}</td><td class="right numeric ${cls}">${editing?inlineLogNumber(e,'bonus',mobile):bonus}</td>${[points(e.contribution),nf(Math.round(e.game)),nf(e.before),nf(e.after)].map(value=>`<td class="right numeric ${cls}">${e.inlineDraft?'—':value}</td>`).join('')}`;
+}
+function completeLogRow(e,{editing,details,mini,mobile}){
+  const writable=editing&&!data.dayClosures.some(boundary=>boundary.day===e.day),context=e.inlineDraft?logPositionContext(null,e.anchor,e.insertSide).bosses.find(b=>b.id===Number(e.boss)):null;
+  const label=e.role==='초월'?'초월':e.kill?(e.carry?'관통':'격파'):e.carry?'이월타':'일반';
+  return `<tr ${e.inlineDraft?'class="log-inline-draft"':`data-log-id="${e.id}"`} data-day="${e.day}"${editing?` data-inline-log="${e.inlineDraft?'draft':e.id}"`:''}>${mini?'':`<td class="progress-cell">${e.inlineDraft?'<span>새 기록</span>':ext.sequence?`<small class="mobile-seq" title="기록 순번">#${e.seq}</small>`:''}<span>${e.day}일차</span><small>${context?.stage??e.stage}단계 ${context?.lap??e.lap}회차</small></td>`}<td>${writable?inlineLogPicker(e,'boss',mobile):`<span class="boss-tag" style="${bossStyle(e.boss)}">${e.boss}넴</span>`}</td><td class="${mobile?'mobile-log-member':''}">${writable?inlineLogPicker(e,'memberId',mobile):memberLink(currentMember(e.memberId))}</td><td class="right numeric ${mobile?'mobile-log-damage':''}">${writable?inlineLogNumber(e,'damage',mobile):`<strong>${nf(e.damage)}</strong>`}${mini?`<small>${e.day}일차 · ${e.stage}단계 ${e.lap}회차</small>`:''}</td><td>${writable?inlineLogType(e,mobile):`<span class="type-tag ${e.kill?'kill':e.carry?'carry':''}">${label}</span>`}</td>${details?logDetailCells(e,writable,mobile):''}${editing?`<td class="log-manage ${mobile?'mobile-log-actions':''}">${logManagement(e)}</td>`:''}</tr>`;
 }
 completeLogTable=(logs,mini=false)=>{
   const editing=!mini&&adminMode(),details=!mini&&ext.details;
-  const headers=[...(!mini?['일차·회차']:[]),'보스','클랜원','기록 피해량','유형',...(details?['실제 피해량','가산점','기여도','인게임','이전 HP','남은 HP']:[]),...(editing&&details?['관리']:[])];
-  const rows=logs.map(e=>`<tr data-log-id="${e.id}" data-day="${e.day}">${!mini?`<td class="progress-cell">${editing?`<button type="button" class="log-drag-handle" draggable="true" data-drag-log="${e.id}" title="드래그로 순서 이동" aria-label="${e.seq}번 기록 순서 이동">⠿</button>`:''}${!mini&&ext.sequence?`<small class="mobile-seq" title="기록 순번">#${e.seq}</small>`:''}<span>${e.day}일차</span><small>${e.stage}단계 ${e.lap}회차</small></td>`:''}<td><span class="boss-tag" style="${bossStyle(e.boss)}">${e.boss}넴</span></td><td>${memberLink(currentMember(e.memberId))}</td><td class="right numeric">${editing?`<button class="damage-edit" data-action="edit-log" data-id="${e.id}">${nf(e.damage)}</button>`:`<span>${nf(e.damage)}</span>`}${mini?`<small>${e.day}일차 · ${e.stage}단계 ${e.lap}회차</small>`:''}</td><td><span class="type-tag ${e.kill?'kill':e.carry?'carry':''}">${e.role==='초월'?'초월':e.kill?(e.carry?'관통':'격파'):e.carry?'이월타':'일반'}</span></td>${details?logDetailCells(e,editing):''}${editing&&details?`<td class="log-manage">${simpleButton('수정','edit-log',e.id,'quiet')}${simpleButton('삭제','entry-delete-log',e.id,'danger quiet')}<button class="button quiet log-insert" data-action="u-insert-log" data-id="${e.id}" data-side="before" title="이 기록 앞에 추가" aria-label="${e.seq}번 기록 앞에 추가">+위</button><button class="button quiet log-insert" data-action="u-insert-log" data-id="${e.id}" data-side="after" title="이 기록 뒤에 추가" aria-label="${e.seq}번 기록 뒤에 추가">+아래</button>${details?`<button class="button quiet" data-action="u-move-log" data-id="${e.id}" data-direction="up" aria-label="기록 위로 이동">↑</button><button class="button quiet" data-action="u-move-log" data-id="${e.id}" data-direction="down" aria-label="기록 아래로 이동">↓</button>`:''}</td>`:''}</tr>`);
-  // One mobile table for both modes. Only the extra detail columns change.
-  // "순번" is displayed inside the progress cell to avoid wasting a full column.
-  const mobileRows=logs.map(e=>`<tr data-log-id="${e.id}" data-day="${e.day}">
-    <td class="progress-cell">${!mini&&ext.sequence?`<small class="mobile-seq" title="기록 순번">#${e.seq}</small>`:''}<span>${e.day}일차</span><small>${e.stage}단계 ${e.lap}회차</small></td>
-    <td><span class="boss-tag" style="${bossStyle(e.boss)}">${e.boss}넴</span></td>
-    <td class="mobile-log-member">${memberLink(currentMember(e.memberId))}</td>
-    <td class="mobile-log-damage numeric"><strong>${nf(e.damage)}</strong></td>
-    <td><span class="type-tag ${e.kill?'kill':e.carry?'carry':''}">${e.role==='초월'?'초월':e.kill?(e.carry?'관통':'격파'):e.carry?'이월타':'일반'}</span></td>
-    ${details?logDetailCells(e,editing,true):''}
-    ${editing&&details?`<td class="mobile-log-actions">${mobileLogManagement(e)}</td>`:''}
-  </tr>`);
-  const wide=`<div class="battle-wide-table">${rowTable(headers,rows,`battle-table ${details?'expanded':''} ${mini?'small-log':''}`)}</div>`;
-  const mobile=!mini?`<div class="battle-mobile-only">${rowTable(['일차·회차','보스','클랜원','기록 피해량','유형',...(details?['실제 피해량','가산점','기여도','인게임','이전 HP','남은 HP']:[]),...(editing&&details?['관리']:[])],mobileRows,`battle-mobile-table ${details?'mobile-detail':''} ${editing?'can-edit':''}`)}</div>`:'';
-  return wide+mobile;
+  const headers=[...(!mini?['일차·회차']:[]),'보스','클랜원','기록 피해량','유형',...(details?['실제 피해량','가산점','기여도','인게임','이전 HP','남은 HP']:[]),...(editing?['관리']:[])];
+  const rows=[...logs],draft=ext.inlineLogDraft;
+  if(editing&&draft?.month===ui.month){const at=rows.findIndex(e=>e.id===draft.anchor);if(at>=0)rows.splice(at+(draft.side==='after'?1:0),0,{...draft,inlineDraft:true});}
+  const wide=rowTable(headers,rows.map(e=>completeLogRow(e,{editing,details,mini,mobile:false})),`battle-table ${details?'expanded':''} ${mini?'small-log':''} ${editing?'inline-editable':''}`);
+  const mobile=!mini?`<div class="battle-mobile-only">${rowTable(headers,rows.map(e=>completeLogRow(e,{editing,details,mini,mobile:true})),`battle-mobile-table ${details?'mobile-detail':''} ${editing?'can-edit inline-editable':''}`)}</div>`:'';
+  return `<div class="battle-wide-table">${wide}</div>`+mobile;
 };
+for(const action of ['inline-log-add'])writerActions.add(action);
+const chooseEntryBeforeInline=chooseEntry;
+chooseEntry=(input,value)=>{
+  const row=input.closest('tr[data-inline-log]'),id=row?.dataset.inlineLog,field=input.dataset.inlineLogField;
+  if(!chooseEntryBeforeInline(input,value))return false;
+  if(!id||!field)return true;
+  if(id==='draft'){if(ext.inlineLogDraft)ext.inlineLogDraft[field]=value;}
+  else if(!updateInlineLog(id,field,value))return false;
+  const next=inlineLogId({id,inlineDraft:id==='draft'},field==='memberId'?'boss':'damage',input.id.startsWith('inline-log-m-'));
+  setTimeout(()=>document.getElementById(next)?.focus(),0);return true;
+};
+const showEntryResultsBeforeInline=showEntryResults;
+showEntryResults=(input,all=false)=>{
+  showEntryResultsBeforeInline(input,all);if(!input.dataset.inlineLogField)return;
+  const box=input.closest('.search-picker').querySelector('[role=listbox]'),rect=input.getBoundingClientRect();
+  Object.assign(box.style,{position:'fixed',left:Math.max(8,Math.min(rect.left,window.innerWidth-248))+'px',top:Math.max(8,Math.min(rect.bottom+4,window.innerHeight-248))+'px',width:'240px',right:'auto',maxHeight:'240px'});
+};
+document.addEventListener('input',event=>{
+  const input=event.target,row=input.closest?.('tr[data-inline-log]'),field=input.dataset.inlineLogField;
+  if(row?.dataset.inlineLog==='draft'&&field&&!input.dataset.entrySearch&&ext.inlineLogDraft)ext.inlineLogDraft[field]=field==='carry'?input.value==='carry':input.value;
+});
+document.addEventListener('change',event=>{
+  const input=event.target,row=input.closest?.('tr[data-inline-log]'),field=input.dataset.inlineLogField;if(!row||!field)return;
+  if(input.dataset.entrySearch)return;
+  if(row.dataset.inlineLog==='draft'){if(ext.inlineLogDraft)ext.inlineLogDraft[field]=field==='carry'?input.value==='carry':input.value;return;}
+  if(field==='carry'){const id=input.id;if(!updateInlineLog(row.dataset.inlineLog,field,input.value))input.setAttribute('aria-invalid','true');else setTimeout(()=>document.getElementById(id)?.focus(),0);}
+});
+document.addEventListener('focusout',event=>{
+  const input=event.target,row=input.closest?.('tr[data-inline-log]'),field=input.dataset.inlineLogField;
+  if(!row||!field||!input.isConnected)return;
+  const nextId=event.relatedTarget?.id;
+  if(input.dataset.entrySearch){
+    if(input.closest('.search-picker').contains(event.relatedTarget))return;
+    if(!resolveEntry(input)){input.setCustomValidity('검색 결과에서 선택하세요.');input.reportValidity();return;}
+  }else if(row.dataset.inlineLog!=='draft'&&field!=='carry'){
+    if(!updateInlineLog(row.dataset.inlineLog,field,input.value)){input.setAttribute('aria-invalid','true');return;}
+  }
+  if(nextId?.startsWith('inline-log-'))setTimeout(()=>document.getElementById(nextId)?.focus(),0);
+});
+document.addEventListener('keydown',event=>{
+  const input=event.target;if(!input.dataset.inlineLogField||input.dataset.entrySearch)return;
+  if(event.key==='Enter'){event.preventDefault();input.blur();setTimeout(()=>document.getElementById(input.id)?.focus(),0);}
+  if(event.key==='Escape'){const row=input.closest('tr[data-inline-log]');if(row?.dataset.inlineLog==='draft'){ext.inlineLogDraft=null;render();}else render();}
+});
+document.addEventListener('click',event=>{
+  const button=event.target.closest('[data-action="inline-log-add"],[data-action="inline-log-cancel"]');if(!button)return;
+  event.preventDefault();event.stopImmediatePropagation();
+  if(button.dataset.action==='inline-log-add'){
+    for(const input of button.closest('tr').querySelectorAll('[data-entry-search]'))if(!resolveEntry(input)){input.setCustomValidity('검색 결과에서 선택하세요.');input.reportValidity();input.focus();return;}
+    commitInlineLogDraft();
+  }else{ext.inlineLogDraft=null;render();}
+},true);
 const closeBeforeInsertionCleanup=closeDrawer;
 closeDrawer=()=>{ext.logInsertion=null;closeBeforeInsertionCleanup();};
 document.addEventListener('click',event=>{
   const button=event.target.closest('[data-action="u-move-log"]');if(!button)return;event.preventDefault();event.stopImmediatePropagation();
-  const rows=[...data.logs].sort((a,b)=>a.seq-b.seq),index=rows.findIndex(row=>row.id===button.dataset.id),direction=button.dataset.direction==='up'?-1:1,target=rows[index+direction];if(target)moveLogRecord(button.dataset.id,target.id,direction<0?'before':'after');
+  moveVisibleLog(button.dataset.id,button.dataset.direction);
 },true);
 function clearLogDropMarks(){for(const row of document.querySelectorAll?.('.log-drop-before,.log-drop-after,.log-dragging')||[])row.classList.remove('log-drop-before','log-drop-after','log-dragging');}
 document.addEventListener('dragstart',event=>{
@@ -1949,7 +2040,7 @@ document.addEventListener('dragover',event=>{
 });
 document.addEventListener('drop',event=>{
   const row=event.target.closest('tr[data-log-id]');if(!row||!ext.draggedLog)return;
-  event.preventDefault();const id=ext.draggedLog,side=ext.logDrop?.id===row.dataset.logId?ext.logDrop.side:'before';ext.draggedLog=null;ext.logDrop=null;clearLogDropMarks();if(id!==row.dataset.logId)moveLogRecord(id,row.dataset.logId,side);
+  event.preventDefault();const id=ext.draggedLog,side=chronologicalLogSide(ext.logDrop?.id===row.dataset.logId?ext.logDrop.side:'before');ext.draggedLog=null;ext.logDrop=null;clearLogDropMarks();if(id!==row.dataset.logId)moveLogRecord(id,row.dataset.logId,side);
 });
 document.addEventListener('dragend',()=>{ext.draggedLog=null;ext.logDrop=null;clearLogDropMarks();});
 
@@ -2178,6 +2269,7 @@ document.addEventListener('keydown',event=>{
   if(event.ctrlKey&&event.key==='Enter'&&form){event.preventDefault();event.stopImmediatePropagation();form.requestSubmit();return;}
   if(event.key==='/'&&!event.ctrlKey&&!target.closest?.('input,textarea,select,[contenteditable="true"]')){event.preventDefault();if(ui.section!=='overview'||ui.tabs.overview!=='logs')nav('overview','logs');document.getElementById('quick-member')?.focus();}
 },true);
+
 
 
 function situationHud(){

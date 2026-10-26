@@ -209,6 +209,7 @@ document.addEventListener('change',async event=>{
 document.addEventListener('click',event=>{
   const button=event.target.closest('[data-action]');if(!button||!button.dataset.action.startsWith('r-'))return;event.preventDefault();event.stopImmediatePropagation();
   if(button.dataset.action==='r-clear-plan'){clearRecommendedPlan();return;}
+  if(button.dataset.action==='r-toggle-distribution'){ext.distributionOpen=!ext.distributionOpen;if(ext.distributionOpen)findPlans();render();return;}
   if(button.dataset.action==='r-image-back'){ext.importMode=false;nav('overview','logs');}
   if(button.dataset.action==='r-log-warnings'){ext.warningOnly=!ext.warningOnly;ui.page=1;render();}
   if(button.dataset.action==='r-hud-boss'){nav('overview','logs');ui.boss=Number(button.dataset.id);render();}

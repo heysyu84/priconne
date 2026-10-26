@@ -1093,6 +1093,14 @@ html[data-text-scale] .battle-mobile-table .mobile-log-actions .button{font-size
 html[data-text-scale] .battle-mobile-table .mobile-log-damage strong{font-size:calc((10px) * var(--text-scale,1))!important}
 html[data-text-scale] .battle-mobile-table .mobile-log-member .member-link{font-size:calc((10px) * var(--text-scale,1))!important}
 }
+html[data-text-scale] .data-table .member-link,
+html[data-text-scale] .data-table .damage-edit,
+html[data-text-scale] .data-table .text-button[data-action="profile"],
+html[data-text-scale] .data-table .text-button[data-action="u-award-history"],
+html[data-text-scale] .data-table .text-button[data-action="v2-award-detail"]{font-size:inherit!important}
+html[data-text-scale] .data-table.attack-dashboard .member-link{font-size:inherit!important}
+html[data-text-scale] .data-table .table-sort{font-size:inherit!important}
+html[data-text-scale] .data-table .table-sort>span{font-size:.9em!important}
 @media(max-width:760px){
 html[data-text-scale] .data-table.battle-mobile-table th,
 html[data-text-scale] .data-table.battle-mobile-table td{font-size:calc((11px) * var(--text-scale,1))!important}
@@ -1136,10 +1144,20 @@ html[data-text-scale] .roster-complete .tenure-cell strong{font-size:calc((11px)
 html[data-text-scale] .roster-complete .tenure-cell small{font-size:calc((9px) * var(--text-scale,1))!important}
 html[data-text-scale] .battle-mobile-table .mobile-log-actions .button{font-size:calc((11px) * var(--text-scale,1))!important}
 }
-html[data-text-scale] .dashboard-attack .dashboard-basic-boss{font-size:calc((16px) * var(--text-scale,1))!important}
+html[data-text-scale] .dashboard-attack .dashboard-basic-boss,
 html[data-text-scale] .dashboard-attack .dashboard-carry-boss,
-html[data-text-scale] .dashboard-attack .carry-ready{font-size:calc((11px) * var(--text-scale,1))!important}
+html[data-text-scale] .dashboard-attack .carry-ready{font-size:calc((16px) * var(--text-scale,1))!important}
 html[data-text-scale] .dashboard-attack .carry-ready{font-size:calc((10px) * var(--text-scale,1))!important}
+@media(max-width:760px){
+html[data-text-scale] .dashboard-attack .dashboard-boss{font-size:calc((14px) * var(--text-scale,1))!important}
+html[data-text-scale] .data-table.attack-dashboard .table-sort>span{font-size:calc((8px) * var(--text-scale,1))!important}
+html[data-text-scale] .data-table.roster-complete .member-link{font-size:calc((11px) * var(--text-scale,1))!important}
+}
+@media(max-width:370px){
+html[data-text-scale] .dashboard-attack .dashboard-boss{font-size:calc((13px) * var(--text-scale,1))!important}
+html[data-text-scale] .dashboard-attack .carry-ready{font-size:calc((9px) * var(--text-scale,1))!important}
+html[data-text-scale] .data-table.roster-complete .member-link{font-size:calc((10px) * var(--text-scale,1))!important}
+}
 html[data-text-scale] .boss-config-table .boss-art-label{font-size:calc((10px) * var(--text-scale,1))!important}
 @media(max-width:760px){
 html[data-text-scale] .combo-heading .boss-tag,
@@ -1160,6 +1178,13 @@ html[data-text-scale] .online-presence strong{font-size:calc((12px) * var(--text
 @media(max-width:760px){
 html[data-text-scale] .header-controls .online-presence{font-size:calc((10px) * var(--text-scale,1))!important}
 html[data-text-scale] .header-controls .online-presence strong{font-size:calc((11px) * var(--text-scale,1))!important}
+}
+html[data-text-scale] .data-table.inline-editable .inline-log-number{font-size:inherit!important}
+html[data-text-scale] .data-table.inline-editable .inline-log-type{font-size:inherit!important}
+html[data-text-scale] .data-table .log-manage-actions .button,
+html[data-text-scale] .data-table .log-manage-actions .log-drag-handle{font-size:calc((11px) * var(--text-scale,1))!important}
+@media(max-width:760px){
+html[data-text-scale] .recommendation-actions>.button{font-size:calc((11px) * var(--text-scale,1))!important}
 }
 /* compat/battle-image-import.css */
 html[data-text-scale] .bli-head h2{font-size:calc((clamp(20px,2vw,25px)) * var(--text-scale,1))!important}

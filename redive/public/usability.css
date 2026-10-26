@@ -402,7 +402,10 @@ h1,h2,h3,strong,b{font-weight:700}
 
 /* Member names are text links, never bordered badges, across every page. */
 .member-link,.text-button[data-action].member-link,
-.roster-complete .member-link,.battle-mobile-table .member-link{
+.roster-complete .member-link,.battle-mobile-table .member-link,
+.data-table .text-button[data-action="profile"],
+.data-table .text-button[data-action="u-award-history"],
+.data-table .text-button[data-action="v2-award-detail"]{
   border:0!important;
   background:transparent!important;
   border-radius:0!important;
@@ -417,6 +420,18 @@ h1,h2,h3,strong,b{font-weight:700}
   text-decoration:underline!important;
   text-underline-offset:2px;
 }
+
+/* Name and value controls follow their table cell's type size. */
+.data-table .member-link,.data-table .damage-edit,
+.data-table .text-button[data-action="profile"],
+.data-table .text-button[data-action="u-award-history"],
+.data-table .text-button[data-action="v2-award-detail"]{font-size:inherit!important;line-height:inherit}
+.data-table .member-link{display:inline-block;max-width:100%;vertical-align:middle;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.data-table.attack-dashboard .member-link{font-size:inherit!important}
+.data-table .table-sort{display:inline-flex;align-items:center;justify-content:inherit;gap:3px;max-width:100%;padding:0;border:0;background:none;color:inherit;font:inherit;font-weight:700;line-height:inherit;white-space:nowrap}
+.data-table .table-sort>span{font-size:.9em;color:var(--muted)}
+.data-table th.center .table-sort{justify-content:center}.data-table th.right .table-sort{justify-content:flex-end}
+.data-table th[aria-sort=ascending] .table-sort,.data-table th[aria-sort=descending] .table-sort{color:var(--accent)}
 
 /* Both mobile battle-log modes use the same font, borders, row padding and chips. */
 @media(max-width:760px){
@@ -715,12 +730,29 @@ h1,h2,h3,strong,b{font-weight:700}
 .header-controls .header-settings svg{display:block;width:18px!important;height:18px!important;min-width:18px;min-height:18px;flex:0 0 18px;aspect-ratio:1;overflow:visible}
 .winner-cell .winner-person{display:inline-flex;align-items:baseline;gap:4px;white-space:nowrap}
 .winner-cell .winner-separator{display:inline-block;padding:0 8px;color:var(--muted);font-weight:400}
-.dashboard-attack{display:inline-flex;align-items:flex-end;gap:3px;min-height:35px;white-space:nowrap}
-.dashboard-attack .dashboard-basic-boss{display:inline-flex;align-items:center;justify-content:center;width:31px;height:33px;min-width:31px;min-height:33px;padding:0;border:1px solid var(--boss);border-radius:5px;background:var(--boss-wash);color:var(--boss-ink);font-size:16px;font-weight:750;line-height:1}
-.dashboard-attack .dashboard-carry-boss,.dashboard-attack .carry-ready{display:inline-flex;align-items:center;justify-content:center;min-width:23px;height:23px;min-height:23px;padding:0 3px;border:1px solid var(--line);border-radius:4px;background:var(--surface);font-size:11px;font-weight:700;line-height:1;box-sizing:border-box}
-.dashboard-attack .dashboard-carry-boss{color:var(--boss-ink);border-color:var(--boss);background:var(--boss-wash)}
-.dashboard-attack .carry-ready{color:var(--text);font-size:10px}
+.dashboard-attack{--attack-box-width:31px;--attack-box-height:33px;display:inline-flex;align-items:center;gap:3px;min-height:35px;white-space:nowrap}
+.dashboard-attack .dashboard-basic-boss,.dashboard-attack .dashboard-carry-boss,.dashboard-attack .carry-ready{display:inline-flex;align-items:center;justify-content:center;width:var(--attack-box-width);height:var(--attack-box-height);min-width:var(--attack-box-width);min-height:var(--attack-box-height);padding:0;border:1px solid var(--boss);border-radius:5px;background:var(--boss-wash);color:var(--boss-ink);font-size:16px;font-weight:750;line-height:1;box-sizing:border-box;flex:none}
+.dashboard-attack .carry-ready{color:var(--text);font-size:10px;background:var(--surface);border-color:var(--line);letter-spacing:-.03em}
 .dashboard-attack .slot-separator{display:none}
+@media(max-width:760px){
+ .dashboard-attack{--attack-box-width:26px;--attack-box-height:30px;gap:2px;min-height:30px}
+ .dashboard-attack .dashboard-boss{font-size:14px}
+ .data-table.attack-dashboard th,.data-table.attack-dashboard td{padding-left:3px!important;padding-right:3px!important}
+ .data-table.attack-dashboard th:first-child{width:25%!important}
+ .data-table.attack-dashboard th:nth-child(n+2):nth-child(-n+4){width:auto!important}
+ .data-table.attack-dashboard th:nth-last-child(-n+2){width:32px!important}
+ .data-table.attack-dashboard thead th{padding-left:1px!important;padding-right:1px!important}
+ .data-table.attack-dashboard .slot-cell{padding-left:1px!important;padding-right:1px!important}
+ .data-table.attack-dashboard .table-sort{position:relative;gap:0}
+ .data-table.attack-dashboard .table-sort>span{position:absolute;bottom:-8px;left:50%;transform:translateX(-50%);font-size:8px;line-height:1}
+ /* Keep UID and joining dates on one line in compact rosters. */
+ .data-table.roster-complete .member-link{font-size:11px!important}
+}
+@media(max-width:370px){
+ .dashboard-attack{--attack-box-width:23px;--attack-box-height:28px;gap:1px;min-height:28px}
+ .dashboard-attack .dashboard-boss{font-size:13px}.dashboard-attack .carry-ready{font-size:9px}
+ .data-table.roster-complete .member-link{font-size:10px!important}
+}
 .boss-config-table{width:100%;min-width:0!important;table-layout:fixed}
 .boss-config-table th:first-child{width:59px}.boss-config-table th:nth-child(2){width:auto}.boss-config-table th:nth-child(3){width:165px}.boss-config-table th:nth-child(4),.boss-config-table th:nth-child(5){width:103px}
 .boss-config-table input,.boss-config-table select{width:100%;min-width:0;max-width:100%;box-sizing:border-box}
@@ -790,6 +822,32 @@ h1,h2,h3,strong,b{font-weight:700}
  .header-controls:has(.online-presence) .month-select{width:84px;max-width:84px}
 }
 @media print{.online-presence{display:none}}
+
+/* Editing stays in the same row; controls remain in one group at its end. */
+.data-table.inline-editable{width:max-content!important;min-width:100%!important;max-width:none!important;table-layout:auto!important}
+.data-table.inline-editable :is(th,td){white-space:nowrap!important}
+.data-table.inline-editable .progress-cell{min-width:75px}
+.data-table.inline-editable .inline-log-member{width:116px;min-width:116px}
+.data-table.inline-editable .inline-log-boss{width:145px;min-width:145px}
+.data-table.inline-editable .search-picker{width:100%;min-width:0}
+.data-table.inline-editable .search-picker>input[type=search]{width:100%;min-width:0;padding:5px 7px}
+.data-table.inline-editable .inline-log-number{width:132px;min-width:132px;max-width:none;min-height:32px;padding:5px 7px;text-align:right;font-variant-numeric:tabular-nums;font-size:inherit;line-height:1.35}
+.data-table.inline-editable .inline-log-bonus{width:108px;min-width:108px}
+.data-table.inline-editable .inline-log-type{width:78px;min-width:78px;min-height:32px;padding:5px;font-size:inherit}
+.data-table.inline-editable .log-manage{padding-left:8px!important;min-width:204px}
+.data-table .log-manage-actions{display:inline-flex!important;align-items:center;gap:3px;flex-wrap:nowrap;white-space:nowrap}
+.data-table .log-manage-actions .button,.data-table .log-manage-actions .log-drag-handle{display:inline-flex!important;align-items:center;justify-content:center;flex:none;min-width:27px;min-height:29px;width:auto;margin:0;padding:4px 5px;line-height:1.1;font-size:11px}
+.data-table .log-manage-actions .log-drag-handle{cursor:grab;border:1px solid var(--line);border-radius:5px;background:var(--surface);color:var(--muted)}
+.data-table .log-manage-actions .log-drag-handle:active{cursor:grabbing}
+.data-table .log-inline-draft>td{background:var(--accent-wash)}
+.data-table.inline-editable input[aria-invalid=true]{border-color:#bb5576}
+.search-picker-results:has(.entry-picker-option){z-index:100}
+@media(max-width:760px){
+ .data-table.battle-mobile-table.inline-editable{width:max-content!important;min-width:880px!important;max-width:none!important;table-layout:auto!important}
+ .data-table.battle-mobile-table.inline-editable.mobile-detail{min-width:1450px!important}
+ .data-table.battle-mobile-table.inline-editable th{width:auto!important}
+ .data-table.inline-editable .log-manage-actions .button{min-height:30px;padding:4px 6px}
+}
 
 
 /* The recommendation controls never reflow when a plan or notice opens. */

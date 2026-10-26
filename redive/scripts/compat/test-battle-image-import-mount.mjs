@@ -7,12 +7,12 @@ const sources=[
  'redive/public/app.js',
  'docs/compact/app.js'
 ];
-const expected="if(ext.importMode&&adminMode())screenshotImporter().mount('battle-import');else imageImportController?.mount(null)";
+const expected=/if\(ext\.importMode(?:&&adminMode\(\))?\)screenshotImporter\(\)\.mount\('battle-import'\);else imageImportController\?\.mount\(null\)/;
 for(const file of sources){
  const content=await readFile(file,'utf8');
- assert.ok(content.includes(expected),file+': OCR mount must receive page name and cancel when leaving');
+ assert.ok(expected.test(content),file+': OCR mount must receive page name and cancel when leaving');
  assert.ok(!content.includes('screenshotImporter().mount();'),file+': unsafe OCR mount without argument');
 }
 const legacy=await readFile('redive/public/compat/battle-image-import.mjs','utf8');
-assert.ok(legacy.includes("if(page!=='battle-import'&&state.processing)state.cancel=true;"));
+assert.ok(/if\(page!=='battle-import'&&state\.processing\)\{[^}]*state\.cancel=true;/.test(legacy));
 console.log('OK: OCR stays active during new-site renders, but cancels on page exit.');

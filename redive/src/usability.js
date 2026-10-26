@@ -39,7 +39,8 @@ fullTactics=()=>{
   if(['converter','trash'].includes(ui.tabs.tactics)&&!adminMode())ui.tabs.tactics='workspace';
   if(ui.tabs.tactics==='planner'){ui.tabs.tactics='combos';ext.distributionOpen=true;findPlans();}
   const work=ui.tabs.tactics==='workspace';
-  const tabs=[['combos','추천 조합'],['workspace','택틱 작업실'],['external','이월 계산기'],...(adminMode()?[['converter','택틱 변환기']]:[])];
+  const activeMenuTactics=data.tactics.filter(t=>!t.hidden&&!t.deletedAt&&t.stage===4),comboCount=activeMenuTactics.filter(t=>t.category!=='carry').length,workCount=comboCount+(data.rules.carryVisible?activeMenuTactics.filter(t=>t.category==='carry').length:0);
+  const tabs=[['combos','추천 조합',comboCount],['workspace','택틱 작업실',workCount],['external','이월 계산기'],...(adminMode()?[['converter','택틱 변환기']]:[])];
   return titleBar('택틱',work&&adminMode()?simpleButton('삭제함','v2-tactic-trash')+simpleButton('택틱 추가','new-tactic','','primary'):'')+pageTabs(tabs)+({combos:recommendationRows,workspace:completeWorkspace,external:completeExternal,converter:completeConverter,trash:completeTrash}[ui.tabs.tactics]||recommendationRows)();
 };
 fullClan=()=>{
@@ -68,7 +69,7 @@ tacticReadingHeader=t=>{
   const received=carry?`<section class="carry-summary"><div><span>필요 이월</span><strong>${needed===null?'—':needed+'초'}</strong></div><div class="field"><label for="carry-main-received">받은 이월 · 초</label><input id="carry-main-received" type="number" min="1" max="90" inputmode="numeric" data-input="ops-carry-received" value="${ui.carry}"></div><p class="carry-warning danger" ${warning?'':'hidden'}>필요 이월보다 짧습니다.</p></section>`:'';
   const links=(t.links||[]).filter(link=>/^https?:\/\//i.test(link.url||''));
   const sources=links.length?`<div class="tactic-intro-links">${links.map(link=>`<a class="button source-link" href="${X(link.url)}" target="_blank" rel="noopener noreferrer">${X(link.label)}</a>`).join('')}</div>`:'';
-  return `<div class="work-editor-head tactic-reading-head ${carry?'is-carry':''}">${carry?`<div class="tactic-intro-top">${received}${memo}</div>`:memo}<div class="tactic-summary-row"><div class="tactic-identity"><h2>${t.boss?t.boss+'넴 · '+X(bossBy(t.boss).name):'미분류'}</h2><div class="tactic-metadata"><span class="${t.hands?'danger':''}">손컨 <b>${tacticHands(t)}</b></span> · <span class="${t.tp.includes('+')?'danger':''}">TP <b>${X(t.tp||'—')}</b></span> · <span class="tactic-damage-group"><span class="tactic-damage-meta">기대딜 <strong>${tacticDamageLabel(t)}</strong></span>${videoButton(t)}</span></div>${sources}</div><div class="tactic-header-party">${party(t)}</div></div>${adminMode()?`<div class="work-actions">${simpleButton('편성 수정','edit-tactic',t.id)}${simpleButton(t.hidden?'다시 표시':'숨기기','hide-tactic',t.id)}${simpleButton('복제','duplicate-tactic',t.id)}${simpleButton('삭제','delete-tactic',t.id,'danger')}</div>`:''}</div>`;
+  return `<div class="work-editor-head tactic-reading-head ${carry?'is-carry':''}">${carry?`<div class="tactic-intro-top">${received}</div>`:''}<div class="tactic-summary-row"><div class="tactic-identity"><h2>${t.boss?t.boss+'넴 · '+X(bossBy(t.boss).name):'미분류'}</h2><div class="tactic-metadata"><span class="${t.hands?'danger':''}">손컨 <b>${tacticHands(t)}</b></span> · <span class="${t.tp.includes('+')?'danger':''}">TP <b>${X(t.tp||'—')}</b></span> · <span class="tactic-damage-group"><span class="tactic-damage-meta">기대딜 <strong>${tacticDamageLabel(t)}</strong></span>${videoButton(t)}</span></div>${sources}</div><div class="tactic-header-party">${party(t)}</div></div>${memo}${adminMode()?`<div class="work-actions">${simpleButton('편성 수정','edit-tactic',t.id)}${simpleButton(t.hidden?'다시 표시':'숨기기','hide-tactic',t.id)}${simpleButton('복제','duplicate-tactic',t.id)}${simpleButton('삭제','delete-tactic',t.id,'danger')}</div>`:''}</div>`;
 };
 comboDetailBody=t=>`<div class="combo-detail-controls"><label>이월 받은 시간 <input aria-label="이월 받은 시간" data-input="ops-combo-carry" data-id="${t.id}" value="${fmtTime(ui.carry)}" inputmode="numeric"></label>${simpleButton('본문 복사','copy-tactic',t.id)}${t.recommendationOnly?'':simpleButton('작업실에서 열기','v2-open-workspace',t.id)}${videoButton(t)}</div>${displayTacticNote(t)?`<p class="tactic-note">${X(displayTacticNote(t)).replace(/\n/g,'<br>')}</p>`:''}${renderTacticGrid(t,false)}`;
 
@@ -131,7 +132,7 @@ function awardRows(){
   }
   return [...map.values()].sort((a,b)=>b.total-a.total||a.name.localeCompare(b.name,'ko'));
 }
-completeHall=()=>`<div class="table-tools"><span>확정한 월별 결과 기준</span></div>`+rowTable(['클랜원','인게임 1위 / 2위','기여도 1위 / 2위','피해량 1위 / 2위','총 수상'],awardRows().map(p=>`<tr><td><button class="text-button" data-action="u-award-history" data-name="${X(p.name)}">${X(p.name)}</button></td>${RESULT_METRICS.map(([metric])=>`<td class="center numeric">${p[metric]?.[0]||0} / ${p[metric]?.[1]||0}</td>`).join('')}<td class="center numeric"><strong>${p.total}</strong></td></tr>`),'hall-table award-count-table exact-table');
+completeHall=()=>`<div class="table-tools"><span>확정한 월별 결과 기준</span></div>`+rowTable(['클랜원','인게임 1위 / 2위','기여도 1위 / 2위','피해량 1위 / 2위','총 수상'],awardRows().map(p=>`<tr><td><button class="text-button member-link" data-action="u-award-history" data-name="${X(p.name)}">${X(p.name)}</button></td>${RESULT_METRICS.map(([metric])=>`<td class="center numeric">${p[metric]?.[0]||0} / ${p[metric]?.[1]||0}</td>`).join('')}<td class="center numeric"><strong>${p.total}</strong></td></tr>`),'hall-table award-count-table exact-table');
 
 function sealResult(month){
   if(!ensureEdit())return false;const season=historySeason(month);if(!season)return false;

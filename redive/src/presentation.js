@@ -13,7 +13,15 @@ function bossArt(boss){
   if(!b)return null;
   if(b.portraitKey==='none')return null;
   if(b.portraitUrl)return {image:b.portraitUrl,name:b.name};
-  return GAME_ASSETS.bosses[b.portraitKey]||Object.values(GAME_ASSETS.bosses).find(a=>a.name===b.name)||null;
+  // Older shared records may retain a slot's original portrait key after
+  // the monthly boss name changes. Resolve the current name before that key.
+  const lineups=[selectedFutureLineup(ui.month),...Object.values(data.futureOverrides||{}),...Object.values((ext.futureCatalog||FUTURE_REFERENCE).months)];
+  for(const lineup of lineups){
+    const reference=lineup?.bosses.find(source=>source.name===b.name);
+    const image=reference&&localFuturePortrait(reference);
+    if(image)return {image,name:b.name};
+  }
+  return Object.values(GAME_ASSETS.bosses).find(a=>a.name===b.name)||GAME_ASSETS.bosses[b.portraitKey]||null;
 }
 function bossFace(boss,cls=''){
   const b=typeof boss==='object'?boss:data.bossSettings.find(b=>b.id===Number(boss)),art=bossArt(b);

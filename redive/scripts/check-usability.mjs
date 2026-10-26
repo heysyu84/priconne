@@ -54,7 +54,7 @@ await check('a clan-wide profile survives polling and an intentional member sele
 });
 await check('clearing a recommendation resets the selection, support choices and filter together',()=>{
   const q=runtimeFixture();q.findPlans();q.applyFoundPlan(0);q.ext.distributionOpen=true;assert.equal(q.selectedParties().length,3);assert.ok(q.recommendationRows().includes('r-clear-plan'));
-  q.clearRecommendedPlan();assert.equal(q.selectedParties().length,0);assert.equal(q.ext.onlyPicks,false);assert.equal(q.ext.distributionOpen,false);assert.ok(q.recommendationRows().includes('추천 분배'));
+  q.clearRecommendedPlan();assert.equal(q.selectedParties().length,0);assert.equal(q.ext.onlyPicks,false);assert.equal(q.ext.distributionOpen,false);assert.ok(q.recommendationRows().includes('data-action="v3-distribution"'));
 });
 await check('a rounded coefficient presentation never overwrites the unedited exact value',()=>{
   const input={value:'0.11',dataset:{display:'0.11',exact:'0.1123456789'}},form={querySelector:()=>input},fd={get:()=>input.value};
