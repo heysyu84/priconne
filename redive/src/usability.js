@@ -175,14 +175,17 @@ function updateLineupPreview(kind){
     let face=select.parentElement.querySelector('.lineup-slot-face');if(!face){face=document.createElement('span');face.className='lineup-slot-face';select.before(face);}face.innerHTML=names[i]?portraitHtml(names[i]):'';
   }
 }
-function applyLineupText(input){
+function applyLineupText(input,composing=false){
   const kind=input.dataset.kind,section=input.closest('.lineup-text-entry'),parsed=partyTools.parseLineup(input.value,data.characters);
   if(kind==='converter')ext.converterLineupText=input.value;
+  // The last Korean syllable stays in composition until the next key. Apply a
+  // complete match immediately, without interrupting or rewriting the IME input.
+  if(composing&&!parsed.valid)return;
   const messages=[];if(parsed.unknown.length)messages.push('찾지 못함: '+parsed.unknown.join(', '));if(parsed.ambiguous.length)messages.push('이름 확인: '+parsed.ambiguous.map(p=>p.token).join(', '));if(parsed.duplicates.length)messages.push('중복: '+parsed.duplicates.join(', '));
   if(parsed.names.length>5)messages.push('캐릭터는 5명까지 입력하세요.');
   section.querySelector('.lineup-text-feedback').textContent=messages.join(' · ')||(!input.value.trim()?'':parsed.valid?'편성에 적용됨':`${parsed.names.length}/5명`);
   section.querySelector('.lineup-text-feedback').classList.toggle('danger',!!messages.length);
-  if(parsed.valid)setLineupNames(kind,parsed.names);
+  if(parsed.valid){const current=lineupNames(kind);if(parsed.names.some((name,index)=>current[index]!==name))setLineupNames(kind,parsed.names);}
 }
 const tacticFormWithoutNames=editCompleteTactic;
 editCompleteTactic=id=>{
@@ -241,7 +244,7 @@ document.addEventListener('submit',event=>{
   checkpoint();const season=historySeason(month);if(season)season.result.rank=rank;
   data.history??=[];let row=data.history.find(h=>h.month===month);if(!row){row={month,winners:{game:[],contribution:[],damage:[]}};data.history.push(row);}row.clanRank=rank;persist();closeDrawer();render();toast('클랜 순위 저장',true);
 },true);
-document.addEventListener('input',event=>{if(event.target.dataset.input==='u-lineup-text'&&!event.isComposing)applyLineupText(event.target);});
+document.addEventListener('input',event=>{if(event.target.dataset.input==='u-lineup-text')applyLineupText(event.target,event.isComposing);});
 document.addEventListener('compositionend',event=>{if(event.target.dataset.input==='u-lineup-text')applyLineupText(event.target);});
 document.addEventListener('change',event=>{if(event.target.id?.startsWith('party-')||event.target.name?.startsWith('star-'))updateLineupPreview('tactic');if(event.target.id?.startsWith('convert-name-'))updateLineupPreview('converter');});
 document.addEventListener('toggle',event=>{if(event.target.matches?.('.calculator-popover')&&event.target.open)updateEstimator();},true);

@@ -102,6 +102,7 @@ h1,h2,h3,strong,b{font-weight:700}
 .lineup-text-entry{margin:8px 0 18px;border:1px solid var(--line);border-radius:9px;padding:12px;background:color-mix(in srgb,var(--surface) 85%,var(--accent-wash))}
 .lineup-text-entry>label{font-size:13px;font-weight:700;display:block;margin-bottom:7px}.lineup-name-input{width:100%;min-width:0;border:1px solid var(--strong-line);border-radius:6px;padding:9px;font:inherit;font-size:14px;background:var(--surface);color:var(--text)}
 .lineup-text-feedback,.lineup-order-feedback{font-size:12px;line-height:1.5;margin-top:6px}.lineup-text-feedback:empty,.lineup-order-feedback:empty{display:none}
+form[data-form="v2-tactic"] #tactic-text{display:block;width:100%;min-width:0;min-height:260px;box-sizing:border-box;resize:vertical}
 .lineup-order-feedback{display:flex;flex-wrap:wrap;align-items:center;gap:7px}.lineup-order-warning{color:#a66b2f;font-weight:650}.lineup-order-ok{color:#4f8c77;font-weight:650}.lineup-order-feedback .button{font-size:11px;padding:3px 6px;min-height:27px}
 .lineup-preview{margin-top:10px}.lineup-preview:empty{display:none}.lineup-preview .party{justify-content:space-around;max-width:500px;margin:auto}
 .lineup-slot-face{display:block;height:37px;width:37px;margin:5px auto;border:1px solid #c9b386;border-radius:5px;overflow:hidden;box-shadow:0 1px 3px #31486c22}.lineup-slot-face:empty{display:none}.lineup-slot-face img{width:100%;height:100%;object-fit:cover}
