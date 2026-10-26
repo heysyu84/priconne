@@ -90,7 +90,7 @@ const formatNumber=n=>Number(n||0).toLocaleString('ko-KR');
 function damageDigitCandidates(text){
  const value=String(text||'').normalize('NFKC')
   .replace(/(?<=\d)[oO〇○](?=\d)/g,'0').replace(/(?<=\d)[Il|](?=\d)/g,'1');
- const matches=[...value.matchAll(/(?<!\d)(?:\d[\d,\u00a0 ]{5,15}\d|\d{6,12})(?!\d)/g)];
+ const matches=[...value.matchAll(/(?<!\d)(?:\d[\d,.\u00a0 ]{5,15}\d|\d{6,12})(?!\d)/g)];
  const unique=new Set();
  for(const match of matches){
   const digits=match[0].replace(/\D/g,'');
