@@ -791,3 +791,10 @@ h1,h2,h3,strong,b{font-weight:700}
 }
 @media print{.online-presence{display:none}}
 
+
+/* The recommendation controls never reflow when a plan or notice opens. */
+.recommendation-actions{display:grid;grid-template-columns:94px 60px 60px;gap:6px;align-items:center;flex-wrap:nowrap;flex:none;white-space:nowrap}
+.recommendation-actions>.button{min-width:0;min-height:34px;display:inline-flex;align-items:center;justify-content:center;white-space:nowrap;box-sizing:border-box;padding:5px 6px}
+.toolbar-right:has(.recommendation-actions){flex-wrap:nowrap;align-items:center}
+.workspace-navigation .count{display:inline-flex;align-items:center;justify-content:center;margin-left:5px;min-width:20px;padding:0 5px;border-radius:99px;font-variant-numeric:tabular-nums;background:var(--surface-alt,#f3edf8);color:var(--muted)}
+@media(max-width:760px){.recommendation-actions{grid-template-columns:84px 53px 53px;gap:5px}.recommendation-actions>.button{min-height:32px;font-size:11px;padding:4px 5px}.toolbar-right:has(.recommendation-actions){max-width:100%}}
