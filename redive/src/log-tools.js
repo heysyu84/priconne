@@ -84,7 +84,7 @@ saveCompleteLog=form=>{
   const saved=data.logs.find(row=>row.id===record.id);
   if(!old){ext.entryMember=memberId;ext.entryBoss=boss;ext.entryCarry=saved.kill&&!saved.carry&&!data.logs.some(row=>row.carryFrom===saved.id);ext.entryFeedback=currentMember(memberId).name+' · '+boss+'넴 '+nf(saved.damage)+' 등록';}
   persist();if(drawer.open)closeDrawer();ext.logInsertion=null;if(!old)ext.inlineLogDraft=null;render();
-  if(!old){const input=document.getElementById('quick-damage');if(input&&!input.readOnly)input.focus();}
+  if(!old)document.getElementById('quick-member')?.focus();
   toast(old?'기록 수정':'기록 등록',true);return true;
 };
 function moveLogRecord(id,anchorId,side){
@@ -120,9 +120,12 @@ function inlineLogPicker(e,field,mobile){
 }
 function inlineLogNumber(e,field,mobile){
   const value=field==='bonus'?(e.inlineDraft?e.bonus:Math.round((e.bonus||0)*10000)):e.damage;
-  return `<input class="inline-log-number ${field==='bonus'?'inline-log-bonus':''}" id="${inlineLogId(e,field,mobile)}" data-inline-log-field="${field}" type="text" inputmode="${field==='bonus'?'decimal':'numeric'}" value="${X(typeof value==='number'?nf(value):value)}" aria-label="${e.inlineDraft?'새':e.seq+'번'} 기록 ${field==='bonus'?'가산점':'피해량'}" autocomplete="off">`;
+  return `<input class="inline-log-number ${field==='bonus'?'inline-log-bonus':''}" id="${inlineLogId(e,field,mobile)}" data-inline-log-field="${field}" type="text" inputmode="${field==='bonus'?'decimal':'numeric'}" value="${X(typeof value==='number'?nf(value):value)}" aria-label="${e.inlineDraft?'새':e.seq+'번'} 기록 ${field==='bonus'?'가산점':'피해량'}" ${field==='bonus'?'tabindex="-1" ':''}autocomplete="off">`;
 }
-function inlineLogType(e,mobile){return `<select class="inline-log-type" id="${inlineLogId(e,'carry',mobile)}" data-inline-log-field="carry" aria-label="${e.inlineDraft?'새':e.seq+'번'} 기록 이월 사용"><option value="normal" ${!e.carry?'selected':''}>${!e.carry&&e.role==='초월'?'초월':!e.carry&&e.kill?'격파':'일반'}</option><option value="carry" ${e.carry?'selected':''}>${e.carry&&e.kill?'관통':'이월타'}</option></select>`;}
+function inlineLogType(e,mobile){
+  const label=e.role==='초월'?'초월':e.kill?(e.carry?'관통':'격파'):e.carry?'이월타':'일반';
+  return `<div class="inline-log-type"><span class="type-tag ${e.kill?'kill':e.carry?'carry':''}">${label}</span><label class="inline-log-carry"><input type="checkbox" id="${inlineLogId(e,'carry',mobile)}" data-inline-log-field="carry" aria-label="${e.inlineDraft?'새':e.seq+'번'} 기록 이월타 여부" ${e.carry?'checked':''}>이월</label></div>`;
+}
 function visibleLogMoveTarget(id,direction){
   const rows=getFilteredCompleteLogs(),index=rows.findIndex(row=>row.id===id),source=rows[index],target=rows[index+(direction==='up'?-1:1)];
   return source&&target&&source.day===target.day?target:null;
@@ -174,13 +177,19 @@ showEntryResults=(input,all=false)=>{
 };
 document.addEventListener('input',event=>{
   const input=event.target,row=input.closest?.('tr[data-inline-log]'),field=input.dataset.inlineLogField;
-  if(row?.dataset.inlineLog==='draft'&&field&&!input.dataset.entrySearch&&ext.inlineLogDraft)ext.inlineLogDraft[field]=field==='carry'?input.value==='carry':input.value;
+  if(row?.dataset.inlineLog==='draft'&&field&&!input.dataset.entrySearch&&ext.inlineLogDraft)ext.inlineLogDraft[field]=field==='carry'?input.checked:input.value;
 });
 document.addEventListener('change',event=>{
   const input=event.target,row=input.closest?.('tr[data-inline-log]'),field=input.dataset.inlineLogField;if(!row||!field)return;
   if(input.dataset.entrySearch)return;
-  if(row.dataset.inlineLog==='draft'){if(ext.inlineLogDraft)ext.inlineLogDraft[field]=field==='carry'?input.value==='carry':input.value;return;}
-  if(field==='carry'){const id=input.id;if(!updateInlineLog(row.dataset.inlineLog,field,input.value))input.setAttribute('aria-invalid','true');else setTimeout(()=>document.getElementById(id)?.focus(),0);}
+  if(row.dataset.inlineLog==='draft'){
+    if(ext.inlineLogDraft)ext.inlineLogDraft[field]=field==='carry'?input.checked:input.value;
+    if(field==='carry'){const tag=row.querySelector('.inline-log-type .type-tag');if(tag){tag.textContent=input.checked?'이월타':'일반';tag.classList.toggle('carry',input.checked);}}return;
+  }
+  if(field==='carry'){
+    const id=input.id;if(!updateInlineLog(row.dataset.inlineLog,field,input.checked)){input.checked=!!data.logs.find(e=>e.id===row.dataset.inlineLog)?.carry;input.setAttribute('aria-invalid','true');}
+    else setTimeout(()=>document.getElementById(id)?.focus(),0);
+  }
 });
 document.addEventListener('focusout',event=>{
   const input=event.target,row=input.closest?.('tr[data-inline-log]'),field=input.dataset.inlineLogField;
@@ -195,8 +204,17 @@ document.addEventListener('focusout',event=>{
   if(nextId?.startsWith('inline-log-'))setTimeout(()=>document.getElementById(nextId)?.focus(),0);
 });
 document.addEventListener('keydown',event=>{
-  const input=event.target;if(!input.dataset.inlineLogField||input.dataset.entrySearch)return;
-  if(event.key==='Enter'){event.preventDefault();input.blur();setTimeout(()=>document.getElementById(input.id)?.focus(),0);}
+  const input=event.target;if(!input.dataset.inlineLogField||input.dataset.entrySearch||event.isComposing||event.keyCode===229)return;
+  if(event.key==='Enter'){
+    event.preventDefault();const row=input.closest('tr[data-inline-log]'),id=row.dataset.inlineLog,field=input.dataset.inlineLogField;
+    if(id==='draft'){
+      for(const picker of row.querySelectorAll('[data-entry-search]'))if(!resolveEntry(picker)){picker.reportValidity();picker.focus();return;}
+      if(ext.inlineLogDraft)ext.inlineLogDraft[field]=field==='carry'?input.checked:input.value;
+      commitInlineLogDraft();
+    }else if(field!=='carry'&&updateInlineLog(id,field,input.value)){
+      document.getElementById(inlineLogId({id},field==='damage'?'memberId':field,input.id.startsWith('inline-log-m-')))?.focus();
+    }
+  }
   if(event.key==='Escape'){const row=input.closest('tr[data-inline-log]');if(row?.dataset.inlineLog==='draft'){ext.inlineLogDraft=null;render();}else render();}
 });
 document.addEventListener('click',event=>{

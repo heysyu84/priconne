@@ -5,7 +5,9 @@ function entryItems(kind,picker){
 }
 function entryMatches(kind,query,picker){
  const term=String(query||'').trim().toLowerCase().replace(/\s/g,'');
- return entryItems(kind,picker).filter(item=>!term||(kind==='member'?matchName(item.member,term):[item.label,chosung(item.label)].some(text=>text.toLowerCase().replace(/\s/g,'').includes(term))));
+ const items=entryItems(kind,picker);
+ if(kind==='member')return items.map((item,index)=>({item,index,rank:partyTools.memberMatchRank(item.member,term,chosung)})).filter(row=>Number.isFinite(row.rank)).sort((a,b)=>a.rank-b.rank||a.index-b.index).map(row=>row.item);
+ return items.filter(item=>!term||[item.label,chosung(item.label)].some(text=>text.toLowerCase().replace(/\s/g,'').includes(term)));
 }
 function entrySearch(kind,id,name,value,allowLocked=false){
  const picker={dataset:{selected:String(value||''),allowLocked:allowLocked?'1':'0'}},selected=entryItems(kind,picker).find(item=>String(item.value)===String(value));
@@ -39,6 +41,24 @@ function focusCarryFromDamage(event){
  const carry=form.querySelector('[name=usesCarry]');if(!carry)return false;
  event.preventDefault();carry.focus();return true;
 }
+function moveEntryField(event){
+ if(event.isComposing||event.keyCode===229||event.altKey||event.ctrlKey||event.metaKey||event.shiftKey)return false;
+ const input=event.target,form=input.closest?.('form[data-form="v2-quick-log"],form[data-form="v2-log"]');
+ if(!form||!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(event.key))return false;
+ if(input.dataset.entrySearch&&['ArrowUp','ArrowDown'].includes(event.key))return false;
+ // Keep normal caret movement inside text; cross fields only at its edges.
+ if(input.type==='text'||input.type==='search'){
+  const end=String(input.value).length,start=input.selectionStart,finish=input.selectionEnd;
+  if(event.key==='ArrowLeft'&&(start!==0||finish!==0))return false;
+  if(event.key==='ArrowRight'&&(start!==end||finish!==end))return false;
+ }
+ const selectors=['[data-entry-search="member"]','[data-entry-search="boss"]','[name="damage"]','[name="usesCarry"]','button[type="submit"]'];
+ const fields=selectors.map(selector=>form.querySelector(selector)).filter(field=>field&&!field.disabled);
+ let index=fields.indexOf(input);if(index<0&&input.name==='bonus')index=2;else if(index<0)return false;
+ const next=fields[index+(['ArrowRight','ArrowDown'].includes(event.key)?1:-1)];if(!next)return false;
+ if(input.dataset.entrySearch&&!resolveEntry(input))return false;
+ event.preventDefault();event.stopImmediatePropagation();next.focus();return true;
+}
 function askDeleteLog(id){
  if(!ensureEdit())return;const log=data.logs.find(row=>row.id===id);if(!log){toast('공격 기록을 찾지 못했습니다.');return;}
  openDrawer('공격 기록 삭제',`<p>${X(currentMember(log.memberId).name)} · ${log.day}일차 · ${log.boss}넴</p><p class="numeric delete-log-damage">${nf(log.damage)}</p>`,simpleButton('취소','close-drawer')+simpleButton('삭제','entry-confirm-delete',id,'danger'));
@@ -65,8 +85,14 @@ document.addEventListener('input',event=>{
  const input=event.target;if(!input.dataset.entrySearch)return;input.closest('.search-picker').querySelector('input[type=hidden]').value='';input.setCustomValidity('');showEntryResults(input);
 });
 document.addEventListener('keydown',event=>{
+ if(event.isComposing||event.keyCode===229)return;
  if(focusCarryFromDamage(event))return;
+ if(moveEntryField(event))return;
+ if(event.key==='Enter'&&!event.shiftKey&&!event.altKey&&!event.ctrlKey&&!event.metaKey&&event.target.name==='damage'&&['v2-quick-log','v2-log'].includes(event.target.form?.dataset.form)){
+  event.preventDefault();event.stopImmediatePropagation();event.target.form.requestSubmit();return;
+ }
  const input=event.target;if(!input.dataset.entrySearch)return;const picker=input.closest('.search-picker'),box=picker.querySelector('[role=listbox]');
+ if(event.altKey||event.ctrlKey||event.metaKey)return;
  if(event.key==='Escape'){closeEntryResults(input);return;}
  if(event.key==='Tab'){resolveEntry(input);closeEntryResults(input);return;}
  if(!['ArrowDown','ArrowUp','Enter'].includes(event.key))return;

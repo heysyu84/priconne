@@ -13,10 +13,25 @@ export function hangulKeyboard(value){
   }).join('');
 }
 
+export function memberMatchRank(member,query,initials=()=> ''){
+  const q=compact(query);if(!q)return 0;
+  const name=compact(member.name),aliases=(member.aliases||[]).map(compact),uid=compact(member.uid),initial=compact(initials(member.name));
+  // Literal names always come before two-beolsik keyboard interpretations.
+  if(name===q)return 0;
+  if(name.startsWith(q))return 1;
+  if(name.includes(q))return 2;
+  if(aliases.some(value=>value===q))return 3;
+  if(aliases.some(value=>value.startsWith(q)))return 4;
+  if(aliases.some(value=>value.includes(q)))return 5;
+  if(uid.includes(q)||initial.includes(q))return 6;
+  const keys=[member.name,...(member.aliases||[]),initials(member.name)].map(value=>compact(hangulKeyboard(value)));
+  if(keys.some(value=>value===q))return 7;
+  if(keys.some(value=>value.startsWith(q)))return 8;
+  return keys.some(value=>value.includes(q))?9:Infinity;
+}
+
 export function matchesMember(member,query,initials=()=> ''){
-  const q=compact(query);if(!q)return true;
-  const values=[member.name,member.uid||'',...(member.aliases||[]),initials(member.name)];
-  return values.some(value=>compact(value).includes(q)||compact(hangulKeyboard(value)).includes(q));
+  return Number.isFinite(memberMatchRank(member,query,initials));
 }
 
 export function parseLineup(source,characters){

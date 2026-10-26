@@ -1181,6 +1181,7 @@ html[data-text-scale] .header-controls .online-presence strong{font-size:calc((1
 }
 html[data-text-scale] .data-table.inline-editable .inline-log-number{font-size:inherit!important}
 html[data-text-scale] .data-table.inline-editable .inline-log-type{font-size:inherit!important}
+html[data-text-scale] .data-table.inline-editable .inline-log-carry{font-size:inherit!important}
 html[data-text-scale] .data-table .log-manage-actions .button,
 html[data-text-scale] .data-table .log-manage-actions .log-drag-handle{font-size:calc((11px) * var(--text-scale,1))!important}
 @media(max-width:760px){

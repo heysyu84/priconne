@@ -834,7 +834,9 @@ h1,h2,h3,strong,b{font-weight:700}
 .data-table.inline-editable .search-picker>input[type=search]{width:100%;min-width:0;padding:5px 7px}
 .data-table.inline-editable .inline-log-number{width:132px;min-width:132px;max-width:none;min-height:32px;padding:5px 7px;text-align:right;font-variant-numeric:tabular-nums;font-size:inherit;line-height:1.35}
 .data-table.inline-editable .inline-log-bonus{width:108px;min-width:108px}
-.data-table.inline-editable .inline-log-type{width:78px;min-width:78px;min-height:32px;padding:5px;font-size:inherit}
+.data-table.inline-editable .inline-log-type{display:flex;align-items:center;justify-content:space-between;gap:6px;min-width:99px;min-height:32px;font-size:inherit}
+.data-table.inline-editable .inline-log-carry{display:inline-flex;align-items:center;gap:4px;cursor:pointer;white-space:nowrap;font-size:inherit}
+.data-table.inline-editable .inline-log-carry input{flex:none;width:16px;min-width:16px;height:16px;min-height:16px;margin:0;accent-color:var(--accent)}
 .data-table.inline-editable .log-manage{padding-left:8px!important;min-width:204px}
 .data-table .log-manage-actions{display:inline-flex!important;align-items:center;gap:3px;flex-wrap:nowrap;white-space:nowrap}
 .data-table .log-manage-actions .button,.data-table .log-manage-actions .log-drag-handle{display:inline-flex!important;align-items:center;justify-content:center;flex:none;min-width:27px;min-height:29px;width:auto;margin:0;padding:4px 5px;line-height:1.1;font-size:11px}

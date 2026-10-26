@@ -1,6 +1,6 @@
 import {replayMonth as engineReplay,bossProgress as engineProgress,contribution as engineContribution,estimateCarry as engineEstimate} from './battle-engine.mjs';
 import {convertForeignTactic,foreignSuggestions} from './tactic-parser.mjs';
-import * as partyTools from './party-tools.mjs';
+import * as partyTools from './party-tools.mjs?v=20261026-log-keys01';
 import * as logOrder from './log-order.mjs';
 import * as legacyTools from './legacy-tools.mjs?v=20261026-ocr-regions09';
 const ICONS={
@@ -1132,7 +1132,9 @@ function entryItems(kind,picker){
 }
 function entryMatches(kind,query,picker){
  const term=String(query||'').trim().toLowerCase().replace(/\s/g,'');
- return entryItems(kind,picker).filter(item=>!term||(kind==='member'?matchName(item.member,term):[item.label,chosung(item.label)].some(text=>text.toLowerCase().replace(/\s/g,'').includes(term))));
+ const items=entryItems(kind,picker);
+ if(kind==='member')return items.map((item,index)=>({item,index,rank:partyTools.memberMatchRank(item.member,term,chosung)})).filter(row=>Number.isFinite(row.rank)).sort((a,b)=>a.rank-b.rank||a.index-b.index).map(row=>row.item);
+ return items.filter(item=>!term||[item.label,chosung(item.label)].some(text=>text.toLowerCase().replace(/\s/g,'').includes(term)));
 }
 function entrySearch(kind,id,name,value,allowLocked=false){
  const picker={dataset:{selected:String(value||''),allowLocked:allowLocked?'1':'0'}},selected=entryItems(kind,picker).find(item=>String(item.value)===String(value));
@@ -1166,6 +1168,24 @@ function focusCarryFromDamage(event){
  const carry=form.querySelector('[name=usesCarry]');if(!carry)return false;
  event.preventDefault();carry.focus();return true;
 }
+function moveEntryField(event){
+ if(event.isComposing||event.keyCode===229||event.altKey||event.ctrlKey||event.metaKey||event.shiftKey)return false;
+ const input=event.target,form=input.closest?.('form[data-form="v2-quick-log"],form[data-form="v2-log"]');
+ if(!form||!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(event.key))return false;
+ if(input.dataset.entrySearch&&['ArrowUp','ArrowDown'].includes(event.key))return false;
+ // Keep normal caret movement inside text; cross fields only at its edges.
+ if(input.type==='text'||input.type==='search'){
+  const end=String(input.value).length,start=input.selectionStart,finish=input.selectionEnd;
+  if(event.key==='ArrowLeft'&&(start!==0||finish!==0))return false;
+  if(event.key==='ArrowRight'&&(start!==end||finish!==end))return false;
+ }
+ const selectors=['[data-entry-search="member"]','[data-entry-search="boss"]','[name="damage"]','[name="usesCarry"]','button[type="submit"]'];
+ const fields=selectors.map(selector=>form.querySelector(selector)).filter(field=>field&&!field.disabled);
+ let index=fields.indexOf(input);if(index<0&&input.name==='bonus')index=2;else if(index<0)return false;
+ const next=fields[index+(['ArrowRight','ArrowDown'].includes(event.key)?1:-1)];if(!next)return false;
+ if(input.dataset.entrySearch&&!resolveEntry(input))return false;
+ event.preventDefault();event.stopImmediatePropagation();next.focus();return true;
+}
 function askDeleteLog(id){
  if(!ensureEdit())return;const log=data.logs.find(row=>row.id===id);if(!log){toast('공격 기록을 찾지 못했습니다.');return;}
  openDrawer('공격 기록 삭제',`<p>${X(currentMember(log.memberId).name)} · ${log.day}일차 · ${log.boss}넴</p><p class="numeric delete-log-damage">${nf(log.damage)}</p>`,simpleButton('취소','close-drawer')+simpleButton('삭제','entry-confirm-delete',id,'danger'));
@@ -1192,8 +1212,14 @@ document.addEventListener('input',event=>{
  const input=event.target;if(!input.dataset.entrySearch)return;input.closest('.search-picker').querySelector('input[type=hidden]').value='';input.setCustomValidity('');showEntryResults(input);
 });
 document.addEventListener('keydown',event=>{
+ if(event.isComposing||event.keyCode===229)return;
  if(focusCarryFromDamage(event))return;
+ if(moveEntryField(event))return;
+ if(event.key==='Enter'&&!event.shiftKey&&!event.altKey&&!event.ctrlKey&&!event.metaKey&&event.target.name==='damage'&&['v2-quick-log','v2-log'].includes(event.target.form?.dataset.form)){
+  event.preventDefault();event.stopImmediatePropagation();event.target.form.requestSubmit();return;
+ }
  const input=event.target;if(!input.dataset.entrySearch)return;const picker=input.closest('.search-picker'),box=picker.querySelector('[role=listbox]');
+ if(event.altKey||event.ctrlKey||event.metaKey)return;
  if(event.key==='Escape'){closeEntryResults(input);return;}
  if(event.key==='Tab'){resolveEntry(input);closeEntryResults(input);return;}
  if(!['ArrowDown','ArrowUp','Enter'].includes(event.key))return;
@@ -1899,7 +1925,7 @@ saveCompleteLog=form=>{
   const saved=data.logs.find(row=>row.id===record.id);
   if(!old){ext.entryMember=memberId;ext.entryBoss=boss;ext.entryCarry=saved.kill&&!saved.carry&&!data.logs.some(row=>row.carryFrom===saved.id);ext.entryFeedback=currentMember(memberId).name+' · '+boss+'넴 '+nf(saved.damage)+' 등록';}
   persist();if(drawer.open)closeDrawer();ext.logInsertion=null;if(!old)ext.inlineLogDraft=null;render();
-  if(!old){const input=document.getElementById('quick-damage');if(input&&!input.readOnly)input.focus();}
+  if(!old)document.getElementById('quick-member')?.focus();
   toast(old?'기록 수정':'기록 등록',true);return true;
 };
 function moveLogRecord(id,anchorId,side){
@@ -1935,9 +1961,12 @@ function inlineLogPicker(e,field,mobile){
 }
 function inlineLogNumber(e,field,mobile){
   const value=field==='bonus'?(e.inlineDraft?e.bonus:Math.round((e.bonus||0)*10000)):e.damage;
-  return `<input class="inline-log-number ${field==='bonus'?'inline-log-bonus':''}" id="${inlineLogId(e,field,mobile)}" data-inline-log-field="${field}" type="text" inputmode="${field==='bonus'?'decimal':'numeric'}" value="${X(typeof value==='number'?nf(value):value)}" aria-label="${e.inlineDraft?'새':e.seq+'번'} 기록 ${field==='bonus'?'가산점':'피해량'}" autocomplete="off">`;
+  return `<input class="inline-log-number ${field==='bonus'?'inline-log-bonus':''}" id="${inlineLogId(e,field,mobile)}" data-inline-log-field="${field}" type="text" inputmode="${field==='bonus'?'decimal':'numeric'}" value="${X(typeof value==='number'?nf(value):value)}" aria-label="${e.inlineDraft?'새':e.seq+'번'} 기록 ${field==='bonus'?'가산점':'피해량'}" ${field==='bonus'?'tabindex="-1" ':''}autocomplete="off">`;
 }
-function inlineLogType(e,mobile){return `<select class="inline-log-type" id="${inlineLogId(e,'carry',mobile)}" data-inline-log-field="carry" aria-label="${e.inlineDraft?'새':e.seq+'번'} 기록 이월 사용"><option value="normal" ${!e.carry?'selected':''}>${!e.carry&&e.role==='초월'?'초월':!e.carry&&e.kill?'격파':'일반'}</option><option value="carry" ${e.carry?'selected':''}>${e.carry&&e.kill?'관통':'이월타'}</option></select>`;}
+function inlineLogType(e,mobile){
+  const label=e.role==='초월'?'초월':e.kill?(e.carry?'관통':'격파'):e.carry?'이월타':'일반';
+  return `<div class="inline-log-type"><span class="type-tag ${e.kill?'kill':e.carry?'carry':''}">${label}</span><label class="inline-log-carry"><input type="checkbox" id="${inlineLogId(e,'carry',mobile)}" data-inline-log-field="carry" aria-label="${e.inlineDraft?'새':e.seq+'번'} 기록 이월타 여부" ${e.carry?'checked':''}>이월</label></div>`;
+}
 function visibleLogMoveTarget(id,direction){
   const rows=getFilteredCompleteLogs(),index=rows.findIndex(row=>row.id===id),source=rows[index],target=rows[index+(direction==='up'?-1:1)];
   return source&&target&&source.day===target.day?target:null;
@@ -1989,13 +2018,19 @@ showEntryResults=(input,all=false)=>{
 };
 document.addEventListener('input',event=>{
   const input=event.target,row=input.closest?.('tr[data-inline-log]'),field=input.dataset.inlineLogField;
-  if(row?.dataset.inlineLog==='draft'&&field&&!input.dataset.entrySearch&&ext.inlineLogDraft)ext.inlineLogDraft[field]=field==='carry'?input.value==='carry':input.value;
+  if(row?.dataset.inlineLog==='draft'&&field&&!input.dataset.entrySearch&&ext.inlineLogDraft)ext.inlineLogDraft[field]=field==='carry'?input.checked:input.value;
 });
 document.addEventListener('change',event=>{
   const input=event.target,row=input.closest?.('tr[data-inline-log]'),field=input.dataset.inlineLogField;if(!row||!field)return;
   if(input.dataset.entrySearch)return;
-  if(row.dataset.inlineLog==='draft'){if(ext.inlineLogDraft)ext.inlineLogDraft[field]=field==='carry'?input.value==='carry':input.value;return;}
-  if(field==='carry'){const id=input.id;if(!updateInlineLog(row.dataset.inlineLog,field,input.value))input.setAttribute('aria-invalid','true');else setTimeout(()=>document.getElementById(id)?.focus(),0);}
+  if(row.dataset.inlineLog==='draft'){
+    if(ext.inlineLogDraft)ext.inlineLogDraft[field]=field==='carry'?input.checked:input.value;
+    if(field==='carry'){const tag=row.querySelector('.inline-log-type .type-tag');if(tag){tag.textContent=input.checked?'이월타':'일반';tag.classList.toggle('carry',input.checked);}}return;
+  }
+  if(field==='carry'){
+    const id=input.id;if(!updateInlineLog(row.dataset.inlineLog,field,input.checked)){input.checked=!!data.logs.find(e=>e.id===row.dataset.inlineLog)?.carry;input.setAttribute('aria-invalid','true');}
+    else setTimeout(()=>document.getElementById(id)?.focus(),0);
+  }
 });
 document.addEventListener('focusout',event=>{
   const input=event.target,row=input.closest?.('tr[data-inline-log]'),field=input.dataset.inlineLogField;
@@ -2010,8 +2045,17 @@ document.addEventListener('focusout',event=>{
   if(nextId?.startsWith('inline-log-'))setTimeout(()=>document.getElementById(nextId)?.focus(),0);
 });
 document.addEventListener('keydown',event=>{
-  const input=event.target;if(!input.dataset.inlineLogField||input.dataset.entrySearch)return;
-  if(event.key==='Enter'){event.preventDefault();input.blur();setTimeout(()=>document.getElementById(input.id)?.focus(),0);}
+  const input=event.target;if(!input.dataset.inlineLogField||input.dataset.entrySearch||event.isComposing||event.keyCode===229)return;
+  if(event.key==='Enter'){
+    event.preventDefault();const row=input.closest('tr[data-inline-log]'),id=row.dataset.inlineLog,field=input.dataset.inlineLogField;
+    if(id==='draft'){
+      for(const picker of row.querySelectorAll('[data-entry-search]'))if(!resolveEntry(picker)){picker.reportValidity();picker.focus();return;}
+      if(ext.inlineLogDraft)ext.inlineLogDraft[field]=field==='carry'?input.checked:input.value;
+      commitInlineLogDraft();
+    }else if(field!=='carry'&&updateInlineLog(id,field,input.value)){
+      document.getElementById(inlineLogId({id},field==='damage'?'memberId':field,input.id.startsWith('inline-log-m-')))?.focus();
+    }
+  }
   if(event.key==='Escape'){const row=input.closest('tr[data-inline-log]');if(row?.dataset.inlineLog==='draft'){ext.inlineLogDraft=null;render();}else render();}
 });
 document.addEventListener('click',event=>{
