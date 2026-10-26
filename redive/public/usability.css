@@ -730,7 +730,7 @@ h1,h2,h3,strong,b{font-weight:700}
 .header-controls .header-settings svg{display:block;width:18px!important;height:18px!important;min-width:18px;min-height:18px;flex:0 0 18px;aspect-ratio:1;overflow:visible}
 .winner-cell .winner-person{display:inline-flex;align-items:baseline;gap:4px;white-space:nowrap}
 .winner-cell .winner-separator{display:inline-block;padding:0 8px;color:var(--muted);font-weight:400}
-.dashboard-attack{--attack-box-width:31px;--attack-box-height:33px;--attack-box-gap:3px;display:inline-flex;align-items:center;gap:var(--attack-box-gap);width:calc(var(--attack-box-width) * 2 + var(--attack-box-gap));min-height:35px;white-space:nowrap}
+.dashboard-attack{--attack-box-width:31px;--attack-box-height:33px;--attack-box-gap:3px;display:inline-flex;align-items:center;gap:var(--attack-box-gap);width:calc(var(--attack-box-width) * 2 + var(--attack-box-gap));min-height:var(--attack-box-height);vertical-align:middle;white-space:nowrap}
 .dashboard-attack .dashboard-basic-boss,.dashboard-attack .dashboard-carry-boss,.dashboard-attack .carry-ready{display:inline-flex;align-items:center;justify-content:center;width:var(--attack-box-width);height:var(--attack-box-height);min-width:var(--attack-box-width);min-height:var(--attack-box-height);padding:0;border:1px solid var(--boss);border-radius:5px;background:var(--boss-wash);color:var(--boss-ink);font-size:16px;font-weight:750;line-height:1;box-sizing:border-box;flex:none}
 .dashboard-attack .dashboard-basic-boss:only-child{width:100%;min-width:100%}
 .dashboard-attack .carry-ready{color:var(--text);font-size:10px;background:var(--surface);border-color:var(--line);letter-spacing:-.03em}
@@ -859,3 +859,29 @@ h1,h2,h3,strong,b{font-weight:700}
 .toolbar-right:has(.recommendation-actions){flex-wrap:nowrap;align-items:center}
 .workspace-navigation .count{display:inline-flex;align-items:center;justify-content:center;margin-left:5px;min-width:20px;padding:0 5px;border-radius:99px;font-variant-numeric:tabular-nums;background:var(--surface-alt,#f3edf8);color:var(--muted)}
 @media(max-width:760px){.recommendation-actions{grid-template-columns:84px 53px 53px;gap:5px}.recommendation-actions>.button{min-height:32px;font-size:11px;padding:4px 5px}.toolbar-right:has(.recommendation-actions){max-width:100%}}
+
+/* Single-line data needs space between rows, not a fixed 44px cell height.
+   Keep type sizes, column widths and interactive controls at their existing size. */
+.data-table.dense-table td{height:auto}
+.data-table:is(
+  .ranking-detail,.ranking-unified,.award-count-table,.archive-month-table,
+  .daily-records,.profile-attacks,.top-damage-table,.coefficient-table,
+  .roster-complete.members-compact
+) :is(th,td):not(.no-rows){
+  padding-top:5px!important;
+  padding-bottom:5px!important;
+}
+/* These rows include a second line, an image or a confirmation control. */
+.data-table:is(.history-table,.boss-statistics,.roster-complete.alumni-compact) :is(th,td):not(.no-rows){
+  padding-top:6px!important;
+  padding-bottom:6px!important;
+}
+.data-table.attack-dashboard :is(th,td):not(.no-rows){
+  padding-top:4px!important;
+  padding-bottom:4px!important;
+}
+.data-table.attack-dashboard .slot-cell{min-height:0}
+@media(max-width:760px){
+  /* Leave room for the small sort indicator below mobile dashboard headings. */
+  .data-table.attack-dashboard thead th{padding-bottom:10px!important}
+}
