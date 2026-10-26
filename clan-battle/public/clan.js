@@ -16,7 +16,7 @@ const {createWorkflow}=await import('./workflow.mjs?v=20261024-carry-only-type01
 const {ensureTactics,carryTacticsVisible,tacticGroupsFor,groupOf}=await import('./tactics-model.mjs?v=20261024-carry-punctuation06');
 const {syncTacticRecommendations,visibleTacticRecommendations}=await import('./tactic-combo-sync.mjs?v=20261026-combo-live02');
 const {applySourceData,remainingAttacks}=await import('./guild-model.mjs?v=20261025-dashboard-carry01');
-const {createGuildWorkspace}=await import('./guild-workspace.mjs?v=20261026-combo-source03');
+const {createGuildWorkspace}=await import('./guild-workspace.mjs?v=20261026-counts-actions01');
 const {createTacticWorkspace}=await import('./tactics-workspace.mjs?v=20261026-combo-source04');
 const {createBattleImageImport}=await import('./battle-image-import.mjs?v=20261025-ocr-fields02');
 const loadAsset=async path=>{const response=await fetch(assetUrl(path)+'?v=20261024-carry-punctuation06');if(!response.ok)throw Error('택틱 자료를 불러오지 못했습니다.');return response.json()};
