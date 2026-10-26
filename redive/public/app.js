@@ -2,7 +2,7 @@ import {replayMonth as engineReplay,bossProgress as engineProgress,contribution 
 import {convertForeignTactic,foreignSuggestions} from './tactic-parser.mjs';
 import * as partyTools from './party-tools.mjs';
 import * as logOrder from './log-order.mjs';
-import * as legacyTools from './legacy-tools.mjs?v=20261026-ocr-damage08';
+import * as legacyTools from './legacy-tools.mjs?v=20261026-ocr-regions09';
 const ICONS={
  cat:'M4 18V6l5 4 3-2 3 2 5-4v12c-3 4-13 4-16 0Z|M8 16h.1M16 16h.1M10 20l2 1 2-1',
  compass:'M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z|m15.5 8.5-2 5-5 2 2-5 5-2Z',
@@ -2026,6 +2026,8 @@ updateExternal=()=>{
   catch(error){output.textContent=error.message;output.setAttribute('aria-invalid','true');}
 };
 
+// Match the OCR parser's nickname key so equivalent names cannot belong to two people.
+const imageNicknameKey=value=>String(value??'').normalize('NFKC').replace(/[\s_()[\]·.\-]/g,'').toLowerCase();
 let imageImportController;
 function imageImportMonth(){
   if(!ext.imageImportMonth||ext.imageImportMonthKey!==ui.month||ext.imageImportMonth.events!==data.logs){
@@ -2040,26 +2042,24 @@ function screenshotImporter(){
     getApp:()=>({active:ui.month,roster:data.members}),getMonth:imageImportMonth,
     canEdit:adminMode,unlock:()=>toggleWriter(),notify:message=>toast(message),render:()=>render(),
     saveNicknameAlias:(memberId,alias)=>{
-      if(!adminMode())return {ok:false,error:'관리자 작성 권한이 필요합니다.'};
-      const value=String(alias||'').normalize('NFKC').replace(/\s+/g,' ').trim();
-      const normal=text=>String(text||'').normalize('NFKC').replace(/\s+/g,'').toLowerCase();
-      if(!value||value.length>40||/[\x00-\x1f]/.test(value))return {ok:false,error:'닉네임 형식을 확인하세요.'};
+      if(!adminMode()||!ensureEdit())return {ok:false,error:'관리자 작성 권한과 편집 가능한 동기화 상태가 필요합니다.'};
+      const raw=String(alias??''),value=raw.normalize('NFKC').replace(/\s+/g,' ').trim(),key=imageNicknameKey(value);
+      if(!key||value.length>40||/[\x00-\x1f\x7f]/.test(raw))return {ok:false,error:'닉네임 형식을 확인하세요.'};
       const member=data.members.find(p=>p.id===memberId);
       if(!member)return {ok:false,error:'클랜원을 찾지 못했습니다.'};
-      const conflict=data.members.find(p=>p.id!==memberId&&[p.name,...(p.aliases||[])].some(v=>normal(v)===normal(value)));
+      const conflict=data.members.find(p=>p.id!==memberId&&[p.name,...(p.aliases||[])].some(name=>imageNicknameKey(name)===key));
       if(conflict)return {ok:false,error:'이미 다른 클랜원('+conflict.name+')에게 연결된 이름입니다.'};
-      if(![member.name,...(member.aliases||[])].some(v=>normal(v)===normal(value))){
-        member.aliases=[...(member.aliases||[]),value];
-        saveComplete();
-      }
+      if([member.name,...(member.aliases||[])].some(name=>imageNicknameKey(name)===key))return {ok:true};
+      checkpoint();member.aliases=[...(member.aliases||[]),value];persist();
       return {ok:true};
     },
     removeNicknameAlias:(memberId,alias)=>{
-      if(!adminMode())return {ok:false,error:'관리자 작성 권한이 필요합니다.'};
+      if(!adminMode()||!ensureEdit())return {ok:false,error:'관리자 작성 권한과 편집 가능한 동기화 상태가 필요합니다.'};
       const member=data.members.find(p=>p.id===memberId);
       if(!member)return {ok:false,error:'클랜원을 찾지 못했습니다.'};
-      member.aliases=(member.aliases||[]).filter(v=>v!==alias);
-      saveComplete();
+      const key=imageNicknameKey(alias),aliases=(member.aliases||[]).filter(name=>imageNicknameKey(name)!==key);
+      if(aliases.length===(member.aliases||[]).length)return {ok:true};
+      checkpoint();member.aliases=aliases;persist();
       return {ok:true};
     },
     navigate:()=>{ext.importMode=false;nav('overview','logs');},beforeCommit:()=>checkpoint(),

@@ -1,0 +1,35 @@
+name: Verify battle screenshot import
+on:
+  pull_request:
+    paths:
+      - 'redive/**'
+      - 'docs/compact/**'
+      - 'docs/index.html'
+      - '.github/workflows/test-battle-image-ocr.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'redive/**'
+      - 'docs/compact/**'
+      - 'docs/index.html'
+      - '.github/workflows/test-battle-image-ocr.yml'
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify OCR crops, evidence, aliases and registration
+        run: |
+          node redive/scripts/compat/test-battle-image-parser.mjs
+          node redive/scripts/compat/test-battle-image-ocr.mjs
+          node redive/scripts/compat/test-battle-image-readings.mjs
+          node redive/scripts/compat/test-battle-image-aliases.mjs
+          node redive/scripts/compat/test-battle-image-pipeline.mjs
+          node redive/scripts/compat/test-battle-image-source-sync.mjs
+          node --check redive/public/app.js
+          node --check docs/compact/app.js
