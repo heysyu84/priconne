@@ -276,3 +276,14 @@ html[data-text-scale]:not([data-text-scale="100"]) .combo-compact-list{
 @container combo-card (max-width:360px){
   .combo-compact-row .combo-mini-party{gap:3px}
 }
+
+/* Recommendation counts and fixed action rail. */
+.sidebar .nav .nav-count{margin-left:auto;display:inline-flex;justify-content:center;align-items:center;min-width:24px;padding:1px 6px;border-radius:999px;background:#ede5f5;color:#765b8d;font-size:11px;font-weight:750;font-variant-numeric:tabular-nums;line-height:1.5}
+.mobile-nav button .nav-count{display:inline-flex;align-items:center;justify-content:center;min-width:19px;min-height:19px;padding:0 3px;border-radius:999px;background:#f1e7f7;color:#815d99;font-size:10px;font-weight:800;font-variant-numeric:tabular-nums;line-height:1}
+.combo-workspace-toolbar{flex-wrap:nowrap;align-items:center}
+.combo-workspace-toolbar>.tabset{flex:0 1 auto;flex-wrap:nowrap}
+.combo-planner-actions{display:grid;grid-template-columns:89px 58px 58px;gap:6px;flex:none;align-items:center;margin-left:auto}
+.combo-planner-actions>.btn{min-width:0;min-height:34px;padding:6px 7px;white-space:nowrap;font-size:12px}
+.combo-planner-actions>.btn.active{background:#eee3f6;color:#79519a;border-color:#ccb6df}
+.combo-planner-help{margin-bottom:12px;padding:12px 14px;font-size:12px;line-height:1.7;color:#826a96}
+@media(max-width:600px){.combo-workspace-toolbar{flex-wrap:wrap;gap:6px}.combo-workspace-toolbar>.tabset{width:100%;flex:1 1 100%}.combo-planner-actions{width:100%;margin-left:0;grid-template-columns:minmax(0,1fr) minmax(0,.7fr) minmax(0,.7fr)}.combo-planner-actions>.btn{min-height:34px}}
