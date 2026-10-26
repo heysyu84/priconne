@@ -66,3 +66,19 @@
 .bli-name-map .bli-fields{grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));align-items:start}
 .bli-name-map .bli-fields>label{grid-column:auto}
 .bli-fields>label>small{font-size:11px;font-weight:500;overflow-wrap:anywhere;color:#716780}
+
+/* OCR name review: keep long misread names from stretching the layout. */
+.bli-name-map .bli-fields{align-items:stretch}
+.bli-name-item{display:flex;flex-direction:column;gap:6px;min-width:0}
+.bli-name-item label{display:flex;flex-direction:column;gap:5px;min-width:0;font-weight:700}
+.bli-name-item select{display:block;width:100%;min-width:0}
+.bli-name-text{display:block;max-width:100%;line-height:1.4;overflow-wrap:anywhere;word-break:break-word;max-height:3em;overflow:hidden}
+.bli-name-item .btn{align-self:flex-start;white-space:normal}
+.bli-uncertain,.bli-alias-manager{margin-top:12px;padding-top:10px;border-top:1px solid #ded8ec}
+.bli-uncertain summary,.bli-alias-manager summary{cursor:pointer;font-weight:700}
+.bli-alias-add{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto;gap:8px;margin:10px 0}
+.bli-alias-add input,.bli-alias-add select{width:100%;min-width:0}
+.bli-saved-aliases{display:flex;flex-wrap:wrap;gap:7px;margin-top:8px}
+.bli-saved-alias{display:flex;align-items:center;gap:7px;max-width:100%;overflow-wrap:anywhere;border:1px solid #ded8ec;border-radius:8px;padding:5px 7px}
+.bli-saved-alias>span{min-width:0;overflow-wrap:anywhere}
+@media(max-width:600px){.bli-alias-add{grid-template-columns:minmax(0,1fr)}.bli-name-map .bli-fields{grid-template-columns:minmax(0,1fr)}}
