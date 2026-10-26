@@ -183,7 +183,7 @@ export function createBattleImageImport(api){
    '<label>기록 피해량<input data-bli-field="damage" type="text" inputmode="numeric" value="'+escapeHtml(row.damage===''?'':formatNumber(row.damage))+'" placeholder="정확한 숫자"></label>'+
    '<label class="bli-carry">이월 사용<input type="checkbox" data-bli-field="carry" '+(row.carry?'checked':'')+'></label></div>'+
    '<div class="bli-row-note">'+(row.duplicate&&!row.duplicateOverride?'<button class="btn sm" type="button" data-bli-duplicate="'+escapeHtml(row.id)+'">중복이 아닌 별개 공격으로 확인</button>':'')+(row.stage?'<span>화면 단계: '+escapeHtml(row.stage)+'단계</span>':'')+
-   (row.damageCandidates?.length?'<span>피해량 OCR 후보: '+escapeHtml(row.damageCandidates.map(formatNumber).join(' / '))+'</span>':'')+(bad?'<strong>검토: '+escapeHtml(warnings.join(' · '))+'</strong>':'<span>등록 가능</span>')+'</div>'+
+   (row.damageCandidates?.length?'<span>피해량 OCR 후보: '+escapeHtml(row.damageCandidates.map(formatNumber).join(' / '))+'</span>':'')+(row.damageReview?'<button type="button" class="btn sm" data-bli-confirm-damage="'+escapeHtml(row.id)+'">원본 대미지 확인 완료</button>':'')+(bad?'<strong>검토: '+escapeHtml(warnings.join(' · '))+'</strong>':'<span>등록 가능</span>')+'</div>'+
    '<details><summary>인식된 원문 확인</summary><pre>'+escapeHtml(row.rawText||'')+'</pre></details></div>';
  }
  function nameMapping(){
@@ -322,7 +322,7 @@ export function createBattleImageImport(api){
        const text=result.data?.text||'';
        if(mode==='detail'&&/모의\s*전/.test(text)){practiceCount++;continue;}
        const options={roster:members(),bosses:month().bosses,source:file.name+' · '+(i+1)+'행'};
-       const parsed=mode==='detail'? [parseBattleLogText(text,options)].filter(Boolean):
+       const parsed=mode==='detail'? [parseBattleLogText(text||'문자 인식 실패',options)].filter(Boolean):
          parseQuickLogText(text,options);
        if(mode==='detail'&&parsed.length){
         const row=parsed[0],reads={};
@@ -519,7 +519,7 @@ export function createBattleImageImport(api){
   if(event.target?.id==='bli-raw')state.raw=event.target.value;
  });
  document.addEventListener('click',event=>{
-  const button=event.target.closest('[data-bli],[data-bli-remove],[data-bli-duplicate],[data-bli-shift]');if(!button)return;
+  const button=event.target.closest('[data-bli],[data-bli-remove],[data-bli-duplicate],[data-bli-shift],[data-bli-confirm-damage]');if(!button)return;
   if(!button.closest('.bli-shell'))return;
   event.preventDefault();
   switch(button.dataset.bli){
@@ -565,6 +565,14 @@ export function createBattleImageImport(api){
     for(const row of imported){row.selected=true;row.order=state.rows.length;state.rows.push(row);}
     state.raw='';updateRows(true);render();break;
    }
+  }
+  if(button.dataset.bliConfirmDamage){
+   const row=state.rows.find(r=>r.id===button.dataset.bliConfirmDamage);
+   if(row&&Number(row.damage)>0&&confirm('원본 스크린샷과 대미지 숫자가 완전히 일치하나요?')){
+    row.damageReview=false;row.selected=true;row.damageCandidates=[];
+    updateRows(true);render();
+   }
+   return;
   }
   if(button.dataset.bliShift){
     if(state.processing)return;
