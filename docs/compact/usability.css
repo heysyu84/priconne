@@ -83,6 +83,10 @@ h1,h2,h3,strong,b{font-weight:700}
 .work-list-row .video-link>span{display:none}
 .work-list-row .video-play{width:21px;height:16px}
 .work-list-row .source-document{width:21px;height:18px}
+.work-library .sheet-heading:has(.carry-time-filter){gap:7px;flex-wrap:nowrap}
+.work-library .sheet-heading:has(.carry-time-filter)>h2{flex:none;white-space:nowrap}
+.carry-time-filter{flex:0 0 98px;width:98px;min-width:0;max-width:98px;min-height:30px;margin-left:auto;padding:4px 5px;font-size:12px;font-weight:650;line-height:1.3;border-color:var(--line);border-radius:6px;background:var(--surface);color:var(--text)}
+.work-library .sheet-heading:has(.carry-time-filter)>.text-button{flex:none;white-space:nowrap}
 .tactic-intro-links{display:flex;flex-wrap:wrap;gap:6px}.tactic-intro-links:empty{display:none}
 .source-link{background:var(--accent-wash);color:var(--accent)}
 .tactic-reading-note{border-radius:7px;background:color-mix(in srgb,var(--surface) 82%,var(--accent-wash));border:1px solid var(--line);border-left:3px solid color-mix(in srgb,var(--boss) 60%,var(--line))!important}

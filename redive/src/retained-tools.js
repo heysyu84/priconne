@@ -136,7 +136,7 @@ function commitCompatibleCarry(){
   if(rows.some(t=>t.party.length!==5||new Set(t.party).size!==5)){toast('각 택틱의 캐릭터 5명을 확인하세요.');return;}
   checkpoint();
   for(const row of rows){const t={...structuredClone(row),id:uid(),party:[...row.party],stars:Array.from({length:5},(_,i)=>Number(row.stars[i])||defaultCharacterStars([row.party[i]])[0]),stage:4,category:'carry',title:row.party.join(' '),support:1,hidden:false,links:[],duration:Number.isFinite(row.duration)?row.duration:90,rows:row.rows?row.rows.map(r=>({...r,id:uid()})):null};t.requiredCarrySeconds=minimumCarry(t);t.note=displayTacticNote(t);data.tactics.push(t);ui.selectedTactic=t.id;}
-  persist();closeDrawer();ext.workGroup='carry';nav('tactics','workspace');toast(rows.length+'개 이월 택틱 등록',true);
+  persist();closeDrawer();ext.workGroup='carry';ext.carryTimeRange='all';nav('tactics','workspace');toast(rows.length+'개 이월 택틱 등록',true);
 }
 renderCarryPreview=()=>{
   const el=document.getElementById('carry-import-preview');if(!el)return;
@@ -168,7 +168,7 @@ function commitPastedRows(){
   try{
     const parsed=parseCompatiblePaste(text,current);if(!parsed.rows.length){toast('붙여넣을 본문이 없습니다.');return;}pasteSourceColors(ext.pasteSourceHtml,parsed.rows);ext.pasteSourceHtml='';
     if(parsed.transfer?.metadata){
-      checkpoint();const tactic={...parsed.tactic,id:uid(),rows:parsed.rows,hidden:false,deletedAt:null};tactic.text=tactic.rows.map(row=>row.text).join('\n');data.tactics.push(tactic);ui.selectedTactic=tactic.id;ext.workGroup='carry';persist();closeDrawer();nav('tactics','workspace');toast('이월 택틱과 편성 가져오기',true);return;
+      checkpoint();const tactic={...parsed.tactic,id:uid(),rows:parsed.rows,hidden:false,deletedAt:null};tactic.text=tactic.rows.map(row=>row.text).join('\n');data.tactics.push(tactic);ui.selectedTactic=tactic.id;ext.workGroup='carry';ext.carryTimeRange='all';persist();closeDrawer();nav('tactics','workspace');toast('이월 택틱과 편성 가져오기',true);return;
     }
     rememberRows(current);if(parsed.transfer?.mode==='named'){checkpoint();current.party=parsed.tactic.party;current.stars=parsed.tactic.stars;}
     current.rows=document.getElementById('paste-grid-replace').checked?parsed.rows:[...tacticRows(current),...parsed.rows];saveGridText(current);closeDrawer();render();toast(parsed.rows.length+'행 적용');
@@ -191,7 +191,7 @@ document.addEventListener('paste',event=>{
   if(!text.startsWith('#NYANG_TACTIC_V1')&&!(html&&(text.includes('\n')||text.includes('\t'))))return;
   event.preventDefault();event.stopImmediatePropagation();if(!ensureEdit())return;
   const tactic=activeTactic();
-  try{const parsed=parseCompatiblePaste(text,tactic);rememberRows(tactic);pasteSourceColors(html,parsed.rows);if(parsed.transfer?.metadata){checkpoint();const added={...parsed.tactic,id:uid(),rows:parsed.rows,hidden:false,deletedAt:null};added.text=added.rows.map(row=>row.text).join('\n');data.tactics.push(added);ui.selectedTactic=added.id;ext.workGroup='carry';persist();render();return;}if(parsed.transfer?.mode==='named'){tactic.party=parsed.tactic.party;tactic.stars=parsed.tactic.stars;}const index=tacticRows(tactic).findIndex(row=>row.id===input.dataset.row);tactic.rows.splice(index,1,...parsed.rows);saveGridText(tactic);render();}catch(error){toast(error.message);}
+  try{const parsed=parseCompatiblePaste(text,tactic);rememberRows(tactic);pasteSourceColors(html,parsed.rows);if(parsed.transfer?.metadata){checkpoint();const added={...parsed.tactic,id:uid(),rows:parsed.rows,hidden:false,deletedAt:null};added.text=added.rows.map(row=>row.text).join('\n');data.tactics.push(added);ui.selectedTactic=added.id;ext.workGroup='carry';ext.carryTimeRange='all';persist();render();return;}if(parsed.transfer?.mode==='named'){tactic.party=parsed.tactic.party;tactic.stars=parsed.tactic.stars;}const index=tacticRows(tactic).findIndex(row=>row.id===input.dataset.row);tactic.rows.splice(index,1,...parsed.rows);saveGridText(tactic);render();}catch(error){toast(error.message);}
 },true);
 document.addEventListener('input',event=>{
   const field=event.target;if(field.dataset.input!=='v2-row-text'||!adminMode())return;

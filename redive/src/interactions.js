@@ -14,8 +14,8 @@ document.addEventListener('click',async event=>{const button=event.target.closes
  if(action==='v2-combo-stage'){ext.stage=Number(value);render();return;}if(action==='v2-toggle-notice'){ext.noticeOpen=!ext.noticeOpen;render();return;}
  if(action==='v2-notice'){if(!ensureEdit())return;openDrawer(ext.stage+'단계 조합 안내',`<div class="field"><label for="combo-notice">안내</label><textarea id="combo-notice" name="notice" rows="10">${X(data.notices[ext.stage]||'')}</textarea></div>`,`<button type="submit" class="button primary">저장</button>`,'',true,'v2-notice');return;}
  if(action==='v2-open-planner'){ext.distributionOpen=true;findPlans();nav('tactics','combos');return;}if(action==='v2-copy-plan'){const text=selectedParties().map((t,i)=>`${i+1}타 ${t.boss}넴 ${t.party.join(' ')} / ${tacticDamageLabel(t)} / 대여 ${t.party[t.support]||'없음'}`).join('\n');await copyText(text);return;}if(action==='v2-find-plans'){findPlans();render();return;}if(action==='v2-use-plan'){applyFoundPlan(Number(id));return;}
- if(action==='v2-work-group'){ext.workGroup=value;ext.workEditing=false;ui.carry=90;render();return;}if(action==='v2-select-tactic'){flushGrid();ui.selectedTactic=id;ui.libraryOpen=true;ext.rowUndo=[];ext.rowRedo=[];ui.carry=activeTactic()?.duration||90;render();return;}
- if(action==='v2-open-workspace'){const t=data.tactics.find(t=>t.id===id);ext.workGroup=t.hidden?'hidden':t.category;ext.stage=t.stage;ui.selectedTactic=id;ui.carry=t.duration||90;closeDrawer();nav('tactics','workspace');return;}
+ if(action==='v2-work-group'){ext.workGroup=value;ext.carryTimeRange='all';ext.workEditing=false;ui.carry=90;render();return;}if(action==='v2-select-tactic'){flushGrid();ui.selectedTactic=id;ui.libraryOpen=true;ext.rowUndo=[];ext.rowRedo=[];ui.carry=activeTactic()?.duration||90;render();return;}
+ if(action==='v2-open-workspace'){const t=data.tactics.find(t=>t.id===id);ext.workGroup=t.hidden?'hidden':t.category;ext.carryTimeRange='all';ext.stage=t.stage;ui.selectedTactic=id;ui.carry=t.duration||90;closeDrawer();nav('tactics','workspace');return;}
  if(action==='v2-tactic-trash'){nav('tactics','trash');return;}if(action==='v2-back-workspace'){nav('tactics','workspace');return;}
  if(action==='delete-tactic'){if(!ensureEdit())return;openDrawer('택틱 삭제','<p>삭제함으로 이동합니다.</p>',simpleButton('취소','close-drawer')+simpleButton('삭제','confirm-delete-tactic',id,'danger'));return;}
  if(action==='confirm-delete-tactic'){if(!ensureEdit())return;checkpoint();const t=data.tactics.find(t=>t.id===id);t.deletedAt=Date.now();ui.picks=ui.picks.filter(i=>i!==id);persist();closeDrawer();render();toast('삭제함으로 이동',true);return;}
@@ -190,6 +190,11 @@ document.addEventListener('input',event=>{const el=event.target,key=el.dataset.i
  if(key==='v2-import-field'){const row=ext.importRows.find(r=>r.id===el.dataset.id);if(row)row[el.dataset.field]=el.type==='checkbox'?el.checked:el.dataset.field==='boss'?Number(el.value):el.value;}
 });
 document.addEventListener('change',async event=>{const el=event.target,key=el.dataset.input;if(!key?.startsWith('v2-'))return;
+ if(key==='v2-carry-time-range'){
+  if(!CARRY_TIME_RANGES.some(([range])=>range===el.value))return;
+  flushGrid();ext.carryTimeRange=el.value;ext.workEditing=false;ext.rowUndo=[];ext.rowRedo=[];ext.rowSelection=null;ui.libraryOpen=true;
+  render();document.getElementById('carry-time-range')?.focus({preventScroll:true});return;
+ }
  if(key==='v2-month'){switchMonthTo(el.value,el.value!==Object.keys(data.seasons).sort().at(-1));return;}if(key==='v2-archive-month'){switchMonthTo(el.value,true);return;}
  if(key==='v2-all-days'){ext.allDays=el.checked;ui.page=1;render();return;}if(key==='v2-sequence'){ext.sequence=el.checked;render();return;}if(key==='v2-details'){ext.details=el.checked;render();return;}
  if(key==='v2-profile-member'){ui.profile=el.value;render();return;}if(key==='v2-profile-stage'){ext.profileStage=Number(el.value);render();return;}if(key==='v2-work-stage'){ext.stage=Number(el.value);render();return;}

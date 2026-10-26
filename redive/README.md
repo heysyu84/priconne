@@ -38,6 +38,7 @@ node scripts/check-ui-fixes.mjs
 node scripts/check-inline-logs.mjs
 node scripts/check-entry-keyboard.mjs
 node scripts/check-lineup-input.mjs
+node scripts/check-carry-time-filter.mjs
 node scripts/check-presence.mjs
 REDIVE_LEGACY_SOURCE=../clan-battle node scripts/check-migration.mjs
 node scripts/compat/test-battle-image-parser.mjs

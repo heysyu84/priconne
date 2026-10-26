@@ -897,6 +897,7 @@ html[data-text-scale] .combo-metadata dd{font-size:calc((14px) * var(--text-scal
 html[data-text-scale] .tactic-metadata{font-size:0!important}
 html[data-text-scale] .tactic-metadata>span{font-size:calc((12px) * var(--text-scale,1))!important}
 html[data-text-scale] .work-list-row .video-link{font-size:calc((10px) * var(--text-scale,1))!important}
+html[data-text-scale] .carry-time-filter{font-size:calc((12px) * var(--text-scale,1))!important}
 html[data-text-scale] .calculator-heading{font-size:calc((14px) * var(--text-scale,1))!important}
 html[data-text-scale] .calculator-box .field label{font-size:calc((11px) * var(--text-scale,1))!important}
 html[data-text-scale] .calculator-box input{font-size:calc((14px) * var(--text-scale,1))!important}
