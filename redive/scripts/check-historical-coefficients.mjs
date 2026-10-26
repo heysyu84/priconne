@@ -1,0 +1,24 @@
+import assert from 'node:assert/strict';
+import {replayMonth,contribution,earlyStageContributionMultiplier} from '../public/battle-engine.mjs';
+import {decodeLegacy,encodeLegacy} from '../public/legacy-codec.mjs';
+import {runtimeFixture} from './runtime-fixture.mjs';
+
+const month={options:{days:1,startStage:2,dailyAttacks:3,autoContribution:true,preserveContributionCoefficients:true},levels:[{stage:2,start:1,end:1,count:1},{stage:3,start:2,end:2,count:1},{stage:4,start:3,end:9999,count:9997}],bosses:Array.from({length:5},(_,i)=>({id:i+1,name:`${i+1}넴`,hp:{2:30000000,3:60000000,4:100000000},game:{2:2,3:3,4:4},contribution:{2:.4,3:.2,4:.07}})),events:[{id:'a',seq:1,day:1,boss:1,memberId:'m',damage:30000000},{id:'b',seq:2,day:1,boss:1,memberId:'m',damage:60000000},{id:'c',seq:3,day:1,boss:1,memberId:'m',damage:50000000}],memberIds:['m'],membership:{m:{fromDay:1,toDay:null}},tactics:[]};
+const coefficients=structuredClone(month.bosses.map(b=>b.contribution));
+assert.deepEqual(replayMonth(month),[]);
+assert.deepEqual(month.bosses.map(b=>b.contribution),coefficients);
+assert.equal(month.events.reduce((sum,e)=>sum+contribution(e,month),0),27500000);
+const automatic=structuredClone(month);delete automatic.options.preserveContributionCoefficients;replayMonth(automatic);
+assert.equal(automatic.bosses[0].contribution[2],earlyStageContributionMultiplier(30000000));
+assert.equal(automatic.bosses[0].contribution[3],earlyStageContributionMultiplier(60000000));
+assert.notEqual(automatic.bosses[0].contribution[4],.07);
+const current=structuredClone(month);delete current.options.preserveContributionCoefficients;current.options.autoContribution=false;
+const root={active:'2026-10',months:{'2026-10':current},roster:[{id:'m',name:'검증',status:'active',uid:'123456789012'}]};
+const archives={'2026-01':month},reference=runtimeFixture().sharedDocument(),decoded=decodeLegacy(root,archives,reference);
+assert.equal(decoded.seasons['2026-01'].rules.preserveContributionCoefficients,true);
+assert.equal(decoded.seasons['2026-10'].rules.preserveContributionCoefficients,false);
+assert.deepEqual(encodeLegacy(decoded,root,archives,reference).data,root);
+const app=runtimeFixture();app.ui.month='2026-01';app.applySharedDocument(decoded);
+assert.deepEqual(JSON.parse(JSON.stringify(app.get().bossSettings.map(b=>b.contribution))),coefficients);
+assert.equal(app.get().logs.reduce((sum,e)=>sum+e.contribution,0),27500000);
+console.log('PASS historical coefficients survive replay, codec round trip and actual UI recalculation; live automatic coefficients remain automatic');

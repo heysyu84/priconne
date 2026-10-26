@@ -30,7 +30,7 @@ export function replayMonth(month) {
   const baseline=Number(month.options.contributionBaseline||30000000);
   for(const boss of month.bosses){
     boss.contribution??={};
-    for(const stage of [2,3])boss.contribution[stage]=earlyStageContributionMultiplier(boss.hp[stage],baseline);
+    if(!month.options.preserveContributionCoefficients)for(const stage of [2,3])boss.contribution[stage]=earlyStageContributionMultiplier(boss.hp[stage],baseline);
   }
   const bossState = new Map(month.bosses.map(b => [b.id, { lap: 1, hp: Number(b.hp[phaseForLap(1, month)]) }]));
   const people = new Map();
@@ -72,7 +72,7 @@ export function replayMonth(month) {
       if (person.shots > Number(month.options.dailyAttacks || 3)) warnings.push({ id: e.id, message: "일일 기본 타수를 초과했습니다." });
     }
   }
-  if (month.options.autoContribution) {
+  if (month.options.autoContribution && !month.options.preserveContributionCoefficients) {
     const n = Number(month.options.contributionSamples || 10);
     const factor = Number(month.options.contributionFactor || 0.95);
     const base = Number(month.options.contributionBaseline || 30000000);

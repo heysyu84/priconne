@@ -1,5 +1,5 @@
 import {createApiClient} from './compat/api-client.mjs';
-import {decodeLegacy,encodeLegacy} from './legacy-codec.mjs';
+import {decodeLegacy,encodeLegacy} from './legacy-codec.mjs?v=20261027-history-coeff01';
 
 export function createLegacySharedClient({apiOrigin,pageOrigin,storage,fetcher,reference,selectedMonth=()=>null,now=Date.now}){
   const client=createApiClient({apiOrigin,pageOrigin,storage,fetcher,now});

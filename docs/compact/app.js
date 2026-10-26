@@ -1,4 +1,4 @@
-import {replayMonth as engineReplay,bossProgress as engineProgress,contribution as engineContribution,estimateCarry as engineEstimate} from './battle-engine.mjs';
+import {replayMonth as engineReplay,bossProgress as engineProgress,contribution as engineContribution,estimateCarry as engineEstimate} from './battle-engine.mjs?v=20261027-history-coeff01';
 import {convertForeignTactic,foreignSuggestions} from './tactic-parser.mjs';
 import * as partyTools from './party-tools.mjs?v=20261026-log-keys01';
 import * as logOrder from './log-order.mjs';
@@ -245,7 +245,7 @@ function fixtureSeason(key,memberIds,currentDay=3){const rules=defaultRules();ru
 }
 function snapshotSeason(){if(!data.seasons||!ui.month)return;data.seasons[ui.month]=Object.fromEntries(SEASON_KEYS.map(k=>[k,structuredClone(data[k])]));}
 function activateSeason(key){if(!data.seasons[key])return false;snapshotSeason();for(const k of SEASON_KEYS)data[k]=structuredClone(data.seasons[key][k]);ui.month=key;data.activeMonth=key;data.settings.days=data.rules.days;data.settings.daily=data.rules.daily;ui.day=Math.min(data.rules.days,key==='2026-10'?3:data.rules.days);ui.page=1;ui.boss=0;ui.query='';ext.allDays=false;ui.selectedTactic=data.tactics.find(t=>!t.deletedAt&&!t.hidden)?.id;recalculateSeason();persist();return true;}
-function engineMonth(){return {events:data.logs,bosses:data.bossSettings,levels:seasonLevels(data.rules),options:{days:data.rules.days,dailyAttacks:data.rules.daily,startStage:data.rules.startStage,autoContribution:data.rules.autoContribution,contributionFactor:data.rules.factor,contributionSamples:data.rules.samples,contributionBaseline:data.rules.baseline}};}
+function engineMonth(){return {events:data.logs,bosses:data.bossSettings,levels:seasonLevels(data.rules),options:{days:data.rules.days,dailyAttacks:data.rules.daily,startStage:data.rules.startStage,autoContribution:data.rules.autoContribution,preserveContributionCoefficients:data.rules.preserveContributionCoefficients,contributionFactor:data.rules.factor,contributionSamples:data.rules.samples,contributionBaseline:data.rules.baseline}};}
 function recalculateSeason(){const month=engineMonth();for(const e of data.logs){e.carry=e.usesCarry!==undefined?!!e.usesCarry:e.type==='carry';e.usesCarry=e.carry;e.bonus=Number(e.bonus)||0;}data.replayWarnings=engineReplay(month);for(const e of data.logs){e.type=e.kill?'kill':e.carry?'carry':'normal';e.game=e.actual*Number(data.bossSettings.find(b=>b.id===e.boss)?.game[e.stage]||1);e.contribution=engineContribution(e,month);}data.bosses=engineProgress(month);data.rates=[2,3,4].map(stage=>data.bossSettings.map(b=>b.contribution[stage]??0));data.settings.days=data.rules.days;data.settings.daily=data.rules.daily;return month;}
 function memberSeasonActive(m,day=ui.day){const p=data.memberships[m.id];return p&&day>=p.from&&day<=p.to;}
 function statsFor(m,day=ui.day){const logs=data.logs.filter(e=>e.memberId===m.id&&e.day<=day),daily=logs.filter(e=>e.day===day),basics=daily.filter(e=>!e.carry),sources=new Set(daily.filter(e=>e.carry).map(e=>e.carryFrom));const active=memberSeasonActive(m,day);const allowedDays=Array.from({length:day},(_,i)=>i+1).filter(d=>memberSeasonActive(m,d)).length;const contribution=logs.reduce((s,e)=>s+(Number.isFinite(e.contribution)?e.contribution:0),0);return {member:m,logs,damage:logs.reduce((s,e)=>s+e.actual,0),dayDamage:daily.reduce((s,e)=>s+e.actual,0),game:logs.reduce((s,e)=>s+e.game,0),contribution,dayContribution:daily.reduce((s,e)=>s+(e.contribution||0),0),average:logs.length?contribution/logs.length:0,used:basics.length,remaining:active?Math.max(0,data.rules.daily-basics.length):0,carry:basics.filter(e=>e.kill&&!sources.has(e.id)).length,shots:logs.length,basicShots:logs.filter(e=>!e.carry).length,missing:Math.max(0,allowedDays*data.rules.daily-logs.filter(e=>!e.carry).length),active,slots:basics.map(e=>({basic:e,carry:daily.find(c=>c.carryFrom===e.id),pending:e.kill&&!sources.has(e.id)}))};}
@@ -2275,7 +2275,7 @@ async function prepareCompatibleBackup(input){
   if(!root)return input;
   const missing=(root.archivedMonths||[]).filter(month=>!root.months[month]);
   if(missing.length)throw Error('보관 월 '+missing.join(', ')+'이 빠져 있습니다. 모든 월이 포함된 백업을 선택하세요.');
-  const {decodeLegacy}=await import('./legacy-codec.mjs');
+  const {decodeLegacy}=await import('./legacy-codec.mjs?v=20261027-history-coeff01');
   return sharedBackup(decodeLegacy(root,{},sharedDocument()));
 }
 function applyTransferMetadata(transfer,t){
