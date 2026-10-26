@@ -76,14 +76,67 @@ function portraitFingerprint(bitmap,row){
  for(let i=0;i<data.length;i+=4)values.push(data[i]/255,data[i+1]/255,data[i+2]/255);
  canvas.width=canvas.height=0;return values;
 }
-async function readLabel(worker,bitmap,row,box,style='raw',whitelist=''){
- await worker.setParameters({tessedit_pageseg_mode:'7',tessedit_char_whitelist:whitelist});
+async function readLabel(worker,bitmap,row,box,style='raw',whitelist='',psm='7'){
+ await worker.setParameters({tessedit_pageseg_mode:psm,tessedit_char_whitelist:whitelist});
  const crop=labelCanvas(bitmap,row,box,style);
  try{const result=await worker.recognize(crop);return {text:String(result.data?.text||'').trim(),confidence:Number(result.data?.confidence||0)};}
  finally{crop.width=crop.height=0;}
 }
 const escapeHtml=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'}[c]));
 const formatNumber=n=>Number(n||0).toLocaleString('ko-KR');
+
+// OCR accuracy: prefer repeated numeric readings from the damage region rather than guessing from the whole log.
+// Full-row OCR also includes dates, lap numbers and boss HP, so its longest number is not always damage.
+function damageDigitCandidates(text){
+ const value=String(text||'').normalize('NFKC')
+  .replace(/(?<=\d)[oO〇○](?=\d)/g,'0').replace(/(?<=\d)[Il|](?=\d)/g,'1');
+ const matches=[...value.matchAll(/(?<!\d)(?:\d[\d,\u00a0 ]{5,15}\d|\d{6,12})(?!\d)/g)];
+ const unique=new Set();
+ for(const match of matches){
+  const digits=match[0].replace(/\D/g,'');
+  if(digits.length<7||digits.length>12)continue;
+  const n=Number(digits);
+  if(Number.isSafeInteger(n)&&n>=1000000&&n<=1000000000000)unique.add(n);
+ }
+ return [...unique];
+}
+async function readDamageWithEvidence(worker,bitmap,frame,original){
+ const evidence=[],add=(read,source)=>{
+  const values=damageDigitCandidates(read.text);
+  if(values.length===1)evidence.push({value:values[0],source,confidence:read.confidence});
+ };
+ const hasOriginal=Number.isSafeInteger(Number(original))&&Number(original)>=1000000;
+ const probes=[
+  {name:'좁은 숫자영역',box:detailFields.damage,style:'raw',psm:'7'},
+  {name:'확장 숫자영역',box:{x:.49,y:.00,w:.50,h:.48},style:'raw',psm:'6'},
+  {name:'검정 글씨 대비',box:{x:.49,y:.00,w:.50,h:.48},style:'black',psm:'6'},
+  {name:'흰 글씨 대비',box:{x:.49,y:.00,w:.50,h:.48},style:'white',psm:'6'},
+  {name:'하단 숫자영역',box:{x:.42,y:.26,w:.57,h:.52},style:'raw',psm:'6'}
+ ];
+ for(let i=0;i<probes.length;i++){
+  const p=probes[i];
+  const result=await readLabel(worker,bitmap,frame,p.box,p.style,'0123456789, ',p.psm);
+  add(result,p.name);
+  const counts=new Map();
+  for(const e of evidence)counts.set(e.value,(counts.get(e.value)||0)+1);
+  if([...counts.values()].some(n=>n>=2))break;
+  if(i===0&&hasOriginal&&evidence.some(e=>e.value===Number(original)))break;
+ }
+ const votes=new Map();
+ for(const item of evidence)votes.set(item.value,(votes.get(item.value)||0)+1);
+ const ranked=[...votes].sort((a,b)=>b[1]-a[1]);
+ const full=hasOriginal?Number(original):0;
+ const agreed=ranked.find(item=>item[1]>=2)?.[0]||0;
+ // If none of the crops agree, retain the old full-row value as a suggestion,
+ // never certify an unverified damage value as safe to batch-register.
+ const chosen=agreed||full||ranked[0]?.[0]||0;
+ const review=!!chosen&&(!agreed&&(votes.get(full)||0)<1);
+ const conflicted=!!chosen&&(ranked.length>1||full&&agreed&&full!==agreed);
+ return {damage:chosen||'',review:review||conflicted&&(!agreed||full&&full!==agreed),
+   candidates:[...new Set([full,...ranked.map(([value])=>value)].filter(Boolean))],
+   details:evidence.map(e=>e.source+': '+e.value.toLocaleString('ko-KR')).join(' / ')||'숫자 추출 실패'};
+}
+
 function reliableOcrNickname(value){
  const name=cleanOcrName(value);
  if(!name||name.length>20||/[\r\n]/.test(name)||/\d{4,}/.test(name))return false;
@@ -106,6 +159,7 @@ export function createBattleImageImport(api){
   const errs=validBattleLogRow(row,{monthKey:getApp().active,members:members(),bosses:month().bosses,day:selectedDay()})
    .filter(error=>error!=='중복 후보'||!row.duplicateOverride);
   if(row.stage && !/^[1-6]$/.test(String(row.stage)))errs.push('단계 표기 확인');
+  if(row.damageReview)errs.push('피해량 숫자 원본 확인 필요');
   return errs;
  }
  const editingAllowed=()=>!!canEdit();
@@ -129,7 +183,7 @@ export function createBattleImageImport(api){
    '<label>기록 피해량<input data-bli-field="damage" type="text" inputmode="numeric" value="'+escapeHtml(row.damage===''?'':formatNumber(row.damage))+'" placeholder="정확한 숫자"></label>'+
    '<label class="bli-carry">이월 사용<input type="checkbox" data-bli-field="carry" '+(row.carry?'checked':'')+'></label></div>'+
    '<div class="bli-row-note">'+(row.duplicate&&!row.duplicateOverride?'<button class="btn sm" type="button" data-bli-duplicate="'+escapeHtml(row.id)+'">중복이 아닌 별개 공격으로 확인</button>':'')+(row.stage?'<span>화면 단계: '+escapeHtml(row.stage)+'단계</span>':'')+
-   (bad?'<strong>검토: '+escapeHtml(warnings.join(' · '))+'</strong>':'<span>등록 가능</span>')+'</div>'+
+   (row.damageCandidates?.length?'<span>피해량 OCR 후보: '+escapeHtml(row.damageCandidates.map(formatNumber).join(' / '))+'</span>':'')+(bad?'<strong>검토: '+escapeHtml(warnings.join(' · '))+'</strong>':'<span>등록 가능</span>')+'</div>'+
    '<details><summary>인식된 원문 확인</summary><pre>'+escapeHtml(row.rawText||'')+'</pre></details></div>';
  }
  function nameMapping(){
@@ -295,9 +349,11 @@ export function createBattleImageImport(api){
          row.memberId=recognized?(confirmed?.memberId||state.nameMatches[row.ocrName]||''):'';
          row.memberName=row.memberId?(members().find(m=>m.id===row.memberId)?.name||''):'';
          reads.member=names.map(r=>r.text).join(' / ');
-         reads.damage=await readLabel(worker,bitmap,frames[i],detailFields.damage);
-         const damage=parseBattleLogText('입힌 데미지 '+reads.damage.text,{roster:[],bosses:[]});
-         if(damage?.damage)row.damage=damage.damage;
+         const damageRead=await readDamageWithEvidence(worker,bitmap,frames[i],row.damage);
+         row.damage=damageRead.damage;
+         row.damageCandidates=damageRead.candidates;
+         row.damageReview=!!damageRead.review;
+         reads.damage=damageRead.details;
          if(!row.gameAt){
           reads.date=await readLabel(worker,bitmap,frames[i],detailFields.date,'raw','0123456789/: .-');
           row.gameAt=parseBattleLogText(reads.date.text,{roster:[],bosses:[]})?.gameAt||'';
@@ -452,6 +508,7 @@ export function createBattleImageImport(api){
   if(field==='selected'){row.selected=element.checked;render();return;}
   if(field==='carry'){row.carry=element.checked;return;}
   row[field]=field==='damage'?Number(String(element.value).replace(/[^\d]/g,''))||'':element.value;
+  if(field==='damage'){row.damageReview=false;row.damageCandidates=[];}
   if(field==='memberId'&&row.ocrName){
    state.nameMatches[row.ocrName]=row.memberId;
    for(const other of state.rows)if(other.ocrName===row.ocrName){other.memberId=row.memberId;other.selected=true;}
