@@ -84,6 +84,13 @@ async function readLabel(worker,bitmap,row,box,style='raw',whitelist=''){
 }
 const escapeHtml=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'}[c]));
 const formatNumber=n=>Number(n||0).toLocaleString('ko-KR');
+function reliableOcrNickname(value){
+ const name=cleanOcrName(value);
+ if(!name||name.length>20||/[\r\n]/.test(name)||/\d{4,}/.test(name))return false;
+ const letters=(name.match(/\p{L}/gu)||[]).length;
+ const symbols=(name.match(/[^\p{L}\p{N}\s]/gu)||[]).length;
+ return letters>=2&&symbols<=Math.max(1,Math.floor(name.length/3))&&!/(?:데미지|대미지|피해량|전투로그|단계째|입힌)/.test(name);
+}
 export function createBattleImageImport(api){
  const {getApp,getMonth,persist,render,navigate,notify,canEdit,unlock,replay,beforeCommit}=api;
  const state={cropOpen:false,cropIndex:0,cropFrames:{detail:structuredClone(detailFrames),quick:[structuredClone(quickFrame)]},rows:[],processing:false,cancel:false,progress:'',mode:'detail',ocrStatus:'',errors:[],day:null,raw:'',completed:0,total:0,nameMatches:{}};
@@ -117,7 +124,7 @@ export function createBattleImageImport(api){
    '<button class="btn sm" type="button" data-bli-remove="'+escapeHtml(row.id)+'">삭제</button></div>'+
    '<div class="bli-fields">'+
    '<label>공격 일시<input data-bli-field="gameAt" type="datetime-local" value="'+escapeHtml(row.gameAt||'')+'"></label>'+
-   '<label>클랜원<select data-bli-field="memberId">'+memberOptions+'</select>'+(row.ocrName?'<small>인식: '+escapeHtml(row.ocrName)+(row.memberId?'':' · 명단에서 선택')+'</small>':'')+'</label>'+
+   '<label>클랜원<select data-bli-field="memberId">'+memberOptions+'</select>'+(row.ocrName?'<small>OCR 이름: '+escapeHtml(row.ocrName)+(row.memberId?'':' · 명단에서 선택')+'</small>':row.ocrRawName?'<small>인식 불확실: '+escapeHtml(row.ocrRawName)+' · 개별 확인 필수</small>':'<small>이름 미인식 · 개별 확인 필수</small>')+'</label>'+
    '<label>보스<select data-bli-field="bossId">'+bossOptions+'</select></label>'+
    '<label>기록 피해량<input data-bli-field="damage" type="text" inputmode="numeric" value="'+escapeHtml(row.damage===''?'':formatNumber(row.damage))+'" placeholder="정확한 숫자"></label>'+
    '<label class="bli-carry">이월 사용<input type="checkbox" data-bli-field="carry" '+(row.carry?'checked':'')+'></label></div>'+
@@ -126,12 +133,13 @@ export function createBattleImageImport(api){
    '<details><summary>인식된 원문 확인</summary><pre>'+escapeHtml(row.rawText||'')+'</pre></details></div>';
  }
  function nameMapping(){
-  const names=[...new Set(state.rows.map(row=>row.ocrName).filter(Boolean))];
-  if(!names.length)return '';
-  return '<details class="bli-name-map" open><summary>인게임 닉네임 → 사이트 클랜원 연결</summary><p class="muted">사이트 이름은 바뀌지 않습니다. 이번 분석의 같은 닉네임 기록에 함께 적용합니다.</p><div class="bli-fields">'+names.map(name=>{
+  const names=[...new Set(state.rows.map(row=>row.ocrName).filter(name=>reliableOcrNickname(name)))];
+  const uncertain=state.rows.filter(row=>!row.ocrName&&row.ocrRawName).length;
+  if(!names.length&&!uncertain)return '';
+  return '<details class="bli-name-map" open><summary>인게임 닉네임 → 사이트 클랜원 연결</summary><p class="muted">확실한 이름만 묶어 표시합니다. 숫자·기호 등 인식 불확실 '+uncertain+'건은 자동 연결하지 않습니다. 아래 개별 기록에서 이름을 확인해 주세요.</p>'+(names.length?'<div class="bli-fields">'+names.map(name=>{
    const rows=state.rows.filter(row=>row.ocrName===name),ids=new Set(rows.map(row=>row.memberId)),value=ids.size===1?rows[0].memberId:'';
    return '<label>'+escapeHtml(name)+' · '+rows.length+'건<select data-bli-name-map="'+escapeHtml(name)+'">'+options(members().map(p=>({id:p.id,name:memberLabel(p,getApp().roster)})),value,'사이트 클랜원 선택')+'</select></label>';
-  }).join('')+'</div></details>';
+  }).join('')+'</div>':'')+(uncertain?'<details class="bli-uncertain"><summary>인식 불확실 '+uncertain+'건 (개별 확인 필수)</summary><p>OCR이 글자가 아닌 숫자나 피해량을 이름처럼 읽었습니다. 같은 문자열도 서로 다른 사람일 수 있으므로 묶어 연결하지 않습니다.</p></details>':'')+'</details>';
  }
  function view(){
   if(!editingAllowed())return '<section class="panel bli-shell"><h2>이미지 일괄 등록</h2><p>관리자 작성 잠금을 해제해야 사용할 수 있습니다.</p><button class="btn" type="button" data-bli="unlock">작성 잠금 해제</button><button class="btn" type="button" data-page="battle">배틀로그로 돌아가기</button></section>';
@@ -269,10 +277,14 @@ export function createBattleImageImport(api){
           names.push(await readLabel(worker,bitmap,frames[i],{x:.32,y:.35,w:.28,h:.34}));
           name=parseBattleLogText(names.at(-1).text,{...options,bosses:[],memberField:true});
          }
-         const recognized=names.map(read=>({...read,text:cleanOcrName(read.text)})).filter(read=>read.text).sort((a,b)=>b.confidence-a.confidence)[0];
+         const readings=names.map(read=>({...read,text:cleanOcrName(read.text)})).filter(read=>read.text).sort((a,b)=>b.confidence-a.confidence);
+         const recognized=readings.find(read=>reliableOcrNickname(read.text));
          row.bossVisual=portraitFingerprint(bitmap,frames[i]);
-         row.ocrName=name?.memberName?cleanOcrName(names.at(-1).text):recognized?.text||'';
-         row.memberId=name?.memberId||state.nameMatches[row.ocrName]||'';row.memberName=name?.memberName||'';
+         row.ocrName=recognized?.text||'';
+         row.ocrRawName=recognized?'':(readings[0]?.text||'').slice(0,80);
+         const confirmed=recognized?parseBattleLogText(recognized.text,{...options,bosses:[],memberField:true}):null;
+         row.memberId=recognized?(confirmed?.memberId||state.nameMatches[row.ocrName]||''):'';
+         row.memberName=row.memberId?(members().find(m=>m.id===row.memberId)?.name||''):'';
          reads.member=names.map(r=>r.text).join(' / ');
          reads.damage=await readLabel(worker,bitmap,frames[i],detailFields.damage);
          const damage=parseBattleLogText('입힌 데미지 '+reads.damage.text,{roster:[],bosses:[]});
@@ -404,8 +416,10 @@ export function createBattleImageImport(api){
   if(!event.target.closest('.bli-shell'))return;
   const element=event.target;
   if(element.dataset?.bliNameMap){
-   const name=element.dataset.bliNameMap;state.nameMatches[name]=element.value;
-   for(const row of state.rows)if(row.ocrName===name){row.memberId=element.value;row.selected=true;}
+   const name=element.dataset.bliNameMap;
+   if(!reliableOcrNickname(name))return;
+   state.nameMatches[name]=element.value;
+   for(const row of state.rows)if(row.ocrName===name){row.memberId=element.value;row.selected=!!element.value;}
    updateRows(true);render();return;
   }
   if(element.id==='bli-mode'){if(state.processing)return;state.mode=element.value;state.cropIndex=0;render();return;}
