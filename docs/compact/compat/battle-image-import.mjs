@@ -470,8 +470,9 @@ export function createBattleImageImport(api){
    case 'remember-alias':{
     const alias=button.dataset.alias||'';
     if(!reliableOcrNickname(alias)){notify('불확실한 OCR 글자는 자동 기억할 수 없습니다. 정확한 닉네임을 직접 등록해 주세요.');break;}
-    const linked=[...new Set(state.rows.filter(row=>row.ocrName===alias).map(row=>row.memberId))].filter(Boolean);
-    if(linked.length!==1){notify('먼저 한 명의 클랜원을 선택하세요.');break;}
+    const group=state.rows.filter(row=>row.ocrName===alias);
+    const linked=[...new Set(group.map(row=>row.memberId).filter(Boolean))];
+    if(linked.length!==1||group.some(row=>row.memberId!==linked[0])){notify('이 이름의 모든 기록이 같은 클랜원인지 먼저 확인하세요.');break;}
     if(!confirm('"'+alias+'"을(를) 정확한 인게임 닉네임으로 확인했나요? 다음 분석에서도 자동 연결됩니다.'))break;
     const result=saveNicknameAlias?.(linked[0],alias);
     if(result?.ok){notify('인게임 별칭을 기억했습니다.');render();}
