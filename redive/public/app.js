@@ -2,7 +2,7 @@ import {replayMonth as engineReplay,bossProgress as engineProgress,contribution 
 import {convertForeignTactic,foreignSuggestions} from './tactic-parser.mjs';
 import * as partyTools from './party-tools.mjs';
 import * as logOrder from './log-order.mjs';
-import * as legacyTools from './legacy-tools.mjs';
+import * as legacyTools from './legacy-tools.mjs?v=20261026-ocr-lifecycle02';
 const ICONS={
  cat:'M4 18V6l5 4 3-2 3 2 5-4v12c-3 4-13 4-16 0Z|M8 16h.1M16 16h.1M10 20l2 1 2-1',
  compass:'M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z|m15.5 8.5-2 5-5 2 2-5 5-2Z',
@@ -2051,7 +2051,7 @@ function screenshotImporter(){
 }
 batchImportPage=()=>screenshotImporter().view().replace(/\bclass="btn/g,'class="button').replace(/data-page="battle"/g,'data-action="r-image-back"').replace('← 배틀로그','배틀로그');
 const afterRetainedRender=afterOperationalRender;
-afterOperationalRender=()=>{afterRetainedRender();if(ext.importMode&&adminMode())screenshotImporter().mount('battle-import');else imageImportController?.mount(null);};
+afterOperationalRender=()=>{afterRetainedRender();if(ext.importMode)screenshotImporter().mount('battle-import');else imageImportController?.mount(null);};
 
 async function readCompatibleCarryFile(file){
   if(file.name.toLowerCase().endsWith('.xlsx')){
