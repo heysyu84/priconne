@@ -2039,6 +2039,29 @@ function screenshotImporter(){
   imageImportController=legacyTools.createBattleImageImport({
     getApp:()=>({active:ui.month,roster:data.members}),getMonth:imageImportMonth,
     canEdit:adminMode,unlock:()=>toggleWriter(),notify:message=>toast(message),render:()=>render(),
+    saveNicknameAlias:(memberId,alias)=>{
+      if(!adminMode())return {ok:false,error:'관리자 작성 권한이 필요합니다.'};
+      const value=String(alias||'').normalize('NFKC').replace(/\s+/g,' ').trim();
+      const normal=text=>String(text||'').normalize('NFKC').replace(/\s+/g,'').toLowerCase();
+      if(!value||value.length>40||/[\x00-\x1f]/.test(value))return {ok:false,error:'닉네임 형식을 확인하세요.'};
+      const member=data.members.find(p=>p.id===memberId);
+      if(!member)return {ok:false,error:'클랜원을 찾지 못했습니다.'};
+      const conflict=data.members.find(p=>p.id!==memberId&&[p.name,...(p.aliases||[])].some(v=>normal(v)===normal(value)));
+      if(conflict)return {ok:false,error:'이미 다른 클랜원('+conflict.name+')에게 연결된 이름입니다.'};
+      if(![member.name,...(member.aliases||[])].some(v=>normal(v)===normal(value))){
+        member.aliases=[...(member.aliases||[]),value];
+        saveComplete();
+      }
+      return {ok:true};
+    },
+    removeNicknameAlias:(memberId,alias)=>{
+      if(!adminMode())return {ok:false,error:'관리자 작성 권한이 필요합니다.'};
+      const member=data.members.find(p=>p.id===memberId);
+      if(!member)return {ok:false,error:'클랜원을 찾지 못했습니다.'};
+      member.aliases=(member.aliases||[]).filter(v=>v!==alias);
+      saveComplete();
+      return {ok:true};
+    },
     navigate:()=>{ext.importMode=false;nav('overview','logs');},beforeCommit:()=>checkpoint(),
     replay:month=>engineReplay(month),
     persist:()=>{
