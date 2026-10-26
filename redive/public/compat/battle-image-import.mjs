@@ -157,14 +157,15 @@ export function createBattleImageImport(api){
  async function analyze(){
   if(state.processing||!editingAllowed())return;
   if(!picked.length){notify('스크린샷을 먼저 선택하세요.');return;}
-  state.processing=true;state.cancel=false;state.errors=[];state.total=picked.length;state.completed=0;
-  const files=picked.splice(0),mode=state.mode,frames=structuredClone(state.cropFrames[state.mode]),contextMonth=getApp().active;
+  state.processing=true;state.cancel=false;state.cancelReason='';state.errors=[];state.total=picked.length;state.completed=0;
+  const files=picked.slice(),mode=state.mode,frames=structuredClone(state.cropFrames[state.mode]),contextMonth=getApp().active;
   let practiceCount=0;
   state.progress='OCR 엔진 및 한국어 모델 준비 중…';render();
   let worker=null,run=++jobId;
   try{
    const Tesseract=await loadOcr();
-   if(run!==jobId||state.cancel)return;
+   if(run!==jobId||state.cancel){state.cancelReason||='모델 준비 중 화면이 변경됐습니다.';return;}
+   state.progress='한국어 OCR 모델을 불러오는 중…';const status=$('bli-progress');if(status)status.textContent=state.progress;
    worker=await Tesseract.createWorker('kor',1,{
      logger:message=>{if(run!==jobId)return;if(message.status==='recognizing text'){
        const percent=Math.round(Number(message.progress||0)*100);
@@ -245,14 +246,21 @@ export function createBattleImageImport(api){
     state.completed++;
     state.progress=state.completed+'/'+state.total+'장 분석 완료';const status=$('bli-progress');if(status)status.textContent=state.progress;
    }
-  }catch(error){state.errors.push('이미지 인식 실패: '+(error.message||String(error)));state.progress='이미지 분석에 실패했습니다.';}
+  }catch(error){state.errors.push('이미지 인식 실패: '+(error?.message||String(error)));}
   finally{
    if(worker)await worker.terminate().catch(()=>{});
-   files.length=0;picked.length=0;
-   state.processing=false;state.cancel=false;
+   const stopped=state.cancel||run!==jobId;
+   const reason=state.cancelReason||'화면 변경 또는 사용자 중단';
+   const completed=state.completed,total=state.total,count=state.rows.length,errorCount=state.errors.length;
+   state.processing=false;state.cancel=false;state.cancelReason='';
    for(const row of state.rows)if(!row.bossId){const inferred=matchBossPortrait(row.bossVisual,state.rows);if(inferred){row.bossId=inferred;row.rawText+='\n보스: 같은 분석 내 일치하는 보스 초상화로 확인';}}
    updateRows(true);
-   state.progress+=(practiceCount?' · 모의전 '+practiceCount+'건 제외':'')+' · 수정할 기록을 확인한 뒤 등록하세요.';render();
+   if(stopped){state.progress='OCR 중단: '+reason+' · 이미지는 보관되어 있습니다. 다시 분석해 주세요.';}
+   else if(errorCount){state.progress='OCR 오류 '+errorCount+'건: '+state.errors[0]+' · 다시 시도해 주세요.';}
+   else if(!completed){state.progress='이미지 분석이 시작되지 않았습니다. 다시 시도해 주세요.';}
+   else if(!count){state.progress=completed+'/'+total+'장 분석 완료 · 인식 0건 · 스크린샷 형식과 인식 영역을 확인하세요.';}
+   else{state.progress=completed+'/'+total+'장 분석 완료 · '+count+'건 인식'+(practiceCount?' · 모의전 '+practiceCount+'건 제외':'')+' · 결과를 확인한 뒤 등록하세요.';}
+   render();
   }
  }
  function updateRows(selectNew=false){
@@ -327,7 +335,7 @@ export function createBattleImageImport(api){
   navigate('battle');
   notify('이미지에서 추출한 공격 기록 '+selection.length+'건을 등록했습니다.');
  }
- function mount(page){if(page!=='battle-import'&&state.processing)state.cancel=true;}
+ function mount(page){if(page!=='battle-import'&&state.processing){state.cancelReason='이미지 등록 화면을 벗어났습니다.';state.cancel=true;}}
  document.addEventListener('change',event=>{
   if(!event.target.closest('.bli-shell'))return;
   const element=event.target;
@@ -373,7 +381,7 @@ export function createBattleImageImport(api){
   switch(button.dataset.bli){
    case 'unlock':unlock?.();break;
    case 'analyze':void analyze();break;
-   case 'cancel':state.cancel=true;state.progress='현재 OCR 처리 후 중단합니다.';break;
+   case 'cancel':state.cancelReason='사용자가 분석 중단을 선택했습니다.';state.cancel=true;state.progress='현재 OCR 처리 후 중단합니다.';break;
    case 'reset-crop':if(state.processing)return;state.cropFrames={detail:structuredClone(detailFrames),quick:[structuredClone(quickFrame)]};render();break;
    case 'clear':if(state.processing)return;clearPreview();state.rows=[];state.nameMatches={};state.errors=[];picked=[];state.progress='미리보기를 비웠습니다.';render();break;
    case 'commit':commit();break;
