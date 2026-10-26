@@ -1,17 +1,39 @@
 import {parseBattleLogText,parseQuickLogText,detectDuplicateRows,sortBattleLogRows,validBattleLogRow,cleanOcrName,matchBossReadings,matchBossPortrait} from './battle-image-parser.mjs';
 import {makeId,memberLabel} from './roster.mjs';
 
-const OCR_URL='https://cdn.jsdelivr.net/npm/tesseract.js@7.0.0/dist/tesseract.min.js';
+const OCR_SOURCES=[
+ 'https://cdn.jsdelivr.net/npm/tesseract.js@7.0.0/dist/tesseract.min.js',
+ 'https://cdnjs.cloudflare.com/ajax/libs/tesseract.js/7.0.0/tesseract.min.js',
+ 'https://unpkg.com/tesseract.js@7.0.0/dist/tesseract.min.js'
+];
 let ocrPromise=null;
-function loadOcr(){
+function loadOcr(report=()=>{}){
  if(globalThis.Tesseract?.createWorker)return Promise.resolve(globalThis.Tesseract);
  if(ocrPromise)return ocrPromise;
- ocrPromise=new Promise((resolve,reject)=>{
-  const script=document.createElement('script');script.src=OCR_URL;script.async=true;
-  script.onload=()=>globalThis.Tesseract?.createWorker?resolve(globalThis.Tesseract):reject(new Error('OCR 엔진이 로드되지 않았습니다.'));
-  script.onerror=()=>reject(new Error('OCR 엔진을 내려받지 못했습니다. 인터넷 연결을 확인해 주세요.'));
-  document.head.append(script);
- }).catch(e=>{ocrPromise=null;throw e;});
+ ocrPromise=(async()=>{
+  let lastError=null;
+  for(let i=0;i<OCR_SOURCES.length;i++){
+   report('OCR 엔진 다운로드 중 ('+(i+1)+'/'+OCR_SOURCES.length+')…');
+   try{
+    await new Promise((resolve,reject)=>{
+     const script=document.createElement('script');
+     let settled=false;
+     const finish=error=>{
+      if(settled)return;settled=true;clearTimeout(timeout);
+      script.onload=null;script.onerror=null;
+      if(error){script.remove();reject(error);}else resolve();
+     };
+     const timeout=setTimeout(()=>finish(new Error('엔진 다운로드 15초 제한시간 초과')),15000);
+     script.src=OCR_SOURCES[i];script.async=true;
+     script.onload=()=>finish(globalThis.Tesseract?.createWorker?null:new Error('엔진 실행 함수가 없습니다.'));
+     script.onerror=()=>finish(new Error('엔진 CDN 접속 실패'));
+     document.head.append(script);
+    });
+    return globalThis.Tesseract;
+   }catch(error){lastError=error;}
+  }
+  throw new Error('OCR 엔진 다운로드 실패: '+(lastError?.message||'알 수 없는 오류')+' · 네트워크/CDN 연결을 확인하세요.');
+ })().catch(error=>{ocrPromise=null;throw error;});
  return ocrPromise;
 }
 function toCanvas(bitmap,frame,maximumScale=2.4){
@@ -163,15 +185,34 @@ export function createBattleImageImport(api){
   state.progress='OCR 엔진 및 한국어 모델 준비 중…';render();
   let worker=null,run=++jobId;
   try{
-   const Tesseract=await loadOcr();
-   if(run!==jobId||state.cancel){state.cancelReason||='모델 준비 중 화면이 변경됐습니다.';return;}
-   state.progress='한국어 OCR 모델을 불러오는 중…';const status=$('bli-progress');if(status)status.textContent=state.progress;
-   worker=await Tesseract.createWorker('kor',1,{
-     logger:message=>{if(run!==jobId)return;if(message.status==='recognizing text'){
-       const percent=Math.round(Number(message.progress||0)*100);
-       const el=$('bli-progress');if(el)el.textContent='이미지 '+(state.completed+1)+'/'+state.total+' · 문자 분석 '+percent+'%';
-     }}
+   const Tesseract=await loadOcr(message=>{
+    if(run!==jobId)return;
+    state.progress=message;const el=$('bli-progress');if(el)el.textContent=message;
    });
+   if(run!==jobId||state.cancel){state.cancelReason||='모델 준비 중 화면이 변경됐습니다.';return;}
+   state.progress='한국어 OCR 모델 초기화 중…';const status=$('bli-progress');if(status)status.textContent=state.progress;
+   let startTimer=null,abandoned=false;
+   const pendingWorker=Tesseract.createWorker('kor',1,{
+    logger:message=>{
+     if(run!==jobId||state.cancel)return;
+     const stages={'loading tesseract core':'문자인식 엔진 불러오는 중','initializing tesseract':'문자인식 엔진 초기화 중','loading language traineddata':'한국어 모델 다운로드 중','initializing api':'한국어 모델 적용 중','recognizing text':'문자 분석 중'};
+     const phase=stages[message.status]||String(message.status||'OCR 처리 중');
+     const percent=Math.round(Math.min(1,Math.max(0,Number(message.progress)||0))*100);
+     state.progress=(message.status==='recognizing text'?'이미지 '+(state.completed+1)+'/'+state.total+' · ':'')+phase+' '+percent+'%';
+     const el=$('bli-progress');if(el)el.textContent=state.progress;
+    }
+   }).then(async value=>{
+    if(abandoned){await value.terminate().catch(()=>{});throw new Error('OCR 초기화 제한시간 초과');}
+    return value;
+   });
+   try{
+    worker=await Promise.race([
+     pendingWorker,
+     new Promise((_,reject)=>{startTimer=setTimeout(()=>{
+      abandoned=true;reject(new Error('한국어 OCR 모델 준비가 75초를 초과했습니다. CDN 접속 상태를 확인하고 다시 시도하세요.'));
+     },75000);})
+    ]);
+   }finally{clearTimeout(startTimer);}
    for(const file of files){
     if(state.cancel||run!==jobId)break;
     try{
