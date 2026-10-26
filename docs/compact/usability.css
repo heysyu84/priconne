@@ -79,9 +79,10 @@ h1,h2,h3,strong,b{font-weight:700}
 .video-play rect{fill:color-mix(in srgb,var(--boss) 74%,#536078);stroke:color-mix(in srgb,var(--boss) 84%,#536078);stroke-width:1}.video-play path{fill:#fff;stroke:none}
 .video-link:hover{background:color-mix(in srgb,var(--surface) 68%,var(--boss));border-color:var(--boss)}
 .video-link.missing{background:var(--wash);border-color:var(--line);color:var(--muted);opacity:.58;box-shadow:none}
-.work-list-row .video-link{font-size:10px;padding:3px;min-height:26px;gap:0}
-.work-list-row .video-link>span{display:none}.work-list-row .video-link.missing>span{display:inline;font-size:10px}
+.work-list-row .video-link{font-size:10px;padding:3px;width:calc(var(--work-video-width,38px) - 2px);min-width:calc(var(--work-video-width,38px) - 2px);height:26px;min-height:26px;box-sizing:border-box;line-height:1;gap:0}
+.work-list-row .video-link>span{display:none}
 .work-list-row .video-play{width:21px;height:16px}
+.work-list-row .source-document{width:21px;height:18px}
 .tactic-intro-links{display:flex;flex-wrap:wrap;gap:6px}.tactic-intro-links:empty{display:none}
 .source-link{background:var(--accent-wash);color:var(--accent)}
 .tactic-reading-note{border-radius:7px;background:color-mix(in srgb,var(--surface) 82%,var(--accent-wash));border:1px solid var(--line);border-left:3px solid color-mix(in srgb,var(--boss) 60%,var(--line))!important}

@@ -54,7 +54,7 @@ function videoButton(t,small=false,context=''){
   const url=/^https?:\/\//i.test(t.video||'')?t.video:'',video=isVideoUrl(url);
   const label=video?(small?'영상':'원본 영상'):(small?'자료':'원본 자료');
   const cls=`button video-link${small&&context!=='combo'?' work-list-video':''}${context==='combo'?' combo-source-box':''}`;
-  if(!url)return context==='combo'?`<span class="${cls} missing" aria-hidden="true"></span>`:small?`<span class="${cls} missing" aria-label="등록된 링크 없음">자료</span>`:'';
+  if(!url)return context==='combo'?`<span class="${cls} missing" aria-hidden="true"></span>`:small?`<span class="${cls} missing" aria-label="등록된 링크 없음"></span>`:'';
   const glyph=video?'<svg class="video-play" viewBox="0 0 24 18" aria-hidden="true"><rect x="1" y="1" width="22" height="16" rx="5"/><path d="m10 5 7 4-7 4Z"/></svg>':'<svg class="source-document" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M14 3H6v18h12V7zM14 3v5h4M9 12h6M9 16h6"/></svg>';
   return `<a class="${cls}" href="${X(url)}" style="${t.boss?bossStyle(t.boss):'--boss:#7186a1'}" target="_blank" rel="noopener noreferrer" aria-label="${X(t.boss+'넴 '+t.party.join(' ')+' '+label)}" title="${label}">${glyph}<span>${label}</span></a>`;
 }
