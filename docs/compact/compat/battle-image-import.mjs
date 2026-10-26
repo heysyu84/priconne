@@ -94,9 +94,9 @@ function damageDigitCandidates(text){
  const unique=new Set();
  for(const match of matches){
   const digits=match[0].replace(/\D/g,'');
-  if(digits.length<7||digits.length>12)continue;
+  if(digits.length<6||digits.length>12)continue;
   const n=Number(digits);
-  if(Number.isSafeInteger(n)&&n>=1000000&&n<=1000000000000)unique.add(n);
+  if(Number.isSafeInteger(n)&&n>=100000&&n<=1000000000000)unique.add(n);
  }
  return [...unique];
 }
@@ -105,7 +105,7 @@ async function readDamageWithEvidence(worker,bitmap,frame,original){
   const values=damageDigitCandidates(read.text);
   if(values.length===1)evidence.push({value:values[0],source,confidence:read.confidence});
  };
- const hasOriginal=Number.isSafeInteger(Number(original))&&Number(original)>=1000000;
+ const hasOriginal=Number.isSafeInteger(Number(original))&&Number(original)>=100000;
  const probes=[
   {name:'좁은 숫자영역',box:detailFields.damage,style:'raw',psm:'7'},
   {name:'확장 숫자영역',box:{x:.49,y:.00,w:.50,h:.48},style:'raw',psm:'6'},
@@ -130,7 +130,7 @@ async function readDamageWithEvidence(worker,bitmap,frame,original){
  // If none of the crops agree, retain the old full-row value as a suggestion,
  // never certify an unverified damage value as safe to batch-register.
  const chosen=agreed||full||ranked[0]?.[0]||0;
- const review=!!chosen&&(!agreed&&(votes.get(full)||0)<1);
+ const review=!!chosen&&(chosen<1000000||(!agreed&&(votes.get(full)||0)<1));
  const conflicted=!!chosen&&(ranked.length>1||full&&agreed&&full!==agreed);
  return {damage:chosen||'',review:review||conflicted&&(!agreed||full&&full!==agreed),
    candidates:[...new Set([full,...ranked.map(([value])=>value)].filter(Boolean))],
