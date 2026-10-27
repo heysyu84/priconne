@@ -62,13 +62,27 @@ function oldResumeProfile(d){
  '<details class="fold"><summary>단계별 통계</summary>'+stages.map(stage=>'<h3 class="detail-stage-heading">'+stage+'단계</h3>'+oldResumeStats(d,whole.filter(l=>l.stage===stage))).join('')+'</details>'+
  '<details class="fold"><summary>공격 상세 · '+events.length+'건</summary>'+rowTable(['일차','보스','단계·회차','실제 피해량','기여도','이월'],attacks,'profile-attacks exact-table')+'</details>'+oldResumeLink(d);
 }
+let oldResumeBoss=0,oldResumeLogType='all',oldResumeQuery='',oldResumeDetails=false,oldResumeSequence=false,oldResumeLogOrder='desc';
 function oldResumeLogs(d){
- const filter='<div class="toolbar"><div class="toolbar-left">'+[0,1,2,3,4,5].map(n=>'<button type="button" class="button '+(oldResumeDay===n?'selected':'')+'" data-action="old-resume-day" data-value="'+n+'">'+(n?n+'일차':'전체 일차')+'</button>').join('')+'</div></div>';
- const logs=d.logs.filter(l=>!oldResumeDay||l.day===oldResumeDay).slice().reverse(),pages=Math.max(1,Math.ceil(logs.length/50));
+ const bossSelector='<select class="select-field" data-input="old-resume-boss" aria-label="보스"><option value="0">전체 보스</option>'+d.bossNames.map((name,i)=>'<option value="'+(i+1)+'" '+(oldResumeBoss===i+1?'selected':'')+'>'+(i+1)+'넴 '+X(name)+'</option>').join('')+'</select>';
+ const daySelector='<div class="day-switch" role="group" aria-label="조회 일차">'+[1,2,3,4,5].map(day=>'<button type="button" data-action="old-resume-day" data-value="'+day+'" class="'+(oldResumeDay===day?'active':'')+'" aria-pressed="'+(oldResumeDay===day)+'">'+day+'일차</button>').join('')+'</div>';
+ const typeSelector='<select class="select-field" data-input="old-resume-type" aria-label="공격 유형">'+[['all','전체 유형'],['normal','일반'],['kill','격파'],['carry','이월타']].map(([val,label])=>'<option value="'+val+'" '+(oldResumeLogType===val?'selected':'')+'>'+label+'</option>').join('')+'</select>';
+ const toolbar='<div class="toolbar"><div class="toolbar-left">'+bossSelector+'<label class="inline-check"><input type="checkbox" data-input="old-resume-all-days" '+(oldResumeDay===0?'checked':'')+'>전체 일차</label>'+daySelector+'</div><div class="toolbar-right"><input class="search-input" id="complete-log-search" data-input="old-resume-query" value="'+X(oldResumeQuery)+'" placeholder="이름 · 초성 · 순번" aria-label="공격 기록 검색">'+typeSelector+'</div></div>';
+ const query=oldResumeQuery.trim().toLocaleLowerCase('ko');
+ let rows=d.logs.filter(l=>(!oldResumeDay||l.day===oldResumeDay)&&(!oldResumeBoss||l.boss===oldResumeBoss)&&(oldResumeLogType==='all'||oldResumeLogType==='carry'&&l.carry||oldResumeLogType==='kill'&&l.kill||oldResumeLogType==='normal'&&!l.carry&&!l.kill)&&(!query||l.name.toLocaleLowerCase('ko').includes(query)||String(l.seq).includes(query)));
+ rows=rows.slice().sort((a,b)=>oldResumeLogOrder==='asc'?a.seq-b.seq:b.seq-a.seq);
+ const pages=Math.max(1,Math.ceil(rows.length/50));
  oldResumePage=Math.min(Math.max(1,oldResumePage),pages);
- const rows=logs.slice((oldResumePage-1)*50,oldResumePage*50).map(l=>'<tr><td class="center">'+l.seq+'</td><td class="center">'+l.day+'일차</td><td class="center">'+l.lap+'회차</td><td class="center">'+l.boss+'넴</td><td>'+X(l.name)+'</td><td class="right numeric">'+nf(l.actual)+'</td><td class="right numeric">'+nf(l.contribution)+'</td><td class="center">'+(l.carry?'이월':l.kill?'격파':'일반')+'</td></tr>');
- const paged='<div class="table-tools"><span>'+logs.length+'건 · '+oldResumePage+'/'+pages+'페이지</span><div><button type="button" class="button" data-action="old-resume-page" data-value="'+(oldResumePage-1)+'" '+(oldResumePage===1?'disabled':'')+'>이전</button><button type="button" class="button" data-action="old-resume-page" data-value="'+(oldResumePage+1)+'" '+(oldResumePage===pages?'disabled':'')+'>다음</button></div></div>';
- return filter+rowTable(['순번','일차','회차','보스','클랜원','실제 피해량','기여도','유형'],rows,'exact-table')+paged+oldResumeLink(d);
+ const controls='<div class="table-tools"><span>'+(oldResumeDay===0?'전체':oldResumeDay+'일차')+' · '+rows.length+'건 · 확정</span><div><label class="inline-check"><input type="checkbox" data-input="old-resume-sequence" '+(oldResumeSequence?'checked':'')+'>순번</label><label class="inline-check"><input type="checkbox" data-input="old-resume-details" '+(oldResumeDetails?'checked':'')+'>상세</label>'+simpleButton('등록순 '+(oldResumeLogOrder==='asc'?'↑':'↓'),'old-resume-order')+simpleButton('CSV','old-resume-csv')+'</div></div>';
+ const headers=[...(oldResumeSequence?['순번']:[]),'일차 · 회차','보스','클랜원','기록 피해량',...(oldResumeDetails?['이전 HP','실제 피해량','남은 HP','가산점','기여도','인게임']:[]),'유형'];
+ const display=rows.slice((oldResumePage-1)*50,oldResumePage*50).map(l=>{
+  const type=l.kill?(l.carry?'관통':'격파'):l.carry?'이월타':'일반';
+  return '<tr>'+(oldResumeSequence?'<td class="hide-on-narrow">'+l.seq+'</td>':'')+'<td class="progress-cell"><span>'+l.day+'일차</span><small>'+l.stage+'단계 '+l.lap+'회차</small></td><td><span class="boss-tag" style="'+bossStyle(l.boss)+'">'+l.boss+'넴</span></td><td>'+oldResumePersonButton({name:l.name})+'</td><td class="right numeric">'+nf(l.damage)+'</td>'+
+  (oldResumeDetails?'<td class="right numeric extra-cell" data-label="이전 HP">—</td><td class="right numeric extra-cell" data-label="실제 피해량">'+nf(l.actual)+'</td><td class="right numeric extra-cell" data-label="남은 HP">—</td><td class="right numeric extra-cell" data-label="가산점">—</td><td class="right numeric extra-cell" data-label="기여도">'+nf(l.contribution)+'</td><td class="right numeric extra-cell" data-label="인게임">—</td>':'')+
+  '<td><span class="type-tag '+(l.kill?'kill':l.carry?'carry':'')+'">'+type+'</span></td></tr>';
+ });
+ const pagination='<div class="pagination"><span>'+ (rows.length?(oldResumePage-1)*50+1+'–'+Math.min(oldResumePage*50,rows.length):'0')+' / '+rows.length+'건</span><div><button type="button" data-action="old-resume-page" data-value="'+(oldResumePage-1)+'" '+(oldResumePage===1?'disabled':'')+'>이전</button><span>'+oldResumePage+'/'+pages+'</span><button type="button" data-action="old-resume-page" data-value="'+(oldResumePage+1)+'" '+(oldResumePage>=pages?'disabled':'')+'>다음</button></div></div>';
+ return toolbar+controls+rowTable(headers,display,'battle-table '+(oldResumeDetails?'expanded':''))+pagination+oldResumeLink(d);
 }
 function oldResumeStats(d,logs){
  return rowTable(['보스','공격 수','피해량 합계','평균 피해량','최고 피해량'],[1,2,3,4,5].map(boss=>{
