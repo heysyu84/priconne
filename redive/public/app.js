@@ -2520,21 +2520,26 @@ const oldResumeBaseHistory=completeHistory;
 completeHistory=()=>{
  const html=oldResumeBaseHistory(),entries=oldResumeIndex?.months;
  if(!entries)return html+'<p class="field-help">2024~2025년 이력서 목록을 불러오는 중입니다.</p>';
- const rows=entries.filter(m=>!historyMonths().includes(m.month)).map(m=>'<tr><td>'+m.month.replace('-','.')+'</td><td class="center">'+m.rank+'위</td><td class="center">'+m.count+'명</td>'+['game','contribution','damage'].map(key=>'<td>'+m.winners[key].map(p=>X(p.name)).join(' · ')+'</td>').join('')+'<td><button class="text-button" data-action="old-resume-open" data-id="'+m.month+'">상세</button></td></tr>');
- const monthButtons='<div class="toolbar"><div class="toolbar-left">'+entries.map(m=>'<button type="button" class="button" data-action="old-resume-open" data-id="'+m.month+'">'+m.month.replace('-','.')+'</button>').join('')+'</div></div>';
- return html+boardSection('2024~2025년 원본 이력서',monthButtons+(rows.length?rowTable(['월','클랜 순위','참가','인게임 1·2위','기여도 1·2위','피해량 1·2위','열기'],rows,'exact-table'):''));
+ return html+[2025,2024].map(year=>{
+  const months=entries.filter(m=>m.month.startsWith(year+'-'));
+  const rows=months.filter(m=>!historyMonths().includes(m.month)).map(m=>'<tr><td>'+m.month.replace('-','.')+'</td><td class="center">'+m.rank+'위</td><td class="center">'+m.count+'명</td>'+['game','contribution','damage'].map(key=>'<td>'+m.winners[key].map(p=>X(p.name)).join(' · ')+'</td>').join('')+'<td><button class="text-button" data-action="old-resume-open" data-id="'+m.month+'">상세</button></td></tr>');
+  const monthButtons='<div class="toolbar"><div class="toolbar-left">'+months.map(m=>'<button type="button" class="button" data-action="old-resume-open" data-id="'+m.month+'">'+m.month.slice(-2)+'월</button>').join('')+'</div></div>';
+  return boardSection(year+'년 원본 이력서',monthButtons+(rows.length?rowTable(['월','클랜 순위','참가','인게임 1·2위','기여도 1·2위','피해량 1·2위','열기'],rows,'exact-table'):''));
+ }).join('');
 };
 const oldResumeBaseHall=completeHall;
 completeHall=()=>{
  const html=oldResumeBaseHall(),entries=oldResumeIndex?.months;
  if(!entries)return html;
- const map=new Map();
- for(const entry of entries)for(const k of ['game','contribution','damage'])for(const p of entry.winners[k]||[]){
-  const row=map.get(p.name)||{name:p.name,game:[0,0],contribution:[0,0],damage:[0,0],total:0};
-  row[k][p.rank-1]++;row.total++;map.set(p.name,row);
- }
- const rows=[...map.values()].sort((a,b)=>b.total-a.total||a.name.localeCompare(b.name,'ko')).map(p=>'<tr><td>'+X(p.name)+'</td>'+['game','contribution','damage'].map(k=>'<td class="center">1위 '+p[k][0]+' / 2위 '+p[k][1]+'</td>').join('')+'<td class="center">'+p.total+'</td></tr>');
- return html+boardSection('2024~2025년 원본 이력서 수상 내역 (별도)',rowTable(['클랜원','인게임','기여도','피해량','수상 합계'],rows,'exact-table'))+'<p class="field-help">2024~2025년 원본의 별도 집계로, 기존 공용 수상 횟수에 중복 합산하지 않습니다.</p>';
+ return html+[2025,2024].map(year=>{
+  const map=new Map();
+  for(const entry of entries.filter(m=>m.month.startsWith(year+'-')))for(const k of ['game','contribution','damage'])for(const p of entry.winners[k]||[]){
+   const row=map.get(p.name)||{name:p.name,game:[0,0],contribution:[0,0],damage:[0,0],total:0};
+   row[k][p.rank-1]++;row.total++;map.set(p.name,row);
+  }
+  const rows=[...map.values()].sort((a,b)=>b.total-a.total||a.name.localeCompare(b.name,'ko')).map(p=>'<tr><td>'+X(p.name)+'</td>'+['game','contribution','damage'].map(k=>'<td class="center">1위 '+p[k][0]+' / 2위 '+p[k][1]+'</td>').join('')+'<td class="center">'+p.total+'</td></tr>');
+  return boardSection(year+'년 원본 이력서 수상 내역 (별도)',rowTable(['클랜원','인게임','기여도','피해량','수상 합계'],rows,'exact-table'));
+ }).join('')+'<p class="field-help">연도별 원본 기준 별도 집계로, 기존 공용 수상 횟수에 중복 합산하지 않습니다.</p>';
 };
 document.addEventListener('change',event=>{
  const input=event.target;
