@@ -73,13 +73,13 @@ completeArchive=()=>{
 };
 
 function wholeProfileEvents(){return data.logs.filter(e=>ui.profile==='__clan__'||e.memberId===ui.profile);}
-function dailyProfileBars(events){
-  const rows=Array.from({length:data.rules.days},(_,i)=>{const records=events.filter(e=>e.day===i+1);return {day:i+1,damage:records.reduce((s,e)=>s+e.actual,0),contribution:records.reduce((s,e)=>s+(e.contribution||0),0)};});
+function dailyProfileBars(events,days=data.rules.days){
+  const rows=Array.from({length:days},(_,i)=>{const records=events.filter(e=>e.day===i+1);return {day:i+1,damage:records.reduce((s,e)=>s+e.actual,0),contribution:records.reduce((s,e)=>s+(e.contribution||0),0)};});
   const maxDamage=Math.max(1,...rows.map(r=>r.damage)),maxContribution=Math.max(1,...rows.map(r=>r.contribution));
   return `<section class="daily-paired-bars"><div class="paired-heading"><h3>피해량</h3><h3>기여도</h3></div>${rows.map(r=>`<div class="paired-day"><div class="paired-value damage"><strong class="numeric">${nf(r.damage)}</strong><span><i style="width:${r.damage/maxDamage*100}%"></i></span></div><b>${r.day}일차</b><div class="paired-value contribution"><strong class="numeric">${nf(Math.round(r.contribution))}</strong><span><i style="width:${r.contribution/maxContribution*100}%"></i></span></div></div>`).join('')}</section>`;
 }
 function profilePhaseShares(events){
-  return `<section class="profile-phase-shares"><h2>단계별 보스 공격 비중</h2><p class="chart-note">실제 피해량 기준 · 월 전체</p><div class="phase-share-grid">${[[0,'종합'],[2,'2단계'],[3,'3단계'],[4,'4단계']].map(([stage,label])=>{const selected=stage?events.filter(e=>e.stage===stage):events,total=selected.reduce((s,e)=>s+e.actual,0);let sum=0;const parts=data.bossSettings.map(b=>{const value=selected.filter(e=>e.boss===b.id).reduce((s,e)=>s+e.actual,0),start=sum;sum+=total?value/total*100:0;return {id:b.id,start,end:sum,share:total?value/total*100:0};});return `<figure class="phase-share"><figcaption>${label}</figcaption><div class="phase-donut" role="img" aria-label="${label} ${parts.map(p=>p.id+'넴 '+p.share.toFixed(1)+'%').join(', ')}" style="background:${total?'conic-gradient('+parts.map(p=>`var(--b${p.id}) ${p.start}% ${p.end}%`).join(',')+')':'var(--line)'}"><span><strong>${selected.length}</strong>타</span></div><div class="phase-legend">${parts.map(p=>`<span><i style="background:var(--b${p.id})"></i>${p.id}넴 <b>${p.share.toFixed(1)}%</b></span>`).join('')}</div></figure>`;}).join('')}</div></section>`;
+  return `<section class="profile-phase-shares"><h2>단계별 보스 공격 비중</h2><p class="chart-note">실제 피해량 기준 · 월 전체</p><div class="phase-share-grid">${[[0,'종합'],...[...new Set(events.map(e=>Number(e.stage)).filter(Boolean))].sort((a,b)=>a-b).map(stage=>[stage,stage+'단계'])].map(([stage,label])=>{const selected=stage?events.filter(e=>e.stage===stage):events,total=selected.reduce((s,e)=>s+e.actual,0);let sum=0;const parts=data.bossSettings.map(b=>{const value=selected.filter(e=>e.boss===b.id).reduce((s,e)=>s+e.actual,0),start=sum;sum+=total?value/total*100:0;return {id:b.id,start,end:sum,share:total?value/total*100:0};});return `<figure class="phase-share"><figcaption>${label}</figcaption><div class="phase-donut" role="img" aria-label="${label} ${parts.map(p=>p.id+'넴 '+p.share.toFixed(1)+'%').join(', ')}" style="background:${total?'conic-gradient('+parts.map(p=>`var(--b${p.id}) ${p.start}% ${p.end}%`).join(',')+')':'var(--line)'}"><span><strong>${selected.length}</strong>타</span></div><div class="phase-legend">${parts.map(p=>`<span><i style="background:var(--b${p.id})"></i>${p.id}넴 <b>${p.share.toFixed(1)}%</b></span>`).join('')}</div></figure>`;}).join('')}</div></section>`;
 }
 dailyRecordTable=(all,m)=>rowTable(['일차','피해량','기여도'],Array.from({length:data.rules.days},(_,i)=>{const rows=data.logs.filter(e=>e.day===i+1&&(all||e.memberId===m.id)&&(!ext.profileStage||e.stage===ext.profileStage));return `<tr><td>${i+1}일차</td><td class="right numeric">${nf(rows.reduce((s,e)=>s+e.actual,0))}</td><td class="right numeric">${points(rows.reduce((s,e)=>s+(e.contribution||0),0))}</td></tr>`;}),'daily-records exact-table');
 completeProfile=()=>{
@@ -185,6 +185,7 @@ function afterOperationalRender(){
 }
 const regularPrint=printPage;
 printPage=()=>{
+  if(!adminMode())return;
   if(ui.section==='records'&&(ui.tabs.records==='profile'||ui.tabs.records==='archive'&&ext.archiveView==='profile')){
     const oldDay=ext.profileDay,oldStage=ext.profileStage;ext.profileDay=0;ext.profileStage=0;
     let report=document.getElementById('profile-print');if(!report){report=document.createElement('section');report.id='profile-print';document.body.append(report);}
@@ -232,4 +233,5 @@ document.addEventListener('keydown',event=>{
  if(!['ArrowUp','ArrowDown','Home','End'].includes(event.key)||event.altKey||event.ctrlKey||event.metaKey||event.shiftKey||event.target.closest('input,textarea,[contenteditable="true"]'))return;
  const table=event.target.closest('.tactic-grid-wrap .set-grid')||(event.target===document.body?document.querySelector?.('.tactic-active-row')?.closest('.set-grid'):null);if(!table)return;const rows=[...table.querySelectorAll('tbody tr')],current=rows.findIndex(row=>row.classList.contains('tactic-active-row'));event.preventDefault();let next=event.key==='Home'?0:event.key==='End'?rows.length-1:current<0?0:current+(event.key==='ArrowDown'?1:-1);selectTacticRow(table,next)?.scrollIntoView({block:'nearest',inline:'nearest'});
 });
+
 

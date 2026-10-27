@@ -13,7 +13,7 @@ import {initialState} from '../server/initial-state.mjs';
 const sqlite=new DatabaseSync(':memory:');sqlite.exec(readFileSync(new URL('../drizzle/0000_safe_hex.sql',import.meta.url),'utf8'));
 const stmt=(sql,args=[])=>({bind(...values){return stmt(sql,values);},async first(){return sqlite.prepare(sql).get(...args)||null;},async run(){return {meta:{changes:Number(sqlite.prepare(sql).run(...args).changes)}};}});
 const env={CLAN_ADMIN_BOOTSTRAP_EMAIL:'owner@site.test',DB:{prepare:stmt,async batch(statements){sqlite.exec('BEGIN');try{const result=[];for(const s of statements)result.push(await s.run());sqlite.exec('COMMIT');return result;}catch(e){sqlite.exec('ROLLBACK');throw e;}}}};
-const code=readFileSync(new URL('../public/app.js',import.meta.url),'utf8').replace(/^import[^\n]+\n/gm,'');
+const code=readFileSync(new URL('../public/app.js',import.meta.url),'utf8').replace(/^import[^\n]+\n/gm,'').replaceAll('import.meta.url',JSON.stringify(new URL('../public/app.js',import.meta.url).href));
 const node=()=>({innerHTML:'',value:'',open:false,dataset:{},classList:{toggle(){},add(){},remove(){}},style:{setProperty(){}},addEventListener(){},querySelector(){return null;},close(){this.open=false;}});
 let writes=0;
 async function client(isOwner,storage=new Map()){
@@ -75,3 +75,4 @@ await check('delete buttons confirm one record and propagate its removal through
  await viewer.poll({force:true});assert.equal(viewer.get().logs.length,before-1);assert.ok(!viewer.get().logs.some(row=>row.id===log.id));
 });
 for(const c of [admin,viewer,secondAdmin])c.close();sqlite.close();console.log(checks+' shared-client checks passed');
+

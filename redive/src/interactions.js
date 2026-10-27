@@ -20,7 +20,16 @@ document.addEventListener('click',async event=>{const button=event.target.closes
  if(action==='delete-tactic'){if(!ensureEdit())return;openDrawer('택틱 삭제','<p>삭제함으로 이동합니다.</p>',simpleButton('취소','close-drawer')+simpleButton('삭제','confirm-delete-tactic',id,'danger'));return;}
  if(action==='confirm-delete-tactic'){if(!ensureEdit())return;checkpoint();const t=data.tactics.find(t=>t.id===id);t.deletedAt=Date.now();ui.picks=ui.picks.filter(i=>i!==id);persist();closeDrawer();render();toast('삭제함으로 이동',true);return;}
  if(action==='v2-restore-tactic'){if(!ensureEdit())return;checkpoint();const t=data.tactics.find(t=>t.id===id);delete t.deletedAt;persist();render();toast('택틱 복원',true);return;}
- if(action==='hide-tactic'){if(!ensureEdit())return;checkpoint();const t=data.tactics.find(t=>t.id===id);t.hidden=!t.hidden;ui.picks=ui.picks.filter(i=>i!==id);persist();render();toast(t.hidden?'택틱 숨김':'택틱 다시 표시',true);return;}
+ if(action==='hide-tactic'){
+  if(!ensureEdit())return;
+  const matches=data.tactics.filter(t=>t.id===id);
+  if(matches.length!==1){toast('택틱을 정확히 확인하지 못했습니다. 최신 목록을 다시 확인하세요.');return;}
+  flushGrid();checkpoint();const t=matches[0];t.hidden=!t.hidden;
+  ui.picks=ui.picks.filter(i=>i!==id);ext.workEditing=false;
+  if(!t.hidden){ext.workGroup=t.category;ext.stage=4;ext.carryTimeRange='all';ui.boss=0;ui.selectedTactic=t.id;ui.libraryOpen=true;ui.carry=t.duration||90;ext.rowUndo=[];ext.rowRedo=[];}
+  persist();if(!t.hidden)nav('tactics','workspace');else render();
+  toast((t.hidden?'숨김: ':'다시 표시: ')+(t.boss?t.boss+'넴 · ':'미분류 · ')+t.party.join(' '),true);return;
+ }
  if(action==='duplicate-tactic'){if(!ensureEdit())return;checkpoint();const t=structuredClone(data.tactics.find(t=>t.id===id));t.id=uid();for(const row of tacticRows(t))row.id=uid();data.tactics.push(t);ui.selectedTactic=t.id;persist();render();toast('택틱 복제',true);return;}
  if(action==='copy-tactic'){const t=tacticById(id);await copyText(adjustedWithBase(tacticRows(t).map(r=>r.text).join('\n'),ui.carry,t.duration||90));return;}
  if(action==='v2-copy-set'){const t=activeTactic();await copyText(tacticRows(t).map(r=>r.checked.map(v=>v?'TRUE':'FALSE').join('\t')+'\t'+adjustedWithBase(r.text,ui.carry,t.duration||90)).join('\n'));return;}
@@ -202,7 +211,7 @@ document.addEventListener('change',async event=>{const el=event.target,key=el.da
  if(key==='v2-profile-member'){ui.profile=el.value;render();return;}if(key==='v2-profile-stage'){ext.profileStage=Number(el.value);render();return;}if(key==='v2-work-stage'){ext.stage=Number(el.value);render();return;}
  if(key==='v2-pick-tactic'){const id=el.dataset.id;if(el.checked){if(ui.picks.length>=3){el.checked=false;toast('3개까지 선택할 수 있습니다.');return;}ui.picks.push(id);}else ui.picks=ui.picks.filter(i=>i!==id);render();return;}
  if(key==='v2-row-check'){if(!ensureEdit())return;const t=activeTactic();rememberRows(t);const row=tacticRows(t).find(r=>r.id===el.dataset.row);row.manualChecks=true;row.checked[Number(el.dataset.column)]=el.checked;saveGridText(t);return;}
- if(key==='v2-editable'){if(syncState.started){el.checked=false;toggleWriter();return;}if(!data.settings.editable&&data.pinHash){el.checked=false;toggleWriter();return;}data.settings.editable=el.checked;persist();render();return;}if(key==='v2-default-day'){data.settings.defaultDay=Number(el.value);persist();return;}
+ if(key==='v2-editable'){if(syncState.started){el.checked=false;toggleWriter();return;}if(!data.settings.editable&&data.pinHash){el.checked=false;toggleWriter();return;}data.settings.editable=el.checked;persist();render();return;}if(key==='v2-default-day'){data.settings.defaultDay=Number(el.value);data.settings.defaultDayMode=data.settings.defaultDay>0?'manual':'auto';ui.day=defaultBattleDay();persist();render();return;}
  if(key==='v2-carry-sheet'&&el.files[0]){try{const file=el.files[0],rows=file.name.toLowerCase().endsWith('.xlsx')?await xlsxRows(file):parseDelimited(await file.text(),file.name.toLowerCase().endsWith('.tsv')?'\t':',');ext.carryImport=parseCarrySheet(rows);renderCarryPreview();}catch(error){toast(error.message);}return;}
  if(key==='v2-ocr-mode'){ext.ocrMode=el.value;return;}
  if(key==='v2-batch-images'){
@@ -230,3 +239,4 @@ const unwrappedFullBattle=fullBattle;
 fullBattle=()=>ext.importMode?batchImportPage():unwrappedFullBattle();
 const originalInitializeSeasons=initializeSeasons;
 initializeSeasons=()=>{originalInitializeSeasons();initializeAwards();};
+

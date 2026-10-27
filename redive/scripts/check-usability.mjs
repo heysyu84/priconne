@@ -67,7 +67,7 @@ await check('row movement and insertion preserve day boundaries and exact intege
   assert.throws(()=>logOrder.moveRecord(records,'a','c','before'),/같은 일차/);
 });
 await check('the actual registration path inserts against historical HP then replays all records',()=>{
-  const q=runtimeFixture(),d=q.get();d.logs=[];d.dayClosures=[];d.rules.levels=[{stage:4,count:9999}];d.rules.startStage=4;q.ui.day=1;q.ui.section='overview';q.ui.tabs.overview='logs';q.recalculateSeason();
+  const q=runtimeFixture(),d=q.get();d.settings.editable=true;d.logs=[];d.dayClosures=[];d.rules.levels=[{stage:4,count:9999}];d.rules.startStage=4;q.ui.day=1;q.ui.section='overview';q.ui.tabs.overview='logs';q.recalculateSeason();
   const member=d.members.find(m=>d.memberships[m.id]),form={memberId:member.id,boss:'1',day:'1',unit:'1',damage:'123456789',bonus:'0'};
   assert.equal(q.saveCompleteLog(form),true);const first=d.logs[0];assert.equal(q.saveCompleteLog({...form,damage:'100000000',insertAnchor:first.id,insertSide:'before'}),true);
   assert.equal(d.logs[1].id,first.id);assert.equal(d.logs[0].before,d.bossSettings[0].hp[4]);assert.equal(d.logs[1].before,d.logs[0].after);assert.equal(d.logs[1].damage,123456789);
@@ -78,10 +78,10 @@ await check('unlinked carries remain visible with an actionable record warning',
   const html=app.completeLogTable(d.logs.slice(0,1));assert.ok(html.includes('log-warning-row'));assert.ok(html.includes('연결할 일반 공격'));assert.ok(app.battleLogContent().includes('확인할 기록 1건'));d.replayWarnings=old;
 });
 await check('result confirmation updates both hall of fame and award counts exactly once',()=>{
-  const q=runtimeFixture(),d=q.get(),before=q.awardRows().reduce((sum,row)=>sum+row.total,0);assert.equal(q.sealResult(q.ui.month),true);
+  const q=runtimeFixture(),d=q.get(),before=q.awardRows().reduce((sum,row)=>sum+row.total,0);d.settings.editable=true;assert.equal(q.sealResult(q.ui.month),true);
   assert.equal(d.result.sealed,true);assert.ok(d.history.some(h=>h.month===q.ui.month));assert.equal(q.awardRows().reduce((sum,row)=>sum+row.total,0),before+6);
   q.sealResult(q.ui.month);assert.equal(q.awardRows().reduce((sum,row)=>sum+row.total,0),before+6);
-  const html=q.completeHall();assert.ok(html.indexOf('인게임 1위')<html.indexOf('기여도 1위'));assert.ok(html.indexOf('기여도 1위')<html.indexOf('피해량 1위'));
+  const html=q.completeHall();assert.ok(html.indexOf('인게임 1·2위')<html.indexOf('기여도 1·2위'));assert.ok(html.indexOf('기여도 1·2위')<html.indexOf('피해량 1·2위'));
 });
 await check('support assignment recovers feasible overlaps instead of rejecting them',()=>{
   const assignment=legacyTools.assignSupports([['a','b','c','d','e'],['a','f','g','h','i'],['b','f','j','k','l']]);assert.ok(assignment);assert.equal(assignment.supports.filter(Boolean).length,3);
@@ -97,3 +97,4 @@ await check('original text colours survive time shifting without accepting unsaf
   const html=legacyTools.richLine(row,[],[],60,90);assert.ok(html.includes('0:50'));assert.ok(html.includes('color:#cc3355'));assert.ok(!html.includes('javascript:'));assert.ok(html.includes('위험 안내'));
 });
 console.log(checks+' usability checks passed');
+

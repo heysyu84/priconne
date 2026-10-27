@@ -4,7 +4,7 @@ import {runtimeFixture} from './runtime-fixture.mjs';
 let checks=0;
 const check=async(name,fn)=>{await fn();checks++;console.log('PASS '+name);};
 function scenario(order='asc'){
-  const app=runtimeFixture(),data=app.get();
+  const app=runtimeFixture(),data=app.get();data.settings.editable=true;
   data.logs=[];data.dayClosures=[];data.rules.levels=[{stage:4,count:9999}];data.rules.startStage=4;
   app.ui.section='overview';app.ui.tabs.overview='logs';app.ui.day=1;app.ext.logOrder=order;app.ext.allDays=false;app.recalculateSeason();
   const people=data.members.filter(m=>data.memberships[m.id]);
@@ -100,3 +100,4 @@ await check('visible row movement cannot cross a day boundary',()=>{
 });
 
 console.log(`${checks} dashboard and inline-log checks passed`);
+

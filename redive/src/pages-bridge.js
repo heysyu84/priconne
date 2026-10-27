@@ -4,10 +4,10 @@ const pagesApiOrigin=document.querySelector?.('meta[name="nyang-legacy-api-origi
 if(pagesApiOrigin){
  let productionClient,productionPresence;
  const localInitializer=initializeCompletePrototype,loadedPage=renderPage;
- initializeCompletePrototype=()=>{localInitializer();data.settings.editable=false;render();};
+ initializeCompletePrototype=()=>{data.settings.editable=false;localInitializer();};
  renderPage=()=>{
   const cached=readBrowser(SYNC_CACHE)?.document?.importedSource?.key==='live-shared-clan-api';
-  if(!syncState.ready&&!cached)return `<section class="shared-loading"><h1>${syncState.status==='offline'?'공용 자료에 연결하지 못했습니다.':'기록 불러오는 중'}</h1>${syncState.status==='offline'?'<button class="button" data-action="legacy-retry">다시 연결</button>':''}</section>`;
+  if(!syncState.started||!syncState.ready&&!cached)return `<section class="shared-loading"><h1>${syncState.status==='offline'?'공용 자료에 연결하지 못했습니다.':'기록 불러오는 중'}</h1>${syncState.status==='offline'?'<button class="button" data-action="legacy-retry">다시 연결</button>':''}</section>`;
   return loadedPage();
  };
  const siteInitializeShared=initializeSharedSync;
@@ -42,3 +42,4 @@ if(pagesApiOrigin){
   catch(error){form.querySelector('.legacy-auth-error').textContent=error.message;}finally{button.disabled=false;}
  },true);
 }
+

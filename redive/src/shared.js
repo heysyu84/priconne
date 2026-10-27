@@ -51,13 +51,13 @@ function refreshSharedStatus(){
   status.innerHTML=failing?`<span>${X(syncState.error||'최신 자료에 연결하지 못했습니다.')}</span><button data-action="shared-retry">다시 연결</button>${syncState.pending?'<button data-action="shared-review">내 변경 확인</button>':''}`:draft?'<span>이 기기에 저장하지 못한 변경이 있습니다.</span><button data-action="shared-review">확인</button>':'';
 }
 function applySharedDocument(document,{initial=false}={}){
-  const followLatest=initial||ui.day===currentBattleDay();
+  const followLatest=initial||data.settings.defaultDayMode!=='manual'&&ui.day===currentBattleDay();
   const month=document.seasons[ui.month]?ui.month:document.activeMonth;
   for(const key of ['members','characters','history','awards','communityLinks','seasons','importedSource','siteCopy','futureOverrides','referenceVersion'])data[key]=document[key]===undefined?undefined:structuredClone(document[key]);
   ui.month=month;data.activeMonth=month;data.pinHash=null;
   for(const key of SEASON_KEYS)data[key]=structuredClone(data.seasons[month][key]);
   applyGameScope();recalculateSeason();snapshotSeason();
-  ui.day=followLatest?currentBattleDay():Math.min(ui.day,data.rules.days);
+  ui.day=followLatest?defaultBattleDay():Math.min(ui.day,data.rules.days);
   if(ui.profile!=='__clan__'&&!data.members.some(m=>m.id===ui.profile))ui.profile='__clan__';
   if(!data.tactics.some(t=>t.id===ui.selectedTactic))ui.selectedTactic=data.tactics.find(t=>!t.hidden&&!t.deletedAt)?.id;
   ui.picks=ui.picks.filter(id=>data.tactics.some(t=>t.id===id&&!t.hidden&&!t.deletedAt));
@@ -67,7 +67,7 @@ function applySharedDocument(document,{initial=false}={}){
   writeBrowser(SYNC_CACHE,{document,revision:syncState.revision,updatedAt:syncState.updatedAt});
 }
 function persistShared(){
-  writeBrowser(SYNC_PREFS,{theme:data.settings.theme,large:data.settings.large,compact:data.settings.compact,defaultDay:data.settings.defaultDay});
+  writeBrowser(SYNC_PREFS,{theme:data.settings.theme,large:data.settings.large,compact:data.settings.compact,defaultDay:data.settings.defaultDay,defaultDayMode:data.settings.defaultDayMode||'auto'});
   if(!syncState.ready||!syncState.canEdit||!data.settings.editable)return;
   const text=sharedText();
   if(text===syncState.baseline&&!syncState.inFlight){if(syncState.pending){try{localStorage.removeItem(SYNC_DRAFT);}catch{}}syncState.pending='';refreshSharedStatus();return;}
@@ -140,7 +140,7 @@ function showLegacyReview(){
 }
 function initializeSharedSync(){
   syncState.started=true;data.settings.editable=false;
-  const prefs=readBrowser(SYNC_PREFS);if(prefs)Object.assign(data.settings,{theme:prefs.theme||'light',large:!!prefs.large,compact:!!prefs.compact,defaultDay:Number(prefs.defaultDay)||2});
+  const prefs=readBrowser(SYNC_PREFS);if(prefs)Object.assign(data.settings,{theme:prefs.theme||'light',large:!!prefs.large,compact:!!prefs.compact,defaultDay:prefs.defaultDayMode==='manual'?Number(prefs.defaultDay)||0:0,defaultDayMode:prefs.defaultDayMode==='manual'?'manual':'auto'});
   // One-time rollout: reduced row spacing starts enabled, then stays user-configurable.
   // Record the choice only in this browser, never in shared clan records.
   if(!readBrowser('redive-compact-default-20261026')){
@@ -176,4 +176,5 @@ document.addEventListener('click',async event=>{
     const baseline=syncState.baseline;applySharedDocument(doc);syncState.baseline=baseline;persist();closeDrawer();render();await flushShared();
   }
 },true);
+
 

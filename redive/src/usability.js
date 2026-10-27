@@ -1,5 +1,5 @@
 // Shared controls and compact views used by the production interface.
-const adminMode=()=>!!data.settings.editable&&(!syncState.started||syncState.canEdit);
+const adminMode=()=>!!data.settings.editable&&(!syncState.started||syncState.ready&&syncState.canEdit);
 const RESULT_METRICS=[['game','인게임'],['contribution','기여도'],['damage','피해량']];
 subpageNames.tactics.external='이월 계산기';
 subpageNames.records.history='명예의 전당';
@@ -47,7 +47,7 @@ fullClan=()=>{
   if(ui.tabs.clan==='characters'&&!adminMode())ui.tabs.clan='members';
   return titleBar(ui.tabs.clan==='settings'?'설정':'클랜 DB')+pageTabs([['members','클랜원'],['alumni','역대 클랜원'],['rates','기여도'],['future','미래 보스'],...(adminMode()?[['characters','캐릭터·초상화']]:[]),['settings','설정']])+({members:()=>completeRoster(false),alumni:()=>completeRoster(true),rates:completeRates,future:futureBossSettings,characters:characterLibrary,settings:completeSettings}[ui.tabs.clan]||(()=>completeRoster(false)))();
 };
-fullRecords=()=>titleBar('기록·통계',ui.tabs.records==='profile'?'':simpleButton('인쇄','print'))+pageTabs([['ranking','월간 순위'],['profile','개인 이력'],['archive','과거 기록'],['history','명예의 전당'],['hall','수상 횟수']])+({ranking:completeRanking,profile:completeProfile,archive:completeArchive,history:completeHistory,hall:completeHall}[ui.tabs.records]||completeRanking)();
+fullRecords=()=>titleBar('기록·통계',ui.tabs.records==='profile'?'':simpleButton('인쇄','print'))+pageTabs([['ranking','월간 순위'],['profile','개인 이력'],['archive','과거 기록'],['history','명예의 전당'],['hall','수상 횟수'],['chronicle','아카이브']])+({ranking:completeRanking,profile:completeProfile,archive:completeArchive,history:completeHistory,hall:completeHall,chronicle:completeClanArchive}[ui.tabs.records]||completeRanking)();
 
 function isVideoUrl(value){try{const url=new URL(value);return /^https?:$/.test(url.protocol)&&/(^|\.)(youtube\.com|youtu\.be|nicovideo\.jp|bilibili\.com|vimeo\.com)$/.test(url.hostname);}catch{return false;}}
 function videoButton(t,small=false,context=''){
@@ -88,7 +88,7 @@ textScale=()=>{
 setTextScale=value=>{const scale=Number(value);if(![90,95,100,105,110].includes(scale))return;ext.textScaleV2=scale;try{localStorage.setItem('nyang-text-scale-v2',String(scale));}catch{}applyAppearance();};
 const previousTextAppearance=applyAppearance;
 applyAppearance=()=>{previousTextAppearance();document.documentElement.style.setProperty('--text-scale',String(1.1*textScale()/100));};
-settingsDisplay=()=>`<section class="settings-sheet"><div class="setting-row"><h3>화면 테마</h3><div>${['light','dark'].map(theme=>`<button class="button ${data.settings.theme===theme?'selected':''}" data-action="set-theme" data-value="${theme}">${theme==='light'?'라이트':'다크'}</button>`).join('')}</div></div><div class="setting-row"><h3>글자 크기</h3><select class="select-field" data-input="ops-text-scale" aria-label="화면 글자 크기">${[90,95,100,105,110].map(value=>`<option value="${value}" ${value===textScale()?'selected':''}>${value}%${value===100?' · 기본':''}</option>`).join('')}</select></div><label class="setting-row"><h3>행 간격 줄이기</h3><input type="checkbox" data-setting="compact" ${data.settings.compact?'checked':''}></label><div class="setting-row"><h3>기본 조회 일차</h3><select data-input="v2-default-day" class="select-field">${Array.from({length:data.rules.days},(_,i)=>`<option value="${i+1}" ${data.settings.defaultDay===i+1?'selected':''}>${i+1}일차</option>`).join('')}</select></div>${settingsVersionLink()}</section>`;
+settingsDisplay=()=>`<section class="settings-sheet"><div class="setting-row"><h3>화면 테마</h3><div>${['light','dark'].map(theme=>`<button class="button ${data.settings.theme===theme?'selected':''}" data-action="set-theme" data-value="${theme}">${theme==='light'?'라이트':'다크'}</button>`).join('')}</div></div><div class="setting-row"><h3>글자 크기</h3><select class="select-field" data-input="ops-text-scale" aria-label="화면 글자 크기">${[90,95,100,105,110].map(value=>`<option value="${value}" ${value===textScale()?'selected':''}>${value}%${value===100?' · 기본':''}</option>`).join('')}</select></div><label class="setting-row"><h3>행 간격 줄이기</h3><input type="checkbox" data-setting="compact" ${data.settings.compact?'checked':''}></label><div class="setting-row"><h3>기본 조회 일차</h3><select data-input="v2-default-day" class="select-field"><option value="0" ${data.settings.defaultDayMode!=='manual'?'selected':''}>현재 일차 · 자동</option>${Array.from({length:data.rules.days},(_,i)=>`<option value="${i+1}" ${data.settings.defaultDayMode==='manual'&&data.settings.defaultDay===i+1?'selected':''}>${i+1}일차</option>`).join('')}</select></div>${settingsVersionLink()}</section>`;
 
 completeRoster=(alumni=false)=>{
   const rows=data.members.filter(m=>(alumni||m.status==='active')&&matchName(m,ext.rosterQuery)).sort((a,b)=>Number(b.status==='active')-Number(a.status==='active')||a.name.localeCompare(b.name,'ko'));
@@ -254,3 +254,4 @@ document.addEventListener('keydown',event=>{if(event.key==='Escape')for(const po
 
 // Accept raw seconds or M:SS without rewriting the unfinished entry during typing.
 document.addEventListener('change',event=>{const field=event.target,key=field?.dataset?.input;const eligible=key==='v2-work-carry'||key==='v2-detail-carry'||key==='ops-combo-carry'||key==='v2-remaining-calculator'||key==='v2-external'&&field.id==='external-carry';if(!eligible)return;const seconds=timeToSec(field.value),cap=key==='v2-remaining-calculator'||key==='ops-combo-carry'?90:130;if(Number.isInteger(seconds)&&seconds>0&&seconds<=cap){field.value=fmtTime(seconds);field.removeAttribute('aria-invalid');}else field.setAttribute('aria-invalid','true');});
+
