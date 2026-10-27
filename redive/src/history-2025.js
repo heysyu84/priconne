@@ -22,15 +22,45 @@ function oldResumeTable(d){
  const mobile='<div class="table-wrap mobile-ranking"><table class="data-table ranking-unified"><thead><tr><th class="center">순위</th><th>클랜원</th>'+metrics.map(([key,label])=>'<th class="right" aria-sort="'+(selected===key?'descending':'none')+'"><button type="button" data-action="old-resume-sort" data-value="'+key+'">'+label+' '+(selected===key?'↓':'↕')+'</button></th>').join('')+'</tr></thead><tbody>'+sorted(selected).map(p=>'<tr><td class="center rank-cell">'+p[selected+'Rank']+'</td><td>'+oldResumePersonButton(p)+'</td>'+metrics.map(([key])=>'<td class="right numeric">'+nf(p[key]||0)+'</td>').join('')+'</tr>').join('')+'</tbody></table></div>';
  return '<div class="toolbar"><span>5일차까지 · '+d.memberCount+'명</span>'+simpleButton('CSV','old-resume-csv')+'</div>'+desktop+mobile+oldResumeLink(d);
 }
+let oldResumeStage=0,oldResumeProfileDay=0,oldResumeMetric='damage';
+function oldResumeShare(d,events,metric='damage'){
+ const counts=[1,2,3,4,5].map(boss=>({boss,name:d.bossNames[boss-1]||'',value:events.filter(l=>l.boss===boss).reduce((s,l)=>s+(metric==='contribution'?l.contribution:l.actual),0)}));
+ const total=counts.reduce((s,x)=>s+x.value,0),circ=2*Math.PI*66;
+ let offset=0;
+ const arcs=counts.map(x=>{const fraction=total?x.value/total:0,start=offset;offset+=fraction;return fraction?'<circle class="share-arc" cx="92" cy="92" r="66" fill="none" stroke="var(--b'+x.boss+')" stroke-width="16" stroke-dasharray="'+Math.max(0,circ*fraction-3)+' '+circ+'" stroke-dashoffset="'+(-circ*start)+'" transform="rotate(-90 92 92)"><title>'+x.boss+'넴 '+X(x.name)+' · '+(fraction*100).toFixed(1)+'%</title></circle>':'';}).join('');
+ return '<div class="rich-share"><div class="share-visual"><svg viewBox="0 0 184 184" class="ring-chart" role="img" aria-label="보스별 '+(metric==='contribution'?'기여도':'피해량')+' 비중"><circle cx="92" cy="92" r="66" class="ring-base" fill="none" stroke-width="16"></circle>'+arcs+'</svg><div class="ring-center"><span>합계</span><strong class="numeric">'+chartValue(total,metric)+'</strong><small>'+(metric==='contribution'?'기여도':'피해량')+'</small></div></div><div class="boss-share-legend">'+counts.map(x=>'<div class="share-boss-name" style="'+bossStyle(x.boss)+'"><b>'+x.boss+'넴</b><small>'+X(x.name)+'</small><span class="share-bar"><i style="width:'+(total?x.value/total*100:0)+'%"></i></span><strong class="numeric">'+(total?x.value/total*100:0).toFixed(1)+'%</strong></div>').join('')+'</div></div>';
+}
+function oldResumeProfileBars(events){
+ const days=Array.from({length:5},(_,i)=>{const rows=events.filter(l=>l.day===i+1);return {day:i+1,damage:rows.reduce((s,l)=>s+l.actual,0),contribution:rows.reduce((s,l)=>s+l.contribution,0)};});
+ const maxDamage=Math.max(1,...days.map(x=>x.damage)),maxContribution=Math.max(1,...days.map(x=>x.contribution));
+ return '<section class="daily-paired-bars"><div class="paired-heading"><h3>피해량</h3><h3>기여도</h3></div>'+days.map(x=>'<div class="paired-day"><div class="paired-value damage"><strong class="numeric">'+nf(x.damage)+'</strong><span><i style="width:'+(x.damage/maxDamage*100)+'%"></i></span></div><b>'+x.day+'일차</b><div class="paired-value contribution"><strong class="numeric">'+nf(x.contribution)+'</strong><span><i style="width:'+(x.contribution/maxContribution*100)+'%"></i></span></div></div>').join('')+'</section>';
+}
+function oldResumePhaseShares(d,events){
+ return '<section class="profile-phase-shares"><h2>단계별 보스 공격 비중</h2><p class="chart-note">실제 피해량 기준 · 월 전체</p><div class="phase-share-grid">'+[[0,'종합'],[2,'2단계'],[3,'3단계'],[4,'4단계']].map(([stage,label])=>{
+  const rows=stage?events.filter(l=>l.stage===stage):events,total=rows.reduce((s,l)=>s+l.actual,0),amounts=[1,2,3,4,5].map(boss=>rows.filter(l=>l.boss===boss).reduce((s,l)=>s+l.actual,0));let offset=0;
+  const parts=amounts.map((val,i)=>{const start=offset;offset+=total?val/total*100:0;return 'var(--b'+(i+1)+') '+start+'% '+offset+'%';});
+  const legend=amounts.map((value,i)=>'<span><i style="background:var(--b'+(i+1)+')"></i>'+(i+1)+'넴 <b>'+(total?value/total*100:0).toFixed(1)+'%</b></span>').join('');
+  return '<figure class="phase-share"><figcaption>'+label+'</figcaption><div class="phase-donut" role="img" aria-label="'+label+'" style="background:'+(total?'conic-gradient('+parts.join(',')+')':'var(--line)')+'"><span><strong>'+rows.length+'</strong>타</span></div><div class="phase-legend">'+legend+'</div></figure>';
+ }).join('')+'</div></section>';
+}
 function oldResumeProfile(d){
- const p=d.members.find(x=>x.name===oldResumePerson)||d.members[0];if(!p)return '<p class="no-rows">이력서 없음</p>';
- const select='<div class="toolbar"><label for="old-resume-person">클랜원</label><select id="old-resume-person" class="select-field" data-input="old-resume-person">'+d.members.map(m=>'<option value="'+X(m.name)+'" '+(m.name===p.name?'selected':'')+'>'+X(m.name)+'</option>').join('')+'</select></div>';
- const scores=boardSection(X(p.name)+' · '+d.month+' 이력서',rowTable(['항목','기록','순위'],[['피해량','damage'],['기여도','contribution'],['인게임 점수','game']].map(([label,key])=>'<tr><td>'+label+'</td><td class="right numeric">'+nf(p[key]||0)+'</td><td class="center">'+(p[key+'Rank']||'—')+'위</td></tr>'))+'<p class="field-help">회원번호 '+X(p.uid||'미확인')+'</p>');
- const logs=d.logs.filter(l=>l.name===p.name);
- const sum=ls=>[ls.length,nf(ls.reduce((v,l)=>v+l.actual,0)),nf(ls.reduce((v,l)=>v+l.contribution,0))];
- const daily=Array.from({length:5},(_,i)=>{const x=sum(logs.filter(l=>l.day===i+1));return '<tr><td>'+(i+1)+'일차</td><td class="right">'+x[0]+'</td><td class="right numeric">'+x[1]+'</td><td class="right numeric">'+x[2]+'</td></tr>';});
- const boss=Array.from({length:5},(_,i)=>{const x=sum(logs.filter(l=>l.boss===i+1));return '<tr><td>'+(i+1)+'넴 '+X(d.bossNames[i]||'')+'</td><td class="right">'+x[0]+'</td><td class="right numeric">'+x[1]+'</td><td class="right numeric">'+x[2]+'</td></tr>';});
- return select+scores+boardSection('일차별 공격 기록',rowTable(['일차','타수','피해량','기여도'],daily,'exact-table'))+boardSection('보스별 공격 기록',rowTable(['보스','타수','피해량','기여도'],boss,'exact-table'))+oldResumeLink(d);
+ const all=oldResumePerson==='__clan__',p=all?null:d.members.find(x=>x.name===oldResumePerson)||d.members[0],name=all?'클랜 전체':p?.name;
+ if(!name)return '<p class="no-rows">개인 기록 없음</p>';
+ const stages=[2,3,4].filter(stage=>d.logs.some(l=>l.stage===stage));
+ const whole=d.logs.filter(l=>all||l.name===name),events=whole.filter(l=>(!oldResumeStage||l.stage===oldResumeStage)&&(!oldResumeProfileDay||l.day===oldResumeProfileDay));
+ const score=key=>!oldResumeStage&&!oldResumeProfileDay?(all?d.totals[key]:p[key]):key==='game'?null:events.reduce((v,l)=>v+(key==='damage'?l.actual:l.contribution),0);
+ const toolbar='<div class="toolbar profile-toolbar"><select id="full-profile-member" class="select-field" aria-label="기록 대상" data-input="old-resume-person"><option value="__clan__" '+(all?'selected':'')+'>클랜 전체</option>'+d.members.map(m=>'<option value="'+X(m.name)+'" '+(!all&&m.name===name?'selected':'')+'>'+X(m.name)+'</option>').join('')+'</select><select class="select-field" aria-label="이력 단계" data-input="old-resume-stage"><option value="0" '+(!oldResumeStage?'selected':'')+'>전체 단계</option>'+stages.map(stage=>'<option value="'+stage+'" '+(stage===oldResumeStage?'selected':'')+'>'+stage+'단계</option>').join('')+'</select>'+simpleButton('PDF 보기','old-resume-pdf-preview','','primary')+simpleButton('PDF 저장','old-resume-pdf-download','','quiet')+simpleButton('인쇄','old-resume-print','','quiet')+'</div>';
+ const totals='<dl class="profile-totals">'+[['damage','피해량'],['contribution','기여도'],['game','인게임']].map(([key,label])=>'<div><dt>'+label+'</dt><dd>'+ (score(key)===null?'—':key==='contribution'?nf(Math.round(score(key))):nf(score(key)))+'</dd></div>').join('')+'</dl>';
+ const pills='<div class="day-pills" role="group" aria-label="개인 이력 일차">'+[[0,'전체'],[1,'1일차'],[2,'2일차'],[3,'3일차'],[4,'4일차'],[5,'5일차']].map(([day,label])=>'<button type="button" data-action="old-resume-profile-day" data-value="'+day+'" class="'+(oldResumeProfileDay===day?'active':'')+'" aria-pressed="'+(oldResumeProfileDay===day)+'">'+label+'</button>').join('')+'</div>';
+ const metric='<div class="filter-group" role="group" aria-label="개인 이력 지표">'+[['damage','피해량'],['contribution','기여도']].map(([key,label])=>'<button type="button" data-action="old-resume-metric" data-value="'+key+'" class="'+(oldResumeMetric===key?'active':'')+'">'+label+'</button>').join('')+'</div>';
+ const donut='<section class="profile-donut"><div class="profile-chart-controls">'+pills+metric+'</div>'+oldResumeShare(d,events,oldResumeMetric)+'<div class="profile-chart-foot">'+(oldResumeProfileDay?oldResumeProfileDay+'일차':'전체 일차')+' · 공격 '+events.length+'건</div></section>';
+ const daily=Array.from({length:5},(_,i)=>{const r=whole.filter(l=>l.day===i+1&&(!oldResumeStage||l.stage===oldResumeStage));return '<tr><td>'+(i+1)+'일차</td><td class="right numeric">'+nf(r.reduce((v,l)=>v+l.actual,0))+'</td><td class="right numeric">'+nf(r.reduce((v,l)=>v+l.contribution,0))+'</td></tr>';});
+ const attacks=events.map(l=>'<tr><td>'+l.day+'일차</td><td>'+l.boss+'넴</td><td class="attack-phase">'+l.stage+'단계 '+l.lap+'회차</td><td class="right numeric">'+nf(l.actual)+'</td><td class="right numeric">'+nf(l.contribution)+'</td><td class="center">'+(l.carry?'사용':'—')+'</td></tr>');
+ return toolbar+totals+oldResumeProfileBars(whole.filter(l=>!oldResumeStage||l.stage===oldResumeStage))+donut+oldResumePhaseShares(d,whole)+
+ '<details class="fold"><summary>일차별 수치</summary>'+rowTable(['일차','피해량','기여도'],daily,'daily-records exact-table')+'</details>'+
+ '<details class="fold"><summary>보스별 통계</summary>'+oldResumeStats(d,events)+'</details>'+
+ '<details class="fold"><summary>단계별 통계</summary>'+stages.map(stage=>'<h3 class="detail-stage-heading">'+stage+'단계</h3>'+oldResumeStats(d,whole.filter(l=>l.stage===stage))).join('')+'</details>'+
+ '<details class="fold"><summary>공격 상세 · '+events.length+'건</summary>'+rowTable(['일차','보스','단계·회차','실제 피해량','기여도','이월'],attacks,'profile-attacks exact-table')+'</details>'+oldResumeLink(d);
 }
 function oldResumeLogs(d){
  const filter='<div class="toolbar"><div class="toolbar-left">'+[0,1,2,3,4,5].map(n=>'<button type="button" class="button '+(oldResumeDay===n?'selected':'')+'" data-action="old-resume-day" data-value="'+n+'">'+(n?n+'일차':'전체 일차')+'</button>').join('')+'</div></div>';
