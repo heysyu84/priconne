@@ -124,6 +124,12 @@ document.addEventListener('keydown',event=>{
   else if(input.form){if(input.form.dataset.form==='v2-log')completeLogPreview();else syncAttackEntry(input.form);}
  }
 },true);
+document.addEventListener('change',event=>{
+ const field=event.target,form=field.form;
+ if(field.name==='day'&&form?.dataset.form==='v2-log'&&!form.querySelector('[name="logId"]')?.value){
+  carryOnConfirmedMember(form,form.querySelector('[name="memberId"]')?.value);
+ }
+},true);
 document.addEventListener('submit',event=>{
  const form=event.target;if(!['v2-quick-log','v2-log'].includes(form.dataset.form))return;
  for(const input of form.querySelectorAll('[data-entry-search]'))if(!resolveEntry(input)){
