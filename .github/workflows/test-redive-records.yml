@@ -1,0 +1,37 @@
+name: Verify ReDive records and startup
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'redive/**'
+      - 'docs/compact/**'
+      - 'docs/index.html'
+      - '.github/workflows/test-redive-records.yml'
+  pull_request:
+    paths:
+      - 'redive/**'
+      - 'docs/compact/**'
+      - 'docs/index.html'
+      - '.github/workflows/test-redive-records.yml'
+permissions:
+  contents: read
+jobs:
+  records-and-startup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Check permissions, game day, tactic restore and historical records
+        run: |
+          node --check redive/public/app.js
+          node --check docs/compact/app.js
+          node redive/scripts/check-archive-startup.mjs
+          node redive/scripts/check-shared-client.mjs
+          node redive/scripts/check-carry-time-filter.mjs
+          node redive/scripts/check-historical-coefficients.mjs
+          node redive/scripts/check-inline-logs.mjs
+          node redive/scripts/check-ui-fixes.mjs
+          node redive/scripts/check-usability.mjs
