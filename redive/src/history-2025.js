@@ -6,7 +6,7 @@ const oldResumeOptions=()=>[2025,2024].map(year=>'<optgroup label="'+year+'년 �
 const oldResumeLink=d=>'<p class="field-help">Google 시트의 '+X(d.month.slice(0,4))+'년 원본 기록 · 읽기 전용 <a target="_blank" rel="noopener noreferrer" href="'+X(d.source)+'">원본 이력서 보기</a></p>';
 function oldResumeOpen(month){
  if(!oldResumeMonths.includes(month))return;
- oldResumeMonth=month;oldResumeData=null;oldResumeError='';oldResumePerson='';oldResumeSort='damage';oldResumeDay=0;oldResumePage=1;ext.archiveView='summary';
+ oldResumeMonth=month;oldResumeData=null;oldResumeError='';oldResumePerson='__clan__';oldResumeSort='game';oldResumeDay=0;oldResumePage=1;oldResumeBoss=0;oldResumeLogType='all';oldResumeQuery='';oldResumeDetails=false;oldResumeSequence=false;oldResumeLogOrder='desc';oldResumeStage=0;oldResumeProfileDay=0;oldResumeMetric='damage';ext.archiveView='summary';
  nav('records','archive');
  const request=++oldResumeRequest;
  fetch(new URL('./history-'+month.slice(0,4)+'/'+month+'.json',import.meta.url),{cache:'force-cache'}).then(r=>{if(!r.ok)throw Error('이력서 기록을 불러오지 못했습니다.');return r.json();}).then(d=>{if(request!==oldResumeRequest)return;if(d.month!==month||!Array.isArray(d.members)||!Array.isArray(d.logs))throw Error('이력서 자료 형식 오류');oldResumeData=d;render();}).catch(e=>{if(request===oldResumeRequest){oldResumeError=e.message;render();}});
@@ -133,24 +133,70 @@ completeHall=()=>{
   return boardSection(year+'년 원본 이력서 수상 내역 (별도)',rowTable(['클랜원','인게임','기여도','피해량','수상 합계'],rows,'exact-table'));
  }).join('')+'<p class="field-help">연도별 원본 기준 별도 집계로, 기존 공용 수상 횟수에 중복 합산하지 않습니다.</p>';
 };
+async function oldResumePDF(preview){
+ const d=oldResumeData;if(!d)return;
+ const all=oldResumePerson==='__clan__',person=all?null:d.members.find(p=>p.name===oldResumePerson)||d.members[0],events=d.logs.filter(l=>all||l.name===person?.name);
+ const summary=all?d.totals:person;
+ const module=await import('./report-pdf.mjs?v=20261027-summary04');
+ await module[preview?'previewProfilePdf':'downloadProfilePdf']({
+  target:document.body,downloadLabel:'PDF 저장',copy:v=>v,month:d.month,day:5,days:5,all,
+  p:person?{name:person.name,uid:person.uid,tenureMonths:null}:null,
+  bosses:d.bossNames.map((name,i)=>({id:i+1,name})),events,contribution:l=>l.contribution,
+  summary:{name:all?'클랜 전체':person.name,damage:summary.damage,contribution:summary.contribution,game:summary.game}
+ });
+}
+function oldResumeCSV(){
+ const d=oldResumeData;if(!d)return;
+ if(ext.archiveView==='ranking'){
+  downloadCsv([['순위','클랜원','피해량','기여도','인게임'],...d.members.map(p=>[p[oldResumeSort+'Rank'],p.name,p.damage,p.contribution,p.game])],'월간순위_'+d.month+'.csv');
+ }else{
+  const rows=d.logs.filter(l=>(!oldResumeDay||l.day===oldResumeDay)&&(!oldResumeBoss||l.boss===oldResumeBoss));
+  downloadCsv([['순번','일차','단계','회차','보스','클랜원','기록 피해량','실제 피해량','기여도','이월','격파'],...rows.map(l=>[l.seq,l.day,l.stage,l.lap,l.boss,l.name,l.damage,l.actual,l.contribution,l.carry?'사용':'',l.kill?'격파':''])],'배틀로그_'+d.month+'.csv');
+ }
+}
 document.addEventListener('change',event=>{
- const input=event.target;
- if(input?.dataset?.input==='v2-archive-month'){
+ const input=event.target,key=input?.dataset?.input;
+ if(key==='v2-archive-month'){
   if(oldResumeMonths.includes(input.value)){event.preventDefault();event.stopImmediatePropagation();oldResumeOpen(input.value);}
   else if(oldResumeMonth){oldResumeRequest++;oldResumeMonth='';oldResumeData=null;}
+  return;
  }
- if(input?.dataset?.input==='old-resume-person'){event.preventDefault();event.stopImmediatePropagation();oldResumePerson=input.value;render();}
+ const changes={
+  'old-resume-person':()=>{oldResumePerson=input.value;oldResumeProfileDay=0;},
+  'old-resume-stage':()=>{oldResumeStage=Number(input.value);oldResumeProfileDay=0;},
+  'old-resume-boss':()=>{oldResumeBoss=Number(input.value);oldResumePage=1;},
+  'old-resume-type':()=>{oldResumeLogType=input.value;oldResumePage=1;},
+  'old-resume-all-days':()=>{oldResumeDay=input.checked?0:5;oldResumePage=1;},
+  'old-resume-sequence':()=>{oldResumeSequence=input.checked;},
+  'old-resume-details':()=>{oldResumeDetails=input.checked;}
+ };
+ if(changes[key]){event.preventDefault();event.stopImmediatePropagation();changes[key]();render();}
+},true);
+document.addEventListener('input',event=>{
+ const el=event.target;
+ if(el?.dataset?.input!=='old-resume-query')return;
+ event.stopImmediatePropagation();
+ oldResumeQuery=el.value;oldResumePage=1;const cursor=el.selectionStart;
+ render();
+ const field=document.querySelector('[data-input="old-resume-query"]');if(field){field.focus();field.setSelectionRange(cursor,cursor);}
 },true);
 document.addEventListener('click',event=>{
  const button=event.target.closest('[data-action]');if(!button)return;
  const action=button.dataset.action;
- if(!['old-resume-open','old-resume-person','old-resume-sort','old-resume-day','old-resume-page'].includes(action))return;
+ const supported=['old-resume-open','old-resume-person','old-resume-sort','old-resume-day','old-resume-page','old-resume-profile-day','old-resume-metric','old-resume-order','old-resume-csv','old-resume-pdf-preview','old-resume-pdf-download','old-resume-print'];
+ if(!supported.includes(action))return;
  event.preventDefault();event.stopImmediatePropagation();
- if(action==='old-resume-open')oldResumeOpen(button.dataset.id);
- else if(action==='old-resume-person'){oldResumePerson=button.dataset.name;ext.archiveView='profile';render();}
- else if(action==='old-resume-sort'){oldResumeSort=button.dataset.value;render();}
- else if(action==='old-resume-day'){oldResumeDay=Number(button.dataset.value);oldResumePage=1;render();}
- else if(action==='old-resume-page'){oldResumePage=Number(button.dataset.value);render();}
+ if(action==='old-resume-open'){oldResumeOpen(button.dataset.id);return;}
+ if(action==='old-resume-person'){oldResumePerson=button.dataset.name;oldResumeProfileDay=0;ext.archiveView='profile';render();return;}
+ if(action==='old-resume-sort'){oldResumeSort=button.dataset.value;render();return;}
+ if(action==='old-resume-day'){oldResumeDay=Number(button.dataset.value);oldResumePage=1;render();return;}
+ if(action==='old-resume-page'){oldResumePage=Number(button.dataset.value);render();return;}
+ if(action==='old-resume-profile-day'){oldResumeProfileDay=Number(button.dataset.value);render();return;}
+ if(action==='old-resume-metric'){oldResumeMetric=button.dataset.value;render();return;}
+ if(action==='old-resume-order'){oldResumeLogOrder=oldResumeLogOrder==='asc'?'desc':'asc';oldResumePage=1;render();return;}
+ if(action==='old-resume-csv'){oldResumeCSV();return;}
+ if(action==='old-resume-print'){window.print();return;}
+ if(action==='old-resume-pdf-preview'||action==='old-resume-pdf-download')void oldResumePDF(action==='old-resume-pdf-preview').catch(error=>{console.error(error);toast('PDF 생성 실패: '+error.message);});
 },true);
 async function oldResumeLoadIndex(){
  try{
