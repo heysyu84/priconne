@@ -22,10 +22,22 @@ function showEntryResults(input,all=false){
 function closeEntryResults(input){
  const picker=input.closest('.search-picker');picker.querySelector('[role=listbox]').hidden=true;input.setAttribute('aria-expanded','false');input.removeAttribute('aria-activedescendant');
 }
+function shouldAutoUseCarry(memberId,day,records=data.logs){
+  if(!memberId||!Number.isInteger(Number(day)))return false;
+  const daily=records.filter(e=>e.day===Number(day)&&e.memberId===memberId),basic=daily.filter(e=>!e.carry);
+  return basic.length>=data.rules.daily&&basic.some(e=>e.kill&&!daily.some(c=>c.carryFrom===e.id));
+}
+function carryOnConfirmedMember(form,memberId){
+  if(!form||!['v2-quick-log','v2-log'].includes(form.dataset.form)||form.querySelector('[name="logId"]')?.value)return;
+  const checkbox=form.querySelector('[name="usesCarry"]');if(!checkbox)return;
+  const fd=new FormData(form),day=Number(fd.get('day')),context=form.dataset.form==='v2-log'&&fd.get('insertAnchor')?entryLogContext(fd).logs:data.logs;
+  checkbox.checked=shouldAutoUseCarry(memberId,day,context);
+}
 function chooseEntry(input,value){
  const picker=input.closest('.search-picker'),item=entryItems(input.dataset.entrySearch,picker).find(item=>String(item.value)===String(value));if(!item||item.disabled)return false;
  picker.querySelector('input[type=hidden]').value=item.value;picker.dataset.selected=item.value;input.value=item.label;input.setCustomValidity('');closeEntryResults(input);
- const form=input.form;if(input.dataset.entrySearch==='boss'&&form){if(form.dataset.form==='v2-log')completeLogPreview();else syncAttackEntry(form);}
+ const form=input.form;if(input.dataset.entrySearch==='member')carryOnConfirmedMember(form,item.value);
+ if(input.dataset.entrySearch==='boss'&&form){if(form.dataset.form==='v2-log')completeLogPreview();else syncAttackEntry(form);}
  return true;
 }
 function resolveEntry(input){
@@ -103,7 +115,14 @@ document.addEventListener('keydown',event=>{
   const selected=options[Math.max(0,current)];if(chooseEntry(input,selected.dataset.value))input.form?.querySelector(input.dataset.entrySearch==='member'?'[data-entry-search=boss]':'[name=damage]')?.focus();return;
  }
  const next=Math.max(0,Math.min(options.length-1,current+(event.key==='ArrowDown'?1:-1)));
- options.forEach((option,index)=>{option.classList.toggle('active',index===next);option.setAttribute('aria-selected',String(index===next));});input.setAttribute('aria-activedescendant',options[next].id);options[next].scrollIntoView({block:'nearest'});
+ options.forEach((option,index)=>{option.classList.toggle('active',index===next);option.setAttribute('aria-selected',String(index===next));});
+ input.setAttribute('aria-activedescendant',options[next].id);options[next].scrollIntoView({block:'nearest'});
+ // One arrow press changes the selected value as well as the highlighted option.
+ const picked=entryItems(input.dataset.entrySearch,picker).find(item=>String(item.value)===options[next].dataset.value);
+ if(picked){picker.querySelector('input[type=hidden]').value=picked.value;picker.dataset.selected=picked.value;input.value=picked.label;input.setCustomValidity('');
+  if(input.dataset.entrySearch==='member')carryOnConfirmedMember(input.form,picked.value);
+  else if(input.form){if(input.form.dataset.form==='v2-log')completeLogPreview();else syncAttackEntry(input.form);}
+ }
 },true);
 document.addEventListener('submit',event=>{
  const form=event.target;if(!['v2-quick-log','v2-log'].includes(form.dataset.form))return;
