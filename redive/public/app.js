@@ -940,7 +940,7 @@ quickLogForm=()=>{
   const available=data.bosses.filter(b=>!b.locked),b=available.find(b=>b.id===(ui.boss||ext.entryBoss))||available[0]||data.bosses[0];
   const memberId=data.members.some(m=>m.id===ext.entryMember&&memberSeasonActive(m))?ext.entryMember:allSeasonStats().find(s=>s.active&&s.remaining)?.member.id;
   const automatic=[2,3].includes(b.stage);
-  return `<section id="attack-entry" class="attack-entry"><div class="entry-title"><h2>기록 등록</h2><span class="entry-feedback" role="status">${X(ext.entryFeedback||'')}</span></div><form class="quick-log simple-entry" data-form="v2-quick-log"><input type="hidden" name="day" value="${ui.day}"><input type="hidden" name="unit" value="1"><div class="quick-field"><label for="quick-member">클랜원</label>${entrySearch('member','quick-member','memberId',memberId)}</div><div class="quick-field"><label for="quick-boss">보스</label>${entrySearch('boss','quick-boss','boss',b.id)}</div><div class="quick-field quick-damage"><label for="quick-damage">피해량</label><input id="quick-damage" name="damage" type="text" pattern="[0-9, ]+" required inputmode="numeric" placeholder="예: 350,000,000" value="${automatic?data.bossSettings.find(v=>v.id===b.id).hp[b.stage]:''}" data-was-auto="${automatic?'1':'0'}" ${automatic?'readonly':''}></div><div class="quick-field quick-bonus"><label for="quick-bonus">가산점</label><input id="quick-bonus" name="bonus" type="text" inputmode="decimal" placeholder="0" value="0" title="기여도에 더하거나 뺄 점수"></div><label class="early-auto" ${automatic?'':'hidden'}><input type="checkbox" name="autoDamage" data-input="v3-quick-auto" checked>2·3단계 HP 자동입력</label><label class="quick-carry"><input name="usesCarry" type="checkbox" ${ext.entryCarry?'checked':''}>이월 사용</label><button class="button primary" type="submit">등록</button><details class="entry-extra"><summary>시간·메모</summary><div class="field"><label for="quick-remaining">격파 시 남은 시간</label><input id="quick-remaining" name="remaining" placeholder="0:30" inputmode="numeric"></div><div class="field"><label for="quick-note">메모</label><input id="quick-note" name="note"></div></details></form></section>`;
+  return `<section id="attack-entry" class="attack-entry"><div class="entry-title"><h2>기록 등록</h2><span class="entry-feedback" role="status">${X(ext.entryFeedback||'')}</span></div><form class="quick-log simple-entry" data-form="v2-quick-log"><input type="hidden" name="day" value="${ui.day}"><input type="hidden" name="unit" value="1"><div class="quick-field"><label for="quick-member">클랜원</label>${entrySearch('member','quick-member','memberId',memberId)}</div><div class="quick-field"><label for="quick-boss">보스</label>${entrySearch('boss','quick-boss','boss',b.id)}</div><div class="quick-field quick-damage"><label for="quick-damage">피해량</label><input id="quick-damage" name="damage" type="text" pattern="[0-9, ]+" required inputmode="numeric" placeholder="예: 350,000,000" value="${automatic?data.bossSettings.find(v=>v.id===b.id).hp[b.stage]:''}" data-was-auto="${automatic?'1':'0'}" ${automatic?'readonly':''}></div><div class="quick-field quick-bonus"><label for="quick-bonus">가산점</label><input id="quick-bonus" name="bonus" type="text" inputmode="decimal" placeholder="0" value="0" title="기여도에 더하거나 뺄 점수"></div><label class="early-auto" ${automatic?'':'hidden'}><input type="checkbox" name="autoDamage" data-input="v3-quick-auto" checked>2·3단계 HP 자동입력</label><label class="quick-carry"><input name="usesCarry" type="checkbox" ${shouldAutoUseCarry(memberId,ui.day)?'checked':''}>이월 사용</label><button class="button primary" type="submit">등록</button><details class="entry-extra"><summary>시간·메모</summary><div class="field"><label for="quick-remaining">격파 시 남은 시간</label><input id="quick-remaining" name="remaining" placeholder="0:30" inputmode="numeric"></div><div class="field"><label for="quick-note">메모</label><input id="quick-note" name="note"></div></details></form></section>`;
 };
 function logPagination(count,size=50){
   const pages=Math.max(1,Math.ceil(count/size));ui.page=Math.min(Math.max(1,ui.page),pages);
@@ -1182,10 +1182,22 @@ function showEntryResults(input,all=false){
 function closeEntryResults(input){
  const picker=input.closest('.search-picker');picker.querySelector('[role=listbox]').hidden=true;input.setAttribute('aria-expanded','false');input.removeAttribute('aria-activedescendant');
 }
+function shouldAutoUseCarry(memberId,day,records=data.logs){
+  if(!memberId||!Number.isInteger(Number(day)))return false;
+  const daily=records.filter(e=>e.day===Number(day)&&e.memberId===memberId),basic=daily.filter(e=>!e.carry);
+  return basic.length>=data.rules.daily&&basic.some(e=>e.kill&&!daily.some(c=>c.carryFrom===e.id));
+}
+function carryOnConfirmedMember(form,memberId){
+  if(!form||!['v2-quick-log','v2-log'].includes(form.dataset.form)||form.querySelector('[name="logId"]')?.value)return;
+  const checkbox=form.querySelector('[name="usesCarry"]');if(!checkbox)return;
+  const fd=new FormData(form),day=Number(fd.get('day')),context=form.dataset.form==='v2-log'&&fd.get('insertAnchor')?entryLogContext(fd).logs:data.logs;
+  checkbox.checked=shouldAutoUseCarry(memberId,day,context);
+}
 function chooseEntry(input,value){
  const picker=input.closest('.search-picker'),item=entryItems(input.dataset.entrySearch,picker).find(item=>String(item.value)===String(value));if(!item||item.disabled)return false;
  picker.querySelector('input[type=hidden]').value=item.value;picker.dataset.selected=item.value;input.value=item.label;input.setCustomValidity('');closeEntryResults(input);
- const form=input.form;if(input.dataset.entrySearch==='boss'&&form){if(form.dataset.form==='v2-log')completeLogPreview();else syncAttackEntry(form);}
+ const form=input.form;if(input.dataset.entrySearch==='member')carryOnConfirmedMember(form,item.value);
+ if(input.dataset.entrySearch==='boss'&&form){if(form.dataset.form==='v2-log')completeLogPreview();else syncAttackEntry(form);}
  return true;
 }
 function resolveEntry(input){
@@ -1263,7 +1275,14 @@ document.addEventListener('keydown',event=>{
   const selected=options[Math.max(0,current)];if(chooseEntry(input,selected.dataset.value))input.form?.querySelector(input.dataset.entrySearch==='member'?'[data-entry-search=boss]':'[name=damage]')?.focus();return;
  }
  const next=Math.max(0,Math.min(options.length-1,current+(event.key==='ArrowDown'?1:-1)));
- options.forEach((option,index)=>{option.classList.toggle('active',index===next);option.setAttribute('aria-selected',String(index===next));});input.setAttribute('aria-activedescendant',options[next].id);options[next].scrollIntoView({block:'nearest'});
+ options.forEach((option,index)=>{option.classList.toggle('active',index===next);option.setAttribute('aria-selected',String(index===next));});
+ input.setAttribute('aria-activedescendant',options[next].id);options[next].scrollIntoView({block:'nearest'});
+ // One arrow press changes the selected value as well as the highlighted option.
+ const picked=entryItems(input.dataset.entrySearch,picker).find(item=>String(item.value)===options[next].dataset.value);
+ if(picked){picker.querySelector('input[type=hidden]').value=picked.value;picker.dataset.selected=picked.value;input.value=picked.label;input.setCustomValidity('');
+  if(input.dataset.entrySearch==='member')carryOnConfirmedMember(input.form,picked.value);
+  else if(input.form){if(input.form.dataset.form==='v2-log')completeLogPreview();else syncAttackEntry(input.form);}
+ }
 },true);
 document.addEventListener('submit',event=>{
  const form=event.target;if(!['v2-quick-log','v2-log'].includes(form.dataset.form))return;
