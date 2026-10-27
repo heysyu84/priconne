@@ -911,3 +911,17 @@ form[data-form="v2-tactic"] #tactic-text{display:block;width:100%;min-width:0;mi
   /* Leave room for the small sort indicator below mobile dashboard headings. */
   .data-table.attack-dashboard thead th{padding-bottom:10px!important}
 }
+
+
+/* Estimator: show the damage needed to break even, beside the resulting carry time. */
+.estimate-result.carry-estimate-summary{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto;gap:8px 10px;align-items:center}
+.carry-estimate-metric{display:flex;flex-direction:column;gap:4px;min-width:0}
+.carry-estimate-metric>span{display:block;color:var(--muted);font-size:12px;line-height:1.35;white-space:nowrap}
+.carry-estimate-metric>strong{display:block;font-size:23px;line-height:1.25;color:var(--accent);font-weight:700;font-variant-numeric:tabular-nums}
+.carry-estimate-summary>#estimate-error{grid-column:1/-1;order:initial;flex-basis:auto;width:100%}
+.carry-estimate-summary>#estimate-error:empty{display:none}
+.calculator-box .estimate-result.carry-estimate-summary{display:grid;gap:7px 6px}
+.calculator-box .carry-estimate-metric>span{font-size:10.5px;letter-spacing:-.3px}
+.calculator-box .carry-estimate-metric>strong{font-size:18px;margin:0}
+.calculator-box .carry-estimate-summary>.button{white-space:nowrap;padding:6px 8px;font-size:11px;min-width:0}
+@media(max-width:760px){.carry-estimate-metric>span{font-size:11px}.carry-estimate-metric>strong{font-size:20px}.calculator-box .carry-estimate-metric>span{font-size:10px}.calculator-box .carry-estimate-metric>strong{font-size:17px}}
