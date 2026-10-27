@@ -51,12 +51,13 @@ function refreshSharedStatus(){
   status.innerHTML=failing?`<span>${X(syncState.error||'최신 자료에 연결하지 못했습니다.')}</span><button data-action="shared-retry">다시 연결</button>${syncState.pending?'<button data-action="shared-review">내 변경 확인</button>':''}`:draft?'<span>이 기기에 저장하지 못한 변경이 있습니다.</span><button data-action="shared-review">확인</button>':'';
 }
 function applySharedDocument(document,{initial=false}={}){
+  const followLatest=initial||ui.day===currentBattleDay();
   const month=document.seasons[ui.month]?ui.month:document.activeMonth;
   for(const key of ['members','characters','history','awards','communityLinks','seasons','importedSource','siteCopy','futureOverrides','referenceVersion'])data[key]=document[key]===undefined?undefined:structuredClone(document[key]);
   ui.month=month;data.activeMonth=month;data.pinHash=null;
   for(const key of SEASON_KEYS)data[key]=structuredClone(data.seasons[month][key]);
   applyGameScope();recalculateSeason();snapshotSeason();
-  ui.day=Math.min(initial?(Math.max(1,...data.logs.map(e=>e.day))):ui.day,data.rules.days);
+  ui.day=followLatest?currentBattleDay():Math.min(ui.day,data.rules.days);
   if(ui.profile!=='__clan__'&&!data.members.some(m=>m.id===ui.profile))ui.profile='__clan__';
   if(!data.tactics.some(t=>t.id===ui.selectedTactic))ui.selectedTactic=data.tactics.find(t=>!t.hidden&&!t.deletedAt)?.id;
   ui.picks=ui.picks.filter(id=>data.tactics.some(t=>t.id===id&&!t.hidden&&!t.deletedAt));
