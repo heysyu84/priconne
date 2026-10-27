@@ -1,15 +1,15 @@
-// Imported 2025 monthly resumes; static/read-only, never written to the live API.
-const oldResumeMonths=Array.from({length:12},(_,i)=>'2025-'+String(12-i).padStart(2,'0'));
+// Imported 2024-2025 monthly resumes; static/read-only, never written to the live API.
+const oldResumeMonths=[2025,2024].flatMap(year=>Array.from({length:12},(_,i)=>year+'-'+String(12-i).padStart(2,'0')));
 let oldResumeIndex=null,oldResumeMonth='',oldResumeData=null,oldResumeError='',oldResumePerson='',oldResumeSort='damage',oldResumeDay=0,oldResumePage=1,oldResumeRequest=0;
 const oldResumeMeta=month=>oldResumeIndex?.months?.find(m=>m.month===month);
-const oldResumeOptions=()=>'<optgroup label="2025년 이력서">'+oldResumeMonths.map(month=>'<option value="'+month+'" '+(month===oldResumeMonth?'selected':'')+'>'+month.replace('-','년 ')+'월</option>').join('')+'</optgroup>';
-const oldResumeLink=d=>'<p class="field-help">Google 시트의 2025년 원본 기록 · 읽기 전용 <a target="_blank" rel="noopener noreferrer" href="'+X(d.source)+'">원본 이력서 보기</a></p>';
+const oldResumeOptions=()=>[2025,2024].map(year=>'<optgroup label="'+year+'년 이력서">'+oldResumeMonths.filter(month=>month.startsWith(year+'-')).map(month=>'<option value="'+month+'" '+(month===oldResumeMonth?'selected':'')+'>'+month.replace('-','년 ')+'월</option>').join('')+'</optgroup>').join('');
+const oldResumeLink=d=>'<p class="field-help">Google 시트의 '+X(d.month.slice(0,4))+'년 원본 기록 · 읽기 전용 <a target="_blank" rel="noopener noreferrer" href="'+X(d.source)+'">원본 이력서 보기</a></p>';
 function oldResumeOpen(month){
  if(!oldResumeMonths.includes(month))return;
  oldResumeMonth=month;oldResumeData=null;oldResumeError='';oldResumePerson='';oldResumeSort='damage';oldResumeDay=0;oldResumePage=1;ext.archiveView='summary';
  nav('records','archive');
  const request=++oldResumeRequest;
- fetch(new URL('./history-2025/'+month+'.json',import.meta.url),{cache:'force-cache'}).then(r=>{if(!r.ok)throw Error('이력서 기록을 불러오지 못했습니다.');return r.json();}).then(d=>{if(request!==oldResumeRequest)return;if(d.month!==month||!Array.isArray(d.members)||!Array.isArray(d.logs))throw Error('이력서 자료 형식 오류');oldResumeData=d;render();}).catch(e=>{if(request===oldResumeRequest){oldResumeError=e.message;render();}});
+ fetch(new URL('./history-'+month.slice(0,4)+'/'+month+'.json',import.meta.url),{cache:'force-cache'}).then(r=>{if(!r.ok)throw Error('이력서 기록을 불러오지 못했습니다.');return r.json();}).then(d=>{if(request!==oldResumeRequest)return;if(d.month!==month||!Array.isArray(d.members)||!Array.isArray(d.logs))throw Error('이력서 자료 형식 오류');oldResumeData=d;render();}).catch(e=>{if(request===oldResumeRequest){oldResumeError=e.message;render();}});
 }
 function oldResumeTable(d){
  const order=[...d.members].sort((a,b)=>(a[oldResumeSort+'Rank']||999)-(b[oldResumeSort+'Rank']||999));
@@ -43,7 +43,7 @@ function oldResumeArchive(){
  if(ext.archiveView==='profile')return selector+oldResumeProfile(d);
  if(ext.archiveView==='logs')return selector+oldResumeLogs(d);
  const m=oldResumeMeta(d.month),names=k=>(m?.winners?.[k]||[]).map(w=>w.rank+'위 '+X(w.name)).join(' · ')||'—';
- const totals=boardSection('2025년 '+d.month.slice(-2)+'월 클랜 성적',rowTable(['항목','합계'],[
+ const totals=boardSection(d.month.slice(0,4)+'년 '+d.month.slice(-2)+'월 클랜 성적',rowTable(['항목','합계'],[
   '<tr><td>피해량</td><td class="right numeric">'+nf(d.totals.damage)+'</td></tr>',
   '<tr><td>기여도</td><td class="right numeric">'+nf(d.totals.contribution)+'</td></tr>',
   '<tr><td>인게임 점수</td><td class="right numeric">'+nf(d.totals.game)+'</td></tr>'
@@ -60,10 +60,10 @@ completeArchive=()=>oldResumeMonth?oldResumeArchive():oldResumeBaseArchive().rep
 const oldResumeBaseHistory=completeHistory;
 completeHistory=()=>{
  const html=oldResumeBaseHistory(),entries=oldResumeIndex?.months;
- if(!entries)return html+'<p class="field-help">2025년 이력서 목록을 불러오는 중입니다.</p>';
+ if(!entries)return html+'<p class="field-help">2024~2025년 이력서 목록을 불러오는 중입니다.</p>';
  const rows=entries.filter(m=>!historyMonths().includes(m.month)).map(m=>'<tr><td>'+m.month.replace('-','.')+'</td><td class="center">'+m.rank+'위</td><td class="center">'+m.count+'명</td>'+['game','contribution','damage'].map(key=>'<td>'+m.winners[key].map(p=>X(p.name)).join(' · ')+'</td>').join('')+'<td><button class="text-button" data-action="old-resume-open" data-id="'+m.month+'">상세</button></td></tr>');
- const monthButtons='<div class="toolbar"><div class="toolbar-left">'+entries.map(m=>'<button type="button" class="button" data-action="old-resume-open" data-id="'+m.month+'">'+m.month.slice(-2)+'월</button>').join('')+'</div></div>';
- return html+boardSection('2025년 원본 이력서',monthButtons+(rows.length?rowTable(['월','클랜 순위','참가','인게임 1·2위','기여도 1·2위','피해량 1·2위','열기'],rows,'exact-table'):''));
+ const monthButtons='<div class="toolbar"><div class="toolbar-left">'+entries.map(m=>'<button type="button" class="button" data-action="old-resume-open" data-id="'+m.month+'">'+m.month.replace('-','.')+'</button>').join('')+'</div></div>';
+ return html+boardSection('2024~2025년 원본 이력서',monthButtons+(rows.length?rowTable(['월','클랜 순위','참가','인게임 1·2위','기여도 1·2위','피해량 1·2위','열기'],rows,'exact-table'):''));
 };
 const oldResumeBaseHall=completeHall;
 completeHall=()=>{
@@ -75,7 +75,7 @@ completeHall=()=>{
   row[k][p.rank-1]++;row.total++;map.set(p.name,row);
  }
  const rows=[...map.values()].sort((a,b)=>b.total-a.total||a.name.localeCompare(b.name,'ko')).map(p=>'<tr><td>'+X(p.name)+'</td>'+['game','contribution','damage'].map(k=>'<td class="center">1위 '+p[k][0]+' / 2위 '+p[k][1]+'</td>').join('')+'<td class="center">'+p.total+'</td></tr>');
- return html+boardSection('2025년 원본 이력서 수상 내역 (별도)',rowTable(['클랜원','인게임','기여도','피해량','수상 합계'],rows,'exact-table'))+'<p class="field-help">2025년 원본의 별도 집계로, 기존 공용 수상 횟수에 중복 합산하지 않습니다.</p>';
+ return html+boardSection('2024~2025년 원본 이력서 수상 내역 (별도)',rowTable(['클랜원','인게임','기여도','피해량','수상 합계'],rows,'exact-table'))+'<p class="field-help">2024~2025년 원본의 별도 집계로, 기존 공용 수상 횟수에 중복 합산하지 않습니다.</p>';
 };
 document.addEventListener('change',event=>{
  const input=event.target;
@@ -98,9 +98,14 @@ document.addEventListener('click',event=>{
 },true);
 async function oldResumeLoadIndex(){
  try{
-  const res=await fetch(new URL('./history-2025/manifest.json',import.meta.url),{cache:'force-cache'});
-  if(!res.ok)throw Error('이력서 목록 다운로드 실패');
-  oldResumeIndex=await res.json();
+  const indexList=await Promise.all([2025,2024].map(async year=>{
+   const res=await fetch(new URL('./history-'+year+'/manifest.json',import.meta.url),{cache:'force-cache'});
+   if(!res.ok)throw Error(year+'년 이력서 목록 다운로드 실패');
+   const index=await res.json();
+   if(index.year!==year||index.months?.length!==12)throw Error(year+'년 이력서 목록이 올바르지 않습니다.');
+   return index;
+  }));
+  oldResumeIndex={months:indexList.flatMap(index=>index.months).sort((a,b)=>b.month.localeCompare(a.month))};
   if(ui.section==='records'&&['history','hall','archive'].includes(ui.tabs.records))render();
  }catch(e){oldResumeError=e.message;}
 }
