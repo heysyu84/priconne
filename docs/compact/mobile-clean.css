@@ -143,7 +143,7 @@ h1{font-weight:800}h2{font-weight:750}
  .selection-strip{font-size:12px;padding:9px 10px;gap:6px}.selection-strip>.push{display:none}
  .work-editor-head h2{font-size:16px}.work-editor-head .tactic-metadata{font-size:12px;line-height:1.7;margin-top:4px}.work-editor-head .work-actions{gap:3px}.work-actions .button{font-size:11px;min-height:29px;padding:4px 6px}.work-editor>.party .unit-face{width:44px;height:44px}.work-editor>.party .unit strong{font-size:12px}.work-editor>.party .unit small{font-size:10px}
  .work-control-row{gap:9px}.carry-inline{gap:6px}.carry-inline label{font-size:12px}.carry-inline input{font-size:14px;min-height:33px}.work-control-row .button{font-size:11px;min-height:30px;padding:4px 7px}.work-bottom>span{display:none}
- .set-grid th.set-auto{border-bottom:2px solid #d48ba0;background:#f8dce4;color:#a63e5c}.set-grid td.auto-cell{background:#fff0f4}.set-grid .instruction-cell{font-size:15px;line-height:1.65;padding-top:7px;padding-bottom:8px}.set-grid .set-check input{width:20px;height:20px}
+ .set-grid th.set-auto{border-bottom:2px solid #d48ba0;background:#f8dce4;color:#a63e5c}.set-grid td.auto-cell{background:#fff0f4}.set-grid .instruction-cell{font-size:15px;line-height:1.4;padding-top:7px;padding-bottom:8px}.set-grid .set-check input{width:20px;height:20px}
  .daily-records{table-layout:auto}.daily-records th,.daily-records td{font-size:12px;white-space:nowrap}
  .history-table{min-width:720px}.history-table thead{display:table-header-group}.history-table tbody{display:table-row-group}.history-table tbody tr{display:table-row;padding:0}.history-table tbody td{display:table-cell;padding:9px;font-size:12px;white-space:nowrap}.history-table tbody td:before{display:none}
 }
