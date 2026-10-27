@@ -1284,6 +1284,12 @@ document.addEventListener('keydown',event=>{
   else if(input.form){if(input.form.dataset.form==='v2-log')completeLogPreview();else syncAttackEntry(input.form);}
  }
 },true);
+document.addEventListener('change',event=>{
+ const field=event.target,form=field.form;
+ if(field.name==='day'&&form?.dataset.form==='v2-log'&&!form.querySelector('[name="logId"]')?.value){
+  carryOnConfirmedMember(form,form.querySelector('[name="memberId"]')?.value);
+ }
+},true);
 document.addEventListener('submit',event=>{
  const form=event.target;if(!['v2-quick-log','v2-log'].includes(form.dataset.form))return;
  for(const input of form.querySelectorAll('[data-entry-search]'))if(!resolveEntry(input)){
@@ -1946,6 +1952,8 @@ openCompleteLog=(id=null,bossId=null)=>{
     const day=form.querySelector('[name=day]');if(day){day.value=String(anchor.day);if(day.tagName==='SELECT'){day.disabled=true;form.insertAdjacentHTML('afterbegin',`<input type="hidden" name="day" value="${anchor.day}">`);}}
   }
   completeLogPreview();
+  // Initialize the carry checkbox from the selected member after insertion/day context is ready.
+  if(!form.querySelector('[name="logId"]')?.value)carryOnConfirmedMember(form,form.querySelector('[name="memberId"]')?.value);
 };
 function chronologicalLogSide(side){return ext.logOrder==='asc'?side:side==='before'?'after':'before';}
 function openInsertedLog(id,side){
