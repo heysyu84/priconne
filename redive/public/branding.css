@@ -1,0 +1,110 @@
+/* Keep the complete lettering inside the existing 80px header. */
+.site-header.branding-header{
+  display:grid;
+  grid-template-columns:auto minmax(0,1fr) auto;
+  align-items:center;
+  gap:14px;
+  height:80px;
+  min-height:80px;
+  padding-top:0;
+  padding-bottom:0;
+}
+.branding-header .header-brand{display:contents}
+.branding-header .clan-wordmark{
+  display:block;
+  position:relative;
+  width:205px;
+  max-width:100%;
+  height:auto;
+  min-width:0;
+  aspect-ratio:1920/648;
+  overflow:hidden;
+  border-radius:2px;
+}
+.clan-wordmark .clan-logo{
+  position:absolute;
+  top:-26.235%;
+  left:0;
+  display:block;
+  width:100%;
+  max-width:none;
+  height:auto;
+  pointer-events:none;
+}
+.clan-wordmark .clan-logo-dark{display:none}
+:root[data-theme=dark] .clan-wordmark .clan-logo-light{display:none}
+:root[data-theme=dark] .clan-wordmark .clan-logo-dark{display:block}
+.clan-wordmark:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.branding-header .header-resource-links{
+  display:flex;
+  align-items:center;
+  justify-content:flex-start;
+  flex-wrap:wrap;
+  gap:5px;
+  min-width:0;
+}
+.branding-header .header-resource-button[data-resource=ghost]{background:#f0eafa;border-color:#d7c4e9;color:#735390}
+.branding-header .header-resource-button[data-resource=semi]{background:#e8f0fb;border-color:#c0d4ed;color:#476b98}
+.branding-header .header-resource-button[data-resource=carry]{background:#e9f4f0;border-color:#bedbce;color:#3e745e}
+:root[data-theme=dark] .branding-header .header-resource-button{
+  background:var(--accent-wash);
+  color:var(--text);
+  border-color:var(--line);
+}
+.branding-header .header-controls{min-width:0;gap:9px}
+.version-setting>.button{flex:none;white-space:nowrap}
+@media(max-width:760px){
+  .site-header.branding-header{
+    grid-template-columns:minmax(0,1fr) auto;
+    grid-template-rows:1fr;
+    gap:8px;
+    height:80px;
+    min-height:80px;
+    padding-top:3px;
+    padding-bottom:3px;
+  }
+  .site-header.branding-header .header-brand{
+    display:flex;
+    flex-direction:column;
+    flex-wrap:nowrap;
+    justify-content:center;
+    align-items:flex-start;
+    gap:2px;
+    min-width:0;
+    grid-area:1/1;
+  }
+  .site-header.branding-header .clan-wordmark{width:145px;grid-area:auto}
+  .site-header.branding-header .header-resource-links{
+    grid-area:auto;
+    flex-wrap:nowrap;
+    gap:3px;
+    max-width:100%;
+  }
+  .branding-header .header-resource-links .header-resource-button{
+    min-height:22px;
+    padding:2px 6px;
+    line-height:1.2;
+    white-space:nowrap;
+  }
+  .branding-header .header-controls{
+    display:grid;
+    grid-area:1/2;
+    grid-template-columns:auto auto;
+    grid-template-areas:"presence month" "writer settings";
+    gap:4px;
+    justify-items:stretch;
+    align-items:center;
+  }
+  .branding-header .header-controls .online-presence{grid-area:presence;min-height:25px}
+  .branding-header .header-controls .month-select{grid-area:month;width:84px;max-width:84px;min-height:25px;padding:2px 0}
+  .branding-header .header-controls .header-write{grid-area:writer;min-height:30px;padding:4px 6px;white-space:nowrap}
+  .branding-header .header-controls .header-settings{grid-area:settings;min-height:30px;padding:4px 6px}
+  .branding-header .header-settings span{display:inline}
+  .branding-header .sample-label{display:none}
+}
+@media(max-width:370px){
+  .site-header.branding-header{padding-left:10px;padding-right:10px;gap:6px}
+  .site-header.branding-header .clan-wordmark{width:134px}
+  .branding-header .header-resource-links .header-resource-button{padding-left:5px;padding-right:5px}
+  .branding-header .header-controls .month-select{width:78px;max-width:78px}
+}

@@ -157,7 +157,7 @@ check('compact reading keeps portrait headers, visible resources and precise sou
  assert.equal((grid.match(/class="set-character-face"/g)||[]).length,5);assert.equal((grid.match(/type="checkbox"/g)||[]).length,t.rows.length*6);
  assert.ok(!grid.includes('본문 클릭 후'));assert.ok(!grid.includes('<th>'+t.party[0]+'</th>'));
  imported.ext.workGroup='main';imported.ui.libraryOpen=true;const workspace=imported.completeWorkspace();
- assert.ok(workspace.includes('work-library expanded'));assert.ok(!workspace.includes('workspace-resources'));const resources=imported.headerResourceButtons();assert.equal((resources.match(/class="button header-resource-button"/g)||[]).length,4);assert.ok(resources.includes('>기존버전</a>'));for(const name of ['망령','세미','이월'])assert.ok(resources.includes('>'+name+'</a>'));
+ assert.ok(workspace.includes('work-library expanded'));assert.ok(!workspace.includes('workspace-resources'));const resources=imported.headerResourceButtons();assert.equal((resources.match(/class="button header-resource-button"/g)||[]).length,3);assert.ok(!resources.includes('legacy.html'));assert.ok(imported.settingsDisplay().includes('href="https://priconne.pages.dev/legacy.html"'));for(const name of ['망령','세미','이월'])assert.ok(resources.includes('>'+name+'</a>'));
  for(const link of importedData.communityLinks)assert.ok(resources.includes('href="'+link.url+'"'));
  assert.equal(imported.tacticDamageLabel({damage:1.56}),'1.6');assert.equal(imported.tacticDamageLabel({damage:.38}),'0.4');
  const rate=importedData.bossSettings[0].contribution[4];importedData.bossSettings[0].contribution[4]=1.234567;
