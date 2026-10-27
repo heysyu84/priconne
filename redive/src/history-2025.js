@@ -11,11 +11,16 @@ function oldResumeOpen(month){
  const request=++oldResumeRequest;
  fetch(new URL('./history-'+month.slice(0,4)+'/'+month+'.json',import.meta.url),{cache:'force-cache'}).then(r=>{if(!r.ok)throw Error('이력서 기록을 불러오지 못했습니다.');return r.json();}).then(d=>{if(request!==oldResumeRequest)return;if(d.month!==month||!Array.isArray(d.members)||!Array.isArray(d.logs))throw Error('이력서 자료 형식 오류');oldResumeData=d;render();}).catch(e=>{if(request===oldResumeRequest){oldResumeError=e.message;render();}});
 }
+function oldResumePersonButton(p){
+ return '<button type="button" class="text-button member-link" data-action="old-resume-person" data-name="'+X(p.name)+'">'+X(p.name)+'</button>';
+}
 function oldResumeTable(d){
- const order=[...d.members].sort((a,b)=>(a[oldResumeSort+'Rank']||999)-(b[oldResumeSort+'Rank']||999));
- const sort='<div class="toolbar"><div class="toolbar-left">'+[['damage','피해량'],['contribution','기여도'],['game','인게임']].map(([key,title])=>'<button type="button" class="button '+(oldResumeSort===key?'selected':'')+'" data-action="old-resume-sort" data-value="'+key+'">'+title+' 순위</button>').join('')+'</div></div>';
- const rows=order.map(p=>'<tr><td class="center">'+(p[oldResumeSort+'Rank']||'—')+'</td><td><button type="button" class="text-button member-link" data-action="old-resume-person" data-name="'+X(p.name)+'">'+X(p.name)+'</button></td><td class="right numeric">'+nf(p.damage||0)+'</td><td class="right numeric">'+nf(p.contribution||0)+'</td><td class="right numeric">'+nf(p.game||0)+'</td></tr>');
- return sort+rowTable(['순위','클랜원','피해량','기여도','인게임'],rows,'exact-table')+oldResumeLink(d);
+ const metrics=[['game','인게임'],['contribution','기여도'],['damage','피해량']];
+ const sorted=key=>[...d.members].sort((a,b)=>(a[key+'Rank']||999)-(b[key+'Rank']||999)||a.name.localeCompare(b.name,'ko'));
+ const desktop='<div class="ranking-columns desktop-ranking">'+metrics.map(([key,label])=>'<section class="ranking-column"><h2>'+label+'</h2>'+rowTable(['순위','클랜원',label],sorted(key).map((p,i)=>'<tr><td class="center rank-cell desktop">'+(p[key+'Rank']||i+1)+'</td><td>'+oldResumePersonButton(p)+'</td><td class="right numeric"><strong>'+nf(p[key]||0)+'</strong></td></tr>'),'ranking-detail dense-table')+'</section>').join('')+'</div>';
+ const selected=metrics.find(([key])=>key===oldResumeSort)?.[0]||'game';
+ const mobile='<div class="table-wrap mobile-ranking"><table class="data-table ranking-unified"><thead><tr><th class="center">순위</th><th>클랜원</th>'+metrics.map(([key,label])=>'<th class="right" aria-sort="'+(selected===key?'descending':'none')+'"><button type="button" data-action="old-resume-sort" data-value="'+key+'">'+label+' '+(selected===key?'↓':'↕')+'</button></th>').join('')+'</tr></thead><tbody>'+sorted(selected).map(p=>'<tr><td class="center rank-cell">'+p[selected+'Rank']+'</td><td>'+oldResumePersonButton(p)+'</td>'+metrics.map(([key])=>'<td class="right numeric">'+nf(p[key]||0)+'</td>').join('')+'</tr>').join('')+'</tbody></table></div>';
+ return '<div class="toolbar"><span>5일차까지 · '+d.memberCount+'명</span>'+simpleButton('CSV','old-resume-csv')+'</div>'+desktop+mobile+oldResumeLink(d);
 }
 function oldResumeProfile(d){
  const p=d.members.find(x=>x.name===oldResumePerson)||d.members[0];if(!p)return '<p class="no-rows">이력서 없음</p>';
@@ -35,25 +40,27 @@ function oldResumeLogs(d){
  const paged='<div class="table-tools"><span>'+logs.length+'건 · '+oldResumePage+'/'+pages+'페이지</span><div><button type="button" class="button" data-action="old-resume-page" data-value="'+(oldResumePage-1)+'" '+(oldResumePage===1?'disabled':'')+'>이전</button><button type="button" class="button" data-action="old-resume-page" data-value="'+(oldResumePage+1)+'" '+(oldResumePage===pages?'disabled':'')+'>다음</button></div></div>';
  return filter+rowTable(['순번','일차','회차','보스','클랜원','실제 피해량','기여도','유형'],rows,'exact-table')+paged+oldResumeLink(d);
 }
+function oldResumeStats(d,logs){
+ return rowTable(['보스','공격 수','피해량 합계','평균 피해량','최고 피해량'],[1,2,3,4,5].map(boss=>{
+  const rows=logs.filter(e=>e.boss===boss),total=rows.reduce((n,e)=>n+e.actual,0);
+  return '<tr><td><span class="boss-stat-name"><span class="boss-tag" style="'+bossStyle(boss)+'">'+boss+'넴</span></span></td><td class="right">'+rows.length+'</td><td class="right numeric">'+nf(total)+'</td><td class="right numeric">'+nf(rows.length?Math.round(total/rows.length):0)+'</td><td class="right numeric">'+nf(Math.max(0,...rows.map(e=>e.actual)))+'</td></tr>';
+ }),'boss-statistics');
+}
 function oldResumeArchive(){
- const selector='<div class="archive-selector"><label for="archive-month">조회 월</label><select id="archive-month" class="select-field" data-input="v2-archive-month">'+Object.keys(data.seasons).sort().reverse().map(m=>'<option value="'+m+'">'+m.replace('-','년 ')+'월</option>').join('')+oldResumeOptions()+'</select><div class="subview-tabs">'+[['summary','요약'],['ranking','순위'],['profile','개인 이력'],['logs','배틀로그']].map(([k,title])=>'<button type="button" data-action="v2-archive-view" data-value="'+k+'" class="'+(ext.archiveView===k?'active':'')+'">'+title+'</button>').join('')+'</div></div>';
+ const years=Object.keys(data.seasons).sort().reverse();
+ const selector='<div class="archive-selector"><label for="archive-month">조회 월</label><select id="archive-month" class="select-field" data-input="v2-archive-month">'+years.map(month=>'<option value="'+month+'">'+month.replace('-','년 ')+'월</option>').join('')+oldResumeOptions()+'</select><div class="subview-tabs">'+[['summary','요약'],['logs','배틀로그'],['ranking','순위'],['profile','개인 이력'],['tactics','택틱']].map(([key,label])=>'<button type="button" data-action="v2-archive-view" data-value="'+key+'" class="'+(ext.archiveView===key?'active':'')+'">'+label+'</button>').join('')+'</div></div>';
  if(!oldResumeData)return selector+'<section class="sheet"><p class="no-rows">'+X(oldResumeError||'이력서 기록을 불러오는 중입니다.')+'</p></section>';
  const d=oldResumeData;
+ if(ext.archiveView==='logs')return selector+oldResumeLogs(d);
  if(ext.archiveView==='ranking')return selector+oldResumeTable(d);
  if(ext.archiveView==='profile')return selector+oldResumeProfile(d);
- if(ext.archiveView==='logs')return selector+oldResumeLogs(d);
- const m=oldResumeMeta(d.month),names=k=>(m?.winners?.[k]||[]).map(w=>w.rank+'위 '+X(w.name)).join(' · ')||'—';
- const totals=boardSection(d.month.slice(0,4)+'년 '+d.month.slice(-2)+'월 클랜 성적',rowTable(['항목','합계'],[
-  '<tr><td>피해량</td><td class="right numeric">'+nf(d.totals.damage)+'</td></tr>',
-  '<tr><td>기여도</td><td class="right numeric">'+nf(d.totals.contribution)+'</td></tr>',
-  '<tr><td>인게임 점수</td><td class="right numeric">'+nf(d.totals.game)+'</td></tr>'
- ]));
- const winners=boardSection('월별 수상',rowTable(['항목','1·2위'],[
-  '<tr><td>인게임</td><td>'+names('game')+'</td></tr>',
-  '<tr><td>기여도</td><td>'+names('contribution')+'</td></tr>',
-  '<tr><td>피해량</td><td>'+names('damage')+'</td></tr>'
- ]));
- return selector+'<dl class="archive-totals"><div><dt>클랜 순위</dt><dd>'+d.clanRank+'위</dd></div><div><dt>참가</dt><dd>'+d.memberCount+'명</dd></div><div><dt>공격 기록</dt><dd>'+d.logs.length+'건</dd></div></dl>'+totals+winners+oldResumeLink(d);
+ if(ext.archiveView==='tactics')return selector+boardSection('택틱', '<p class="no-rows">이력서에 포함된 택틱은 아직 사이트의 택틱 데이터 형식으로 이관되지 않았습니다.</p>')+oldResumeLink(d);
+ const details=(oldResumeIndex?.months||[]).map(m=>'<tr><td>'+m.month.replace('-','.')+'</td><td class="center">'+m.count+'명</td><td class="right numeric">'+nf(m.totals.game)+'</td><td class="center">'+m.rank+'위</td><td>확정</td><td>'+simpleButton('상세','old-resume-open',m.month,'quiet')+'</td></tr>');
+ const current=years.filter(m=>!(oldResumeIndex?.months||[]).some(o=>o.month===m)).map(month=>{const sum=seasonSummary(month);return '<tr><td>'+month.replace('-','.')+'</td><td class="center">'+sum.count+'명</td><td class="right numeric">'+nf(sum.gameTotal)+'</td><td class="center">'+(sum.rank?sum.rank+'위':'미입력')+'</td><td>'+(sum.sealed?'확정':'진행 중')+'</td><td>'+simpleButton('상세','archive-detail',month,'quiet')+'</td></tr>';});
+ const allRows=[...current,...details].sort((a,b)=>{const get=t=>t.match(/<td>(\d{4}\.\d{2})/)?.[1]||'';return get(b).localeCompare(get(a));});
+ return selector+'<dl class="archive-totals"><div><dt>클랜 순위</dt><dd>'+d.clanRank+'위</dd></div><div><dt>총 인게임 점수</dt><dd>'+nf(d.totals.game)+'</dd></div><div><dt>참가</dt><dd>'+d.memberCount+'명</dd></div><div><dt>공격</dt><dd>'+d.logs.length+'건</dd></div></dl>'+
+ boardSection('월별 기록',rowTable(['월','참가','인게임 점수','클랜 순위','결과','열기'],allRows,'archive-month-table exact-table'))+
+ boardSection('단계별 보스 통계',[2,3,4].map(stage=>'<details class="fold" '+(stage===4?'open':'')+'><summary>'+stage+'단계</summary>'+oldResumeStats(d,d.logs.filter(e=>e.stage===stage))+'</details>').join(''))+oldResumeLink(d);
 }
 const oldResumeBaseArchive=completeArchive;
 completeArchive=()=>oldResumeMonth?oldResumeArchive():oldResumeBaseArchive().replace('</select>',oldResumeOptions()+'</select>');
