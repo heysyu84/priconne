@@ -52,6 +52,7 @@
   border-color:var(--line);
 }
 .branding-header .header-controls{display:flex;justify-content:flex-end;min-width:0;gap:9px}
+.branding-header .month-select.current-month-label{display:inline-flex;align-items:center;justify-content:center;white-space:nowrap;cursor:default}
 .version-setting>.button{flex:none;white-space:nowrap}
 @media(max-width:760px){
   .site-header.branding-header{
