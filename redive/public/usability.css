@@ -925,3 +925,51 @@ form[data-form="v2-tactic"] #tactic-text{display:block;width:100%;min-width:0;mi
 .calculator-box .carry-estimate-metric>strong{font-size:18px;margin:0}
 .calculator-box .carry-estimate-summary>.button{white-space:nowrap;padding:6px 8px;font-size:11px;min-width:0}
 @media(max-width:760px){.carry-estimate-metric>span{font-size:11px}.carry-estimate-metric>strong{font-size:20px}.calculator-box .carry-estimate-metric>span{font-size:10px}.calculator-box .carry-estimate-metric>strong{font-size:17px}}
+
+
+/* The situation board follows the site's dark palette; boss identity colors stay intact. */
+:root[data-theme=dark] .battle-hud{
+  --hud-ink:var(--text);
+  --hud-muted:var(--muted);
+  --hud-line:var(--line);
+  color:var(--hud-ink);
+  background:var(--surface)!important;
+  border-color:var(--hud-line)!important;
+}
+:root[data-theme=dark] .battle-hud .hud-status-line,
+:root[data-theme=dark] .battle-hud .hud-status-line b,
+:root[data-theme=dark] .battle-hud .hud-chart-heading h2,
+:root[data-theme=dark] .battle-hud .hud-bar-row>strong,
+:root[data-theme=dark] .battle-hud .hud-ring strong,
+:root[data-theme=dark] .battle-hud .raid-name>strong,
+:root[data-theme=dark] .battle-hud .raid-life>strong{color:var(--hud-ink)}
+:root[data-theme=dark] .battle-hud .raid-banner{
+  color:var(--hud-ink);
+  background:color-mix(in srgb,var(--surface) 93%,var(--boss))!important;
+  border-color:color-mix(in srgb,var(--hud-line) 70%,var(--boss))!important;
+  border-bottom-color:var(--boss)!important;
+}
+:root[data-theme=dark] .battle-hud .raid-banner:hover{background:color-mix(in srgb,var(--surface) 87%,var(--boss))!important}
+:root[data-theme=dark] .battle-hud .raid-name>small,
+:root[data-theme=dark] .battle-hud .raid-heading small,
+:root[data-theme=dark] .battle-hud .raid-round,
+:root[data-theme=dark] .battle-hud .raid-life small,
+:root[data-theme=dark] .battle-hud .raid-life>span,
+:root[data-theme=dark] .battle-hud .raid-status,
+:root[data-theme=dark] .battle-hud .raid-phase,
+:root[data-theme=dark] .battle-hud .hud-chart-legend{color:var(--hud-muted)!important}
+:root[data-theme=dark] .battle-hud .raid-hp,
+:root[data-theme=dark] .battle-hud .raid-hp-track,
+:root[data-theme=dark] .battle-hud .raid-health-track,
+:root[data-theme=dark] .battle-hud .hud-bar-track{background:var(--wash)!important;border-color:var(--hud-line)!important}
+:root[data-theme=dark] .battle-hud .hud-charts{border-top-color:var(--hud-line)!important}
+:root[data-theme=dark] .battle-hud .hud-bar-row{color:var(--hud-ink)!important;background:var(--surface)!important;border-color:var(--hud-line)!important}
+:root[data-theme=dark] .battle-hud .hud-bar-row:hover{background:var(--wash)!important;border-color:var(--boss)!important}
+:root[data-theme=dark] .battle-hud .hud-ring-track{stroke:var(--hud-line)}
+:root[data-theme=dark] .battle-hud .hud-ring-value{stroke:var(--hud-ink)}
+:root[data-theme=dark] .battle-hud .hud-used-dot,
+:root[data-theme=dark] .battle-hud .hud-chart-legend i,
+:root[data-theme=dark] .battle-hud .hud-status-light,
+:root[data-theme=dark] .battle-hud .raid-status .state-dot{background:var(--hud-muted)!important}
+:root[data-theme=dark] .battle-hud .hud-chart-legend>span:nth-child(2)>i{background:repeating-linear-gradient(135deg,var(--hud-muted),var(--hud-muted) 2px,var(--surface) 2px,var(--surface) 3px)!important}
+:root[data-theme=dark] .battle-hud .hud-carry-bar{background:repeating-linear-gradient(135deg,var(--boss),var(--boss) 2px,var(--surface) 2px,var(--surface) 3px)!important}
