@@ -98,13 +98,42 @@ function reconcileOctober2020Awards(doc) {
   return corrected;
 }
 
+// The archived member ID 817922955229 used both names. Consolidate awards and historical winners once.
+function canonicalizeWaitingMember(doc){
+ const alias='대기중(1호기)',canonical='대기중';
+ const needsHistory=(doc.history||[]).some(entry=>Object.values(entry.winners||{}).some(list=>Array.isArray(list)&&list.some(person=>(typeof person==='string'?person:person?.name)===alias)));
+ const needsAwards=(doc.awards||[]).some(row=>row.name===alias);
+ if(!needsHistory&&!needsAwards)return null;
+ const copy=structuredClone(doc);
+ for(const entry of copy.history||[])for(const [metric,list]of Object.entries(entry.winners||{})){
+   if(!Array.isArray(list))continue;
+   entry.winners[metric]=list.map(person=>typeof person==='string'?(person===alias?canonical:person):person?.name===alias?{...person,name:canonical}:person);
+ }
+ if(Array.isArray(copy.awards)){
+   const groups=new Map();
+   for(const p of copy.awards){
+     const name=p.name===alias?canonical:p.name;
+     const target=groups.get(name);
+     if(!target){groups.set(name,{...p,name});continue;}
+     for(const metric of ['damage','contribution','game']){
+       target[metric]??=[0,0];
+       for(let place=0;place<2;place++)target[metric][place]=(Number(target[metric][place])||0)+(Number(p[metric]?.[place])||0);
+     }
+     target.total=(Number(target.total)||0)+(Number(p.total)||0);
+   }
+   copy.awards=[...groups.values()];
+ }
+ return copy;
+}
+
 async function seedOnce(db,initial) {
   const current=await db.prepare('SELECT revision,document FROM clan_state WHERE id = ?').bind('clan').first();
   if(current){
     const previous=JSON.parse(current.document);
     const juneReconciled=reconcileJune2020Awards(previous);
     const octoberReconciled=reconcileOctober2020Awards(juneReconciled||previous);
-    const reconciled=octoberReconciled||juneReconciled;
+    const waitingReconciled=canonicalizeWaitingMember(octoberReconciled||juneReconciled||previous);
+    const reconciled=waitingReconciled||octoberReconciled||juneReconciled;
     if(reconciled||initial.referenceVersion&&previous.referenceVersion!==initial.referenceVersion){
       const updated=initial.referenceVersion&&previous.referenceVersion!==initial.referenceVersion?applyRecordUpdates(reconciled||previous,initial):(reconciled||previous);
       const ids=new Set(previous.members.map(m=>m.id));

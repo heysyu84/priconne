@@ -137,6 +137,12 @@ historyResult=month=>{
  if(!entry||data.seasons[month]||month<'2024-01'&&(data.history||[]).some(h=>h.month===month))return historyResultBeforeImport(month);
  return {month,rank:entry.rank,count:entry.count,winners:entry.winners,sealed:true,changed:false};
 };
+// Normalize names in both stored results and the imported monthly Hall of Fame.
+const historyResultWithImports=historyResult;
+historyResult=month=>{
+ const result=historyResultWithImports(month);
+ return {...result,winners:Object.fromEntries(RESULT_METRICS.map(([metric])=>[metric,(result.winners?.[metric]||[]).map(person=>({...(typeof person==='string'?{name:person}:person),name:canonicalAwardName(typeof person==='string'?person:person.name)}))]))};
+};
 // DB award totals already include these years. Keep the common lifetime table;
 // adding separate imported-year award tables duplicated their presentation.
 async function oldResumePDF(preview){

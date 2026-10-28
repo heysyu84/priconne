@@ -122,6 +122,7 @@ completeArchive=()=>{
   return html.replace(/<th[^>]*data-label="열기"[^>]*>열기<\/th>/g,'').replace(/<td[^>]*data-label="열기"[^>]*>[\s\S]*?<\/td>/g,'');
 };
 
+const canonicalAwardName=name=>name==='대기중(1호기)'?'대기중':name;
 function historyMonths(){return [...new Set([...(data.history||[]).map(h=>h.month),...Object.keys(data.seasons)])].sort().reverse();}
 function historySeason(month){return month===ui.month?data:data.seasons[month];}
 function historyResult(month){
@@ -136,13 +137,26 @@ completeHistory=()=>rowTable(['월','클랜 순위','참가','인게임 1·2위'
 const JUNE_2020_WINNERS={damage:[{name:'루나',rank:1},{name:'슈',rank:2}],contribution:[{name:'루나',rank:1},{name:'SyN',rank:2}],game:[{name:'루나',rank:1},{name:'SyN',rank:2}]};
 const OCTOBER_2020_WINNERS={damage:[{name:'슈',rank:1},{name:'피직스',rank:2}],contribution:[{name:'피직스',rank:1},{name:'슈',rank:2}],game:[{name:'둥둥팡팡',rank:1},{name:'피직스',rank:2}]};
 function awardRows(){
-  const map=new Map((data.awards||[]).map(p=>[p.name,{...structuredClone(p),id:data.members.find(m=>m.name===p.name)?.id||p.name}]));
+  // Both names refer to the same UID (817922955229); combine past award counts, never double-list the player.
+  const map=new Map();
+  for(const source of data.awards||[]){
+    const name=canonicalAwardName(source.name);
+    let row=map.get(name);
+    if(!row){row={...structuredClone(source),name,id:data.members.find(m=>m.name===name||canonicalAwardName(m.name)===name)?.id||name};
+      for(const [metric] of RESULT_METRICS)row[metric]=[Number(row[metric]?.[0])||0,Number(row[metric]?.[1])||0];
+      row.total=Number(row.total)||0;map.set(name,row);
+    }else{
+      for(const [metric] of RESULT_METRICS)for(let place=0;place<2;place++)row[metric][place]+=Number(source[metric]?.[place])||0;
+      row.total+=Number(source.total)||0;
+    }
+  }
   for(const month of Object.keys(data.seasons)){
     if((data.history||[]).some(h=>h.month===month))continue;
     const result=historySeason(month).result;if(!result.sealed||!result.winners)continue;
     for(const [metric]of RESULT_METRICS)for(const [index,person]of(result.winners[metric]||[]).entries()){
-      if(!map.has(person.name))map.set(person.name,{id:person.id,name:person.name,game:[0,0],contribution:[0,0],damage:[0,0],total:0});
-      const row=map.get(person.name);row[metric][index]++;row.total++;
+      const name=canonicalAwardName(person.name);
+      if(!map.has(name))map.set(name,{id:data.members.find(m=>m.name===name)?.id||person.id||name,name,game:[0,0],contribution:[0,0],damage:[0,0],total:0});
+      const row=map.get(name);row[metric][index]++;row.total++;
     }
   }
   // Until the server-side correction completes, reconcile both verified historical months in the read-only view.
