@@ -8,7 +8,7 @@ export const PUBLIC_ORIGIN='https://priconne.pages.dev';
 export const RELEASE='20261028-missing-records04';
 export function canonicalHead(legacy=false){
   const page=legacy?'/legacy.html':'/';
-  return `<link rel="canonical" href="${PUBLIC_ORIGIN}${page}"><script>if(location.hostname==='heysyu84.github.io'){location.replace('${PUBLIC_ORIGIN}'+(location.pathname.replace(/^\\/priconne(?=\\/|$)/,'')||'/')+location.search+location.hash)}</script>`;
+  return `<link rel="canonical" href="${PUBLIC_ORIGIN}${page}"><script>if(location.hostname==='heysyu84.github.io'&&!new URLSearchParams(location.search).has('github-preview')){location.replace('${PUBLIC_ORIGIN}'+(location.pathname.replace(/^\\/priconne(?=\\/|$)/,'')||'/')+location.search+location.hash)}</script>`;
 }
 export function activateVersionLink(html){
   return html.replace(/<a class="btn sm version-link"[^>]*>신버전 열기<\/a>/g,`<a class="btn sm version-link" href="${PUBLIC_ORIGIN}/" aria-label="냥냥클랜 새 화면 열기">간편 버전</a>`).replace(/<button[^>]*class="btn sm version-pending"[^>]*>간편 버전[\s\S]*?<\/button>/g,`<a class="btn sm version-link" href="${PUBLIC_ORIGIN}/">간편 버전</a>`);
