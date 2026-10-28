@@ -2586,7 +2586,7 @@ function oldResumeOpen(month){
  oldResumeMonth=month;oldResumeData=null;oldResumeError='';oldResumePerson='__clan__';oldResumeSort='game';oldResumeDay=0;oldResumePage=1;oldResumeBoss=0;oldResumeSortDirection=-1;oldResumeLogType='all';oldResumeQuery='';oldResumeDetails=false;oldResumeSequence=false;oldResumeLogOrder='desc';oldResumeStage=0;oldResumeProfileDay=0;oldResumeMetric='damage';ext.archiveView='summary';
  nav('records','archive');
  const request=++oldResumeRequest;
- fetch(new URL('./history-'+month.slice(0,4)+'/'+month+'.json',import.meta.url),{cache:'force-cache'}).then(r=>{if(!r.ok)throw Error('이력서 기록을 불러오지 못했습니다.');return r.json();}).then(d=>{if(request!==oldResumeRequest)return;if(d.month!==month||!Array.isArray(d.members)||!Array.isArray(d.logs))throw Error('이력서 자료 형식 오류');oldResumeData=d;render();}).catch(e=>{if(request===oldResumeRequest){oldResumeError=e.message;render();}});
+ fetch(new URL('./history-'+month.slice(0,4)+'/'+month+'.json?v=20261028-missing-records04',import.meta.url),{cache:'force-cache'}).then(r=>{if(!r.ok)throw Error('이력서 기록을 불러오지 못했습니다.');return r.json();}).then(d=>{if(request!==oldResumeRequest)return;if(d.month!==month||!Array.isArray(d.members)||!Array.isArray(d.logs))throw Error('이력서 자료 형식 오류');oldResumeData=d;render();}).catch(e=>{if(request===oldResumeRequest){oldResumeError=e.message;render();}});
 }
 function oldResumePersonButton(p){
  return '<button type="button" class="text-button member-link" data-action="old-resume-person" data-name="'+X(p.name)+'">'+X(p.name)+'</button>';
