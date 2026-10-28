@@ -1810,6 +1810,11 @@ completeArchive=()=>{
   return html.replace(/<th[^>]*data-label="열기"[^>]*>열기<\/th>/g,'').replace(/<td[^>]*data-label="열기"[^>]*>[\s\S]*?<\/td>/g,'');
 };
 
+const canonicalAwardName=name=>name==='대기중(1호기)'?'대기중':name;
+// A missing record or deliberate dormancy is not a personal award.
+const HISTORICAL_NO_AWARD_MONTHS=new Set(['2019-07','2019-08','2019-09','2019-10','2019-11','2019-12','2020-01','2020-03','2020-05']);
+const historicalAwardNote=month=>month==='2020-01'?'신년 유이 동면':HISTORICAL_NO_AWARD_MONTHS.has(month)?'기록유실':'';
+const isNonPersonAward=name=>['기록유실','기록 유실','신년 유이 동면'].includes(name);
 function historyMonths(){return [...new Set([...(data.history||[]).map(h=>h.month),...Object.keys(data.seasons)])].sort().reverse();}
 function historySeason(month){return month===ui.month?data:data.seasons[month];}
 function historyResult(month){
@@ -1817,18 +1822,62 @@ function historyResult(month){
   if(!season)return {month,rank:stored?.clanRank,count:stored?.memberCount||0,winners:Object.fromEntries(RESULT_METRICS.map(([metric])=>[metric,(stored?.winners?.[metric]||[]).map(name=>({name}))])),sealed:true,stored};
   const summary=seasonSummary(month);return {month,rank:season.result.rank??stored?.clanRank,count:summary.count,winners:season.result.winners||summary.winners,sealed:!!season.result.sealed,changed:season.result.sealed&&season.result.fingerprint!==resultFingerprint(season.logs),stored};
 }
-completeHistory=()=>rowTable(['월','클랜 순위','참가','인게임 1·2위','기여도 1·2위','피해량 1·2위','결과'],historyMonths().map(month=>{
+completeHistory=()=>rowTable(['월','클랜 순위','참가','인게임 1·2위','기여도 1·2위','피해량 1·2위','결과'],historyMonths().filter(month=>!(month>='2019-07'&&month<='2019-11')).map(month=>{
   const result=historyResult(month),season=historySeason(month);
+  const note=historicalAwardNote(month);
+  if(note){
+    const grouped=month==='2019-12',label=grouped?'2019.07~12':month.replace('-','.');
+    // The detailed month-by-month ranks are preserved separately under Past Records.
+    const rank=grouped||month==='2020-01'?'—':Number.isFinite(result.rank)?result.rank+'위':result.rank||'—';
+    return '<tr class="honors-no-award"><td>'+X(label)+'</td><td class="center">'+X(rank)+'</td><td class="center">—</td><td colspan="3" class="honors-note-cell" data-label="수상 내역"><strong>'+X(note)+'</strong></td><td class="center" data-label="결과">—</td></tr>';
+  }
   return `<tr><td>${month.replace('-','.')}</td><td>${adminMode()?`<button class="text-button" data-action="u-history-rank" data-id="${month}">${Number.isFinite(result.rank)?result.rank+'위':result.rank||'입력'}</button>`:Number.isFinite(result.rank)?result.rank+'위':result.rank||'—'}</td><td class="center">${result.count||'—'}</td>${RESULT_METRICS.map(([metric])=>`<td class="winner-cell">${winnerText(result.winners,metric)}</td>`).join('')}<td>${season&&adminMode()?simpleButton(result.changed?'다시 확정':result.sealed?'확정됨':'결과 확정','u-confirm-result',month,result.sealed?'quiet':'primary'):`<span class="result-status ${result.sealed?'sealed':''}">${result.sealed?'확정':'미확정'}</span>`}</td></tr>`;
 }),'history-table exact-table');
+const JUNE_2020_WINNERS={damage:[{name:'루나',rank:1},{name:'슈',rank:2}],contribution:[{name:'루나',rank:1},{name:'SyN',rank:2}],game:[{name:'루나',rank:1},{name:'SyN',rank:2}]};
+const OCTOBER_2020_WINNERS={damage:[{name:'슈',rank:1},{name:'피직스',rank:2}],contribution:[{name:'피직스',rank:1},{name:'슈',rank:2}],game:[{name:'둥둥팡팡',rank:1},{name:'피직스',rank:2}]};
 function awardRows(){
-  const map=new Map((data.awards||[]).map(p=>[p.name,{...structuredClone(p),id:data.members.find(m=>m.name===p.name)?.id||p.name}]));
+  // Both names refer to the same UID (817922955229); combine past award counts, never double-list the player.
+  const map=new Map();
+  for(const source of data.awards||[]){
+    if(isNonPersonAward(source.name))continue;
+    const name=canonicalAwardName(source.name);
+    let row=map.get(name);
+    if(!row){row={...structuredClone(source),name,id:data.members.find(m=>m.name===name||canonicalAwardName(m.name)===name)?.id||name};
+      for(const [metric] of RESULT_METRICS)row[metric]=[Number(row[metric]?.[0])||0,Number(row[metric]?.[1])||0];
+      row.total=Number(row.total)||0;map.set(name,row);
+    }else{
+      for(const [metric] of RESULT_METRICS)for(let place=0;place<2;place++)row[metric][place]+=Number(source[metric]?.[place])||0;
+      row.total+=Number(source.total)||0;
+    }
+  }
   for(const month of Object.keys(data.seasons)){
     if((data.history||[]).some(h=>h.month===month))continue;
     const result=historySeason(month).result;if(!result.sealed||!result.winners)continue;
+    if(HISTORICAL_NO_AWARD_MONTHS.has(month))continue;
     for(const [metric]of RESULT_METRICS)for(const [index,person]of(result.winners[metric]||[]).entries()){
-      if(!map.has(person.name))map.set(person.name,{id:person.id,name:person.name,game:[0,0],contribution:[0,0],damage:[0,0],total:0});
-      const row=map.get(person.name);row[metric][index]++;row.total++;
+      if(isNonPersonAward(person.name))continue;
+      const name=canonicalAwardName(person.name);
+      if(!map.has(name))map.set(name,{id:data.members.find(m=>m.name===name)?.id||person.id||name,name,game:[0,0],contribution:[0,0],damage:[0,0],total:0});
+      const row=map.get(name);row[metric][index]++;row.total++;
+    }
+  }
+  // Until the server-side correction completes, reconcile both verified historical months in the read-only view.
+  const nameOf=p=>typeof p==='string'?p:p?.name;
+  for(const [month,confirmed] of [['2020-06',JUNE_2020_WINNERS],['2020-10',OCTOBER_2020_WINNERS]]){
+    const old=(data.history||[]).find(h=>h.month===month)?.winners;
+    if(!old)continue;
+    for(const [metric] of RESULT_METRICS){
+      const correct=confirmed[metric];
+      for(let place=0;place<2;place++){
+        const before=nameOf(old[metric]?.[place]),after=correct[place].name;
+        if(!before||before===after)continue;
+        const previous=map.get(before);
+        if(!previous||Number(previous[metric]?.[place])<1)continue;
+        previous[metric][place]--;previous.total=Math.max(0,previous.total-1);
+        let next=map.get(after);
+        if(!next){next={id:data.members.find(m=>m.name===after)?.id||after,name:after,game:[0,0],contribution:[0,0],damage:[0,0],total:0};map.set(after,next);}
+        next[metric][place]++;next.total++;
+      }
     }
   }
   return [...map.values()].sort((a,b)=>b.total-a.total||a.name.localeCompare(b.name,'ko'));
@@ -2514,7 +2563,7 @@ const recordDays=d=>d.dayDetailAvailable===false?0:Math.max(1,Number(d.days)||5)
 const recordScope=d=>d.coverage==='personal'?'보관 기록 전체':'클랜 전체';
 const recordState=entry=>entry.coverage==='personal'?'개인 기록':entry.coverage==='summary'?'순위 보관':'확정';
 function recordCoverageNotice(d){
- const text=d.coverage==='summary'?'이 달은 클랜 순위와 연혁만 보관되어 있습니다. 개인 이력과 공격 상세 자료는 남아 있지 않습니다.':d.coverage==='personal'?(d.scopeName||'일부 클랜원')+'의 개인 기록만 보관되어 있습니다. 클랜 전체 합계와 순위 자료는 아닙니다.':d.awardSnapshotDiffers?'보관된 전체 공격으로 월 누적을 복원했습니다. 명예의 전당의 당시 조회 집계와 차이가 있어 기존 수상 기록은 유지했습니다.':d.dayDetailAvailable===false?'일차 정보가 남아 있지 않아 월 누적으로 표시합니다.':'';
+ const text=d.coverage==='summary'?'이 달은 클랜 순위와 연혁만 보관되어 있습니다. 개인 이력과 공격 상세 자료는 남아 있지 않습니다.':d.coverage==='personal'?(d.scopeName||'일부 클랜원')+'의 개인 기록만 보관되어 있습니다. 클랜 전체 합계와 순위 자료는 아닙니다.':d.dayDetailAvailable===false?'일차 정보가 남아 있지 않아 월 누적으로 표시합니다.':'';
  return text?'<p class="field-help record-coverage" role="note">'+X(text)+'</p>':'';
 }
 
@@ -2531,7 +2580,7 @@ function recordMonthTable(){
   return '<tr><td><button type="button" class="text-button" data-action="'+action+'" data-id="'+month+'">'+month.replace('-','.')+'</button></td><td class="center">'+(Number.isFinite(sum.count)?sum.count+'명':'—')+'</td><td class="right numeric">'+recordNumber(sum.gameTotal)+'</td><td class="center">'+recordRank(sum.rank,imported?.rankLabel)+'</td><td><span class="result-status '+(sum.sealed?'sealed':'')+'">'+(imported?recordState(imported):sum.sealed?'확정':'진행 중')+'</span></td></tr>';
  }),'archive-month-table exact-table'));
 }
-const oldResumeLink=d=>!d.source?'':'<p class="field-help">Google 시트의 '+X(d.month.slice(0,4))+'년 원본 기록 · 읽기 전용 <a target="_blank" rel="noopener noreferrer" href="'+X(d.source)+'">원본 이력서 보기</a></p>';
+const oldResumeLink=d=>!d.source?'':'<p class="field-help">Google 시트의 '+X(d.month.slice(0,4))+'년 원본 기록 · 읽기 전용 <a target="_blank" rel="noopener noreferrer" href="'+X(d.source)+'">'+(d.month==='2020-10'?'원본 배틀로그 보기':'원본 이력서 보기')+'</a></p>';
 function oldResumeOpen(month){
  if(!oldResumeMonths.includes(month))return;
  oldResumeMonth=month;oldResumeData=null;oldResumeError='';oldResumePerson='__clan__';oldResumeSort='game';oldResumeDay=0;oldResumePage=1;oldResumeBoss=0;oldResumeSortDirection=-1;oldResumeLogType='all';oldResumeQuery='';oldResumeDetails=false;oldResumeSequence=false;oldResumeLogOrder='desc';oldResumeStage=0;oldResumeProfileDay=0;oldResumeMetric='damage';ext.archiveView='summary';
@@ -2634,9 +2683,20 @@ completeArchive=()=>{
 const historyMonthsBeforeImport=historyMonths,historyResultBeforeImport=historyResult;
 historyMonths=()=>[...new Set([...historyMonthsBeforeImport(),...(oldResumeIndex?.months||[]).map(m=>m.month)])].sort().reverse();
 historyResult=month=>{
+ if(month==='2020-06'||month==='2020-10'){
+  const existing=historyResultBeforeImport(month),entry=oldResumeMeta(month);
+  return {...existing,month,rank:entry?.rank??existing.rank,count:entry?.count??existing.count,winners:month==='2020-06'?JUNE_2020_WINNERS:OCTOBER_2020_WINNERS,sealed:true,changed:false};
+ }
  const entry=oldResumeMeta(month);
  if(!entry||data.seasons[month]||month<'2024-01'&&(data.history||[]).some(h=>h.month===month))return historyResultBeforeImport(month);
  return {month,rank:entry.rank,count:entry.count,winners:entry.winners,sealed:true,changed:false};
+};
+// Normalize names in both stored results and the imported monthly Hall of Fame.
+const historyResultWithImports=historyResult;
+historyResult=month=>{
+ const result=historyResultWithImports(month);
+ if(HISTORICAL_NO_AWARD_MONTHS.has(month))return {...result,winners:{damage:[],contribution:[],game:[]}};
+ return {...result,winners:Object.fromEntries(RESULT_METRICS.map(([metric])=>[metric,(result.winners?.[metric]||[]).map(person=>({...(typeof person==='string'?{name:person}:person),name:canonicalAwardName(typeof person==='string'?person:person.name)}))]))};
 };
 // DB award totals already include these years. Keep the common lifetime table;
 // adding separate imported-year award tables duplicated their presentation.
