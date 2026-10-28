@@ -131,7 +131,7 @@ function historyResult(month){
 }
 completeHistory=()=>rowTable(['월','클랜 순위','참가','인게임 1·2위','기여도 1·2위','피해량 1·2위','결과'],historyMonths().map(month=>{
   const result=historyResult(month),season=historySeason(month);
-  return `<tr><td>${month.replace('-','.')}</td><td>${adminMode()?`<button class="text-button" data-action="u-history-rank" data-id="${month}">${result.rank?result.rank+'위':'입력'}</button>`:result.rank?result.rank+'위':'—'}</td><td class="center">${result.count||'—'}</td>${RESULT_METRICS.map(([metric])=>`<td class="winner-cell">${winnerText(result.winners,metric)}</td>`).join('')}<td>${season&&adminMode()?simpleButton(result.changed?'다시 확정':result.sealed?'확정됨':'결과 확정','u-confirm-result',month,result.sealed?'quiet':'primary'):`<span class="result-status ${result.sealed?'sealed':''}">${result.sealed?'확정':'미확정'}</span>`}</td></tr>`;
+  return `<tr><td>${month.replace('-','.')}</td><td>${adminMode()?`<button class="text-button" data-action="u-history-rank" data-id="${month}">${Number.isFinite(result.rank)?result.rank+'위':result.rank||'입력'}</button>`:Number.isFinite(result.rank)?result.rank+'위':result.rank||'—'}</td><td class="center">${result.count||'—'}</td>${RESULT_METRICS.map(([metric])=>`<td class="winner-cell">${winnerText(result.winners,metric)}</td>`).join('')}<td>${season&&adminMode()?simpleButton(result.changed?'다시 확정':result.sealed?'확정됨':'결과 확정','u-confirm-result',month,result.sealed?'quiet':'primary'):`<span class="result-status ${result.sealed?'sealed':''}">${result.sealed?'확정':'미확정'}</span>`}</td></tr>`;
 }),'history-table exact-table');
 function awardRows(){
   const map=new Map((data.awards||[]).map(p=>[p.name,{...structuredClone(p),id:data.members.find(m=>m.name===p.name)?.id||p.name}]));

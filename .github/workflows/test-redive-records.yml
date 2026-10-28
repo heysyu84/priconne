@@ -28,10 +28,13 @@ jobs:
         run: |
           node --check redive/public/app.js
           node --check docs/compact/app.js
+          node redive/scripts/check-tactic-body-save.mjs
           node redive/scripts/check-archive-startup.mjs
+          node redive/scripts/check-historical-resumes.mjs
           node redive/scripts/check-shared-client.mjs
           node redive/scripts/check-carry-time-filter.mjs
           node redive/scripts/check-historical-coefficients.mjs
           node redive/scripts/check-inline-logs.mjs
           node redive/scripts/check-ui-fixes.mjs
           node redive/scripts/check-usability.mjs
+

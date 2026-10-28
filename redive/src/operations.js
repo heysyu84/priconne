@@ -88,7 +88,7 @@ completeProfile=()=>{
 };
 async function downloadCurrentProfile(target,preview=false){
   const events=wholeProfileEvents(),all=ui.profile==='__clan__',m=all?null:currentMember(ui.profile);
-  const module=await import('./report-pdf.mjs?v=20261027-summary04');
+  const module=await import('./report-pdf.mjs?v=20261028-history01');
   return module[preview?'previewProfilePdf':'downloadProfilePdf']({target,downloadLabel:copyFor('PDF 저장'),copy:copyFor,month:ui.month,day:data.rules.days,days:data.rules.days,all,p:m?{...m,tenureMonths:memberTenure(m)}:null,bosses:data.bossSettings,events,contribution:e=>e.contribution||0,summary:{name:all?'클랜 전체':m.name,damage:events.reduce((s,e)=>s+e.actual,0),contribution:events.reduce((s,e)=>s+(e.contribution||0),0),game:events.reduce((s,e)=>s+e.game,0)}});
 }
 
