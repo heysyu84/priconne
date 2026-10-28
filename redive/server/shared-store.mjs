@@ -72,11 +72,39 @@ function reconcileJune2020Awards(doc) {
   return corrected;
 }
 
+// Correct October 2020 awards against the original seven-day battle log ranking board.
+function reconcileOctober2020Awards(doc) {
+  const record=(doc.history||[]).find(row=>row.month==='2020-10');
+  if(!record?.winners||!Array.isArray(doc.awards))return null;
+  const canonical={damage:['슈','피직스'],contribution:['피직스','슈'],game:['둥둥팡팡','피직스']};
+  const nameOf=item=>typeof item==='string'?item:item?.name;
+  if(Object.entries(canonical).some(([metric])=>!Array.isArray(record.winners[metric])||record.winners[metric].length<2))return null;
+  if(Object.entries(canonical).every(([metric,names])=>names.every((name,i)=>nameOf(record.winners[metric][i])===name)))return null;
+  const corrected=structuredClone(doc),rows=new Map(corrected.awards.map(row=>[row.name,row]));
+  for(const [metric,names] of Object.entries(canonical))for(let i=0;i<2;i++){
+    const before=nameOf(record.winners[metric][i]),after=names[i];
+    if(before===after)continue;
+    if(!before||Number(rows.get(before)?.[metric]?.[i])<1)return null;
+  }
+  for(const [metric,names] of Object.entries(canonical))for(let i=0;i<2;i++){
+    const before=nameOf(record.winners[metric][i]),after=names[i];
+    if(before===after)continue;
+    const prior=rows.get(before);prior[metric][i]--;prior.total=Math.max(0,(Number(prior.total)||0)-1);
+    let next=rows.get(after);
+    if(!next){next={name:after,game:[0,0],contribution:[0,0],damage:[0,0],total:0};rows.set(after,next);corrected.awards.push(next);}
+    next[metric][i]++;next.total++;
+  }
+  corrected.history.find(row=>row.month==='2020-10').winners=Object.fromEntries(Object.entries(canonical).map(([metric,names])=>[metric,[...names]]));
+  return corrected;
+}
+
 async function seedOnce(db,initial) {
   const current=await db.prepare('SELECT revision,document FROM clan_state WHERE id = ?').bind('clan').first();
   if(current){
     const previous=JSON.parse(current.document);
-    const reconciled=reconcileJune2020Awards(previous);
+    const juneReconciled=reconcileJune2020Awards(previous);
+    const octoberReconciled=reconcileOctober2020Awards(juneReconciled||previous);
+    const reconciled=octoberReconciled||juneReconciled;
     if(reconciled||initial.referenceVersion&&previous.referenceVersion!==initial.referenceVersion){
       const updated=initial.referenceVersion&&previous.referenceVersion!==initial.referenceVersion?applyRecordUpdates(reconciled||previous,initial):(reconciled||previous);
       const ids=new Set(previous.members.map(m=>m.id));

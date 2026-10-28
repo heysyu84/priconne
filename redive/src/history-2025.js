@@ -26,7 +26,7 @@ function recordMonthTable(){
   return '<tr><td><button type="button" class="text-button" data-action="'+action+'" data-id="'+month+'">'+month.replace('-','.')+'</button></td><td class="center">'+(Number.isFinite(sum.count)?sum.count+'명':'—')+'</td><td class="right numeric">'+recordNumber(sum.gameTotal)+'</td><td class="center">'+recordRank(sum.rank,imported?.rankLabel)+'</td><td><span class="result-status '+(sum.sealed?'sealed':'')+'">'+(imported?recordState(imported):sum.sealed?'확정':'진행 중')+'</span></td></tr>';
  }),'archive-month-table exact-table'));
 }
-const oldResumeLink=d=>!d.source?'':'<p class="field-help">Google 시트의 '+X(d.month.slice(0,4))+'년 원본 기록 · 읽기 전용 <a target="_blank" rel="noopener noreferrer" href="'+X(d.source)+'">원본 이력서 보기</a></p>';
+const oldResumeLink=d=>!d.source?'':'<p class="field-help">Google 시트의 '+X(d.month.slice(0,4))+'년 원본 기록 · 읽기 전용 <a target="_blank" rel="noopener noreferrer" href="'+X(d.source)+'">'+(d.month==='2020-10'?'원본 배틀로그 보기':'원본 이력서 보기')+'</a></p>';
 function oldResumeOpen(month){
  if(!oldResumeMonths.includes(month))return;
  oldResumeMonth=month;oldResumeData=null;oldResumeError='';oldResumePerson='__clan__';oldResumeSort='game';oldResumeDay=0;oldResumePage=1;oldResumeBoss=0;oldResumeSortDirection=-1;oldResumeLogType='all';oldResumeQuery='';oldResumeDetails=false;oldResumeSequence=false;oldResumeLogOrder='desc';oldResumeStage=0;oldResumeProfileDay=0;oldResumeMetric='damage';ext.archiveView='summary';
@@ -129,9 +129,9 @@ completeArchive=()=>{
 const historyMonthsBeforeImport=historyMonths,historyResultBeforeImport=historyResult;
 historyMonths=()=>[...new Set([...historyMonthsBeforeImport(),...(oldResumeIndex?.months||[]).map(m=>m.month)])].sort().reverse();
 historyResult=month=>{
- if(month==='2020-06'){
+ if(month==='2020-06'||month==='2020-10'){
   const existing=historyResultBeforeImport(month),entry=oldResumeMeta(month);
-  return {...existing,month,rank:entry?.rank??existing.rank,count:entry?.count??existing.count,winners:JUNE_2020_WINNERS,sealed:true,changed:false};
+  return {...existing,month,rank:entry?.rank??existing.rank,count:entry?.count??existing.count,winners:month==='2020-06'?JUNE_2020_WINNERS:OCTOBER_2020_WINNERS,sealed:true,changed:false};
  }
  const entry=oldResumeMeta(month);
  if(!entry||data.seasons[month]||month<'2024-01'&&(data.history||[]).some(h=>h.month===month))return historyResultBeforeImport(month);
