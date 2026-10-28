@@ -3,7 +3,7 @@ const adminMode=()=>!!data.settings.editable&&(!syncState.started||syncState.rea
 const RESULT_METRICS=[['game','인게임'],['contribution','기여도'],['damage','피해량']];
 subpageNames.tactics.external='이월 계산기';
 subpageNames.records.history='명예의 전당';
-subpageNames.records.hall='수상 횟수';
+subpageNames.records.hall='명예의 전당';
 copyRegistry.add('이월 계산기');copyRegistry.add('수상 횟수');
 
 function ensureCharacterReference(){
@@ -47,7 +47,20 @@ fullClan=()=>{
   if(ui.tabs.clan==='characters'&&!adminMode())ui.tabs.clan='members';
   return titleBar(ui.tabs.clan==='settings'?'설정':'클랜 DB')+pageTabs([['members','클랜원'],['alumni','역대 클랜원'],['rates','기여도'],['future','미래 보스'],...(adminMode()?[['characters','캐릭터·초상화']]:[]),['settings','설정']])+({members:()=>completeRoster(false),alumni:()=>completeRoster(true),rates:completeRates,future:futureBossSettings,characters:characterLibrary,settings:completeSettings}[ui.tabs.clan]||(()=>completeRoster(false)))();
 };
-fullRecords=()=>titleBar('기록·통계',ui.tabs.records==='profile'?'':simpleButton('인쇄','print'))+pageTabs([['ranking','월간 순위'],['profile','개인 이력'],['archive','과거 기록'],['history','명예의 전당'],['hall','수상 횟수'],['chronicle','아카이브']])+({ranking:completeRanking,profile:completeProfile,archive:completeArchive,history:completeHistory,hall:completeHall,chronicle:completeClanArchive}[ui.tabs.records]||completeRanking)();
+fullRecords=()=>{
+  if(ui.tabs.records==='hall'){ui.tabs.records='history';ext.honorsView='counts';history.replaceState(null,'','#records/history/counts');}
+  return titleBar('기록·통계',ui.tabs.records==='profile'?'':simpleButton('인쇄','print'))+pageTabs([['ranking','월간 순위'],['profile','개인 이력'],['archive','과거 기록'],['history','명예의 전당'],['chronicle','아카이브']])+({ranking:completeRanking,profile:completeProfile,archive:completeArchive,history:completeHonors,chronicle:completeClanArchive}[ui.tabs.records]||completeRanking)();
+};
+function completeHonors(){
+  const view=ext.honorsView==='counts'?'counts':'monthly';
+  return `<div class="subview-tabs honors-views" role="group" aria-label="명예의 전당 보기">${[['monthly','월별 수상'],['counts','수상 횟수']].map(([key,label])=>`<button type="button" data-action="honors-view" data-value="${key}" class="${view===key?'active':''}" aria-pressed="${view===key}">${label}</button>`).join('')}</div>`+(view==='counts'?completeHall():completeHistory());
+}
+document.addEventListener('click',event=>{
+  const button=event.target.closest('[data-action]');if(!button||button.dataset.action!=='honors-view')return;
+  const view=button.dataset.value;if(!['monthly','counts'].includes(view))return;
+  event.preventDefault();event.stopImmediatePropagation();ext.honorsView=view;ui.tabs.records='history';
+  history.replaceState(null,'','#records/history'+(view==='counts'?'/counts':''));render();
+},true);
 
 function isVideoUrl(value){try{const url=new URL(value);return /^https?:$/.test(url.protocol)&&/(^|\.)(youtube\.com|youtu\.be|nicovideo\.jp|bilibili\.com|vimeo\.com)$/.test(url.hostname);}catch{return false;}}
 function videoButton(t,small=false,context=''){

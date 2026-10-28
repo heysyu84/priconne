@@ -70,7 +70,7 @@ await check('imported months share the chooser, lifetime awards and full histori
 });
 await check('the clan archive contains sourced events and excludes membership counts',()=>{
  const app=runtimeFixture();app.ui.section='records';app.ui.tabs.records='chronicle';const html=app.fullRecords();
- assert.match(html,/리리다이브/);assert.match(html,/궁극 연성/);assert.match(html,/2025\.10/);assert.match(html,/gid=1411801387/);
+ assert.match(html,/리리다이브/);assert.match(html,/궁극 연성/);assert.match(html,/2025\.10/);assert.match(app.evaluate('CLAN_ARCHIVE_SOURCE'),/gid=1411801387/);assert.doesNotMatch(html,/원본|메코/);assert.match(html,/메이코패스/);
  assert.doesNotMatch(html,/\d+인|\d+명|클랜원 수|참가 인원/);
 });
 console.log(checks+' startup/archive regression checks passed');

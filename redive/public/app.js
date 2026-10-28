@@ -90,8 +90,8 @@ function dayButtons(){const today=currentBattleDay();return `<div class="day-swi
 function pageTabs(items,group=ui.section){return `<div class="page-tabs" role="tablist" aria-label="${X(NAV.find(n=>n[0]===group)?.[1]||'화면')} 하위 메뉴">${items.map(([id,title,count])=>`<button role="tab" aria-selected="${ui.tabs[group]===id}" class="${ui.tabs[group]===id?'active':''}" data-action="tab" data-group="${group}" data-value="${id}">${title}${count!=null?`<span class="count">${count}</span>`:''}</button>`).join('')}</div>`;}
 function pageHeading(title,eyebrow,description='',action='add-log'){return `<div class="page-heading"><div><div class="eyebrow"><i></i>${eyebrow}</div><h1>${title}</h1>${description?`<p class="page-description">${description}</p>`:''}</div><div class="heading-actions">${dayButtons()}${action?`<button class="button primary" data-action="${action}">${icon('plus')}${action==='new-tactic'?'새 택틱':action==='add-member'?'클랜원 추가':'공격 기록'}</button>`:''}</div></div>`;}
 function empty(title,description='',button=''){return `<div class="empty-state"><div class="empty-symbol">${icon('leaf')}</div><strong>${title}</strong><p>${description}</p>${button}</div>`;}
-function nav(section,tab){if(section==='battle'){section='overview';tab='logs';}if(section!=='records'&&ui.month!==Object.keys(data.seasons).sort().at(-1))activateSeason(Object.keys(data.seasons).sort().at(-1));if(section==='tactics'&&!tab)tab='workspace';if(section==='tactics'&&ui.section!=='tactics'){ext.workGroup='main';ext.carryTimeRange='all';}if(section==='overview'&&(ui.section!=='overview'||!tab))ui.day=defaultBattleDay();ui.section=section;if(tab)ui.tabs[section]=tab;ui.query='';ui.boss=0;ui.page=1;const value=`${section}${ui.tabs[section]?'/'+ui.tabs[section]:''}`;if(location.hash.slice(1)!==value)history.pushState(null,'','#'+value);render();window.scrollTo({top:0});}
-function parseHash(){let [s,t]=location.hash.slice(1).split('/');if(s==='battle'){s='overview';t='logs';history.replaceState(null,'','#overview/logs');}if(s==='tactics'&&!t)t='workspace';if(s!=='records'&&ui.month!==Object.keys(data.seasons).sort().at(-1))activateSeason(Object.keys(data.seasons).sort().at(-1));if(NAV.some(n=>n[0]===s)){if(s==='tactics'&&ui.section!=='tactics'){ext.workGroup='main';ext.carryTimeRange='all';}if(s==='overview'&&ui.section!=='overview')ui.day=defaultBattleDay();ui.section=s;if(t)ui.tabs[s]=t;}}
+function nav(section,tab){if(section==='records'&&tab==='hall'){tab='history';ext.honorsView='counts';}if(section==='battle'){section='overview';tab='logs';}if(section!=='records'&&ui.month!==Object.keys(data.seasons).sort().at(-1))activateSeason(Object.keys(data.seasons).sort().at(-1));if(section==='tactics'&&!tab)tab='workspace';if(section==='tactics'&&ui.section!=='tactics'){ext.workGroup='main';ext.carryTimeRange='all';}if(section==='overview'&&(ui.section!=='overview'||!tab))ui.day=defaultBattleDay();ui.section=section;if(tab)ui.tabs[section]=tab;ui.query='';ui.boss=0;ui.page=1;const value=`${section}${ui.tabs[section]?'/'+ui.tabs[section]:''}${section==='records'&&ui.tabs.records==='history'&&ext.honorsView==='counts'?'/counts':''}`;if(location.hash.slice(1)!==value)history.pushState(null,'','#'+value);render();window.scrollTo({top:0});}
+function parseHash(){let [s,t,detail]=location.hash.slice(1).split('/');if(s==='records'&&(t==='history'||t==='hall')){ext.honorsView=t==='hall'||detail==='counts'?'counts':'monthly';if(t==='hall'){t='history';history.replaceState(null,'','#records/history/counts');}}if(s==='battle'){s='overview';t='logs';history.replaceState(null,'','#overview/logs');}if(s==='tactics'&&!t)t='workspace';if(s!=='records'&&ui.month!==Object.keys(data.seasons).sort().at(-1))activateSeason(Object.keys(data.seasons).sort().at(-1));if(NAV.some(n=>n[0]===s)){if(s==='tactics'&&ui.section!=='tactics'){ext.workGroup='main';ext.carryTimeRange='all';}if(s==='overview'&&ui.section!=='overview')ui.day=defaultBattleDay();ui.section=s;if(t)ui.tabs[s]=t;}}
 function render(){applyAppearance();const navs=NAV.map(([id,title,ico,num])=>`<button class="nav-item ${ui.section===id?'active':''}" data-action="nav" data-value="${id}" ${ui.section===id?'aria-current="page"':''}>${icon(ico)}<span class="nav-text">${title}</span><span class="nav-short">${num}</span></button>`).join('');
  app.innerHTML=`<div class="shell"><aside class="sidebar"><a class="brand" href="#overview/bosses" aria-label="Re²: Dive 전황"><span class="brand-mark">${icon('cat')}</span><div><div class="brand-word">re<sup>2</sup><span>:</span> dive</div><div class="brand-caption">냥냥클랜</div></div></a><div class="side-month"><small>CLAN BATTLE</small><strong>${ui.month.replace('-','.')}<span>${ui.day}일차</span></strong></div><nav class="nav-list" aria-label="주 메뉴">${navs}</nav><div class="sidebar-bottom"><button class="nav-item" data-action="settings">${icon('gear')}<span class="nav-text">환경설정</span></button><div class="side-tip"><span>INDEPENDENT DESIGN LAB</span>새로운 클랜전, 새로운 흐름.<br>예시 데이터로 자유롭게 둘러보세요.</div></div></aside><div class="workspace"><header class="topbar"><a class="mobile-brand" href="#overview/bosses" aria-label="Re²: Dive 홈"><span class="brand-mark">${icon('cat')}</span><span class="brand-word">re<sup>2</sup><span>:</span> dive</span></a><div class="breadcrumb">WORKSPACE ${icon('chevron')}<strong>${NAV.find(n=>n[0]===ui.section)?.[1]||'전황'}</strong></div><div class="top-actions"><span class="demo-badge"><i></i>예시 데이터</span><select class="month-select" aria-label="조회 월" data-input="month"><option value="2026-10" ${ui.month==='2026-10'?'selected':''}>2026년 10월</option><option value="2026-09" ${ui.month==='2026-09'?'selected':''}>2026년 9월 · 예시</option><option value="2026-08" ${ui.month==='2026-08'?'selected':''}>2026년 8월 · 예시</option></select><button class="top-icon" data-action="theme" aria-label="화면 테마 전환">${icon(data.settings.theme==='dark'?'sun':'moon')}</button><button class="mobile-settings mobile-only" data-action="settings" aria-label="환경설정">${icon('gear')}</button></div></header><main class="content" id="main">${renderPage()}<footer class="page-footer"><span>Re²: Dive / 냥냥클랜</span><span>디자인 시제품 · 변경 내용은 이 브라우저에 저장</span></footer></main></div><nav class="mobile-nav" aria-label="하단 주 메뉴">${NAV.map(([id,title,ico])=>`<button class="${ui.section===id?'active':''}" data-action="nav" data-value="${id}" ${ui.section===id?'aria-current="page"':''}>${icon(ico)}<span>${title}</span></button>`).join('')}</nav></div>`;
  if(ui.section==='tactics'&&ui.tabs.tactics==='tools')updateCarryTool();
@@ -173,7 +173,7 @@ function printPage(){if(!adminMode())return;if(drawer.open){drawer.classList.add
 
 document.addEventListener('click',event=>{if(typeof handleCopyPick==='function'&&handleCopyPick(event))return;ui.drawerTrigger=event.target.closest('[data-action]');},true);
 document.addEventListener('click',async event=>{const el=event.target.closest('[data-action]');if(!el||el.disabled)return;const a=el.dataset.action,id=el.dataset.id,v=el.dataset.value;
- if(a==='nav'){nav(v);return;}if(a==='tab'){ui.tabs[el.dataset.group]=v;ui.query='';ui.page=1;ui.boss=0;history.replaceState(null,'','#'+ui.section+'/'+v);render();return;}if(a==='day'){ui.day=Number(v);ui.page=1;render();return;}if(a==='settings'){openSettings(v||null);return;}if(a==='settings-rules'){openSettings('rules');return;}if(a==='settings-tab'){openSettings(v);return;}if(a==='close-drawer'){closeDrawer();return;}
+ if(a==='nav'){nav(v);return;}if(a==='tab'){ui.tabs[el.dataset.group]=v;ui.query='';ui.page=1;ui.boss=0;history.replaceState(null,'','#'+ui.section+'/'+v+(ui.section==='records'&&v==='history'&&ext.honorsView==='counts'?'/counts':''));render();return;}if(a==='day'){ui.day=Number(v);ui.page=1;render();return;}if(a==='settings'){openSettings(v||null);return;}if(a==='settings-rules'){openSettings('rules');return;}if(a==='settings-tab'){openSettings(v);return;}if(a==='close-drawer'){closeDrawer();return;}
  if(a==='theme'||a==='set-theme'){data.settings.theme=a==='theme'?(data.settings.theme==='light'?'dark':'light'):v;persist();render();if(drawer.open)openSettings();return;}
  if(a==='add-log'){openLog();return;}if(a==='boss-log'){openLog(null,Number(id));return;}if(a==='edit-log'){openLog(id);return;}if(a==='delete-log'){removeLog(id);return;}
  if(a==='undo'){if(!undoState)return;data=undoState;undoState=null;persist();render();if(drawer.open)closeDrawer();toast('직전 변경을 되돌렸습니다.');return;}
@@ -1691,7 +1691,7 @@ const adminMode=()=>!!data.settings.editable&&(!syncState.started||syncState.rea
 const RESULT_METRICS=[['game','인게임'],['contribution','기여도'],['damage','피해량']];
 subpageNames.tactics.external='이월 계산기';
 subpageNames.records.history='명예의 전당';
-subpageNames.records.hall='수상 횟수';
+subpageNames.records.hall='명예의 전당';
 copyRegistry.add('이월 계산기');copyRegistry.add('수상 횟수');
 
 function ensureCharacterReference(){
@@ -1735,7 +1735,20 @@ fullClan=()=>{
   if(ui.tabs.clan==='characters'&&!adminMode())ui.tabs.clan='members';
   return titleBar(ui.tabs.clan==='settings'?'설정':'클랜 DB')+pageTabs([['members','클랜원'],['alumni','역대 클랜원'],['rates','기여도'],['future','미래 보스'],...(adminMode()?[['characters','캐릭터·초상화']]:[]),['settings','설정']])+({members:()=>completeRoster(false),alumni:()=>completeRoster(true),rates:completeRates,future:futureBossSettings,characters:characterLibrary,settings:completeSettings}[ui.tabs.clan]||(()=>completeRoster(false)))();
 };
-fullRecords=()=>titleBar('기록·통계',ui.tabs.records==='profile'?'':simpleButton('인쇄','print'))+pageTabs([['ranking','월간 순위'],['profile','개인 이력'],['archive','과거 기록'],['history','명예의 전당'],['hall','수상 횟수'],['chronicle','아카이브']])+({ranking:completeRanking,profile:completeProfile,archive:completeArchive,history:completeHistory,hall:completeHall,chronicle:completeClanArchive}[ui.tabs.records]||completeRanking)();
+fullRecords=()=>{
+  if(ui.tabs.records==='hall'){ui.tabs.records='history';ext.honorsView='counts';history.replaceState(null,'','#records/history/counts');}
+  return titleBar('기록·통계',ui.tabs.records==='profile'?'':simpleButton('인쇄','print'))+pageTabs([['ranking','월간 순위'],['profile','개인 이력'],['archive','과거 기록'],['history','명예의 전당'],['chronicle','아카이브']])+({ranking:completeRanking,profile:completeProfile,archive:completeArchive,history:completeHonors,chronicle:completeClanArchive}[ui.tabs.records]||completeRanking)();
+};
+function completeHonors(){
+  const view=ext.honorsView==='counts'?'counts':'monthly';
+  return `<div class="subview-tabs honors-views" role="group" aria-label="명예의 전당 보기">${[['monthly','월별 수상'],['counts','수상 횟수']].map(([key,label])=>`<button type="button" data-action="honors-view" data-value="${key}" class="${view===key?'active':''}" aria-pressed="${view===key}">${label}</button>`).join('')}</div>`+(view==='counts'?completeHall():completeHistory());
+}
+document.addEventListener('click',event=>{
+  const button=event.target.closest('[data-action]');if(!button||button.dataset.action!=='honors-view')return;
+  const view=button.dataset.value;if(!['monthly','counts'].includes(view))return;
+  event.preventDefault();event.stopImmediatePropagation();ext.honorsView=view;ui.tabs.records='history';
+  history.replaceState(null,'','#records/history'+(view==='counts'?'/counts':''));render();
+},true);
 
 function isVideoUrl(value){try{const url=new URL(value);return /^https?:$/.test(url.protocol)&&/(^|\.)(youtube\.com|youtu\.be|nicovideo\.jp|bilibili\.com|vimeo\.com)$/.test(url.hostname);}catch{return false;}}
 function videoButton(t,small=false,context=''){
@@ -2699,29 +2712,29 @@ void oldResumeLoadIndex();
 // Membership-count notes are intentionally excluded from this editorial timeline.
 const CLAN_ARCHIVE_SOURCE='https://docs.google.com/spreadsheets/d/1qIxlOewmyRNhMWwLLhNw6PPbPf7fhpmdExRrlJFBLRw/edit#gid=1411801387';
 const CLAN_ARCHIVE_EVENTS=[
- ['2019-07','시작','냥냥클랜 결성','메코를 초대 클랜장으로, 냥냥클랜의 첫 기록이 시작됐다.'],
- ['2019-08','기록','첫 번째 기록 암흑기','원본 DB에 기록 공백으로 남아 있는 시기. 남아 있는 연혁을 통해 초기의 발자취를 이어 간다.'],
+ ['2019-07','시작','냥냥클랜 결성','메이코패스를 초대 클랜장으로, 냥냥클랜의 첫 기록이 시작됐다.'],
+ ['2019-08','기록','첫 번째 기록 암흑기','초기의 기록이 일부 남아 있지 않은 시기. 남겨진 발자취로 클랜의 시작을 이어 간다.'],
  ['2020-01','전환','첫 번째 동면','첫 해산과 함께 잠시 동면에 들어갔다.'],
  ['2020-02','재결성','리다이브','냥냥클랜이 다시 모여 리다이브를 시작했다.'],
- ['2020-03','기록','두 번째 기록 암흑기','재결성 뒤에도 일부 기록이 유실된 시기가 원본에 남아 있다.'],
+ ['2020-03','기록','두 번째 기록 암흑기','재결성 이후, 일부 기록이 유실된 두 번째 기록 공백기를 거쳤다.'],
  ['2020-10','전투','이월 조합 변경 도입','이월에서 조합을 변경하는 방식이 도입됐다.'],
  ['2021-03','전환','두 번째 해산','클랜이 두 번째 해산을 맞았다.'],
  ['2021-04','재결성','리리다이브','다시 모인 냥냥클랜. 리리다이브라는 이름으로 역사를 이어 갔다.'],
  ['2021-05','운영','2대 클랜장 앨리스','앨리스가 두 번째 클랜장을 맡았다.'],
- ['2021-09','사람','사쿠라 은퇴','원본 연혁에 사쿠라의 은퇴가 기록됐다.'],
- ['2022-03','운영','메코, 다시 클랜장으로','메코가 클랜장으로 복귀했다.'],
+ ['2021-09','사람','사쿠라 은퇴','사쿠라가 활동을 마무리하고 은퇴했다.'],
+ ['2022-03','운영','메이코패스, 다시 클랜장으로','메이코패스가 클랜장으로 복귀했다.'],
  ['2022-06','전투','동시타격 도입','클랜전의 동시타격 방식이 도입됐다.'],
  ['2022-07','전투','랭크 보정과 TP 상한','랭크 보정과 TP 상한 도입이 클랜전의 새로운 기준이 됐다.'],
- ['2022-08','전환','노루지부 해산','원본 DB에 노루지부의 해산이 기록됐다.'],
+ ['2022-08','전환','노루지부 해산','노루지부가 해산했다.'],
  ['2022-12','운영','앨리스, 다시 클랜장으로','앨리스가 다시 클랜장을 맡았다.'],
  ['2023-01','전투','SET 도입과 회차 조정','SET 기능 도입과 회차 조정으로 전투 환경이 바뀌었다.'],
- ['2023-05','사람','메코 은퇴','메코의 은퇴가 연혁의 한 페이지로 남았다.'],
- ['2023-08','사람','메코 복귀','메코가 다시 클랜으로 돌아왔다.'],
+ ['2023-05','사람','메이코패스 은퇴','메이코패스의 은퇴가 연혁의 한 페이지로 남았다.'],
+ ['2023-08','사람','메이코패스 복귀','메이코패스가 다시 클랜으로 돌아왔다.'],
  ['2024-05','전투','회차 대격변','회차 체계가 크게 바뀌고 5단계가 삭제됐다.'],
  ['2024-08','기록 갱신','처음으로 IN 5','클랜 순위 5위. 처음으로 다섯 손가락 안에 이름을 올렸다.'],
  ['2024-10','전투','1단계 스킵 도입','회차 조정과 함께 1단계 스킵이 도입됐다.'],
  ['2025-02','기록 갱신','최고 순위 4위','클랜 최고 순위를 4위로 새로 썼다.'],
- ['2025-03','전투','심역 업데이트','원본 연혁에 심역 업데이트가 기록됐다.'],
+ ['2025-03','전투','심역 업데이트','심역 업데이트로 새로운 육성 환경을 맞았다.'],
  ['2025-05','기록 갱신','최고 순위 3위','클랜 최고 순위가 3위로 올라섰다.'],
  ['2025-09','전환','토아 해산 이후','토아 해산 이후의 첫 클랜전을 치렀다.'],
  ['2025-10','기록 갱신','최고 순위 2위','클랜 최고 순위를 다시 한 번 갱신했다.'],
@@ -2731,7 +2744,7 @@ subpageNames.records.chronicle='아카이브';copyRegistry.add('아카이브');
 function completeClanArchive(){
  const years=[...new Set(CLAN_ARCHIVE_EVENTS.map(e=>e[0].slice(0,4)))];
  const items=years.map(year=>'<section class="clan-archive-year" id="clan-archive-'+year+'" aria-labelledby="clan-archive-title-'+year+'"><h2 id="clan-archive-title-'+year+'">'+year+'<small>냥냥클랜의 기록</small></h2><ol>'+CLAN_ARCHIVE_EVENTS.filter(e=>e[0].startsWith(year)).map(([date,tag,title,body])=>'<li class="'+(tag==='기록 갱신'?'is-milestone':'')+'"><div class="archive-event-date"><time datetime="'+date+'">'+date.replace('-','.')+'</time><span>'+tag+'</span></div><div class="archive-event-copy"><h3>'+title+'</h3><p>'+body+'</p></div></li>').join('')+'</ol></section>').join('');
- return '<article class="clan-archive"><header class="clan-archive-intro"><div><span class="archive-eyebrow">NYANGNYANG CLAN · SINCE 2019</span><h2>다시 모여,<br>이어 온 이야기.</h2><p>결성과 동면, 두 번의 재결성.<br>함께 쌓아 온 냥냥클랜의 굵직한 순간들을 펼칩니다.</p></div><div class="archive-highlight"><span>기록으로 남은 최고 순위</span><strong>2<small>위</small></strong><time datetime="2025-10">2025년 10월 달성</time></div></header><nav class="archive-year-nav" aria-label="연혁 연도">'+years.map(year=>'<a href="#clan-archive-'+year+'" data-action="clan-archive-year" data-value="'+year+'">'+year+'</a>').join('')+'</nav><div class="clan-archive-timeline">'+items+'</div><footer class="clan-archive-source"><p>원본 DB에 남은 사건을 중심으로 정리했습니다. 연혁이 기재되지 않은 기간은 생략했습니다.</p><a class="button" target="_blank" rel="noopener noreferrer" href="'+CLAN_ARCHIVE_SOURCE+'">원본 DB 보기</a></footer></article>';
+ return '<article class="clan-archive"><header class="clan-archive-intro"><div><span class="archive-eyebrow">NYANGNYANG CLAN · SINCE 2019</span><h2>다시 모여,<br>이어 온 이야기.</h2><p>결성과 동면, 두 번의 재결성.<br>함께 쌓아 온 냥냥클랜의 굵직한 순간들을 펼칩니다.</p></div><div class="archive-highlight"><span>기록으로 남은 최고 순위</span><strong>2<small>위</small></strong><time datetime="2025-10">2025년 10월 달성</time></div></header><nav class="archive-year-nav" aria-label="연혁 연도">'+years.map(year=>'<a href="#clan-archive-'+year+'" data-action="clan-archive-year" data-value="'+year+'">'+year+'</a>').join('')+'</nav><div class="clan-archive-timeline">'+items+'</div><footer class="clan-archive-source"><p>2019년부터 이어 온 냥냥클랜의 발자취.<br>함께 만드는 다음 이야기도 이곳에 이어집니다.</p></footer></article>';
 }
 document.addEventListener('click',event=>{const link=event.target.closest('[data-action="clan-archive-year"]');if(!link)return;event.preventDefault();event.stopImmediatePropagation();document.getElementById('clan-archive-'+link.dataset.value)?.scrollIntoView({behavior:'smooth',block:'start'});},true);
 
