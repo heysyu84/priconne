@@ -1811,6 +1811,10 @@ completeArchive=()=>{
 };
 
 const canonicalAwardName=name=>name==='대기중(1호기)'?'대기중':name;
+// A missing record or deliberate dormancy is not a personal award.
+const HISTORICAL_NO_AWARD_MONTHS=new Set(['2019-07','2019-08','2019-09','2019-10','2019-11','2019-12','2020-01','2020-03','2020-05']);
+const historicalAwardNote=month=>month==='2020-01'?'신년 유이 동면':HISTORICAL_NO_AWARD_MONTHS.has(month)?'기록유실':'';
+const isNonPersonAward=name=>['기록유실','기록 유실','신년 유이 동면'].includes(name);
 function historyMonths(){return [...new Set([...(data.history||[]).map(h=>h.month),...Object.keys(data.seasons)])].sort().reverse();}
 function historySeason(month){return month===ui.month?data:data.seasons[month];}
 function historyResult(month){
@@ -1818,8 +1822,15 @@ function historyResult(month){
   if(!season)return {month,rank:stored?.clanRank,count:stored?.memberCount||0,winners:Object.fromEntries(RESULT_METRICS.map(([metric])=>[metric,(stored?.winners?.[metric]||[]).map(name=>({name}))])),sealed:true,stored};
   const summary=seasonSummary(month);return {month,rank:season.result.rank??stored?.clanRank,count:summary.count,winners:season.result.winners||summary.winners,sealed:!!season.result.sealed,changed:season.result.sealed&&season.result.fingerprint!==resultFingerprint(season.logs),stored};
 }
-completeHistory=()=>rowTable(['월','클랜 순위','참가','인게임 1·2위','기여도 1·2위','피해량 1·2위','결과'],historyMonths().map(month=>{
+completeHistory=()=>rowTable(['월','클랜 순위','참가','인게임 1·2위','기여도 1·2위','피해량 1·2위','결과'],historyMonths().filter(month=>!(month>='2019-07'&&month<='2019-11')).map(month=>{
   const result=historyResult(month),season=historySeason(month);
+  const note=historicalAwardNote(month);
+  if(note){
+    const grouped=month==='2019-12',label=grouped?'2019.07~12':month.replace('-','.');
+    // The detailed month-by-month ranks are preserved separately under Past Records.
+    const rank=grouped||month==='2020-01'?'—':Number.isFinite(result.rank)?result.rank+'위':result.rank||'—';
+    return '<tr class="honors-no-award"><td>'+X(label)+'</td><td class="center">'+X(rank)+'</td><td class="center">—</td><td colspan="3" class="honors-note-cell" data-label="수상 내역"><strong>'+X(note)+'</strong></td><td class="center" data-label="결과">—</td></tr>';
+  }
   return `<tr><td>${month.replace('-','.')}</td><td>${adminMode()?`<button class="text-button" data-action="u-history-rank" data-id="${month}">${Number.isFinite(result.rank)?result.rank+'위':result.rank||'입력'}</button>`:Number.isFinite(result.rank)?result.rank+'위':result.rank||'—'}</td><td class="center">${result.count||'—'}</td>${RESULT_METRICS.map(([metric])=>`<td class="winner-cell">${winnerText(result.winners,metric)}</td>`).join('')}<td>${season&&adminMode()?simpleButton(result.changed?'다시 확정':result.sealed?'확정됨':'결과 확정','u-confirm-result',month,result.sealed?'quiet':'primary'):`<span class="result-status ${result.sealed?'sealed':''}">${result.sealed?'확정':'미확정'}</span>`}</td></tr>`;
 }),'history-table exact-table');
 const JUNE_2020_WINNERS={damage:[{name:'루나',rank:1},{name:'슈',rank:2}],contribution:[{name:'루나',rank:1},{name:'SyN',rank:2}],game:[{name:'루나',rank:1},{name:'SyN',rank:2}]};
@@ -1828,6 +1839,7 @@ function awardRows(){
   // Both names refer to the same UID (817922955229); combine past award counts, never double-list the player.
   const map=new Map();
   for(const source of data.awards||[]){
+    if(isNonPersonAward(source.name))continue;
     const name=canonicalAwardName(source.name);
     let row=map.get(name);
     if(!row){row={...structuredClone(source),name,id:data.members.find(m=>m.name===name||canonicalAwardName(m.name)===name)?.id||name};
@@ -1841,7 +1853,9 @@ function awardRows(){
   for(const month of Object.keys(data.seasons)){
     if((data.history||[]).some(h=>h.month===month))continue;
     const result=historySeason(month).result;if(!result.sealed||!result.winners)continue;
+    if(HISTORICAL_NO_AWARD_MONTHS.has(month))continue;
     for(const [metric]of RESULT_METRICS)for(const [index,person]of(result.winners[metric]||[]).entries()){
+      if(isNonPersonAward(person.name))continue;
       const name=canonicalAwardName(person.name);
       if(!map.has(name))map.set(name,{id:data.members.find(m=>m.name===name)?.id||person.id||name,name,game:[0,0],contribution:[0,0],damage:[0,0],total:0});
       const row=map.get(name);row[metric][index]++;row.total++;
@@ -2681,6 +2695,7 @@ historyResult=month=>{
 const historyResultWithImports=historyResult;
 historyResult=month=>{
  const result=historyResultWithImports(month);
+ if(HISTORICAL_NO_AWARD_MONTHS.has(month))return {...result,winners:{damage:[],contribution:[],game:[]}};
  return {...result,winners:Object.fromEntries(RESULT_METRICS.map(([metric])=>[metric,(result.winners?.[metric]||[]).map(person=>({...(typeof person==='string'?{name:person}:person),name:canonicalAwardName(typeof person==='string'?person:person.name)}))]))};
 };
 // DB award totals already include these years. Keep the common lifetime table;

@@ -141,6 +141,7 @@ historyResult=month=>{
 const historyResultWithImports=historyResult;
 historyResult=month=>{
  const result=historyResultWithImports(month);
+ if(HISTORICAL_NO_AWARD_MONTHS.has(month))return {...result,winners:{damage:[],contribution:[],game:[]}};
  return {...result,winners:Object.fromEntries(RESULT_METRICS.map(([metric])=>[metric,(result.winners?.[metric]||[]).map(person=>({...(typeof person==='string'?{name:person}:person),name:canonicalAwardName(typeof person==='string'?person:person.name)}))]))};
 };
 // DB award totals already include these years. Keep the common lifetime table;

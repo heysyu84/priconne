@@ -126,6 +126,24 @@ function canonicalizeWaitingMember(doc){
  return copy;
 }
 
+// Narrative historical notes were previously saved in the winner field.
+function reconcileNonAwardMonths(doc){
+ const exception=new Set(['2019-07','2019-08','2019-09','2019-10','2019-11','2019-12','2020-01','2020-03','2020-05']);
+ const placeholders=new Set(['기록유실','기록 유실','신년 유이 동면']);
+ let copy=null;
+ const ensure=()=>copy??=structuredClone(doc);
+ for(let index=0;index<(doc.history||[]).length;index++){
+   const month=doc.history[index];
+   if(!exception.has(month.month))continue;
+   if(!Object.values(month.winners||{}).some(list=>Array.isArray(list)&&list.length))continue;
+   ensure().history[index].winners={game:[],contribution:[],damage:[]};
+ }
+ if((doc.awards||[]).some(row=>placeholders.has(row.name))){
+   ensure().awards=doc.awards.filter(row=>!placeholders.has(row.name));
+ }
+ return copy;
+}
+
 async function seedOnce(db,initial) {
   const current=await db.prepare('SELECT revision,document FROM clan_state WHERE id = ?').bind('clan').first();
   if(current){
@@ -133,7 +151,8 @@ async function seedOnce(db,initial) {
     const juneReconciled=reconcileJune2020Awards(previous);
     const octoberReconciled=reconcileOctober2020Awards(juneReconciled||previous);
     const waitingReconciled=canonicalizeWaitingMember(octoberReconciled||juneReconciled||previous);
-    const reconciled=waitingReconciled||octoberReconciled||juneReconciled;
+    const nonAwardReconciled=reconcileNonAwardMonths(waitingReconciled||octoberReconciled||juneReconciled||previous);
+    const reconciled=nonAwardReconciled||waitingReconciled||octoberReconciled||juneReconciled;
     if(reconciled||initial.referenceVersion&&previous.referenceVersion!==initial.referenceVersion){
       const updated=initial.referenceVersion&&previous.referenceVersion!==initial.referenceVersion?applyRecordUpdates(reconciled||previous,initial):(reconciled||previous);
       const ids=new Set(previous.members.map(m=>m.id));

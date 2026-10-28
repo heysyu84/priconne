@@ -973,3 +973,8 @@ form[data-form="v2-tactic"] #tactic-text{display:block;width:100%;min-width:0;mi
 :root[data-theme=dark] .battle-hud .raid-status .state-dot{background:var(--hud-muted)!important}
 :root[data-theme=dark] .battle-hud .hud-chart-legend>span:nth-child(2)>i{background:repeating-linear-gradient(135deg,var(--hud-muted),var(--hud-muted) 2px,var(--surface) 2px,var(--surface) 3px)!important}
 :root[data-theme=dark] .battle-hud .hud-carry-bar{background:repeating-linear-gradient(135deg,var(--boss),var(--boss) 2px,var(--surface) 2px,var(--surface) 3px)!important}
+
+/* Narrative rows occupy all three award categories, not a winner position. */
+.history-table .honors-note-cell{text-align:center!important;background:var(--wash);color:var(--muted);font-weight:600;white-space:normal}
+.history-table .honors-note-cell strong{font-size:inherit;font-weight:650}
+.history-table .honors-no-award td{vertical-align:middle}
