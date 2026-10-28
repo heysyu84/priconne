@@ -1,3 +1,4 @@
+import {pastedRows} from './compat/tactics-model.mjs';
 // Both interfaces edit the existing clan API. Preserve fields owned by the
 // original interface, and patch only fields actually changed by this one.
 const clone=value=>structuredClone(value);
@@ -9,7 +10,7 @@ const normalize=value=>String(value||'').normalize('NFKC').replace(/\s+/g,'').to
 const carrySeconds=t=>t.requiredCarrySeconds??(Number(String(t.note||'').match(/(?:필요\s*)?이월\s*시간\s*[:：]?\s*(\d+)\s*초/)?.[1])||null);
 const carryNote=value=>String(value||'').replace(/(?:필요\s*)?이월\s*(?:시간)?\s*[:：]?\s*(?:\d+\s*분\s*)?\d+\s*초\s*(?:기준|필요)?/g,'').replace(/^[\s·|,;]+|[\s·|,;]+$/g,'').replace(/\s*·\s*·\s*/g,' · ').trim();
 function tactic(t,reference={}){
- const party=clone(t.characters||t.party||reference.party||[]),rows=clone(t.rows||reference.rows||[]);
+ const party=clone(t.characters||t.party||reference.party||[]),rows=clone(t.rows??(t.text?pastedRows(t.text,[],party):reference.rows??[]));
  return {...clone(t),party,stars:Array.from(t.stars||reference.stars||[5,5,5,5,5]).map(Number),stage:t.stage===3?3:4,category:group(t),damage:finite(t.expectedDamage??t.damage),sourceExpectedDamage:t.expectedDamage??'',hands:t.manualCount===''?null:finite(t.manualCount??t.hands),tp:String(t.tp||''),duration:finite(t.duration??t.baseSeconds??reference.duration,90)||90,requiredCarrySeconds:carrySeconds(t)??reference.requiredCarrySeconds??null,support:finite(t.supportIndex??t.support,-1),title:party.join(' '),hidden:!!t.hidden,deletedAt:t.trashedAt||null,video:t.video||t.tacticUrl||'',links:clone(t.links||[]),note:group(t)==='carry'?carryNote(t.note):t.note||'',rows,text:rows.map(r=>r.text).join('\n')||t.text||''};
 }
 const eventFields=e=>({id:e.id,seq:e.seq,day:e.day,boss:e.boss,memberId:e.memberId,damage:e.damage,carry:!!(e.usesCarry??e.carry),bonus:finite(e.bonus),memo:e.note??e.memo??'',gameAt:e.gameAt||''});
@@ -40,7 +41,7 @@ function updateTactic(t,old,previous){
  if(fresh||t.damage!==previous.damage){out.expectedDamage=String(t.damage);if('expectedDamageSort' in out)out.expectedDamageSort=t.damage;}
  set('hands','manualCount',t.hands===null?'':String(t.hands));set('tp','tp',t.tp);set('video','video',t.video);set('links','links',clone(t.links||[]));set('hidden','hidden',!!t.hidden);set('deletedAt','trashedAt',t.deletedAt||null);set('duration','baseSeconds',t.duration||90);set('requiredCarrySeconds','requiredCarrySeconds',t.requiredCarrySeconds??null);set('support','supportIndex',t.support??-1);
  if(fresh||t.note!==previous.note||t.requiredCarrySeconds!==previous.requiredCarrySeconds||t.category!==previous.category){const note=t.category==='carry'?carryNote(t.note):t.note;out.note=t.category==='carry'&&t.requiredCarrySeconds?`필요 이월시간: ${t.requiredCarrySeconds}초${note?' · '+note:''}`:note;}
- if(fresh||!same(t.rows,previous.rows)||t.text!==previous.text){const prior=new Map((old?.rows||[]).map(r=>[r.id,r]));out.rows=(t.rows||[]).map(r=>({...clone(prior.get(r.id)||{}),...clone(r),manualChecks:true}));}
+ if(fresh||!same(t.rows,previous.rows)||t.text!==previous.text){const prior=new Map((old?.rows||[]).map(r=>[r.id,r]));out.rows=(t.rows??pastedRows(t.text||'',[],t.party)).map(r=>({...clone(prior.get(r.id)||{}),...clone(r),manualChecks:true}));}
  if(fresh||t.title!==previous.title)out.title=t.title;
  return out;
 }
