@@ -9,7 +9,7 @@ const recordDays=d=>d.dayDetailAvailable===false?0:Math.max(1,Number(d.days)||5)
 const recordScope=d=>d.coverage==='personal'?'보관 기록 전체':'클랜 전체';
 const recordState=entry=>entry.coverage==='personal'?'개인 기록':entry.coverage==='summary'?'순위 보관':'확정';
 function recordCoverageNotice(d){
- const text=d.coverage==='summary'?'이 달은 클랜 순위와 연혁만 보관되어 있습니다. 개인 이력과 공격 상세 자료는 남아 있지 않습니다.':d.coverage==='personal'?(d.scopeName||'일부 클랜원')+'의 개인 기록만 보관되어 있습니다. 클랜 전체 합계와 순위 자료는 아닙니다.':d.awardSnapshotDiffers?'보관된 전체 공격으로 월 누적을 복원했습니다. 명예의 전당의 당시 조회 집계와 차이가 있어 기존 수상 기록은 유지했습니다.':d.dayDetailAvailable===false?'일차 정보가 남아 있지 않아 월 누적으로 표시합니다.':'';
+ const text=d.coverage==='summary'?'이 달은 클랜 순위와 연혁만 보관되어 있습니다. 개인 이력과 공격 상세 자료는 남아 있지 않습니다.':d.coverage==='personal'?(d.scopeName||'일부 클랜원')+'의 개인 기록만 보관되어 있습니다. 클랜 전체 합계와 순위 자료는 아닙니다.':d.dayDetailAvailable===false?'일차 정보가 남아 있지 않아 월 누적으로 표시합니다.':'';
  return text?'<p class="field-help record-coverage" role="note">'+X(text)+'</p>':'';
 }
 
@@ -129,6 +129,10 @@ completeArchive=()=>{
 const historyMonthsBeforeImport=historyMonths,historyResultBeforeImport=historyResult;
 historyMonths=()=>[...new Set([...historyMonthsBeforeImport(),...(oldResumeIndex?.months||[]).map(m=>m.month)])].sort().reverse();
 historyResult=month=>{
+ if(month==='2020-06'){
+  const existing=historyResultBeforeImport(month),entry=oldResumeMeta(month);
+  return {...existing,month,rank:entry?.rank??existing.rank,count:entry?.count??existing.count,winners:JUNE_2020_WINNERS,sealed:true,changed:false};
+ }
  const entry=oldResumeMeta(month);
  if(!entry||data.seasons[month]||month<'2024-01'&&(data.history||[]).some(h=>h.month===month))return historyResultBeforeImport(month);
  return {month,rank:entry.rank,count:entry.count,winners:entry.winners,sealed:true,changed:false};

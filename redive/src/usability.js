@@ -133,6 +133,7 @@ completeHistory=()=>rowTable(['월','클랜 순위','참가','인게임 1·2위'
   const result=historyResult(month),season=historySeason(month);
   return `<tr><td>${month.replace('-','.')}</td><td>${adminMode()?`<button class="text-button" data-action="u-history-rank" data-id="${month}">${Number.isFinite(result.rank)?result.rank+'위':result.rank||'입력'}</button>`:Number.isFinite(result.rank)?result.rank+'위':result.rank||'—'}</td><td class="center">${result.count||'—'}</td>${RESULT_METRICS.map(([metric])=>`<td class="winner-cell">${winnerText(result.winners,metric)}</td>`).join('')}<td>${season&&adminMode()?simpleButton(result.changed?'다시 확정':result.sealed?'확정됨':'결과 확정','u-confirm-result',month,result.sealed?'quiet':'primary'):`<span class="result-status ${result.sealed?'sealed':''}">${result.sealed?'확정':'미확정'}</span>`}</td></tr>`;
 }),'history-table exact-table');
+const JUNE_2020_WINNERS={damage:[{name:'루나',rank:1},{name:'슈',rank:2}],contribution:[{name:'루나',rank:1},{name:'SyN',rank:2}],game:[{name:'루나',rank:1},{name:'SyN',rank:2}]};
 function awardRows(){
   const map=new Map((data.awards||[]).map(p=>[p.name,{...structuredClone(p),id:data.members.find(m=>m.name===p.name)?.id||p.name}]));
   for(const month of Object.keys(data.seasons)){
@@ -141,6 +142,21 @@ function awardRows(){
     for(const [metric]of RESULT_METRICS)for(const [index,person]of(result.winners[metric]||[]).entries()){
       if(!map.has(person.name))map.set(person.name,{id:person.id,name:person.name,game:[0,0],contribution:[0,0],damage:[0,0],total:0});
       const row=map.get(person.name);row[metric][index]++;row.total++;
+    }
+  }
+  // A previously stored day-three award snapshot must not override the final June standings.
+  const june=(data.history||[]).find(h=>h.month==='2020-06');
+  const nameOf=p=>typeof p==='string'?p:p?.name;
+  if(june?.winners)for(const [metric] of RESULT_METRICS){
+    const old=june.winners[metric]||[],correct=JUNE_2020_WINNERS[metric];
+    for(let place=0;place<2;place++){
+      const before=nameOf(old[place]),after=correct[place].name;
+      if(!before||before===after)continue;
+      const previous=map.get(before);
+      if(previous&&Number(previous[metric]?.[place])>0){previous[metric][place]--;previous.total=Math.max(0,previous.total-1);}
+      let next=map.get(after);
+      if(!next){next={id:data.members.find(m=>m.name===after)?.id||after,name:after,game:[0,0],contribution:[0,0],damage:[0,0],total:0};map.set(after,next);}
+      next[metric][place]++;next.total++;
     }
   }
   return [...map.values()].sort((a,b)=>b.total-a.total||a.name.localeCompare(b.name,'ko'));

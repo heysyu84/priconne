@@ -1821,6 +1821,7 @@ completeHistory=()=>rowTable(['월','클랜 순위','참가','인게임 1·2위'
   const result=historyResult(month),season=historySeason(month);
   return `<tr><td>${month.replace('-','.')}</td><td>${adminMode()?`<button class="text-button" data-action="u-history-rank" data-id="${month}">${Number.isFinite(result.rank)?result.rank+'위':result.rank||'입력'}</button>`:Number.isFinite(result.rank)?result.rank+'위':result.rank||'—'}</td><td class="center">${result.count||'—'}</td>${RESULT_METRICS.map(([metric])=>`<td class="winner-cell">${winnerText(result.winners,metric)}</td>`).join('')}<td>${season&&adminMode()?simpleButton(result.changed?'다시 확정':result.sealed?'확정됨':'결과 확정','u-confirm-result',month,result.sealed?'quiet':'primary'):`<span class="result-status ${result.sealed?'sealed':''}">${result.sealed?'확정':'미확정'}</span>`}</td></tr>`;
 }),'history-table exact-table');
+const JUNE_2020_WINNERS={damage:[{name:'루나',rank:1},{name:'슈',rank:2}],contribution:[{name:'루나',rank:1},{name:'SyN',rank:2}],game:[{name:'루나',rank:1},{name:'SyN',rank:2}]};
 function awardRows(){
   const map=new Map((data.awards||[]).map(p=>[p.name,{...structuredClone(p),id:data.members.find(m=>m.name===p.name)?.id||p.name}]));
   for(const month of Object.keys(data.seasons)){
@@ -1829,6 +1830,21 @@ function awardRows(){
     for(const [metric]of RESULT_METRICS)for(const [index,person]of(result.winners[metric]||[]).entries()){
       if(!map.has(person.name))map.set(person.name,{id:person.id,name:person.name,game:[0,0],contribution:[0,0],damage:[0,0],total:0});
       const row=map.get(person.name);row[metric][index]++;row.total++;
+    }
+  }
+  // A previously stored day-three award snapshot must not override the final June standings.
+  const june=(data.history||[]).find(h=>h.month==='2020-06');
+  const nameOf=p=>typeof p==='string'?p:p?.name;
+  if(june?.winners)for(const [metric] of RESULT_METRICS){
+    const old=june.winners[metric]||[],correct=JUNE_2020_WINNERS[metric];
+    for(let place=0;place<2;place++){
+      const before=nameOf(old[place]),after=correct[place].name;
+      if(!before||before===after)continue;
+      const previous=map.get(before);
+      if(previous&&Number(previous[metric]?.[place])>0){previous[metric][place]--;previous.total=Math.max(0,previous.total-1);}
+      let next=map.get(after);
+      if(!next){next={id:data.members.find(m=>m.name===after)?.id||after,name:after,game:[0,0],contribution:[0,0],damage:[0,0],total:0};map.set(after,next);}
+      next[metric][place]++;next.total++;
     }
   }
   return [...map.values()].sort((a,b)=>b.total-a.total||a.name.localeCompare(b.name,'ko'));
@@ -2514,7 +2530,7 @@ const recordDays=d=>d.dayDetailAvailable===false?0:Math.max(1,Number(d.days)||5)
 const recordScope=d=>d.coverage==='personal'?'보관 기록 전체':'클랜 전체';
 const recordState=entry=>entry.coverage==='personal'?'개인 기록':entry.coverage==='summary'?'순위 보관':'확정';
 function recordCoverageNotice(d){
- const text=d.coverage==='summary'?'이 달은 클랜 순위와 연혁만 보관되어 있습니다. 개인 이력과 공격 상세 자료는 남아 있지 않습니다.':d.coverage==='personal'?(d.scopeName||'일부 클랜원')+'의 개인 기록만 보관되어 있습니다. 클랜 전체 합계와 순위 자료는 아닙니다.':d.awardSnapshotDiffers?'보관된 전체 공격으로 월 누적을 복원했습니다. 명예의 전당의 당시 조회 집계와 차이가 있어 기존 수상 기록은 유지했습니다.':d.dayDetailAvailable===false?'일차 정보가 남아 있지 않아 월 누적으로 표시합니다.':'';
+ const text=d.coverage==='summary'?'이 달은 클랜 순위와 연혁만 보관되어 있습니다. 개인 이력과 공격 상세 자료는 남아 있지 않습니다.':d.coverage==='personal'?(d.scopeName||'일부 클랜원')+'의 개인 기록만 보관되어 있습니다. 클랜 전체 합계와 순위 자료는 아닙니다.':d.dayDetailAvailable===false?'일차 정보가 남아 있지 않아 월 누적으로 표시합니다.':'';
  return text?'<p class="field-help record-coverage" role="note">'+X(text)+'</p>':'';
 }
 
@@ -2634,6 +2650,10 @@ completeArchive=()=>{
 const historyMonthsBeforeImport=historyMonths,historyResultBeforeImport=historyResult;
 historyMonths=()=>[...new Set([...historyMonthsBeforeImport(),...(oldResumeIndex?.months||[]).map(m=>m.month)])].sort().reverse();
 historyResult=month=>{
+ if(month==='2020-06'){
+  const existing=historyResultBeforeImport(month),entry=oldResumeMeta(month);
+  return {...existing,month,rank:entry?.rank??existing.rank,count:entry?.count??existing.count,winners:JUNE_2020_WINNERS,sealed:true,changed:false};
+ }
  const entry=oldResumeMeta(month);
  if(!entry||data.seasons[month]||month<'2024-01'&&(data.history||[]).some(h=>h.month===month))return historyResultBeforeImport(month);
  return {month,rank:entry.rank,count:entry.count,winners:entry.winners,sealed:true,changed:false};

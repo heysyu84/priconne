@@ -46,12 +46,39 @@ export async function identity(request,env) {
   return {authenticated:true,canEdit:!!admin,userId};
 }
 
+// Fix June 2020's saved day-three winners without changing any other month.
+function reconcileJune2020Awards(doc) {
+  const record=(doc.history||[]).find(row=>row.month==='2020-06');
+  if(!record?.winners||!Array.isArray(doc.awards))return null;
+  const canonical={damage:['루나','슈'],contribution:['루나','SyN'],game:['루나','SyN']};
+  const nameOf=item=>typeof item==='string'?item:item?.name;
+  if(Object.entries(canonical).some(([metric])=>!Array.isArray(record.winners[metric])||record.winners[metric].length<2))return null;
+  if(Object.entries(canonical).every(([metric,names])=>names.every((name,i)=>nameOf(record.winners[metric][i])===name)))return null;
+  const corrected=structuredClone(doc),rows=new Map(corrected.awards.map(row=>[row.name,row]));
+  for(const [metric,names] of Object.entries(canonical))for(let i=0;i<2;i++){
+    const before=nameOf(record.winners[metric][i]),after=names[i];
+    if(before===after)continue;
+    if(!before||Number(rows.get(before)?.[metric]?.[i])<1)return null;
+  }
+  for(const [metric,names] of Object.entries(canonical))for(let i=0;i<2;i++){
+    const before=nameOf(record.winners[metric][i]),after=names[i];
+    if(before===after)continue;
+    const prior=rows.get(before);prior[metric][i]--;prior.total=Math.max(0,(Number(prior.total)||0)-1);
+    let next=rows.get(after);
+    if(!next){next={name:after,game:[0,0],contribution:[0,0],damage:[0,0],total:0};rows.set(after,next);corrected.awards.push(next);}
+    next[metric][i]++;next.total++;
+  }
+  corrected.history.find(row=>row.month==='2020-06').winners=Object.fromEntries(Object.entries(canonical).map(([metric,names])=>[metric,[...names]]));
+  return corrected;
+}
+
 async function seedOnce(db,initial) {
   const current=await db.prepare('SELECT revision,document FROM clan_state WHERE id = ?').bind('clan').first();
   if(current){
     const previous=JSON.parse(current.document);
-    if(initial.referenceVersion&&previous.referenceVersion!==initial.referenceVersion){
-      const updated=applyRecordUpdates(previous,initial);
+    const reconciled=reconcileJune2020Awards(previous);
+    if(reconciled||initial.referenceVersion&&previous.referenceVersion!==initial.referenceVersion){
+      const updated=initial.referenceVersion&&previous.referenceVersion!==initial.referenceVersion?applyRecordUpdates(reconciled||previous,initial):(reconciled||previous);
       const ids=new Set(previous.members.map(m=>m.id));
       const document=JSON.stringify({...updated,members:[...previous.members,...initial.members.filter(m=>!ids.has(m.id))],referenceVersion:initial.referenceVersion,siteCopy:previous.siteCopy||{},futureOverrides:previous.futureOverrides||{}}),at=new Date().toISOString(),mutation=crypto.randomUUID();
       await db.batch([
