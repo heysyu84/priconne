@@ -62,7 +62,29 @@ completeLogPreview=()=>{
   const estimate=damage>before?engineEstimate({hp:before,second:damage,seconds:90}):null;
   document.getElementById('log-preview').innerHTML=`<dl class="preview-values"><div><dt>실제 피해량</dt><dd>${nf(actual)}</dd></div><div><dt>공격 후 HP</dt><dd>${nf(Math.max(0,before-damage))}</dd></div>${estimate?.seconds?`<div><dt>예상 이월</dt><dd>${estimate.seconds}초</dd></div>`:''}</dl>`;
 };
-saveCompleteLog=form=>{
+let carryEntryRefresh=null;
+async function refreshCarryEntry(fd){
+  if(carryEntryRefresh){toast('최신 이월 기록을 확인하고 있습니다.');return false;}
+  if(!syncState.started||!syncState.ready||syncState.pending||syncState.inFlight){toast('변경 내용을 저장한 뒤 이월을 다시 확인하세요.');return false;}
+  const month=ui.month,revision=syncState.revision,editable=data.settings.editable;
+  const keys=['logId','memberId','boss','day','damage','unit','usesCarry','autoDamage','bonus','remaining','note','gameAt','insertAnchor','insertSide'];
+  const values=Object.fromEntries(keys.filter(key=>fd.has(key)).map(key=>[key,fd.get(key)]));
+  carryEntryRefresh=true;toast('최신 격파·이월 기록을 확인합니다.');
+  try{
+    const result=await stateRequest('/api/state');
+    // A read must never replace a draft made while the request was in flight.
+    if(ui.month!==month||syncState.revision!==revision||syncState.pending||syncState.inFlight||!data.settings.editable){toast('입력 중 기록이 변경됐습니다. 확인 후 다시 등록하세요.');return false;}
+    if(!result.canEdit){syncState.canEdit=false;data.settings.editable=false;toast('편집 권한을 다시 확인하세요.');return false;}
+    if(!result.document||result.revision<=revision){toast('선택한 일차에 사용할 이월이 없습니다.');return false;}
+    if(result.document.activeMonth!==month){toast('진행 중인 클랜전이 바뀌었습니다. 최신 월을 확인하세요.');return false;}
+    syncState.revision=result.revision;syncState.updatedAt=result.updatedAt;
+    applySharedDocument(result.document);data.settings.editable=editable;
+    syncState.status='saved';syncState.error='';
+    return saveCompleteLog(inlineLogFields(values),{carryVerified:true});
+  }catch(error){toast('최신 이월 기록을 확인하지 못했습니다. 연결 후 다시 등록하세요.');return false;}
+  finally{carryEntryRefresh=null;}
+}
+saveCompleteLog=(form,{carryVerified=false}={})=>{
   if(!ensureEdit())return false;
   const fd=typeof form?.get==='function'&&typeof form?.has==='function'?form:new FormData(form),id=String(fd.get('logId')||''),old=data.logs.find(row=>row.id===id),entry=attackEntryState(fd);
   const memberId=String(fd.get('memberId')||''),boss=Number(fd.get('boss')),day=Number(fd.get('day')),carry=fd.has('usesCarry'),bonus=numberValue(fd.get('bonus')||0),damage=entry.damage;
@@ -75,7 +97,12 @@ saveCompleteLog=form=>{
   const daily=data.logs.filter(row=>row.day===day&&row.memberId===memberId&&row.id!==id);
   if(!old&&!carry&&daily.filter(row=>!row.carry).length>=data.rules.daily){toast('기본 타수를 모두 사용했습니다.');return false;}
   const prefix=entryLogContext(fd).logs.filter(row=>row.day===day&&row.memberId===memberId&&row.id!==id);
-  if(!old&&carry&&!prefix.some(row=>row.kill&&!row.carry&&!prefix.some(other=>other.carryFrom===row.id))){toast('사용할 이월이 없습니다.');return false;}
+  if(!old&&carry&&!prefix.some(row=>row.kill&&!row.carry&&!prefix.some(other=>other.carryFrom===row.id))){
+    const laterSource=daily.find(row=>row.kill&&!row.carry&&!daily.some(other=>other.carryFrom===row.id));
+    if(fd.get('insertAnchor')&&laterSource){toast('이 위치는 이월이 생기기 전입니다. '+laterSource.seq+'번 격파 기록 뒤에 추가하세요.');return false;}
+    if(!carryVerified&&syncState.started&&syncState.ready&&!syncState.pending&&!syncState.inFlight){void refreshCarryEntry(fd);return false;}
+    toast('선택한 일차에 사용할 이월이 없습니다.');return false;
+  }
   const remaining=String(fd.get('remaining')||''),seconds=remaining?timeToSec(remaining):NaN;
   if(remaining&&!(seconds>=0&&seconds<=90)){toast('남은 시간을 확인하세요.');return false;}
   // Effective insert / quick-entry path. Never silently create a duplicate attack:

@@ -29,6 +29,7 @@ jobs:
           node --check redive/public/app.js
           node --check docs/compact/app.js
           node redive/scripts/check-tactic-body-save.mjs
+          node redive/scripts/check-cleanup-carry.mjs
           node redive/scripts/check-archive-startup.mjs
           node redive/scripts/check-historical-resumes.mjs
           node redive/scripts/check-shared-client.mjs
