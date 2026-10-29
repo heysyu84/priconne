@@ -46,6 +46,13 @@ const snapshot={
   }))
  }))
 };
+const unitMap=JSON.parse(await fs.readFile(new URL('../data/character-unit-map.json',import.meta.url),'utf8'));
+const positionUnits=JSON.parse(await fs.readFile(new URL('../data/character-positions.json',import.meta.url),'utf8')).units;
+const usedIds=new Set(snapshot.bosses.flatMap(b=>b.tasks.flatMap(t=>t.charas.map(c=>c.prefabId))));
+snapshot.characterData={
+ names:Object.fromEntries([...usedIds].filter(id=>unitMap[String(id)]).map(id=>[id,unitMap[String(id)]])),
+ positionUnits:positionUnits.filter(u=>usedIds.has(u.unitId))
+};
 const total=snapshot.bosses.reduce((sum,b)=>sum+b.tasks.length,0);
 if(!total||total>1000)throw Error('Unreasonable tactic count '+total);
 await fs.writeFile(new URL('../public/aikurumi-snapshot.json',import.meta.url),
