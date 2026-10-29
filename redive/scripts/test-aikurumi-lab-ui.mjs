@@ -21,7 +21,9 @@ test('mobile/desktop source comparison panel receives real data',()=>{
  assert.match(elements.get('summary').textContent,/행동 대상/);
  assert.match(elements.get('list').innerHTML,/data-item/);
  assert.match(elements.get('detail').innerHTML,/원문 전체/);
+ const picker=elements.get('filter');picker.value='timeline';picker.handlers.change();
  assert.match(elements.get('detail').innerHTML,/원문 근거/);
+ picker.value='all';picker.handlers.change();
  assert.doesNotMatch(elements.get('detail').innerHTML,/<button[^>]*data-action="register"/);
 });
 test('unmatched actor and no-body filters update the displayed items',()=>{
