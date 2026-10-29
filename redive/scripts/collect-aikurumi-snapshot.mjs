@@ -55,7 +55,9 @@ snapshot.characterData={
 };
 const total=snapshot.bosses.reduce((sum,b)=>sum+b.tasks.length,0);
 if(!total||total>1000)throw Error('Unreasonable tactic count '+total);
-await fs.writeFile(new URL('../public/aikurumi-snapshot.json',import.meta.url),
+const filename=stage===3?'../public/aikurumi-snapshot-stage3.json':stage===6?'../public/aikurumi-snapshot.json':
+  '../public/aikurumi-snapshot-stage'+stage+'.json';
+await fs.writeFile(new URL(filename,import.meta.url),
   JSON.stringify(snapshot,null,2)+'\n','utf8');
 console.log('Snapshot prepared',JSON.stringify({jpMonth:month,krMonth:snapshot.krMonth,
  stage,bosses:snapshot.bosses.length,tactics:total,links:snapshot.bosses.reduce((n,b)=>n+b.tasks.reduce((x,t)=>x+t.links.length,0),0)}));
