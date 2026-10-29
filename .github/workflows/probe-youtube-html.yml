@@ -1,0 +1,37 @@
+name: Probe public YouTube metadata without authentication (isolated)
+on:
+  push:
+    branches: ['test/aikurumi-api-probe-20261030']
+    paths: ['.github/workflows/probe-youtube-html.yml']
+permissions:
+  contents: read
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Inspect two real Aikurumi-linked videos' public web metadata
+        shell: bash
+        run: |
+          node --input-type=module <<'NODE'
+          const ids=['gcLTnp88aSo','dgRUnwQUuao'];
+          for(const id of ids){
+            const url='https://www.youtube.com/watch?v='+id+'&hl=ja';
+            try{
+              const res=await fetch(url,{redirect:'follow',signal:AbortSignal.timeout(12000),
+                headers:{'User-Agent':'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/125.0.0.0 Safari/537.36',
+                  'Accept-Language':'ja-JP,ja;q=0.9,en;q=0.8'}});
+              const html=(await res.text()).slice(0,2500000);
+              const raw=html.match(/"shortDescription"\s*:\s*"((?:\\.|[^"\\])*)"/);
+              let description='';
+              if(raw){try{description=JSON.parse('"'+raw[1]+'"')}catch{}}
+              const meta=html.match(/<meta[^>]+name="description"[^>]+content="([^"]*)"/i);
+              console.log('HTML_RESULT',JSON.stringify({id,http:res.status,finalHost:new URL(res.url).hostname,
+                htmlLength:html.length,hasPlayer:html.includes('ytInitialPlayerResponse'),
+                hasConsent:html.includes('consent.youtube.com'),
+                botGate:/sign in to confirm you|not a bot|unusual traffic/i.test(html),
+                shortDescriptionLength:description.length,timelinePattern:/\b(?:0|1):[0-5]\d/.test(description),
+                excerpt:description.slice(0,160),metaLength:meta?.[1]?.length||0}));
+            }catch(e){console.log('HTML_ERROR',JSON.stringify({id,reason:String(e).slice(0,240)}))}
+          }
+          NODE
