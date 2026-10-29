@@ -7,7 +7,10 @@ const number=value=>value===null||value===undefined||value===''||!Number.isFinit
 const url=value=>{try{const u=new URL(String(value));return /^https?:$/.test(u.protocol)?u.href:null;}catch{return null;}};
 const state=flags=>(flags||[]).map((v,i)=>'<span title="'+(i===5?'AUTO':String(i+1)+'번 캐릭터')+'" class="'+(v?'on':'off')+'">'+(i===5?'A':i+1)+(v?'●':'○')+'</span>').join(' ');
 const list=el('list'),detail=el('detail'),boss=el('boss'),filter=el('filter'),query=el('search');
-let items=[],selected=null;
+let items=[],selected=null,sourceData=null;
+const windowSafeUnitMap=()=>sourceData?.characterData?.names||{};
+const windowSafePositions=()=>sourceData?.characterData?.positionUnits||[];
+const bossNames=()=>sourceData?.bosses?.map(b=>b.unitName)||[];
 
 function visible(){
  return filterReviewItems(items,{boss:boss.value,mode:filter.value,query:query.value});
@@ -43,6 +46,12 @@ function drawDetail(item){
  if(!item){detail.innerHTML='<p class="muted">왼쪽에서 택틱을 선택해 주세요.</p>';return;}
  const p=item.preview,f=reviewFlags(p),s=statusLabel(p);
  const link=url(p.sourceUrl);
+ const isYouTube=!!link&&(['youtube.com','www.youtube.com','m.youtube.com','youtu.be','www.youtu.be'].includes(new URL(link).hostname));
+ const youtubePanel=isYouTube?'<section class="youtube-paste"><details><summary>YouTube 설명란 · 일본어 택틱 직접 대조</summary>'
+  +'<p class="muted">원본 영상을 열어 설명란을 복사해 붙여넣으세요. 이 작업은 이 브라우저 화면에서만 진행되며 서버에 저장하지 않습니다.</p>'
+  +'<textarea data-youtube-input rows="7" maxlength="10000" placeholder="유튜브 영상의 일본어 설명란을 여기에 붙여넣으세요."></textarea>'
+  +'<div class="youtube-actions"><button type="button" data-youtube="preview">붙여넣은 TL 변환</button><button type="button" data-youtube="clear">비우기</button></div>'
+  +'<div data-youtube-output aria-live="polite"></div></details></section>':'';
  const notes=p.notes?'<details><summary>육성·전투 조건 원문 ('+p.notes.split('\n').length+'행)</summary><pre>'+esc(p.notes)+'</pre></details>':'';
  const issues=[...p.issues.map(i=>i.message+(i.count?' ('+i.count+'건)':'')),...p.warnings];
  const unique=[...new Set(issues)];
@@ -66,6 +75,7 @@ function drawDetail(item){
   +'<span class="label">편성 / 성급 / 랭크 (일본 서버 원본)</span>'+party+warn
   +'<div class="compare-grid"><section><h3>한국어 변환 결과 · '+p.rows.length+'행</h3><div class="steps">'+rows+'</div></section>'
   +'<section><h3>원문 전체 · 대조용</h3><pre class="raw-full">'+raw+'</pre>'+notes+'</section></div>'
+  +youtubePanel
   +'<p class="muted">위 조작문은 검토용 변환 결과입니다. 관리자 확인 없이 택틱 등록이나 기존 자료 변경은 수행되지 않습니다.</p>';
 }
 list.addEventListener('click',event=>{
@@ -73,6 +83,28 @@ list.addEventListener('click',event=>{
  selected=button.dataset.item;drawList();
 });
 detail.addEventListener('click',event=>{
+ const youtubeButton=event.target.closest('button[data-youtube]');
+ if(youtubeButton){
+   const entry=visible().find(x=>x.id===selected);
+   const input=detail.querySelector('textarea[data-youtube-input]');
+   const output=detail.querySelector('[data-youtube-output]');
+   if(!entry||!input||!output)return;
+   if(youtubeButton.dataset.youtube==='clear'){input.value='';output.innerHTML='';return;}
+   if(youtubeButton.dataset.youtube!=='preview')return;
+   const original=input.value.trim();
+   if(!original){output.textContent='먼저 유튜브 영상 설명란을 붙여넣어 주세요.';return;}
+   const data=items.find(x=>x.id===selected);
+   const local=previewAikurumiTactic(data.task,{...data.link,remarks:original,name:'YouTube 설명란 (수동 입력)'},{
+     unitMap:windowSafeUnitMap(),positionUnits:windowSafePositions(),
+     stage:data.preview.stage,bossSlot:data.boss.index,bossNames:bossNames()
+   });
+   const findings=[...new Set([...local.issues.map(i=>i.message),...local.warnings])];
+   output.innerHTML='<h4>YouTube 설명란 변환 · '+local.rows.length+'행 (미검증)</h4>'
+     +(findings.length?'<p class="review">검토 필요: '+esc(findings.slice(0,8).join(' / '))+'</p>':'<p class="muted">형식 오류는 감지되지 않았지만 원문 대조가 필요합니다.</p>')
+     +(local.rows.length?local.rows.map((r,i)=>'<div class="step"><div class="step-head"><span class="step-text">'+esc(r.text)+'</span><span class="state">'+state(r.checked)+'</span></div><div class="source-line">원문 근거 '+(i+1)+' '+esc(r.source||'')+'</div></div>').join(''):'<p class="muted">조작문이 없거나 해석할 수 없습니다.</p>')
+     +'<p class="muted">저장·공유·자동 등록되지 않습니다.</p>';
+   return;
+ }
  const button=event.target.closest('button[data-nav]');if(!button)return;
  const results=visible(),i=results.findIndex(x=>x.id===selected);
  if(i<0)return;
@@ -88,6 +120,7 @@ async function init(){
   const data=await res.json();
   if(data.readOnly!==true||!Array.isArray(data.bosses)||!data.characterData)
     throw Error('검증되지 않은 자료 형식입니다.');
+  sourceData=data;
   el('month').innerHTML='<option>'+esc(data.krMonth)+' 한섭 / '+esc(data.jpMonth)+' 일섭 / stage '+esc(data.stage)+'</option>';
   boss.innerHTML='<option value="all">전체 보스</option>'+data.bosses.map(x=>'<option value="'+esc(x.index)+'">'+esc(x.index)+'넴 · '+esc(x.unitName)+'</option>').join('');
   for(const b of data.bosses)for(const t of b.tasks||[]){
