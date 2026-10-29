@@ -1,0 +1,63 @@
+name: Verify isolated Aikurumi preview page
+on:
+  push:
+    branches:
+      - test/aikurumi-api-probe-20261030
+    paths:
+      - .github/workflows/verify-aikurumi-preview.yml
+      - docs/aikurumi-lab/**
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate offline page and links locally
+        shell: bash
+        run: |
+          node --check docs/aikurumi-lab/aikurumi-lab.mjs
+          node --check docs/aikurumi-lab/aikurumi-tactic-review.mjs
+          node --check docs/aikurumi-lab/aikurumi-character-matcher.mjs
+          node --check docs/aikurumi-lab/aikurumi-tactic-preprocess.mjs
+          node --check docs/aikurumi-lab/tactic-parser.mjs
+          test -s docs/aikurumi-lab/index.html
+          for f in aikurumi-lab.mjs aikurumi-tactic-review.mjs aikurumi-tactic-preprocess.mjs aikurumi-character-matcher.mjs tactic-parser.mjs aikurumi-snapshot.json; do
+            test -s "docs/aikurumi-lab/$f"
+          done
+      - name: Verify public branch preview responds with actual page assets
+        shell: bash
+        run: |
+          node --input-type=module <<'NODE'
+          import assert from 'node:assert/strict';
+          const base='https://test-aikurumi-api-probe-2026.priconne.pages.dev/aikurumi-lab/';
+          async function verify(file,check){
+            let last;
+            for(let attempt=0;attempt<5;attempt++){
+              try{
+                const response=await fetch(base+file,{signal:AbortSignal.timeout(12000),headers:{'Cache-Control':'no-cache'}});
+                assert.equal(response.status,200,file+' HTTP '+response.status);
+                const text=await response.text();
+                check(text);
+                console.log('SMOKE_OK',file,'bytes',text.length,'type',response.headers.get('content-type'));
+                return;
+              }catch(error){last=error;console.log('SMOKE_RETRY',file,attempt+1,String(error));await new Promise(r=>setTimeout(r,2000));}
+            }
+            throw last;
+          }
+          await verify('',text=>{assert.match(text,/<title>냥냥클랜/);assert.match(text,/aikurumi-lab\.mjs/);});
+          await verify('aikurumi-lab.mjs',text=>{assert.match(text,/previewAikurumiTactic/);assert.match(text,/aikurumi-snapshot\.json/);});
+          await verify('aikurumi-tactic-review.mjs',text=>assert.match(text,/registrationAllowed:false/));
+          await verify('aikurumi-snapshot.json',text=>{
+            const snapshot=JSON.parse(text);assert.equal(snapshot.readOnly,true);assert.equal(snapshot.jpMonth,'2025-10');assert.equal(snapshot.krMonth,'2026-11');assert.equal(snapshot.bosses.length,5);
+            assert.equal(snapshot.bosses.reduce((n,b)=>n+b.tasks.length,0),97);
+            assert.equal(snapshot.bosses.reduce((n,b)=>n+b.tasks.reduce((k,t)=>k+t.links.length,0),0),214);
+          });
+          NODE
