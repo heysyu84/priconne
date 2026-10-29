@@ -40,7 +40,7 @@ export function filterReviewItems(items,{boss='all',mode='all',query=''}={}){
     if(mode==='notes'&&!flags.notesOnly)return false;
     if(q){
       const searchable=[item.boss.unitName,item.task.id,item.link.name,item.link.remarks,
-        ...p.matchedKoreanNames||[],...p.originalLineup.map(c=>c.unitName),...p.originalLineup.map(c=>c.prefabId)];
+        ...(p.matchedKoreanNames||[]),...p.originalLineup.map(c=>c.unitName),...p.originalLineup.map(c=>c.prefabId)];
       return searchable.join(' ').normalize('NFKC').toLocaleLowerCase('ko-KR').includes(q);
     }
     return true;
