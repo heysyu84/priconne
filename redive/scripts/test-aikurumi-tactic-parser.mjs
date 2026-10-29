@@ -41,8 +41,8 @@ test('all-party SET dialect variants are recognized without introducing a sixth 
   }
 });
 
-test('explicit action arrows retain the specified ON order',()=>{
-  const r=convertForeignTactic('1:09 キャラ1 → キャラ2 ON',['A','B','C','D','E']);
+test('explicit sequential ON with Japanese 順に retains source ordering',()=>{
+  const r=convertForeignTactic('1:09 キャラ1、キャラ2 順にON',['A','B','C','D','E']);
   assert.match(r.text,/A, B 순으로 ON/);
 });
 
