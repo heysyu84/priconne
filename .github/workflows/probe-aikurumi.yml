@@ -12,6 +12,9 @@ on:
       - 'redive/scripts/test-aikurumi-review.mjs'
       - 'redive/public/aikurumi-character-matcher.mjs'
       - 'redive/scripts/test-aikurumi-character-matcher.mjs'
+      - 'redive/scripts/test-aikurumi-snapshot.mjs'
+      - 'redive/public/aikurumi-lab.mjs'
+      - 'redive/public/aikurumi-lab.html'
 permissions:
   contents: read
 jobs:
@@ -107,4 +110,4 @@ jobs:
           NODE
 
       - name: Check parser against real source regression cases
-        run: node --test redive/scripts/test-aikurumi-tactic-parser.mjs redive/scripts/test-aikurumi-preprocess.mjs redive/scripts/test-aikurumi-review.mjs redive/scripts/test-aikurumi-character-matcher.mjs
+        run: node --test redive/scripts/test-aikurumi-tactic-parser.mjs redive/scripts/test-aikurumi-preprocess.mjs redive/scripts/test-aikurumi-review.mjs redive/scripts/test-aikurumi-character-matcher.mjs redive/scripts/test-aikurumi-snapshot.mjs
