@@ -38,6 +38,23 @@ summary{cursor:pointer;font-weight:700;margin:12px 0}a{color:var(--accent)}.warn
 .youtube-actions button:first-child{background:#2e4270;border-color:#5c74a6}
 .youtube-paste h4{font-size:.95rem;margin:14px 0 8px}
 [data-youtube-output]{border-radius:10px;overflow-wrap:anywhere}
+
+.stage3-panel{margin-bottom:16px}
+.stage3-panel[hidden]{display:none}
+.stage3-content{padding:14px 16px}
+.stage3-toolbar{display:flex;gap:12px;align-items:end;flex-wrap:wrap;margin-bottom:12px}
+.stage3-toolbar button{border:1px solid #6e88bf;background:#2a4171;border-radius:9px;color:#fff;font:inherit;padding:10px 14px;min-height:42px;cursor:pointer}
+.stage3-toolbar button:hover{background:#3a578f}
+.compose-result{border:1px solid var(--line);background:var(--surface2);border-radius:12px;padding:13px;margin:10px 0}
+.compose-result h3{margin:0 0 8px;font-size:1rem}
+.compose-list{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.compose-boss{background:#111b2b;border:1px solid var(--line);border-radius:9px;padding:10px;min-width:0}
+.compose-boss b,.compose-boss small{display:block}
+.compose-boss small{font-size:.75rem;margin:4px 0;line-height:1.5}
+.compose-boss button{color:var(--accent);border:1px solid var(--line);border-radius:8px;background:transparent;padding:5px 8px;font:inherit;font-size:.75rem;cursor:pointer}
+.stage3-notice{margin:12px 0;color:var(--muted);font-size:.82rem}
+@media(max-width:1000px){.compose-list{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){.compose-list{grid-template-columns:minmax(0,1fr)}}
 @media(max-width:1040px){.compare-grid{grid-template-columns:minmax(0,1fr)}}
 @media(max-width:760px){.detail-heading{align-items:flex-start;flex-direction:column}.nav-actions{align-self:flex-end}.item-title{align-items:flex-start}.item-title span:first-child{font-size:.85rem}.item-status{flex-shrink:0}}
 @media(max-width:760px){main{padding:18px 12px 50px}.panes{grid-template-columns:minmax(0,1fr)}.list{max-height:280px}.data-grid{grid-template-columns:1fr}.party strong{font-size:.73rem}header h1{font-size:1.35rem}.step-head{flex-wrap:wrap}.state{font-size:.82rem}.toolbar>*{flex:1 1 42%;min-width:0}.toolbar select,.toolbar input{width:100%;min-width:0}.item{padding:12px}.detail{padding:13px}}
@@ -45,11 +62,19 @@ summary{cursor:pointer;font-weight:700;margin:12px 0}a{color:var(--accent)}.warn
 <header><div><h1>외부 택틱 검토실</h1><p class="muted">냥냥클랜 · aikurumi 수동 수집 기능의 독립 검증 화면</p></div><span class="badge">TEST / 읽기 전용</span></header>
 <div class="notice"><strong>운영 사이트와 완전히 분리</strong> · 수집 자료는 검토 전용입니다. 기존 택틱을 수정하거나 추천조합에 등록할 수 없습니다.</div>
 <div class="toolbar">
-<label><span class="label">한섭 / 일섭 / 단계</span><select id="month" disabled><option>자료 읽는 중</option></select></label>
+<label><span class="label">한섭 / 일섭 / 단계</span><select id="month"><option value="6">한섭 2026-11 · 4단계</option><option value="3">한섭 2026-11 · 3단계</option></select></label>
 <label><span class="label">보스</span><select id="boss"><option value="all">전체 보스</option></select></label>
+<label><span class="label">택틱 유형</span><select id="operation"><option value="all">전체 유형</option><option value="manual">손컨</option><option value="easy-manual">간단손컨</option><option value="semi-auto">세미오토</option><option value="full-auto">풀오토</option><option value="carry">이월용</option><option value="unknown">미분류</option></select></label>
 <label><span class="label">검토 상태</span><select id="filter"><option value="all">전체</option><option value="timeline">조작문 있음</option><option value="warning">미해석 경고</option><option value="unknown">행동 대상 미확인</option><option value="clean">형식 경고 없음</option><option value="notes">본문 없음</option></select></label>
 <label><span class="label">캐릭터명·원본 검색</span><input id="search" placeholder="캐릭터 / 보스 / ID 검색"></label>
 </div>
 <p id="summary" class="summary-bar" aria-live="polite">원본 자료 분석 중…</p>
+<section id="stage3-section" class="panel stage3-panel" hidden>
+  <div class="panel-title">3단계 · 1~5넴 캐릭터 중복 없는 조합 추출</div>
+  <div class="stage3-content"><p class="muted">5개 보스의 편성에서 동일한 캐릭터 ID를 중복 사용하지 않는 조합을 찾습니다. 원본 자료에 없는 조합은 생성하지 않습니다.</p>
+  <div class="stage3-toolbar"><label><span class="label">조합 유형</span><select id="compose-mode"><option value="full-auto">풀오토 우선</option><option value="all">모든 유형</option><option value="semi-auto">세미오토만</option><option value="easy-manual">간단손컨만</option><option value="manual">손컨만</option></select></label>
+  <button id="compose-button" type="button">중복 없는 조합 찾기</button></div>
+  <div id="compose-output" aria-live="polite"><p class="muted">추출 버튼을 누르면 결과를 표시합니다.</p></div></div>
+</section>
 <div class="panes"><section class="panel"><h2 class="panel-title" id="list-title">수집된 자료</h2><div class="list" id="list"><p class="empty">자료 읽는 중…</p></div></section><section class="panel"><h2 class="panel-title">원본과 한국어 변환 비교</h2><div class="detail" id="detail"><p class="muted">왼쪽에서 택틱을 선택하세요.</p></div></section></div>
 </main><script type="module" src="./aikurumi-lab.mjs"></script></body></html>
