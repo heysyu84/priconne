@@ -13,7 +13,7 @@ on:
       - redive/public/aikurumi-operation-types.mjs
       - redive/public/aikurumi-review-filters.mjs
       - redive/public/aikurumi-tactic-review.mjs
-      - redive/scripts/test-aikurumi-review.mjs redive/scripts/test-aikurumi-stage3-composer.mjs
+      - redive/scripts/test-aikurumi-review.mjs
   workflow_dispatch:
 
 permissions:
@@ -40,7 +40,7 @@ jobs:
           node --check docs/aikurumi-lab/aikurumi-operation-types.mjs
           node --check docs/aikurumi-lab/aikurumi-stage3-composer.mjs
           node --check redive/public/aikurumi-lab.mjs
-          node --test redive/scripts/test-aikurumi-review-filters.mjs redive/scripts/test-aikurumi-lab-ui.mjs redive/scripts/test-aikurumi-review.mjs
+          node --test redive/scripts/test-aikurumi-review-filters.mjs redive/scripts/test-aikurumi-lab-ui.mjs redive/scripts/test-aikurumi-review.mjs redive/scripts/test-aikurumi-stage3-composer.mjs
           test -s docs/aikurumi-lab/index.html
           for f in aikurumi-lab.mjs aikurumi-tactic-review.mjs aikurumi-tactic-preprocess.mjs aikurumi-character-matcher.mjs tactic-parser.mjs aikurumi-snapshot.json aikurumi-snapshot-stage3.json aikurumi-operation-types.mjs aikurumi-stage3-composer.mjs; do
             test -s "docs/aikurumi-lab/$f"
