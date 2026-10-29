@@ -158,15 +158,20 @@ test('video collection opens the exact matching stage-3 tactic and returns to re
  assert.match(elements.get('detail').innerHTML,new RegExp(boss+'넴'));
 });
 
-test('YouTube Data API derived Korean TL appears on exact video-linked tactic automatically',()=>{
+test('YouTube Data API derived Korean TL appears on exact video-linked tactic automatically',async()=>{
  const matched=youtubeCandidates.references.find(x=>x.stage===6&&(x.status==='partial'||x.status==='candidate')&&x.rows?.length);
  assert.ok(matched,'Expected at least one actually extracted timeline');
+ const month=elements.get('month');month.value='6';month.handlers.change();
+ for(let i=0;i<12&&!elements.get('list-title').textContent.includes('215');i++)
+   await new Promise(resolve=>setImmediate(resolve));
  const search=elements.get('search');search.value=String(matched.taskId);search.handlers.input();
  elements.get('list').handlers.click({target:{closest:selector=>selector==='button[data-item]'?
   {dataset:{item:[matched.boss,matched.taskId,matched.linkIndex,matched.linkOrdinal].join(':')}}:null}});
  const html=elements.get('detail').innerHTML;
  assert.match(html,/API 자동 TL 변환 및 원문 대조/);
  assert.match(html,/일본어 설명란에서 자동 변환한 한국어 조작문/);
+ assert.match(html,/기준 TL: YouTube 일본어 TL 우선/);
+ assert.match(html,/aikurumi 중국어 TL · 참고 자료/);
  assert.match(html,/자동 등록되지 않습니다/);
  assert.ok(!html.includes('YOUTUBE_API_KEY'));
  search.value='';search.handlers.input();
