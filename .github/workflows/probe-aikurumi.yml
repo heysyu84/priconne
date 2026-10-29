@@ -60,3 +60,6 @@ jobs:
           console.log('RESULT',JSON.stringify({periods:Array.isArray(periods)?periods.length:0,successfulStages:success}));
           if(!Array.isArray(periods)||!success)process.exitCode=1;
           NODE
+
+      - name: Check parser against real source regression cases
+        run: node --test redive/scripts/test-aikurumi-tactic-parser.mjs
