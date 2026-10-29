@@ -6,6 +6,9 @@ on:
     paths:
       - .github/workflows/verify-aikurumi-preview.yml
       - docs/aikurumi-lab/**
+      - redive/scripts/test-aikurumi-review-filters.mjs
+      - redive/scripts/test-aikurumi-lab-ui.mjs
+      - redive/public/aikurumi-review-filters.mjs
   workflow_dispatch:
 
 permissions:
