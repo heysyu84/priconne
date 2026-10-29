@@ -8,7 +8,7 @@ on:
       - docs/aikurumi-lab/**
       - redive/scripts/test-aikurumi-review-filters.mjs
       - redive/scripts/test-aikurumi-lab-ui.mjs
-      - redive/scripts/test-aikurumi-stage3-composer.mjs redive/scripts/test-aikurumi-youtube-collections.mjs
+      - redive/scripts/test-aikurumi-stage3-composer.mjs
       - redive/public/aikurumi-stage3-composer.mjs
       - redive/public/aikurumi-operation-types.mjs
       - redive/public/aikurumi-stage3-carry.mjs
@@ -45,7 +45,7 @@ jobs:
           node --check docs/aikurumi-lab/aikurumi-stage3-carry.mjs
           node --check docs/aikurumi-lab/aikurumi-youtube-collections.mjs
           node --check redive/public/aikurumi-lab.mjs
-          node --test redive/scripts/test-aikurumi-review-filters.mjs redive/scripts/test-aikurumi-lab-ui.mjs redive/scripts/test-aikurumi-review.mjs redive/scripts/test-aikurumi-stage3-composer.mjs
+          node --test redive/scripts/test-aikurumi-review-filters.mjs redive/scripts/test-aikurumi-lab-ui.mjs redive/scripts/test-aikurumi-review.mjs redive/scripts/test-aikurumi-stage3-composer.mjs redive/scripts/test-aikurumi-youtube-collections.mjs
           test -s docs/aikurumi-lab/index.html
           for f in aikurumi-lab.mjs aikurumi-tactic-review.mjs aikurumi-tactic-preprocess.mjs aikurumi-character-matcher.mjs tactic-parser.mjs aikurumi-snapshot.json aikurumi-snapshot-stage3.json aikurumi-operation-types.mjs aikurumi-stage3-composer.mjs aikurumi-stage3-carry.mjs aikurumi-youtube-collections.mjs; do
             test -s "docs/aikurumi-lab/$f"
