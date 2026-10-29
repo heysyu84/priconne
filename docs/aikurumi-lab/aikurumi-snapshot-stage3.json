@@ -1,0 +1,6764 @@
+{
+  "source": "aikurumi.cn",
+  "readOnly": true,
+  "jpMonth": "2025-10",
+  "krMonth": "2026-11",
+  "stage": 3,
+  "clanBattleId": 1093,
+  "collectedAt": "2026-10-29T22:39:20.791Z",
+  "bosses": [
+    {
+      "index": 1,
+      "prefabId": 302100,
+      "unitName": "ワイバーン",
+      "tasks": [
+        {
+          "id": 14253,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 7000,
+          "halfAutoDamage": null,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "全set 满补",
+          "charas": [
+            {
+              "prefabId": 134001,
+              "unitName": "Fio",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 103801,
+              "unitName": "Shiori",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 130101,
+              "unitName": "Wakana",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 135301,
+              "unitName": "Qulia (Summer)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 135601,
+              "unitName": "Shinatsu",
+              "currentRarity": 5,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "全set 7000\n油管 スギさん\n满补",
+              "link": "https://www.youtube.com/watch?v=YYSf-2wPFVA",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        },
+        {
+          "id": 14257,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 7000,
+          "halfAutoDamage": 9000,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "全set 余52+20s",
+          "charas": [
+            {
+              "prefabId": 106801,
+              "unitName": "Labyrista",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 107101,
+              "unitName": "Christina",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 105701,
+              "unitName": "Djeeta",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 135501,
+              "unitName": "Aira",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 135101,
+              "unitName": "Sheffy (Summer)",
+              "currentRarity": 5,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "全set 7000\n油管 スギさん\n余52+20s",
+              "link": "https://www.youtube.com/watch?v=IL9D561pJZs",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        },
+        {
+          "id": 14263,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 7000,
+          "halfAutoDamage": 9000,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "全set 余69+20s",
+          "charas": [
+            {
+              "prefabId": 134001,
+              "unitName": "Fio",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 103801,
+              "unitName": "Shiori",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 129601,
+              "unitName": "Anemone",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 130101,
+              "unitName": "Wakana",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 135601,
+              "unitName": "Shinatsu",
+              "currentRarity": 5,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "全set 7000\n油管 スギさん\n余69+20s",
+              "link": "https://www.youtube.com/watch?v=IL9D561pJZs",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        },
+        {
+          "id": 14296,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 7000,
+          "halfAutoDamage": null,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "xoxxx 满补",
+          "charas": [
+            {
+              "prefabId": 111401,
+              "unitName": "Luna",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 180601,
+              "unitName": "Kyaru (Princess)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 125501,
+              "unitName": "Djeeta (Warlock)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 121601,
+              "unitName": "Inori (Phantom Thief)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 113901,
+              "unitName": "Tsumugi (Halloween)",
+              "currentRarity": 5,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "xoxxx 7000\n油管 丸太\n满补",
+              "link": "https://www.youtube.com/watch?v=gBAMR9fVpfQ",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        },
+        {
+          "id": 14304,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 7000,
+          "halfAutoDamage": null,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "全set 满补",
+          "charas": [
+            {
+              "prefabId": 125101,
+              "unitName": "Tamaki (Cafe)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 102501,
+              "unitName": "Suzume",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 135201,
+              "unitName": "Precia (Summer)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 135301,
+              "unitName": "Qulia (Summer)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 135601,
+              "unitName": "Shinatsu",
+              "currentRarity": 5,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "全set 7000\n油管 クローバー【Clover】\n满补",
+              "link": "https://www.youtube.com/watch?v=QctI5DVFQDI",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        },
+        {
+          "id": 14332,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 7000,
+          "halfAutoDamage": null,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "全set 满补",
+          "charas": [
+            {
+              "prefabId": 134001,
+              "unitName": "Fio",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 103801,
+              "unitName": "Shiori",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 110701,
+              "unitName": "Aoi (Student)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 106301,
+              "unitName": "Arisa",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 135601,
+              "unitName": "Shinatsu",
+              "currentRarity": 5,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "全set 7000\n情報会 しばいぬ\n满补",
+              "link": "",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        },
+        {
+          "id": 14336,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 7000,
+          "halfAutoDamage": null,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "全set 满补",
+          "charas": [
+            {
+              "prefabId": 125101,
+              "unitName": "Tamaki (Cafe)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 103801,
+              "unitName": "Shiori",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 110701,
+              "unitName": "Aoi (Student)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 106301,
+              "unitName": "Arisa",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 105901,
+              "unitName": "Kokkoro",
+              "currentRarity": 6,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "全set 7000\n情報会 かっち\n满补",
+              "link": "",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        },
+        {
+          "id": 14337,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 7000,
+          "halfAutoDamage": null,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "全set 满补",
+          "charas": [
+            {
+              "prefabId": 125101,
+              "unitName": "Tamaki (Cafe)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 134001,
+              "unitName": "Fio",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 103801,
+              "unitName": "Shiori",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 110701,
+              "unitName": "Aoi (Student)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 106301,
+              "unitName": "Arisa",
+              "currentRarity": 6,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "全set 7000\n情報会 かっち\n满补",
+              "link": "",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        },
+        {
+          "id": 14338,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 7000,
+          "halfAutoDamage": null,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "全set 满补",
+          "charas": [
+            {
+              "prefabId": 125401,
+              "unitName": "Shiori (Ranger)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 103801,
+              "unitName": "Shiori",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 106301,
+              "unitName": "Arisa",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 125201,
+              "unitName": "Monika (Cafe)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 135601,
+              "unitName": "Shinatsu",
+              "currentRarity": 5,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "全set 7000\n情報会 かっち\n满补",
+              "link": "",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        },
+        {
+          "id": 14339,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 7000,
+          "halfAutoDamage": null,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "全set 满补",
+          "charas": [
+            {
+              "prefabId": 106001,
+              "unitName": "Kyaru",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 129901,
+              "unitName": "Eriko (Commander)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 121601,
+              "unitName": "Inori (Phantom Thief)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 102701,
+              "unitName": "Eriko",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 104301,
+              "unitName": "Makoto",
+              "currentRarity": 6,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "全set 7000\n情報会 かっち\n满补",
+              "link": "",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        },
+        {
+          "id": 14340,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 7000,
+          "halfAutoDamage": null,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "全set 满补",
+          "charas": [
+            {
+              "prefabId": 106001,
+              "unitName": "Kyaru",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 121601,
+              "unitName": "Inori (Phantom Thief)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 129801,
+              "unitName": "Makoto (Commander)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 102701,
+              "unitName": "Eriko",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 104301,
+              "unitName": "Makoto",
+              "currentRarity": 6,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "全set 7000\n情報会 かっち\n满补",
+              "link": "",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        },
+        {
+          "id": 14341,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 7000,
+          "halfAutoDamage": null,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "全set 满补",
+          "charas": [
+            {
+              "prefabId": 124801,
+              "unitName": "Nozomi (Liberator)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 121601,
+              "unitName": "Inori (Phantom Thief)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 129801,
+              "unitName": "Makoto (Commander)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 102701,
+              "unitName": "Eriko",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 104301,
+              "unitName": "Makoto",
+              "currentRarity": 6,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "全set 7000\n情報会 かっち\n满补",
+              "link": "",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        },
+        {
+          "id": 14342,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 7000,
+          "halfAutoDamage": null,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "全set 满补",
+          "charas": [
+            {
+              "prefabId": 134001,
+              "unitName": "Fio",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 103801,
+              "unitName": "Shiori",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 110701,
+              "unitName": "Aoi (Student)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 106301,
+              "unitName": "Arisa",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 100301,
+              "unitName": "Rei",
+              "currentRarity": 6,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "全set 7000\n情報会 かっち\n满补",
+              "link": "",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        },
+        {
+          "id": 14343,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 7000,
+          "halfAutoDamage": null,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "全set 满补",
+          "charas": [
+            {
+              "prefabId": 124801,
+              "unitName": "Nozomi (Liberator)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 129901,
+              "unitName": "Eriko (Commander)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 121601,
+              "unitName": "Inori (Phantom Thief)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 102701,
+              "unitName": "Eriko",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 104301,
+              "unitName": "Makoto",
+              "currentRarity": 6,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "全set 7000\n情報会 かっち\n满补",
+              "link": "",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        },
+        {
+          "id": 14344,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 7000,
+          "halfAutoDamage": null,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "全set 满补",
+          "charas": [
+            {
+              "prefabId": 103801,
+              "unitName": "Shiori",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 110701,
+              "unitName": "Aoi (Student)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 106301,
+              "unitName": "Arisa",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 130101,
+              "unitName": "Wakana",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 105301,
+              "unitName": "Monika",
+              "currentRarity": 6,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "全set 7000\n情報会 人リタ\n满补",
+              "link": "",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        },
+        {
+          "id": 14360,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 7000,
+          "halfAutoDamage": null,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "全set 满补",
+          "charas": [
+            {
+              "prefabId": 125301,
+              "unitName": "Kokkoro (Ranger)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 112901,
+              "unitName": "Rino (Wonderland)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 103801,
+              "unitName": "Shiori",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 110701,
+              "unitName": "Aoi (Student)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 106301,
+              "unitName": "Arisa",
+              "currentRarity": 6,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "全set 7000\n情報会 クンミー\n满补",
+              "link": "",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        },
+        {
+          "id": 14386,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 7000,
+          "halfAutoDamage": null,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "全set 余38+20s",
+          "charas": [
+            {
+              "prefabId": 129001,
+              "unitName": "Eris",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 103101,
+              "unitName": "Shinobu",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 129901,
+              "unitName": "Eriko (Commander)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 102701,
+              "unitName": "Eriko",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 104301,
+              "unitName": "Makoto",
+              "currentRarity": 6,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "全set 7000\nX@Bura9ma\n余38+20s",
+              "link": "https://x.com/Bura9ma/status/1981672079805321321",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        },
+        {
+          "id": 14390,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 7000,
+          "halfAutoDamage": null,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "全set 余57+20s",
+          "charas": [
+            {
+              "prefabId": 134701,
+              "unitName": "Ho-oh",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 102801,
+              "unitName": "Saren",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 180901,
+              "unitName": "Akino & Saren",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 107101,
+              "unitName": "Christina",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 106101,
+              "unitName": "Muimi",
+              "currentRarity": 6,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "全set 7000\nX@syumunZ\n余57+20s",
+              "link": "https://x.com/syumunZ/status/1981567631917514966",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        },
+        {
+          "id": 14398,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 7000,
+          "halfAutoDamage": null,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "全set 满补",
+          "charas": [
+            {
+              "prefabId": 124801,
+              "unitName": "Nozomi (Liberator)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 121601,
+              "unitName": "Inori (Phantom Thief)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 125601,
+              "unitName": "Vikala",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 102701,
+              "unitName": "Eriko",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 104301,
+              "unitName": "Makoto",
+              "currentRarity": 6,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "全set 7000\nWorryChefs C101\n满补",
+              "link": "https://docs.google.com/spreadsheets/d/e/2PACX-1vR1Iyk-Y6LYURS-JTD1j9R96Sox1TzuhaWSv8yhy6ReM4vMTZxddLp_sRPjZJWQYRTxySbha6cHPIu1/pubhtml",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        },
+        {
+          "id": 14399,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 7000,
+          "halfAutoDamage": null,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "全set 满补",
+          "charas": [
+            {
+              "prefabId": 124801,
+              "unitName": "Nozomi (Liberator)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 121601,
+              "unitName": "Inori (Phantom Thief)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 102701,
+              "unitName": "Eriko",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 135901,
+              "unitName": "Satsuki",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 104301,
+              "unitName": "Makoto",
+              "currentRarity": 6,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "全set 7000\nWorryChefs C101\n满补",
+              "link": "https://docs.google.com/spreadsheets/d/e/2PACX-1vR1Iyk-Y6LYURS-JTD1j9R96Sox1TzuhaWSv8yhy6ReM4vMTZxddLp_sRPjZJWQYRTxySbha6cHPIu1/pubhtml",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        },
+        {
+          "id": 14400,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 7000,
+          "halfAutoDamage": null,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "全set 满补",
+          "charas": [
+            {
+              "prefabId": 124701,
+              "unitName": "Mitsuki (New Year)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 124801,
+              "unitName": "Nozomi (Liberator)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 121601,
+              "unitName": "Inori (Phantom Thief)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 102701,
+              "unitName": "Eriko",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 104301,
+              "unitName": "Makoto",
+              "currentRarity": 6,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "全set 7000\nWorryChefs C101\n满补",
+              "link": "https://docs.google.com/spreadsheets/d/e/2PACX-1vR1Iyk-Y6LYURS-JTD1j9R96Sox1TzuhaWSv8yhy6ReM4vMTZxddLp_sRPjZJWQYRTxySbha6cHPIu1/pubhtml",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        },
+        {
+          "id": 14401,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 7000,
+          "halfAutoDamage": null,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "全set 满补",
+          "charas": [
+            {
+              "prefabId": 124801,
+              "unitName": "Nozomi (Liberator)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 121601,
+              "unitName": "Inori (Phantom Thief)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 129801,
+              "unitName": "Makoto (Commander)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 104601,
+              "unitName": "Tamaki",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 104301,
+              "unitName": "Makoto",
+              "currentRarity": 6,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "全set 7000\nWorryChefs C102\n满补",
+              "link": "https://docs.google.com/spreadsheets/d/e/2PACX-1vR1Iyk-Y6LYURS-JTD1j9R96Sox1TzuhaWSv8yhy6ReM4vMTZxddLp_sRPjZJWQYRTxySbha6cHPIu1/pubhtml",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        },
+        {
+          "id": 14402,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 7000,
+          "halfAutoDamage": null,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "全set 满补",
+          "charas": [
+            {
+              "prefabId": 124701,
+              "unitName": "Mitsuki (New Year)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 124801,
+              "unitName": "Nozomi (Liberator)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 121601,
+              "unitName": "Inori (Phantom Thief)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 129801,
+              "unitName": "Makoto (Commander)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 104301,
+              "unitName": "Makoto",
+              "currentRarity": 6,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "全set 7000\nWorryChefs C102\n满补",
+              "link": "https://docs.google.com/spreadsheets/d/e/2PACX-1vR1Iyk-Y6LYURS-JTD1j9R96Sox1TzuhaWSv8yhy6ReM4vMTZxddLp_sRPjZJWQYRTxySbha6cHPIu1/pubhtml",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        },
+        {
+          "id": 14403,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 7000,
+          "halfAutoDamage": null,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "全set 满补",
+          "charas": [
+            {
+              "prefabId": 124801,
+              "unitName": "Nozomi (Liberator)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 121601,
+              "unitName": "Inori (Phantom Thief)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 129801,
+              "unitName": "Makoto (Commander)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 135901,
+              "unitName": "Satsuki",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 104301,
+              "unitName": "Makoto",
+              "currentRarity": 6,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "全set 7000\nWorryChefs C102\n满补",
+              "link": "https://docs.google.com/spreadsheets/d/e/2PACX-1vR1Iyk-Y6LYURS-JTD1j9R96Sox1TzuhaWSv8yhy6ReM4vMTZxddLp_sRPjZJWQYRTxySbha6cHPIu1/pubhtml",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        },
+        {
+          "id": 14404,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 7000,
+          "halfAutoDamage": null,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "全set 满补",
+          "charas": [
+            {
+              "prefabId": 124801,
+              "unitName": "Nozomi (Liberator)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 121601,
+              "unitName": "Inori (Phantom Thief)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 129801,
+              "unitName": "Makoto (Commander)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 125601,
+              "unitName": "Vikala",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 104301,
+              "unitName": "Makoto",
+              "currentRarity": 6,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "全set 7000\nWorryChefs C102\n满补",
+              "link": "https://docs.google.com/spreadsheets/d/e/2PACX-1vR1Iyk-Y6LYURS-JTD1j9R96Sox1TzuhaWSv8yhy6ReM4vMTZxddLp_sRPjZJWQYRTxySbha6cHPIu1/pubhtml",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        },
+        {
+          "id": 14405,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 7000,
+          "halfAutoDamage": null,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "全set 满补",
+          "charas": [
+            {
+              "prefabId": 124801,
+              "unitName": "Nozomi (Liberator)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 129901,
+              "unitName": "Eriko (Commander)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 121601,
+              "unitName": "Inori (Phantom Thief)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 129801,
+              "unitName": "Makoto (Commander)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 104301,
+              "unitName": "Makoto",
+              "currentRarity": 6,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "全set 7000\nWorryChefs C102\n满补",
+              "link": "https://docs.google.com/spreadsheets/d/e/2PACX-1vR1Iyk-Y6LYURS-JTD1j9R96Sox1TzuhaWSv8yhy6ReM4vMTZxddLp_sRPjZJWQYRTxySbha6cHPIu1/pubhtml",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        },
+        {
+          "id": 14454,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 7000,
+          "halfAutoDamage": null,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "全set 满补",
+          "charas": [
+            {
+              "prefabId": 134001,
+              "unitName": "Fio",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 103801,
+              "unitName": "Shiori",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 125201,
+              "unitName": "Monika (Cafe)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 135301,
+              "unitName": "Qulia (Summer)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 135601,
+              "unitName": "Shinatsu",
+              "currentRarity": 5,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "全set 7000\n油管 ブイズ使い\n满补",
+              "link": "https://www.youtube.com/watch?v=unG2c92lMTQ",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        },
+        {
+          "id": 14455,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 7000,
+          "halfAutoDamage": null,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "全set 满补",
+          "charas": [
+            {
+              "prefabId": 136101,
+              "unitName": "サクラ",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 124801,
+              "unitName": "Nozomi (Liberator)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 121601,
+              "unitName": "Inori (Phantom Thief)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 129801,
+              "unitName": "Makoto (Commander)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 133001,
+              "unitName": "Grace",
+              "currentRarity": 5,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "全set 7000\n油管 ブイズ使い\n满补",
+              "link": "https://www.youtube.com/watch?v=unG2c92lMTQ",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        },
+        {
+          "id": 14456,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 7000,
+          "halfAutoDamage": null,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "全set 满补",
+          "charas": [
+            {
+              "prefabId": 129001,
+              "unitName": "Eris",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 132001,
+              "unitName": "Echidna (Summer)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 180601,
+              "unitName": "Kyaru (Princess)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 118201,
+              "unitName": "Misora",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 131801,
+              "unitName": "Homare (Summer)",
+              "currentRarity": 5,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "全set 7000\n油管 ブイズ使い\n满补",
+              "link": "https://www.youtube.com/watch?v=unG2c92lMTQ",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "prefabId": 320800,
+      "unitName": "タフガイスト",
+      "tasks": [
+        {
+          "id": 14254,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 8000,
+          "halfAutoDamage": null,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "全set 满补",
+          "charas": [
+            {
+              "prefabId": 129701,
+              "unitName": "Nephi-Nera",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 116701,
+              "unitName": "Aoi (Work)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 124801,
+              "unitName": "Nozomi (Liberator)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 180901,
+              "unitName": "Akino & Saren",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 135501,
+              "unitName": "Aira",
+              "currentRarity": 5,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "全set 8000\n油管 スギさん\n满补",
+              "link": "https://www.youtube.com/watch?v=YYSf-2wPFVA",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        },
+        {
+          "id": 14259,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 8000,
+          "halfAutoDamage": 9000,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "全set 余45+20s",
+          "charas": [
+            {
+              "prefabId": 129001,
+              "unitName": "Eris",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 133801,
+              "unitName": "Neneka (Alpha)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 180601,
+              "unitName": "Kyaru (Princess)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 125501,
+              "unitName": "Djeeta (Warlock)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 119101,
+              "unitName": "Kuuka (Noir)",
+              "currentRarity": 5,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "全set 8000\n油管 スギさん\n余45+20s",
+              "link": "https://www.youtube.com/watch?v=IL9D561pJZs",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        },
+        {
+          "id": 14262,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 8000,
+          "halfAutoDamage": 9000,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "全set 余55+20s",
+          "charas": [
+            {
+              "prefabId": 134001,
+              "unitName": "Fio",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 103801,
+              "unitName": "Shiori",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 129601,
+              "unitName": "Anemone",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 130101,
+              "unitName": "Wakana",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 135601,
+              "unitName": "Shinatsu",
+              "currentRarity": 5,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "全set 8000\n油管 スギさん\n余55+20s",
+              "link": "https://www.youtube.com/watch?v=IL9D561pJZs",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        },
+        {
+          "id": 14294,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 8000,
+          "halfAutoDamage": null,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "全set 满补",
+          "charas": [
+            {
+              "prefabId": 106001,
+              "unitName": "Kyaru",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 115001,
+              "unitName": "Neneka (New Year)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 124101,
+              "unitName": "Yori (Holiday)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 104401,
+              "unitName": "Illya",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 113901,
+              "unitName": "Tsumugi (Halloween)",
+              "currentRarity": 5,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "全set 8000\n油管 丸太\n满补",
+              "link": "https://www.youtube.com/watch?v=5fdadWNp5TM",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        },
+        {
+          "id": 14305,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 8000,
+          "halfAutoDamage": null,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "全set 满补",
+          "charas": [
+            {
+              "prefabId": 110301,
+              "unitName": "Saren (Summer)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 133601,
+              "unitName": "Medusa",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 136101,
+              "unitName": "サクラ",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 133901,
+              "unitName": "Christina (Alpha)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 130001,
+              "unitName": "Yamato",
+              "currentRarity": 5,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "全set 8000\n油管 クローバー【Clover】\n满补",
+              "link": "https://www.youtube.com/watch?v=QctI5DVFQDI",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        },
+        {
+          "id": 14333,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 8000,
+          "halfAutoDamage": null,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "全set 满补",
+          "charas": [
+            {
+              "prefabId": 118101,
+              "unitName": "Ranpha",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 106001,
+              "unitName": "Kyaru",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 118201,
+              "unitName": "Misora",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 106701,
+              "unitName": "Homare",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 104401,
+              "unitName": "Illya",
+              "currentRarity": 6,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "全set 8000\n情報会 しばいぬ\n满补",
+              "link": "",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        },
+        {
+          "id": 14345,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 8000,
+          "halfAutoDamage": null,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "全set 满补",
+          "charas": [
+            {
+              "prefabId": 116701,
+              "unitName": "Aoi (Work)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 130201,
+              "unitName": "Fubuki",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 111301,
+              "unitName": "Mimi (Halloween)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 128701,
+              "unitName": "Hiyori (Astral)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 135501,
+              "unitName": "Aira",
+              "currentRarity": 5,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "全set 8000\n情報会 かっち\n满补",
+              "link": "",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        },
+        {
+          "id": 14346,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 8000,
+          "halfAutoDamage": null,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "全set 满补",
+          "charas": [
+            {
+              "prefabId": 116701,
+              "unitName": "Aoi (Work)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 124801,
+              "unitName": "Nozomi (Liberator)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 111301,
+              "unitName": "Mimi (Halloween)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 106501,
+              "unitName": "Kaya",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 106101,
+              "unitName": "Muimi",
+              "currentRarity": 6,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "全set 8000\n情報会 かっち\n满补",
+              "link": "",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        },
+        {
+          "id": 14347,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 8000,
+          "halfAutoDamage": null,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "全set 满补",
+          "charas": [
+            {
+              "prefabId": 111401,
+              "unitName": "Luna",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 106001,
+              "unitName": "Kyaru",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 118201,
+              "unitName": "Misora",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 104401,
+              "unitName": "Illya",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 119101,
+              "unitName": "Kuuka (Noir)",
+              "currentRarity": 5,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "全set 8000\n情報会 かっち\n满补",
+              "link": "",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        },
+        {
+          "id": 14348,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 8000,
+          "halfAutoDamage": null,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "全set 满补",
+          "charas": [
+            {
+              "prefabId": 111401,
+              "unitName": "Luna",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 133801,
+              "unitName": "Neneka (Alpha)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 106001,
+              "unitName": "Kyaru",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 104401,
+              "unitName": "Illya",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 119101,
+              "unitName": "Kuuka (Noir)",
+              "currentRarity": 5,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "全set 8000\n情報会 かっち\n满补",
+              "link": "",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        },
+        {
+          "id": 14361,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 8000,
+          "halfAutoDamage": null,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "全set 满补",
+          "charas": [
+            {
+              "prefabId": 116701,
+              "unitName": "Aoi (Work)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 102801,
+              "unitName": "Saren",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 116801,
+              "unitName": "Tamaki (Work)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 135501,
+              "unitName": "Aira",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 113601,
+              "unitName": "Jun (Summer)",
+              "currentRarity": 5,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "全set 8000\n情報会 クンミー\n满补",
+              "link": "",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        },
+        {
+          "id": 14384,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 8000,
+          "halfAutoDamage": null,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "xooxo 余53+20s",
+          "charas": [
+            {
+              "prefabId": 129701,
+              "unitName": "Nephi-Nera",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 116701,
+              "unitName": "Aoi (Work)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 134701,
+              "unitName": "Ho-oh",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 116801,
+              "unitName": "Tamaki (Work)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 135501,
+              "unitName": "Aira",
+              "currentRarity": 5,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "xooxo 8000\nX@Bura9ma\n余53+20s",
+              "link": "https://x.com/Bura9ma/status/1981672079805321321",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        },
+        {
+          "id": 14389,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 8000,
+          "halfAutoDamage": null,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "全set 余42+20s",
+          "charas": [
+            {
+              "prefabId": 106001,
+              "unitName": "Kyaru",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 124701,
+              "unitName": "Mitsuki (New Year)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 133001,
+              "unitName": "Grace",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 133901,
+              "unitName": "Christina (Alpha)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 100701,
+              "unitName": "Miyako",
+              "currentRarity": 6,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "全set 8000\nX@Bura9ma\n余42+20s",
+              "link": "https://x.com/Bura9ma/status/1981672079805321321",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        },
+        {
+          "id": 14392,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 8000,
+          "halfAutoDamage": null,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "全set 余50+20s",
+          "charas": [
+            {
+              "prefabId": 123001,
+              "unitName": "Ameth",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 106801,
+              "unitName": "Labyrista",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 126401,
+              "unitName": "Croce",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 105701,
+              "unitName": "Djeeta",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 135101,
+              "unitName": "Sheffy (Summer)",
+              "currentRarity": 5,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "全set 8000\nX@syumunZ\n余50+20s",
+              "link": "https://x.com/syumunZ/status/1981567631917514966",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        },
+        {
+          "id": 14406,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 8000,
+          "halfAutoDamage": null,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "全set 满补",
+          "charas": [
+            {
+              "prefabId": 133801,
+              "unitName": "Neneka (Alpha)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 106001,
+              "unitName": "Kyaru",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 118201,
+              "unitName": "Misora",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 104401,
+              "unitName": "Illya",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 119101,
+              "unitName": "Kuuka (Noir)",
+              "currentRarity": 5,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "全set 8000\nWorryChefs C201\n满补",
+              "link": "https://docs.google.com/spreadsheets/d/e/2PACX-1vR1Iyk-Y6LYURS-JTD1j9R96Sox1TzuhaWSv8yhy6ReM4vMTZxddLp_sRPjZJWQYRTxySbha6cHPIu1/pubhtml",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        },
+        {
+          "id": 14407,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 8000,
+          "halfAutoDamage": null,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "全set 满补",
+          "charas": [
+            {
+              "prefabId": 133801,
+              "unitName": "Neneka (Alpha)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 106001,
+              "unitName": "Kyaru",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 118201,
+              "unitName": "Misora",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 125501,
+              "unitName": "Djeeta (Warlock)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 104401,
+              "unitName": "Illya",
+              "currentRarity": 6,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "全set 8000\nWorryChefs C201\n满补",
+              "link": "https://docs.google.com/spreadsheets/d/e/2PACX-1vR1Iyk-Y6LYURS-JTD1j9R96Sox1TzuhaWSv8yhy6ReM4vMTZxddLp_sRPjZJWQYRTxySbha6cHPIu1/pubhtml",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        },
+        {
+          "id": 14408,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 8000,
+          "halfAutoDamage": null,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "全set 满补",
+          "charas": [
+            {
+              "prefabId": 133801,
+              "unitName": "Neneka (Alpha)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 106001,
+              "unitName": "Kyaru",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 118201,
+              "unitName": "Misora",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 119001,
+              "unitName": "Io (Noir)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 104401,
+              "unitName": "Illya",
+              "currentRarity": 6,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "全set 8000\nWorryChefs C201\n满补",
+              "link": "https://docs.google.com/spreadsheets/d/e/2PACX-1vR1Iyk-Y6LYURS-JTD1j9R96Sox1TzuhaWSv8yhy6ReM4vMTZxddLp_sRPjZJWQYRTxySbha6cHPIu1/pubhtml",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        },
+        {
+          "id": 14409,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 8000,
+          "halfAutoDamage": null,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "全set 满补",
+          "charas": [
+            {
+              "prefabId": 133801,
+              "unitName": "Neneka (Alpha)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 106001,
+              "unitName": "Kyaru",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 121401,
+              "unitName": "Misaki (Stage)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 104401,
+              "unitName": "Illya",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 119101,
+              "unitName": "Kuuka (Noir)",
+              "currentRarity": 5,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "全set 8000\nWorryChefs C202\n满补",
+              "link": "https://docs.google.com/spreadsheets/d/e/2PACX-1vR1Iyk-Y6LYURS-JTD1j9R96Sox1TzuhaWSv8yhy6ReM4vMTZxddLp_sRPjZJWQYRTxySbha6cHPIu1/pubhtml",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        },
+        {
+          "id": 14410,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 8000,
+          "halfAutoDamage": null,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "全set 满补",
+          "charas": [
+            {
+              "prefabId": 133801,
+              "unitName": "Neneka (Alpha)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 106001,
+              "unitName": "Kyaru",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 121401,
+              "unitName": "Misaki (Stage)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 125501,
+              "unitName": "Djeeta (Warlock)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 104401,
+              "unitName": "Illya",
+              "currentRarity": 6,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "全set 8000\nWorryChefs C202\n满补",
+              "link": "https://docs.google.com/spreadsheets/d/e/2PACX-1vR1Iyk-Y6LYURS-JTD1j9R96Sox1TzuhaWSv8yhy6ReM4vMTZxddLp_sRPjZJWQYRTxySbha6cHPIu1/pubhtml",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        },
+        {
+          "id": 14411,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 8000,
+          "halfAutoDamage": null,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "全set 满补",
+          "charas": [
+            {
+              "prefabId": 133801,
+              "unitName": "Neneka (Alpha)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 106001,
+              "unitName": "Kyaru",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 121401,
+              "unitName": "Misaki (Stage)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 119001,
+              "unitName": "Io (Noir)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 104401,
+              "unitName": "Illya",
+              "currentRarity": 6,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "全set 8000\nWorryChefs C202\n满补",
+              "link": "https://docs.google.com/spreadsheets/d/e/2PACX-1vR1Iyk-Y6LYURS-JTD1j9R96Sox1TzuhaWSv8yhy6ReM4vMTZxddLp_sRPjZJWQYRTxySbha6cHPIu1/pubhtml",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        },
+        {
+          "id": 14412,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 8000,
+          "halfAutoDamage": null,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "全set 满补",
+          "charas": [
+            {
+              "prefabId": 133801,
+              "unitName": "Neneka (Alpha)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 106001,
+              "unitName": "Kyaru",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 100901,
+              "unitName": "Anna",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 104401,
+              "unitName": "Illya",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 119101,
+              "unitName": "Kuuka (Noir)",
+              "currentRarity": 5,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "全set 8000\nWorryChefs C203\n满补",
+              "link": "https://docs.google.com/spreadsheets/d/e/2PACX-1vR1Iyk-Y6LYURS-JTD1j9R96Sox1TzuhaWSv8yhy6ReM4vMTZxddLp_sRPjZJWQYRTxySbha6cHPIu1/pubhtml",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        },
+        {
+          "id": 14413,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 8000,
+          "halfAutoDamage": null,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "全set 满补",
+          "charas": [
+            {
+              "prefabId": 133801,
+              "unitName": "Neneka (Alpha)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 106001,
+              "unitName": "Kyaru",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 100601,
+              "unitName": "Akari",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 104401,
+              "unitName": "Illya",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 119101,
+              "unitName": "Kuuka (Noir)",
+              "currentRarity": 5,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "全set 8000\nWorryChefs C203\n满补",
+              "link": "https://docs.google.com/spreadsheets/d/e/2PACX-1vR1Iyk-Y6LYURS-JTD1j9R96Sox1TzuhaWSv8yhy6ReM4vMTZxddLp_sRPjZJWQYRTxySbha6cHPIu1/pubhtml",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        },
+        {
+          "id": 14414,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 8000,
+          "halfAutoDamage": null,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "全set 满补",
+          "charas": [
+            {
+              "prefabId": 133801,
+              "unitName": "Neneka (Alpha)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 106001,
+              "unitName": "Kyaru",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 119001,
+              "unitName": "Io (Noir)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 104401,
+              "unitName": "Illya",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 119101,
+              "unitName": "Kuuka (Noir)",
+              "currentRarity": 5,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "全set 8000\nWorryChefs C203\n满补",
+              "link": "https://docs.google.com/spreadsheets/d/e/2PACX-1vR1Iyk-Y6LYURS-JTD1j9R96Sox1TzuhaWSv8yhy6ReM4vMTZxddLp_sRPjZJWQYRTxySbha6cHPIu1/pubhtml",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        },
+        {
+          "id": 14457,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 8000,
+          "halfAutoDamage": null,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "全set 满补",
+          "charas": [
+            {
+              "prefabId": 133601,
+              "unitName": "Medusa",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 136101,
+              "unitName": "サクラ",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 129901,
+              "unitName": "Eriko (Commander)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 133001,
+              "unitName": "Grace",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 133901,
+              "unitName": "Christina (Alpha)",
+              "currentRarity": 5,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "全set 8000\n油管 ブイズ使い\n满补",
+              "link": "https://www.youtube.com/watch?v=unG2c92lMTQ",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        },
+        {
+          "id": 14458,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 8000,
+          "halfAutoDamage": null,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "全set 满补",
+          "charas": [
+            {
+              "prefabId": 129701,
+              "unitName": "Nephi-Nera",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 116701,
+              "unitName": "Aoi (Work)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 124801,
+              "unitName": "Nozomi (Liberator)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 135501,
+              "unitName": "Aira",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 106101,
+              "unitName": "Muimi",
+              "currentRarity": 6,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "全set 8000\n油管 ブイズ使い\n满补",
+              "link": "https://www.youtube.com/watch?v=unG2c92lMTQ",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        },
+        {
+          "id": 14459,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 8000,
+          "halfAutoDamage": null,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "全set 满补",
+          "charas": [
+            {
+              "prefabId": 129001,
+              "unitName": "Eris",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 132001,
+              "unitName": "Echidna (Summer)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 133801,
+              "unitName": "Neneka (Alpha)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 118201,
+              "unitName": "Misora",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 131801,
+              "unitName": "Homare (Summer)",
+              "currentRarity": 5,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "全set 8000\n油管 ブイズ使い\n满补",
+              "link": "https://www.youtube.com/watch?v=unG2c92lMTQ",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "prefabId": 307201,
+      "unitName": "バジリスク",
+      "tasks": [
+        {
+          "id": 14255,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            40,
+            20
+          ],
+          "damage": null,
+          "autoDamage": 9000,
+          "halfAutoDamage": 9000,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "全set 满补",
+          "charas": [
+            {
+              "prefabId": 110301,
+              "unitName": "Saren (Summer)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 181201,
+              "unitName": "Sheffy (Princess)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 119901,
+              "unitName": "Miyako (Holiday)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 122501,
+              "unitName": "Rei (Summer)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 110401,
+              "unitName": "Makoto (Summer)",
+              "currentRarity": 5,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "9000\n油管 スギさん\n满补",
+              "link": "https://www.youtube.com/watch?v=YYSf-2wPFVA",
+              "remarks": "OOOXO \n1:10 白菲 水剑set",
+              "damage": 0,
+              "type": 40
+            },
+            {
+              "index": 1,
+              "name": "全set 9000\n情報会 RYUKI\n满补",
+              "link": "",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        },
+        {
+          "id": 14261,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 9000,
+          "halfAutoDamage": 9000,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "全set 余63+20s",
+          "charas": [
+            {
+              "prefabId": 134001,
+              "unitName": "Fio",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 103801,
+              "unitName": "Shiori",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 129601,
+              "unitName": "Anemone",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 130101,
+              "unitName": "Wakana",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 135601,
+              "unitName": "Shinatsu",
+              "currentRarity": 5,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "全set 9000\n油管 スギさん\n余63+20s",
+              "link": "https://www.youtube.com/watch?v=IL9D561pJZs",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        },
+        {
+          "id": 14334,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            40
+          ],
+          "damage": null,
+          "autoDamage": 9000,
+          "halfAutoDamage": 9000,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "满补",
+          "charas": [
+            {
+              "prefabId": 110301,
+              "unitName": "Saren (Summer)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 117301,
+              "unitName": "Chika (Summer)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 105701,
+              "unitName": "Djeeta",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 108601,
+              "unitName": "Ayane (Holiday)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 105601,
+              "unitName": "Ruka",
+              "currentRarity": 6,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "9000\n情報会 しばいぬ\n满补",
+              "link": "",
+              "remarks": "全set 自动off\n121 水千 水千off",
+              "damage": 0,
+              "type": 40
+            }
+          ]
+        },
+        {
+          "id": 14349,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 9000,
+          "halfAutoDamage": null,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "全set 满补",
+          "charas": [
+            {
+              "prefabId": 134001,
+              "unitName": "Fio",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 135201,
+              "unitName": "Precia (Summer)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 130101,
+              "unitName": "Wakana",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 135301,
+              "unitName": "Qulia (Summer)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 135601,
+              "unitName": "Shinatsu",
+              "currentRarity": 5,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "全set 9000\n情報会 ちねれたユキ\n满补",
+              "link": "",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        },
+        {
+          "id": 14350,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 9000,
+          "halfAutoDamage": null,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "全set 满补",
+          "charas": [
+            {
+              "prefabId": 110301,
+              "unitName": "Saren (Summer)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 117001,
+              "unitName": "Eriko (Summer)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 181201,
+              "unitName": "Sheffy (Princess)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 119901,
+              "unitName": "Miyako (Holiday)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 122501,
+              "unitName": "Rei (Summer)",
+              "currentRarity": 5,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "全set 9000\n情報会 かっち\n满补",
+              "link": "",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        },
+        {
+          "id": 14351,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 9000,
+          "halfAutoDamage": null,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "全set 满补",
+          "charas": [
+            {
+              "prefabId": 110301,
+              "unitName": "Saren (Summer)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 181201,
+              "unitName": "Sheffy (Princess)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 119901,
+              "unitName": "Miyako (Holiday)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 122501,
+              "unitName": "Rei (Summer)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 129401,
+              "unitName": "Chloe (Winter)",
+              "currentRarity": 5,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "全set 9000\n情報会 かっち\n满补",
+              "link": "",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        },
+        {
+          "id": 14352,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 9000,
+          "halfAutoDamage": null,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "全set 满补",
+          "charas": [
+            {
+              "prefabId": 134001,
+              "unitName": "Fio",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 103801,
+              "unitName": "Shiori",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 135201,
+              "unitName": "Precia (Summer)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 130101,
+              "unitName": "Wakana",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 135601,
+              "unitName": "Shinatsu",
+              "currentRarity": 5,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "全set 9000\n情報会 鞘戸詩音\n满补",
+              "link": "",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        },
+        {
+          "id": 14353,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 9000,
+          "halfAutoDamage": null,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "全set 满补",
+          "charas": [
+            {
+              "prefabId": 134001,
+              "unitName": "Fio",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 103801,
+              "unitName": "Shiori",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 135201,
+              "unitName": "Precia (Summer)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 130101,
+              "unitName": "Wakana",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 135301,
+              "unitName": "Qulia (Summer)",
+              "currentRarity": 5,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "全set 9000\n情報会 鞘戸詩音\n满补",
+              "link": "",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        },
+        {
+          "id": 14362,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 9000,
+          "halfAutoDamage": null,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "全set 满补",
+          "charas": [
+            {
+              "prefabId": 110301,
+              "unitName": "Saren (Summer)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 115601,
+              "unitName": "Yui (Ceremonial)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 117301,
+              "unitName": "Chika (Summer)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 108601,
+              "unitName": "Ayane (Holiday)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 105601,
+              "unitName": "Ruka",
+              "currentRarity": 6,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "全set 9000\n情報会 クンミー\n满补",
+              "link": "",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        },
+        {
+          "id": 14388,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 9000,
+          "halfAutoDamage": null,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "xoooo 余39+20s",
+          "charas": [
+            {
+              "prefabId": 134001,
+              "unitName": "Fio",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 103801,
+              "unitName": "Shiori",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 180501,
+              "unitName": "Kokkoro (Princess)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 105901,
+              "unitName": "Kokkoro",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 100301,
+              "unitName": "Rei",
+              "currentRarity": 6,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "xoooo 9000\nX@Bura9ma\n余39+20s",
+              "link": "https://x.com/Bura9ma/status/1981672079805321321",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        },
+        {
+          "id": 14394,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 9000,
+          "halfAutoDamage": null,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "全set 余42+20s",
+          "charas": [
+            {
+              "prefabId": 129001,
+              "unitName": "Eris",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 133801,
+              "unitName": "Neneka (Alpha)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 180601,
+              "unitName": "Kyaru (Princess)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 125501,
+              "unitName": "Djeeta (Warlock)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 119101,
+              "unitName": "Kuuka (Noir)",
+              "currentRarity": 5,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "全set 9000\nX@syumunZ\n余42+20s",
+              "link": "https://x.com/syumunZ/status/1981567631917514966",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        },
+        {
+          "id": 14415,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 9000,
+          "halfAutoDamage": null,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "全set 满补",
+          "charas": [
+            {
+              "prefabId": 101001,
+              "unitName": "Maho",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 110301,
+              "unitName": "Saren (Summer)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 108601,
+              "unitName": "Ayane (Holiday)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 116201,
+              "unitName": "Chloe (School Festival)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 105601,
+              "unitName": "Ruka",
+              "currentRarity": 6,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "全set 9000\nWorryChefs C301\n满补",
+              "link": "https://docs.google.com/spreadsheets/d/e/2PACX-1vR1Iyk-Y6LYURS-JTD1j9R96Sox1TzuhaWSv8yhy6ReM4vMTZxddLp_sRPjZJWQYRTxySbha6cHPIu1/pubhtml",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        },
+        {
+          "id": 14416,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 9000,
+          "halfAutoDamage": null,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "全set 满补",
+          "charas": [
+            {
+              "prefabId": 103801,
+              "unitName": "Shiori",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 110701,
+              "unitName": "Aoi (Student)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 106301,
+              "unitName": "Arisa",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 105901,
+              "unitName": "Kokkoro",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 100301,
+              "unitName": "Rei",
+              "currentRarity": 6,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "全set 9000\nWorryChefs C306\n满补",
+              "link": "https://docs.google.com/spreadsheets/d/e/2PACX-1vR1Iyk-Y6LYURS-JTD1j9R96Sox1TzuhaWSv8yhy6ReM4vMTZxddLp_sRPjZJWQYRTxySbha6cHPIu1/pubhtml",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        },
+        {
+          "id": 14417,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 9000,
+          "halfAutoDamage": null,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "全set 余52+20s",
+          "charas": [
+            {
+              "prefabId": 122701,
+              "unitName": "Kyoka (Summer)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 103601,
+              "unitName": "Kyoka",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 131701,
+              "unitName": "Ameth (Summer)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 115701,
+              "unitName": "Kasumi (Summer)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 122601,
+              "unitName": "Yui (Summer)",
+              "currentRarity": 5,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "全set 9000\nWorryChefs C307\n余52+20s",
+              "link": "https://docs.google.com/spreadsheets/d/e/2PACX-1vR1Iyk-Y6LYURS-JTD1j9R96Sox1TzuhaWSv8yhy6ReM4vMTZxddLp_sRPjZJWQYRTxySbha6cHPIu1/pubhtml",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        },
+        {
+          "id": 14418,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 9000,
+          "halfAutoDamage": null,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "全set 余58+20s",
+          "charas": [
+            {
+              "prefabId": 122701,
+              "unitName": "Kyoka (Summer)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 131701,
+              "unitName": "Ameth (Summer)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 115701,
+              "unitName": "Kasumi (Summer)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 133701,
+              "unitName": "Labyrista (Alpha)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 122601,
+              "unitName": "Yui (Summer)",
+              "currentRarity": 5,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "全set 9000\nWorryChefs C309\n余58+20s",
+              "link": "https://docs.google.com/spreadsheets/d/e/2PACX-1vR1Iyk-Y6LYURS-JTD1j9R96Sox1TzuhaWSv8yhy6ReM4vMTZxddLp_sRPjZJWQYRTxySbha6cHPIu1/pubhtml",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "prefabId": 301501,
+      "unitName": "ウールヴヘジン",
+      "tasks": [
+        {
+          "id": 14256,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 10000,
+          "halfAutoDamage": 9000,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "全set 满补",
+          "charas": [
+            {
+              "prefabId": 128401,
+              "unitName": "Hatsune (New Year)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 126501,
+              "unitName": "Lyrael",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 133501,
+              "unitName": "Saren (New Year)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 107001,
+              "unitName": "Neneka",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 135401,
+              "unitName": "Anemone (Summer)",
+              "currentRarity": 5,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "全set 10000\n油管 スギさん\n满补",
+              "link": "https://www.youtube.com/watch?v=YYSf-2wPFVA",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        },
+        {
+          "id": 14260,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 10000,
+          "halfAutoDamage": 9000,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "全set 余63+20s",
+          "charas": [
+            {
+              "prefabId": 129001,
+              "unitName": "Eris",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 133801,
+              "unitName": "Neneka (Alpha)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 180601,
+              "unitName": "Kyaru (Princess)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 125501,
+              "unitName": "Djeeta (Warlock)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 119101,
+              "unitName": "Kuuka (Noir)",
+              "currentRarity": 5,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "全set 10000\n油管 スギさん\n余63+20s",
+              "link": "https://www.youtube.com/watch?v=IL9D561pJZs",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        },
+        {
+          "id": 14306,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            40
+          ],
+          "damage": null,
+          "autoDamage": 10000,
+          "halfAutoDamage": 10000,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "满补",
+          "charas": [
+            {
+              "prefabId": 135401,
+              "unitName": "Anemone (Summer)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 134601,
+              "unitName": "Aoi (Pilot)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 134801,
+              "unitName": "Tsumugi (Geo Gehenna)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 180801,
+              "unitName": "Misogi & Mimi & Kyoka",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 124801,
+              "unitName": "Nozomi (Liberator)",
+              "currentRarity": 5,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "10000\n油管 クローバー【Clover】\n满补",
+              "link": "https://www.youtube.com/watch?v=QctI5DVFQDI",
+              "remarks": "oooxx 自动on\n118 狱三家set",
+              "damage": 0,
+              "type": 40
+            }
+          ]
+        },
+        {
+          "id": 14354,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 10000,
+          "halfAutoDamage": null,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "全set 满补",
+          "charas": [
+            {
+              "prefabId": 134601,
+              "unitName": "Aoi (Pilot)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 180801,
+              "unitName": "Misogi & Mimi & Kyoka",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 124801,
+              "unitName": "Nozomi (Liberator)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 105701,
+              "unitName": "Djeeta",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 132101,
+              "unitName": "Rem (Summer)",
+              "currentRarity": 5,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "全set 10000\n情報会 RYUKI\n满补",
+              "link": "",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        },
+        {
+          "id": 14355,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 10000,
+          "halfAutoDamage": null,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "全set 满补",
+          "charas": [
+            {
+              "prefabId": 135401,
+              "unitName": "Anemone (Summer)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 132401,
+              "unitName": "Iroha",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 180801,
+              "unitName": "Misogi & Mimi & Kyoka",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 124801,
+              "unitName": "Nozomi (Liberator)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 105701,
+              "unitName": "Djeeta",
+              "currentRarity": 6,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "全set 10000\n情報会 サホ\n满补",
+              "link": "",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        },
+        {
+          "id": 14356,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20,
+            40
+          ],
+          "damage": null,
+          "autoDamage": 10000,
+          "halfAutoDamage": 10000,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "全set 满补",
+          "charas": [
+            {
+              "prefabId": 110301,
+              "unitName": "Saren (Summer)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 117001,
+              "unitName": "Eriko (Summer)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 181201,
+              "unitName": "Sheffy (Princess)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 119901,
+              "unitName": "Miyako (Holiday)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 122501,
+              "unitName": "Rei (Summer)",
+              "currentRarity": 5,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "全set 10000\n情報会 ちねれたユキ\n满补",
+              "link": "",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            },
+            {
+              "index": 1,
+              "name": "10000\n情報会 ｋｅｎ@\n满补",
+              "link": "",
+              "remarks": "开始 〇〇××× 自动OFF\n01:21 水病 〇〇×〇×\n01:21 布丁 〇〇〇〇〇",
+              "damage": 0,
+              "type": 40
+            },
+            {
+              "index": 2,
+              "name": "10000\n情報会 Sylv (シルヴ)\n满补",
+              "link": "",
+              "remarks": "1:30 OOXXX 自动OFF\n1:21 病娇 → OOXOX\n1:21 布丁 → OOOOO\n1:21 水剑 → OOOOX\n1:10 布丁 → OOOOO",
+              "damage": 0,
+              "type": 40
+            }
+          ]
+        },
+        {
+          "id": 14357,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            40
+          ],
+          "damage": null,
+          "autoDamage": null,
+          "halfAutoDamage": 10000,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "满补",
+          "charas": [
+            {
+              "prefabId": 135401,
+              "unitName": "Anemone (Summer)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 132401,
+              "unitName": "Iroha",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 134801,
+              "unitName": "Tsumugi (Geo Gehenna)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 180801,
+              "unitName": "Misogi & Mimi & Kyoka",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 105701,
+              "unitName": "Djeeta",
+              "currentRarity": 6,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "10000\n情報会 キモオタ\n满补",
+              "link": "",
+              "remarks": "TP5-1\n自动ON全SET\n1:21　狱三家　狱三家OFF",
+              "damage": 0,
+              "type": 40
+            }
+          ]
+        },
+        {
+          "id": 14358,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 10000,
+          "halfAutoDamage": null,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "全set 满补",
+          "charas": [
+            {
+              "prefabId": 128401,
+              "unitName": "Hatsune (New Year)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 126501,
+              "unitName": "Lyrael",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 133501,
+              "unitName": "Saren (New Year)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 131001,
+              "unitName": "Maho (Dream Park)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 135401,
+              "unitName": "Anemone (Summer)",
+              "currentRarity": 5,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "全set 10000\n情報会 Bluvel\n满补",
+              "link": "",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        },
+        {
+          "id": 14363,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 10000,
+          "halfAutoDamage": null,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "全set 满补",
+          "charas": [
+            {
+              "prefabId": 134801,
+              "unitName": "Tsumugi (Geo Gehenna)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 180801,
+              "unitName": "Misogi & Mimi & Kyoka",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 124801,
+              "unitName": "Nozomi (Liberator)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 105701,
+              "unitName": "Djeeta",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 115901,
+              "unitName": "Makoto (Cinderella)",
+              "currentRarity": 5,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "全set 10000\n情報会 クンミー\n满补",
+              "link": "",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        },
+        {
+          "id": 14364,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 10000,
+          "halfAutoDamage": null,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "全set 满补",
+          "charas": [
+            {
+              "prefabId": 124601,
+              "unitName": "Misato (New Year)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 110301,
+              "unitName": "Saren (Summer)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 104901,
+              "unitName": "Shizuru",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 108601,
+              "unitName": "Ayane (Holiday)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 104301,
+              "unitName": "Makoto",
+              "currentRarity": 6,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "全set 10000\n情報会 クンミー\n满补",
+              "link": "",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        },
+        {
+          "id": 14387,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 10000,
+          "halfAutoDamage": null,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "全set 余37+20s",
+          "charas": [
+            {
+              "prefabId": 181201,
+              "unitName": "Sheffy (Princess)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 106401,
+              "unitName": "Sheffy",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 122401,
+              "unitName": "Hiyori (Summer)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 105701,
+              "unitName": "Djeeta",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 105601,
+              "unitName": "Ruka",
+              "currentRarity": 6,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "全set 10000\nX@Bura9ma\n余37+20s",
+              "link": "https://x.com/Bura9ma/status/1981672079805321321",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        },
+        {
+          "id": 14393,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 10000,
+          "halfAutoDamage": null,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "全set 余58+20s",
+          "charas": [
+            {
+              "prefabId": 123001,
+              "unitName": "Ameth",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 106801,
+              "unitName": "Labyrista",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 126401,
+              "unitName": "Croce",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 105701,
+              "unitName": "Djeeta",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 135101,
+              "unitName": "Sheffy (Summer)",
+              "currentRarity": 5,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "全set 10000\nX@syumunZ\n余58+20s",
+              "link": "https://x.com/syumunZ/status/1981567631917514966",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        },
+        {
+          "id": 14419,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 10000,
+          "halfAutoDamage": null,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "全set 满补",
+          "charas": [
+            {
+              "prefabId": 135401,
+              "unitName": "Anemone (Summer)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 180801,
+              "unitName": "Misogi & Mimi & Kyoka",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 124801,
+              "unitName": "Nozomi (Liberator)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 105701,
+              "unitName": "Djeeta",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 132101,
+              "unitName": "Rem (Summer)",
+              "currentRarity": 5,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "全set 10000\nWorryChefs C401\n满补",
+              "link": "https://docs.google.com/spreadsheets/d/e/2PACX-1vR1Iyk-Y6LYURS-JTD1j9R96Sox1TzuhaWSv8yhy6ReM4vMTZxddLp_sRPjZJWQYRTxySbha6cHPIu1/pubhtml",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        },
+        {
+          "id": 14420,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 10000,
+          "halfAutoDamage": null,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "全set 余43+20s",
+          "charas": [
+            {
+              "prefabId": 112301,
+              "unitName": "Shiori (Magical)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 101601,
+              "unitName": "Suzuna",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 133201,
+              "unitName": "Monika (New Year)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 105701,
+              "unitName": "Djeeta",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 108901,
+              "unitName": "Rei (New Year)",
+              "currentRarity": 6,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "全set 10000\nWorryChefs C404\n余43+20s",
+              "link": "https://docs.google.com/spreadsheets/d/e/2PACX-1vR1Iyk-Y6LYURS-JTD1j9R96Sox1TzuhaWSv8yhy6ReM4vMTZxddLp_sRPjZJWQYRTxySbha6cHPIu1/pubhtml",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        },
+        {
+          "id": 14421,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 10000,
+          "halfAutoDamage": null,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "全set 余62+20s",
+          "charas": [
+            {
+              "prefabId": 180801,
+              "unitName": "Misogi & Mimi & Kyoka",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 121201,
+              "unitName": "Labyrista (Overload)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 105701,
+              "unitName": "Djeeta",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 115901,
+              "unitName": "Makoto (Cinderella)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 114501,
+              "unitName": "Saren (Holiday)",
+              "currentRarity": 5,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "全set 10000\nWorryChefs C406\n余62+20s",
+              "link": "https://docs.google.com/spreadsheets/d/e/2PACX-1vR1Iyk-Y6LYURS-JTD1j9R96Sox1TzuhaWSv8yhy6ReM4vMTZxddLp_sRPjZJWQYRTxySbha6cHPIu1/pubhtml",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        },
+        {
+          "id": 14422,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 10000,
+          "halfAutoDamage": null,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "全set 余51+20s",
+          "charas": [
+            {
+              "prefabId": 106801,
+              "unitName": "Labyrista",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 114201,
+              "unitName": "Monika (Magical)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 126401,
+              "unitName": "Croce",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 133201,
+              "unitName": "Monika (New Year)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 180401,
+              "unitName": "Pecorine (Princess)",
+              "currentRarity": 5,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "全set 10000\nWorryChefs C407\n余51+20s",
+              "link": "https://docs.google.com/spreadsheets/d/e/2PACX-1vR1Iyk-Y6LYURS-JTD1j9R96Sox1TzuhaWSv8yhy6ReM4vMTZxddLp_sRPjZJWQYRTxySbha6cHPIu1/pubhtml",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        },
+        {
+          "id": 14423,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 10000,
+          "halfAutoDamage": null,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "全set 余50+20s",
+          "charas": [
+            {
+              "prefabId": 111601,
+              "unitName": "Nozomi (Holiday)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 122001,
+              "unitName": "Shinobu (Pirate)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 181201,
+              "unitName": "Sheffy (Princess)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 122401,
+              "unitName": "Hiyori (Summer)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 108901,
+              "unitName": "Rei (New Year)",
+              "currentRarity": 6,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "全set 10000\nWorryChefs C408\n余50+20s",
+              "link": "https://docs.google.com/spreadsheets/d/e/2PACX-1vR1Iyk-Y6LYURS-JTD1j9R96Sox1TzuhaWSv8yhy6ReM4vMTZxddLp_sRPjZJWQYRTxySbha6cHPIu1/pubhtml",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "prefabId": 300201,
+      "unitName": "レサトパルト",
+      "tasks": [
+        {
+          "id": 14258,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 12000,
+          "halfAutoDamage": 9000,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "全set 余56+20s",
+          "charas": [
+            {
+              "prefabId": 106801,
+              "unitName": "Labyrista",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 107101,
+              "unitName": "Christina",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 105701,
+              "unitName": "Djeeta",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 135501,
+              "unitName": "Aira",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 135101,
+              "unitName": "Sheffy (Summer)",
+              "currentRarity": 5,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "全set 12000\n油管 スギさん\n余56+20s",
+              "link": "https://www.youtube.com/watch?v=IL9D561pJZs",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        },
+        {
+          "id": 14310,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            10
+          ],
+          "damage": 12000,
+          "autoDamage": null,
+          "halfAutoDamage": null,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "满补",
+          "charas": [
+            {
+              "prefabId": 135401,
+              "unitName": "Anemone (Summer)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 134601,
+              "unitName": "Aoi (Pilot)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 180801,
+              "unitName": "Misogi & Mimi & Kyoka",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 124801,
+              "unitName": "Nozomi (Liberator)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 125001,
+              "unitName": "Muimi (Liberator)",
+              "currentRarity": 5,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "12000\n油管 きらーん\n满补",
+              "link": "https://www.youtube.com/watch?v=JbytoTJVV2k",
+              "remarks": "狱三家以外SET开始\n1:22 香菜　狱三家SET\n1:22 狱三家　解除\n1:15 狱三家　ダンシング取消最速 狱三家SET",
+              "damage": 0,
+              "type": 10
+            }
+          ]
+        },
+        {
+          "id": 14359,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            10,
+            40
+          ],
+          "damage": 12000,
+          "autoDamage": null,
+          "halfAutoDamage": 12000,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "高骑士满补，低骑士余66+20s",
+          "charas": [
+            {
+              "prefabId": 135401,
+              "unitName": "Anemone (Summer)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 134601,
+              "unitName": "Aoi (Pilot)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 180801,
+              "unitName": "Misogi & Mimi & Kyoka",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 124801,
+              "unitName": "Nozomi (Liberator)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 132101,
+              "unitName": "Rem (Summer)",
+              "currentRarity": 5,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "12000\n情報会 のぬ\n满补",
+              "link": "",
+              "remarks": "狱三家以外SET\n1:22　白菜后狱三家\n1:20　アドベンチャー后狱三家\n1:10　アドベンチャー后狱三家",
+              "damage": 0,
+              "type": 10
+            },
+            {
+              "index": 1,
+              "name": "12000\n情報会 さーち𖤐 ̖́-らいと\n满补",
+              "link": "",
+              "remarks": "狱三家以外SET 自动OFF ooxoo\n\n1:22 白菜 狱三家SET后解除 自动ON  ooxoo\n1:19 狱三家 狱三家SET  ooooo",
+              "damage": 0,
+              "type": 40
+            },
+            {
+              "index": 2,
+              "name": "12000\n情報会 のぬ\n满补",
+              "link": "",
+              "remarks": "TP5-2\n狱三家以外SET 自动ON\n1:22　偶像　偶像OFF",
+              "damage": 0,
+              "type": 40
+            }
+          ]
+        },
+        {
+          "id": 14385,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 12000,
+          "halfAutoDamage": null,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "xooxo 余38+20s",
+          "charas": [
+            {
+              "prefabId": 129701,
+              "unitName": "Nephi-Nera",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 116701,
+              "unitName": "Aoi (Work)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 134701,
+              "unitName": "Ho-oh",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 116801,
+              "unitName": "Tamaki (Work)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 135501,
+              "unitName": "Aira",
+              "currentRarity": 5,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "xooxo 12000\nX@Bura9ma\n余38+20s",
+              "link": "https://x.com/Bura9ma/status/1981672079805321321",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        },
+        {
+          "id": 14391,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 12000,
+          "halfAutoDamage": null,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "全set 余57+20s",
+          "charas": [
+            {
+              "prefabId": 134701,
+              "unitName": "Ho-oh",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 102801,
+              "unitName": "Saren",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 180901,
+              "unitName": "Akino & Saren",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 107101,
+              "unitName": "Christina",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 106101,
+              "unitName": "Muimi",
+              "currentRarity": 6,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "全set 12000\nX@syumunZ\n余57+20s",
+              "link": "https://x.com/syumunZ/status/1981567631917514966",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        },
+        {
+          "id": 14425,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 12000,
+          "halfAutoDamage": null,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "全set 余44+20s",
+          "charas": [
+            {
+              "prefabId": 116701,
+              "unitName": "Aoi (Work)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 180901,
+              "unitName": "Akino & Saren",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 111301,
+              "unitName": "Mimi (Halloween)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 106101,
+              "unitName": "Muimi",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 104701,
+              "unitName": "Jun",
+              "currentRarity": 6,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "全set 12000\nWorryChefs C504\n余44+20s",
+              "link": "https://docs.google.com/spreadsheets/d/e/2PACX-1vR1Iyk-Y6LYURS-JTD1j9R96Sox1TzuhaWSv8yhy6ReM4vMTZxddLp_sRPjZJWQYRTxySbha6cHPIu1/pubhtml",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        },
+        {
+          "id": 14426,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 12000,
+          "halfAutoDamage": null,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "全set 余48+20s",
+          "charas": [
+            {
+              "prefabId": 180801,
+              "unitName": "Misogi & Mimi & Kyoka",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 121201,
+              "unitName": "Labyrista (Overload)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 105701,
+              "unitName": "Djeeta",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 115901,
+              "unitName": "Makoto (Cinderella)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 114501,
+              "unitName": "Saren (Holiday)",
+              "currentRarity": 5,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "全set 12000\nWorryChefs C505\n余48+20s",
+              "link": "https://docs.google.com/spreadsheets/d/e/2PACX-1vR1Iyk-Y6LYURS-JTD1j9R96Sox1TzuhaWSv8yhy6ReM4vMTZxddLp_sRPjZJWQYRTxySbha6cHPIu1/pubhtml",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        },
+        {
+          "id": 14427,
+          "stage": 3,
+          "type": 2,
+          "canAuto": [
+            20
+          ],
+          "damage": null,
+          "autoDamage": 12000,
+          "halfAutoDamage": null,
+          "easyManualDamage": null,
+          "remarks": "",
+          "exRemarks": "全set 余49+20s",
+          "charas": [
+            {
+              "prefabId": 129701,
+              "unitName": "Nephi-Nera",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 116701,
+              "unitName": "Aoi (Work)",
+              "currentRarity": 5,
+              "rank": 38
+            },
+            {
+              "prefabId": 107101,
+              "unitName": "Christina",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 106101,
+              "unitName": "Muimi",
+              "currentRarity": 6,
+              "rank": 38
+            },
+            {
+              "prefabId": 104701,
+              "unitName": "Jun",
+              "currentRarity": 6,
+              "rank": 38
+            }
+          ],
+          "links": [
+            {
+              "index": 0,
+              "name": "全set 12000\nWorryChefs C506\n余49+20s",
+              "link": "https://docs.google.com/spreadsheets/d/e/2PACX-1vR1Iyk-Y6LYURS-JTD1j9R96Sox1TzuhaWSv8yhy6ReM4vMTZxddLp_sRPjZJWQYRTxySbha6cHPIu1/pubhtml",
+              "remarks": "",
+              "damage": 0,
+              "type": 20
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "characterData": {
+    "names": {
+      "100301": [
+        "레이"
+      ],
+      "100601": [
+        "아카리"
+      ],
+      "100701": [
+        "푸딩",
+        "미야코"
+      ],
+      "100901": [
+        "안나"
+      ],
+      "101001": [
+        "마호"
+      ],
+      "101601": [
+        "스즈나"
+      ],
+      "102501": [
+        "스즈메"
+      ],
+      "102701": [
+        "에리코"
+      ],
+      "102801": [
+        "사렌"
+      ],
+      "103101": [
+        "시노부"
+      ],
+      "103601": [
+        "쿄우카",
+        "쿄카"
+      ],
+      "103801": [
+        "시오리"
+      ],
+      "104301": [
+        "마코토"
+      ],
+      "104401": [
+        "이리야"
+      ],
+      "104601": [
+        "타마키"
+      ],
+      "104701": [
+        "쥰"
+      ],
+      "104901": [
+        "시즈루"
+      ],
+      "105301": [
+        "모니카"
+      ],
+      "105601": [
+        "루카"
+      ],
+      "105701": [
+        "지타"
+      ],
+      "105901": [
+        "콧코로"
+      ],
+      "106001": [
+        "캬루"
+      ],
+      "106101": [
+        "무이미"
+      ],
+      "106301": [
+        "아리사"
+      ],
+      "106401": [
+        "셰피"
+      ],
+      "106501": [
+        "카야"
+      ],
+      "106701": [
+        "호마레"
+      ],
+      "106801": [
+        "라비",
+        "라비리스타"
+      ],
+      "107001": [
+        "네네카"
+      ],
+      "107101": [
+        "크리스",
+        "크리스티나"
+      ],
+      "108601": [
+        "성야네"
+      ],
+      "108901": [
+        "신레이"
+      ],
+      "110301": [
+        "수사렌",
+        "수영복사렌"
+      ],
+      "110401": [
+        "수코토"
+      ],
+      "110701": [
+        "편오이"
+      ],
+      "111301": [
+        "할미미"
+      ],
+      "111401": [
+        "루나"
+      ],
+      "111601": [
+        "성조미"
+      ],
+      "112301": [
+        "마오리"
+      ],
+      "112901": [
+        "앨리노"
+      ],
+      "113601": [
+        "수쥰"
+      ],
+      "113901": [
+        "할무기"
+      ],
+      "114201": [
+        "마니카"
+      ],
+      "114501": [
+        "성사렌"
+      ],
+      "115001": [
+        "뉴네카"
+      ],
+      "115601": [
+        "의유이"
+      ],
+      "115701": [
+        "수스미"
+      ],
+      "115901": [
+        "신코토"
+      ],
+      "116201": [
+        "성로에"
+      ],
+      "116701": [
+        "작오이"
+      ],
+      "116801": [
+        "작마키"
+      ],
+      "117001": [
+        "수리코"
+      ],
+      "117301": [
+        "수치카"
+      ],
+      "118101": [
+        "란파"
+      ],
+      "118201": [
+        "미소라"
+      ],
+      "119001": [
+        "느이오"
+      ],
+      "119101": [
+        "느우카"
+      ],
+      "119901": [
+        "성푸딩"
+      ],
+      "121201": [
+        "오라비"
+      ],
+      "121401": [
+        "스사키"
+      ],
+      "121601": [
+        "괴노리"
+      ],
+      "122001": [
+        "해노부"
+      ],
+      "122401": [
+        "수요리"
+      ],
+      "122501": [
+        "수레이"
+      ],
+      "122601": [
+        "수유이"
+      ],
+      "122701": [
+        "수쿄카"
+      ],
+      "123001": [
+        "아메스"
+      ],
+      "124101": [
+        "클요리"
+      ],
+      "124601": [
+        "뉴사토"
+      ],
+      "124701": [
+        "뉴츠키"
+      ],
+      "124801": [
+        "리조미"
+      ],
+      "125001": [
+        "리이미"
+      ],
+      "125101": [
+        "카마키"
+      ],
+      "125201": [
+        "카니카"
+      ],
+      "125301": [
+        "레코로"
+      ],
+      "125401": [
+        "레오리"
+      ],
+      "125501": [
+        "워지타"
+      ],
+      "125601": [
+        "비카라"
+      ],
+      "126401": [
+        "클로체"
+      ],
+      "126501": [
+        "라이라엘"
+      ],
+      "128401": [
+        "뉴츠네"
+      ],
+      "128701": [
+        "아요리"
+      ],
+      "129001": [
+        "에리스"
+      ],
+      "129401": [
+        "윈로에"
+      ],
+      "129601": [
+        "아네모네"
+      ],
+      "129701": [
+        "네피",
+        "네피네라"
+      ],
+      "129801": [
+        "커코토"
+      ],
+      "129901": [
+        "커리코"
+      ],
+      "130001": [
+        "야마토"
+      ],
+      "130101": [
+        "와카나"
+      ],
+      "130201": [
+        "후부키"
+      ],
+      "131001": [
+        "드마호"
+      ],
+      "131701": [
+        "수메스"
+      ],
+      "131801": [
+        "수마레"
+      ],
+      "132001": [
+        "수키드나"
+      ],
+      "132101": [
+        "수렘"
+      ],
+      "132401": [
+        "이로하"
+      ],
+      "133001": [
+        "그레이스"
+      ],
+      "133201": [
+        "뉴니카"
+      ],
+      "133501": [
+        "뉴사렌"
+      ],
+      "133601": [
+        "메두사"
+      ],
+      "133701": [
+        "알라비"
+      ],
+      "133801": [
+        "알네카"
+      ],
+      "133901": [
+        "알리스"
+      ],
+      "134001": [
+        "피오"
+      ],
+      "134601": [
+        "파오이"
+      ],
+      "134701": [
+        "봉황"
+      ],
+      "134801": [
+        "게무기"
+      ],
+      "135101": [
+        "수셰피"
+      ],
+      "135201": [
+        "수레시아"
+      ],
+      "135301": [
+        "수리아",
+        "수크리아"
+      ],
+      "135401": [
+        "수네모네"
+      ],
+      "135501": [
+        "아이라"
+      ],
+      "135601": [
+        "시나츠"
+      ],
+      "135901": [
+        "사츠키"
+      ],
+      "136101": [
+        "사쿠라"
+      ],
+      "180401": [
+        "프페코"
+      ],
+      "180501": [
+        "프코로"
+      ],
+      "180601": [
+        "프캬루"
+      ],
+      "180801": [
+        "리리컬"
+      ],
+      "180901": [
+        "사키노"
+      ],
+      "181201": [
+        "프셰피"
+      ]
+    },
+    "positionUnits": [
+      {
+        "unitId": 100301,
+        "japanese": "レイ",
+        "english": "Rei",
+        "position": 250,
+        "place": 1,
+        "maxRarity": 6
+      },
+      {
+        "unitId": 100601,
+        "japanese": "アカリ",
+        "english": "Akari",
+        "position": 570,
+        "place": 2,
+        "maxRarity": 6
+      },
+      {
+        "unitId": 100701,
+        "japanese": "ミヤコ",
+        "english": "Miyako",
+        "position": 125,
+        "place": 1,
+        "maxRarity": 6
+      },
+      {
+        "unitId": 100901,
+        "japanese": "アンナ",
+        "english": "Anna",
+        "position": 440,
+        "place": 2,
+        "maxRarity": 6
+      },
+      {
+        "unitId": 101001,
+        "japanese": "マホ",
+        "english": "Maho",
+        "position": 795,
+        "place": 3,
+        "maxRarity": 6
+      },
+      {
+        "unitId": 101601,
+        "japanese": "スズナ",
+        "english": "Suzuna",
+        "position": 705,
+        "place": 3,
+        "maxRarity": 6
+      },
+      {
+        "unitId": 102501,
+        "japanese": "スズメ",
+        "english": "Suzume",
+        "position": 720,
+        "place": 3,
+        "maxRarity": 6
+      },
+      {
+        "unitId": 102701,
+        "japanese": "エリコ",
+        "english": "Eriko",
+        "position": 230,
+        "place": 1,
+        "maxRarity": 6
+      },
+      {
+        "unitId": 102801,
+        "japanese": "サレン",
+        "english": "Saren",
+        "position": 430,
+        "place": 2,
+        "maxRarity": 6
+      },
+      {
+        "unitId": 103101,
+        "japanese": "シノブ",
+        "english": "Shinobu",
+        "position": 365,
+        "place": 2,
+        "maxRarity": 6
+      },
+      {
+        "unitId": 103601,
+        "japanese": "キョウカ",
+        "english": "Kyoka",
+        "position": 810,
+        "place": 3,
+        "maxRarity": 6
+      },
+      {
+        "unitId": 103801,
+        "japanese": "シオリ",
+        "english": "Shiori",
+        "position": 710,
+        "place": 3,
+        "maxRarity": 6
+      },
+      {
+        "unitId": 104301,
+        "japanese": "マコト",
+        "english": "Makoto",
+        "position": 165,
+        "place": 1,
+        "maxRarity": 6
+      },
+      {
+        "unitId": 104401,
+        "japanese": "イリヤ",
+        "english": "Illya",
+        "position": 425,
+        "place": 2,
+        "maxRarity": 6
+      },
+      {
+        "unitId": 104601,
+        "japanese": "タマキ",
+        "english": "Tamaki",
+        "position": 215,
+        "place": 1,
+        "maxRarity": 6
+      },
+      {
+        "unitId": 104701,
+        "japanese": "ジュン",
+        "english": "Jun",
+        "position": 135,
+        "place": 1,
+        "maxRarity": 6
+      },
+      {
+        "unitId": 104901,
+        "japanese": "シズル",
+        "english": "Shizuru",
+        "position": 285,
+        "place": 1,
+        "maxRarity": 6
+      },
+      {
+        "unitId": 105301,
+        "japanese": "モニカ",
+        "english": "Monika",
+        "position": 410,
+        "place": 2,
+        "maxRarity": 6
+      },
+      {
+        "unitId": 105601,
+        "japanese": "ルカ",
+        "english": "Ruka",
+        "position": 158,
+        "place": 1,
+        "maxRarity": 6
+      },
+      {
+        "unitId": 105701,
+        "japanese": "ジータ",
+        "english": "Djeeta",
+        "position": 245,
+        "place": 1,
+        "maxRarity": 6
+      },
+      {
+        "unitId": 105901,
+        "japanese": "コッコロ",
+        "english": "Kokkoro",
+        "position": 500,
+        "place": 2,
+        "maxRarity": 6
+      },
+      {
+        "unitId": 106001,
+        "japanese": "キャル",
+        "english": "Karyl",
+        "position": 750,
+        "place": 3,
+        "maxRarity": 6
+      },
+      {
+        "unitId": 106101,
+        "japanese": "ムイミ",
+        "english": "Muimi",
+        "position": 162,
+        "place": 1,
+        "maxRarity": 6
+      },
+      {
+        "unitId": 106301,
+        "japanese": "アリサ",
+        "english": "Arisa",
+        "position": 625,
+        "place": 3,
+        "maxRarity": 6
+      },
+      {
+        "unitId": 106401,
+        "japanese": "シェフィ",
+        "english": "",
+        "position": 368,
+        "place": 2,
+        "maxRarity": 6
+      },
+      {
+        "unitId": 106501,
+        "japanese": "カヤ",
+        "english": "Kaya",
+        "position": 168,
+        "place": 1,
+        "maxRarity": 6
+      },
+      {
+        "unitId": 106701,
+        "japanese": "ホマレ",
+        "english": "",
+        "position": 727,
+        "place": 3,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 106801,
+        "japanese": "ラビリスタ",
+        "english": "",
+        "position": 560,
+        "place": 2,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 107001,
+        "japanese": "ネネカ",
+        "english": "Neneka",
+        "position": 660,
+        "place": 3,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 107101,
+        "japanese": "クリスティーナ",
+        "english": "Christina",
+        "position": 290,
+        "place": 1,
+        "maxRarity": 6
+      },
+      {
+        "unitId": 108601,
+        "japanese": "アヤネ（クリスマス）",
+        "english": "Ayane (Holiday)",
+        "position": 190,
+        "place": 1,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 108901,
+        "japanese": "レイ（ニューイヤー）",
+        "english": "Rei (New Year)",
+        "position": 153,
+        "place": 1,
+        "maxRarity": 6
+      },
+      {
+        "unitId": 110301,
+        "japanese": "サレン（サマー）",
+        "english": "Saren (Summer)",
+        "position": 585,
+        "place": 2,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 110401,
+        "japanese": "マコト（サマー）",
+        "english": "Makoto (Summer)",
+        "position": 180,
+        "place": 1,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 110701,
+        "japanese": "アオイ（編入生）",
+        "english": "Aoi (Student)",
+        "position": 680,
+        "place": 3,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 111301,
+        "japanese": "ミミ（ハロウィン）",
+        "english": "Mimi (Halloween)",
+        "position": 365,
+        "place": 2,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 111401,
+        "japanese": "ルナ",
+        "english": "Luna",
+        "position": 765,
+        "place": 3,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 111601,
+        "japanese": "ノゾミ（クリスマス）",
+        "english": "Nozomi (Holiday)",
+        "position": 418,
+        "place": 2,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 112301,
+        "japanese": "シオリ（マジカル）",
+        "english": "Shiori (Magical)",
+        "position": 712,
+        "place": 3,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 112901,
+        "japanese": "リノ（ワンダー）",
+        "english": "",
+        "position": 730,
+        "place": 3,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 113601,
+        "japanese": "ジュン（サマー）",
+        "english": "",
+        "position": 182,
+        "place": 1,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 113901,
+        "japanese": "ツムギ（ハロウィン）",
+        "english": "",
+        "position": 152,
+        "place": 1,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 114201,
+        "japanese": "モニカ（マジカル）",
+        "english": "",
+        "position": 528,
+        "place": 2,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 114501,
+        "japanese": "サレン（クリスマス）",
+        "english": "",
+        "position": 150,
+        "place": 1,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 115001,
+        "japanese": "ネネカ（ニューイヤー）",
+        "english": "",
+        "position": 562,
+        "place": 2,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 115601,
+        "japanese": "ユイ（儀装束）",
+        "english": "",
+        "position": 578,
+        "place": 2,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 115701,
+        "japanese": "カスミ（サマー）",
+        "english": "",
+        "position": 738,
+        "place": 3,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 115901,
+        "japanese": "マコト（シンデレラ）",
+        "english": "",
+        "position": 166,
+        "place": 1,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 116201,
+        "japanese": "クロエ（聖学祭）",
+        "english": "",
+        "position": 184,
+        "place": 1,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 116701,
+        "japanese": "アオイ（作業服）",
+        "english": "",
+        "position": 527,
+        "place": 2,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 116801,
+        "japanese": "タマキ（作業服）",
+        "english": "",
+        "position": 216,
+        "place": 1,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 117001,
+        "japanese": "エリコ（サマー）",
+        "english": "",
+        "position": 407,
+        "place": 2,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 117301,
+        "japanese": "チカ（サマー）",
+        "english": "",
+        "position": 520,
+        "place": 2,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 118101,
+        "japanese": "ランファ",
+        "english": "",
+        "position": 782,
+        "place": 3,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 118201,
+        "japanese": "ミソラ",
+        "english": "",
+        "position": 730,
+        "place": 3,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 119001,
+        "japanese": "イオ（ノワール）",
+        "english": "",
+        "position": 714,
+        "place": 3,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 119101,
+        "japanese": "クウカ（ノワール）",
+        "english": "",
+        "position": 143,
+        "place": 1,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 119901,
+        "japanese": "ミヤコ（クリスマス）",
+        "english": "",
+        "position": 302,
+        "place": 2,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 121201,
+        "japanese": "ラビリスタ（オーバーロード）",
+        "english": "",
+        "position": 260,
+        "place": 1,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 121401,
+        "japanese": "ミサキ（ステージ）",
+        "english": "",
+        "position": 742,
+        "place": 3,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 121601,
+        "japanese": "イノリ（怪盗）",
+        "english": "",
+        "position": 292,
+        "place": 1,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 122001,
+        "japanese": "シノブ（パイレーツ）",
+        "english": "",
+        "position": 380,
+        "place": 2,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 122401,
+        "japanese": "ヒヨリ（サマー）",
+        "english": "",
+        "position": 264,
+        "place": 1,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 122501,
+        "japanese": "レイ（サマー）",
+        "english": "",
+        "position": 250,
+        "place": 1,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 122601,
+        "japanese": "ユイ（サマー）",
+        "english": "",
+        "position": 554,
+        "place": 2,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 122701,
+        "japanese": "キョウカ（サマー）",
+        "english": "",
+        "position": 812,
+        "place": 3,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 123001,
+        "japanese": "アメス",
+        "english": "",
+        "position": 746,
+        "place": 3,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 124101,
+        "japanese": "ヨリ（クリスマス）",
+        "english": "",
+        "position": 433,
+        "place": 2,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 124601,
+        "japanese": "ミサト（ニューイヤー）",
+        "english": "",
+        "position": 698,
+        "place": 3,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 124701,
+        "japanese": "ミツキ（ニューイヤー）",
+        "english": "",
+        "position": 590,
+        "place": 2,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 124801,
+        "japanese": "ノゾミ（リベレイター）",
+        "english": "",
+        "position": 423,
+        "place": 2,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 125001,
+        "japanese": "ムイミ（リベレイター）",
+        "english": "",
+        "position": 221,
+        "place": 1,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 125101,
+        "japanese": "タマキ（カフェ）",
+        "english": "",
+        "position": 825,
+        "place": 3,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 125201,
+        "japanese": "モニカ（カフェ）",
+        "english": "",
+        "position": 463,
+        "place": 2,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 125301,
+        "japanese": "コッコロ（レンジャー）",
+        "english": "",
+        "position": 752,
+        "place": 3,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 125401,
+        "japanese": "シオリ（レンジャー）",
+        "english": "",
+        "position": 710,
+        "place": 3,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 125501,
+        "japanese": "ジータ（ウォーロック）",
+        "english": "",
+        "position": 443,
+        "place": 2,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 125601,
+        "japanese": "ビカラ",
+        "english": "",
+        "position": 267,
+        "place": 1,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 126401,
+        "japanese": "クローチェ",
+        "english": "",
+        "position": 373,
+        "place": 2,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 126501,
+        "japanese": "ライラエル",
+        "english": "",
+        "position": 740,
+        "place": 3,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 128401,
+        "japanese": "ハツネ（ニューイヤー）",
+        "english": "",
+        "position": 801,
+        "place": 3,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 128701,
+        "japanese": "ヒヨリ（アストラル）",
+        "english": "",
+        "position": 226,
+        "place": 1,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 129001,
+        "japanese": "エリス",
+        "english": "",
+        "position": 800,
+        "place": 3,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 129401,
+        "japanese": "クロエ（ウィンター）",
+        "english": "",
+        "position": 188,
+        "place": 1,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 129601,
+        "japanese": "アネモネ",
+        "english": "",
+        "position": 550,
+        "place": 2,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 129701,
+        "japanese": "ネフィ＝ネラ",
+        "english": "",
+        "position": 540,
+        "place": 2,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 129801,
+        "japanese": "マコト（コマンダー）",
+        "english": "",
+        "position": 269,
+        "place": 1,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 129901,
+        "japanese": "エリコ（コマンダー）",
+        "english": "",
+        "position": 294,
+        "place": 1,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 130001,
+        "japanese": "ヤマト",
+        "english": "",
+        "position": 150,
+        "place": 1,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 130101,
+        "japanese": "ワカナ",
+        "english": "",
+        "position": 535,
+        "place": 2,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 130201,
+        "japanese": "フブキ",
+        "english": "",
+        "position": 371,
+        "place": 2,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 131001,
+        "japanese": "マホ（ドリームパーク）",
+        "english": "",
+        "position": 702,
+        "place": 3,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 131701,
+        "japanese": "アメス（サマー）",
+        "english": "",
+        "position": 743,
+        "place": 3,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 131801,
+        "japanese": "ホマレ（サマー）",
+        "english": "",
+        "position": 709,
+        "place": 3,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 132001,
+        "japanese": "エキドナ（サマー）",
+        "english": "",
+        "position": 775,
+        "place": 3,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 132101,
+        "japanese": "レム（サマー）",
+        "english": "",
+        "position": 146,
+        "place": 1,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 132401,
+        "japanese": "イロハ",
+        "english": "",
+        "position": 501,
+        "place": 2,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 133001,
+        "japanese": "グレイス",
+        "english": "",
+        "position": 234,
+        "place": 1,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 133201,
+        "japanese": "モニカ（ニューイヤー）",
+        "english": "",
+        "position": 296,
+        "place": 1,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 133501,
+        "japanese": "サレン（ニューイヤー）",
+        "english": "",
+        "position": 718,
+        "place": 3,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 133601,
+        "japanese": "メドゥーサ",
+        "english": "",
+        "position": 445,
+        "place": 2,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 133701,
+        "japanese": "ラビリスタ（アルファ）",
+        "english": "",
+        "position": 717,
+        "place": 3,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 133801,
+        "japanese": "ネネカ（アルファ）",
+        "english": "",
+        "position": 759,
+        "place": 3,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 133901,
+        "japanese": "クリスティーナ（アルファ）",
+        "english": "",
+        "position": 228,
+        "place": 1,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 134001,
+        "japanese": "フィオ",
+        "english": "",
+        "position": 746,
+        "place": 3,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 134601,
+        "japanese": "アオイ（パイロット）",
+        "english": "",
+        "position": 526,
+        "place": 2,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 134701,
+        "japanese": "ホウオウ",
+        "english": "",
+        "position": 490,
+        "place": 2,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 134801,
+        "japanese": "ツムギ（ジオ・ゲヘナ）",
+        "english": "",
+        "position": 485,
+        "place": 2,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 135101,
+        "japanese": "シェフィ（サマー）",
+        "english": "",
+        "position": 143,
+        "place": 1,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 135201,
+        "japanese": "プレシア（サマー）",
+        "english": "",
+        "position": 548,
+        "place": 2,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 135301,
+        "japanese": "クリア（サマー）",
+        "english": "",
+        "position": 413,
+        "place": 2,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 135401,
+        "japanese": "アネモネ（サマー）",
+        "english": "",
+        "position": 553,
+        "place": 2,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 135501,
+        "japanese": "アイラ",
+        "english": "",
+        "position": 213,
+        "place": 1,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 135601,
+        "japanese": "シナツ",
+        "english": "",
+        "position": 198,
+        "place": 1,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 135901,
+        "japanese": "サツキ",
+        "english": "",
+        "position": 219,
+        "place": 1,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 136101,
+        "japanese": "サクラ",
+        "english": "",
+        "position": 432,
+        "place": 2,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 180401,
+        "japanese": "ペコリーヌ（プリンセス）",
+        "english": "Pecorine (Princess)",
+        "position": 155,
+        "place": 1,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 180501,
+        "japanese": "コッコロ（プリンセス）",
+        "english": "",
+        "position": 555,
+        "place": 2,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 180601,
+        "japanese": "キャル（プリンセス）",
+        "english": "",
+        "position": 747,
+        "place": 3,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 180801,
+        "japanese": "ミソギ＆ミミ＆キョウカ",
+        "english": "",
+        "position": 465,
+        "place": 2,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 180901,
+        "japanese": "アキノ＆サレン",
+        "english": "",
+        "position": 421,
+        "place": 2,
+        "maxRarity": 5
+      },
+      {
+        "unitId": 181201,
+        "japanese": "シェフィ（プリンセス）",
+        "english": "",
+        "position": 368,
+        "place": 2,
+        "maxRarity": 5
+      }
+    ]
+  }
+}
