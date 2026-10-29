@@ -79,7 +79,7 @@ export function createYouTubeTacticCandidates(snapshots,found,{fetchedAt=new Dat
   // Stage 3 is often just "全SET", without two timestamped action lines.
   // That is still a tactic: prefer YouTube and request human verification
   // rather than silently replacing it with Aikurumi's Chinese translation.
-  const fullSetOrAuto=/(?:全員|全|すべて|全部)\\s*(?:SET|セット|セト)|(?:フルオート|セミオート|オート\\s*(?:ON|OFF))/iu
+  const fullSetOrAuto=/(?:全員|全|すべて|全部)\s*(?:SET|セット|セト)|(?:フルオート|セミオート|オート\s*(?:ON|OFF))/iu
     .test(video.description);
   const japaneseTactic=inspection.mayContainTactic||fullSetOrAuto;
   if(!japaneseTactic)return {...base,status:'no-youtube-tl',youtubeHasTactic:false,
