@@ -326,7 +326,7 @@ export function convertForeignTactic(raw, koreanNames=[], foreignNames=[], bossN
        }
      }
    }else{
-     if(!t&&!rows.length&&/(?:初動|UBセット|开局|初始)/i.test(line)){act(line,'',true);return;}
+     if(!t&&!rows.length&&/(?:初動|UBセット|开局|初始|(?:全キャラ|全員|全体|全员|全體|全部|전부|전체|전원|全)\s*SET)/i.test(line)){act(line,'',true);return;}
      for(let i=0;i<parts.length;){
        const a=actorStart(parts[i]);
        if(a){
