@@ -7,6 +7,19 @@ const auto=/^(?:(?:AUTO|オート|오토|自动|自動|자동)\s*(?:ON|OFF|オ�
 const header=/^[◆■▼●#]+\s*(?:TL|タイムライン|时间轴|時間軸|操作|UB(?:发动|発動|发動|發動)?(?:时间|時間)?|開始|注意|配置|育成|职阶|職階)/i;
 const comment=/^(?:---+|===+|\s*◆\s*(?:备注|備考|注意))/i;
 
+// Some sources omit the colon in 1:13 or mark a time with a leading star.
+// Apply these conversions only to actionable timeline lines; never to notes.
+const shorthand=/^([01])([0-5][0-9])(?=[ \t、，:：])/;
+const starTime=/^[☆⭐★✩]+\s*(?=\d{1,2}:[0-5]\d|[01][0-5][0-9](?=[ \t、，:：]))/;
+export function normalizeAikurumiActionLine(line) {
+  const input=String(line??'');
+  const leading=input.match(/^\s*/)?.[0]||'';
+  const raw=input.slice(leading.length);
+  const withoutStar=raw.replace(starTime,'');
+  const canonical=withoutStar.replace(shorthand,(_,minute,seconds)=>minute+':'+seconds);
+  return leading+canonical;
+}
+
 export function splitAikurumiTimeline(raw){
   const original=String(raw??'').replace(/\r\n?/g,'\n');
   const lines=original.split('\n');
@@ -20,7 +33,7 @@ export function splitAikurumiTimeline(raw){
   const actions=[];
   for(const line of lines.slice(start)){
     if(header.test(line.trim())||comment.test(line.trim())) notes.push(line);
-    else actions.push(line);
+    else actions.push(normalizeAikurumiActionLine(line));
   }
   return {
     original,
