@@ -28,6 +28,9 @@ jobs:
           node --check docs/aikurumi-lab/aikurumi-character-matcher.mjs
           node --check docs/aikurumi-lab/aikurumi-tactic-preprocess.mjs
           node --check docs/aikurumi-lab/tactic-parser.mjs
+          node --check docs/aikurumi-lab/aikurumi-review-filters.mjs
+          node --check redive/public/aikurumi-lab.mjs
+          node --test redive/scripts/test-aikurumi-review-filters.mjs redive/scripts/test-aikurumi-lab-ui.mjs
           test -s docs/aikurumi-lab/index.html
           for f in aikurumi-lab.mjs aikurumi-tactic-review.mjs aikurumi-tactic-preprocess.mjs aikurumi-character-matcher.mjs tactic-parser.mjs aikurumi-snapshot.json; do
             test -s "docs/aikurumi-lab/$f"
@@ -52,8 +55,9 @@ jobs:
             }
             throw last;
           }
-          await verify('',text=>{assert.match(text,/<title>냥냥클랜/);assert.match(text,/aikurumi-lab\.mjs/);});
+          await verify('',text=>{assert.match(text,/<title>냥냥클랜/);assert.match(text,/aikurumi-lab\.mjs/);assert.match(text,/원문/);});
           await verify('aikurumi-lab.mjs',text=>{assert.match(text,/previewAikurumiTactic/);assert.match(text,/aikurumi-snapshot\.json/);});
+          await verify('aikurumi-review-filters.mjs',text=>{assert.match(text,/reviewSummary/);assert.match(text,/filterReviewItems/);});
           await verify('aikurumi-tactic-review.mjs',text=>assert.match(text,/registrationAllowed:false/));
           await verify('aikurumi-snapshot.json',text=>{
             const snapshot=JSON.parse(text);assert.equal(snapshot.readOnly,true);assert.equal(snapshot.jpMonth,'2025-10');assert.equal(snapshot.krMonth,'2026-11');assert.equal(snapshot.bosses.length,5);
