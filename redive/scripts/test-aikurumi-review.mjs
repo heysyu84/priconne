@@ -63,3 +63,11 @@ test('unrecognized instruction is flagged, not silently registered',()=>{
  assert.equal(p.issues.some(x=>x.code==='unparsed-instructions'),true);
  assert.equal(p.registrationAllowed,false);
 });
+
+test('ambiguous one-second source timing ranges remain visible and require review',()=>{
+ const raw='全SET 自动ON\n1:17-16 黑猫 ON\n1:09 紫罗兰 OFF';
+ const p=previewAikurumiTactic(task,{index:5,remarks:raw},{koreanNames:kor,sourceAliases:['兰法龙','','黑猫','','紫罗兰']});
+ assert.equal(p.sourceText,raw);
+ assert.ok(p.issues.some(issue=>issue.code==='time-range'&&issue.message.includes('1:17-16')));
+ assert.equal(p.registrationAllowed,false);
+});
