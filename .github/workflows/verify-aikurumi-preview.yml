@@ -8,9 +8,12 @@ on:
       - docs/aikurumi-lab/**
       - redive/scripts/test-aikurumi-review-filters.mjs
       - redive/scripts/test-aikurumi-lab-ui.mjs
-      - redive/scripts/test-aikurumi-stage3-composer.mjs
+      - redive/scripts/test-aikurumi-stage3-composer.mjs redive/scripts/test-aikurumi-youtube-collections.mjs
       - redive/public/aikurumi-stage3-composer.mjs
       - redive/public/aikurumi-operation-types.mjs
+      - redive/public/aikurumi-stage3-carry.mjs
+      - redive/public/aikurumi-youtube-collections.mjs
+      - redive/scripts/test-aikurumi-youtube-collections.mjs
       - redive/public/aikurumi-review-filters.mjs
       - redive/public/aikurumi-tactic-review.mjs
       - redive/scripts/test-aikurumi-review.mjs
@@ -39,10 +42,12 @@ jobs:
           node --check docs/aikurumi-lab/aikurumi-review-filters.mjs
           node --check docs/aikurumi-lab/aikurumi-operation-types.mjs
           node --check docs/aikurumi-lab/aikurumi-stage3-composer.mjs
+          node --check docs/aikurumi-lab/aikurumi-stage3-carry.mjs
+          node --check docs/aikurumi-lab/aikurumi-youtube-collections.mjs
           node --check redive/public/aikurumi-lab.mjs
           node --test redive/scripts/test-aikurumi-review-filters.mjs redive/scripts/test-aikurumi-lab-ui.mjs redive/scripts/test-aikurumi-review.mjs redive/scripts/test-aikurumi-stage3-composer.mjs
           test -s docs/aikurumi-lab/index.html
-          for f in aikurumi-lab.mjs aikurumi-tactic-review.mjs aikurumi-tactic-preprocess.mjs aikurumi-character-matcher.mjs tactic-parser.mjs aikurumi-snapshot.json aikurumi-snapshot-stage3.json aikurumi-operation-types.mjs aikurumi-stage3-composer.mjs; do
+          for f in aikurumi-lab.mjs aikurumi-tactic-review.mjs aikurumi-tactic-preprocess.mjs aikurumi-character-matcher.mjs tactic-parser.mjs aikurumi-snapshot.json aikurumi-snapshot-stage3.json aikurumi-operation-types.mjs aikurumi-stage3-composer.mjs aikurumi-stage3-carry.mjs aikurumi-youtube-collections.mjs; do
             test -s "docs/aikurumi-lab/$f"
           done
       - name: Verify public branch preview responds with actual page assets
@@ -68,6 +73,8 @@ jobs:
           await verify('',text=>{assert.match(text,/<title>냥냥클랜/);assert.match(text,/aikurumi-lab\.mjs/);assert.match(text,/원본과 한국어 변환 비교/);});
           await verify('aikurumi-lab.mjs',text=>{assert.match(text,/previewAikurumiTactic/);assert.match(text,/aikurumi-snapshot\.json/);});
           await verify('aikurumi-review-filters.mjs',text=>{assert.match(text,/reviewSummary/);assert.match(text,/filterReviewItems/);});
+          await verify('aikurumi-youtube-collections.mjs',text=>assert.match(text,/groupAikurumiVideos/));
+          await verify('aikurumi-stage3-carry.mjs',text=>assert.match(text,/parseStage3CarryTime/));
           await verify('aikurumi-tactic-review.mjs',text=>assert.match(text,/registrationAllowed:false/));
           await verify('aikurumi-snapshot-stage3.json',text=>{
             const stage3=JSON.parse(text);assert.equal(stage3.readOnly,true);
