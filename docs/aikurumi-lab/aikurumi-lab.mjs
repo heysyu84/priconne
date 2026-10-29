@@ -16,6 +16,59 @@ const viewMode=el('view-mode'),videoPanel=el('youtube-collections'),videoOutput=
 let videoNavigation=[];
 let items=[],selected=null,sourceData=null;
 const sourceCache=new Map();
+let youtubeReview=null,youtubeReviewState='pending',youtubeReviewPromise=null;
+function sourceKey(stage,boss,taskId,linkIndex,ordinal){
+  return [stage,boss,taskId,linkIndex??ordinal,ordinal].join(':');
+}
+function youtubePreviewFor(item){
+ if(!youtubeReview?.references)return null;
+ const id=sourceKey(sourceData?.stage,item.boss.index,item.task.id,item.link?.index,item.ordinal??item.id.split(':').at(-1));
+ return youtubeReview._byKey?.get(id)||null;
+}
+function loadYouTubePreviews(){
+ if(youtubeReviewPromise)return youtubeReviewPromise;
+ youtubeReviewPromise=fetch('./aikurumi-youtube-candidates.json',{cache:'no-store'}).then(async response=>{
+   if(!response.ok)throw Error('자동 수집 결과가 아직 생성되지 않았습니다.');
+   const data=await response.json();
+   if(data.schema!=='nyang-youtube-tactic-candidates-v1'||data.readOnly!==true||
+      data.registrationAllowed!==false||!Array.isArray(data.references))throw Error('안전하지 않은 자동 수집 데이터');
+   if(Date.now()>=Date.parse(data.expiresAt))throw Error('자동 수집 결과가 만료되었습니다. 재수집이 필요합니다.');
+   data._byKey=new Map(data.references.map(r=>[sourceKey(r.stage,r.boss,r.taskId,r.linkIndex,r.linkOrdinal),r]));
+   youtubeReview=data;youtubeReviewState='ready';
+ }).catch(e=>{youtubeReviewState=e.message;}).then(()=>{
+    if(items.length&&viewMode.value==='tactics')drawList();
+ });
+ return youtubeReviewPromise;
+}
+function youtubeAutoPanel(item){
+ const source=youtubePreviewFor(item);
+ if(youtubeReviewState!=='ready')return '<div class="youtube-auto-status">'+esc(
+   youtubeReviewState==='pending'?'API 수집 결과 확인 중…':youtubeReviewState)+'</div>';
+ if(!source)return '<div class="youtube-auto-status">이 출처에 해당하는 유튜브 자동 수집 결과가 없습니다.</div>';
+ const labels={candidate:'자동 변환 후보',partial:'부분 변환 · 원문 확인 필수',
+ 'needs-translation-review':'일본어 해석 필요','needs-source-check':'구간 확인 필요',
+ 'no-parsable-timeline':'조작문 미검출','empty-description':'설명란 비어 있음',
+ 'video-unavailable':'영상 조회 불가'};
+ const reason={ 'shared-video-without-sections':'한 영상에 여러 택틱이 있어 구간을 확정할 수 없음',
+ 'no-unique-damage-section':'원본 피해량과 일치하는 고유 구간을 찾지 못함',
+ 'multiple-options-no-damage-marker':'같은 보스의 택틱이 여러 개이며 식별값 부족',
+ 'boss-section-not-found':'이 영상의 해당 보스 구간을 찾지 못함',
+ 'multiple-timelines-without-sections':'같은 설명란에 둘 이상의 조작문이 있음',
+ 'section-contains-multiple-damage-codes':'하나의 구간에 여러 피해량 표기가 존재함',
+ 'same-damage-multiple-options':'피해량이 같은 택틱들이 있어 편성을 식별할 수 없음'};
+ const converted=source.rows?.length?source.rows.map((r,i)=>
+   '<div class="step"><div class="step-head"><span class="step-text">'+esc(r.text)+'</span>'
+   +'<span class="state">'+state(r.checked)+'</span></div></div>').join(''):'';
+ return '<div class="youtube-auto-status"><strong>'+esc(labels[source.status]||'검토 필요')+'</strong>'
+   +' · 영상 연결 '+esc(source.videoId)+' · 자동 분리 '+esc(source.matching||'미확인')+'</div>'
+   +(reason[source.matching]?'<p class="review">'+esc(reason[source.matching])+'</p>':'')
+   +(converted?'<div class="youtube-auto-rows"><h4>일본어 설명란에서 자동 변환한 한국어 조작문 · '+source.rows.length+'행</h4>'
+      +converted+'</div>':'<p class="muted">안전하게 대응시킬 수 있는 한국어 조작문이 아직 없습니다.</p>')
+   +(source.omittedRows?'<p class="review">미해석·불확실한 원문 '+source.omittedRows+'행은 표시에서 제외했습니다. 영상 원본 확인 필수.</p>':'')
+   +(source.issues?.length?'<p class="muted">확인 항목: '+esc(source.issues.join(' / '))+'</p>':'')
+   +'<p class="muted">영상 설명란 원문은 공개 저장하지 않습니다. 출처 링크에서 일본어 원문을 확인하세요. 이 결과는 검토 후보이며 자동 등록되지 않습니다.</p>';
+}
+
 const windowSafeUnitMap=()=>sourceData?.characterData?.names||{};
 const windowSafePositions=()=>sourceData?.characterData?.positionUnits||[];
 const bossNames=()=>sourceData?.bosses?.map(b=>b.unitName)||[];
@@ -58,7 +111,8 @@ function drawDetail(item){
  const carryDetail=carry?.seconds===null?'원본에 명시된 이월시간 없음':carry?.status==='full'?'풀 이월 · 1:30 (90초)':carry?'격파 '+formatCarrySeconds(90-carry.remainingSeconds)+' 경과 · 잔여 '+carry.remainingSeconds+'초 + 추가 '+carry.bonusSeconds+'초 = 이월 '+formatCarrySeconds(carry.seconds):'';
  const link=url(p.sourceUrl);
  const isYouTube=!!link&&(['youtube.com','www.youtube.com','m.youtube.com','youtu.be','www.youtu.be'].includes(new URL(link).hostname));
- const youtubePanel=isYouTube?'<section class="youtube-paste"><details><summary>YouTube 설명란 · 일본어 택틱 직접 대조</summary>'
+ const youtubePanel=isYouTube?'<section class="youtube-paste"><details open><summary>YouTube 설명란 · API 자동 TL 변환 및 원문 대조</summary>'
+  +youtubeAutoPanel(item)
   +'<p class="muted">원본 영상을 열어 설명란을 복사해 붙여넣으세요. 이 작업은 이 브라우저 화면에서만 진행되며 서버에 저장하지 않습니다.</p>'
   +'<textarea data-youtube-input rows="7" maxlength="10000" placeholder="유튜브 영상의 일본어 설명란을 여기에 붙여넣으세요."></textarea>'
   +'<div class="youtube-actions"><button type="button" data-youtube="preview">붙여넣은 TL 변환</button><button type="button" data-youtube="clear">비우기</button></div>'
@@ -279,6 +333,7 @@ async function loadStage(stage){
   composePanel.hidden=viewMode.value==='videos'||stage!==3;
   el('compose-output').innerHTML='<p class="muted">중복 없는 조합 찾기를 누르면 이 단계의 실제 외부 편성을 계산합니다.</p>';
   drawList();
+  loadYouTubePreviews();
  }catch(e){
   items=[];composePanel.hidden=true;
   list.innerHTML='<p class="empty">'+esc(e.message)+'</p>';
