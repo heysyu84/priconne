@@ -3,6 +3,7 @@ import {filterReviewItems,reviewFlags,reviewSummary} from './aikurumi-review-fil
 import {classifySourceTactic,OPERATION_LABELS} from './aikurumi-operation-types.mjs';
 import {findNonOverlappingStage3} from './aikurumi-stage3-composer.mjs';
 import {parseStage3CarryTime,carryTimeLabel,formatCarrySeconds} from './aikurumi-stage3-carry.mjs';
+import {groupAikurumiVideos,collectionTotals} from './aikurumi-youtube-collections.mjs';
 
 const el=id=>document.getElementById(id);
 const esc=value=>String(value??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
@@ -11,6 +12,8 @@ const url=value=>{try{const u=new URL(String(value));return /^https?:$/.test(u.p
 const state=flags=>(flags||[]).map((v,i)=>'<span title="'+(i===5?'AUTO':String(i+1)+'번 캐릭터')+'" class="'+(v?'on':'off')+'">'+(i===5?'A':i+1)+(v?'●':'○')+'</span>').join(' ');
 const list=el('list'),detail=el('detail'),boss=el('boss'),filter=el('filter'),query=el('search');
 const stagePicker=el('month'),operationFilter=el('operation'),composePanel=el('stage3-section');
+const viewMode=el('view-mode'),videoPanel=el('youtube-collections'),videoOutput=el('collection-output');
+let videoNavigation=[];
 let items=[],selected=null,sourceData=null;
 const sourceCache=new Map();
 const windowSafeUnitMap=()=>sourceData?.characterData?.names||{};
@@ -88,6 +91,87 @@ function drawDetail(item){
   +youtubePanel
   +'<p class="muted">위 조작문은 검토용 변환 결과입니다. 관리자 확인 없이 택틱 등록이나 기존 자료 변경은 수행되지 않습니다.</p>';
 }
+
+
+async function allPreviewSnapshots(){
+  return Promise.all([3,6].map(async st=>{
+    if(sourceCache.has(st))return sourceCache.get(st);
+    const file=st===3?'./aikurumi-snapshot-stage3.json':'./aikurumi-snapshot.json';
+    const response=await fetch(file,{cache:'no-store'});
+    if(!response.ok)throw Error(st+'단계의 유튜브 원본 데이터를 불러오지 못했습니다. HTTP '+response.status);
+    const data=await response.json();
+    if(data.readOnly!==true||Number(data.stage)!==st||!Array.isArray(data.bosses))throw Error('검증되지 않은 원본 단계: '+st);
+    sourceCache.set(st,data);
+    return data;
+  }));
+}
+function updateViewMode(){
+ const videos=viewMode.value==='videos';
+ videoPanel.hidden=!videos;
+ el('tactic-panes').hidden=videos;
+ composePanel.hidden=videos||Number(sourceData?.stage)!==3;
+ for(const id of ['month','boss','operation','filter','search']){
+   const control=el(id);
+   if(control)control.disabled=videos;
+ }
+ if(videos)renderYouTubeCollections();
+}
+async function renderYouTubeCollections(){
+ videoOutput.innerHTML='<p class="muted">3단계와 4단계 유튜브 출처를 비교하는 중…</p>';
+ try {
+   const snapshots=await allPreviewSnapshots();
+   if(viewMode.value!=='videos')return;
+   const groups=groupAikurumiVideos(snapshots),totals=collectionTotals(groups);
+   const repeatedOnly=el('repeated-only').checked;
+   el('collection-status').textContent='유튜버 '+totals.creators+'명 · 서로 다른 영상 '+totals.videos+'개 · 원본 택틱 연결 '+totals.references+'건 · 반복 연결 영상 '+totals.repeatedVideos+'개';
+   videoNavigation=[];
+   const shown=groups.map(creator=>({...creator,
+     videos:creator.videos.filter(v=>!repeatedOnly||v.references.length>1)})).filter(creator=>creator.videos.length);
+   videoOutput.innerHTML=shown.length?shown.map((creator,i)=>
+      '<details class="video-creator" '+(i<2?'open':'')+'><summary>'+esc(creator.creator)
+      +' · 영상 '+creator.videos.length+'개 / 택틱 링크 '+creator.videos.reduce((n,v)=>n+v.references.length,0)+'건</summary>'
+      +creator.videos.map(video=>
+        '<section class="video-card"><h4>'+esc(video.label)+'</h4><div class="video-meta">영상 ID '+esc(video.videoId)
+        +' · '+video.distinctBosses+'개 보스·단계 · '+video.references.length+'개 택틱 링크'
+        +(video.creatorNames.length>1?' · 출처 표기: '+esc(video.creatorNames.join(', ')):'')+'</div>'
+        +'<a href="https://www.youtube.com/watch?v='+encodeURIComponent(video.videoId)+'" target="_blank" rel="noopener noreferrer">유튜브 원본 영상 열기</a>'
+        +'<div class="video-references">'+video.references.map(ref=>{
+          const navIndex=videoNavigation.push(ref)-1;
+          const originalUrl=url(ref.sourceUrl);
+          const safeSource=originalUrl&&new URL(originalUrl).hostname.match(/^(?:www\.|m\.)?(?:youtube\.com|youtu\.be)$/)
+            ?originalUrl:'https://www.youtube.com/watch?v='+encodeURIComponent(video.videoId);
+          return '<div class="video-reference"><span>'+esc(ref.stage===3?'3단계':'4단계')+' · '+esc(ref.boss)+'넴 · #'+esc(ref.taskId)+'</span>'
+            +'<small>'+esc(ref.sourceTitle.replace(/\s+/g,' ').trim())+'</small>'
+            +(ref.startSeconds!==null?'<small>영상 시작 '+Math.floor(ref.startSeconds/60)+':'+String(ref.startSeconds%60).padStart(2,'0')+'</small>':'')
+            +'<a href="'+esc(safeSource)+'" target="_blank" rel="noopener noreferrer">시간 지정 원본</a>'
+            +'<button type="button" data-video-reference="'+navIndex+'">택틱 검토하기</button></div>';
+        }).join('')+'</div></section>'
+      ).join('')+'</details>'
+     ).join(''):'<p class="muted">조건에 맞는 영상 모음이 없습니다.</p>';
+ }catch(e){videoOutput.innerHTML='<p class="warnings">'+esc(e.message)+'</p>';}
+}
+viewMode.addEventListener('change',updateViewMode);
+el('repeated-only').addEventListener('change',renderYouTubeCollections);
+videoOutput.addEventListener('click',async event=>{
+ const btn=event.target.closest('button[data-video-reference]');
+ if(!btn)return;
+ const idx=Number(btn.dataset.videoReference),ref=videoNavigation[idx];
+ if(!Number.isInteger(idx)||!ref)return;
+ viewMode.value='tactics';
+ // loadStage is intentionally awaited so cross-stage links are selected correctly.
+ await loadStage(ref.stage);
+ updateViewMode();
+ const match=items.find(x=>Number(x.boss.index)===ref.boss&&
+   String(x.task.id)===String(ref.taskId)&&
+   Number(x.link?.index)===Number(ref.linkIndex)&&
+   x.id.endsWith(':'+ref.linkOrdinal));
+ if(match){
+   selected=match.id;
+   boss.value=String(ref.boss);filter.value='all';operationFilter.value='all';query.value='';
+   drawList();
+   el('tactic-panes').scrollIntoView?.({behavior:'smooth',block:'start'});
+ }
+});
 
 function showStage3Composer(){
  const output=el('compose-output');
@@ -192,7 +276,7 @@ async function loadStage(stage){
       items.push({id:[b.index,t.id,link.index??i,i].join(':'),boss:b,task:t,link,preview});
     }
   }
-  composePanel.hidden=stage!==3;
+  composePanel.hidden=viewMode.value==='videos'||stage!==3;
   el('compose-output').innerHTML='<p class="muted">중복 없는 조합 찾기를 누르면 이 단계의 실제 외부 편성을 계산합니다.</p>';
   drawList();
  }catch(e){
