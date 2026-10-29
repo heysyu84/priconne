@@ -8,9 +8,12 @@ on:
       - docs/aikurumi-lab/**
       - redive/scripts/test-aikurumi-review-filters.mjs
       - redive/scripts/test-aikurumi-lab-ui.mjs
+      - redive/scripts/test-aikurumi-stage3-composer.mjs
+      - redive/public/aikurumi-stage3-composer.mjs
+      - redive/public/aikurumi-operation-types.mjs
       - redive/public/aikurumi-review-filters.mjs
       - redive/public/aikurumi-tactic-review.mjs
-      - redive/scripts/test-aikurumi-review.mjs
+      - redive/scripts/test-aikurumi-review.mjs redive/scripts/test-aikurumi-stage3-composer.mjs
   workflow_dispatch:
 
 permissions:
@@ -34,10 +37,12 @@ jobs:
           node --check docs/aikurumi-lab/aikurumi-tactic-preprocess.mjs
           node --check docs/aikurumi-lab/tactic-parser.mjs
           node --check docs/aikurumi-lab/aikurumi-review-filters.mjs
+          node --check docs/aikurumi-lab/aikurumi-operation-types.mjs
+          node --check docs/aikurumi-lab/aikurumi-stage3-composer.mjs
           node --check redive/public/aikurumi-lab.mjs
           node --test redive/scripts/test-aikurumi-review-filters.mjs redive/scripts/test-aikurumi-lab-ui.mjs redive/scripts/test-aikurumi-review.mjs
           test -s docs/aikurumi-lab/index.html
-          for f in aikurumi-lab.mjs aikurumi-tactic-review.mjs aikurumi-tactic-preprocess.mjs aikurumi-character-matcher.mjs tactic-parser.mjs aikurumi-snapshot.json; do
+          for f in aikurumi-lab.mjs aikurumi-tactic-review.mjs aikurumi-tactic-preprocess.mjs aikurumi-character-matcher.mjs tactic-parser.mjs aikurumi-snapshot.json aikurumi-snapshot-stage3.json aikurumi-operation-types.mjs aikurumi-stage3-composer.mjs; do
             test -s "docs/aikurumi-lab/$f"
           done
       - name: Verify public branch preview responds with actual page assets
@@ -64,6 +69,11 @@ jobs:
           await verify('aikurumi-lab.mjs',text=>{assert.match(text,/previewAikurumiTactic/);assert.match(text,/aikurumi-snapshot\.json/);});
           await verify('aikurumi-review-filters.mjs',text=>{assert.match(text,/reviewSummary/);assert.match(text,/filterReviewItems/);});
           await verify('aikurumi-tactic-review.mjs',text=>assert.match(text,/registrationAllowed:false/));
+          await verify('aikurumi-snapshot-stage3.json',text=>{
+            const stage3=JSON.parse(text);assert.equal(stage3.readOnly,true);
+            assert.equal(stage3.stage,3);assert.equal(stage3.bosses.length,5);
+            assert.equal(stage3.bosses.reduce((n,b)=>n+b.tasks.length,0),95);
+          });
           await verify('aikurumi-snapshot.json',text=>{
             const snapshot=JSON.parse(text);assert.equal(snapshot.readOnly,true);assert.equal(snapshot.jpMonth,'2025-10');assert.equal(snapshot.krMonth,'2026-11');assert.equal(snapshot.bosses.length,5);
             assert.equal(snapshot.bosses.reduce((n,b)=>n+b.tasks.length,0),97);
