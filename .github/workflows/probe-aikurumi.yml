@@ -31,7 +31,9 @@ jobs:
             }catch(error){console.log('REQUEST_ERROR',path,error.name,error.message);return null;}
           }
           const periods=await call('/pcr/clanBattleList?server=jp');
-          const sample=Array.isArray(periods)?periods.find(x=>String(x.startTime||'').startsWith('2025-10')):null;
+          console.log('PERIOD_SAMPLE',JSON.stringify(Array.isArray(periods)?periods.slice(0,4):null));
+          const parseMonth=v=>{const raw=String(v??'');const m=raw.match(/^(\d{4})[-/](\d{1,2})/);if(m)return m[1]+'-'+m[2].padStart(2,'0');const n=Number(v);if(Number.isFinite(n)&&n>1e9){const d=new Date(n<1e12?n*1000:n);return d.toISOString().slice(0,7)}return null;};
+          const sample=Array.isArray(periods)?periods.find(x=>parseMonth(x.startTime)==='2025-10'):null;
           const battleId=Number(sample?.clanBattleId||1093);
           console.log('PERIOD',JSON.stringify({found:!!sample,clanBattleId:battleId,startTime:sample?.startTime||null}));
           let success=0;
@@ -43,6 +45,10 @@ jobs:
               const first=data.flatMap(b=>b.tasks||[])[0];
               const link=first?.links?.[0];
               console.log('STAGE',stage,'BOSSES',JSON.stringify(bosses));
+              const tasks=data.flatMap(b=>b.tasks||[]);const links=tasks.flatMap(t=>t.links||[]);const timeline=links.filter(l=>String(l.remarks||'').trim());
+              console.log('CONTENT_STATS',stage,JSON.stringify({tasks:tasks.length,withFiveCharacters:tasks.filter(t=>t.charas?.length===5).length,withDescription:tasks.filter(t=>String(t.remarks||'').trim()).length,withWarning:tasks.filter(t=>String(t.exRemarks||'').trim()).length,withLinks:tasks.filter(t=>(t.links||[]).length>0).length,totalLinks:links.length,linksWithTimeline:timeline.length,tasksWithTimeline:tasks.filter(t=>(t.links||[]).some(l=>String(l.remarks||'').trim())).length,withManualDamage:tasks.filter(t=>Number(t.damage)>0).length,withAutoDamage:tasks.filter(t=>Number(t.autoDamage)>0).length,withHalfAutoDamage:tasks.filter(t=>Number(t.halfAutoDamage)>0).length,carryTypes:tasks.filter(t=>t.type===1).length}));
+              console.log('SAMPLE_CHARACTERS',stage,JSON.stringify(first?.charas?.map(c=>({prefabId:c.prefabId,unitName:c.unitName,currentRarity:c.currentRarity,rarity:c.rarity,rank:c.rank}))||[]));
+              console.log('SAMPLE_TIMELINE',stage,JSON.stringify(timeline[0]?{name:timeline[0].name,text:String(timeline[0].remarks).slice(0,220),video:String(timeline[0].link||'').slice(0,120)}:null));
               console.log('TACTIC_FIELDS',stage,JSON.stringify(first?{keys:Object.keys(first),partySize:first.charas?.length,hasRemarks:!!first.remarks,hasVideo:!!link?.link,hasTimeline:!!link?.remarks,types:first.canAuto,damage:first.damage,autoDamage:first.autoDamage,halfAutoDamage:first.halfAutoDamage,linkFields:link?Object.keys(link):[]}:null));
             }
             await new Promise(r=>setTimeout(r,400));
