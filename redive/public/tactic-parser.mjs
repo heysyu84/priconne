@@ -68,7 +68,7 @@ export function convertForeignTactic(raw, koreanNames=[], foreignNames=[], bossN
  const section=src.search(/【\s*(?:お団子|団子|당고)\s*(?:ver\.?|版)?\s*】/i);
  if(section>=0 && /(?:SET|セット|切)/.test(src.slice(0,section)))src=src.slice(0,section);
  src=src.replace(/[\uFE0E\uFE0F\u200D]/g,'');
- const dango=/[OX〇○◯●⭕❌ー－—-]{5}/i.test(src);
+ const dango=/[OX〇○◯●⭕❌✕×✖✗ー－—-]{5}/i.test(src);
  const format=dango?'dango':'commands';
  src=src.replace(/\u00a0/g,' ').replace(/[ \u3000]+(\d{1,2}:[0-5]\d)(?=[ \u3000\t]|$)/g,'\n$1 ');
  const rows=[],state=[false,false,false,false,false];let auto=false,time='',lastTime='',sourceLine='';
@@ -129,7 +129,7 @@ export function convertForeignTactic(raw, koreanNames=[], foreignNames=[], bossN
    const commands=[];
    let leadingActorAction=false;
    if(a.changed!==null)auto=a.changed;
-   const symbols=rest.match(/[OX〇○◯●⭕❌ー－—-]{5}/i);
+   const symbols=rest.match(/[OX〇○◯●⭕❌✕×✖✗ー－—-]{5}/i);
    if(symbols){
      commands.push(...a.events.map(e=>e.text));
      const on=[],off=[];
@@ -181,7 +181,7 @@ export function convertForeignTactic(raw, koreanNames=[], foreignNames=[], bossN
        if(actors.length){commands.push(actors.length===5&&actors.every(actor=>actor.i>=0)?'전부 SET':actorList(actors)+' SET');rest=rest.replace(new RegExp(dictPattern,'g'),' ');}
      }
    }
-   const leftover=trim(rest.replace(/(?:初動|UBセット|お団子|시작|초동|開始|开局|初始|START)/gi,'').replace(/[\s、,，:：;；\/'‘’\"()[\]（）➡→➜⇒⟶]+/g,' '));
+   const leftover=trim(rest.replace(/(?:初動|UBセット|お団子|시작|초동|開始|开始|开局|初始|START)/gi,'').replace(/[\s、,，:：;；\/'‘’\"()[\]（）【】➡→➜⇒⟶]+/g,' '));
    if(leftover){warning('미해석 원문·조건 확인: '+leftover);commands.push('[원문 확인: '+leftover+']');}
    // A fully OFF initial row still establishes the initial time/state.
    if(initial&&!commands.length&&!actor)commands.push('전부 OFF');
@@ -191,15 +191,15 @@ export function convertForeignTactic(raw, koreanNames=[], foreignNames=[], bossN
  };
  const arrowDango=merged=>{
    const segments=merged.split(/\s*(?:➡|→|➜|⇒|⟶)\s*/);
-   if(segments.length<2||!segments.every(x=>/[OX〇○◯●⭕❌ー－—-]{5}/i.test(x)))return false;
-   const first=segments[0].match(/[OX〇○◯●⭕❌ー－—-]{5}/i);
+   if(segments.length<2||!segments.every(x=>/[OX〇○◯●⭕❌✕×✖✗ー－—-]{5}/i.test(x)))return false;
+   const first=segments[0].match(/[OX〇○◯●⭕❌✕×✖✗ー－—-]{5}/i);
    const rawActor=cleanActor(segments[0].slice(0,first.index)).replace(/[\[\]]/g,' ').trim();
    const actor=actorStart(rawActor)?.name||rawActor;
    const previousTime=lastTime;
    const actions=[],autoActions=[],unresolved=[];
    const initial=!rows.length&&(!time||time==='1:30');
    for(let j=0;j<segments.length;j++){
-     const segment=segments[j],symbol=segment.match(/[OX〇○◯●⭕❌ー－—-]{5}/i);
+     const segment=segments[j],symbol=segment.match(/[OX〇○◯●⭕❌✕×✖✗ー－—-]{5}/i);
      const before=[...state],prevAuto=auto,rowStart=rows.length;
      // Later actor labels describe the second trigger. Do not interpret them
      // as a character number or an unknown error in the joined output.
@@ -287,7 +287,7 @@ export function convertForeignTactic(raw, koreanNames=[], foreignNames=[], bossN
    const t=line.match(/^(\d{1,2}:[0-5]\d)\s*/);
    if(t){time=t[1];line=trim(line.slice(t[0].length));}
    const autoLine=line.match(autoOnly);
-   if(autoLine&&!/[OX〇○◯●⭕❌ー－—-]{5}/i.test(line)&&cleanActor(autoLine[1])&&
+   if(autoLine&&!/[OX〇○◯●⭕❌✕×✖✗ー－—-]{5}/i.test(line)&&cleanActor(autoLine[1])&&
       !/(?:\b(?:SET(?:ON|OFF)?|ON|OFF)\b|切|解除|オン|オフ|关|關|开|開)/i.test(autoLine[1])){
      const rawActor=cleanActor(autoLine[1]);
      if(/(?:되자마자|보자마자|직후|즉시|見えたら|直後|すぐ)/.test(rawActor)){
@@ -308,7 +308,7 @@ export function convertForeignTactic(raw, koreanNames=[], foreignNames=[], bossN
    if(dango){
      const merged=parts.join(' ');
      if(arrowDango(merged))return;
-     const s=merged.match(/[OX〇○◯●⭕❌ー－—-]{5}/i);
+     const s=merged.match(/[OX〇○◯●⭕❌✕×✖✗ー－—-]{5}/i);
      if(s){
        const rawActor=cleanActor(merged.slice(0,s.index)).replace(/[\[\]]/g,' ').trim().replace(/^(?:시작|초동|初動|開始|开局|初始|START)$/i,'');
        const a=actorStart(rawActor);
