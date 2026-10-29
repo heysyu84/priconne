@@ -22,7 +22,7 @@ export function convertForeignTactic(raw, koreanNames=[], foreignNames=[], bossN
  // Preserve its spelling; it still has no positional SET slot until assigned.
  const sourceNames=[...String(raw).matchAll(/(?<![\p{L}\p{N}_])([\p{L}\p{M}][\p{L}\p{M}\d_・·]{0,23})[ \t]*(?=(?:SET(?:ON|OFF)?|ON|OFF|切|解除|オン|オフ|关|關|开|開)(?![A-Za-z]))/giu)]
    .map(match=>match[1]).filter(name=>
-     !/^(?:AUTO|オート|오토|자동|自動|自动|手動|수동|START|시작|初動|초동|ON|OFF|SET|全員|全体|全キャラ|전부|전체|전원)$/i.test(name)&&
+     !/^(?:AUTO|オート|오토|자동|自動|自动|手動|수동|START|시작|初動|초동|ON|OFF|SET|全員|全体|全キャラ|全员|全體|全部|全|전부|전체|전원)$/i.test(name)&&
      !/(?:不足|足り|場合|のみ|なら|たら|以上|以下|未満|必要|条件|조건|필요|부족|경우|이상|이하|미만|대기|지연|秒|초|만$)/.test(name));
  const otherNames=[...characterNames,...sourceNames,...Object.entries(suggested).flatMap(([name,values])=>[name,...values])]
    .flatMap(entry=>typeof entry==='string'?[entry]:[entry?.name,...(entry?.aliases||[])])
@@ -158,13 +158,15 @@ export function convertForeignTactic(raw, koreanNames=[], foreignNames=[], bossN
      }
      // Consume commands in source order. Arrows inside a subject list mean
      // ordered actions; arrows between commands must never reorder ON/OFF.
-     const subject='(?:'+dictPattern+'|全員|全体|全キャラ|전부)';
+     // Whole-party SET is commonly written as 全SET / 全部SET in Aikurumi notes.
+     // Match whole-party commands before character names; never treat 全 as a character.
+     const subject='(?:全キャラ|全員|全体|全员|全體|全部|전부|전체|전원|全|'+dictPattern+')';
      const regex=new RegExp('(?<![\\p{L}\\p{N}_])((?:'+subject+'[\\s、,，]*(?:(?:➡|→|➜|⇒|⟶)[\\s]*)?)+)\\s*(?:順に|順番に|순으로|순서대로)?\\s*(SET(?:ON|OFF)?|ON|OFF|切|解除|オン|オフ|关|關|开|開)','giu');
      let matched=false;const events=[...a.events];
      rest=rest.replace(regex,(whole,names,command,index)=>{
        matched=true;
        const enable=/^(?:SET|SETON|ON|オン|开|開)$/i.test(command);
-       const all=/(?:全員|全体|全キャラ|전부)/.test(names);
+       const all=/^(?:全キャラ|全員|全体|全员|全體|全部|전부|전체|전원|全)$/.test(names.trim());
        const actors=all?[0,1,2,3,4].map(i=>({name:label[i],i})):actorsIn(names);
        // Explicit instructions also matter when SET state is unchanged.
        applyActors(actors,enable);
@@ -179,7 +181,7 @@ export function convertForeignTactic(raw, koreanNames=[], foreignNames=[], bossN
        if(actors.length){commands.push(actors.length===5&&actors.every(actor=>actor.i>=0)?'전부 SET':actorList(actors)+' SET');rest=rest.replace(new RegExp(dictPattern,'g'),' ');}
      }
    }
-   const leftover=trim(rest.replace(/(?:初動|UBセット|お団子|시작|초동|開始|开局|初始|START)/gi,'').replace(/[\s、,，:：;；'‘’\"()[\]（）➡→➜⇒⟶]+/g,' '));
+   const leftover=trim(rest.replace(/(?:初動|UBセット|お団子|시작|초동|開始|开局|初始|START)/gi,'').replace(/[\s、,，:：;；\/'‘’\"()[\]（）➡→➜⇒⟶]+/g,' '));
    if(leftover){warning('미해석 원문·조건 확인: '+leftover);commands.push('[원문 확인: '+leftover+']');}
    // A fully OFF initial row still establishes the initial time/state.
    if(initial&&!commands.length&&!actor)commands.push('전부 OFF');
