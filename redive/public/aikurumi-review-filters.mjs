@@ -1,3 +1,4 @@
+import {classifySourceTactic} from './aikurumi-operation-types.mjs';
 // Independent, read-only review states; a clean syntax check is not a
 // verified tactic and must never be treated as automatic import approval.
 export function reviewFlags(preview){
@@ -28,11 +29,13 @@ export function reviewSummary(items){
   }
   return sum;
 }
-export function filterReviewItems(items,{boss='all',mode='all',query=''}={}){
+export function filterReviewItems(items,{boss='all',mode='all',operation='all',query=''}={}){
   const q=String(query).trim().normalize('NFKC').toLocaleLowerCase('ko-KR');
   return (items||[]).filter(item=>{
     const p=item.preview,flags=reviewFlags(p);
     if(boss!=='all'&&String(item.boss.index)!==String(boss))return false;
+    const source=classifySourceTactic(item.task,item.link);
+    if(operation!=='all'&&!source.categories.includes(operation))return false;
     if(mode==='timeline'&&!flags.hasTimeline)return false;
     if(mode==='clean'&&!flags.noWarnings)return false;
     if(mode==='warning'&&!flags.hasWarning)return false;
