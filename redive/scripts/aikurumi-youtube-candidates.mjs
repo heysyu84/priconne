@@ -2,7 +2,7 @@
 // Only DERIVED Korean operation rows and source identifiers may be exported.
 // Never serialize YouTube's original description or Japanese source lines to public assets.
 import {previewAikurumiTactic} from '../public/aikurumi-tactic-review.mjs';
-import {youtubeVideoId} from './aikurumi-youtube-api.mjs';
+import {youtubeVideoId,inspectYouTubeDescription} from './aikurumi-youtube-api.mjs';
 
 function bossHeader(text,bossNames){
  const line=String(text).trim().slice(0,130);
@@ -72,8 +72,13 @@ export function createYouTubeTacticCandidates(snapshots,found,{fetchedAt=new Dat
   const base={stage:ref.stage,boss:ref.boss,taskId:ref.task.id,
     linkIndex:ref.link.index??ref.ordinal,linkOrdinal:ref.ordinal,videoId:ref.videoId,
     status:'needs-source-check',matching:'',rowCount:0,issues:[],warnings:[],rows:[],
-    sourceUrl:String(ref.link.link||'')};
-  if(!video?.description)return {...base,status:video?'empty-description':'video-unavailable',matching:'no-description'};
+    sourceUrl:String(ref.link.link||''),youtubeHasTactic:null};
+  if(!video?.description)return {...base,status:video?'empty-description':'video-unavailable',
+    matching:'no-description',youtubeHasTactic:video?false:null};
+  const inspection=inspectYouTubeDescription(video.description);
+  if(!inspection.mayContainTactic)return {...base,status:'no-youtube-tl',youtubeHasTactic:false,
+    matching:'no-tactic-evidence'};
+  base.youtubeHasTactic=true; // priority remains YouTube even when segmentation is ambiguous
   const segments=splitVideoDescription(video.description,ref.bossNames);
   const matched=matchedSegment(segments,ref,all);
   if(!matched.segment)return {...base,matching:matched.match};
