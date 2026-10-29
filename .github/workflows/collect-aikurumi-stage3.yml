@@ -1,0 +1,45 @@
+name: Collect Aikurumi stage 3 for five-boss deck review (test only)
+on:
+  push:
+    branches: ['test/aikurumi-api-probe-20261030']
+    paths: ['.github/workflows/collect-aikurumi-stage3.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: isolated-aikurumi-stage3
+  cancel-in-progress: false
+jobs:
+  stage3:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: test/aikurumi-api-probe-20261030
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Collect original stage-3 party IDs, damage and link source
+        run: |
+          node redive/scripts/collect-aikurumi-snapshot.mjs 2025-10 3
+          cp redive/public/aikurumi-snapshot-stage3.json docs/aikurumi-lab/aikurumi-snapshot-stage3.json
+          node --input-type=module <<'NODE'
+          import {readFileSync} from 'node:fs';
+          import {findNonOverlappingStage3} from './redive/public/aikurumi-stage3-composer.mjs';
+          const snapshot=JSON.parse(readFileSync('redive/public/aikurumi-snapshot-stage3.json','utf8'));
+          const result=findNonOverlappingStage3(snapshot);
+          console.log('STAGE3_COMPOSITION',JSON.stringify({status:result.status,counts:result.eligiblePerBoss,
+            feasible:result.solutions.length,bestDamage:result.solutions[0]?.totalDamage||null,
+            bestTaskIds:result.solutions[0]?.lineup.map(x=>x.taskId)||[],inspected:result.inspected||0}));
+          if(snapshot.stage!==3)throw Error('Stage 3 snapshot mismatch');
+          NODE
+      - name: Commit isolated stage 3 snapshot only
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add redive/public/aikurumi-snapshot-stage3.json docs/aikurumi-lab/aikurumi-snapshot-stage3.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'test: add source stage-3 five-boss lineups for read-only review'
+            git push origin HEAD:test/aikurumi-api-probe-20261030
+          fi
