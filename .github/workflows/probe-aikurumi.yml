@@ -56,6 +56,7 @@ jobs:
             }
             await new Promise(r=>setTimeout(r,400));
           }
+          for(const [method,path,headers] of [['GET','/pcr/clanBattleList?server=jp',{'Origin':'https://priconne.pages.dev'}],['OPTIONS','/pcr/gvgTask',{'Origin':'https://priconne.pages.dev','Access-Control-Request-Method':'POST','Access-Control-Request-Headers':'content-type,d,l,t'}]]){try{const res=await fetch(root+path,{method,headers,signal:AbortSignal.timeout(12000)});console.log('CORS',JSON.stringify({method,status:res.status,allowOrigin:res.headers.get('access-control-allow-origin'),allowMethods:res.headers.get('access-control-allow-methods'),allowHeaders:res.headers.get('access-control-allow-headers')}))}catch(error){console.log('CORS_ERROR',method,error.message)}}
           console.log('RESULT',JSON.stringify({periods:Array.isArray(periods)?periods.length:0,successfulStages:success}));
           if(!Array.isArray(periods)||!success)process.exitCode=1;
           NODE
