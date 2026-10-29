@@ -1,0 +1,44 @@
+name: Collect Aikurumi snapshot for isolated tactic review lab
+on:
+  push:
+    branches: ['test/aikurumi-api-probe-20261030']
+    paths:
+      - '.github/workflows/collect-aikurumi-snapshot.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: isolated-aikurumi-snapshot
+  cancel-in-progress: false
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: test/aikurumi-api-probe-20261030
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify the standalone read-only modules
+        run: |
+          node --check redive/scripts/collect-aikurumi-snapshot.mjs
+          node --check redive/public/aikurumi-lab.mjs
+          node --check redive/public/aikurumi-tactic-review.mjs
+          node --check redive/public/aikurumi-character-matcher.mjs
+          node --test redive/scripts/test-aikurumi-character-matcher.mjs redive/scripts/test-aikurumi-review.mjs
+      - name: Collect published Japanese 2025-10 stage 6 (Korean 2026-11)
+        run: node redive/scripts/collect-aikurumi-snapshot.mjs 2025-10 6
+      - name: Commit only the read-only review snapshot to the test branch
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add redive/public/aikurumi-snapshot.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'test: refresh offline Aikurumi tactic review dataset'
+            git push origin HEAD:test/aikurumi-api-probe-20261030
+          fi
