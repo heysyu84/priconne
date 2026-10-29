@@ -111,12 +111,14 @@ function drawDetail(item){
  if(!item){detail.innerHTML='<p class="muted">왼쪽에서 택틱을 선택해 주세요.</p>';return;}
  const p=item.preview,f=reviewFlags(p),s=statusLabel(p),category=classifySourceTactic(item.task,item.link);
  const youtubeCandidate=youtubePreviewFor(item);
- const activeSource=selectPrimaryTacticSource(youtubeCandidate,{youtubeReady:youtubeReviewState==='ready',hasChineseTimeline:p.rows.length>0});
- const youtubePrimary=activeSource.source==='youtube'||activeSource.source==='youtube-unverified'||activeSource.source==='awaiting-youtube';
+
  const carry=Number(sourceData?.stage)===3?parseStage3CarryTime(item.link?.name):null;
  const carryDetail=carry?.seconds===null?'원본에 명시된 이월시간 없음':carry?.status==='full'?'풀 이월 · 1:30 (90초)':carry?'격파 '+formatCarrySeconds(90-carry.remainingSeconds)+' 경과 · 잔여 '+carry.remainingSeconds+'초 + 추가 '+carry.bonusSeconds+'초 = 이월 '+formatCarrySeconds(carry.seconds):'';
  const link=url(p.sourceUrl);
  const isYouTube=!!link&&(['youtube.com','www.youtube.com','m.youtube.com','youtu.be','www.youtu.be'].includes(new URL(link).hostname));
+ const activeSource=isYouTube?selectPrimaryTacticSource(youtubeCandidate,{youtubeReady:youtubeReviewState==='ready',hasChineseTimeline:p.rows.length>0})
+  :{source:'aikurumi',label:'aikurumi 중국어 TL (YouTube 링크 없음)'};
+ const youtubePrimary=isYouTube&&['youtube','youtube-unverified','awaiting-youtube'].includes(activeSource.source);
  const youtubePanel=isYouTube?'<section class="youtube-paste"><details open><summary>YouTube 설명란 · API 자동 TL 변환 및 원문 대조</summary>'
   +youtubeAutoPanel(item)
   +'<p class="muted">원본 영상을 열어 설명란을 복사해 붙여넣으세요. 이 작업은 이 브라우저 화면에서만 진행되며 서버에 저장하지 않습니다.</p>'
