@@ -2,15 +2,17 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 const snapshot=JSON.parse(readFileSync(new URL('../public/aikurumi-snapshot.json',import.meta.url),'utf8'));
+const stage3=JSON.parse(readFileSync(new URL('../public/aikurumi-snapshot-stage3.json',import.meta.url),'utf8'));
 const elements=new Map();
-for(const id of ['list','detail','boss','filter','search','month','list-title','summary']){
- elements.set(id,{value:id==='boss'||id==='filter'?'all':'',innerHTML:'',textContent:'',scrollTop:0,handlers:{},
+for(const id of ['list','detail','boss','filter','search','month','list-title','summary','operation','stage3-section','compose-output','compose-button','compose-mode']){
+ elements.set(id,{value:id==='boss'||id==='filter'||id==='operation'?'all':id==='compose-mode'?'full-auto':id==='month'?'6':'',innerHTML:'',textContent:'',scrollTop:0,hidden:false,handlers:{},
    addEventListener(type,fn){this.handlers[type]=fn;}});
 }
+elements.get('month').options=[{value:'6',textContent:''},{value:'3',textContent:''}];
 globalThis.document={getElementById:id=>elements.get(id)};
 globalThis.fetch=async path=>{
- assert.equal(path,'./aikurumi-snapshot.json');
- return {ok:true,json:async()=>snapshot};
+ assert.ok(['./aikurumi-snapshot.json','./aikurumi-snapshot-stage3.json'].includes(path));
+ return {ok:true,json:async()=>path.includes('stage3')?stage3:snapshot};
 };
 await import('../public/aikurumi-lab.mjs');
 for(let i=0;i<5&&(!elements.get('list').innerHTML.includes('data-item'));i++)
@@ -70,4 +72,31 @@ test('YouTube description pasted into preview is converted only in local memory'
  assert.equal(textArea.value,'');
  assert.equal(result.innerHTML,'');
  entry.value='';entry.handlers.input();
+});
+
+test('source operation category filter separates carry and full-auto',()=>{
+ const type=elements.get('operation');
+ type.value='carry';type.handlers.change();
+ assert.match(elements.get('list').innerHTML,/이월용/);
+ assert.ok(!elements.get('list').innerHTML.includes('미분류'));
+ type.value='full-auto';type.handlers.change();
+ assert.match(elements.get('list').innerHTML,/풀오토/);
+ type.value='all';type.handlers.change();
+});
+test('switching to stage3 enables true five-boss zero-overlap recommendations',async()=>{
+ const month=elements.get('month');
+ month.value='3';month.handlers.change();
+ for(let i=0;i<10&&!elements.get('list-title').textContent.includes('101');i++)
+   await new Promise(resolve=>setImmediate(resolve));
+ assert.equal(elements.get('stage3-section').hidden,false);
+ assert.equal(month.value,'3');
+ elements.get('compose-button').handlers.click();
+ const result=elements.get('compose-output').innerHTML;
+ assert.match(result,/캐릭터 25명 전원 중복 없음/);
+ assert.match(result,/#14253 검토하기/);
+ assert.match(elements.get('list-title').textContent,/101/);
+ month.value='6';month.handlers.change();
+ for(let i=0;i<10&&!elements.get('list-title').textContent.includes('215');i++)
+  await new Promise(resolve=>setImmediate(resolve));
+ assert.equal(elements.get('stage3-section').hidden,true);
 });
