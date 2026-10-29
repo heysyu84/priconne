@@ -2,6 +2,7 @@
 // from translated names. A character used by one boss cannot be reused.
 // Read-only: no registration, site data writes, or fabricated substitute units.
 import {classifySourceTactic,sourceDamage} from './aikurumi-operation-types.mjs';
+import {parseStage3CarryTime} from './aikurumi-stage3-carry.mjs';
 
 export function findNonOverlappingStage3(snapshot,{operation='full-auto',limit=5}={}){
   if(Number(snapshot?.stage)!==3||!Array.isArray(snapshot?.bosses)||snapshot.bosses.length!==5)
@@ -16,10 +17,15 @@ export function findNonOverlappingStage3(snapshot,{operation='full-auto',limit=5
       if(ids.length!==5||new Set(ids).size!==5||ids.some(id=>!Number.isSafeInteger(id)||id<=0))continue;
       if(Number(task.type)===1)continue; // carry tactics not interchangeable with initial hits
       const links=task.links?.length?task.links:[null];
-      const eligible=links.map(link=>({link,kind:classifySourceTactic(task,link)}))
+      const eligible=links.map(link=>({link,kind:classifySourceTactic(task,link),
+        carry:parseStage3CarryTime(link?.name)}))
         .filter(row=>operation==='all'?row.kind.operation!=='unknown':row.kind.operation===operation);
       if(!eligible.length)continue;
-      eligible.sort((x,y)=>sourceDamage(task,y.kind.operation,y.link)-sourceDamage(task,x.kind.operation,x.link));
+      // Per-source carry time is significant even for two links sharing
+      // the same five-character team and the same recorded damage.
+      eligible.sort((x,y)=>sourceDamage(task,y.kind.operation,y.link)-sourceDamage(task,x.kind.operation,x.link)
+        ||Number(y.carry.seconds!==null)-Number(x.carry.seconds!==null)
+        ||(y.carry.seconds??-1)-(x.carry.seconds??-1));
       const best=eligible[0];
       candidates.push({
         boss:Number(b.index),bossName:String(b.unitName??''),
@@ -28,12 +34,16 @@ export function findNonOverlappingStage3(snapshot,{operation='full-auto',limit=5
         characterNames:(task.charas||[]).map(c=>snapshot.characterData?.names?.[String(c.prefabId)]?.[0]||String(c.unitName||'')),
         operation:best.kind.operation,
         score:sourceDamage(task,best.kind.operation,best.link),
+        carry:best.carry,
+        carrySeconds:best.carry.seconds,
         sourceLink:best.link?.link||'',
         sourceTitle:best.link?.name||'',
         sourceLinkIndex:best.link?.index??null
       });
     }
-    candidates.sort((a,b)=>b.score-a.score||Number(a.taskId)-Number(b.taskId));
+    candidates.sort((a,b)=>b.score-a.score||
+      Number(b.carrySeconds!==null)-Number(a.carrySeconds!==null)||
+      (b.carrySeconds??-1)-(a.carrySeconds??-1)||Number(a.taskId)-Number(b.taskId));
     return {boss:Number(b.index),candidates};
   });
   const eligiblePerBoss=groups.map(g=>({boss:g.boss,count:g.candidates.length}));
@@ -48,9 +58,15 @@ export function findNonOverlappingStage3(snapshot,{operation='full-auto',limit=5
   function visit(depth,score){
     if(depth===5){
       const selection=chosen.toSorted((a,b)=>a.boss-b.boss);
-      const entry={totalDamage:score,lineup:selection,uniqueCharacters:25};
+      const knownCarry=selection.filter(row=>row.carrySeconds!==null);
+      const entry={totalDamage:score,lineup:selection,uniqueCharacters:25,
+        totalCarrySeconds:knownCarry.reduce((sum,row)=>sum+row.carrySeconds,0),
+        knownCarryCount:knownCarry.length,
+        unknownCarryCount:5-knownCarry.length};
       results.push(entry);
       results.sort((a,b)=>b.totalDamage-a.totalDamage||
+        b.knownCarryCount-a.knownCarryCount||
+        b.totalCarrySeconds-a.totalCarrySeconds||
         a.lineup.map(x=>x.taskId).join(',').localeCompare(b.lineup.map(x=>x.taskId).join(',')));
       if(results.length>maxResults)results.length=maxResults;
       return;
