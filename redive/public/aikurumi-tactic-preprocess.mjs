@@ -24,7 +24,7 @@ export function splitAikurumiTimeline(raw){
   const original=String(raw??'').replace(/\r\n?/g,'\n');
   const lines=original.split('\n');
   const isAction=line=>{
-    const t=line.trim();
+    const t=normalizeAikurumiActionLine(line.trim());
     return timed.test(t)||setup.test(t)||auto.test(t)||mask.test(t)&&!/[★☆]\s*[0-9]/.test(t);
   };
   const start=lines.findIndex(isAction);
