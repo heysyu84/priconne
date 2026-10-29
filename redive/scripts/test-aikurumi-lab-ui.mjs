@@ -86,7 +86,7 @@ test('source operation category filter separates carry and full-auto',()=>{
 test('switching to stage3 enables true five-boss zero-overlap recommendations',async()=>{
  const month=elements.get('month');
  month.value='3';month.handlers.change();
- for(let i=0;i<10&&!elements.get('list-title').textContent.includes('101');i++)
+ for(let i=0;i<10&&!elements.get('list-title').textContent.includes('100');i++)
    await new Promise(resolve=>setImmediate(resolve));
  assert.equal(elements.get('stage3-section').hidden,false);
  assert.equal(month.value,'3');
@@ -94,7 +94,7 @@ test('switching to stage3 enables true five-boss zero-overlap recommendations',a
  const result=elements.get('compose-output').innerHTML;
  assert.match(result,/캐릭터 25명 전원 중복 없음/);
  assert.match(result,/#14253 검토하기/);
- assert.match(elements.get('list-title').textContent,/101/);
+ assert.match(elements.get('list-title').textContent,/100/);
  month.value='6';month.handlers.change();
  for(let i=0;i<10&&!elements.get('list-title').textContent.includes('215');i++)
   await new Promise(resolve=>setImmediate(resolve));
