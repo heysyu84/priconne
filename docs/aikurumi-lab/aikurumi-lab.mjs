@@ -4,6 +4,7 @@ import {classifySourceTactic,OPERATION_LABELS} from './aikurumi-operation-types.
 import {findNonOverlappingStage3} from './aikurumi-stage3-composer.mjs';
 import {parseStage3CarryTime,carryTimeLabel,formatCarrySeconds} from './aikurumi-stage3-carry.mjs';
 import {groupAikurumiVideos,collectionTotals} from './aikurumi-youtube-collections.mjs';
+import {selectPrimaryTacticSource} from './aikurumi-source-priority.mjs';
 
 const el=id=>document.getElementById(id);
 const esc=value=>String(value??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
@@ -92,9 +93,11 @@ function drawList(){
  list.innerHTML=filtered.length?filtered.map(x=>{
   const p=x.preview,s=statusLabel(p),party=p.matchedKoreanNames||p.originalLineup.map(c=>c.unitName);
   const category=classifySourceTactic(x.task,x.link);
+  const selectedSource=youtubePreviewFor(x);
+  const preferred=selectedSource?selectPrimaryTacticSource(selectedSource,{youtubeReady:youtubeReviewState==='ready',hasChineseTimeline:p.rows.length>0}):null;
   return '<button type="button" class="item '+(x.id===selected?'selected':'')+'" data-item="'+esc(x.id)+'" aria-current="'+(x.id===selected?'true':'false')+'">'
    +'<div class="item-title"><span>'+esc(x.boss.index)+'넴 · '+esc(party.join(' / '))+'</span><span class="'+s.style+' item-status">'+s.text+'</span></div>'
-   +'<small>#'+esc(x.task.id)+' · '+esc(OPERATION_LABELS[category.operation])+(category.carry?' · 이월용':'')+' · '+esc(x.link.name||'원본 링크 없음')+' · '+(p.rows.length?p.rows.length+'행':'조작문 없음')+'</small></button>';
+   +'<small>#'+esc(x.task.id)+(preferred?' · '+esc(preferred.label):'')+' · '+esc(OPERATION_LABELS[category.operation])+(category.carry?' · 이월용':'')+' · '+esc(x.link.name||'원본 링크 없음')+' · '+(p.rows.length?p.rows.length+'행':'조작문 없음')+'</small></button>';
  }).join(''):'<p class="empty">선택한 조건에 맞는 자료가 없습니다.</p>';
  list.scrollTop=y;
  const sum=el('summary');
@@ -107,6 +110,9 @@ function detailPair(label,value){
 function drawDetail(item){
  if(!item){detail.innerHTML='<p class="muted">왼쪽에서 택틱을 선택해 주세요.</p>';return;}
  const p=item.preview,f=reviewFlags(p),s=statusLabel(p),category=classifySourceTactic(item.task,item.link);
+ const youtubeCandidate=youtubePreviewFor(item);
+ const activeSource=selectPrimaryTacticSource(youtubeCandidate,{youtubeReady:youtubeReviewState==='ready',hasChineseTimeline:p.rows.length>0});
+ const youtubePrimary=activeSource.source==='youtube'||activeSource.source==='youtube-unverified'||activeSource.source==='awaiting-youtube';
  const carry=Number(sourceData?.stage)===3?parseStage3CarryTime(item.link?.name):null;
  const carryDetail=carry?.seconds===null?'원본에 명시된 이월시간 없음':carry?.status==='full'?'풀 이월 · 1:30 (90초)':carry?'격파 '+formatCarrySeconds(90-carry.remainingSeconds)+' 경과 · 잔여 '+carry.remainingSeconds+'초 + 추가 '+carry.bonusSeconds+'초 = 이월 '+formatCarrySeconds(carry.seconds):'';
  const link=url(p.sourceUrl);
@@ -131,6 +137,12 @@ function drawDetail(item){
   +'<div class="source-line"><span>원문 근거 '+(i+1)+'</span> '+esc(r.source||'원문 근거 없음')+'</div></div>').join('')
   :'<p class="muted">변환 가능한 조작문이 없습니다. 원본 설명을 확인해 주세요.</p>';
  const raw=esc(p.sourceText||'원본 설명 없음');
+ const chineseComparison='<div class="compare-grid"><section><h3>aikurumi 중국어 변환 참고 · '+p.rows.length+'행</h3><div class="steps">'+rows+'</div></section>'
+  +'<section><h3>aikurumi 중국어 원문</h3><pre class="raw-full">'+raw+'</pre>'+notes+'</section></div>';
+ const chinesePanel=youtubePrimary
+  ?'<details class="secondary-source"><summary>aikurumi 중국어 TL · 참고 자료 (일본어 YouTube 우선)</summary>'+chineseComparison+'</details>'
+  :chineseComparison;
+ const youtubeFirst=youtubePrimary&&isYouTube;
  detail.innerHTML='<div class="detail-heading"><div><h2>'+esc(item.boss.index)+'넴 · '+esc(item.boss.unitName)+'</h2><p class="muted">택틱 #'+esc(item.task.id)+' · 원본 링크 '+esc(item.link.index??'—')+' · '+esc(s.text)+'</p></div>'
   +'<div class="nav-actions"><button type="button" data-nav="prev" aria-label="이전 택틱">이전</button><button type="button" data-nav="next" aria-label="다음 택틱">다음</button></div></div>'
   +'<div class="data-grid">'
@@ -140,9 +152,11 @@ function drawDetail(item){
   +(carry?detailPair('3단계 격파 후 이월',carryDetail):'')
   +'<div class="stat"><span class="label">원본 영상 · 페이지</span><strong>'+(link?'<a href="'+esc(link)+'" target="_blank" rel="noopener noreferrer">원본 열기</a>':'링크 없음')+'</strong></div></div>'
   +'<span class="label">편성 / 성급 / 랭크 (일본 서버 원본)</span>'+party+warn
-  +'<div class="compare-grid"><section><h3>한국어 변환 결과 · '+p.rows.length+'행</h3><div class="steps">'+rows+'</div></section>'
-  +'<section><h3>원문 전체 · 대조용</h3><pre class="raw-full">'+raw+'</pre>'+notes+'</section></div>'
-  +youtubePanel
+  +'<div class="source-priority"><strong>기준 TL: '+esc(activeSource.label)+'</strong>'
+  +'<p class="muted">'+(youtubeFirst?'일본어 YouTube가 우선입니다. 영상 내 해당 TL을 분리하지 못한 경우 중국어로 자동 대체하지 않습니다.':'유튜브에 해당하는 일본어 조작 TL이 없을 때만 aikurumi 중국어를 사용합니다.')+'</p></div>'
+  +(youtubeFirst?youtubePanel:'')
+  +chinesePanel
+  +(!youtubeFirst?youtubePanel:'')
   +'<p class="muted">위 조작문은 검토용 변환 결과입니다. 관리자 확인 없이 택틱 등록이나 기존 자료 변경은 수행되지 않습니다.</p>';
 }
 
