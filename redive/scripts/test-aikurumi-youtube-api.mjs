@@ -11,6 +11,7 @@ test('only verified YouTube hostnames and 11-character IDs are accepted',()=>{
     'https://youtu.be/gcLTnp88aSo','https://m.youtube.com/shorts/gcLTnp88aSo',
     'https://www.youtube.com/live/gcLTnp88aSo','https://www.youtube-nocookie.com/embed/gcLTnp88aSo'])
     assert.equal(youtubeVideoId(url),'gcLTnp88aSo',url);
+  assert.equal(youtubeVideoId('https://youtu.be/LSCOSiF1fv8https://youtu.be/LSCOSiF1fv8https://docs.google.com/spreadsheets/d/example'),'LSCOSiF1fv8');
   for(const url of ['https://youtube.com.evil.example/watch?v=gcLTnp88aSo',
     'javascript:alert(1)','https://youtube.com/watch?v=bad',
     'https://vimeo.com/gcLTnp88aSo'])
