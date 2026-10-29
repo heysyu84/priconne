@@ -9,6 +9,8 @@ on:
       - redive/scripts/test-aikurumi-review-filters.mjs
       - redive/scripts/test-aikurumi-lab-ui.mjs
       - redive/public/aikurumi-review-filters.mjs
+      - redive/public/aikurumi-tactic-review.mjs
+      - redive/scripts/test-aikurumi-review.mjs
   workflow_dispatch:
 
 permissions:
@@ -33,7 +35,7 @@ jobs:
           node --check docs/aikurumi-lab/tactic-parser.mjs
           node --check docs/aikurumi-lab/aikurumi-review-filters.mjs
           node --check redive/public/aikurumi-lab.mjs
-          node --test redive/scripts/test-aikurumi-review-filters.mjs redive/scripts/test-aikurumi-lab-ui.mjs
+          node --test redive/scripts/test-aikurumi-review-filters.mjs redive/scripts/test-aikurumi-lab-ui.mjs redive/scripts/test-aikurumi-review.mjs
           test -s docs/aikurumi-lab/index.html
           for f in aikurumi-lab.mjs aikurumi-tactic-review.mjs aikurumi-tactic-preprocess.mjs aikurumi-character-matcher.mjs tactic-parser.mjs aikurumi-snapshot.json; do
             test -s "docs/aikurumi-lab/$f"
