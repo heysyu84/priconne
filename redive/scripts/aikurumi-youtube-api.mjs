@@ -6,7 +6,12 @@ export function youtubeVideoId(raw) {
     const u=new URL(String(raw??'').trim());
     const host=u.hostname.toLowerCase();
     let id=null;
-    if(host==='youtu.be'||host==='www.youtu.be')id=u.pathname.split('/').filter(Boolean)[0];
+    if(host==='youtu.be'||host==='www.youtu.be'){
+      const segment=u.pathname.split('/').filter(Boolean)[0]||'';
+      // Aikurumi has one mistakenly concatenated URL. Recover the first
+      // complete ID only when the next characters clearly start another URL.
+      id=segment.match(/^([a-zA-Z0-9_-]{11})(?=https?:)/)?.[1]||segment;
+    }
     else if(['youtube.com','www.youtube.com','m.youtube.com','music.youtube.com',
       'youtube-nocookie.com','www.youtube-nocookie.com'].includes(host)) {
       if(u.pathname==='/watch')id=u.searchParams.get('v');
