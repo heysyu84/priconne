@@ -74,10 +74,37 @@ const windowSafeUnitMap=()=>sourceData?.characterData?.names||{};
 const windowSafePositions=()=>sourceData?.characterData?.positionUnits||[];
 const bossNames=()=>sourceData?.bosses?.map(b=>b.unitName)||[];
 
-function visible(){
- return filterReviewItems(items,{boss:boss.value,mode:filter.value,operation:operationFilter.value,query:query.value});
+function effectiveFlags(item){
+ const p=item.preview,flags=reviewFlags(p),youtube=youtubePreviewFor(item);
+ if(youtube?.youtubeHasTactic!==true)return flags;
+ const hasRows=Array.isArray(youtube.rows)&&youtube.rows.length>0;
+ return {
+   ...flags,hasTimeline:hasRows,notesOnly:false,
+   noWarnings:false,hasWarning:youtube.status!=='candidate'||!!youtube.issues?.length,
+   hasUnknown:youtube.issues?.includes('unmapped-actors')||false
+ };
 }
-function statusLabel(p){
+function visible(){
+ const filtered=filterReviewItems(items,{boss:boss.value,mode:'all',operation:operationFilter.value,query:query.value});
+ return filtered.filter(item=>{
+   const f=effectiveFlags(item);
+   if(filter.value==='timeline')return f.hasTimeline;
+   if(filter.value==='notes')return f.notesOnly;
+   if(filter.value==='clean')return f.noWarnings;
+   if(filter.value==='warning')return f.hasWarning;
+   if(filter.value==='unknown')return f.hasUnknown;
+   return true;
+ });
+}
+function statusLabel(p,item){
+ const youtube=item?youtubePreviewFor(item):null;
+ if(youtube?.youtubeHasTactic===true){
+   if(youtube.status==='candidate')return {text:'일본어 TL 후보',style:'review'};
+   if(youtube.status==='partial')return {text:'일본어 부분 변환',style:'review'};
+   if(youtube.status==='needs-source-check')return {text:'유튜브 구간 확인',style:'review'};
+   return {text:'유튜브 번역 확인',style:'review'};
+ }
+ if(youtube?.status==='video-unavailable')return {text:'유튜브 조회 불가',style:'review'};
  const f=reviewFlags(p);
  if(f.notesOnly)return {text:'본문 없음',style:'muted'};
  if(f.hasUnknown)return {text:'행동 대상 확인',style:'review'};
@@ -91,7 +118,7 @@ function drawList(){
  if(!filtered.some(x=>x.id===selected))selected=filtered[0]?.id??null;
  const y=list.scrollTop;
  list.innerHTML=filtered.length?filtered.map(x=>{
-  const p=x.preview,s=statusLabel(p),party=p.matchedKoreanNames||p.originalLineup.map(c=>c.unitName);
+  const p=x.preview,s=statusLabel(p,x),party=p.matchedKoreanNames||p.originalLineup.map(c=>c.unitName);
   const category=classifySourceTactic(x.task,x.link);
   const selectedSource=youtubePreviewFor(x);
   const preferred=selectedSource?selectPrimaryTacticSource(selectedSource,{youtubeReady:youtubeReviewState==='ready',hasChineseTimeline:p.rows.length>0}):null;
@@ -101,7 +128,15 @@ function drawList(){
  }).join(''):'<p class="empty">선택한 조건에 맞는 자료가 없습니다.</p>';
  list.scrollTop=y;
  const sum=el('summary');
- if(sum)sum.textContent='전체 '+all.total+'건 · 조작문 '+all.timeline+'건 · 미해석 '+all.warning+'건 · 행동 대상 미확인 '+all.unknown+'건 · 본문 없음 '+all.notes+'건';
+ if(sum){
+   const stateCount=items.reduce((a,x)=>{
+     const f=effectiveFlags(x);
+     if(f.hasTimeline)a.timeline++;if(f.hasWarning)a.warning++;
+     if(f.hasUnknown)a.unknown++;if(f.notesOnly)a.notes++;
+     return a;
+   },{timeline:0,warning:0,unknown:0,notes:0});
+   sum.textContent='자료 전체 '+all.total+'건 · 우선 출처 조작문 '+stateCount.timeline+'건 · 검토 경고 '+stateCount.warning+'건 · 행동 대상 미확인 '+stateCount.unknown+'건 · TL 없음 '+stateCount.notes+'건';
+ }
  drawDetail(filtered.find(x=>x.id===selected));
 }
 function detailPair(label,value){
@@ -109,7 +144,7 @@ function detailPair(label,value){
 }
 function drawDetail(item){
  if(!item){detail.innerHTML='<p class="muted">왼쪽에서 택틱을 선택해 주세요.</p>';return;}
- const p=item.preview,f=reviewFlags(p),s=statusLabel(p),category=classifySourceTactic(item.task,item.link);
+ const p=item.preview,f=effectiveFlags(item),s=statusLabel(p,item),category=classifySourceTactic(item.task,item.link);
  const youtubeCandidate=youtubePreviewFor(item);
 
  const carry=Number(sourceData?.stage)===3?parseStage3CarryTime(item.link?.name):null;
