@@ -3,13 +3,13 @@
   "source": "YouTube Data API v3",
   "readOnly": true,
   "registrationAllowed": false,
-  "fetchedAt": "2026-10-29T23:25:33.765Z",
-  "expiresAt": "2026-11-26T23:25:33.765Z",
+  "fetchedAt": "2026-10-29T23:25:49.932Z",
+  "expiresAt": "2026-11-26T23:25:49.932Z",
   "videoCount": 69,
   "totalReferences": 136,
   "statuses": {
-    "no-youtube-tl": 19,
-    "needs-translation-review": 19,
+    "no-youtube-tl": 18,
+    "needs-translation-review": 20,
     "needs-source-check": 63,
     "partial": 32,
     "video-unavailable": 3
@@ -202,14 +202,15 @@
       "linkIndex": 0,
       "linkOrdinal": 0,
       "videoId": "5fdadWNp5TM",
-      "status": "no-youtube-tl",
-      "matching": "no-tactic-evidence",
-      "rowCount": 0,
+      "status": "needs-translation-review",
+      "matching": "single-video",
+      "rowCount": 1,
       "issues": [],
       "warnings": [],
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=5fdadWNp5TM",
-      "youtubeHasTactic": false
+      "youtubeHasTactic": true,
+      "omittedRows": 1
     },
     {
       "stage": 3,
