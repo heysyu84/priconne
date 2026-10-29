@@ -3,14 +3,14 @@
   "source": "YouTube Data API v3",
   "readOnly": true,
   "registrationAllowed": false,
-  "fetchedAt": "2026-10-29T23:21:11.903Z",
-  "expiresAt": "2026-11-26T23:21:11.903Z",
+  "fetchedAt": "2026-10-29T23:23:17.946Z",
+  "expiresAt": "2026-11-26T23:23:17.946Z",
   "videoCount": 69,
   "totalReferences": 136,
   "statuses": {
-    "needs-source-check": 80,
-    "no-parsable-timeline": 1,
-    "needs-translation-review": 20,
+    "no-youtube-tl": 19,
+    "needs-translation-review": 19,
+    "needs-source-check": 63,
     "partial": 32,
     "video-unavailable": 3
   },
@@ -22,13 +22,14 @@
       "linkIndex": 0,
       "linkOrdinal": 0,
       "videoId": "YYSf-2wPFVA",
-      "status": "needs-source-check",
-      "matching": "shared-video-without-sections",
+      "status": "no-youtube-tl",
+      "matching": "no-tactic-evidence",
       "rowCount": 0,
       "issues": [],
       "warnings": [],
       "rows": [],
-      "sourceUrl": "https://www.youtube.com/watch?v=YYSf-2wPFVA"
+      "sourceUrl": "https://www.youtube.com/watch?v=YYSf-2wPFVA",
+      "youtubeHasTactic": false
     },
     {
       "stage": 3,
@@ -37,13 +38,14 @@
       "linkIndex": 0,
       "linkOrdinal": 0,
       "videoId": "IL9D561pJZs",
-      "status": "needs-source-check",
-      "matching": "shared-video-without-sections",
+      "status": "no-youtube-tl",
+      "matching": "no-tactic-evidence",
       "rowCount": 0,
       "issues": [],
       "warnings": [],
       "rows": [],
-      "sourceUrl": "https://www.youtube.com/watch?v=IL9D561pJZs"
+      "sourceUrl": "https://www.youtube.com/watch?v=IL9D561pJZs",
+      "youtubeHasTactic": false
     },
     {
       "stage": 3,
@@ -52,13 +54,14 @@
       "linkIndex": 0,
       "linkOrdinal": 0,
       "videoId": "IL9D561pJZs",
-      "status": "needs-source-check",
-      "matching": "shared-video-without-sections",
+      "status": "no-youtube-tl",
+      "matching": "no-tactic-evidence",
       "rowCount": 0,
       "issues": [],
       "warnings": [],
       "rows": [],
-      "sourceUrl": "https://www.youtube.com/watch?v=IL9D561pJZs"
+      "sourceUrl": "https://www.youtube.com/watch?v=IL9D561pJZs",
+      "youtubeHasTactic": false
     },
     {
       "stage": 3,
@@ -67,15 +70,14 @@
       "linkIndex": 0,
       "linkOrdinal": 0,
       "videoId": "gBAMR9fVpfQ",
-      "status": "no-parsable-timeline",
-      "matching": "single-video",
+      "status": "no-youtube-tl",
+      "matching": "no-tactic-evidence",
       "rowCount": 0,
-      "issues": [
-        "no-action-timeline"
-      ],
+      "issues": [],
       "warnings": [],
       "rows": [],
-      "sourceUrl": "https://www.youtube.com/watch?v=gBAMR9fVpfQ"
+      "sourceUrl": "https://www.youtube.com/watch?v=gBAMR9fVpfQ",
+      "youtubeHasTactic": false
     },
     {
       "stage": 3,
@@ -94,6 +96,7 @@
       "warnings": [],
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=QctI5DVFQDI",
+      "youtubeHasTactic": true,
       "omittedRows": 2
     },
     {
@@ -103,13 +106,14 @@
       "linkIndex": 0,
       "linkOrdinal": 0,
       "videoId": "unG2c92lMTQ",
-      "status": "needs-source-check",
-      "matching": "no-unique-damage-section",
+      "status": "no-youtube-tl",
+      "matching": "no-tactic-evidence",
       "rowCount": 0,
       "issues": [],
       "warnings": [],
       "rows": [],
-      "sourceUrl": "https://www.youtube.com/watch?v=unG2c92lMTQ"
+      "sourceUrl": "https://www.youtube.com/watch?v=unG2c92lMTQ",
+      "youtubeHasTactic": false
     },
     {
       "stage": 3,
@@ -118,13 +122,14 @@
       "linkIndex": 0,
       "linkOrdinal": 0,
       "videoId": "unG2c92lMTQ",
-      "status": "needs-source-check",
-      "matching": "no-unique-damage-section",
+      "status": "no-youtube-tl",
+      "matching": "no-tactic-evidence",
       "rowCount": 0,
       "issues": [],
       "warnings": [],
       "rows": [],
-      "sourceUrl": "https://www.youtube.com/watch?v=unG2c92lMTQ"
+      "sourceUrl": "https://www.youtube.com/watch?v=unG2c92lMTQ",
+      "youtubeHasTactic": false
     },
     {
       "stage": 3,
@@ -133,13 +138,14 @@
       "linkIndex": 0,
       "linkOrdinal": 0,
       "videoId": "unG2c92lMTQ",
-      "status": "needs-source-check",
-      "matching": "no-unique-damage-section",
+      "status": "no-youtube-tl",
+      "matching": "no-tactic-evidence",
       "rowCount": 0,
       "issues": [],
       "warnings": [],
       "rows": [],
-      "sourceUrl": "https://www.youtube.com/watch?v=unG2c92lMTQ"
+      "sourceUrl": "https://www.youtube.com/watch?v=unG2c92lMTQ",
+      "youtubeHasTactic": false
     },
     {
       "stage": 3,
@@ -148,13 +154,14 @@
       "linkIndex": 0,
       "linkOrdinal": 0,
       "videoId": "YYSf-2wPFVA",
-      "status": "needs-source-check",
-      "matching": "shared-video-without-sections",
+      "status": "no-youtube-tl",
+      "matching": "no-tactic-evidence",
       "rowCount": 0,
       "issues": [],
       "warnings": [],
       "rows": [],
-      "sourceUrl": "https://www.youtube.com/watch?v=YYSf-2wPFVA"
+      "sourceUrl": "https://www.youtube.com/watch?v=YYSf-2wPFVA",
+      "youtubeHasTactic": false
     },
     {
       "stage": 3,
@@ -163,13 +170,14 @@
       "linkIndex": 0,
       "linkOrdinal": 0,
       "videoId": "IL9D561pJZs",
-      "status": "needs-source-check",
-      "matching": "shared-video-without-sections",
+      "status": "no-youtube-tl",
+      "matching": "no-tactic-evidence",
       "rowCount": 0,
       "issues": [],
       "warnings": [],
       "rows": [],
-      "sourceUrl": "https://www.youtube.com/watch?v=IL9D561pJZs"
+      "sourceUrl": "https://www.youtube.com/watch?v=IL9D561pJZs",
+      "youtubeHasTactic": false
     },
     {
       "stage": 3,
@@ -178,13 +186,14 @@
       "linkIndex": 0,
       "linkOrdinal": 0,
       "videoId": "IL9D561pJZs",
-      "status": "needs-source-check",
-      "matching": "shared-video-without-sections",
+      "status": "no-youtube-tl",
+      "matching": "no-tactic-evidence",
       "rowCount": 0,
       "issues": [],
       "warnings": [],
       "rows": [],
-      "sourceUrl": "https://www.youtube.com/watch?v=IL9D561pJZs"
+      "sourceUrl": "https://www.youtube.com/watch?v=IL9D561pJZs",
+      "youtubeHasTactic": false
     },
     {
       "stage": 3,
@@ -193,14 +202,14 @@
       "linkIndex": 0,
       "linkOrdinal": 0,
       "videoId": "5fdadWNp5TM",
-      "status": "needs-translation-review",
-      "matching": "single-video",
-      "rowCount": 1,
+      "status": "no-youtube-tl",
+      "matching": "no-tactic-evidence",
+      "rowCount": 0,
       "issues": [],
       "warnings": [],
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=5fdadWNp5TM",
-      "omittedRows": 1
+      "youtubeHasTactic": false
     },
     {
       "stage": 3,
@@ -219,6 +228,7 @@
       "warnings": [],
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=QctI5DVFQDI",
+      "youtubeHasTactic": true,
       "omittedRows": 3
     },
     {
@@ -228,13 +238,14 @@
       "linkIndex": 0,
       "linkOrdinal": 0,
       "videoId": "unG2c92lMTQ",
-      "status": "needs-source-check",
-      "matching": "no-unique-damage-section",
+      "status": "no-youtube-tl",
+      "matching": "no-tactic-evidence",
       "rowCount": 0,
       "issues": [],
       "warnings": [],
       "rows": [],
-      "sourceUrl": "https://www.youtube.com/watch?v=unG2c92lMTQ"
+      "sourceUrl": "https://www.youtube.com/watch?v=unG2c92lMTQ",
+      "youtubeHasTactic": false
     },
     {
       "stage": 3,
@@ -243,13 +254,14 @@
       "linkIndex": 0,
       "linkOrdinal": 0,
       "videoId": "unG2c92lMTQ",
-      "status": "needs-source-check",
-      "matching": "no-unique-damage-section",
+      "status": "no-youtube-tl",
+      "matching": "no-tactic-evidence",
       "rowCount": 0,
       "issues": [],
       "warnings": [],
       "rows": [],
-      "sourceUrl": "https://www.youtube.com/watch?v=unG2c92lMTQ"
+      "sourceUrl": "https://www.youtube.com/watch?v=unG2c92lMTQ",
+      "youtubeHasTactic": false
     },
     {
       "stage": 3,
@@ -258,13 +270,14 @@
       "linkIndex": 0,
       "linkOrdinal": 0,
       "videoId": "unG2c92lMTQ",
-      "status": "needs-source-check",
-      "matching": "no-unique-damage-section",
+      "status": "no-youtube-tl",
+      "matching": "no-tactic-evidence",
       "rowCount": 0,
       "issues": [],
       "warnings": [],
       "rows": [],
-      "sourceUrl": "https://www.youtube.com/watch?v=unG2c92lMTQ"
+      "sourceUrl": "https://www.youtube.com/watch?v=unG2c92lMTQ",
+      "youtubeHasTactic": false
     },
     {
       "stage": 3,
@@ -273,13 +286,14 @@
       "linkIndex": 0,
       "linkOrdinal": 0,
       "videoId": "YYSf-2wPFVA",
-      "status": "needs-source-check",
-      "matching": "shared-video-without-sections",
+      "status": "no-youtube-tl",
+      "matching": "no-tactic-evidence",
       "rowCount": 0,
       "issues": [],
       "warnings": [],
       "rows": [],
-      "sourceUrl": "https://www.youtube.com/watch?v=YYSf-2wPFVA"
+      "sourceUrl": "https://www.youtube.com/watch?v=YYSf-2wPFVA",
+      "youtubeHasTactic": false
     },
     {
       "stage": 3,
@@ -288,13 +302,14 @@
       "linkIndex": 0,
       "linkOrdinal": 0,
       "videoId": "IL9D561pJZs",
-      "status": "needs-source-check",
-      "matching": "shared-video-without-sections",
+      "status": "no-youtube-tl",
+      "matching": "no-tactic-evidence",
       "rowCount": 0,
       "issues": [],
       "warnings": [],
       "rows": [],
-      "sourceUrl": "https://www.youtube.com/watch?v=IL9D561pJZs"
+      "sourceUrl": "https://www.youtube.com/watch?v=IL9D561pJZs",
+      "youtubeHasTactic": false
     },
     {
       "stage": 3,
@@ -303,13 +318,14 @@
       "linkIndex": 0,
       "linkOrdinal": 0,
       "videoId": "YYSf-2wPFVA",
-      "status": "needs-source-check",
-      "matching": "shared-video-without-sections",
+      "status": "no-youtube-tl",
+      "matching": "no-tactic-evidence",
       "rowCount": 0,
       "issues": [],
       "warnings": [],
       "rows": [],
-      "sourceUrl": "https://www.youtube.com/watch?v=YYSf-2wPFVA"
+      "sourceUrl": "https://www.youtube.com/watch?v=YYSf-2wPFVA",
+      "youtubeHasTactic": false
     },
     {
       "stage": 3,
@@ -318,13 +334,14 @@
       "linkIndex": 0,
       "linkOrdinal": 0,
       "videoId": "IL9D561pJZs",
-      "status": "needs-source-check",
-      "matching": "shared-video-without-sections",
+      "status": "no-youtube-tl",
+      "matching": "no-tactic-evidence",
       "rowCount": 0,
       "issues": [],
       "warnings": [],
       "rows": [],
-      "sourceUrl": "https://www.youtube.com/watch?v=IL9D561pJZs"
+      "sourceUrl": "https://www.youtube.com/watch?v=IL9D561pJZs",
+      "youtubeHasTactic": false
     },
     {
       "stage": 3,
@@ -339,7 +356,8 @@
       "issues": [],
       "warnings": [],
       "rows": [],
-      "sourceUrl": "https://www.youtube.com/watch?v=QctI5DVFQDI"
+      "sourceUrl": "https://www.youtube.com/watch?v=QctI5DVFQDI",
+      "youtubeHasTactic": true
     },
     {
       "stage": 3,
@@ -348,13 +366,14 @@
       "linkIndex": 0,
       "linkOrdinal": 0,
       "videoId": "IL9D561pJZs",
-      "status": "needs-source-check",
-      "matching": "shared-video-without-sections",
+      "status": "no-youtube-tl",
+      "matching": "no-tactic-evidence",
       "rowCount": 0,
       "issues": [],
       "warnings": [],
       "rows": [],
-      "sourceUrl": "https://www.youtube.com/watch?v=IL9D561pJZs"
+      "sourceUrl": "https://www.youtube.com/watch?v=IL9D561pJZs",
+      "youtubeHasTactic": false
     },
     {
       "stage": 3,
@@ -374,6 +393,7 @@
       "warnings": [],
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=JbytoTJVV2k",
+      "youtubeHasTactic": true,
       "omittedRows": 4
     },
     {
@@ -389,7 +409,8 @@
       "issues": [],
       "warnings": [],
       "rows": [],
-      "sourceUrl": "https://www.youtube.com/watch?v=gcLTnp88aSo"
+      "sourceUrl": "https://www.youtube.com/watch?v=gcLTnp88aSo",
+      "youtubeHasTactic": true
     },
     {
       "stage": 6,
@@ -408,6 +429,7 @@
       "warnings": [],
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=9ZvfVTf-uMY",
+      "youtubeHasTactic": true,
       "omittedRows": 9
     },
     {
@@ -464,6 +486,7 @@
         }
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=CYRolchpI8g",
+      "youtubeHasTactic": true,
       "omittedRows": 20,
       "warningCount": 10,
       "unknownActorCount": 0
@@ -481,7 +504,8 @@
       "issues": [],
       "warnings": [],
       "rows": [],
-      "sourceUrl": "https://www.youtube.com/watch?v=IZ1ISeHNccY"
+      "sourceUrl": "https://www.youtube.com/watch?v=IZ1ISeHNccY",
+      "youtubeHasTactic": true
     },
     {
       "stage": 6,
@@ -496,7 +520,8 @@
       "issues": [],
       "warnings": [],
       "rows": [],
-      "sourceUrl": "https://www.youtube.com/watch?v=93eu_UEr_EY"
+      "sourceUrl": "https://www.youtube.com/watch?v=93eu_UEr_EY",
+      "youtubeHasTactic": true
     },
     {
       "stage": 6,
@@ -673,6 +698,7 @@
         }
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=dgRUnwQUuao",
+      "youtubeHasTactic": true,
       "omittedRows": 61,
       "warningCount": 56,
       "unknownActorCount": 2
@@ -720,6 +746,7 @@
         }
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=3XR7r4dwSJI",
+      "youtubeHasTactic": true,
       "omittedRows": 5,
       "warningCount": 2,
       "unknownActorCount": 0
@@ -737,7 +764,8 @@
       "issues": [],
       "warnings": [],
       "rows": [],
-      "sourceUrl": "https://www.youtube.com/watch?v=gcLTnp88aSo"
+      "sourceUrl": "https://www.youtube.com/watch?v=gcLTnp88aSo",
+      "youtubeHasTactic": true
     },
     {
       "stage": 6,
@@ -752,7 +780,8 @@
       "issues": [],
       "warnings": [],
       "rows": [],
-      "sourceUrl": "https://www.youtube.com/watch?v=gcLTnp88aSo"
+      "sourceUrl": "https://www.youtube.com/watch?v=gcLTnp88aSo",
+      "youtubeHasTactic": true
     },
     {
       "stage": 6,
@@ -796,6 +825,7 @@
         }
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=bHsEi2jOHIg",
+      "youtubeHasTactic": true,
       "omittedRows": 20,
       "warningCount": 11,
       "unknownActorCount": 0
@@ -817,6 +847,7 @@
       "warnings": [],
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=9AQSGX1D4Y8",
+      "youtubeHasTactic": true,
       "omittedRows": 16
     },
     {
@@ -861,6 +892,7 @@
         }
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=6NqcklSjatQ",
+      "youtubeHasTactic": true,
       "omittedRows": 11,
       "warningCount": 10,
       "unknownActorCount": 0
@@ -878,7 +910,8 @@
       "issues": [],
       "warnings": [],
       "rows": [],
-      "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8"
+      "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8",
+      "youtubeHasTactic": true
     },
     {
       "stage": 6,
@@ -893,7 +926,8 @@
       "issues": [],
       "warnings": [],
       "rows": [],
-      "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8"
+      "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8",
+      "youtubeHasTactic": true
     },
     {
       "stage": 6,
@@ -908,7 +942,8 @@
       "issues": [],
       "warnings": [],
       "rows": [],
-      "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8"
+      "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8",
+      "youtubeHasTactic": true
     },
     {
       "stage": 6,
@@ -923,7 +958,8 @@
       "issues": [],
       "warnings": [],
       "rows": [],
-      "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8"
+      "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8",
+      "youtubeHasTactic": true
     },
     {
       "stage": 6,
@@ -938,7 +974,8 @@
       "issues": [],
       "warnings": [],
       "rows": [],
-      "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8"
+      "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8",
+      "youtubeHasTactic": true
     },
     {
       "stage": 6,
@@ -953,7 +990,8 @@
       "issues": [],
       "warnings": [],
       "rows": [],
-      "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8"
+      "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8",
+      "youtubeHasTactic": true
     },
     {
       "stage": 6,
@@ -968,7 +1006,8 @@
       "issues": [],
       "warnings": [],
       "rows": [],
-      "sourceUrl": "https://www.youtube.com/watch?v=B97LQrFSmVM"
+      "sourceUrl": "https://www.youtube.com/watch?v=B97LQrFSmVM",
+      "youtubeHasTactic": true
     },
     {
       "stage": 6,
@@ -1024,6 +1063,7 @@
         }
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=EcAceF3P8rA",
+      "youtubeHasTactic": true,
       "omittedRows": 4,
       "warningCount": 4,
       "unknownActorCount": 0
@@ -1041,7 +1081,8 @@
       "issues": [],
       "warnings": [],
       "rows": [],
-      "sourceUrl": "https://www.youtube.com/watch?v=S5ZiViaMws8"
+      "sourceUrl": "https://www.youtube.com/watch?v=S5ZiViaMws8",
+      "youtubeHasTactic": true
     },
     {
       "stage": 6,
@@ -1056,7 +1097,8 @@
       "issues": [],
       "warnings": [],
       "rows": [],
-      "sourceUrl": "https://www.youtube.com/watch?v=BSSIs7TVqPs"
+      "sourceUrl": "https://www.youtube.com/watch?v=BSSIs7TVqPs",
+      "youtubeHasTactic": true
     },
     {
       "stage": 6,
@@ -1076,6 +1118,7 @@
       "warnings": [],
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=JcqLd2C8mTA",
+      "youtubeHasTactic": true,
       "omittedRows": 16
     },
     {
@@ -1091,7 +1134,8 @@
       "issues": [],
       "warnings": [],
       "rows": [],
-      "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8"
+      "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8",
+      "youtubeHasTactic": true
     },
     {
       "stage": 6,
@@ -1106,7 +1150,8 @@
       "issues": [],
       "warnings": [],
       "rows": [],
-      "sourceUrl": "https://www.youtube.com/watch?v=0q-o6RY5wSA"
+      "sourceUrl": "https://www.youtube.com/watch?v=0q-o6RY5wSA",
+      "youtubeHasTactic": null
     },
     {
       "stage": 6,
@@ -1121,7 +1166,8 @@
       "issues": [],
       "warnings": [],
       "rows": [],
-      "sourceUrl": "https://www.youtube.com/watch?v=gcLTnp88aSo"
+      "sourceUrl": "https://www.youtube.com/watch?v=gcLTnp88aSo",
+      "youtubeHasTactic": true
     },
     {
       "stage": 6,
@@ -1136,7 +1182,8 @@
       "issues": [],
       "warnings": [],
       "rows": [],
-      "sourceUrl": "https://www.youtube.com/watch?v=gcLTnp88aSo"
+      "sourceUrl": "https://www.youtube.com/watch?v=gcLTnp88aSo",
+      "youtubeHasTactic": true
     },
     {
       "stage": 6,
@@ -1151,7 +1198,8 @@
       "issues": [],
       "warnings": [],
       "rows": [],
-      "sourceUrl": "https://www.youtube.com/watch?v=vk2CIcU0AHM"
+      "sourceUrl": "https://www.youtube.com/watch?v=vk2CIcU0AHM",
+      "youtubeHasTactic": true
     },
     {
       "stage": 6,
@@ -1232,6 +1280,7 @@
         }
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=WtjU6gCeZVY",
+      "youtubeHasTactic": true,
       "omittedRows": 68,
       "warningCount": 46,
       "unknownActorCount": 4
@@ -1249,7 +1298,8 @@
       "issues": [],
       "warnings": [],
       "rows": [],
-      "sourceUrl": "https://www.youtube.com/watch?v=FnmA9QWZ11c"
+      "sourceUrl": "https://www.youtube.com/watch?v=FnmA9QWZ11c",
+      "youtubeHasTactic": true
     },
     {
       "stage": 6,
@@ -1378,6 +1428,7 @@
         }
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=NiPu8EUiHH8",
+      "youtubeHasTactic": true,
       "omittedRows": 58,
       "warningCount": 43,
       "unknownActorCount": 2
@@ -1395,7 +1446,8 @@
       "issues": [],
       "warnings": [],
       "rows": [],
-      "sourceUrl": "https://www.youtube.com/watch?v=gcLTnp88aSo"
+      "sourceUrl": "https://www.youtube.com/watch?v=gcLTnp88aSo",
+      "youtubeHasTactic": true
     },
     {
       "stage": 6,
@@ -1410,7 +1462,8 @@
       "issues": [],
       "warnings": [],
       "rows": [],
-      "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8"
+      "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8",
+      "youtubeHasTactic": true
     },
     {
       "stage": 6,
@@ -1425,7 +1478,8 @@
       "issues": [],
       "warnings": [],
       "rows": [],
-      "sourceUrl": "https://www.youtube.com/watch?v=gcLTnp88aSo"
+      "sourceUrl": "https://www.youtube.com/watch?v=gcLTnp88aSo",
+      "youtubeHasTactic": true
     },
     {
       "stage": 6,
@@ -1481,6 +1535,7 @@
         }
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=xSXBe1r3Jes",
+      "youtubeHasTactic": true,
       "omittedRows": 16,
       "warningCount": 11,
       "unknownActorCount": 0
@@ -1539,6 +1594,7 @@
         }
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=j0neZj-sYg0",
+      "youtubeHasTactic": true,
       "omittedRows": 12,
       "warningCount": 11,
       "unknownActorCount": 0
@@ -1559,6 +1615,7 @@
       "warnings": [],
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=PCzxIzeK3vg",
+      "youtubeHasTactic": true,
       "omittedRows": 4
     },
     {
@@ -1615,6 +1672,7 @@
         }
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=qF5q2PLOMX8",
+      "youtubeHasTactic": true,
       "omittedRows": 12,
       "warningCount": 6,
       "unknownActorCount": 0
@@ -1637,6 +1695,7 @@
       "warnings": [],
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=ZwVh18AGwDU",
+      "youtubeHasTactic": true,
       "omittedRows": 27
     },
     {
@@ -1693,6 +1752,7 @@
         }
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=RSQBqZp4QvM",
+      "youtubeHasTactic": true,
       "omittedRows": 17,
       "warningCount": 11,
       "unknownActorCount": 0
@@ -1710,7 +1770,8 @@
       "issues": [],
       "warnings": [],
       "rows": [],
-      "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8"
+      "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8",
+      "youtubeHasTactic": true
     },
     {
       "stage": 6,
@@ -1725,7 +1786,8 @@
       "issues": [],
       "warnings": [],
       "rows": [],
-      "sourceUrl": "https://www.youtube.com/watch?v=B97LQrFSmVM"
+      "sourceUrl": "https://www.youtube.com/watch?v=B97LQrFSmVM",
+      "youtubeHasTactic": true
     },
     {
       "stage": 6,
@@ -1740,7 +1802,8 @@
       "issues": [],
       "warnings": [],
       "rows": [],
-      "sourceUrl": "https://www.youtube.com/watch?v=B97LQrFSmVM"
+      "sourceUrl": "https://www.youtube.com/watch?v=B97LQrFSmVM",
+      "youtubeHasTactic": true
     },
     {
       "stage": 6,
@@ -1785,6 +1848,7 @@
         }
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=_j29RP6f8g0",
+      "youtubeHasTactic": true,
       "omittedRows": 13,
       "warningCount": 4,
       "unknownActorCount": 4
@@ -1928,6 +1992,7 @@
         }
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=uVDL7cFffWM",
+      "youtubeHasTactic": true,
       "omittedRows": 43,
       "warningCount": 14,
       "unknownActorCount": 2
@@ -1950,6 +2015,7 @@
       "warnings": [],
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=-HGT0MfwG6w",
+      "youtubeHasTactic": true,
       "omittedRows": 65
     },
     {
@@ -1995,6 +2061,7 @@
         }
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=QkKv4NQgakQ",
+      "youtubeHasTactic": true,
       "omittedRows": 6,
       "warningCount": 1,
       "unknownActorCount": 3
@@ -2012,7 +2079,8 @@
       "issues": [],
       "warnings": [],
       "rows": [],
-      "sourceUrl": "https://www.youtube.com/watch?v=ylhzE2D3UGk"
+      "sourceUrl": "https://www.youtube.com/watch?v=ylhzE2D3UGk",
+      "youtubeHasTactic": true
     },
     {
       "stage": 6,
@@ -2081,6 +2149,7 @@
         }
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=oag8z2B9oUU",
+      "youtubeHasTactic": true,
       "omittedRows": 45,
       "warningCount": 19,
       "unknownActorCount": 1
@@ -2098,7 +2167,8 @@
       "issues": [],
       "warnings": [],
       "rows": [],
-      "sourceUrl": "https://www.youtube.com/watch?v=e7UQ94tu0xI"
+      "sourceUrl": "https://www.youtube.com/watch?v=e7UQ94tu0xI",
+      "youtubeHasTactic": null
     },
     {
       "stage": 6,
@@ -2113,7 +2183,8 @@
       "issues": [],
       "warnings": [],
       "rows": [],
-      "sourceUrl": "https://www.youtube.com/watch?v=gcLTnp88aSo"
+      "sourceUrl": "https://www.youtube.com/watch?v=gcLTnp88aSo",
+      "youtubeHasTactic": true
     },
     {
       "stage": 6,
@@ -2128,7 +2199,8 @@
       "issues": [],
       "warnings": [],
       "rows": [],
-      "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8"
+      "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8",
+      "youtubeHasTactic": true
     },
     {
       "stage": 6,
@@ -2143,7 +2215,8 @@
       "issues": [],
       "warnings": [],
       "rows": [],
-      "sourceUrl": "https://www.youtube.com/watch?v=gcLTnp88aSo"
+      "sourceUrl": "https://www.youtube.com/watch?v=gcLTnp88aSo",
+      "youtubeHasTactic": true
     },
     {
       "stage": 6,
@@ -2158,7 +2231,8 @@
       "issues": [],
       "warnings": [],
       "rows": [],
-      "sourceUrl": "https://www.youtube.com/watch?v=gcLTnp88aSo"
+      "sourceUrl": "https://www.youtube.com/watch?v=gcLTnp88aSo",
+      "youtubeHasTactic": true
     },
     {
       "stage": 6,
@@ -2173,7 +2247,8 @@
       "issues": [],
       "warnings": [],
       "rows": [],
-      "sourceUrl": "https://www.youtube.com/watch?v=gcLTnp88aSo"
+      "sourceUrl": "https://www.youtube.com/watch?v=gcLTnp88aSo",
+      "youtubeHasTactic": true
     },
     {
       "stage": 6,
@@ -2192,6 +2267,7 @@
       "warnings": [],
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=kfFsDXBFetY",
+      "youtubeHasTactic": true,
       "omittedRows": 9
     },
     {
@@ -2207,7 +2283,8 @@
       "issues": [],
       "warnings": [],
       "rows": [],
-      "sourceUrl": "https://www.youtube.com/watch?v=gcLTnp88aSo"
+      "sourceUrl": "https://www.youtube.com/watch?v=gcLTnp88aSo",
+      "youtubeHasTactic": true
     },
     {
       "stage": 6,
@@ -2222,7 +2299,8 @@
       "issues": [],
       "warnings": [],
       "rows": [],
-      "sourceUrl": "https://www.youtube.com/watch?v=gcLTnp88aSo"
+      "sourceUrl": "https://www.youtube.com/watch?v=gcLTnp88aSo",
+      "youtubeHasTactic": true
     },
     {
       "stage": 6,
@@ -2241,6 +2319,7 @@
       "warnings": [],
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=G49kCTl26To",
+      "youtubeHasTactic": true,
       "omittedRows": 14
     },
     {
@@ -2260,6 +2339,7 @@
       "warnings": [],
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=bBX9S97R1Yg",
+      "youtubeHasTactic": true,
       "omittedRows": 15
     },
     {
@@ -2316,6 +2396,7 @@
         }
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=FXYfPgUC_Z4",
+      "youtubeHasTactic": true,
       "omittedRows": 20,
       "warningCount": 11,
       "unknownActorCount": 0
@@ -2336,6 +2417,7 @@
       "warnings": [],
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=6Z6-twIpFew",
+      "youtubeHasTactic": true,
       "omittedRows": 5
     },
     {
@@ -2465,6 +2547,7 @@
         }
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=8818eU0TDnQ",
+      "youtubeHasTactic": true,
       "omittedRows": 23,
       "warningCount": 13,
       "unknownActorCount": 1
@@ -2482,7 +2565,8 @@
       "issues": [],
       "warnings": [],
       "rows": [],
-      "sourceUrl": "https://www.youtube.com/watch?v=8818eU0TDnQ"
+      "sourceUrl": "https://www.youtube.com/watch?v=8818eU0TDnQ",
+      "youtubeHasTactic": true
     },
     {
       "stage": 6,
@@ -2695,6 +2779,7 @@
         }
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=-Z7rN4QWfS0",
+      "youtubeHasTactic": true,
       "omittedRows": 47,
       "warningCount": 11,
       "unknownActorCount": 1
@@ -2790,6 +2875,7 @@
         }
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=D2BLH6YYjKc",
+      "youtubeHasTactic": true,
       "omittedRows": 16,
       "warningCount": 9,
       "unknownActorCount": 1
@@ -2807,7 +2893,8 @@
       "issues": [],
       "warnings": [],
       "rows": [],
-      "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8"
+      "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8",
+      "youtubeHasTactic": true
     },
     {
       "stage": 6,
@@ -2822,7 +2909,8 @@
       "issues": [],
       "warnings": [],
       "rows": [],
-      "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8"
+      "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8",
+      "youtubeHasTactic": true
     },
     {
       "stage": 6,
@@ -2837,7 +2925,8 @@
       "issues": [],
       "warnings": [],
       "rows": [],
-      "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8"
+      "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8",
+      "youtubeHasTactic": true
     },
     {
       "stage": 6,
@@ -2852,7 +2941,8 @@
       "issues": [],
       "warnings": [],
       "rows": [],
-      "sourceUrl": "https://www.youtube.com/watch?v=B97LQrFSmVM"
+      "sourceUrl": "https://www.youtube.com/watch?v=B97LQrFSmVM",
+      "youtubeHasTactic": true
     },
     {
       "stage": 6,
@@ -2896,6 +2986,7 @@
         }
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=cMxhNxI-4-Q",
+      "youtubeHasTactic": true,
       "omittedRows": 23,
       "warningCount": 13,
       "unknownActorCount": 0
@@ -2913,7 +3004,8 @@
       "issues": [],
       "warnings": [],
       "rows": [],
-      "sourceUrl": "https://www.youtube.com/watch?v=gcLTnp88aSo"
+      "sourceUrl": "https://www.youtube.com/watch?v=gcLTnp88aSo",
+      "youtubeHasTactic": true
     },
     {
       "stage": 6,
@@ -2928,7 +3020,8 @@
       "issues": [],
       "warnings": [],
       "rows": [],
-      "sourceUrl": "https://www.youtube.com/watch?v=gcLTnp88aSo"
+      "sourceUrl": "https://www.youtube.com/watch?v=gcLTnp88aSo",
+      "youtubeHasTactic": true
     },
     {
       "stage": 6,
@@ -2943,7 +3036,8 @@
       "issues": [],
       "warnings": [],
       "rows": [],
-      "sourceUrl": "https://www.youtube.com/watch?v=gcLTnp88aSo"
+      "sourceUrl": "https://www.youtube.com/watch?v=gcLTnp88aSo",
+      "youtubeHasTactic": true
     },
     {
       "stage": 6,
@@ -2958,7 +3052,8 @@
       "issues": [],
       "warnings": [],
       "rows": [],
-      "sourceUrl": "https://www.youtube.com/watch?v=gcLTnp88aSo"
+      "sourceUrl": "https://www.youtube.com/watch?v=gcLTnp88aSo",
+      "youtubeHasTactic": true
     },
     {
       "stage": 6,
@@ -3002,6 +3097,7 @@
         }
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=-wBhxkTYgU8",
+      "youtubeHasTactic": true,
       "omittedRows": 22,
       "warningCount": 11,
       "unknownActorCount": 0
@@ -3023,6 +3119,7 @@
       "warnings": [],
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=Hyc9-AIDuts",
+      "youtubeHasTactic": true,
       "omittedRows": 19
     },
     {
@@ -3091,6 +3188,7 @@
         }
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=OvTt1H17-Gk",
+      "youtubeHasTactic": true,
       "omittedRows": 19,
       "warningCount": 13,
       "unknownActorCount": 0
@@ -3113,6 +3211,7 @@
       "warnings": [],
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=0-C6osDOz44",
+      "youtubeHasTactic": true,
       "omittedRows": 21
     },
     {
@@ -3157,6 +3256,7 @@
         }
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=uUBQtVxVaBQ",
+      "youtubeHasTactic": true,
       "omittedRows": 22,
       "warningCount": 11,
       "unknownActorCount": 0
@@ -3203,6 +3303,7 @@
         }
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=KTE-ezWKDfc",
+      "youtubeHasTactic": true,
       "omittedRows": 19,
       "warningCount": 12,
       "unknownActorCount": 0
@@ -3225,6 +3326,7 @@
       "warnings": [],
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=eNVvfgsbpcE",
+      "youtubeHasTactic": true,
       "omittedRows": 17
     },
     {
@@ -3240,7 +3342,8 @@
       "issues": [],
       "warnings": [],
       "rows": [],
-      "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8"
+      "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8",
+      "youtubeHasTactic": true
     },
     {
       "stage": 6,
@@ -3285,6 +3388,7 @@
         }
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=1Jk9X6qrM2Q",
+      "youtubeHasTactic": true,
       "omittedRows": 87,
       "warningCount": 14,
       "unknownActorCount": 12
@@ -3332,6 +3436,7 @@
         }
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=1Lrg-sYOtEs",
+      "youtubeHasTactic": true,
       "omittedRows": 89,
       "warningCount": 20,
       "unknownActorCount": 12
@@ -3349,7 +3454,8 @@
       "issues": [],
       "warnings": [],
       "rows": [],
-      "sourceUrl": "https://www.youtube.com/watch?v=ctleNhaGa6c"
+      "sourceUrl": "https://www.youtube.com/watch?v=ctleNhaGa6c",
+      "youtubeHasTactic": true
     },
     {
       "stage": 6,
@@ -3418,6 +3524,7 @@
         }
       ],
       "sourceUrl": "https://youtu.be/LSCOSiF1fv8https://youtu.be/LSCOSiF1fv8https://docs.google.com/spreadsheets/d/e/2PACX-1vR1Iyk-Y6LYURS-JTD1j9R96Sox1TzuhaWSv8yhy6ReM4vMTZxddLp_sRPjZJWQYRTxySbha6cHPIu1/pubhtml#gid=2047017564",
+      "youtubeHasTactic": true,
       "omittedRows": 54,
       "warningCount": 15,
       "unknownActorCount": 1
@@ -3435,7 +3542,8 @@
       "issues": [],
       "warnings": [],
       "rows": [],
-      "sourceUrl": "https://www.youtube.com/watch?v=QQSnlbW4bj4"
+      "sourceUrl": "https://www.youtube.com/watch?v=QQSnlbW4bj4",
+      "youtubeHasTactic": true
     },
     {
       "stage": 6,
@@ -3454,6 +3562,7 @@
       "warnings": [],
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=V-eL_kyjT6o",
+      "youtubeHasTactic": true,
       "omittedRows": 59
     },
     {
@@ -3498,6 +3607,7 @@
         }
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=YjzkV-JOFmc",
+      "youtubeHasTactic": true,
       "omittedRows": 25,
       "warningCount": 12,
       "unknownActorCount": 0
@@ -3515,7 +3625,8 @@
       "issues": [],
       "warnings": [],
       "rows": [],
-      "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8"
+      "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8",
+      "youtubeHasTactic": true
     },
     {
       "stage": 6,
@@ -3530,7 +3641,8 @@
       "issues": [],
       "warnings": [],
       "rows": [],
-      "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8"
+      "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8",
+      "youtubeHasTactic": true
     },
     {
       "stage": 6,
@@ -3545,7 +3657,8 @@
       "issues": [],
       "warnings": [],
       "rows": [],
-      "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8"
+      "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8",
+      "youtubeHasTactic": true
     },
     {
       "stage": 6,
@@ -3560,7 +3673,8 @@
       "issues": [],
       "warnings": [],
       "rows": [],
-      "sourceUrl": "https://www.youtube.com/watch?v=B97LQrFSmVM"
+      "sourceUrl": "https://www.youtube.com/watch?v=B97LQrFSmVM",
+      "youtubeHasTactic": true
     },
     {
       "stage": 6,
@@ -3575,7 +3689,8 @@
       "issues": [],
       "warnings": [],
       "rows": [],
-      "sourceUrl": "https://www.youtube.com/watch?v=nUfbbPPjo44"
+      "sourceUrl": "https://www.youtube.com/watch?v=nUfbbPPjo44",
+      "youtubeHasTactic": null
     },
     {
       "stage": 6,
@@ -3590,7 +3705,8 @@
       "issues": [],
       "warnings": [],
       "rows": [],
-      "sourceUrl": "https://www.youtube.com/watch?v=gcLTnp88aSo"
+      "sourceUrl": "https://www.youtube.com/watch?v=gcLTnp88aSo",
+      "youtubeHasTactic": true
     },
     {
       "stage": 6,
@@ -3718,6 +3834,7 @@
         }
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=qfJLOb2ot5U",
+      "youtubeHasTactic": true,
       "omittedRows": 6,
       "warningCount": 5,
       "unknownActorCount": 0
@@ -3735,7 +3852,8 @@
       "issues": [],
       "warnings": [],
       "rows": [],
-      "sourceUrl": "https://www.youtube.com/watch?v=vk2CIcU0AHM"
+      "sourceUrl": "https://www.youtube.com/watch?v=vk2CIcU0AHM",
+      "youtubeHasTactic": true
     },
     {
       "stage": 6,
@@ -3750,7 +3868,8 @@
       "issues": [],
       "warnings": [],
       "rows": [],
-      "sourceUrl": "https://www.youtube.com/watch?v=EYApaOU-tDE"
+      "sourceUrl": "https://www.youtube.com/watch?v=EYApaOU-tDE",
+      "youtubeHasTactic": true
     },
     {
       "stage": 6,
@@ -3765,7 +3884,8 @@
       "issues": [],
       "warnings": [],
       "rows": [],
-      "sourceUrl": "https://www.youtube.com/watch?v=gcLTnp88aSo"
+      "sourceUrl": "https://www.youtube.com/watch?v=gcLTnp88aSo",
+      "youtubeHasTactic": true
     },
     {
       "stage": 6,
@@ -3780,7 +3900,8 @@
       "issues": [],
       "warnings": [],
       "rows": [],
-      "sourceUrl": "https://www.youtube.com/watch?v=gcLTnp88aSo"
+      "sourceUrl": "https://www.youtube.com/watch?v=gcLTnp88aSo",
+      "youtubeHasTactic": true
     },
     {
       "stage": 6,
@@ -3795,7 +3916,8 @@
       "issues": [],
       "warnings": [],
       "rows": [],
-      "sourceUrl": "https://www.youtube.com/watch?v=gcLTnp88aSo"
+      "sourceUrl": "https://www.youtube.com/watch?v=gcLTnp88aSo",
+      "youtubeHasTactic": true
     },
     {
       "stage": 6,
@@ -3814,6 +3936,7 @@
       "warnings": [],
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=KxcWIohBgyw",
+      "youtubeHasTactic": true,
       "omittedRows": 18
     },
     {
@@ -3883,6 +4006,7 @@
         }
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=mYFL8_5y_sE",
+      "youtubeHasTactic": true,
       "omittedRows": 20,
       "warningCount": 9,
       "unknownActorCount": 3
@@ -3900,7 +4024,8 @@
       "issues": [],
       "warnings": [],
       "rows": [],
-      "sourceUrl": "https://www.youtube.com/watch?v=B97LQrFSmVM"
+      "sourceUrl": "https://www.youtube.com/watch?v=B97LQrFSmVM",
+      "youtubeHasTactic": true
     },
     {
       "stage": 6,
@@ -3915,7 +4040,8 @@
       "issues": [],
       "warnings": [],
       "rows": [],
-      "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8"
+      "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8",
+      "youtubeHasTactic": true
     },
     {
       "stage": 6,
@@ -3935,6 +4061,7 @@
       "warnings": [],
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=RXlBojG-o3E",
+      "youtubeHasTactic": true,
       "omittedRows": 10
     },
     {
@@ -3950,7 +4077,8 @@
       "issues": [],
       "warnings": [],
       "rows": [],
-      "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8"
+      "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8",
+      "youtubeHasTactic": true
     },
     {
       "stage": 6,
@@ -4006,6 +4134,7 @@
         }
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=r18Zgya4o0Y",
+      "youtubeHasTactic": true,
       "omittedRows": 22,
       "warningCount": 12,
       "unknownActorCount": 0
@@ -4023,7 +4152,8 @@
       "issues": [],
       "warnings": [],
       "rows": [],
-      "sourceUrl": "https://www.youtube.com/watch?v=DV-xRyk_tIA"
+      "sourceUrl": "https://www.youtube.com/watch?v=DV-xRyk_tIA",
+      "youtubeHasTactic": true
     },
     {
       "stage": 6,
@@ -4038,7 +4168,8 @@
       "issues": [],
       "warnings": [],
       "rows": [],
-      "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8"
+      "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8",
+      "youtubeHasTactic": true
     },
     {
       "stage": 6,
@@ -4053,7 +4184,8 @@
       "issues": [],
       "warnings": [],
       "rows": [],
-      "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8"
+      "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8",
+      "youtubeHasTactic": true
     },
     {
       "stage": 6,
@@ -4068,7 +4200,8 @@
       "issues": [],
       "warnings": [],
       "rows": [],
-      "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8"
+      "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8",
+      "youtubeHasTactic": true
     }
   ]
 }
