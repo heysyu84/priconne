@@ -45,9 +45,29 @@ test('search by task ID and previous/next navigation work without writes',()=>{
  assert.match(elements.get('list').innerHTML,/#14265/);
  const initial=elements.get('detail').innerHTML;
  const nav=elements.get('detail').handlers.click;
- nav({target:{closest:()=>({dataset:{nav:'next'}})}});
+ nav({target:{closest:selector=>selector==='button[data-nav]'?{dataset:{nav:'next'}}:null}});
  assert.match(elements.get('detail').innerHTML,/#14265/);
  assert.ok(initial);
  search.value='';
  search.handlers.input();
+});
+
+test('YouTube description pasted into preview is converted only in local memory',()=>{
+ const detail=elements.get('detail');
+ const entry=elements.get('search');
+ entry.value='14265';entry.handlers.input();
+ const textArea={value:'全SET 自动ON\n1:11 黑猫 〇〇－〇〇\n1:06 黑猫 自动 OFF'};
+ const result={innerHTML:'',textContent:''};
+ detail.querySelector=selector=>selector==='textarea[data-youtube-input]'?textArea:
+   selector==='[data-youtube-output]'?result:null;
+ detail.handlers.click({target:{closest:selector=>selector==='button[data-youtube]'?
+   {dataset:{youtube:'preview'}}:null}});
+ assert.match(result.innerHTML,/YouTube 설명란 변환/);
+ assert.match(result.innerHTML,/1:11/);
+ assert.match(result.innerHTML,/저장·공유·자동 등록되지 않습니다/);
+ detail.handlers.click({target:{closest:selector=>selector==='button[data-youtube]'?
+   {dataset:{youtube:'clear'}}:null}});
+ assert.equal(textArea.value,'');
+ assert.equal(result.innerHTML,'');
+ entry.value='';entry.handlers.input();
 });
