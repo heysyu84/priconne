@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 4
     steps:
+      - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
@@ -18,6 +19,7 @@ jobs:
         run: |
           node --input-type=module <<'NODE'
           import {createHash} from 'node:crypto';
+          import {convertForeignTactic} from './redive/public/tactic-parser.mjs';
           const root='https://aikurumi.cn/api';
           const token=()=>{const d=String(Date.now());const l=Math.random()*d.length;const t=createHash('sha1').update(d.substr(l)+'123456').digest('hex');return {d,l:String(l),t,'Accept':'application/json','Content-Type':'application/json','User-Agent':'NyangClanTacticProbe/0.1'};};
           async function call(path,body){
@@ -49,6 +51,7 @@ jobs:
               console.log('CONTENT_STATS',stage,JSON.stringify({tasks:tasks.length,withFiveCharacters:tasks.filter(t=>t.charas?.length===5).length,withDescription:tasks.filter(t=>String(t.remarks||'').trim()).length,withWarning:tasks.filter(t=>String(t.exRemarks||'').trim()).length,withLinks:tasks.filter(t=>(t.links||[]).length>0).length,totalLinks:links.length,linksWithTimeline:timeline.length,tasksWithTimeline:tasks.filter(t=>(t.links||[]).some(l=>String(l.remarks||'').trim())).length,withManualDamage:tasks.filter(t=>Number(t.damage)>0).length,withAutoDamage:tasks.filter(t=>Number(t.autoDamage)>0).length,withHalfAutoDamage:tasks.filter(t=>Number(t.halfAutoDamage)>0).length,carryTypes:tasks.filter(t=>t.type===1).length}));
               console.log('SAMPLE_CHARACTERS',stage,JSON.stringify(first?.charas?.map(c=>({prefabId:c.prefabId,unitName:c.unitName,currentRarity:c.currentRarity,rarity:c.rarity,rank:c.rank}))||[]));
               console.log('SAMPLE_TIMELINE',stage,JSON.stringify(timeline[0]?{name:timeline[0].name,text:String(timeline[0].remarks).slice(0,220),video:String(timeline[0].link||'').slice(0,120)}:null));
+              if(stage===6&&timeline[0]){const converted=convertForeignTactic(String(timeline[0].remarks),['란파','수에키드나','프캬루','호마레','바이올렛'],['兰法龙','','黑猫','','紫罗兰'],data.map(b=>b.unitName),[]);console.log('CONVERSION_SAMPLE',JSON.stringify({rows:converted.rows.length,warnings:converted.warnings.slice(0,5),unmappedActors:converted.unmappedActors.slice(0,5),text:converted.text.slice(0,650)}));}
               console.log('TACTIC_FIELDS',stage,JSON.stringify(first?{keys:Object.keys(first),partySize:first.charas?.length,hasRemarks:!!first.remarks,hasVideo:!!link?.link,hasTimeline:!!link?.remarks,types:first.canAuto,damage:first.damage,autoDamage:first.autoDamage,halfAutoDamage:first.halfAutoDamage,linkFields:link?Object.keys(link):[]}:null));
             }
             await new Promise(r=>setTimeout(r,400));
