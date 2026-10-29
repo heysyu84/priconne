@@ -1,0 +1,53 @@
+name: Probe Aikurumi linked YouTube video descriptions (isolated)
+on:
+  push:
+    branches: ['test/aikurumi-api-probe-20261030']
+    paths: ['.github/workflows/probe-youtube-descriptions.yml']
+permissions:
+  contents: read
+jobs:
+  inspect-public-metadata:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install metadata-only extractor
+        run: python -m pip install --quiet --disable-pip-version-check yt-dlp
+      - name: Inspect actual Aikurumi YouTube links without downloading videos
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json, re, yt_dlp
+          videos=[
+            ("gcLTnp88aSo","Aikurumi has no TL for this linked video"),
+            ("dgRUnwQUuao","Aikurumi links Japanese TL"),
+            ("IZ1ISeHNccY","Aikurumi links Chinese/Japanese TL"),
+            ("bHsEi2jOHIg","Aikurumi links Chinese TL"),
+          ]
+          options={"quiet":True,"no_warnings":True,"skip_download":True,"ignoreerrors":False,
+                   "socket_timeout":15,"retries":0,"extractor_retries":0,
+                   "noplaylist":True,"no_color":True}
+          success=0
+          with yt_dlp.YoutubeDL(options) as ydl:
+            for video_id,context in videos:
+              try:
+                info=ydl.extract_info("https://www.youtube.com/watch?v="+video_id,download=False)
+                desc=str(info.get("description") or "")
+                lines=desc.splitlines()
+                times=len(re.findall(r"(?m)^\s*[★☆⭐]?(?:[01]?:)?[0-5]?\d:[0-5]\d",desc))
+                kana=len(re.findall(r"[\u3040-\u30ff]",desc))
+                kanji=len(re.findall(r"[\u3400-\u9fff]",desc))
+                print("VIDEO_SUCCESS",json.dumps({"id":video_id,"context":context,
+                  "title":str(info.get("title") or "")[:120],
+                  "uploader":str(info.get("uploader") or "")[:80],
+                  "description_length":len(desc),"description_lines":len(lines),
+                  "timeline_like_lines":times,"kana_chars":kana,"han_chars":kanji,
+                  "preview":desc[:250]},ensure_ascii=False))
+                success+=1
+              except Exception as e:
+                print("VIDEO_ERROR",json.dumps({"id":video_id,"type":type(e).__name__,
+                   "reason":str(e)[:250]},ensure_ascii=False))
+          print("VIDEO_RESULT",json.dumps({"checked":len(videos),"readable":success},ensure_ascii=False))
+          PY
