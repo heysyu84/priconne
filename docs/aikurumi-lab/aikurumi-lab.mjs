@@ -2,6 +2,7 @@ import {previewAikurumiTactic} from './aikurumi-tactic-review.mjs';
 import {filterReviewItems,reviewFlags,reviewSummary} from './aikurumi-review-filters.mjs';
 import {classifySourceTactic,OPERATION_LABELS} from './aikurumi-operation-types.mjs';
 import {findNonOverlappingStage3} from './aikurumi-stage3-composer.mjs';
+import {parseStage3CarryTime,carryTimeLabel,formatCarrySeconds} from './aikurumi-stage3-carry.mjs';
 
 const el=id=>document.getElementById(id);
 const esc=value=>String(value??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
@@ -50,6 +51,8 @@ function detailPair(label,value){
 function drawDetail(item){
  if(!item){detail.innerHTML='<p class="muted">왼쪽에서 택틱을 선택해 주세요.</p>';return;}
  const p=item.preview,f=reviewFlags(p),s=statusLabel(p),category=classifySourceTactic(item.task,item.link);
+ const carry=Number(sourceData?.stage)===3?parseStage3CarryTime(item.link?.name):null;
+ const carryDetail=carry?.seconds===null?'원본에 명시된 이월시간 없음':carry?.status==='full'?'풀 이월 · 1:30 (90초)':carry?'격파 '+formatCarrySeconds(90-carry.remainingSeconds)+' 경과 · 잔여 '+carry.remainingSeconds+'초 + 추가 '+carry.bonusSeconds+'초 = 이월 '+formatCarrySeconds(carry.seconds):'';
  const link=url(p.sourceUrl);
  const isYouTube=!!link&&(['youtube.com','www.youtube.com','m.youtube.com','youtu.be','www.youtu.be'].includes(new URL(link).hostname));
  const youtubePanel=isYouTube?'<section class="youtube-paste"><details><summary>YouTube 설명란 · 일본어 택틱 직접 대조</summary>'
@@ -77,6 +80,7 @@ function drawDetail(item){
   +detailPair('원본 출처',p.sourceTitle||'aikurumi')+detailPair('원본 딜 수치 · 만 단위',('수동 '+number(p.damageRaw.manual)+' / 오토 '+number(p.damageRaw.auto)))
   +detailPair('캐릭터 매칭',p.characterMatchSource==='korean-unit-id'?'5명 ID 매칭':'추가 확인 필요')
   +detailPair('원본 택틱 유형',OPERATION_LABELS[category.operation]+(category.carry?' · 이월용':'')+' ('+category.confidence+')')
+  +(carry?detailPair('3단계 격파 후 이월',carryDetail):'')
   +'<div class="stat"><span class="label">원본 영상 · 페이지</span><strong>'+(link?'<a href="'+esc(link)+'" target="_blank" rel="noopener noreferrer">원본 열기</a>':'링크 없음')+'</strong></div></div>'
   +'<span class="label">편성 / 성급 / 랭크 (일본 서버 원본)</span>'+party+warn
   +'<div class="compare-grid"><section><h3>한국어 변환 결과 · '+p.rows.length+'행</h3><div class="steps">'+rows+'</div></section>'
@@ -98,18 +102,23 @@ function showStage3Composer(){
  }
  output.innerHTML=result.solutions.map((solution,i)=>
    '<div class="compose-result"><h3>'+(i===0?'우선 추천':'대체 조합 '+(i+1))
-   +' · 캐릭터 25명 전원 중복 없음 · 원본 피해량 합계 '+number(solution.totalDamage)+'</h3>'
+   +' · 캐릭터 25명 전원 중복 없음 · 원본 피해량 합계 '+number(solution.totalDamage)
+   +' · 이월 '+solution.knownCarryCount+'/5개 확인 ('+solution.totalCarrySeconds+'초 합계)</h3>'
    +'<div class="compose-list">'+solution.lineup.map(row=>'<div class="compose-boss"><b>'+esc(row.boss)+'넴 · '+esc(row.bossName)+'</b>'
     +'<small>'+esc(row.characterNames.join(' / '))+'</small>'
     +'<small>'+esc(OPERATION_LABELS[row.operation])+' · 원본 딜 '+number(row.score)+'</small>'
-    +'<button type="button" data-compose-task="'+esc(row.taskId)+'" data-compose-boss="'+esc(row.boss)+'">#'+esc(row.taskId)+' 검토하기</button></div>').join('')+'</div></div>'
- ).join('')+'<p class="stage3-notice">캐릭터 중복 0명을 우선하고, 조건을 만족하는 후보 내에서 원본 피해량 합계로 정렬합니다. 원본 수치는 보장 피해량이 아니며 육성 조건·이월 적용 여부를 별도 검토해야 합니다.</p>';
+    +'<strong class="compose-carry">'+esc(carryTimeLabel(row.carry))+'</strong>'
+    +(row.carry?.status==='remaining-plus-bonus'?'<small>잔여 '+row.carry.remainingSeconds+'초 + 추가 '+row.carry.bonusSeconds+'초'
+      +' · 격파까지 '+(90-row.carry.remainingSeconds)+'초</small>':'')
+    +'<button type="button" data-compose-task="'+esc(row.taskId)+'" data-compose-boss="'+esc(row.boss)+'" data-compose-link="'+esc(row.sourceLinkIndex??'')+'">#'+esc(row.taskId)+' 검토하기</button></div>').join('')+'</div></div>'
+ ).join('')+'<p class="stage3-notice">캐릭터 중복 0명을 우선하고, 원본 피해량이 같은 경우 표기된 이월시간이 긴 조합을 우선합니다. 이월시간 합계는 개별 격파의 비교 지표이며 실제로 동시에 보유하는 이월타 합계가 아닙니다. 시간 미표기는 추측하지 않습니다.</p>';
 }
 el('compose-button')?.addEventListener('click',showStage3Composer);
 el('compose-output')?.addEventListener('click',event=>{
  const btn=event.target.closest('button[data-compose-task]');if(!btn)return;
  const found=items.find(x=>Number(x.task.id)===Number(btn.dataset.composeTask)&&
-   Number(x.boss.index)===Number(btn.dataset.composeBoss));
+   Number(x.boss.index)===Number(btn.dataset.composeBoss)&&
+   String(x.link?.index??'')===String(btn.dataset.composeLink??''));
  if(!found)return;
  boss.value='all';filter.value='all';operationFilter.value='all';query.value='';
  selected=found.id;drawList();
