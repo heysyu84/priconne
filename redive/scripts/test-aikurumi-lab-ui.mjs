@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 const snapshot=JSON.parse(readFileSync(new URL('../public/aikurumi-snapshot.json',import.meta.url),'utf8'));
 const stage3=JSON.parse(readFileSync(new URL('../public/aikurumi-snapshot-stage3.json',import.meta.url),'utf8'));
+const youtubeCandidates=JSON.parse(readFileSync(new URL('../public/aikurumi-youtube-candidates.json',import.meta.url),'utf8'));
 const elements=new Map();
 for(const id of ['list','detail','boss','filter','search','month','list-title','summary','operation','stage3-section','compose-output','compose-button','compose-mode','view-mode','youtube-collections','collection-output','collection-status','repeated-only','tactic-panes']){
  elements.set(id,{value:id==='boss'||id==='filter'||id==='operation'?'all':id==='compose-mode'?'full-auto':id==='month'?'6':id==='view-mode'?'tactics':'',innerHTML:'',textContent:'',scrollTop:0,hidden:false,disabled:false,checked:id==='repeated-only',handlers:{},
@@ -11,11 +12,11 @@ for(const id of ['list','detail','boss','filter','search','month','list-title','
 elements.get('month').options=[{value:'6',textContent:''},{value:'3',textContent:''}];
 globalThis.document={getElementById:id=>elements.get(id)};
 globalThis.fetch=async path=>{
- assert.ok(['./aikurumi-snapshot.json','./aikurumi-snapshot-stage3.json'].includes(path));
- return {ok:true,json:async()=>path.includes('stage3')?stage3:snapshot};
+ assert.ok(['./aikurumi-snapshot.json','./aikurumi-snapshot-stage3.json','./aikurumi-youtube-candidates.json'].includes(path));
+ return {ok:true,json:async()=>path.includes('candidates')?youtubeCandidates:path.includes('stage3')?stage3:snapshot};
 };
 await import('../public/aikurumi-lab.mjs');
-for(let i=0;i<5&&(!elements.get('list').innerHTML.includes('data-item'));i++)
+for(let i=0;i<12&&(!elements.get('list').innerHTML.includes('data-item')||elements.get('detail').innerHTML.includes('API 수집 결과 확인 중'));i++)
   await new Promise(resolve=>setImmediate(resolve));
 
 test('mobile/desktop source comparison panel receives real data',()=>{
@@ -155,4 +156,18 @@ test('video collection opens the exact matching stage-3 tactic and returns to re
  assert.equal(elements.get('tactic-panes').hidden,false);
  assert.match(elements.get('detail').innerHTML,new RegExp('택틱 #'+task));
  assert.match(elements.get('detail').innerHTML,new RegExp(boss+'넴'));
+});
+
+test('YouTube Data API derived Korean TL appears on exact video-linked tactic automatically',()=>{
+ const matched=youtubeCandidates.references.find(x=>x.stage===6&&(x.status==='partial'||x.status==='candidate')&&x.rows?.length);
+ assert.ok(matched,'Expected at least one actually extracted timeline');
+ const search=elements.get('search');search.value=String(matched.taskId);search.handlers.input();
+ elements.get('list').handlers.click({target:{closest:selector=>selector==='button[data-item]'?
+  {dataset:{item:[matched.boss,matched.taskId,matched.linkIndex,matched.linkOrdinal].join(':')}}:null}});
+ const html=elements.get('detail').innerHTML;
+ assert.match(html,/API 자동 TL 변환 및 원문 대조/);
+ assert.match(html,/일본어 설명란에서 자동 변환한 한국어 조작문/);
+ assert.match(html,/자동 등록되지 않습니다/);
+ assert.ok(!html.includes('YOUTUBE_API_KEY'));
+ search.value='';search.handlers.input();
 });
