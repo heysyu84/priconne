@@ -4,9 +4,9 @@ import {readFileSync} from 'node:fs';
 const snapshot=JSON.parse(readFileSync(new URL('../public/aikurumi-snapshot.json',import.meta.url),'utf8'));
 const stage3=JSON.parse(readFileSync(new URL('../public/aikurumi-snapshot-stage3.json',import.meta.url),'utf8'));
 const elements=new Map();
-for(const id of ['list','detail','boss','filter','search','month','list-title','summary','operation','stage3-section','compose-output','compose-button','compose-mode']){
- elements.set(id,{value:id==='boss'||id==='filter'||id==='operation'?'all':id==='compose-mode'?'full-auto':id==='month'?'6':'',innerHTML:'',textContent:'',scrollTop:0,hidden:false,handlers:{},
-   addEventListener(type,fn){this.handlers[type]=fn;}});
+for(const id of ['list','detail','boss','filter','search','month','list-title','summary','operation','stage3-section','compose-output','compose-button','compose-mode','view-mode','youtube-collections','collection-output','collection-status','repeated-only','tactic-panes']){
+ elements.set(id,{value:id==='boss'||id==='filter'||id==='operation'?'all':id==='compose-mode'?'full-auto':id==='month'?'6':id==='view-mode'?'tactics':'',innerHTML:'',textContent:'',scrollTop:0,hidden:false,disabled:false,checked:id==='repeated-only',handlers:{},
+   addEventListener(type,fn){this.handlers[type]=fn;},scrollIntoView(){}});
 }
 elements.get('month').options=[{value:'6',textContent:''},{value:'3',textContent:''}];
 globalThis.document={getElementById:id=>elements.get(id)};
@@ -99,4 +99,41 @@ test('switching to stage3 enables true five-boss zero-overlap recommendations',a
  for(let i=0;i<10&&!elements.get('list-title').textContent.includes('215');i++)
   await new Promise(resolve=>setImmediate(resolve));
  assert.equal(elements.get('stage3-section').hidden,true);
+});
+
+test('YouTube collection mode groups creators by exact video across stages',async()=>{
+ const view=elements.get('view-mode');
+ view.value='videos';view.handlers.change();
+ for(let i=0;i<12&&!elements.get('collection-status').textContent.includes('136');i++)
+   await new Promise(resolve=>setImmediate(resolve));
+ assert.equal(elements.get('youtube-collections').hidden,false);
+ assert.equal(elements.get('tactic-panes').hidden,true);
+ const status=elements.get('collection-status').textContent;
+ assert.match(status,/영상 72개/);
+ assert.match(status,/136건/);
+ assert.match(status,/9개/);
+ const html=elements.get('collection-output').innerHTML;
+ assert.match(html,/Eruru/);
+ assert.match(html,/ぽちょむきん/);
+ assert.match(html,/3단계/);
+ assert.match(html,/4단계/);
+ assert.match(html,/data-video-reference/);
+ assert.match(html,/시간 지정 원본/);
+ assert.ok(!html.includes('YOUTUBE_API_KEY'));
+ view.value='tactics';view.handlers.change();
+ assert.equal(elements.get('youtube-collections').hidden,true);
+ assert.equal(elements.get('tactic-panes').hidden,false);
+});
+test('creator collection can hide non-repeated video groups and restore them',async()=>{
+ const view=elements.get('view-mode');view.value='videos';view.handlers.change();
+ for(let i=0;i<12&&!elements.get('collection-status').textContent.includes('136');i++)
+   await new Promise(resolve=>setImmediate(resolve));
+ const onlyRepeated=elements.get('collection-output').innerHTML;
+ const toggle=elements.get('repeated-only');toggle.checked=false;toggle.handlers.change();
+ for(let i=0;i<12;i++)await new Promise(resolve=>setImmediate(resolve));
+ const allVideos=elements.get('collection-output').innerHTML;
+ assert.ok(allVideos.length>onlyRepeated.length);
+ toggle.checked=true;toggle.handlers.change();
+ for(let i=0;i<12;i++)await new Promise(resolve=>setImmediate(resolve));
+ view.value='tactics';view.handlers.change();
 });
