@@ -137,3 +137,22 @@ test('creator collection can hide non-repeated video groups and restore them',as
  for(let i=0;i<12;i++)await new Promise(resolve=>setImmediate(resolve));
  view.value='tactics';view.handlers.change();
 });
+
+test('video collection opens the exact matching stage-3 tactic and returns to review',async()=>{
+ const view=elements.get('view-mode');
+ view.value='videos';view.handlers.change();
+ for(let i=0;i<12&&!elements.get('collection-output').innerHTML.includes('data-video-reference');i++)
+  await new Promise(resolve=>setImmediate(resolve));
+ const markup=elements.get('collection-output').innerHTML;
+ const match=markup.match(/<div class="video-reference"><span>3단계 · (\d+)넴 · #(\d+)<\/span>[\s\S]*?<button[^>]*data-video-reference="(\d+)"/);
+ assert.ok(match,'Expected a stage-3 source inside a repeated video collection');
+ const [,boss,task,id]=match;
+ await elements.get('collection-output').handlers.click({
+  target:{closest:selector=>selector==='button[data-video-reference]'?{dataset:{videoReference:id}}:null}
+ });
+ assert.equal(view.value,'tactics');
+ assert.equal(elements.get('month').value,'3');
+ assert.equal(elements.get('tactic-panes').hidden,false);
+ assert.match(elements.get('detail').innerHTML,new RegExp('택틱 #'+task));
+ assert.match(elements.get('detail').innerHTML,new RegExp(boss+'넴'));
+});
