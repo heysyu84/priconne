@@ -76,7 +76,13 @@ export function createYouTubeTacticCandidates(snapshots,found,{fetchedAt=new Dat
   if(!video?.description)return {...base,status:video?'empty-description':'video-unavailable',
     matching:'no-description',youtubeHasTactic:video?false:null};
   const inspection=inspectYouTubeDescription(video.description);
-  if(!inspection.mayContainTactic)return {...base,status:'no-youtube-tl',youtubeHasTactic:false,
+  // Stage 3 is often just "全SET", without two timestamped action lines.
+  // That is still a tactic: prefer YouTube and request human verification
+  // rather than silently replacing it with Aikurumi's Chinese translation.
+  const fullSetOrAuto=/(?:全員|全|すべて|全部)\\s*(?:SET|セット|セト)|(?:フルオート|セミオート|オート\\s*(?:ON|OFF))/iu
+    .test(video.description);
+  const japaneseTactic=inspection.mayContainTactic||fullSetOrAuto;
+  if(!japaneseTactic)return {...base,status:'no-youtube-tl',youtubeHasTactic:false,
     matching:'no-tactic-evidence'};
   base.youtubeHasTactic=true; // priority remains YouTube even when segmentation is ambiguous
   const segments=splitVideoDescription(video.description,ref.bossNames);
