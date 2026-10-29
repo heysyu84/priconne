@@ -31,7 +31,7 @@ jobs:
                 hasConsent:html.includes('consent.youtube.com'),
                 botGate:/sign in to confirm you|not a bot|unusual traffic/i.test(html),
                 shortDescriptionLength:description.length,timelinePattern:/\b(?:0|1):[0-5]\d/.test(description),
-                excerpt:description.slice(0,160),metaLength:meta?.[1]?.length||0}));
+                excerpt:description.slice(0,160),metaLength:meta?.[1]?.length||0,metaPreview:meta?.[1]?.slice(0,120)||'', hasDetails:html.includes('"videoDetails"'),hasShortDesc:html.includes('"shortDescription"'),hasAttributedDesc:html.includes('attributedDescription'),playability:html.match(/"playabilityStatus":\{"status":"([^"]+)"/)?.[1]||null, pageTitle:html.match(/<title>([^<]+)<\/title>/)?.[1]?.slice(0,110)||null}));
             }catch(e){console.log('HTML_ERROR',JSON.stringify({id,reason:String(e).slice(0,240)}))}
           }
           NODE
