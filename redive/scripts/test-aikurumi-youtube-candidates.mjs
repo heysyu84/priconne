@@ -31,7 +31,7 @@ test('explicit boss sections match unique references but duplicate options remai
  const matches=output.references.filter(x=>x.videoId==='YYSf-2wPFVA');
  assert.equal(matches.length,4);
  assert.ok(matches.every(x=>x.matching==='unique-boss'));
- assert.ok(matches.every(x=>x.status==='candidate'||x.status==='no-parsable-timeline'));
+ assert.ok(matches.every(x=>['candidate','partial','needs-translation-review','no-parsable-timeline'].includes(x.status)));
 });
 test('public export contains only safe derived previews with a 28-day expiration',()=>{
  const src='1:30 全SET AUTO ON\n1:09 ピオ SET\n0:44 シオリ OFF';
@@ -47,4 +47,16 @@ test('public export contains only safe derived previews with a 28-day expiration
  assert.ok(!JSON.stringify(output).includes('시청해 주셔서 감사합니다'));
  assert.ok(output.references.every(r=>!Object.hasOwn(r,'description')&&!Object.hasOwn(r,'sourceText')&&
    r.rows.every(row=>!Object.hasOwn(row,'source')&&!Object.hasOwn(row,'raw'))));
+});
+
+test('never publish unconverted Japanese source sentences even inside partial action rows',()=>{
+ const data=createYouTubeTacticCandidates(snapshots,report([['JcqLd2C8mTA',
+  '1:30 全SET AUTO ON\n1:12 ネネカ 後 SET\n1:04 プリキャル 目押し\n0:32 AUTO OFF']]));
+ const text=JSON.stringify(data);
+ assert.ok(!text.includes('ネネカ'));
+ assert.ok(!text.includes('プリキャル'));
+ assert.ok(!text.includes('目押し'));
+ assert.ok(!text.includes('description'));
+ assert.ok(!text.includes('sourceText'));
+ assert.ok(data.references.every(r=>r.rows.every(x=>!/[ぁ-ゟァ-ヿ一-龯]/u.test(x.text))));
 });
