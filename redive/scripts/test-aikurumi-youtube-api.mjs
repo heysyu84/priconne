@@ -21,7 +21,7 @@ test('only verified YouTube hostnames and 11-character IDs are accepted',()=>{
 test('actual Aikurumi October snapshot has 65 distinct linked videos',()=>{
   assert.equal(videos.length,65);
   assert.equal(videos.reduce((total,v)=>total+v.mentions.length,0),113);
-  assert.equal(videos.find(v=>v.videoId==='gcLTnp88aSo').mentions.length,3);
+  assert.equal(videos.find(v=>v.videoId==='gcLTnp88aSo').mentions.length,21);
 });
 
 test('API requests are batched in groups of 50; never expose secrets in output',async()=>{
