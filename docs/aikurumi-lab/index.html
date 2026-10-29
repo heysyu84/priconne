@@ -55,6 +55,23 @@ summary{cursor:pointer;font-weight:700;margin:12px 0}a{color:var(--accent)}.warn
 .stage3-notice{margin:12px 0;color:var(--muted);font-size:.82rem}
 @media(max-width:1000px){.compose-list{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:600px){.compose-list{grid-template-columns:minmax(0,1fr)}}
+
+.video-collections{margin-bottom:18px}.video-collections[hidden]{display:none}
+.video-only-toggle{display:inline-flex;align-items:center;gap:7px;margin:0 0 13px;color:var(--muted);font-size:.85rem}
+.video-only-toggle input{min-width:0;min-height:0;accent-color:var(--accent)}
+.video-creator{background:var(--surface2);border:1px solid var(--line);border-radius:12px;margin:12px 0;padding:12px 14px}
+.video-creator>summary{font-size:1.02rem;margin:0;cursor:pointer}
+.video-creator>p{font-size:.8rem;color:var(--muted);margin:7px 0}
+.video-card{margin:10px 0;border:1px solid var(--line);background:#101b2c;border-radius:10px;padding:12px;min-width:0}
+.video-card h4{margin:0 0 4px;font-size:.96rem}
+.video-card .video-meta{color:var(--muted);font-size:.8rem;margin:5px 0 9px}
+.video-card a{overflow-wrap:anywhere}
+.video-references{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:9px}
+.video-reference{background:#1d2a40;border:1px solid var(--line);border-radius:8px;padding:9px 10px;min-width:0}
+.video-reference span,.video-reference small{display:block;overflow-wrap:anywhere}
+.video-reference span{font-weight:650;font-size:.87rem}.video-reference small{font-size:.76rem;margin-top:4px}
+.video-reference button{background:#2c4470;border:1px solid #5373ac;color:#fff;border-radius:7px;padding:6px 9px;margin-top:8px;font:inherit;font-size:.76rem;cursor:pointer}
+@media(max-width:700px){.video-references{grid-template-columns:minmax(0,1fr)}}
 @media(max-width:1040px){.compare-grid{grid-template-columns:minmax(0,1fr)}}
 @media(max-width:760px){.detail-heading{align-items:flex-start;flex-direction:column}.nav-actions{align-self:flex-end}.item-title{align-items:flex-start}.item-title span:first-child{font-size:.85rem}.item-status{flex-shrink:0}}
 @media(max-width:760px){main{padding:18px 12px 50px}.panes{grid-template-columns:minmax(0,1fr)}.list{max-height:280px}.data-grid{grid-template-columns:1fr}.party strong{font-size:.73rem}header h1{font-size:1.35rem}.step-head{flex-wrap:wrap}.state{font-size:.82rem}.toolbar>*{flex:1 1 42%;min-width:0}.toolbar select,.toolbar input{width:100%;min-width:0}.item{padding:12px}.detail{padding:13px}}
@@ -62,6 +79,7 @@ summary{cursor:pointer;font-weight:700;margin:12px 0}a{color:var(--accent)}.warn
 <header><div><h1>외부 택틱 검토실</h1><p class="muted">냥냥클랜 · aikurumi 수동 수집 기능의 독립 검증 화면</p></div><span class="badge">TEST / 읽기 전용</span></header>
 <div class="notice"><strong>운영 사이트와 완전히 분리</strong> · 수집 자료는 검토 전용입니다. 기존 택틱을 수정하거나 추천조합에 등록할 수 없습니다.</div>
 <div class="toolbar">
+<label><span class="label">검토 메뉴</span><select id="view-mode"><option value="tactics">택틱 검토</option><option value="videos">유튜브 모음집</option></select></label>
 <label><span class="label">한섭 / 일섭 / 단계</span><select id="month"><option value="6">한섭 2026-11 · 4단계</option><option value="3">한섭 2026-11 · 3단계</option></select></label>
 <label><span class="label">보스</span><select id="boss"><option value="all">전체 보스</option></select></label>
 <label><span class="label">택틱 유형</span><select id="operation"><option value="all">전체 유형</option><option value="manual">손컨</option><option value="easy-manual">간단손컨</option><option value="semi-auto">세미오토</option><option value="full-auto">풀오토</option><option value="carry">이월용</option><option value="unknown">미분류</option></select></label>
@@ -69,6 +87,14 @@ summary{cursor:pointer;font-weight:700;margin:12px 0}a{color:var(--accent)}.warn
 <label><span class="label">캐릭터명·원본 검색</span><input id="search" placeholder="캐릭터 / 보스 / ID 검색"></label>
 </div>
 <p id="summary" class="summary-bar" aria-live="polite">원본 자료 분석 중…</p>
+<section id="youtube-collections" class="panel video-collections" hidden>
+<div class="panel-title">유튜브 모음집 · 유튜버별 / 동일 영상별 택틱</div>
+<div class="stage3-content">
+<p class="muted">같은 유튜브 영상 ID에 연결된 택틱을 보스·단계에 관계없이 묶습니다. 영상의 시간 지정 링크는 원본 그대로 유지됩니다. 제작자명은 aikurumi의 출처 표기 기준입니다.</p>
+<label class="video-only-toggle"><input type="checkbox" id="repeated-only" checked/> 여러 택틱이 연결된 영상만 보기</label>
+<div id="collection-status" class="summary-bar" aria-live="polite"></div>
+<div id="collection-output"><p class="muted">유튜브 모음집 준비 중…</p></div>
+</div></section>
 <section id="stage3-section" class="panel stage3-panel" hidden>
   <div class="panel-title">3단계 · 1~5넴 캐릭터 중복 없는 조합 추출</div>
   <div class="stage3-content"><p class="muted">5개 보스의 편성에서 동일한 캐릭터 ID를 중복 사용하지 않는 조합을 찾습니다. 원본 자료에 없는 조합은 생성하지 않습니다.</p>
@@ -76,5 +102,5 @@ summary{cursor:pointer;font-weight:700;margin:12px 0}a{color:var(--accent)}.warn
   <button id="compose-button" type="button">중복 없는 조합 찾기</button></div>
   <div id="compose-output" aria-live="polite"><p class="muted">추출 버튼을 누르면 결과를 표시합니다.</p></div></div>
 </section>
-<div class="panes"><section class="panel"><h2 class="panel-title" id="list-title">수집된 자료</h2><div class="list" id="list"><p class="empty">자료 읽는 중…</p></div></section><section class="panel"><h2 class="panel-title">원본과 한국어 변환 비교</h2><div class="detail" id="detail"><p class="muted">왼쪽에서 택틱을 선택하세요.</p></div></section></div>
+<div class="panes" id="tactic-panes"><section class="panel"><h2 class="panel-title" id="list-title">수집된 자료</h2><div class="list" id="list"><p class="empty">자료 읽는 중…</p></div></section><section class="panel"><h2 class="panel-title">원본과 한국어 변환 비교</h2><div class="detail" id="detail"><p class="muted">왼쪽에서 택틱을 선택하세요.</p></div></section></div>
 </main><script type="module" src="./aikurumi-lab.mjs"></script></body></html>
