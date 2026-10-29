@@ -10,6 +10,8 @@ on:
       - 'redive/public/aikurumi-tactic-preprocess.mjs'
       - 'redive/public/aikurumi-tactic-review.mjs'
       - 'redive/scripts/test-aikurumi-review.mjs'
+      - 'redive/public/aikurumi-character-matcher.mjs'
+      - 'redive/scripts/test-aikurumi-character-matcher.mjs'
 permissions:
   contents: read
 jobs:
@@ -26,9 +28,13 @@ jobs:
         run: |
           node --input-type=module <<'NODE'
           import {createHash} from 'node:crypto';
+          import {readFileSync} from 'node:fs';
+          import {previewAikurumiTactic} from './redive/public/aikurumi-tactic-review.mjs';
           import {convertForeignTactic} from './redive/public/tactic-parser.mjs';
           import {splitAikurumiTimeline} from './redive/public/aikurumi-tactic-preprocess.mjs';
           const root='https://aikurumi.cn/api';
+          const unitMap=JSON.parse(readFileSync('./redive/data/character-unit-map.json','utf8'));
+          const positionUnits=JSON.parse(readFileSync('./redive/data/character-positions.json','utf8')).units;
           const token=()=>{const d=String(Date.now());const l=Math.random()*d.length;const t=createHash('sha1').update(d.substr(l)+'123456').digest('hex');return {d,l:String(l),t,'Accept':'application/json','Content-Type':'application/json','User-Agent':'NyangClanTacticProbe/0.1'};};
           async function call(path,body){
             try{
@@ -73,6 +79,20 @@ jobs:
                   }catch(error){variantAudit.exceptions++;console.log('VARIANT_ERROR',JSON.stringify({id:t.id,index:link.index,error:error.message}));}
                 }
                 console.log('VARIANT_AUDIT',JSON.stringify(variantAudit));
+                const matchAudit={sampled:0,idMatched:0,noIdMatch:0,withWarnings:0,unmappedActors:0,parseErrors:0};
+                for(const task of tasks)for(const link of task.links||[]){
+                  if(!String(link.remarks||'').trim())continue;
+                  matchAudit.sampled++;
+                  try{
+                    const preview=previewAikurumiTactic(task,link,{unitMap,positionUnits});
+                    if(preview.characterMatchSource==='korean-unit-id')matchAudit.idMatched++;
+                    else matchAudit.noIdMatch++;
+                    if(preview.warnings.length)matchAudit.withWarnings++;
+                    if(preview.unmappedActors.length)matchAudit.unmappedActors++;
+                    if(preview.registrationAllowed)throw Error('Unsafe live registration permission');
+                  }catch(error){matchAudit.parseErrors++;console.log('MATCH_AUDIT_ERROR',JSON.stringify({id:task.id,index:link.index,error:error.message}));}
+                }
+                console.log('MATCH_AUDIT',JSON.stringify(matchAudit));
               }
               console.log('SAMPLE_CHARACTERS',stage,JSON.stringify(first?.charas?.map(c=>({prefabId:c.prefabId,unitName:c.unitName,currentRarity:c.currentRarity,rarity:c.rarity,rank:c.rank}))||[]));
               console.log('SAMPLE_TIMELINE',stage,JSON.stringify(timeline[0]?{name:timeline[0].name,text:String(timeline[0].remarks).slice(0,220),video:String(timeline[0].link||'').slice(0,120)}:null));
@@ -87,4 +107,4 @@ jobs:
           NODE
 
       - name: Check parser against real source regression cases
-        run: node --test redive/scripts/test-aikurumi-tactic-parser.mjs redive/scripts/test-aikurumi-preprocess.mjs redive/scripts/test-aikurumi-review.mjs
+        run: node --test redive/scripts/test-aikurumi-tactic-parser.mjs redive/scripts/test-aikurumi-preprocess.mjs redive/scripts/test-aikurumi-review.mjs redive/scripts/test-aikurumi-character-matcher.mjs
