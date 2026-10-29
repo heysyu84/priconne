@@ -1,0 +1,52 @@
+name: Probe Aikurumi JP public tactic API (isolated)
+on:
+  push:
+    branches: ['test/aikurumi-api-probe-20261030']
+    paths: ['.github/workflows/probe-aikurumi.yml']
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Read public API only - no write, no deployment
+        shell: bash
+        run: |
+          node --input-type=module <<'NODE'
+          import {createHash} from 'node:crypto';
+          const root='https://aikurumi.cn/api';
+          const token=()=>{const d=String(Date.now());const l=Math.random()*d.length;const t=createHash('sha1').update(d.substr(l)+'123456').digest('hex');return {d,l:String(l),t,'Accept':'application/json','Content-Type':'application/json','User-Agent':'NyangClanTacticProbe/0.1'};};
+          async function call(path,body){
+            try{
+              const response=await fetch(root+path,{method:body?'POST':'GET',headers:token(),body:body?JSON.stringify(body):undefined,signal:AbortSignal.timeout(18000)});
+              console.log('ENDPOINT',path,'HTTP',response.status,'type',response.headers.get('content-type'));
+              const raw=await response.text();
+              let json;try{json=JSON.parse(raw)}catch{console.log('NONJSON_RESPONSE',raw.length,raw.slice(0,140).replace(/</g,'&lt;'));return null}
+              console.log('ENVELOPE',JSON.stringify({code:json.code,hasData:'data' in json,dataType:Array.isArray(json.data)?'array':typeof json.data,dataCount:Array.isArray(json.data)?json.data.length:null,msg:json.msg}));
+              return response.ok&&json.code===200?json.data:null;
+            }catch(error){console.log('REQUEST_ERROR',path,error.name,error.message);return null;}
+          }
+          const periods=await call('/pcr/clanBattleList?server=jp');
+          const sample=Array.isArray(periods)?periods.find(x=>String(x.startTime||'').startsWith('2025-10')):null;
+          const battleId=Number(sample?.clanBattleId||1093);
+          console.log('PERIOD',JSON.stringify({found:!!sample,clanBattleId:battleId,startTime:sample?.startTime||null}));
+          let success=0;
+          for(const stage of [1,3,6]){
+            const data=await call('/pcr/gvgTask',{server:'jp',clanBattleId:battleId,stage});
+            if(Array.isArray(data)){
+              success++;
+              const bosses=data.map(b=>({index:b.index,name:b.unitName,bossId:b.prefabId,tactics:Array.isArray(b.tasks)?b.tasks.length:0}));
+              const first=data.flatMap(b=>b.tasks||[])[0];
+              const link=first?.links?.[0];
+              console.log('STAGE',stage,'BOSSES',JSON.stringify(bosses));
+              console.log('TACTIC_FIELDS',stage,JSON.stringify(first?{keys:Object.keys(first),partySize:first.charas?.length,hasRemarks:!!first.remarks,hasVideo:!!link?.link,hasTimeline:!!link?.remarks,types:first.canAuto,damage:first.damage,autoDamage:first.autoDamage,halfAutoDamage:first.halfAutoDamage,linkFields:link?Object.keys(link):[]}:null));
+            }
+            await new Promise(r=>setTimeout(r,400));
+          }
+          console.log('RESULT',JSON.stringify({periods:Array.isArray(periods)?periods.length:0,successfulStages:success}));
+          if(!Array.isArray(periods)||!success)process.exitCode=1;
+          NODE
