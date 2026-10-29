@@ -29,6 +29,12 @@ export function previewAikurumiTactic(task, link, options={}){
   if(resolved?.issues?.length)issues.push(...resolved.issues);
   if(!namesMatched)issues.push({code:'unmatched-korean-names',message:'한국어 캐릭터명이 아직 검증되지 않음'});
   if(!source.hasAction)issues.push({code:'no-action-timeline',message:'원문에 변환 가능한 조작 타임라인 없음'});
+  // Timing ranges like "1:17-16" do not mean an exact 1:17 trigger.
+  // Preserve the original range and require human confirmation rather than
+  // silently claiming the converted timestamp is exact.
+  const ambiguousTimes=[...sourceText.matchAll(/(?:^|\n)\s*[☆⭐★✩]?\s*(\d{1,2}:[0-5]\d\s*[-~～]\s*(?:(?:\d{1,2}:)?[0-5]\d))(?=\s|$)/g)]
+    .map(match=>match[1]);
+  if(ambiguousTimes.length)issues.push({code:'time-range',message:'조작 시간 범위 확인: '+[...new Set(ambiguousTimes)].join(', ')});
   if(parsed.warnings?.length)issues.push({code:'unparsed-instructions',message:'변환되지 않은 원문 또는 조건이 있음'});
   if(parsed.unmappedActors?.length)issues.push({code:'unmapped-actors',message:'행동 대상의 캐릭터 매칭이 필요함'});
   return {
