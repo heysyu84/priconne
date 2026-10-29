@@ -1,5 +1,7 @@
 import {previewAikurumiTactic} from './aikurumi-tactic-review.mjs';
 import {filterReviewItems,reviewFlags,reviewSummary} from './aikurumi-review-filters.mjs';
+import {classifySourceTactic,OPERATION_LABELS} from './aikurumi-operation-types.mjs';
+import {findNonOverlappingStage3} from './aikurumi-stage3-composer.mjs';
 
 const el=id=>document.getElementById(id);
 const esc=value=>String(value??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
@@ -7,13 +9,15 @@ const number=value=>value===null||value===undefined||value===''||!Number.isFinit
 const url=value=>{try{const u=new URL(String(value));return /^https?:$/.test(u.protocol)?u.href:null;}catch{return null;}};
 const state=flags=>(flags||[]).map((v,i)=>'<span title="'+(i===5?'AUTO':String(i+1)+'번 캐릭터')+'" class="'+(v?'on':'off')+'">'+(i===5?'A':i+1)+(v?'●':'○')+'</span>').join(' ');
 const list=el('list'),detail=el('detail'),boss=el('boss'),filter=el('filter'),query=el('search');
+const stagePicker=el('month'),operationFilter=el('operation'),composePanel=el('stage3-section');
 let items=[],selected=null,sourceData=null;
+const sourceCache=new Map();
 const windowSafeUnitMap=()=>sourceData?.characterData?.names||{};
 const windowSafePositions=()=>sourceData?.characterData?.positionUnits||[];
 const bossNames=()=>sourceData?.bosses?.map(b=>b.unitName)||[];
 
 function visible(){
- return filterReviewItems(items,{boss:boss.value,mode:filter.value,query:query.value});
+ return filterReviewItems(items,{boss:boss.value,mode:filter.value,operation:operationFilter.value,query:query.value});
 }
 function statusLabel(p){
  const f=reviewFlags(p);
@@ -30,9 +34,10 @@ function drawList(){
  const y=list.scrollTop;
  list.innerHTML=filtered.length?filtered.map(x=>{
   const p=x.preview,s=statusLabel(p),party=p.matchedKoreanNames||p.originalLineup.map(c=>c.unitName);
+  const category=classifySourceTactic(x.task,x.link);
   return '<button type="button" class="item '+(x.id===selected?'selected':'')+'" data-item="'+esc(x.id)+'" aria-current="'+(x.id===selected?'true':'false')+'">'
    +'<div class="item-title"><span>'+esc(x.boss.index)+'넴 · '+esc(party.join(' / '))+'</span><span class="'+s.style+' item-status">'+s.text+'</span></div>'
-   +'<small>#'+esc(x.task.id)+' · '+esc(x.link.name||'원본 링크 없음')+' · '+(p.rows.length?p.rows.length+'행':'조작문 없음')+'</small></button>';
+   +'<small>#'+esc(x.task.id)+' · '+esc(OPERATION_LABELS[category.operation])+(category.carry?' · 이월용':'')+' · '+esc(x.link.name||'원본 링크 없음')+' · '+(p.rows.length?p.rows.length+'행':'조작문 없음')+'</small></button>';
  }).join(''):'<p class="empty">선택한 조건에 맞는 자료가 없습니다.</p>';
  list.scrollTop=y;
  const sum=el('summary');
@@ -44,7 +49,7 @@ function detailPair(label,value){
 }
 function drawDetail(item){
  if(!item){detail.innerHTML='<p class="muted">왼쪽에서 택틱을 선택해 주세요.</p>';return;}
- const p=item.preview,f=reviewFlags(p),s=statusLabel(p);
+ const p=item.preview,f=reviewFlags(p),s=statusLabel(p),category=classifySourceTactic(item.task,item.link);
  const link=url(p.sourceUrl);
  const isYouTube=!!link&&(['youtube.com','www.youtube.com','m.youtube.com','youtu.be','www.youtu.be'].includes(new URL(link).hostname));
  const youtubePanel=isYouTube?'<section class="youtube-paste"><details><summary>YouTube 설명란 · 일본어 택틱 직접 대조</summary>'
@@ -71,6 +76,7 @@ function drawDetail(item){
   +'<div class="data-grid">'
   +detailPair('원본 출처',p.sourceTitle||'aikurumi')+detailPair('원본 딜 수치 · 만 단위',('수동 '+number(p.damageRaw.manual)+' / 오토 '+number(p.damageRaw.auto)))
   +detailPair('캐릭터 매칭',p.characterMatchSource==='korean-unit-id'?'5명 ID 매칭':'추가 확인 필요')
+  +detailPair('원본 택틱 유형',OPERATION_LABELS[category.operation]+(category.carry?' · 이월용':'')+' ('+category.confidence+')')
   +'<div class="stat"><span class="label">원본 영상 · 페이지</span><strong>'+(link?'<a href="'+esc(link)+'" target="_blank" rel="noopener noreferrer">원본 열기</a>':'링크 없음')+'</strong></div></div>'
   +'<span class="label">편성 / 성급 / 랭크 (일본 서버 원본)</span>'+party+warn
   +'<div class="compare-grid"><section><h3>한국어 변환 결과 · '+p.rows.length+'행</h3><div class="steps">'+rows+'</div></section>'
@@ -78,6 +84,38 @@ function drawDetail(item){
   +youtubePanel
   +'<p class="muted">위 조작문은 검토용 변환 결과입니다. 관리자 확인 없이 택틱 등록이나 기존 자료 변경은 수행되지 않습니다.</p>';
 }
+
+function showStage3Composer(){
+ const output=el('compose-output');
+ if(!sourceData||Number(sourceData.stage)!==3){composePanel.hidden=true;return;}
+ composePanel.hidden=false;
+ const setting=el('compose-mode')?.value||'full-auto';
+ const result=findNonOverlappingStage3(sourceData,{operation:setting,limit:3});
+ if(!result.solutions.length){
+   output.innerHTML='<p class="warnings">해당 유형에서 1~5넴 캐릭터가 한 명도 겹치지 않는 조합을 찾지 못했습니다. 조합 유형을 변경해 주세요.</p>'
+   +'<p class="muted">보스별 후보: '+result.eligiblePerBoss.map(row=>row.boss+'넴 '+row.count+'개').join(' / ')+'</p>';
+   return;
+ }
+ output.innerHTML=result.solutions.map((solution,i)=>
+   '<div class="compose-result"><h3>'+(i===0?'우선 추천':'대체 조합 '+(i+1))
+   +' · 캐릭터 25명 전원 중복 없음 · 원본 피해량 합계 '+number(solution.totalDamage)+'</h3>'
+   +'<div class="compose-list">'+solution.lineup.map(row=>'<div class="compose-boss"><b>'+esc(row.boss)+'넴 · '+esc(row.bossName)+'</b>'
+    +'<small>'+esc(row.characterNames.join(' / '))+'</small>'
+    +'<small>'+esc(OPERATION_LABELS[row.operation])+' · 원본 딜 '+number(row.score)+'</small>'
+    +'<button type="button" data-compose-task="'+esc(row.taskId)+'" data-compose-boss="'+esc(row.boss)+'">#'+esc(row.taskId)+' 검토하기</button></div>').join('')+'</div></div>'
+ ).join('')+'<p class="stage3-notice">캐릭터 중복 0명을 우선하고, 조건을 만족하는 후보 내에서 원본 피해량 합계로 정렬합니다. 원본 수치는 보장 피해량이 아니며 육성 조건·이월 적용 여부를 별도 검토해야 합니다.</p>';
+}
+el('compose-button')?.addEventListener('click',showStage3Composer);
+el('compose-output')?.addEventListener('click',event=>{
+ const btn=event.target.closest('button[data-compose-task]');if(!btn)return;
+ const found=items.find(x=>Number(x.task.id)===Number(btn.dataset.composeTask)&&
+   Number(x.boss.index)===Number(btn.dataset.composeBoss));
+ if(!found)return;
+ boss.value='all';filter.value='all';operationFilter.value='all';query.value='';
+ selected=found.id;drawList();
+ detail.scrollIntoView?.({behavior:'smooth',block:'start'});
+});
+
 list.addEventListener('click',event=>{
  const button=event.target.closest('button[data-item]');if(!button)return;
  selected=button.dataset.item;drawList();
@@ -111,18 +149,31 @@ detail.addEventListener('click',event=>{
  selected=results[(i+(button.dataset.nav==='next'?1:-1)+results.length)%results.length]?.id??null;
  drawList();
 });
-[boss,filter].forEach(x=>x.addEventListener('change',()=>{list.scrollTop=0;drawList();}));
+[boss,filter,operationFilter].forEach(x=>x.addEventListener('change',()=>{list.scrollTop=0;drawList();}));
+stagePicker.addEventListener('change',()=>loadStage(Number(stagePicker.value)));
 query.addEventListener('input',()=>{list.scrollTop=0;drawList();});
-async function init(){
+async function loadStage(stage){
+ list.innerHTML='<p class="empty">선택한 단계의 자료를 불러오는 중입니다.</p>';
  try{
-  const res=await fetch('./aikurumi-snapshot.json',{cache:'no-store'});
-  if(!res.ok)throw Error('외부 수집 자료를 읽지 못했습니다. HTTP '+res.status);
-  const data=await res.json();
-  if(data.readOnly!==true||!Array.isArray(data.bosses)||!data.characterData)
-    throw Error('검증되지 않은 자료 형식입니다.');
-  sourceData=data;
-  el('month').innerHTML='<option>'+esc(data.krMonth)+' 한섭 / '+esc(data.jpMonth)+' 일섭 / stage '+esc(data.stage)+'</option>';
-  boss.innerHTML='<option value="all">전체 보스</option>'+data.bosses.map(x=>'<option value="'+esc(x.index)+'">'+esc(x.index)+'넴 · '+esc(x.unitName)+'</option>').join('');
+  const path=stage===3?'./aikurumi-snapshot-stage3.json':'./aikurumi-snapshot.json';
+  let data=sourceCache.get(stage);
+  if(!data){
+    const res=await fetch(path,{cache:'no-store'});
+    if(!res.ok)throw Error('선택한 단계의 외부 수집 자료를 읽지 못했습니다. HTTP '+res.status);
+    data=await res.json();
+    if(data.readOnly!==true||Number(data.stage)!==stage||!Array.isArray(data.bosses)||!data.characterData)
+      throw Error('검증되지 않은 단계별 자료 형식입니다.');
+    sourceCache.set(stage,data);
+  }
+  sourceData=data;items=[];selected=null;
+  boss.value='all';filter.value='all';operationFilter.value='all';query.value='';
+  const koreanStage=stage===3?'3단계':'4단계';
+  stagePicker.value=String(stage);
+  for(const opt of stagePicker.options||[]){
+    if(Number(opt.value)===stage)opt.textContent=data.krMonth+' 한섭 · '+koreanStage+' (일섭 stage '+stage+')';
+  }
+  boss.innerHTML='<option value="all">전체 보스</option>'+
+    data.bosses.map(b=>'<option value="'+esc(b.index)+'">'+esc(b.index)+'넴 · '+esc(b.unitName)+'</option>').join('');
   for(const b of data.bosses)for(const t of b.tasks||[]){
     const links=t.links?.length?t.links:[{index:0,name:'원본 링크 없음',remarks:''}];
     for(const [i,link] of links.entries()){
@@ -132,10 +183,13 @@ async function init(){
       items.push({id:[b.index,t.id,link.index??i,i].join(':'),boss:b,task:t,link,preview});
     }
   }
+  composePanel.hidden=stage!==3;
+  el('compose-output').innerHTML='<p class="muted">중복 없는 조합 찾기를 누르면 이 단계의 실제 외부 편성을 계산합니다.</p>';
   drawList();
  }catch(e){
+  items=[];composePanel.hidden=true;
   list.innerHTML='<p class="empty">'+esc(e.message)+'</p>';
-  detail.innerHTML='<p class="empty">테스트 자료를 정상적으로 불러오지 못했습니다. 해당 브랜치의 수집 상태를 확인하세요.</p>';
+  detail.innerHTML='<p class="empty">다른 단계로 변경하거나 수집 자료 상태를 확인하세요.</p>';
  }
 }
-init();
+loadStage(6);
