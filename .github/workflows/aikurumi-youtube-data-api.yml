@@ -1,0 +1,38 @@
+name: YouTube descriptions via official API (isolated, read-only)
+on:
+  push:
+    branches: ['test/aikurumi-api-probe-20261030']
+    paths:
+      - '.github/workflows/aikurumi-youtube-data-api.yml'
+      - 'redive/scripts/aikurumi-youtube-api.mjs'
+      - 'redive/scripts/collect-aikurumi-youtube.mjs'
+      - 'redive/scripts/test-aikurumi-youtube-api.mjs'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify safe YouTube reader using mocked official API
+        run: |
+          node --check redive/scripts/aikurumi-youtube-api.mjs
+          node --check redive/scripts/collect-aikurumi-youtube.mjs
+          node --test redive/scripts/test-aikurumi-youtube-api.mjs
+      - name: Audit only the actual Aikurumi-linked public descriptions
+        run: node redive/scripts/collect-aikurumi-youtube.mjs
+      - name: Save metadata-only audit, never description text
+        if: success() && hashFiles('redive/tmp/youtube-description-audit.json') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: aikurumi-youtube-audit-metadata
+          path: redive/tmp/youtube-description-audit.json
+          retention-days: 3
+          if-no-files-found: ignore
