@@ -1,0 +1,63 @@
+name: Refresh isolated YouTube Korean TL candidates (read-only)
+on:
+  push:
+    branches: ['test/aikurumi-api-probe-20261030']
+    paths:
+      - '.github/workflows/refresh-aikurumi-youtube-candidates.yml'
+      - 'redive/scripts/refresh-aikurumi-youtube-candidates.mjs'
+      - 'redive/scripts/aikurumi-youtube-candidates.mjs'
+      - 'redive/scripts/test-aikurumi-youtube-candidates.mjs'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: isolated-youtube-candidates
+  cancel-in-progress: false
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    env:
+      YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: test/aikurumi-api-probe-20261030
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Test conservative multi-boss matching and no-description publication
+        run: |
+          node --check redive/scripts/aikurumi-youtube-candidates.mjs
+          node --check redive/scripts/refresh-aikurumi-youtube-candidates.mjs
+          node --test redive/scripts/test-aikurumi-youtube-candidates.mjs
+      - name: Fetch 3+4 stage descriptions and build derived previews only
+        run: node redive/scripts/refresh-aikurumi-youtube-candidates.mjs
+      - name: Reject accidental raw API data in generated public bundle
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const p='redive/public/aikurumi-youtube-candidates.json';
+          const data=JSON.parse(fs.readFileSync(p,'utf8'));
+          if(data.schema!=='nyang-youtube-tactic-candidates-v1')throw Error('Invalid export schema');
+          if(data.registrationAllowed!==false||data.readOnly!==true)throw Error('Read-only safety lost');
+          for(const item of data.references){
+            if(Object.hasOwn(item,'description')||Object.hasOwn(item,'sourceText')||Object.hasOwn(item,'notes'))throw Error('Raw description leaked');
+            for(const row of item.rows){
+              if(Object.hasOwn(row,'source')||Object.hasOwn(row,'raw'))throw Error('Raw source leaked');
+            }
+          }
+          if(fs.readFileSync(p,'utf8')!==fs.readFileSync('docs/aikurumi-lab/aikurumi-youtube-candidates.json','utf8'))
+            throw Error('Published mirror differs');
+          console.log('DERIVED_ONLY_OK',JSON.stringify({references:data.references.length,statuses:data.statuses,expiresAt:data.expiresAt}));
+          NODE
+      - name: Publish derived 28-day review candidates only to isolated test branch
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add redive/public/aikurumi-youtube-candidates.json docs/aikurumi-lab/aikurumi-youtube-candidates.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'test: refresh derived YouTube Korean tactic previews (expires after 28 days)'
+            git pull --rebase origin test/aikurumi-api-probe-20261030
+            git push origin HEAD:test/aikurumi-api-probe-20261030
+          fi
