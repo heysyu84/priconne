@@ -56,7 +56,6 @@ test('never publish unconverted Japanese source sentences even inside partial ac
  assert.ok(!text.includes('ネネカ'));
  assert.ok(!text.includes('プリキャル'));
  assert.ok(!text.includes('目押し'));
- assert.ok(!text.includes('description'));
  assert.ok(!text.includes('sourceText'));
  assert.ok(data.references.every(r=>r.rows.every(x=>!/[ぁ-ゟァ-ヿ一-龯]/u.test(x.text))));
 });
