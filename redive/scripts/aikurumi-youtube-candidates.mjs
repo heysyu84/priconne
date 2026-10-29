@@ -34,9 +34,12 @@ function hasToken(text,token){
  return token&&new RegExp('(^|[^0-9])'+token+'(?=$|[^0-9])','m').test(text);
 }
 function matchedSegment(sections,ref,videoRefs){
- if(sections.length===1&&sections[0].boss===null)
-  return videoRefs.length===1?{segment:sections[0],match:'single-video'}:
-    {segment:null,match:'shared-video-without-sections'};
+ if(sections.length===1&&sections[0].boss===null){
+  const timelineStarts=[...sections[0].text.matchAll(/^\s*1:30(?:\s|$)/gm)].length;
+  return videoRefs.length===1&&timelineStarts<=1
+    ?{segment:sections[0],match:'single-video'}:
+    {segment:null,match:videoRefs.length>1?'shared-video-without-sections':'multiple-timelines-without-sections'};
+ }
  const matching=sections.filter(s=>s.boss===ref.boss);
  if(!matching.length)return {segment:null,match:'boss-section-not-found'};
  const perBoss=videoRefs.filter(x=>x.boss===ref.boss&&x.stage===ref.stage);
@@ -84,12 +87,29 @@ export function createYouTubeTacticCandidates(snapshots,found,{fetchedAt=new Dat
       stage:ref.stage,bossSlot:ref.boss,bossNames:ref.bossNames});
   if(!candidate.rows.length)return {...base,matching:matched.match,status:'no-parsable-timeline',
     issues:candidate.issues.map(x=>x.code).slice(0,12)};
-  return {...base,status:'candidate',matching:matched.match,rowCount:candidate.rows.length,
-    issues:candidate.issues.map(x=>x.code).slice(0,12),
-    warnings:candidate.warnings.map(x=>x.slice(0,75)).slice(0,8),
-    unmappedActors:candidate.unmappedActors.slice(0,10),
-    // Derived Korean actions only; never include row.source, description or notes.
-    rows:candidate.rows.slice(0,110).map(row=>({time:row.time||null,
+  // The parser can emit raw source for unknown actors. NEVER publish those
+  // verbatim in the review site's JSON: preserve only already-converted Korean
+  // action lines, and flag the omitted lines explicitly for manual verification.
+  const safeRows=candidate.rows.filter(row=>{
+    const text=String(row.text||'');
+    if(/[\u3040-\u30ff\u3400-\u9fff]/u.test(text)||/\[원문 확인:/u.test(text))return false;
+    const m=String(row.time||'').match(/^(\d{1,2}):([0-5]\d)$/);
+    if(m&&Number(m[1])*60+Number(m[2])>90)return false;
+    return text.length>0&&text.length<=230;
+  });
+  const timed=safeRows.some(row=>/^(?:0?[01]):[0-5]\d$/.test(String(row.time||'')));
+  const hasUnconverted=candidate.rows.length!==safeRows.length;
+  const issues=candidate.issues.map(x=>x.code).slice(0,12);
+  if(hasUnconverted)issues.push('source-lines-omitted');
+  if(!timed||safeRows.length<2)return {...base,matching:matched.match,
+    status:'needs-translation-review',rowCount:candidate.rows.length,issues:[...new Set(issues)],
+    omittedRows:candidate.rows.length};
+  return {...base,status:hasUnconverted||issues.length?'partial':'candidate',matching:matched.match,
+    rowCount:candidate.rows.length,omittedRows:candidate.rows.length-safeRows.length,
+    issues:[...new Set(issues)],warningCount:candidate.warnings.length,
+    unknownActorCount:candidate.unmappedActors.length,
+    // Korean structured steps only; no row.source, Japanese literal, or full description.
+    rows:safeRows.slice(0,90).map(row=>({time:row.time||null,
       text:String(row.text||'').slice(0,230),
       checked:Array.isArray(row.checked)?row.checked.map(Boolean):[]}))
   };
