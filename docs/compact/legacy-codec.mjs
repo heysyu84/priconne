@@ -1,4 +1,4 @@
-import {pastedRows} from './compat/tactics-model.mjs';
+import {pastedRows} from './compat/tactics-model.mjs?v=20261030-set-sync02';
 // Both interfaces edit the existing clan API. Preserve fields owned by the
 // original interface, and patch only fields actually changed by this one.
 const clone=value=>structuredClone(value);
