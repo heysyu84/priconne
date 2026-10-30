@@ -1,4 +1,4 @@
-import {buildReviewItems,reviewDraft,stage3LineupDraft,validateReviewDraft,damageLabel,floorDamage,findImportedTactic,safeUrl,isYouTube} from './aikurumi-review-model.mjs?v=20261030-once01';
+import {buildReviewItems,reviewDraft,stage3LineupDraft,validateReviewDraft,damageLabel,floorDamage,findImportedTactic,safeUrl,isYouTube} from './aikurumi-review-model.mjs?v=20261030-set-sync02';
 import {findNonOverlappingStage3} from './aikurumi-stage3-composer.mjs';
 import {recalculateSetRows} from './tactic-set-state.mjs?v=20261030-set-sync02';
 import {previewAikurumiTactic} from './aikurumi-tactic-review.mjs?v=20261030-once01';
