@@ -119,7 +119,7 @@ class ReviewWorkspace{
    +'<strong>'+escape(name)+'</strong><span>'+draft.stars[i]+'성 · R'+(item.conditions.ranks[i]||'—')+'</span></div>').join('');
   const youtube=item.source==='youtube',sourceUrl=safeUrl(item.link.link);
   const conditionFields=item.conditions.fields.map(f=>'<div><dt>'+escape(f.label)+'</dt><dd>'+escape(f.value)+'</dd></div>').join('');
-  const sourceNotice=item.dangoPriority?'당고 O/X 상태 우선 · 일반 조작문은 참고':youtube?(item.candidate?.status==='video-timeline-only'?'영상 화면의 TL · 설명란 본문 없음':item.candidate?.rows?.length?
+  const sourceNotice=item.dangoPriority?'ai쿠루미 당고 O/X · 유튜브 TL 없음':youtube?(item.candidate?.status==='video-timeline-only'?'영상 화면의 TL · 설명란 본문 없음':item.candidate?.rows?.length?
    (item.candidate.tacticLocation==='author-comment'?'작성자 댓글 TL':'설명란 TL')+' · '+item.candidate.rows.length+'행 수집':'일본어 TL 구간 확인 필요'):
    (isYouTube(item.link.link)?'설명란·작성자 댓글 TL 없음 · ai쿠루미 TL 사용':'ai쿠루미 TL');
   return '<div class="review-detail-heading"><div><span class="review-badge '+state+'">'+label+'</span><h3>'+item.boss+'넴 · '+escape(this.bossName(item))+'</h3><p>'+escape(item.creator)+' · '+escape(item.operationLabel)+' · <span class="review-row-count">출력 '+draft.rows.length+'행</span></p></div><div class="review-detail-nav">'
