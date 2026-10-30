@@ -32,12 +32,14 @@ export function splitVideoDescription(description,bossNames){
   const ordinalTitle=/(?:第\s*)?[1-5]\s*(?:ボス|ネームド|BOSS)|BOSS\s*[1-5]/i.test(bossTitle);
   const isBoss=boss!==null&&(ordinalTitle&&!battle||!/(?:\bUB\b|ユニオンバースト|通常攻撃|スキル|連打|目押し|SET|AUTO|解除)/i.test(bossTitle)&&!battle);
   const chapter=!!clock&&(seconds>90||seconds===0)&&!/(?:SET|OFF|UB|解除|連打|目押し)/i.test(clock[2]);
-  const restart=battleSeconds!==null&&battleSeconds>=60&&battleSeconds<=90&&lastBattle<=45&&battleSeconds>lastBattle+30;
+  const dangoContinuation=/(?:お団子|団子|ダンゴ|당고)\s*(?:ver\.?|版)?/iu.test(trimmed)
+   ||current.lines.some(line=>/(?:お団子|団子|ダンゴ|당고)\s*(?:ver\.?|版)?/iu.test(line.trim().slice(0,80)));
+  const restart=battleSeconds!==null&&battleSeconds>=60&&battleSeconds<=90&&lastBattle<=45&&battleSeconds>lastBattle+30&&!dangoContinuation;
   const variant=!/^(?:[★☆⭐✩]\s*)?0?[01]:[0-5]\d/.test(trimmed)
    &&/^(?:[①-⑳◆■●★☆【\[<(（]|(?:編成|パーティ|pattern|TL)\s*\d)/i.test(trimmed)
    &&/(?:\d[,.\d]*\s*(?:万|億)|全\s*(?:set|セット)|[ox〇○×✕ー-]{5}|編成|パーティ)/i.test(trimmed)
    &&current.lines.some(s=>/^\s*0?[01]:[0-5]\d/.test(s));
-  if(isBoss||chapter||restart||variant){
+  if(isBoss||chapter||restart||(variant&&!dangoContinuation)){
    emit();current={boss:boss??current.boss,header:trimmed,startSeconds:chapter||isBoss&&clock?seconds:current.startSeconds,lines:[]};lastBattle=91;
   }
   current.lines.push(line);if(battleSeconds!==null&&battleSeconds<=90)lastBattle=battleSeconds;
