@@ -1,6 +1,6 @@
 import {buildReviewItems,reviewDraft,stage3LineupDraft,validateReviewDraft,damageLabel,floorDamage,findImportedTactic,safeUrl,isYouTube} from './aikurumi-review-model.mjs?v=20261030-except01';
 import {findNonOverlappingStage3} from './aikurumi-stage3-composer.mjs';
-import {recalculateSetRows} from './tactic-set-state.mjs?v=20261030-except01';
+import {recalculateSetRows} from './tactic-set-state.mjs?v=20261030-except02';
 import {previewAikurumiTactic} from './aikurumi-tactic-review.mjs?v=20261030-except01';
 
 const escape=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));

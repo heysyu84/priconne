@@ -80,3 +80,25 @@ export function recalculateSetRows(rows, characters = [], catalog = [], start = 
   }
   return rows;
 }
+
+// Older clients saved the named exception as the only SET target. Repair only
+// explicitly automatic rows, then propagate their corrected state downstream.
+export function repairExcludedSetRows(rows, characters = [], catalog = []) {
+  const matcher = characterTokens(characters, catalog);
+  let repairing = false, changed = 0;
+  for (let i = 0; i < rows.length; i++) {
+    const row = rows[i];
+    if (row.manualChecks !== false) continue;
+    const source = norm(row.text);
+    if (!repairing) {
+      const exclusion = source.match(/([^,，;；\n]*?)제외\s*(?:전부\s*)?(?:SET|ON|OFF|온|오프)(?![\p{L}\p{N}])/iu);
+      if (!exclusion || !namedSlots(exclusion[1], matcher).length) continue;
+      repairing = true;
+    }
+    const next = commandState(row.text, rows[i - 1]?.checked, characters, catalog);
+    if (next.every((value, slot) => value === six(row.checked)[slot])) continue;
+    row.checked = next;
+    changed++;
+  }
+  return changed;
+}
