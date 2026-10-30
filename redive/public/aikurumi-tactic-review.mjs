@@ -52,7 +52,7 @@ export function previewAikurumiTactic(task, link, options={}){
     damageRaw:{manual:positive(task?.damage),auto:positive(task?.autoDamage),
       halfAuto:positive(task?.halfAutoDamage),easyManual:positive(task?.easyManualDamage)},
     isCarryCandidate:Number(task?.type)===1,
-    timeline:source.timeline,rows:parsed.rows,warnings:parsed.warnings,
+    timeline:source.timeline,rows:parsed.rows,preferredDango:parsed.format==='dango'&&/(?:お団子|団子|ダンゴ|당고)\s*(?:ver\.?|版)?/iu.test(source.timeline),warnings:parsed.warnings,
     unmappedActors:parsed.unmappedActors,issues,
     status:!hasFive?'invalid':!source.hasAction?'notes-only':'needs-review',
     registrationAllowed:false
