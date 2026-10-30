@@ -81,3 +81,21 @@ test('source identity, exact damage, SET flags and conditions survive the produc
  assert.equal(actual.damage,3.3065);assert.equal(actual.tp,'4.3+');assert.equal(actual.note,'초동 TP 조건');
  assert.deepEqual(actual.rows[0].checked,tactic.rows[0].checked);assert.equal(model.findImportedTactic(decoded.seasons[month],item).id,tactic.id);
 });
+test('lineup-only registration is limited to full-auto stage 3 and survives storage without a fabricated TL',()=>{
+ const item=items.find(i=>i.stage===3&&i.operation==='full-auto'&&!i.damage.ambiguous),draft=model.stage3LineupDraft(item,model.reviewDraft(item),{confirmed:true});
+ assert.equal(model.validateReviewDraft(item,draft).length,0);assert.equal(draft.rows.length,0);
+ const tactic=model.buildReviewedTactic(item,draft,{id:'lineup'});assert.equal(tactic.externalSource.reviewScope,'lineup');assert.equal(tactic.text,'');
+ const f=fixture(),ref=f.sharedDocument(),month='2026-11',season=ref.seasons['2026-10'];
+ const root={months:{[month]:{month,options:{days:5,dailyAttacks:3,startStage:2},bosses:season.bossSettings,levels:season.rules.levels,events:[],tactics:[],recommendations:[],memberIds:[],membership:{}}},roster:[],clanHistory:[],hallOfFame:[]};
+ const base=decodeLegacy(root,{},ref);base.seasons[month].recommendations.push(tactic);
+ const decoded=decodeLegacy(encodeLegacy(base,root,{},ref).data,{},ref).seasons[month].recommendations[0];
+ assert.equal(decoded.externalSource.reviewScope,'lineup');assert.equal(decoded.remainingSeconds,tactic.remainingSeconds);assert.equal(decoded.rows.length,0);assert.equal(decoded.text,'');
+ const stage4=items.find(i=>i.stage===4);assert.throws(()=>model.stage3LineupDraft(stage4,model.reviewDraft(stage4),{confirmed:true}),/3단계 풀오토/);
+});
+test('re-registering only a party cannot erase an already reviewed TL or duplicate its source',async()=>{
+ const f=fixture(),item=items.find(i=>i.stage===3&&i.operation==='full-auto'&&!i.damage.ambiguous),draft=reviewed(item);draft.createMonth=true;
+ const apply=f.evaluate('applyExternalReviewedTactics');await apply([{item,draft}]);
+ const season=f.get().seasons[item.month],previous=JSON.stringify(season.recommendations[0].rows),id=season.recommendations[0].id;
+ const lineup=model.stage3LineupDraft(item,draft,{confirmed:true});await apply([{item,draft:lineup}]);
+ assert.equal(season.recommendations.length,1);assert.equal(season.recommendations[0].id,id);assert.equal(JSON.stringify(season.recommendations[0].rows),previous);assert.equal(season.recommendations[0].externalSource.reviewScope,'timeline');
+});

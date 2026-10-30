@@ -1,4 +1,4 @@
-import {createExternalReview} from './aikurumi-review-ui.mjs';
+import {createExternalReview} from './aikurumi-review-ui.mjs?v=20261030-review03';
 // Registration is supplied only by the authenticated main application.
 let bossNames={};
 const review=createExternalReview({getContext:()=>({bossNames})});

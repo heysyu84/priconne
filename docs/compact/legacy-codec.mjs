@@ -68,7 +68,7 @@ export function encodeLegacy(document,root,archives={},reference={}){
   for(const [name,target]of Object.entries(optionMap))if(!before||!same(s.rules[name],before.rules[name]))m.options[target]=s.rules[name];
   if(!before||!same(s.rules.levels,before.rules.levels)){let lap=1;m.levels=s.rules.levels.map(l=>{const level={...l,start:lap,end:lap+l.count-1};lap+=l.count;return level;});}
   if(!before||!same(s.notices,before.notices))m.comboNotices={...m.comboNotices,stage3:s.notices[3]||'',tp:s.notices[4]||''};
-  if(!before||!same(s.recommendations,before.recommendations))m.recommendations=s.recommendations.map(t=>({...clone(t),characters:clone(t.party),stars:t.stars.map(String),expectedDamage:t.sourceExpectedDamage===''?'':String(t.damage),tactic:t.text||''}));
+  if(!before||!same(s.recommendations,before.recommendations))m.recommendations=s.recommendations.map(t=>({...clone(t),characters:clone(t.party),stars:t.stars.map(String),expectedDamage:t.sourceExpectedDamage===''?'':String(t.damage),trashedAt:t.deletedAt||null,tactic:t.text||''}));
   if(!same(document.communityLinks,baseline.communityLinks)&&key===document.activeMonth)m.communityLinks=clone(document.communityLinks);
   if(!before||!same(s.result,before.result)){meta.seasons??={};meta.seasons[key]={...meta.seasons[key],result:clone(s.result)};if(s.result.rank!==before?.result.rank){next.clanHistory??=[];const h=next.clanHistory.find(h=>h.month===key);if(h)h.clanRank=s.result.rank;else next.clanHistory.push({month:key,clanRank:s.result.rank,winners:{damage:[],contribution:[],game:[]}});}}
   if(key===baseline.activeMonth||!old||!same(m,old)){months[key]=m;if(key!==baseline.activeMonth&&old&&!same(m,old))changedArchives.push(key);}
