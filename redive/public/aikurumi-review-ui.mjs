@@ -1,5 +1,6 @@
 import {buildReviewItems,reviewDraft,stage3LineupDraft,validateReviewDraft,damageLabel,floorDamage,findImportedTactic,safeUrl,isYouTube} from './aikurumi-review-model.mjs?v=20261030-once01';
 import {findNonOverlappingStage3} from './aikurumi-stage3-composer.mjs';
+import {recalculateSetRows} from './tactic-set-state.mjs?v=20261030-set-sync02';
 import {previewAikurumiTactic} from './aikurumi-tactic-review.mjs?v=20261030-once01';
 
 const escape=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -47,6 +48,16 @@ class ReviewWorkspace{
  context(){return this.getContext()||{};}
  canApply(){return !!this.onApply&&this.context().canEdit===true;}
  draft(item){if(!this.drafts.has(item.key))this.drafts.set(item.key,reviewDraft(item));return this.drafts.get(item.key);}
+ syncSetRows(draft,start=0){
+  recalculateSetRows(draft.rows,draft.party,this.context().characters||[],start);
+ }
+ refreshSetBoxes(draft){
+  this.root?.querySelectorAll('.review-grid [data-review-row][data-column]').forEach(input=>{
+   const checked=!!draft.rows[Number(input.dataset.reviewRow)]?.checked[Number(input.dataset.column)];
+   input.checked=checked;input.closest('.review-set')?.classList.toggle('on',checked);
+  });
+ }
+
  current(){return this.items.find(i=>i.key===this.selected);}
  existing(item){const context=this.context();return findImportedTactic(context.seasons?.[item.month],item);}
  bossName(item){return this.context().bossNames?.[item.month]?.[item.boss]||item.bossName;}
@@ -229,7 +240,10 @@ class ReviewWorkspace{
     if(key==='category'){this.drawDetail();return;}
    }else{
     const row=draft.rows[Number(target.dataset.reviewRow)];if(!row)return;
-    if(target.type==='checkbox')row.checked[Number(target.dataset.column)]=target.checked;else{row.text=target.value;row.needsReview=false;}
+    if(target.type==='checkbox'){row.checked[Number(target.dataset.column)]=target.checked;row.manualChecks=true;}
+    else{row.text=target.value;row.needsReview=false;row.manualChecks=false;}
+    this.syncSetRows(draft,Number(target.dataset.reviewRow)+(target.type==='checkbox'?1:0));
+    this.refreshSetBoxes(draft);
     draft.confirmed=false;draft.edited=true;
    }
    this.updateApplyState();return;
@@ -255,13 +269,13 @@ class ReviewWorkspace{
   if(!item)return;const draft=this.draft(item);
   if(kind==='edit'){this.editing.has(item.key)?this.editing.delete(item.key):this.editing.add(item.key);this.drawDetail();return;}
   if(kind==='damage-option'){draft.damage=floorDamage(action.dataset.value);draft.confirmed=false;draft.edited=true;this.drawDetail();return;}
-  if(kind==='add-row'){draft.rows.push({text:'',checked:[...(draft.rows.at(-1)?.checked||Array(6).fill(false))]});draft.confirmed=false;draft.edited=true;this.drawDetail();return;}
-  if(kind==='remove-row'){draft.rows.splice(Number(action.dataset.index),1);draft.confirmed=false;draft.edited=true;this.drawDetail();return;}
+  if(kind==='add-row'){draft.rows.push({text:'',checked:[...(draft.rows.at(-1)?.checked||Array(6).fill(false))],manualChecks:false});this.syncSetRows(draft,draft.rows.length-1);draft.confirmed=false;draft.edited=true;this.drawDetail();return;}
+  if(kind==='remove-row'){const index=Number(action.dataset.index);draft.rows.splice(index,1);this.syncSetRows(draft,index);draft.confirmed=false;draft.edited=true;this.drawDetail();return;}
   if(kind==='convert'){
    const text=this.root.querySelector('[data-review-paste]')?.value.trim();if(!text)return;
    const snapshot=this.snapshots.find(s=>s.stage===item.sourceStage),preview=previewAikurumiTactic(item.task,{...item.link,remarks:text},{unitMap:snapshot.characterData.names,positionUnits:snapshot.characterData.positionUnits,stage:item.sourceStage,bossSlot:item.boss,bossNames:snapshot.bosses.map(b=>b.unitName)});
    if(!preview.rows.length){this.root.querySelector('.review-paste-status').textContent='변환할 조작문을 찾지 못했습니다.';return;}
-   draft.rows=preview.rows.map(r=>({text:r.text,checked:[...r.checked]}));draft.confirmed=false;draft.edited=true;this.drawDetail();return;
+   draft.rows=preview.rows.map(r=>({text:r.text,checked:[...r.checked],manualChecks:false}));draft.confirmed=false;draft.edited=true;this.drawDetail();return;
   }
   if(kind==='apply')this.apply([item]);
   if(kind==='apply-lineup')this.apply([item],{lineupOnly:true,confirmed:draft.confirmed});
