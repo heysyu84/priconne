@@ -27,7 +27,12 @@ export function normalizeYouTubeTimeline(text,{task,snapshot}={}){
   let value=raw.replace(/^\s*(\d{1,2}):([0-5]\d)\s+/, (whole,m,s)=>Number(m)*60+Number(s)>90?'':whole)
    .replace(/^\s*([01]):([0-5]\d)(?=\S)/,'$1:$2 ')
    .replace(/^\s*0([01]):([0-5]\d)/,'$1:$2').replace(/全(?:キャラ|員|体)?\s*セット/gi,'全SET');
-  if(aliasPattern)value=value.replace(aliasPattern,name=>names.get(name));
+  if(aliasPattern)value=value.replace(aliasPattern,(name,offset,whole)=>{
+   // Never turn an unknown costume prefix plus a base name into the party's
+   // different costume (e.g. 水ユニ must not become 水윈유니).
+   if(/(?:水着|水|夏|プリ|プ|ニュ|アル|聖|クリ|冬|ハロ|天|儀|作)$/.test(whole.slice(0,offset)))return name;
+   return names.get(name);
+  });
   value=translate(value);
   if(!/^\s*(?:0?[01]):[0-5]\d/.test(value)&&/全(?:キャラ|員|体)?\s*SET/i.test(value)&&value.trim().length<180
     &&!/^\s*全(?:キャラ|員|体)?\s*SET\s*(?:AUTO\s*(?:ON|OFF))?\s*$/i.test(value)){

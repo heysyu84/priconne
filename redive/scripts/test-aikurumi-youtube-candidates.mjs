@@ -3,9 +3,14 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {splitVideoDescription,createYouTubeTacticCandidates} from './aikurumi-youtube-candidates.mjs';
 import {matchedYouTubeSegment,youtubeStartSeconds} from './aikurumi-youtube-segments.mjs';
+import {normalizeYouTubeTimeline} from './aikurumi-youtube-timeline.mjs';
 const load=n=>JSON.parse(readFileSync(new URL('../public/'+n,import.meta.url),'utf8'));
 const snapshots=[load('aikurumi-snapshot-stage3.json'),load('aikurumi-snapshot.json')];
 const report=videos=>({videos:videos.map(([id,description])=>({videoId:id,description}))});
+test('an unrecognized costume shorthand cannot silently become a different party costume',()=>{
+ const snapshot=snapshots[1],task=snapshot.bosses.flatMap(b=>b.tasks).find(t=>t.charas.some(c=>snapshot.characterData.names[c.prefabId]?.includes('윈유니')));assert.ok(task);
+ const text=normalizeYouTubeTimeline('1:12 水ユニ SET',{task,snapshot});assert.match(text,/水ユニ/);assert.doesNotMatch(text,/水윈유니/);
+});
 
 test('detect explicit Japanese boss section without treating battle clocks as boss numbers',()=>{
  const sections=splitVideoDescription('【1ボス】\n1:30 AUTO ON\n1:12 ピオ SET\n【2ボス】\n1:30 全SET\n1:04 ネネカ OFF',
