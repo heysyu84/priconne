@@ -59,3 +59,12 @@ test('stage 3 soft deletion and restoration survive the original storage format'
  const saved=encodeLegacy(decoded,encoded.data,{},reference),restored=decodeLegacy(saved.data,{},reference);
  assert.equal(restored.seasons[month].recommendations[0].deletedAt,null);
 });
+test('stage 3 parties never render a tactic expander or received-carry calculator, including after opening an imported party',()=>{
+ const f=fixture();f.ext.openComboId='stage3-a';
+ let html=f.recommendationRows();assert.match(html,/stage3-delete/);assert.match(html,/<dt>TP<\/dt>/);
+ assert.doesNotMatch(html,/ops-combo-toggle|combo-expansion|ops-combo-carry|이월 받은 시간/);
+ f.evaluate('openAppliedExternalTactic')({month:f.ui.month,stage:3,id:'stage3-a'});
+ assert.equal(f.ext.openComboId,null);assert.equal(f.ui.tabs.tactics,'combos');
+ html=f.recommendationRows();assert.doesNotMatch(html,/ops-combo-toggle|combo-expansion|ops-combo-carry/);
+ f.ext.stage=4;assert.match(f.recommendationRows(),/ops-combo-toggle/);
+});
