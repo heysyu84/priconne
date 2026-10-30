@@ -1,8 +1,8 @@
 import {replayMonth as engineReplay,bossProgress as engineProgress,contribution as engineContribution,estimateCarry as engineEstimate} from './battle-engine.mjs?v=20261027-carry-link02';
-import {convertForeignTactic,foreignSuggestions} from './tactic-parser.mjs?v=20261030-dango03';
+import {convertForeignTactic,foreignSuggestions} from './tactic-parser.mjs?v=20261030-yt-first04';
 import * as partyTools from './party-tools.mjs?v=20261026-log-keys01';
 import * as logOrder from './log-order.mjs';
-import * as legacyTools from './legacy-tools.mjs?v=20261030-dango03';
+import * as legacyTools from './legacy-tools.mjs?v=20261030-yt-first04';
 const ICONS={
  cat:'M4 18V6l5 4 3-2 3 2 5-4v12c-3 4-13 4-16 0Z|M8 16h.1M16 16h.1M10 20l2 1 2-1',
  compass:'M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z|m15.5 8.5-2 5-5 2 2-5 5-2Z',
@@ -2455,7 +2455,7 @@ async function prepareCompatibleBackup(input){
   if(!root)return input;
   const missing=(root.archivedMonths||[]).filter(month=>!root.months[month]);
   if(missing.length)throw Error('보관 월 '+missing.join(', ')+'이 빠져 있습니다. 모든 월이 포함된 백업을 선택하세요.');
-  const {decodeLegacy}=await import('./legacy-codec.mjs?v=20261030-dango03');
+  const {decodeLegacy}=await import('./legacy-codec.mjs?v=20261030-yt-first04');
   return sharedBackup(decodeLegacy(root,{},sharedDocument()));
 }
 function applyTransferMetadata(transfer,t){
@@ -2562,7 +2562,7 @@ if(pagesApiOrigin){
  const siteInitializeShared=initializeSharedSync;
  initializeSharedSync=async()=>{
   try{
-   const [{createLegacySharedClient},{startPresence},{createApiClient}]=await Promise.all([import('./legacy-shared-client.mjs?v=20261030-dango03'),import('./presence.mjs'),import('./compat/api-client.mjs')]);
+   const [{createLegacySharedClient},{startPresence},{createApiClient}]=await Promise.all([import('./legacy-shared-client.mjs?v=20261030-yt-first04'),import('./presence.mjs'),import('./compat/api-client.mjs')]);
    let storage;try{storage=sessionStorage;}catch{}
    productionClient=createLegacySharedClient({apiOrigin:pagesApiOrigin,pageOrigin:location.origin,storage,fetcher:(...args)=>fetch(...args),reference:sharedDocument(),selectedMonth:()=>ui.month});
    stateRequest=(path,options)=>productionClient.request(path,options);
@@ -2926,7 +2926,7 @@ async function mountExternalReview(){
  const root=document.getElementById('external-tactic-review');
  if(!root||!adminMode()||ui.section!=='tactics'||ui.tabs.tactics!=='review')return;
  try{
-  externalReviewLoading??=Promise.all([import('./aikurumi-review-ui.mjs?v=20261030-dango03'),import('./aikurumi-review-model.mjs?v=20261030-dango03')]);
+  externalReviewLoading??=Promise.all([import('./aikurumi-review-ui.mjs?v=20261030-yt-first04'),import('./aikurumi-review-model.mjs?v=20261030-yt-first04')]);
   const [uiModule,model]=await externalReviewLoading;externalReviewModule=model;
   if(!adminMode()||document.getElementById('external-tactic-review')!==root)return;
   externalReviewController??=uiModule.createExternalReview({getContext:externalReviewContext,
@@ -2995,7 +2995,7 @@ async function synchronizeImportedDangoSets(){
  const revision=syncState.revision,seasonsRef=data.seasons;importedDangoCheckBusy=true;
  try{
   importedDangoAssets??=Promise.all([
-   import('./aikurumi-dango-repair.mjs?v=20261030-dango03'),
+   import('./aikurumi-dango-repair.mjs?v=20261030-yt-first04'),
    ...['aikurumi-snapshot-stage3.json','aikurumi-snapshot.json','aikurumi-youtube-candidates.json'].map(async name=>{
     const response=await fetch(new URL('./'+name,import.meta.url),{cache:'no-store'});
     if(!response.ok)throw Error('당고 검수 자료를 불러오지 못했습니다.');return response.json();
