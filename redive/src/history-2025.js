@@ -7,9 +7,9 @@ const recordNumber=value=>Number.isFinite(value)?nf(value):'—';
 const recordRank=(value,label='')=>Number.isFinite(value)?value+'위':X(label||'미보관');
 const recordDays=d=>d.dayDetailAvailable===false?0:Math.max(1,Number(d.days)||5);
 const recordScope=d=>d.coverage==='personal'?'보관 기록 전체':'클랜 전체';
-const recordState=entry=>entry.coverage==='personal'?'개인 기록':entry.coverage==='summary'?'순위 보관':'확정';
+const recordState=entry=>entry.awardNote|| (entry.coverage==='personal'?'개인 기록':entry.coverage==='summary'?'순위 보관':'확정');
 function recordCoverageNotice(d){
- const text=d.coverage==='summary'?'이 달은 클랜 순위와 연혁만 보관되어 있습니다. 개인 이력과 공격 상세 자료는 남아 있지 않습니다.':d.coverage==='personal'?(d.scopeName||'일부 클랜원')+'의 개인 기록만 보관되어 있습니다. 클랜 전체 합계와 순위 자료는 아닙니다.':d.dayDetailAvailable===false?'일차 정보가 남아 있지 않아 월 누적으로 표시합니다.':'';
+ const text=d.month>='2019-07'&&d.month<='2019-12'||d.month==='2020-03'||d.month==='2020-05'?'기록유실 · 해당 월의 클랜전 상세 자료가 남아 있지 않아 개인 이력과 공격 기록을 제공하지 않습니다.':d.month==='2020-01'?'신년 유이 동면 · 클랜전 참여 기록이 없습니다.':d.coverage==='summary'?'이 달은 클랜 순위와 연혁만 보관되어 있습니다. 개인 이력과 공격 상세 자료는 남아 있지 않습니다.':d.coverage==='personal'?(d.scopeName||'일부 클랜원')+'의 개인 기록만 보관되어 있습니다. 클랜 전체 합계와 순위 자료는 아닙니다.':d.dayDetailAvailable===false?'일차 정보가 남아 있지 않아 월 누적으로 표시합니다.':'';
  return text?'<p class="field-help record-coverage" role="note">'+X(text)+'</p>':'';
 }
 
@@ -32,7 +32,7 @@ function oldResumeOpen(month){
  oldResumeMonth=month;oldResumeData=null;oldResumeError='';oldResumePerson='__clan__';oldResumeSort='game';oldResumeDay=0;oldResumePage=1;oldResumeBoss=0;oldResumeSortDirection=-1;oldResumeLogType='all';oldResumeQuery='';oldResumeDetails=false;oldResumeSequence=false;oldResumeLogOrder='desc';oldResumeStage=0;oldResumeProfileDay=0;oldResumeMetric='damage';ext.archiveView='summary';
  nav('records','archive');
  const request=++oldResumeRequest;
- fetch(new URL('./history-'+month.slice(0,4)+'/'+month+'.json',import.meta.url),{cache:'force-cache'}).then(r=>{if(!r.ok)throw Error('이력서 기록을 불러오지 못했습니다.');return r.json();}).then(d=>{if(request!==oldResumeRequest)return;if(d.month!==month||!Array.isArray(d.members)||!Array.isArray(d.logs))throw Error('이력서 자료 형식 오류');oldResumeData=d;render();}).catch(e=>{if(request===oldResumeRequest){oldResumeError=e.message;render();}});
+ fetch(new URL('./history-'+month.slice(0,4)+'/'+month+'.json?v=20261028-missing-records04',import.meta.url),{cache:'force-cache'}).then(r=>{if(!r.ok)throw Error('이력서 기록을 불러오지 못했습니다.');return r.json();}).then(d=>{if(request!==oldResumeRequest)return;if(d.month!==month||!Array.isArray(d.members)||!Array.isArray(d.logs))throw Error('이력서 자료 형식 오류');oldResumeData=d;render();}).catch(e=>{if(request===oldResumeRequest){oldResumeError=e.message;render();}});
 }
 function oldResumePersonButton(p){
  return '<button type="button" class="text-button member-link" data-action="old-resume-person" data-name="'+X(p.name)+'">'+X(p.name)+'</button>';
@@ -214,7 +214,7 @@ document.addEventListener('click',event=>{
 async function oldResumeLoadIndex(){
  try{
   const indexList=await Promise.all(oldResumeYears.map(async year=>{
-   const res=await fetch(new URL('./history-'+year+'/manifest.json?v=20261028-history-all01',import.meta.url),{cache:'force-cache'});
+   const res=await fetch(new URL('./history-'+year+'/manifest.json?v=20261028-missing-records04',import.meta.url),{cache:'force-cache'});
    if(!res.ok)throw Error(year+'년 이력서 목록 다운로드 실패');
    const index=await res.json();
    if(index.year!==year||!Array.isArray(index.months)||index.months.length!==(year===2019?6:12)||new Set(index.months.map(m=>m.month)).size!==index.months.length)throw Error(year+'년 이력서 목록이 올바르지 않습니다.');

@@ -24,18 +24,18 @@ for(const entry of entries.filter(e=>e.month<'2024-01')){
  for(const view of ['summary','logs','ranking','profile','tactics']){
   app.ext.archiveView=view;const html=app.fullRecords();assert.equal(html.match(/NaN|undefined|null일차|null명|>0위/)?.[0],undefined,d.month+' '+view);
   assert.equal((html.match(/id="archive-month"/g)||[]).length,1);
-  if(d.coverage==='summary')assert.match(html,/공격 상세 자료는 남아 있지 않습니다/);
+  if(d.coverage==='summary')assert.match(html,/공격 상세 자료는 남아 있지 않습니다|기록유실|신년 유이 동면/);
   if(d.coverage==='personal'&&view==='ranking')assert.doesNotMatch(html,/ranking-detail/);
   if(d.coverage==='personal'&&view==='profile')assert.doesNotMatch(html,/>클랜 전체<\/option>/);
   if(view==='profile'&&d.days>5)assert.ok(html.includes('>'+d.days+'일차</button>'),entry.month+' last day');
   if(d.dayDetailAvailable===false&&view==='profile')assert.doesNotMatch(html,/daily-paired-bars/);
  }
 }
-assert.equal(months,54);assert.equal(attacks,31850);assert.equal(personal,2);assert.equal(missing,7);
+assert.equal(months,54);assert.equal(attacks,31794);assert.equal(personal,0);assert.equal(missing,9);
 assert.equal(read('history-2020/2020-10.json').logs.length,944);
 assert.ok(read('history-2020/2020-04.json').logs.every(l=>l.day===null));
 assert.equal(JSON.stringify(app.sharedDocument()),before);
-console.log('PASS 54 additional months, 31,850 attacks, exact source totals, variable days, partial/missing coverage, all record views and live-data preservation');
+console.log('PASS 54 additional months, 31,794 attacks, exact source totals, variable days, partial/missing coverage, all record views and live-data preservation');
 // Check the report's drawing bounds without a browser or screenshot.
 const labels=[],bounds=[];
 const ctx={fillRect(x,y,w,h){bounds.push([x,y,w,h]);},fillText(label,x,y){labels.push({label:String(label),x,y});},beginPath(){},arc(x,y,r){bounds.push([x-r,y-r,r*2,r*2]);},stroke(){}};
@@ -45,7 +45,7 @@ for(const month of ['2019-11','2020-04','2023-01']){
  const d=read('history-'+month.slice(0,4)+'/'+month+'.json');labels.length=0;bounds.length=0;
  const result=await createProfilePdf({month,all:true,coverage:d.coverage,dayDetailAvailable:d.dayDetailAvailable,days:d.dayDetailAvailable===false?0:d.days,bosses:d.bossNames.map((name,i)=>({id:i+1,name})),events:d.logs,summary:{name:d.coverage==='personal'?'보관 기록 전체':'클랜 전체',...d.totals},contribution:l=>l.contribution});
  assert.equal(result.pages,1);assert.ok(labels.every(t=>Number.isFinite(t.x)&&Number.isFinite(t.y)&&t.y>=0&&t.y<=1754));assert.ok(bounds.every(b=>b.every(Number.isFinite)&&b[1]+b[3]<=1754));
- if(month==='2019-11'){assert.ok(labels.some(t=>t.label==='10일차'));assert.ok(!labels.some(t=>t.label.includes('클랜 합계')));}
+ if(month==='2019-11'){assert.equal(d.coverage,'summary');assert.ok(!labels.some(t=>/^\d+일차$/.test(t.label)));}
  if(month==='2020-04'){assert.ok(labels.some(t=>t.label==='월 합계'));assert.ok(!labels.some(t=>t.label==='1일차'));}
  if(month==='2023-01'){assert.ok(labels.some(t=>t.label==='1단계'));assert.ok(labels.some(t=>t.label==='5단계'));}
 }
