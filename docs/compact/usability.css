@@ -1032,3 +1032,71 @@ form[data-form="v2-tactic"] #tactic-text{display:block;width:100%;min-width:0;mi
   .recommendation-list .combo-card .combo-metadata,
   .recommendation-list .combo-card .combo-metadata>div{min-width:0;max-width:100%}
 }
+
+
+/* Mobile combo width: the entire card replaces the select checkbox. */
+@media(max-width:760px){
+  .recommendation-list{width:100%;min-width:0;max-width:100%;overflow-x:clip}
+  .recommendation-list>.combo-card{
+    grid-template-columns:clamp(45px,13vw,54px) minmax(0,1fr)!important;
+    column-gap:6px;row-gap:6px;
+    min-width:0;max-width:100%;width:100%;box-sizing:border-box;
+  }
+  .recommendation-list>.combo-card .combo-heading{
+    grid-column:1;grid-row:1;min-width:0;
+    align-items:center;justify-content:center;gap:3px;
+  }
+  .recommendation-list .combo-heading input[data-input="v2-pick-tactic"]{
+    position:absolute!important;width:1px!important;height:1px!important;
+    clip-path:inset(50%)!important;overflow:hidden!important;
+  }
+  .recommendation-list>.combo-card .combo-party{
+    grid-column:2;grid-row:1;min-width:0;max-width:100%;width:100%;
+    container-type:inline-size;
+  }
+  .recommendation-list>.combo-card .party{
+    width:100%;max-width:100%;min-width:0;
+    display:grid;grid-template-columns:repeat(5,minmax(0,1fr));
+    gap:clamp(2px,1.2cqw,5px);
+  }
+  .recommendation-list>.combo-card .unit{width:100%;min-width:0;max-width:100%}
+  .recommendation-list>.combo-card .unit-face{
+    width:clamp(26px,15.5cqw,44px);max-width:100%;
+    height:auto;aspect-ratio:1;margin:0 auto 3px;
+  }
+  .recommendation-list>.combo-card .unit strong{
+    display:block;min-width:0;max-width:100%;min-height:0;
+    font-size:clamp(9px,3.6cqw,12px);line-height:1.25;
+    white-space:normal!important;word-break:keep-all;overflow-wrap:anywhere;
+    text-align:center;
+  }
+  .recommendation-list>.combo-card .unit small{
+    white-space:normal;overflow-wrap:anywhere;font-size:10px;
+  }
+  .recommendation-list>.combo-card .combo-metadata{
+    grid-column:2;grid-row:2;width:100%;min-width:0;max-width:100%;
+    display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+    gap:3px;justify-content:stretch;align-items:stretch;
+  }
+  .recommendation-list>.combo-card .combo-metadata>div{
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    min-width:0;max-width:100%;padding:4px 1px;gap:2px;text-align:center;
+  }
+  .recommendation-list>.combo-card .combo-metadata dt{
+    margin:0;font-size:10px;line-height:1.2;white-space:normal;
+  }
+  .recommendation-list>.combo-card .combo-metadata dd{
+    margin:0;font-size:12px;line-height:1.2;min-width:0;max-width:100%;
+    white-space:normal;overflow-wrap:anywhere;
+  }
+  .recommendation-list>.combo-card .combo-open{
+    grid-column:1;grid-row:2;min-width:0;width:100%;padding:0;
+  }
+  .recommendation-list>.combo-card .combo-open .combo-toggle{
+    width:100%;min-width:0;padding:4px 2px;
+  }
+  .recommendation-list>.combo-card .combo-expansion{
+    grid-column:1/-1;grid-row:3;min-width:0;max-width:100%;
+  }
+  .recommendation-list>.combo-card:not(.stage3-combo-card){cursor:pointer;touch-action:manipulation}
+}
