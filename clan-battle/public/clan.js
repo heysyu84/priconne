@@ -1,5 +1,5 @@
 (async()=>{'use strict';
-const {beginLoading}=await import('./loading-indicator.mjs?v=20261031-02');
+const {beginLoading}=await import('./loading-indicator.mjs?v=20261031-03');
 const stopBootLoading=beginLoading();
 const {menuArtMarkup}=await import('./menu-art.mjs?v=20261022-sd01');
 const {summarizeArchive,sortArchiveRankings}=await import('./archive-summary.mjs?v=20261022-import01');
