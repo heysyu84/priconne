@@ -35,6 +35,11 @@ test('unavailable comments never certify that a YouTube TL is absent',()=>{
  const output=createYouTubeTacticCandidates(snapshots,{videos:[{videoId:'JcqLd2C8mTA',description:'概要',commentsStatus:'failed'}]});
  const item=output.references.find(r=>r.videoId==='JcqLd2C8mTA');assert.equal(item.youtubeHasTactic,null);assert.equal(item.status,'needs-source-check');
 });
+test('a chapter-only full-auto compilation is not mistaken for a written battle timeline',()=>{
+ const output=createYouTubeTacticCandidates(snapshots,{videos:[{videoId:'gcLTnp88aSo',description:'全ボスフルオート紹介\n0:00 はじめに\n2:08 ワイバーン 33,065万\n3:45 ワイバーン 29,490万\n5:12 タフガイスト 26,175万',commentsStatus:'complete'}]});
+ const refs=output.references.filter(r=>r.videoId==='gcLTnp88aSo');assert.equal(refs.length,21);
+ assert.ok(refs.every(r=>r.status==='no-youtube-tl'&&r.youtubeHasTactic===false&&r.rows.length===0));
+});
 
 test('multi-boss YouTube cannot apply whole description to every tactic without headings',()=>{
  const output=createYouTubeTacticCandidates(snapshots,report([['gcLTnp88aSo','1:30 全SET 自動ON\n1:08 ピオ SET\n0:31 ピオ OFF']]));

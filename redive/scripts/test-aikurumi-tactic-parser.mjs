@@ -1,5 +1,11 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+test('mixed mask and command lines preserve initial SET and standalone UB names without duplicated-name warnings',()=>{
+ const names=['피오','수리아','와카나','수레시아','성치카'];
+ const value=convertForeignTactic('1:30 全SET AUTO ON\n1:12 피오\n0:30 〇〇〇〇〇',names);
+ assert.deepEqual(value.rows[0].checked,[true,true,true,true,true,true]);
+ assert.ok(value.rows.some(row=>/1:12 피오 UB/.test(row.text)));assert.equal(value.warnings.length,0);
+});
 import {convertForeignTactic} from '../public/tactic-parser.mjs';
 
 // Grounded in a public Aikurumi JP 2025-10 stage=6 link remark.

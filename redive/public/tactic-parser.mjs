@@ -307,11 +307,11 @@ export function convertForeignTactic(raw, koreanNames=[], foreignNames=[], bossN
    if(boss){actBoss(boss);return;}
    const parts=line.replace(/(?:[ ]{2,}|[\u3000]+)/g,'\t').split(/\t+/).map(trim).filter(Boolean);
    if(!parts.length)return;
-   if(t&&!dango){
+   if(t&&!/[OX〇○◯●⭕❌✕×✖✗ー－—-]{5}/i.test(line)){
      const actors=actorsIn(line),rest=trim(line.replace(new RegExp(dictPattern,'g'),'').replace(/[\s、,，➡→➜⇒⟶]+/g,''));
      if(actors.length&&actors.every(a=>a.i>=0)&&!rest){for(const actor of actors)append(actor.name,['UB']);return;}
    }
-   if(dango){
+   if(/[OX〇○◯●⭕❌✕×✖✗ー－—-]{5}/i.test(line)){
      const merged=parts.join(' ');
      if(arrowDango(merged))return;
      const s=merged.match(/[OX〇○◯●⭕❌✕×✖✗ー－—-]{5}/i);
@@ -328,7 +328,7 @@ export function convertForeignTactic(raw, koreanNames=[], foreignNames=[], bossN
          act(match[2],a?.name||rawActor,!rows.length&&(!time||time==='1:30'));
        }else{
          const a=actorStart(merged);
-         act(a?.rest||merged,a?.name||'',!rows.length&&(!time||time==='1:30'));
+         act(a?a.rest:merged,a?.name||'',!rows.length&&(!time||time==='1:30'));
        }
      }
    }else{

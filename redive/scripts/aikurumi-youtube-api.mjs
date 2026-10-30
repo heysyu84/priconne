@@ -38,11 +38,12 @@ export function inspectYouTubeDescription(raw) {
   const description=String(raw??'');
   const lines=description.replace(/\r\n?/g,'\n').split('\n');
   // Heuristic only, never certify correctness: chapter timestamps are common.
-  const candidate=lines.filter(line=>/^\s*[★☆⭐✩]?\s*(?:[01]?:)?[0-5]?\d:[0-5]\d(?:\s|$|[、,:：→➡）)])/u.test(line));
+  const candidate=lines.map(line=>line.match(/^\s*[★☆⭐✩]?\s*0?([01]):([0-5]\d)(?:\s|$|[、,:：→➡）)])/u))
+    .filter(Boolean).map(m=>Number(m[1])*60+Number(m[2])).filter(seconds=>seconds<=90);
   const instructions=lines.filter(line=>/(?:SET|AUTO|オート|オン|オフ|UB|ユニオンバースト|手動|自動|自动|自动|セット|解除|キャンセル|目押し|後|前|ON|OFF|→|➡)/iu.test(line));
   return {descriptionLength:description.length,lineCount:lines.length,
     candidateClockLines:candidate.length,instructionHintLines:instructions.length,
-    mayContainTactic:candidate.length>=2&&instructions.length>=1,
+    mayContainTactic:candidate.length>=2&&instructions.length>=1&&candidate.some((seconds,index)=>index>0&&seconds<candidate[index-1]),
     containsJapaneseKana:/[\u3040-\u30ff]/u.test(description)};
 }
 

@@ -15,7 +15,9 @@ function bossHeader(text,bossNames){
   ||line.match(/BOSS\s*([1-5])\b/iu);
  if(m)return Number(m[1]);
  const found=(bossNames||[]).map((n,i)=>n&&line.includes(String(n).normalize('NFKC'))?i+1:0).filter(Boolean);
- return found.length===1&&line.length<=130?found[0]:null;
+ if(found.length!==1||line.length>130)return null;
+ const prefix=line.replace(/^[\s【\[（(①-⑳◆■●★☆#]+/u,'');
+ return prefix.startsWith(String(bossNames[found[0]-1]).normalize('NFKC'))?found[0]:null;
 }
 export function splitVideoDescription(description,bossNames){
  const lines=String(description??'').normalize('NFKC').replace(/\r\n?/g,'\n').split('\n'),parts=[];
@@ -30,7 +32,7 @@ export function splitVideoDescription(description,bossNames){
   const ordinalTitle=/(?:第\s*)?[1-5]\s*(?:ボス|ネームド|BOSS)|BOSS\s*[1-5]/i.test(bossTitle);
   const isBoss=boss!==null&&(ordinalTitle&&!battle||!/(?:\bUB\b|ユニオンバースト|通常攻撃|スキル|連打|目押し|SET|AUTO|解除)/i.test(bossTitle)&&!battle);
   const chapter=!!clock&&(seconds>90||seconds===0)&&!/(?:SET|OFF|UB|解除|連打|目押し)/i.test(clock[2]);
-  const restart=battleSeconds!==null&&battleSeconds<=90&&lastBattle<90&&battleSeconds>lastBattle+3;
+  const restart=battleSeconds!==null&&battleSeconds>=60&&battleSeconds<=90&&lastBattle<=45&&battleSeconds>lastBattle+30;
   const variant=/^(?:[①-⑳◆■●★☆【\[<(（]|(?:編成|パーティ|pattern|TL)\s*\d)/i.test(trimmed)
    &&/(?:\d[,.\d]*\s*(?:万|億)|全\s*(?:set|セット)|[ox〇○×✕ー-]{5}|編成|パーティ)/i.test(trimmed)
    &&current.lines.some(s=>/^\s*0?[01]:[0-5]\d/.test(s));
