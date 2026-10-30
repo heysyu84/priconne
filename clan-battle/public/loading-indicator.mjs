@@ -15,7 +15,7 @@ document.body.append(indicator);
 // The site may have a separate light/dark setting even on a dark-mode phone.
 function syncAppearance(){
   const bg=getComputedStyle(document.body).backgroundColor;
-  const rgb=bg.match(/rgba?\\(\\s*(\\d+)[, ]+\\s*(\\d+)[, ]+\\s*(\\d+)/i);
+  const rgb=bg.match(/[0-9]+(?:\.[0-9]+)?/g);
   if(!rgb){indicator.classList.remove('nyang-loading-dark');return;}
   const [r,g,b]=rgb.slice(1,4).map(Number);
   const brightness=(0.2126*r+0.7152*g+0.0722*b)/255;
