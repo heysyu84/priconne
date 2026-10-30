@@ -1,11 +1,11 @@
 {
   "schema": "nyang-youtube-tactic-candidates-v1",
-  "extractionVersion": "20261030-dango03",
+  "extractionVersion": "20261030-except01",
   "source": "YouTube Data API v3",
   "readOnly": true,
   "registrationAllowed": false,
-  "fetchedAt": "2026-10-30T13:09:01.401Z",
-  "expiresAt": "2026-11-27T13:09:01.401Z",
+  "fetchedAt": "2026-10-30T13:40:21.236Z",
+  "expiresAt": "2026-11-27T13:40:21.236Z",
   "videoCount": 69,
   "requestedVideoCount": 72,
   "missingVideoCount": 3,
@@ -1119,7 +1119,7 @@
         },
         {
           "time": "1:11",
-          "text": "ㄴ ーーーーー1:07 敵 UB 후 바이올렛, 호마레, 수키드나, 란파 OFF",
+          "text": "ㄴ ーーーーー1:07 敵 UB 후 프캬루 제외 OFF",
           "checked": [
             false,
             false,
@@ -1566,7 +1566,7 @@
         },
         {
           "time": "1:11",
-          "text": "ㄴ ーーーーー1:07 敵 UB 후 바이올렛, 호마레, 수키드나, 란파 OFF",
+          "text": "ㄴ ーーーーー1:07 敵 UB 후 프캬루 제외 OFF",
           "checked": [
             false,
             false,
@@ -4106,7 +4106,7 @@
       "rows": [
         {
           "time": null,
-          "text": "AUTO 온, 시나츠, 수리아, 와카나, 수레시아 SET",
+          "text": "AUTO 온, 피오 제외 SET",
           "checked": [
             false,
             true,
@@ -4397,7 +4397,7 @@
       "rows": [
         {
           "time": null,
-          "text": "AUTO 오프, 와카나, 수레시아, 편오이, 피오 SET",
+          "text": "AUTO 오프, 시나츠 제외 SET",
           "checked": [
             true,
             true,
@@ -6381,7 +6381,7 @@
       "rows": [
         {
           "time": null,
-          "text": "AUTO 온, 바이올렛, 사쿠라, 수나카, 수사렌 SET",
+          "text": "AUTO 온, 아이라 제외 SET",
           "checked": [
             true,
             true,
@@ -6581,7 +6581,7 @@
       "rows": [
         {
           "time": null,
-          "text": "AUTO 온, 수쥰, 사쿠라, 수나카, 수사렌 SET",
+          "text": "AUTO 온, 아이라 제외 SET",
           "checked": [
             true,
             true,
@@ -6726,7 +6726,7 @@
       "rows": [
         {
           "time": null,
-          "text": "AUTO 오프, 수쥰, 사쿠라, 수나카, 수사렌 SET",
+          "text": "AUTO 오프, 메두사 제외 SET",
           "checked": [
             true,
             true,
@@ -9567,7 +9567,7 @@
       "rows": [
         {
           "time": null,
-          "text": "AUTO 온, 봄쿄카, 피오, 의란파, 수리스 SET, [원문 확인: 클요리以外SET]",
+          "text": "AUTO 온, 클요리 제외 SET, [원문 확인: 클요리以外SET]",
           "checked": [
             true,
             true,
@@ -10878,7 +10878,7 @@
       "rows": [
         {
           "time": null,
-          "text": "AUTO 온, 소노, 알라비, 알조미, 수메스 SET",
+          "text": "AUTO 온, 수유이 제외 SET",
           "checked": [
             true,
             true,
@@ -11474,7 +11474,7 @@
       "rows": [
         {
           "time": null,
-          "text": "AUTO 오프, 엔요리, 수네모네, 라이라엘, 뉴츠네 SET",
+          "text": "AUTO 오프, 뉴사렌 제외 SET",
           "checked": [
             true,
             true,
@@ -12536,7 +12536,7 @@
       "rows": [
         {
           "time": null,
-          "text": "AUTO 오프, 수렘, 리조미, 파오이, 수네모네 SET",
+          "text": "AUTO 오프, 리리컬 제외 SET",
           "checked": [
             true,
             true,
@@ -15105,7 +15105,7 @@
         },
         {
           "time": "0:05",
-          "text": "0:05 프셰피 후 윈유니 ON, 수셰피, 윈에루, 프셰피, 파오이 OFF",
+          "text": "0:05 프셰피 후 윈유니 ON, 윈유니 제외 OFF",
           "checked": [
             true,
             false,
@@ -16825,7 +16825,7 @@
       "rows": [
         {
           "time": null,
-          "text": "AUTO 오프, 수셰피, 리조미, 파오이, 수네모네 SET",
+          "text": "AUTO 오프, 리리컬 제외 SET",
           "checked": [
             true,
             true,
