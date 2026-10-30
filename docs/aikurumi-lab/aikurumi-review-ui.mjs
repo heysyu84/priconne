@@ -64,10 +64,11 @@ class ReviewWorkspace{
  draw(){
   if(!this.root?.isConnected)return;
   const listScroll=this.root.querySelector('.review-list')?.scrollTop||0;
-  const source=this.snapshots.find(s=>(s.stage===3?3:4)===this.stage),month=source?.krMonth?.replace('-','.')||'2026.11';
+  const displayedStage=this.view==='compose'?3:this.stage;
+  const source=this.snapshots.find(s=>(s.stage===3?3:4)===displayedStage),month=source?.krMonth?.replace('-','.')||'2026.11';
   const fetched=this.youtube?.videoCount??0,requested=this.youtube?.requestedVideoCount??new Set(this.items.map(i=>i.candidate?.videoId).filter(Boolean)).size;
   this.root.innerHTML='<div class="external-review">'
-   +'<div class="review-heading"><div><h2>외부 택틱</h2><p>'+escape(month)+' · '+this.stage+'단계</p></div><div class="review-heading-actions">'
+   +'<div class="review-heading"><div><h2>외부 택틱</h2><p>'+escape(month)+' · '+displayedStage+'단계</p></div><div class="review-heading-actions">'
    +button('자료 새로고침','refresh',this.loading?'disabled':'')+'</div></div>'
    +'<div class="review-views" role="group" aria-label="외부 택틱 보기">'+[['tactics','택틱 검수'],['videos','유튜브 모음'],['compose','3단계 조합']].map(([key,label])=>
     '<button type="button" data-review-action="view" data-value="'+key+'" class="'+(this.view===key?'active':'')+'" aria-pressed="'+(this.view===key)+'">'+label+'</button>').join('')+'</div>'
