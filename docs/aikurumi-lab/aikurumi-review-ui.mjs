@@ -1,4 +1,4 @@
-import {buildReviewItems,reviewDraft,stage3LineupDraft,validateReviewDraft,damageLabel,findImportedTactic,safeUrl,isYouTube} from './aikurumi-review-model.mjs?v=20261030-review03';
+import {buildReviewItems,reviewDraft,stage3LineupDraft,validateReviewDraft,damageLabel,findImportedTactic,safeUrl,isYouTube} from './aikurumi-review-model.mjs?v=20261030-review05';
 import {findNonOverlappingStage3} from './aikurumi-stage3-composer.mjs';
 import {previewAikurumiTactic} from './aikurumi-tactic-review.mjs';
 
@@ -60,13 +60,14 @@ class ReviewWorkspace{
    .sort((a,b)=>a.boss-b.boss||(b.damage.value||0)-(a.damage.value||0)||a.ordinal-b.ordinal);
  }
  badge(item){return this.existing(item)?['applied','적용됨']:this.draft(item).confirmed?['verified','검수 완료']:
-  item.problems.length?['check','확인 필요']:['ready','검수 대기'];}
+  item.problems.length?['check','확인 필요']:['ready',item.stage===3&&item.operation==='full-auto'?'바로 등록':'검수 대기'];}
  draw(){
   if(!this.root?.isConnected)return;
   const listScroll=this.root.querySelector('.review-list')?.scrollTop||0;
   const displayedStage=this.view==='compose'?3:this.stage;
   const source=this.snapshots.find(s=>(s.stage===3?3:4)===displayedStage),month=source?.krMonth?.replace('-','.')||'2026.11';
   const fetched=this.youtube?.videoCount??0,requested=this.youtube?.requestedVideoCount??new Set(this.items.map(i=>i.candidate?.videoId).filter(Boolean)).size;
+  const references=this.youtube?.references||[],withTimeline=references.filter(r=>r.rows?.length).length;
   this.root.innerHTML='<div class="external-review">'
    +'<div class="review-heading"><div><h2>외부 택틱</h2><p>'+escape(month)+' · '+displayedStage+'단계</p></div><div class="review-heading-actions">'
    +button('자료 새로고침','refresh',this.loading?'disabled':'')+'</div></div>'
@@ -75,7 +76,7 @@ class ReviewWorkspace{
    +(this.error?'<p class="review-error" role="alert">'+escape(this.error)+'</p>':'')
    +(this.message?'<p class="review-message" role="status">'+escape(this.message)+'</p>':'')
    +(!this.ready?'<div class="review-empty" role="status">'+(this.error?'자료를 다시 불러와 주세요.':'택틱을 불러오는 중…')+'</div>':
-    '<div class="review-fetch-status"><span class="review-status-dot"></span><span>유튜브 설명란 <strong>'+fetched+(requested?' / '+requested:'')+'개</strong> 수집 · '+escape(date(this.youtube.fetchedAt))+'</span>'
+    '<div class="review-fetch-status"><span class="review-status-dot"></span><span>유튜브 설명란 <strong>'+fetched+(requested?' / '+requested:'')+'개</strong> · TL 본문 <strong>'+withTimeline+' / '+references.length+'건</strong> 수집 · '+escape(date(this.youtube.fetchedAt))+'</span>'
     +(Date.parse(this.youtube.expiresAt)<=Date.now()?'<strong class="review-attention">갱신 필요</strong>':'')+'</div>'
     +(this.view==='videos'?this.videoView():this.view==='compose'?this.composeView():this.tacticsView()))+'</div>';
   const list=this.root.querySelector('.review-list');if(list)list.scrollTop=listScroll;
@@ -106,8 +107,9 @@ class ReviewWorkspace{
    +'<strong>'+escape(name)+'</strong><span>'+draft.stars[i]+'성 · R'+(item.conditions.ranks[i]||'—')+'</span></div>').join('');
   const youtube=item.source==='youtube',sourceUrl=safeUrl(item.link.link);
   const conditionFields=item.conditions.fields.map(f=>'<div><dt>'+escape(f.label)+'</dt><dd>'+escape(f.value)+'</dd></div>').join('');
-  const sourceNotice=youtube?(item.candidate?.rows?.length?'일본어 TL 자동 수집':'일본어 TL 확인 필요'):
-   (isYouTube(item.link.link)?'일본어 TL 없음 · ai쿠루미 TL 사용':'ai쿠루미 TL');
+  const sourceNotice=youtube?(item.candidate?.status==='video-timeline-only'?'영상 화면의 TL · 설명란 본문 없음':item.candidate?.rows?.length?
+   (item.candidate.tacticLocation==='author-comment'?'작성자 댓글 TL':'설명란 TL')+' · '+item.candidate.rows.length+'행 수집':'일본어 TL 구간 확인 필요'):
+   (isYouTube(item.link.link)?'설명란·작성자 댓글 TL 없음 · ai쿠루미 TL 사용':'ai쿠루미 TL');
   return '<div class="review-detail-heading"><div><span class="review-badge '+state+'">'+label+'</span><h3>'+item.boss+'넴 · '+escape(this.bossName(item))+'</h3><p>'+escape(item.creator)+' · '+escape(item.operationLabel)+'</p></div><div class="review-detail-nav">'
    +button('목록','list')+button('이전','previous','aria-label="이전 택틱"')+button('다음','next','aria-label="다음 택틱"')+'</div></div>'
    +'<div class="review-party">'+names+'</div>'
@@ -146,7 +148,7 @@ class ReviewWorkspace{
   if(!draft.rows.length)return '<div class="review-empty">자동으로 변환된 조작문이 없습니다. 원본을 확인하고 TL을 입력해 주세요.</div>';
   return '<div class="review-grid-wrap"><table class="review-grid"><thead><tr><th class="review-line-number">행</th>'+item.party.map((name,i)=>'<th title="'+escape(name)+'">'+(i+1)+'</th>').join('')
    +'<th class="review-auto">AUTO</th><th class="review-instruction">조작문</th>'+(editing?'<th class="review-remove"><span class="sr-only">삭제</span></th>':'')+'</tr></thead><tbody>'
-   +draft.rows.map((row,index)=>'<tr><td class="review-line-number">'+(index+1)+'</td>'+row.checked.map((on,column)=>'<td class="review-set '+(on?'on':'')+'">'
+   +draft.rows.map((row,index)=>'<tr class="'+(row.needsReview?'needs-review':'')+'"><td class="review-line-number">'+(index+1)+'</td>'+row.checked.map((on,column)=>'<td class="review-set '+(on?'on':'')+'">'
     +(editing?'<input type="checkbox" data-review-row="'+index+'" data-column="'+column+'" aria-label="'+(index+1)+'행 '+escape(column===5?'AUTO':item.party[column])+' SET" '+(on?'checked':'')+'>':
      '<span aria-label="'+(on?'ON':'OFF')+'">'+(on?'●':'·')+'</span>')+'</td>').join('')
     +'<td class="review-instruction">'+(editing?'<textarea rows="1" data-review-row="'+index+'" aria-label="'+(index+1)+'행 조작문">'+escape(row.text)+'</textarea>':escape(row.text))+'</td>'
@@ -223,7 +225,7 @@ class ReviewWorkspace{
     if(key==='category'){this.drawDetail();return;}
    }else{
     const row=draft.rows[Number(target.dataset.reviewRow)];if(!row)return;
-    if(target.type==='checkbox')row.checked[Number(target.dataset.column)]=target.checked;else row.text=target.value;
+    if(target.type==='checkbox')row.checked[Number(target.dataset.column)]=target.checked;else{row.text=target.value;row.needsReview=false;}
     draft.confirmed=false;draft.edited=true;
    }
    this.updateApplyState();return;

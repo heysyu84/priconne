@@ -64,16 +64,19 @@ export function buildReviewItems(snapshot,youtube,{youtubeReady=true,now=Date.no
    const source=policy.source==='aikurumi'?'aikurumi':'youtube';
    const problems=[];
    if(!preview.matchedKoreanNames)problems.push('캐릭터 이름 확인');
-   if(linked&&!fresh)problems.push('유튜브 수집 자료 갱신 필요');
-   else if(linked&&!candidate)problems.push('유튜브 수집 결과 없음');
-   else if(source==='youtube'){
+   const automaticLineup=snapshot.stage===3&&type.operation==='full-auto';
+   if(!automaticLineup&&linked&&!fresh)problems.push('유튜브 수집 자료 갱신 필요');
+   else if(!automaticLineup&&linked&&!candidate)problems.push('유튜브 수집 결과 없음');
+   else if(!automaticLineup&&source==='youtube'){
     if(candidate?.status==='needs-source-check')problems.push('영상 내 택틱 구간 확인');
     if(candidate?.status==='video-unavailable')problems.push('영상 조회 불가');
     if(candidate?.omittedRows)problems.push('번역되지 않은 조작 '+candidate.omittedRows+'행');
+    if(candidate?.unresolvedRows)problems.push('조작·조건 확인 '+candidate.unresolvedRows+'행');
+    if(candidate?.status==='video-timeline-only')problems.push('영상 화면의 TL · 설명란 본문 없음');
     if(candidate?.issues?.includes('unmapped-actors'))problems.push('행동 대상 확인');
    }
-   if(source==='aikurumi'&&(preview.warnings.length||preview.unmappedActors.length))problems.push('조작문 해석 확인');
-   if(!rows.length)problems.push('조작문 확인');
+   if(!automaticLineup&&source==='aikurumi'&&(preview.warnings.length||preview.unmappedActors.length))problems.push('조작문 해석 확인');
+   if(!automaticLineup&&!rows.length)problems.push('조작문 확인');
    const damage=sourceDamage(task,link);
    if(damage.ambiguous)problems.push('기대딜 선택');
    const conditionFields=candidate?.conditions?.fields?.length&&source==='youtube'?candidate.conditions.fields:conditions.fields;
@@ -96,7 +99,7 @@ export function reviewDraft(item){
   tp:item.conditions.tp,category:item.task.type===1&&item.stage===4?'carry':'main',support:-1,
   duration:90,requiredCarrySeconds:'',carry:item.stage===3?item.carry??'':'',
   note:item.conditions.fields.map(f=>f.label+': '+f.value).join('\n'),
-  rows:item.rows.map(row=>({text:String(row.text||''),checked:[...(row.checked||Array(6).fill(false))]})),
+  rows:item.rows.map(row=>({text:String(row.text||''),checked:[...(row.checked||Array(6).fill(false))],needsReview:row.needsReview===true})),
   source:item.source,confirmed:false,createMonth:false,edited:false};
 }
 

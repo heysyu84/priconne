@@ -1,5 +1,21 @@
 import test from 'node:test';
+import {fetchYouTubeAuthorTimelines} from './aikurumi-youtube-api.mjs';
 import assert from 'node:assert/strict';
+test('only the video author can supply an automatically selected comment TL',async()=>{
+ const video={videoId:'abcdefghijk',channelId:'owner'},calls=[];
+ const out=await fetchYouTubeAuthorTimelines([video],{apiKey:'fixture-key',fetchImpl:async url=>{
+  const u=new URL(url);calls.push(u);assert.equal(u.pathname,'/youtube/v3/commentThreads');assert.equal(u.searchParams.get('textFormat'),'plainText');
+  return Response.json({items:[{snippet:{topLevelComment:{id:'third-party',snippet:{authorChannelId:{value:'someone'},textOriginal:'1:30 全SET AUTO ON\n0:30 AUTO OFF'}}}},
+   {snippet:{topLevelComment:{id:'owner-tl',snippet:{authorChannelId:{value:'owner'},textOriginal:'1:30 全SET AUTO ON\n0:30 AUTO OFF'}}}}]});
+ }});
+ assert.equal(calls.length,1);assert.equal(out[0].commentsStatus,'complete');assert.equal(out[0].authorTimelines.length,1);assert.equal(out[0].authorTimelines[0].id,'owner-tl');
+});
+test('disabled and failed comment reads remain distinct and never erase fetched descriptions',async()=>{
+ for(const [reason,status]of [['commentsDisabled','disabled'],['quotaExceeded','failed']]){
+  const out=await fetchYouTubeAuthorTimelines([{videoId:'abcdefghijk',channelId:'owner',description:'existing'}],{apiKey:'fixture-key',fetchImpl:async()=>Response.json({error:{errors:[{reason}]}},{status:403})});
+  assert.equal(out[0].description,'existing');assert.equal(out[0].commentsStatus,status);assert.equal(out[0].authorTimelines.length,0);
+ }
+});
 import {readFileSync} from 'node:fs';
 import {youtubeVideoId,listAikurumiYouTubeVideos,inspectYouTubeDescription,
   fetchYouTubeDescriptions,summarizeYouTubeDescriptions} from './aikurumi-youtube-api.mjs';

@@ -38,11 +38,12 @@ export function inspectYouTubeDescription(raw) {
   const description=String(raw??'');
   const lines=description.replace(/\r\n?/g,'\n').split('\n');
   // Heuristic only, never certify correctness: chapter timestamps are common.
-  const candidate=lines.filter(line=>/^\s*[★☆⭐✩]?\s*(?:[01]?:)?[0-5]?\d:[0-5]\d(?:\s|$|[、,:：→➡）)])/u.test(line));
+  const candidate=lines.map(line=>line.match(/^\s*[★☆⭐✩]?\s*0?([01]):([0-5]\d)(?:\s|$|[、,:：→➡）)])/u))
+    .filter(Boolean).map(m=>Number(m[1])*60+Number(m[2])).filter(seconds=>seconds<=90);
   const instructions=lines.filter(line=>/(?:SET|AUTO|オート|オン|オフ|UB|ユニオンバースト|手動|自動|自动|自动|セット|解除|キャンセル|目押し|後|前|ON|OFF|→|➡)/iu.test(line));
   return {descriptionLength:description.length,lineCount:lines.length,
     candidateClockLines:candidate.length,instructionHintLines:instructions.length,
-    mayContainTactic:candidate.length>=2&&instructions.length>=1,
+    mayContainTactic:candidate.length>=2&&instructions.length>=1&&candidate.some((seconds,index)=>index>0&&seconds<candidate[index-1]),
     containsJapaneseKana:/[\u3040-\u30ff]/u.test(description)};
 }
 
@@ -56,7 +57,7 @@ export async function fetchYouTubeDescriptions(videos,{apiKey,fetchImpl=fetch}={
     const uri=new URL('https://www.googleapis.com/youtube/v3/videos');
     uri.searchParams.set('part','snippet');
     uri.searchParams.set('id',group.map(v=>v.videoId).join(','));
-    uri.searchParams.set('fields','items(id,snippet(title,description,channelTitle,publishedAt,defaultLanguage))');
+    uri.searchParams.set('fields','items(id,snippet(title,description,channelId,channelTitle,publishedAt,defaultLanguage))');
     uri.searchParams.set('key',String(apiKey));
     const res=await fetchImpl(uri.href,{signal:AbortSignal.timeout(20000)});
     if(!res.ok)throw new Error('YouTube videos.list returned HTTP '+res.status+
@@ -70,12 +71,45 @@ export async function fetchYouTubeDescriptions(videos,{apiKey,fetchImpl=fetch}={
         title:String(item.snippet?.title??''),
         channelTitle:String(item.snippet?.channelTitle??''),
         publishedAt:String(item.snippet?.publishedAt??''),
-        description:String(item.snippet?.description??'')
+        description:String(item.snippet?.description??''),channelId:String(item.snippet?.channelId??'')
       });
     }
   }
   return {requested:unique.length,received:results.size,missing:unique.filter(v=>!results.has(v.videoId)).map(v=>v.videoId),
     videos:[...results.values()]};
+}
+
+// Published comments only; accept operative TLs from the video's own channel.
+// commentThreads does not expose a pinned flag, so never label these as pinned.
+export async function fetchYouTubeAuthorTimelines(videos,{apiKey,fetchImpl=fetch,concurrency=4,maxPages=2}={}){
+ if(!apiKey||!String(apiKey).trim())throw Error('Missing YOUTUBE_API_KEY');
+ const out=videos.map(v=>({...v,authorTimelines:[],commentsStatus:'not-requested'}));let cursor=0;
+ await Promise.all(Array.from({length:Math.min(concurrency,out.length)},async()=>{
+  while(cursor<out.length){
+   const video=out[cursor++];if(!video.channelId){video.commentsStatus='no-author-id';continue;}
+   let pageToken='';
+   try{
+    for(let page=0;page<maxPages;page++){
+     const uri=new URL('https://www.googleapis.com/youtube/v3/commentThreads');
+     for(const [key,value]of Object.entries({part:'snippet',videoId:video.videoId,maxResults:'100',order:'relevance',textFormat:'plainText',
+      fields:'nextPageToken,items(snippet(topLevelComment(id,snippet(textOriginal,authorChannelId))))',key:String(apiKey)}))uri.searchParams.set(key,value);
+     if(pageToken)uri.searchParams.set('pageToken',pageToken);
+     const response=await fetchImpl(uri.href,{signal:AbortSignal.timeout(20000)});
+     if(!response.ok){const payload=await response.json().catch(()=>({}));const reason=payload.error?.errors?.[0]?.reason;
+      video.commentsStatus=reason==='commentsDisabled'?'disabled':'failed';break;}
+     const payload=await response.json();
+     for(const entry of payload.items||[]){
+      const comment=entry.snippet?.topLevelComment,snippet=comment?.snippet;
+      if(snippet?.authorChannelId?.value!==video.channelId)continue;
+      const text=String(snippet.textOriginal||''),inspection=inspectYouTubeDescription(text);
+      if(inspection.mayContainTactic||/(?:全員|全|すべて|全部)\s*(?:SET|セット)|フルオート/iu.test(text))
+       video.authorTimelines.push({id:String(comment.id||''),text});
+     }
+     pageToken=payload.nextPageToken||'';video.commentsStatus=pageToken?'limited':'complete';if(!pageToken)break;
+    }
+   }catch{video.commentsStatus='failed';}
+  }
+ }));return out;
 }
 
 // Only publish derived counters, NOT third-party full descriptions, to reports.

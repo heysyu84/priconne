@@ -6,10 +6,14 @@ on:
       - '.github/workflows/refresh-aikurumi-youtube-candidates.yml'
       - 'redive/scripts/refresh-aikurumi-youtube-candidates.mjs'
       - 'redive/scripts/aikurumi-youtube-candidates.mjs'
+      - 'redive/scripts/aikurumi-youtube-segments.mjs'
+      - 'redive/scripts/aikurumi-youtube-timeline.mjs'
       - 'redive/scripts/test-aikurumi-youtube-candidates.mjs'
       - 'redive/public/aikurumi-snapshot*.json'
       - 'redive/public/aikurumi-tactic-*.mjs'
       - 'redive/public/aikurumi-review-model.mjs'
+      - 'redive/public/aikurumi-character-matcher.mjs'
+      - 'redive/public/tactic-parser.mjs'
   workflow_dispatch:
   schedule:
     - cron: '20 23 * * *'

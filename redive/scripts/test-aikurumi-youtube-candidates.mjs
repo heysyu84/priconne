@@ -2,9 +2,15 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {splitVideoDescription,createYouTubeTacticCandidates} from './aikurumi-youtube-candidates.mjs';
+import {matchedYouTubeSegment,youtubeStartSeconds} from './aikurumi-youtube-segments.mjs';
+import {normalizeYouTubeTimeline} from './aikurumi-youtube-timeline.mjs';
 const load=n=>JSON.parse(readFileSync(new URL('../public/'+n,import.meta.url),'utf8'));
 const snapshots=[load('aikurumi-snapshot-stage3.json'),load('aikurumi-snapshot.json')];
 const report=videos=>({videos:videos.map(([id,description])=>({videoId:id,description}))});
+test('an unrecognized costume shorthand cannot silently become a different party costume',()=>{
+ const snapshot=snapshots[1],task=snapshot.bosses.flatMap(b=>b.tasks).find(t=>t.charas.some(c=>snapshot.characterData.names[c.prefabId]?.includes('윈유니')));assert.ok(task);
+ const text=normalizeYouTubeTimeline('1:12 水ユニ SET',{task,snapshot});assert.match(text,/水ユニ/);assert.doesNotMatch(text,/水윈유니/);
+});
 
 test('detect explicit Japanese boss section without treating battle clocks as boss numbers',()=>{
  const sections=splitVideoDescription('【1ボス】\n1:30 AUTO ON\n1:12 ピオ SET\n【2ボス】\n1:30 全SET\n1:04 ネネカ OFF',
@@ -12,6 +18,32 @@ test('detect explicit Japanese boss section without treating battle clocks as bo
  assert.deepEqual(sections.map(s=>s.boss),[1,2]);
  assert.ok(sections[0].text.includes('ピオ'));
  assert.ok(!sections[0].text.includes('ネネカ'));
+});
+test('video start timestamps and rounded chapter damage resolve only one precise source variant',()=>{
+ assert.equal(youtubeStartSeconds('https://youtu.be/abcdefghijk?t=2m8s'),128);
+ const snapshot=snapshots[1],task=snapshot.bosses[0].tasks[0];
+ const ref={stage:6,boss:1,task,snapshot,link:{name:'33065',link:'https://youtu.be/abcdefghijk'}},other={...ref,task:{...task,id:task.id+1},link:{name:'38600'}};
+ const sections=[{boss:1,text:'ワイバーン 3.31億',startSeconds:128},{boss:1,text:'ワイバーン 3.86億',startSeconds:240}];
+ assert.equal(matchedYouTubeSegment(sections,ref,[ref,other]).segment,sections[0]);
+ const collision={...ref,task:{...task,id:task.id+2},link:{name:'33120'}};
+ assert.equal(matchedYouTubeSegment(sections,ref,[ref,collision]).segment,null);
+});
+test('a second TL starting below 1:30 is split, while a boss UB cue stays inside its battle',()=>{
+ const sections=splitVideoDescription('【1ボス】\n1:16 キャル\n1:07 ワイバーン UB\n0:03 キャル\n1:16 キャル\n0:02 キャル',['ワイバーン']);
+ assert.equal(sections.length,2);assert.match(sections[0].text,/1:07 ワイバーン UB/);assert.doesNotMatch(sections[1].text,/1:07/);
+});
+test('a Japanese author-comment TL wins over an empty description, without silently selecting Chinese',()=>{
+ const output=createYouTubeTacticCandidates(snapshots,{videos:[{videoId:'JcqLd2C8mTA',description:'動画の目次',commentsStatus:'complete',authorTimelines:[{id:'comment',text:'1:30 全SET AUTO ON\n1:12 AUTO OFF\n0:32 AUTO ON'}]}]});
+ const item=output.references.find(r=>r.videoId==='JcqLd2C8mTA');assert.equal(item.tacticLocation,'author-comment');assert.equal(item.commentId,'comment');assert.equal(item.youtubeHasTactic,true);assert.ok(item.rows.length>=3);
+});
+test('unavailable comments never certify that a YouTube TL is absent',()=>{
+ const output=createYouTubeTacticCandidates(snapshots,{videos:[{videoId:'JcqLd2C8mTA',description:'概要',commentsStatus:'failed'}]});
+ const item=output.references.find(r=>r.videoId==='JcqLd2C8mTA');assert.equal(item.youtubeHasTactic,null);assert.equal(item.status,'needs-source-check');
+});
+test('a chapter-only full-auto compilation is not mistaken for a written battle timeline',()=>{
+ const output=createYouTubeTacticCandidates(snapshots,{videos:[{videoId:'gcLTnp88aSo',description:'全ボスフルオート紹介\n0:00 はじめに\n2:08 ワイバーン 33,065万\n3:45 ワイバーン 29,490万\n5:12 タフガイスト 26,175万',commentsStatus:'complete'}]});
+ const refs=output.references.filter(r=>r.videoId==='gcLTnp88aSo');assert.equal(refs.length,21);
+ assert.ok(refs.every(r=>r.status==='no-youtube-tl'&&r.youtubeHasTactic===false&&r.rows.length===0));
 });
 
 test('multi-boss YouTube cannot apply whole description to every tactic without headings',()=>{
@@ -49,13 +81,13 @@ test('public export contains only safe derived previews with a 28-day expiration
    r.rows.every(row=>!Object.hasOwn(row,'source')&&!Object.hasOwn(row,'raw'))));
 });
 
-test('never publish unconverted Japanese source sentences even inside partial action rows',()=>{
+test('unresolved operative fragments remain marked in their rows instead of deleting battle actions',()=>{
  const data=createYouTubeTacticCandidates(snapshots,report([['JcqLd2C8mTA',
   '1:30 全SET AUTO ON\n1:12 ネネカ 後 SET\n1:04 プリキャル 目押し\n0:32 AUTO OFF']]));
  const text=JSON.stringify(data);
- assert.ok(!text.includes('ネネカ'));
- assert.ok(!text.includes('プリキャル'));
- assert.ok(!text.includes('目押し'));
  assert.ok(!text.includes('sourceText'));
- assert.ok(data.references.every(r=>r.rows.every(x=>!/[ぁ-ゟァ-ヿ一-龯]/u.test(x.text))));
+ const one=data.references.find(r=>r.videoId==='JcqLd2C8mTA');
+ assert.ok(one.rows.some(r=>r.time==='1:12'));assert.ok(one.rows.some(r=>r.time==='1:04'));
+ assert.equal(one.omittedRows,0);assert.ok(one.unresolvedRows>0);
+ assert.ok(one.rows.filter(r=>/[ぁ-ゟァ-ヿ一-龯]/u.test(r.text)).every(r=>r.needsReview));
 });

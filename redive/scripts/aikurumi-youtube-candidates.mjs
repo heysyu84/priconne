@@ -1,63 +1,11 @@
-// Server-side, ephemeral YouTube description -> Korean tactic review candidates.
-// Only DERIVED Korean operation rows and source identifiers may be exported.
-// Never serialize YouTube's original description or Japanese source lines to public assets.
+// Server-side description -> scoped operational review rows, never full descriptions.
 import {previewAikurumiTactic} from '../public/aikurumi-tactic-review.mjs';
 import {youtubeVideoId,inspectYouTubeDescription} from './aikurumi-youtube-api.mjs';
 import {extractTacticConditions} from '../public/aikurumi-review-model.mjs';
+import {splitVideoDescription,matchedYouTubeSegment} from './aikurumi-youtube-segments.mjs';
+import {normalizeYouTubeTimeline,translateYouTubeRow} from './aikurumi-youtube-timeline.mjs';
+export {splitVideoDescription} from './aikurumi-youtube-segments.mjs';
 
-function bossHeader(text,bossNames){
- const line=String(text).trim().slice(0,130);
- let m=line.match(/^(?:[【[(（#★☆◆■●\s]*)(?:第\s*)?([1-5])\s*(?:ボス|ネームド|ネム|体目|番目|넴|번\s*보스|BOSS\b|Boss\b)/iu);
- if(m)return Number(m[1]);
- m=line.match(/^(?:[【[(（#★☆◆■●\s]*)BOSS\s*([1-5])\b/iu);
- if(m)return Number(m[1]);
- const found=(bossNames||[]).map((n,i)=>n&&line.includes(n)?i+1:0).filter(Boolean);
- return found.length===1&&line.length<=75?found[0]:null;
-}
-export function splitVideoDescription(description,bossNames){
- const lines=String(description??'').replace(/\r\n?/g,'\n').split('\n');
- const starts=[];
- lines.forEach((line,index)=>{const boss=bossHeader(line,bossNames);if(boss)starts.push({boss,start:index,header:line.trim()});});
- if(!starts.length)return [{boss:null,header:null,text:lines.join('\n').slice(0,18000)}];
- const parts=[];
- for(let i=0;i<starts.length;i++){
-  const p=starts[i],end=starts[i+1]?.start??lines.length;
-  parts.push({boss:p.boss,header:p.header,text:lines.slice(p.start,end).join('\n').slice(0,18000)});
- }
- return parts;
-}
-const titleDamage=name=>{
- const first=String(name??'').split('\n')[0];
- const values=[...first.matchAll(/(?:^|[^\d])(\d{4,6})(?=$|[^\d])/gu)].map(x=>x[1]);
- return values.length===1?values[0]:null;
-};
-function hasToken(text,token){
- return token&&new RegExp('(^|[^0-9])'+token+'(?=$|[^0-9])','m').test(text);
-}
-function matchedSegment(sections,ref,videoRefs){
- if(sections.length===1&&sections[0].boss===null){
-  const timelineStarts=[...sections[0].text.matchAll(/^\s*1:30(?:\s|$)/gm)].length;
-  return videoRefs.length===1&&timelineStarts<=1
-    ?{segment:sections[0],match:'single-video'}:
-    {segment:null,match:videoRefs.length>1?'shared-video-without-sections':'multiple-timelines-without-sections'};
- }
- const matching=sections.filter(s=>s.boss===ref.boss);
- if(!matching.length)return {segment:null,match:'boss-section-not-found'};
- const perBoss=videoRefs.filter(x=>x.boss===ref.boss&&x.stage===ref.stage);
- if(matching.length===1&&perBoss.length===1)return {segment:matching[0],match:'unique-boss'};
- // Each identical source link can be tagged with a number from the first title
- // line, but a segment must contain EXACTLY ONE distinct referenced damage ID.
- const damage=titleDamage(ref.link.name);
- if(!damage)return {segment:null,match:'multiple-options-no-damage-marker'};
- const candidate=matching.filter(s=>hasToken(s.text,damage));
- if(candidate.length!==1)return {segment:null,match:'no-unique-damage-section'};
- const other=perBoss.filter(x=>x!==ref&&titleDamage(x.link.name)!==damage);
- if(other.some(otherRef=>hasToken(candidate[0].text,titleDamage(otherRef.link.name))))
-  return {segment:null,match:'section-contains-multiple-damage-codes'};
- if(perBoss.some(x=>x!==ref&&titleDamage(x.link.name)===damage))
-  return {segment:null,match:'same-damage-multiple-options'};
- return {segment:candidate[0],match:'unique-damage-section'};
-}
 export function createYouTubeTacticCandidates(snapshots,found,{fetchedAt=new Date().toISOString()}={}){
  const refs=[];
  for(const snap of snapshots)for(const boss of snap.bosses||[])for(const task of boss.tasks||[])
@@ -70,27 +18,30 @@ export function createYouTubeTacticCandidates(snapshots,found,{fetchedAt=new Dat
  const videoMap=new Map((found?.videos||[]).map(v=>[v.videoId,v]));
  const references=refs.map(ref=>{
   const video=videoMap.get(ref.videoId),all=refs.filter(x=>x.videoId===ref.videoId);
+  function extract(description,tacticLocation='description',commentId=null){
   const base={stage:ref.stage,boss:ref.boss,taskId:ref.task.id,
     linkIndex:ref.link.index??ref.ordinal,linkOrdinal:ref.ordinal,videoId:ref.videoId,
     status:'needs-source-check',matching:'',rowCount:0,issues:[],warnings:[],rows:[],
-    sourceUrl:String(ref.link.link||''),youtubeHasTactic:null};
-  if(!video?.description)return {...base,status:video?'empty-description':'video-unavailable',
+    sourceUrl:String(ref.link.link||''),youtubeHasTactic:null,tacticLocation,...(commentId?{commentId}:{})};
+  if(!description)return {...base,status:video?'empty-description':'video-unavailable',
     matching:'no-description',youtubeHasTactic:video?false:null};
-  const inspection=inspectYouTubeDescription(video.description);
+  const inspection=inspectYouTubeDescription(description);
   // Stage 3 is often just "全SET", without two timestamped action lines.
   // That is still a tactic: prefer YouTube and request human verification
   // rather than silently replacing it with Aikurumi's Chinese translation.
-  const fullSetOrAuto=/(?:全員|全|すべて|全部)\s*(?:SET|セット|セト)|(?:フルオート|セミオート|オート\s*(?:ON|OFF))/iu
-    .test(video.description);
-  const japaneseTactic=inspection.mayContainTactic||fullSetOrAuto;
-  if(!japaneseTactic)return {...base,status:'no-youtube-tl',youtubeHasTactic:false,
-    matching:'no-tactic-evidence'};
+  const explicitSetup=/^\s*(?:[【\[（(★☆◆■●]+\s*)?(?:(?:初動|開幕|开始|开局)\s*[:：]?\s*)?(?:(?:全キャラ|全員|全体|全|すべて|全部)\s*(?:SET|セット|セト)|(?:AUTO|オート)\s*(?:ON|OFF|オン|オフ)|[OX〇○◯●⭕❌✕×✖✗ー－—-]{5})/imu
+    .test(description);
+  const japaneseTactic=inspection.mayContainTactic||explicitSetup;
+  if(!japaneseTactic)return {...base,status:/(?:タイムライン|\bTL\b)/i.test(description)?'video-timeline-only':'no-youtube-tl',youtubeHasTactic:/(?:タイムライン|\bTL\b)/i.test(description),
+    matching:'no-description-timeline'};
   base.youtubeHasTactic=true; // priority remains YouTube even when segmentation is ambiguous
-  const segments=splitVideoDescription(video.description,ref.bossNames);
-  const matched=matchedSegment(segments,ref,all);
-  if(!matched.segment)return {...base,matching:matched.match};
+  const segments=splitVideoDescription(description,ref.bossNames);
+  const matched=matchedYouTubeSegment(segments,ref,all);
+  if(!matched.segment)return {...base,matching:matched.match,diagnostics:{...matched.diagnostics,
+   sections:segments.slice(0,30).map(s=>({boss:s.boss,header:String(s.header||'').slice(0,160),startSeconds:s.startSeconds,
+    clockLines:inspectYouTubeDescription(s.text).candidateClockLines}))}};
   // A section that contains multiple unrelated time-lines is not safe to bind.
-  const text=matched.segment.text;
+  const text=normalizeYouTubeTimeline(matched.segment.text,ref);
   if(text.length>14000||text.split('\n').length>200)
     return {...base,matching:'section-too-long'};
   const candidate=previewAikurumiTactic(ref.task,
@@ -100,41 +51,33 @@ export function createYouTubeTacticCandidates(snapshots,found,{fetchedAt=new Dat
   const conditions=extractTacticConditions({...ref.task,remarks:'',exRemarks:''},{...ref.link,name:'',remarks:text},candidate);
   base.conditions={tp:conditions.tp,fields:conditions.fields.filter(f=>
     !/[\u3040-\u30ff\u3400-\u9fff]/u.test(f.value))};
-  if(!candidate.rows.length)return {...base,matching:matched.match,status:'no-parsable-timeline',
+  if(!candidate.rows.length)return {...base,matching:matched.match,status:/(?:タイムライン|\bTL\b)/i.test(description)?'video-timeline-only':'no-youtube-tl',youtubeHasTactic:/(?:タイムライン|\bTL\b)/i.test(description),
+    diagnostics:{header:String(matched.segment.header||'').slice(0,160),lineCount:text.split('\n').length,
+     instructionLines:text.split('\n').filter(s=>/(?:全|SET|AUTO|タイムライン|TL)/i.test(s)).map(s=>s.slice(0,180)).slice(0,12)},
     issues:candidate.issues.map(x=>x.code).slice(0,12)};
-  // The parser can emit raw source for unknown actors. NEVER publish those
-  // verbatim in the review site's JSON: preserve only already-converted Korean
-  // action lines, and flag the omitted lines explicitly for manual verification.
-  const safeRows=candidate.rows.filter(row=>{
-    const text=String(row.text||'');
-    if(/[\u3040-\u30ff\u3400-\u9fff]/u.test(text)||/\[원문 확인:/u.test(text))return false;
-    const m=String(row.time||'').match(/^(\d{1,2}):([0-5]\d)$/);
-    if(m&&Number(m[1])*60+Number(m[2])>90)return false;
-    return text.length>0&&text.length<=230;
-  });
-  const timed=safeRows.some(row=>/^(?:0?[01]):[0-5]\d$/.test(String(row.time||'')));
-  const hasUnconverted=candidate.rows.length!==safeRows.length;
+  // Keep every parsed operational row. Unresolved words/conditions stay marked
+  // for review; throwing away the entire row loses required battle actions.
+  const rows=candidate.rows.map(translateYouTubeRow);
+  if(rows.length>250||rows.some(r=>r.text.length>2000))return {...base,matching:matched.match,
+    status:'needs-source-check',issues:['timeline-too-long'],rowCount:rows.length};
+  const unresolvedRows=rows.filter(r=>r.needsReview).length;
   const issues=candidate.issues.map(x=>x.code).slice(0,12);
-  if(hasUnconverted)issues.push('source-lines-omitted');
-  const explicitFullSet=safeRows.length===1&&candidate.rows.length===1&&
-    /전부 SET/.test(safeRows[0].text)&&!issues.length;
-  if((!timed||safeRows.length<2)&&!explicitFullSet)return {...base,matching:matched.match,
-    status:'needs-translation-review',rowCount:candidate.rows.length,issues:[...new Set(issues)],
-    omittedRows:candidate.rows.length};
-  return {...base,status:hasUnconverted||issues.length?'partial':'candidate',matching:matched.match,
-    rowCount:candidate.rows.length,omittedRows:candidate.rows.length-safeRows.length,
+  if(unresolvedRows)issues.push('translation-incomplete');
+  return {...base,status:unresolvedRows||issues.length?'partial':'candidate',matching:matched.match,
+    rowCount:rows.length,omittedRows:0,unresolvedRows,translatedRows:rows.length-unresolvedRows,
     issues:[...new Set(issues)],warningCount:candidate.warnings.length,
-    unknownActorCount:candidate.unmappedActors.length,
-    // Korean structured steps only; no row.source, Japanese literal, or full description.
-    rows:safeRows.slice(0,90).map(row=>({time:row.time||null,
-      text:String(row.text||'').slice(0,230),
-      checked:Array.isArray(row.checked)?row.checked.map(Boolean):[]}))
-  };
+    unknownActorCount:candidate.unmappedActors.length,rows};
+  }
+  const results=[extract(video?.description),...(video?.authorTimelines||[]).map(c=>extract(c.text,'author-comment',c.id))];
+  const quality=r=>(r.rows.length?1000:0)+(r.youtubeHasTactic===true?50:0)+(r.translatedRows||0)*2-(r.unresolvedRows||0)+(r.status==='candidate'?100:0)+(r.tacticLocation==='description'?1:0);
+  results.sort((a,b)=>quality(b)-quality(a));const chosen=results[0];
+  if(chosen.youtubeHasTactic===false&&['failed','limited','no-author-id'].includes(video?.commentsStatus))return {...chosen,status:'needs-source-check',youtubeHasTactic:null,issues:['comments-unavailable'],commentReadStatus:video.commentsStatus};
+  return {...chosen,commentReadStatus:video?.commentsStatus||'not-requested'};
  });
  const statuses={};
  for(const item of references)statuses[item.status]=(statuses[item.status]||0)+1;
  const expiresAt=new Date(Date.parse(fetchedAt)+28*24*60*60*1000).toISOString();
- return {schema:'nyang-youtube-tactic-candidates-v1',source:'YouTube Data API v3',
+ return {schema:'nyang-youtube-tactic-candidates-v1',extractionVersion:'20261030-tl02',source:'YouTube Data API v3',
    readOnly:true,registrationAllowed:false,fetchedAt,expiresAt,
    videoCount:videoMap.size,requestedVideoCount:found?.requested??new Set(refs.map(r=>r.videoId)).size,
    missingVideoCount:found?.missing?.length??0,totalReferences:references.length,statuses,references};
