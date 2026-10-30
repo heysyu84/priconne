@@ -4,19 +4,19 @@
   "source": "YouTube Data API v3",
   "readOnly": true,
   "registrationAllowed": false,
-  "fetchedAt": "2026-10-30T00:54:11.531Z",
-  "expiresAt": "2026-11-27T00:54:11.531Z",
+  "fetchedAt": "2026-10-30T01:00:49.942Z",
+  "expiresAt": "2026-11-27T01:00:49.942Z",
   "videoCount": 69,
   "requestedVideoCount": 72,
   "missingVideoCount": 3,
   "totalReferences": 136,
   "statuses": {
-    "no-youtube-tl": 18,
-    "no-parsable-timeline": 22,
+    "no-youtube-tl": 26,
     "candidate": 2,
-    "needs-source-check": 44,
-    "partial": 47,
-    "video-unavailable": 3
+    "needs-source-check": 58,
+    "partial": 46,
+    "video-unavailable": 3,
+    "video-timeline-only": 1
   },
   "references": [
     {
@@ -27,13 +27,15 @@
       "linkOrdinal": 0,
       "videoId": "YYSf-2wPFVA",
       "status": "no-youtube-tl",
-      "matching": "no-tactic-evidence",
+      "matching": "no-description-timeline",
       "rowCount": 0,
       "issues": [],
       "warnings": [],
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=YYSf-2wPFVA",
-      "youtubeHasTactic": false
+      "youtubeHasTactic": false,
+      "tacticLocation": "description",
+      "commentReadStatus": "complete"
     },
     {
       "stage": 3,
@@ -43,13 +45,15 @@
       "linkOrdinal": 0,
       "videoId": "IL9D561pJZs",
       "status": "no-youtube-tl",
-      "matching": "no-tactic-evidence",
+      "matching": "no-description-timeline",
       "rowCount": 0,
       "issues": [],
       "warnings": [],
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=IL9D561pJZs",
-      "youtubeHasTactic": false
+      "youtubeHasTactic": false,
+      "tacticLocation": "description",
+      "commentReadStatus": "complete"
     },
     {
       "stage": 3,
@@ -59,13 +63,15 @@
       "linkOrdinal": 0,
       "videoId": "IL9D561pJZs",
       "status": "no-youtube-tl",
-      "matching": "no-tactic-evidence",
+      "matching": "no-description-timeline",
       "rowCount": 0,
       "issues": [],
       "warnings": [],
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=IL9D561pJZs",
-      "youtubeHasTactic": false
+      "youtubeHasTactic": false,
+      "tacticLocation": "description",
+      "commentReadStatus": "complete"
     },
     {
       "stage": 3,
@@ -75,13 +81,15 @@
       "linkOrdinal": 0,
       "videoId": "gBAMR9fVpfQ",
       "status": "no-youtube-tl",
-      "matching": "no-tactic-evidence",
+      "matching": "no-description-timeline",
       "rowCount": 0,
       "issues": [],
       "warnings": [],
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=gBAMR9fVpfQ",
-      "youtubeHasTactic": false
+      "youtubeHasTactic": false,
+      "tacticLocation": "description",
+      "commentReadStatus": "complete"
     },
     {
       "stage": 3,
@@ -90,7 +98,7 @@
       "linkIndex": 0,
       "linkOrdinal": 0,
       "videoId": "QctI5DVFQDI",
-      "status": "no-parsable-timeline",
+      "status": "no-youtube-tl",
       "matching": "unique-boss",
       "rowCount": 0,
       "issues": [
@@ -99,7 +107,8 @@
       "warnings": [],
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=QctI5DVFQDI",
-      "youtubeHasTactic": true,
+      "youtubeHasTactic": false,
+      "tacticLocation": "description",
       "conditions": {
         "tp": "",
         "fields": []
@@ -108,7 +117,8 @@
         "header": "3:18 ワイバーン戦1:30残し",
         "lineCount": 1,
         "instructionLines": []
-      }
+      },
+      "commentReadStatus": "complete"
     },
     {
       "stage": 3,
@@ -118,13 +128,15 @@
       "linkOrdinal": 0,
       "videoId": "unG2c92lMTQ",
       "status": "no-youtube-tl",
-      "matching": "no-tactic-evidence",
+      "matching": "no-description-timeline",
       "rowCount": 0,
       "issues": [],
       "warnings": [],
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=unG2c92lMTQ",
-      "youtubeHasTactic": false
+      "youtubeHasTactic": false,
+      "tacticLocation": "description",
+      "commentReadStatus": "complete"
     },
     {
       "stage": 3,
@@ -134,13 +146,15 @@
       "linkOrdinal": 0,
       "videoId": "unG2c92lMTQ",
       "status": "no-youtube-tl",
-      "matching": "no-tactic-evidence",
+      "matching": "no-description-timeline",
       "rowCount": 0,
       "issues": [],
       "warnings": [],
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=unG2c92lMTQ",
-      "youtubeHasTactic": false
+      "youtubeHasTactic": false,
+      "tacticLocation": "description",
+      "commentReadStatus": "complete"
     },
     {
       "stage": 3,
@@ -150,13 +164,15 @@
       "linkOrdinal": 0,
       "videoId": "unG2c92lMTQ",
       "status": "no-youtube-tl",
-      "matching": "no-tactic-evidence",
+      "matching": "no-description-timeline",
       "rowCount": 0,
       "issues": [],
       "warnings": [],
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=unG2c92lMTQ",
-      "youtubeHasTactic": false
+      "youtubeHasTactic": false,
+      "tacticLocation": "description",
+      "commentReadStatus": "complete"
     },
     {
       "stage": 3,
@@ -166,13 +182,15 @@
       "linkOrdinal": 0,
       "videoId": "YYSf-2wPFVA",
       "status": "no-youtube-tl",
-      "matching": "no-tactic-evidence",
+      "matching": "no-description-timeline",
       "rowCount": 0,
       "issues": [],
       "warnings": [],
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=YYSf-2wPFVA",
-      "youtubeHasTactic": false
+      "youtubeHasTactic": false,
+      "tacticLocation": "description",
+      "commentReadStatus": "complete"
     },
     {
       "stage": 3,
@@ -182,13 +200,15 @@
       "linkOrdinal": 0,
       "videoId": "IL9D561pJZs",
       "status": "no-youtube-tl",
-      "matching": "no-tactic-evidence",
+      "matching": "no-description-timeline",
       "rowCount": 0,
       "issues": [],
       "warnings": [],
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=IL9D561pJZs",
-      "youtubeHasTactic": false
+      "youtubeHasTactic": false,
+      "tacticLocation": "description",
+      "commentReadStatus": "complete"
     },
     {
       "stage": 3,
@@ -198,13 +218,15 @@
       "linkOrdinal": 0,
       "videoId": "IL9D561pJZs",
       "status": "no-youtube-tl",
-      "matching": "no-tactic-evidence",
+      "matching": "no-description-timeline",
       "rowCount": 0,
       "issues": [],
       "warnings": [],
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=IL9D561pJZs",
-      "youtubeHasTactic": false
+      "youtubeHasTactic": false,
+      "tacticLocation": "description",
+      "commentReadStatus": "complete"
     },
     {
       "stage": 3,
@@ -235,6 +257,7 @@
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=5fdadWNp5TM",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "conditions": {
         "tp": "",
         "fields": []
@@ -243,7 +266,8 @@
       "unresolvedRows": 0,
       "translatedRows": 1,
       "warningCount": 0,
-      "unknownActorCount": 0
+      "unknownActorCount": 0,
+      "commentReadStatus": "complete"
     },
     {
       "stage": 3,
@@ -260,6 +284,7 @@
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=QctI5DVFQDI",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "diagnostics": {
         "sections": [
           {
@@ -309,7 +334,8 @@
         "damageMatched": false,
         "sourceTimestamp": null,
         "chapterCount": 4
-      }
+      },
+      "commentReadStatus": "complete"
     },
     {
       "stage": 3,
@@ -319,13 +345,15 @@
       "linkOrdinal": 0,
       "videoId": "unG2c92lMTQ",
       "status": "no-youtube-tl",
-      "matching": "no-tactic-evidence",
+      "matching": "no-description-timeline",
       "rowCount": 0,
       "issues": [],
       "warnings": [],
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=unG2c92lMTQ",
-      "youtubeHasTactic": false
+      "youtubeHasTactic": false,
+      "tacticLocation": "description",
+      "commentReadStatus": "complete"
     },
     {
       "stage": 3,
@@ -335,13 +363,15 @@
       "linkOrdinal": 0,
       "videoId": "unG2c92lMTQ",
       "status": "no-youtube-tl",
-      "matching": "no-tactic-evidence",
+      "matching": "no-description-timeline",
       "rowCount": 0,
       "issues": [],
       "warnings": [],
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=unG2c92lMTQ",
-      "youtubeHasTactic": false
+      "youtubeHasTactic": false,
+      "tacticLocation": "description",
+      "commentReadStatus": "complete"
     },
     {
       "stage": 3,
@@ -351,13 +381,15 @@
       "linkOrdinal": 0,
       "videoId": "unG2c92lMTQ",
       "status": "no-youtube-tl",
-      "matching": "no-tactic-evidence",
+      "matching": "no-description-timeline",
       "rowCount": 0,
       "issues": [],
       "warnings": [],
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=unG2c92lMTQ",
-      "youtubeHasTactic": false
+      "youtubeHasTactic": false,
+      "tacticLocation": "description",
+      "commentReadStatus": "complete"
     },
     {
       "stage": 3,
@@ -367,13 +399,15 @@
       "linkOrdinal": 0,
       "videoId": "YYSf-2wPFVA",
       "status": "no-youtube-tl",
-      "matching": "no-tactic-evidence",
+      "matching": "no-description-timeline",
       "rowCount": 0,
       "issues": [],
       "warnings": [],
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=YYSf-2wPFVA",
-      "youtubeHasTactic": false
+      "youtubeHasTactic": false,
+      "tacticLocation": "description",
+      "commentReadStatus": "complete"
     },
     {
       "stage": 3,
@@ -383,13 +417,15 @@
       "linkOrdinal": 0,
       "videoId": "IL9D561pJZs",
       "status": "no-youtube-tl",
-      "matching": "no-tactic-evidence",
+      "matching": "no-description-timeline",
       "rowCount": 0,
       "issues": [],
       "warnings": [],
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=IL9D561pJZs",
-      "youtubeHasTactic": false
+      "youtubeHasTactic": false,
+      "tacticLocation": "description",
+      "commentReadStatus": "complete"
     },
     {
       "stage": 3,
@@ -399,13 +435,15 @@
       "linkOrdinal": 0,
       "videoId": "YYSf-2wPFVA",
       "status": "no-youtube-tl",
-      "matching": "no-tactic-evidence",
+      "matching": "no-description-timeline",
       "rowCount": 0,
       "issues": [],
       "warnings": [],
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=YYSf-2wPFVA",
-      "youtubeHasTactic": false
+      "youtubeHasTactic": false,
+      "tacticLocation": "description",
+      "commentReadStatus": "complete"
     },
     {
       "stage": 3,
@@ -415,13 +453,15 @@
       "linkOrdinal": 0,
       "videoId": "IL9D561pJZs",
       "status": "no-youtube-tl",
-      "matching": "no-tactic-evidence",
+      "matching": "no-description-timeline",
       "rowCount": 0,
       "issues": [],
       "warnings": [],
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=IL9D561pJZs",
-      "youtubeHasTactic": false
+      "youtubeHasTactic": false,
+      "tacticLocation": "description",
+      "commentReadStatus": "complete"
     },
     {
       "stage": 3,
@@ -438,6 +478,7 @@
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=QctI5DVFQDI",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "diagnostics": {
         "sections": [
           {
@@ -487,7 +528,8 @@
         "damageMatched": false,
         "sourceTimestamp": null,
         "chapterCount": 2
-      }
+      },
+      "commentReadStatus": "complete"
     },
     {
       "stage": 3,
@@ -497,13 +539,15 @@
       "linkOrdinal": 0,
       "videoId": "IL9D561pJZs",
       "status": "no-youtube-tl",
-      "matching": "no-tactic-evidence",
+      "matching": "no-description-timeline",
       "rowCount": 0,
       "issues": [],
       "warnings": [],
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=IL9D561pJZs",
-      "youtubeHasTactic": false
+      "youtubeHasTactic": false,
+      "tacticLocation": "description",
+      "commentReadStatus": "complete"
     },
     {
       "stage": 3,
@@ -562,7 +606,7 @@
         },
         {
           "time": "1:15",
-          "text": "1:15 리리컬 후 리리컬 ON, [원문 확인: ダンシングcl최속]",
+          "text": "1:15 리리컬 후 리리컬 ON, [원문 확인: ダンシング캔슬최속]",
           "checked": [
             false,
             false,
@@ -576,6 +620,7 @@
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=JbytoTJVV2k",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "conditions": {
         "tp": "",
         "fields": []
@@ -584,7 +629,8 @@
       "unresolvedRows": 1,
       "translatedRows": 3,
       "warningCount": 1,
-      "unknownActorCount": 0
+      "unknownActorCount": 0,
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -593,7 +639,7 @@
       "linkIndex": 1,
       "linkOrdinal": 0,
       "videoId": "gcLTnp88aSo",
-      "status": "no-parsable-timeline",
+      "status": "no-youtube-tl",
       "matching": "unique-damage-section",
       "rowCount": 0,
       "issues": [
@@ -602,7 +648,8 @@
       "warnings": [],
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=gcLTnp88aSo",
-      "youtubeHasTactic": true,
+      "youtubeHasTactic": false,
+      "tacticLocation": "description",
       "conditions": {
         "tp": "",
         "fields": []
@@ -611,7 +658,8 @@
         "header": "02:08    ワイバーン           33,065万",
         "lineCount": 1,
         "instructionLines": []
-      }
+      },
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -749,6 +797,7 @@
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=9ZvfVTf-uMY",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "conditions": {
         "tp": "",
         "fields": [
@@ -762,7 +811,8 @@
       "unresolvedRows": 4,
       "translatedRows": 5,
       "warningCount": 0,
-      "unknownActorCount": 1
+      "unknownActorCount": 1,
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -873,7 +923,7 @@
         },
         {
           "time": "0:46",
-          "text": "0:46 [원문 확인: ★수키드나 초数직접 발동 通常cl ...※1]",
+          "text": "0:46 [원문 확인: ★수키드나 초数직접 발동 通常캔슬 ...※1]",
           "checked": [
             false,
             false,
@@ -1055,7 +1105,7 @@
         },
         {
           "time": "0:23",
-          "text": "0:23 [원문 확인: ノクバ前に通常すればOK]",
+          "text": "0:23 [원문 확인: 넉백前に通常すればOK]",
           "checked": [
             true,
             true,
@@ -1082,6 +1132,7 @@
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=CYRolchpI8g",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "conditions": {
         "tp": "",
         "fields": []
@@ -1090,7 +1141,8 @@
       "unresolvedRows": 14,
       "translatedRows": 9,
       "warningCount": 10,
-      "unknownActorCount": 0
+      "unknownActorCount": 0,
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -1150,7 +1202,7 @@
         },
         {
           "time": "1:11",
-          "text": "ㄴ [원문 확인: ⭐1 06 프캬루 通常최속 吹き飛ばしcl]",
+          "text": "ㄴ [원문 확인: ⭐1 06 프캬루 通常최속 吹き飛ばし캔슬]",
           "checked": [
             false,
             false,
@@ -1189,7 +1241,7 @@
         },
         {
           "time": "1:00",
-          "text": "ㄴ →프캬루 #エイドcl 후 프캬루, 수키드나 OFF",
+          "text": "ㄴ →프캬루 #エイド캔슬 후 프캬루, 수키드나 OFF",
           "checked": [
             true,
             false,
@@ -1202,7 +1254,7 @@
         },
         {
           "time": "1:00",
-          "text": "ㄴ [원문 확인: ⭐0 51 프캬루 エイドcl최속]",
+          "text": "ㄴ [원문 확인: ⭐0 51 프캬루 エイド캔슬최속]",
           "checked": [
             true,
             false,
@@ -1215,7 +1267,7 @@
         },
         {
           "time": "1:00",
-          "text": "ㄴ [원문 확인: ⭐0 46 수키드나 通常cl최속]",
+          "text": "ㄴ [원문 확인: ⭐0 46 수키드나 通常캔슬최속]",
           "checked": [
             true,
             false,
@@ -1228,7 +1280,7 @@
         },
         {
           "time": "1:00",
-          "text": "ㄴ [원문 확인: ⭐0 44 프캬루 エイドcl최속 吹き飛ばしcl]",
+          "text": "ㄴ [원문 확인: ⭐0 44 프캬루 エイド캔슬최속 吹き飛ばし캔슬]",
           "checked": [
             true,
             false,
@@ -1280,7 +1332,7 @@
         },
         {
           "time": "0:40",
-          "text": "ㄴ [원문 확인: ⭐0 34 프캬루 エイドcl최속 吹き飛ばしcl]",
+          "text": "ㄴ [원문 확인: ⭐0 34 프캬루 エイド캔슬최속 吹き飛ばし캔슬]",
           "checked": [
             false,
             true,
@@ -1319,7 +1371,7 @@
         },
         {
           "time": "0:31",
-          "text": "ㄴ [원문 확인: ⭐0 30 바이올렛 通常cl]",
+          "text": "ㄴ [원문 확인: ⭐0 30 바이올렛 通常캔슬]",
           "checked": [
             false,
             false,
@@ -1345,7 +1397,7 @@
         },
         {
           "time": "0:31",
-          "text": "ㄴ [원문 확인: ⭐0 23 프캬루 吹き飛ばしcl최속 エイド後隙]",
+          "text": "ㄴ [원문 확인: ⭐0 23 프캬루 吹き飛ばし캔슬최속 エイド後隙]",
           "checked": [
             true,
             false,
@@ -1358,7 +1410,7 @@
         },
         {
           "time": "0:20",
-          "text": "0:20 란파 후 [원문 확인: #ソングcl]",
+          "text": "0:20 란파 후 [원문 확인: #ソング캔슬]",
           "checked": [
             true,
             false,
@@ -1371,7 +1423,7 @@
         },
         {
           "time": "0:20",
-          "text": "ㄴ ⭐0:17 프캬루 エイドcl早め 후 프캬루 ON, 란파 OFF",
+          "text": "ㄴ ⭐0:17 프캬루 エイド캔슬早め 후 프캬루 ON, 란파 OFF",
           "checked": [
             false,
             false,
@@ -1384,7 +1436,7 @@
         },
         {
           "time": "0:20",
-          "text": "ㄴ 動画くらい遅くすれば12s ON, [원문 확인: で吹き飛ばしcl]",
+          "text": "ㄴ 動画くらい遅くすれば12s ON, [원문 확인: で吹き飛ばし캔슬]",
           "checked": [
             false,
             false,
@@ -1436,7 +1488,7 @@
         },
         {
           "time": "0:12",
-          "text": "ㄴ [원문 확인: ⭐0 08 スミレ 通常cl早め]",
+          "text": "ㄴ [원문 확인: ⭐0 08 スミレ 通常캔슬早め]",
           "checked": [
             false,
             true,
@@ -1449,7 +1501,7 @@
         },
         {
           "time": "0:12",
-          "text": "ㄴ [원문 확인: 6sエイドcl ソウルtpの猶予広げる]",
+          "text": "ㄴ [원문 확인: 6sエイド캔슬 ソウルtpの猶予広げる]",
           "checked": [
             false,
             true,
@@ -1462,7 +1514,7 @@
         },
         {
           "time": "0:12",
-          "text": "ㄴ ⭐0:06 프캬루 エイドcl早め 후 프캬루 ON",
+          "text": "ㄴ ⭐0:06 프캬루 エイド캔슬早め 후 프캬루 ON",
           "checked": [
             false,
             true,
@@ -1501,7 +1553,7 @@
         },
         {
           "time": "0:01",
-          "text": "0:01 수키드나 후 [원문 확인: #通常cl 14s遅いと欠損]",
+          "text": "0:01 수키드나 후 [원문 확인: #通常캔슬 14s遅いと欠損]",
           "checked": [
             false,
             true,
@@ -1528,6 +1580,7 @@
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=IZ1ISeHNccY",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "conditions": {
         "tp": "",
         "fields": []
@@ -1536,7 +1589,8 @@
       "unresolvedRows": 28,
       "translatedRows": 4,
       "warningCount": 21,
-      "unknownActorCount": 1
+      "unknownActorCount": 1,
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -1553,6 +1607,7 @@
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=93eu_UEr_EY",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "diagnostics": {
         "sections": [
           {
@@ -1614,7 +1669,8 @@
         "damageMatched": true,
         "sourceTimestamp": null,
         "chapterCount": 7
-      }
+      },
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -1623,989 +1679,42 @@
       "linkIndex": 9,
       "linkOrdinal": 9,
       "videoId": "dgRUnwQUuao",
-      "status": "partial",
-      "matching": "unique-boss",
-      "rowCount": 74,
-      "issues": [
-        "unparsed-instructions",
-        "translation-incomplete"
-      ],
+      "status": "needs-source-check",
+      "matching": "ambiguous-party-section",
+      "rowCount": 0,
+      "issues": [],
       "warnings": [],
-      "rows": [
-        {
-          "time": null,
-          "text": "AUTO 오프",
-          "checked": [
-            false,
-            false,
-            false,
-            false,
-            false,
-            false
-          ],
-          "needsReview": false
-        },
-        {
-          "time": "1:16",
-          "text": "1:16 프캬루 후 [원문 확인: ノクバcl一瞬지연※1]",
-          "checked": [
-            false,
-            false,
-            false,
-            false,
-            false,
-            false
-          ],
-          "needsReview": true
-        },
-        {
-          "time": "1:16",
-          "text": "ㄴ [원문 확인: 1 12 ランバーン]",
-          "checked": [
-            false,
-            false,
-            false,
-            false,
-            false,
-            false
-          ],
-          "needsReview": true
-        },
-        {
-          "time": "1:10",
-          "text": "1:10 프캬루 후 [원문 확인: 133.9 遅いと減る]",
-          "checked": [
-            false,
-            false,
-            false,
-            false,
-            false,
-            false
-          ],
-          "needsReview": true
-        },
-        {
-          "time": "1:07",
-          "text": "1:07 보스 UB",
-          "checked": [
-            false,
-            false,
-            false,
-            false,
-            false,
-            false
-          ],
-          "needsReview": false
-        },
-        {
-          "time": "1:06",
-          "text": "1:06 프캬루 후 [원문 확인: ノクバcl一瞬지연※2]",
-          "checked": [
-            false,
-            false,
-            false,
-            false,
-            false,
-            false
-          ],
-          "needsReview": true
-        },
-        {
-          "time": "1:04",
-          "text": "1:04 란파 UB",
-          "checked": [
-            false,
-            false,
-            false,
-            false,
-            false,
-            false
-          ],
-          "needsReview": false
-        },
-        {
-          "time": "1:03",
-          "text": "1:03 수키드나 UB",
-          "checked": [
-            false,
-            false,
-            false,
-            false,
-            false,
-            false
-          ],
-          "needsReview": false
-        },
-        {
-          "time": "1:03",
-          "text": "ㄴ 호마레 UB",
-          "checked": [
-            false,
-            false,
-            false,
-            false,
-            false,
-            false
-          ],
-          "needsReview": false
-        },
-        {
-          "time": "1:03",
-          "text": "ㄴ [원문 확인: 1 01 ランバーン]",
-          "checked": [
-            false,
-            false,
-            false,
-            false,
-            false,
-            false
-          ],
-          "needsReview": true
-        },
-        {
-          "time": "1:03",
-          "text": "ㄴ [원문 확인: 61sサンダー261 見えないけど]",
-          "checked": [
-            false,
-            false,
-            false,
-            false,
-            false,
-            false
-          ],
-          "needsReview": true
-        },
-        {
-          "time": "1:00",
-          "text": "1:00 바이올렛 후 [원문 확인: ソウル後一瞬지연※3]",
-          "checked": [
-            false,
-            false,
-            false,
-            false,
-            false,
-            false
-          ],
-          "needsReview": true
-        },
-        {
-          "time": "0:59",
-          "text": "0:59 프캬루 후 [원문 확인: エイドcl최속 敵飛び上がり視認とか]",
-          "checked": [
-            false,
-            false,
-            false,
-            false,
-            false,
-            false
-          ],
-          "needsReview": true
-        },
-        {
-          "time": "0:59",
-          "text": "ㄴ [원문 확인: 54sサンダー321 こっちで成功判断]",
-          "checked": [
-            false,
-            false,
-            false,
-            false,
-            false,
-            false
-          ],
-          "needsReview": true
-        },
-        {
-          "time": "0:59",
-          "text": "ㄴ [원문 확인: 0 53 ランバーン]",
-          "checked": [
-            false,
-            false,
-            false,
-            false,
-            false,
-            false
-          ],
-          "needsReview": true
-        },
-        {
-          "time": "0:51",
-          "text": "0:51 프캬루 후 [원문 확인: エイドcl최속]",
-          "checked": [
-            false,
-            false,
-            false,
-            false,
-            false,
-            false
-          ],
-          "needsReview": true
-        },
-        {
-          "time": "0:50",
-          "text": "0:50 호마레(敵 UB 후 [원문 확인: でも可]",
-          "checked": [
-            false,
-            false,
-            false,
-            false,
-            false,
-            false
-          ],
-          "needsReview": true
-        },
-        {
-          "time": "0:50",
-          "text": "ㄴ 보스 UB 후 [원문 확인: ランバーン死ぬなら最初の프캬루早すぎ]",
-          "checked": [
-            false,
-            false,
-            false,
-            false,
-            false,
-            false
-          ],
-          "needsReview": true
-        },
-        {
-          "time": "0:48",
-          "text": "0:48 란파 UB",
-          "checked": [
-            false,
-            false,
-            false,
-            false,
-            false,
-            false
-          ],
-          "needsReview": false
-        },
-        {
-          "time": "0:46",
-          "text": "0:46 수키드나 후 [원문 확인: 通常cl최속 피격살짝 지연とか ※4]",
-          "checked": [
-            false,
-            false,
-            false,
-            false,
-            false,
-            false
-          ],
-          "needsReview": true
-        },
-        {
-          "time": "0:44",
-          "text": "0:44 프캬루 후 [원문 확인: エイドcl최속 ノクバclも兼ねる]",
-          "checked": [
-            false,
-            false,
-            false,
-            false,
-            false,
-            false
-          ],
-          "needsReview": true
-        },
-        {
-          "time": "0:44",
-          "text": "ㄴ [원문 확인: 0 43 ランバーン]",
-          "checked": [
-            false,
-            false,
-            false,
-            false,
-            false,
-            false
-          ],
-          "needsReview": true
-        },
-        {
-          "time": "0:44",
-          "text": "ㄴ [원문 확인: 42sサンダー409]",
-          "checked": [
-            false,
-            false,
-            false,
-            false,
-            false,
-            false
-          ],
-          "needsReview": true
-        },
-        {
-          "time": "0:40",
-          "text": "0:40 프캬루 UB",
-          "checked": [
-            false,
-            false,
-            false,
-            false,
-            false,
-            false
-          ],
-          "needsReview": false
-        },
-        {
-          "time": "0:39",
-          "text": "0:39 호마레 UB",
-          "checked": [
-            false,
-            false,
-            false,
-            false,
-            false,
-            false
-          ],
-          "needsReview": false
-        },
-        {
-          "time": "0:35",
-          "text": "0:35 란파 후 [원문 확인: ハーモニー최속※5]",
-          "checked": [
-            false,
-            false,
-            false,
-            false,
-            false,
-            false
-          ],
-          "needsReview": true
-        },
-        {
-          "time": "0:35",
-          "text": "ㄴ [원문 확인: 0 35 ランバーン]",
-          "checked": [
-            false,
-            false,
-            false,
-            false,
-            false,
-            false
-          ],
-          "needsReview": true
-        },
-        {
-          "time": "0:34",
-          "text": "0:34 프캬루 후 [원문 확인: エイド&ノクバcl최속 ここまでの프캬루上手いとノクバ최속でエイドclできる 自分の感覚で調整]",
-          "checked": [
-            false,
-            false,
-            false,
-            false,
-            false,
-            false
-          ],
-          "needsReview": true
-        },
-        {
-          "time": "0:32",
-          "text": "0:32 보스 UB",
-          "checked": [
-            false,
-            false,
-            false,
-            false,
-            false,
-            false
-          ],
-          "needsReview": false
-        },
-        {
-          "time": "0:31",
-          "text": "0:31 수키드나 UB",
-          "checked": [
-            false,
-            false,
-            false,
-            false,
-            false,
-            false
-          ],
-          "needsReview": false
-        },
-        {
-          "time": "0:31",
-          "text": "ㄴ 바이올렛 후 [원문 확인: 피격後 待機 ※6]",
-          "checked": [
-            false,
-            false,
-            false,
-            false,
-            false,
-            false
-          ],
-          "needsReview": true
-        },
-        {
-          "time": "0:28",
-          "text": "0:28 호마레 UB",
-          "checked": [
-            false,
-            false,
-            false,
-            false,
-            false,
-            false
-          ],
-          "needsReview": false
-        },
-        {
-          "time": "0:28",
-          "text": "ㄴ [원문 확인: 0 25ランバーン 21でも通せる ※5]",
-          "checked": [
-            false,
-            false,
-            false,
-            false,
-            false,
-            false
-          ],
-          "needsReview": true
-        },
-        {
-          "time": "0:25",
-          "text": "0:25 프캬루 エイドcl최속(ランバーン UB 후 [원문 확인: ないかもなのでそのつもりで직접 발동構える]",
-          "checked": [
-            false,
-            false,
-            false,
-            false,
-            false,
-            false
-          ],
-          "needsReview": true
-        },
-        {
-          "time": "0:20",
-          "text": "0:20 란파 UB",
-          "checked": [
-            false,
-            false,
-            false,
-            false,
-            false,
-            false
-          ],
-          "needsReview": false
-        },
-        {
-          "time": "0:19",
-          "text": "0:19 [원문 확인: 호마레※7]",
-          "checked": [
-            false,
-            false,
-            false,
-            false,
-            false,
-            false
-          ],
-          "needsReview": true
-        },
-        {
-          "time": "0:19",
-          "text": "ㄴ 프캬루 후 [원문 확인: エイドcl최속 호마레前から見る]",
-          "checked": [
-            false,
-            false,
-            false,
-            false,
-            false,
-            false
-          ],
-          "needsReview": true
-        },
-        {
-          "time": "0:19",
-          "text": "ㄴ [원문 확인: 0 18 ランバーン]",
-          "checked": [
-            false,
-            false,
-            false,
-            false,
-            false,
-            false
-          ],
-          "needsReview": true
-        },
-        {
-          "time": "0:17",
-          "text": "0:17 수키드나 후 [원문 확인: 通常hit최속orサンダーデ버프최속 631 ※8]",
-          "checked": [
-            false,
-            false,
-            false,
-            false,
-            false,
-            false
-          ],
-          "needsReview": true
-        },
-        {
-          "time": "0:16",
-          "text": "0:16 보스 UB",
-          "checked": [
-            false,
-            false,
-            false,
-            false,
-            false,
-            false
-          ],
-          "needsReview": false
-        },
-        {
-          "time": "0:12",
-          "text": "0:12 프캬루 후 [원문 확인: 少しノクバ復帰clしてる ここまでの프캬루が遅くて全くclできないと9sの猶予が減るどころか消える 프캬루遅い時のルートは下部に表記 ※9]",
-          "checked": [
-            false,
-            false,
-            false,
-            false,
-            false,
-            false
-          ],
-          "needsReview": true
-        },
-        {
-          "time": "0:09",
-          "text": "0:09 바이올렛 후 [원문 확인: ソウル後최속 遅いと最後崩壊 ※10]",
-          "checked": [
-            false,
-            false,
-            false,
-            false,
-            false,
-            false
-          ],
-          "needsReview": true
-        },
-        {
-          "time": "0:08",
-          "text": "0:08 프캬루 UB",
-          "checked": [
-            false,
-            false,
-            false,
-            false,
-            false,
-            false
-          ],
-          "needsReview": false
-        },
-        {
-          "time": "0:08",
-          "text": "ㄴ [원문 확인: 0 07 ランバーン]",
-          "checked": [
-            false,
-            false,
-            false,
-            false,
-            false,
-            false
-          ],
-          "needsReview": true
-        },
-        {
-          "time": "0:07",
-          "text": "0:07 호마레 UB",
-          "checked": [
-            false,
-            false,
-            false,
-            false,
-            false,
-            false
-          ],
-          "needsReview": false
-        },
-        {
-          "time": "0:03",
-          "text": "0:03 프캬루 UB",
-          "checked": [
-            false,
-            false,
-            false,
-            false,
-            false,
-            false
-          ],
-          "needsReview": false
-        },
-        {
-          "time": "0:03",
-          "text": "ㄴ [원문 확인: 2sノクバ前にフレイムデ버프入ると完璧※7]",
-          "checked": [
-            false,
-            false,
-            false,
-            false,
-            false,
-            false
-          ],
-          "needsReview": true
-        },
-        {
-          "time": "0:02",
-          "text": "0:02 란파 후 [원문 확인: ノクバcl최속 満点34.4 ※8&11]",
-          "checked": [
-            false,
-            false,
-            false,
-            false,
-            false,
-            false
-          ],
-          "needsReview": true
-        },
-        {
-          "time": "0:02",
-          "text": "ㄴ [원문 확인: 수키드나 満点659 悪巧みデ버프後 打てないのは※10]",
-          "checked": [
-            false,
-            false,
-            false,
-            false,
-            false,
-            false
-          ],
-          "needsReview": true
-        },
-        {
-          "time": "0:02",
-          "text": "ㄴ [원문 확인: 最後に프캬루通常hit]",
-          "checked": [
-            false,
-            false,
-            false,
-            false,
-            false,
-            false
-          ],
-          "needsReview": true
-        },
-        {
-          "time": "0:02",
-          "text": "ㄴ [원문 확인: 0 01 ランバーン 打てないなら※10or※11]",
-          "checked": [
-            false,
-            false,
-            false,
-            false,
-            false,
-            false
-          ],
-          "needsReview": true
-        },
-        {
-          "time": "0:02",
-          "text": "ㄴ ※1 早いと50敵 UB 후 [원문 확인: でランバーンが死ぬ 遅いと1 10프캬루減る]",
-          "checked": [
-            false,
-            false,
-            false,
-            false,
-            false,
-            false
-          ],
-          "needsReview": true
-        },
-        {
-          "time": "0:02",
-          "text": "ㄴ [원문 확인: ※2 61sサンダーを悪巧みデ버프後に 遅れると後が辛い]",
-          "checked": [
-            false,
-            false,
-            false,
-            false,
-            false,
-            false
-          ],
-          "needsReview": true
-        },
-        {
-          "time": "0:02",
-          "text": "ㄴ [원문 확인: ※3 42sサンダーまで 지연しすぎると次の프캬루が心眼になっちゃうし 遅れすぎは34ノクバ前にスミレ通常せず崩壊]",
-          "checked": [
-            false,
-            false,
-            false,
-            false,
-            false,
-            false
-          ],
-          "needsReview": true
-        },
-        {
-          "time": "0:02",
-          "text": "ㄴ [원문 확인: ※4 遅いと34と21でスミレが可能性の範囲内に入らず崩壊]",
-          "checked": [
-            false,
-            false,
-            false,
-            false,
-            false,
-            false
-          ],
-          "needsReview": true
-        },
-        {
-          "time": "0:02",
-          "text": "ㄴ [원문 확인: ※5 早いと25sにランバーンが打てる 詳しく見てないけど+50〜100くらい。一応21sランバーンでも25프캬루がやりやすいっていう利点はある]",
-          "checked": [
-            false,
-            false,
-            false,
-            false,
-            false,
-            false
-          ],
-          "needsReview": true
-        },
-        {
-          "time": "0:02",
-          "text": "ㄴ [원문 확인: ※6 意味あるか知らんけどデ버프チェインしてみてる 意味ない気がする]",
-          "checked": [
-            false,
-            false,
-            false,
-            false,
-            false,
-            false
-          ],
-          "needsReview": true
-        },
-        {
-          "time": "0:02",
-          "text": "ㄴ [원문 확인: ※7 2sフレイムデ버프入れるのがベストだけどかなり難しいから 代わりに19호마레を通常弾中央직접 발동して9sフレイムhitをサンダーデ버프後&2sフレイムを悪巧みデ버프後にするのもあり。ただしその場合19프캬루の직접 발동がバカ難しい]",
-          "checked": [
-            false,
-            false,
-            false,
-            false,
-            false,
-            false
-          ],
-          "needsReview": true
-        },
-        {
-          "time": "0:02",
-          "text": "ㄴ [원문 확인: ※8 29サンダー持続中or17サンダー後のどちらかで打つ。46수키드나の上手さに応じて 完璧なら17サンダー최속 微妙なら通常최속にすることで2s란파&수키드나UBに14と2の悪巧みデ버프を両方入れるのを目指す]",
-          "checked": [
-            false,
-            false,
-            false,
-            false,
-            false,
-            false
-          ],
-          "needsReview": true
-        },
-        {
-          "time": "0:02",
-          "text": "ㄴ [원문 확인: ※9 프캬루遅くて希望がない自覚がある場合は18s以降を]",
-          "checked": [
-            false,
-            false,
-            false,
-            false,
-            false,
-            false
-          ],
-          "needsReview": true
-        },
-        {
-          "time": "0:18",
-          "text": "0:18 수키드나 ON, [원문 확인: 打ち]",
-          "checked": [
-            false,
-            true,
-            false,
-            false,
-            false,
-            false
-          ],
-          "needsReview": true
-        },
-        {
-          "time": "0:16",
-          "text": "0:16 보스 UB",
-          "checked": [
-            false,
-            true,
-            false,
-            false,
-            false,
-            false
-          ],
-          "needsReview": false
-        },
-        {
-          "time": "0:12",
-          "text": "0:12 [원문 확인: 〜0 11 프캬루]",
-          "checked": [
-            false,
-            true,
-            false,
-            false,
-            false,
-            false
-          ],
-          "needsReview": true
-        },
-        {
-          "time": "0:10",
-          "text": "0:10 [원문 확인: スミレ ソウルcl]",
-          "checked": [
-            false,
-            true,
-            false,
-            false,
-            false,
-            false
-          ],
-          "needsReview": true
-        },
-        {
-          "time": "0:10",
-          "text": "ㄴ [원문 확인: 0 07ランバーン]",
-          "checked": [
-            false,
-            true,
-            false,
-            false,
-            false,
-            false
-          ],
-          "needsReview": true
-        },
-        {
-          "time": "0:06",
-          "text": "0:06 프캬루 후 [원문 확인: エイドhit최속]",
-          "checked": [
-            false,
-            true,
-            false,
-            false,
-            false,
-            false
-          ],
-          "needsReview": true
-        },
-        {
-          "time": "0:04",
-          "text": "0:04 호마레 UB",
-          "checked": [
-            false,
-            true,
-            false,
-            false,
-            false,
-            false
-          ],
-          "needsReview": false
-        },
-        {
-          "time": "0:02",
-          "text": "0:02 란파 후 [원문 확인: ノクバcl최속]",
-          "checked": [
-            false,
-            true,
-            false,
-            false,
-            false,
-            false
-          ],
-          "needsReview": true
-        },
-        {
-          "time": "0:01",
-          "text": "0:01 프캬루 UB",
-          "checked": [
-            false,
-            true,
-            false,
-            false,
-            false,
-            false
-          ],
-          "needsReview": false
-        },
-        {
-          "time": "0:01",
-          "text": "ㄴ [원문 확인: 수키드나]",
-          "checked": [
-            false,
-            true,
-            false,
-            false,
-            false,
-            false
-          ],
-          "needsReview": true
-        },
-        {
-          "time": "0:01",
-          "text": "ㄴ [원문 확인: 0 01 ランバーン]",
-          "checked": [
-            false,
-            true,
-            false,
-            false,
-            false,
-            false
-          ],
-          "needsReview": true
-        },
-        {
-          "time": "0:01",
-          "text": "ㄴ [원문 확인: に変更することでそこそこの打点で帰還は可能]",
-          "checked": [
-            false,
-            true,
-            false,
-            false,
-            false,
-            false
-          ],
-          "needsReview": true
-        },
-        {
-          "time": "0:01",
-          "text": "ㄴ ※10、遅いと2sノクバ前にソウルTP入らず、수키드나とランバーン UB 후 [원문 확인: 欠損 猶予は프캬루の全직접 발동が早ければ早いほど増える]",
-          "checked": [
-            false,
-            true,
-            false,
-            false,
-            false,
-            false
-          ],
-          "needsReview": true
-        },
-        {
-          "time": "0:01",
-          "text": "ㄴ ※11、2sノクバclが遅いとバトル종료前にハーモニー入らずランバーン UB 후 [원문 확인: 欠損]",
-          "checked": [
-            false,
-            true,
-            false,
-            false,
-            false,
-            false
-          ],
-          "needsReview": true
-        }
-      ],
+      "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=dgRUnwQUuao",
       "youtubeHasTactic": true,
-      "conditions": {
-        "tp": "",
-        "fields": []
+      "tacticLocation": "description",
+      "diagnostics": {
+        "sections": [
+          {
+            "boss": null,
+            "header": "",
+            "startSeconds": null,
+            "clockLines": 0
+          },
+          {
+            "boss": 1,
+            "header": "TL表記はランファのワイバーンをランバーン、敵は敵と表記",
+            "startSeconds": null,
+            "clockLines": 35
+          },
+          {
+            "boss": 1,
+            "header": "0:18 エキドナset打ち",
+            "startSeconds": null,
+            "clockLines": 7
+          }
+        ],
+        "bestPartyHits": 5,
+        "damageMatched": false,
+        "sourceTimestamp": null,
+        "chapterCount": 0
       },
-      "omittedRows": 0,
-      "unresolvedRows": 55,
-      "translatedRows": 19,
-      "warningCount": 55,
-      "unknownActorCount": 0
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -2622,6 +1731,7 @@
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=3XR7r4dwSJI",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "diagnostics": {
         "sections": [
           {
@@ -2647,7 +1757,8 @@
         "damageMatched": false,
         "sourceTimestamp": null,
         "chapterCount": 0
-      }
+      },
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -2656,7 +1767,7 @@
       "linkIndex": 1,
       "linkOrdinal": 0,
       "videoId": "gcLTnp88aSo",
-      "status": "no-parsable-timeline",
+      "status": "no-youtube-tl",
       "matching": "unique-damage-section",
       "rowCount": 0,
       "issues": [
@@ -2665,7 +1776,8 @@
       "warnings": [],
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=gcLTnp88aSo",
-      "youtubeHasTactic": true,
+      "youtubeHasTactic": false,
+      "tacticLocation": "description",
       "conditions": {
         "tp": "",
         "fields": []
@@ -2674,7 +1786,8 @@
         "header": "03:36    ワイバーン           29,490万",
         "lineCount": 1,
         "instructionLines": []
-      }
+      },
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -2691,6 +1804,7 @@
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=gcLTnp88aSo",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "diagnostics": {
         "sections": [
           {
@@ -2703,7 +1817,13 @@
             "boss": null,
             "header": "00:00    プリンセスナイト強化状況  RANK 420",
             "startSeconds": 0,
-            "clockLines": 2
+            "clockLines": 1
+          },
+          {
+            "boss": 1,
+            "header": "00:39    ワイバーン           28,840万",
+            "startSeconds": 0,
+            "clockLines": 1
           },
           {
             "boss": 1,
@@ -2853,8 +1973,9 @@
         "bestPartyHits": 0,
         "damageMatched": false,
         "sourceTimestamp": null,
-        "chapterCount": 4
-      }
+        "chapterCount": 5
+      },
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -3096,6 +2217,7 @@
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=bHsEi2jOHIg",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "conditions": {
         "tp": "",
         "fields": []
@@ -3104,7 +2226,8 @@
       "unresolvedRows": 13,
       "translatedRows": 4,
       "warningCount": 5,
-      "unknownActorCount": 0
+      "unknownActorCount": 0,
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -3320,6 +2443,7 @@
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=9AQSGX1D4Y8",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "conditions": {
         "tp": "",
         "fields": []
@@ -3328,7 +2452,8 @@
       "unresolvedRows": 6,
       "translatedRows": 9,
       "warningCount": 5,
-      "unknownActorCount": 0
+      "unknownActorCount": 0,
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -3441,6 +2566,7 @@
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=6NqcklSjatQ",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "conditions": {
         "tp": "",
         "fields": []
@@ -3449,7 +2575,8 @@
       "unresolvedRows": 4,
       "translatedRows": 3,
       "warningCount": 4,
-      "unknownActorCount": 0
+      "unknownActorCount": 0,
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -3466,6 +2593,7 @@
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "diagnostics": {
         "sections": [
           {
@@ -3587,7 +2715,8 @@
         "damageMatched": false,
         "sourceTimestamp": null,
         "chapterCount": 4
-      }
+      },
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -3604,6 +2733,7 @@
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "diagnostics": {
         "sections": [
           {
@@ -3725,7 +2855,8 @@
         "damageMatched": false,
         "sourceTimestamp": null,
         "chapterCount": 4
-      }
+      },
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -3742,6 +2873,7 @@
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "diagnostics": {
         "sections": [
           {
@@ -3863,7 +2995,8 @@
         "damageMatched": false,
         "sourceTimestamp": null,
         "chapterCount": 4
-      }
+      },
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -3880,6 +3013,7 @@
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "diagnostics": {
         "sections": [
           {
@@ -4001,7 +3135,8 @@
         "damageMatched": false,
         "sourceTimestamp": null,
         "chapterCount": 4
-      }
+      },
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -4018,6 +3153,7 @@
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "diagnostics": {
         "sections": [
           {
@@ -4139,7 +3275,8 @@
         "damageMatched": false,
         "sourceTimestamp": null,
         "chapterCount": 4
-      }
+      },
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -4156,6 +3293,7 @@
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "diagnostics": {
         "sections": [
           {
@@ -4277,7 +3415,8 @@
         "damageMatched": false,
         "sourceTimestamp": null,
         "chapterCount": 4
-      }
+      },
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -4294,6 +3433,7 @@
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=B97LQrFSmVM",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "diagnostics": {
         "sections": [
           {
@@ -4306,7 +3446,13 @@
             "boss": null,
             "header": "0:00 オープニング",
             "startSeconds": 0,
-            "clockLines": 2
+            "clockLines": 1
+          },
+          {
+            "boss": null,
+            "header": "1:25 騎士強化",
+            "startSeconds": 0,
+            "clockLines": 1
           },
           {
             "boss": 1,
@@ -4372,8 +3518,9 @@
         "bestPartyHits": 0,
         "damageMatched": false,
         "sourceTimestamp": null,
-        "chapterCount": 3
-      }
+        "chapterCount": 4
+      },
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -4616,6 +3763,7 @@
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=EcAceF3P8rA",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "conditions": {
         "tp": "",
         "fields": []
@@ -4624,7 +3772,8 @@
       "unresolvedRows": 11,
       "translatedRows": 6,
       "warningCount": 9,
-      "unknownActorCount": 0
+      "unknownActorCount": 0,
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -4905,6 +4054,7 @@
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=S5ZiViaMws8",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "conditions": {
         "tp": "",
         "fields": []
@@ -4913,7 +4063,8 @@
       "unresolvedRows": 16,
       "translatedRows": 4,
       "warningCount": 6,
-      "unknownActorCount": 0
+      "unknownActorCount": 0,
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -5246,6 +4397,7 @@
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=BSSIs7TVqPs",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "conditions": {
         "tp": "",
         "fields": []
@@ -5254,7 +4406,8 @@
       "unresolvedRows": 17,
       "translatedRows": 7,
       "warningCount": 6,
-      "unknownActorCount": 0
+      "unknownActorCount": 0,
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -5444,6 +4597,7 @@
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=JcqLd2C8mTA",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "conditions": {
         "tp": "5.4",
         "fields": []
@@ -5452,7 +4606,8 @@
       "unresolvedRows": 13,
       "translatedRows": 0,
       "warningCount": 6,
-      "unknownActorCount": 0
+      "unknownActorCount": 0,
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -5461,7 +4616,7 @@
       "linkIndex": 2,
       "linkOrdinal": 2,
       "videoId": "7tgdVxW_rz8",
-      "status": "no-parsable-timeline",
+      "status": "no-youtube-tl",
       "matching": "unique-damage-section",
       "rowCount": 0,
       "issues": [
@@ -5470,7 +4625,8 @@
       "warnings": [],
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8",
-      "youtubeHasTactic": true,
+      "youtubeHasTactic": false,
+      "tacticLocation": "description",
       "conditions": {
         "tp": "",
         "fields": []
@@ -5479,7 +4635,8 @@
         "header": "13:37 2ボス2.69億",
         "lineCount": 1,
         "instructionLines": []
-      }
+      },
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -5495,7 +4652,9 @@
       "warnings": [],
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=0q-o6RY5wSA",
-      "youtubeHasTactic": null
+      "youtubeHasTactic": null,
+      "tacticLocation": "description",
+      "commentReadStatus": "not-requested"
     },
     {
       "stage": 6,
@@ -5504,7 +4663,7 @@
       "linkIndex": 1,
       "linkOrdinal": 0,
       "videoId": "gcLTnp88aSo",
-      "status": "no-parsable-timeline",
+      "status": "no-youtube-tl",
       "matching": "unique-damage-section",
       "rowCount": 0,
       "issues": [
@@ -5513,7 +4672,8 @@
       "warnings": [],
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=gcLTnp88aSo",
-      "youtubeHasTactic": true,
+      "youtubeHasTactic": false,
+      "tacticLocation": "description",
       "conditions": {
         "tp": "",
         "fields": []
@@ -5522,7 +4682,8 @@
         "header": "06:31    タフガイスト       26,175万",
         "lineCount": 1,
         "instructionLines": []
-      }
+      },
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -5531,41 +4692,15 @@
       "linkIndex": 1,
       "linkOrdinal": 0,
       "videoId": "gcLTnp88aSo",
-      "status": "no-parsable-timeline",
-      "matching": "unique-damage-section",
-      "rowCount": 0,
-      "issues": [
-        "no-action-timeline"
-      ],
-      "warnings": [],
-      "rows": [],
-      "sourceUrl": "https://www.youtube.com/watch?v=gcLTnp88aSo",
-      "youtubeHasTactic": true,
-      "conditions": {
-        "tp": "",
-        "fields": []
-      },
-      "diagnostics": {
-        "header": "07:58    タフガイスト       24,949万",
-        "lineCount": 1,
-        "instructionLines": []
-      }
-    },
-    {
-      "stage": 6,
-      "boss": 2,
-      "taskId": 14274,
-      "linkIndex": 1,
-      "linkOrdinal": 1,
-      "videoId": "vk2CIcU0AHM",
       "status": "needs-source-check",
       "matching": "ambiguous-party-section",
       "rowCount": 0,
       "issues": [],
       "warnings": [],
       "rows": [],
-      "sourceUrl": "https://www.youtube.com/watch?v=vk2CIcU0AHM",
+      "sourceUrl": "https://www.youtube.com/watch?v=gcLTnp88aSo",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "diagnostics": {
         "sections": [
           {
@@ -5575,101 +4710,197 @@
             "clockLines": 0
           },
           {
-            "boss": 5,
-            "header": "※レサトパルトはTLズレが発生しやすいので、なぞれるTLを使いましょう。",
-            "startSeconds": null,
-            "clockLines": 0
-          },
-          {
-            "boss": 5,
-            "header": "0:00 騎士強化",
+            "boss": null,
+            "header": "00:00    プリンセスナイト強化状況  RANK 420",
             "startSeconds": 0,
             "clockLines": 1
           },
           {
-            "boss": 5,
-            "header": "1:33 フルオート編成と所感",
-            "startSeconds": 93,
+            "boss": 1,
+            "header": "00:39    ワイバーン           28,840万",
+            "startSeconds": 0,
             "clockLines": 1
           },
           {
             "boss": 1,
-            "header": "5:30 ワイバーン1(物理 3.62億)",
-            "startSeconds": 330,
+            "header": "02:08    ワイバーン           33,065万",
+            "startSeconds": 128,
+            "clockLines": 1
+          },
+          {
+            "boss": 1,
+            "header": "03:36    ワイバーン           29,490万",
+            "startSeconds": 216,
+            "clockLines": 1
+          },
+          {
+            "boss": 1,
+            "header": "04:59    ワイバーン           25,242万",
+            "startSeconds": 299,
             "clockLines": 1
           },
           {
             "boss": 2,
-            "header": "7:35 タフガイスト1(物理 2.85億)",
-            "startSeconds": 455,
+            "header": "06:31    タフガイスト       26,175万",
+            "startSeconds": 391,
             "clockLines": 1
           },
           {
             "boss": 2,
-            "header": "9:25 タフガイスト2(物理 2.73億)",
-            "startSeconds": 565,
+            "header": "07:58    タフガイスト       24,949万",
+            "startSeconds": 478,
             "clockLines": 1
           },
           {
             "boss": 2,
-            "header": "11:27 タフガイスト3(物理 2.49億)",
-            "startSeconds": 687,
+            "header": "09:49    タフガイスト       24,677万",
+            "startSeconds": 589,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "11:28    タフガイスト       24,758万",
+            "startSeconds": 688,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "12:54    タフガイスト       25,372万",
+            "startSeconds": 774,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "14:11    タフガイスト       24,067万",
+            "startSeconds": 851,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "15:46    タフガイスト       22,942万",
+            "startSeconds": 946,
             "clockLines": 1
           },
           {
             "boss": 3,
-            "header": "13:08 バジリスク1(魔法 2.9億)",
-            "startSeconds": 788,
+            "header": "17:25    バジリスク           21,181万",
+            "startSeconds": 1045,
             "clockLines": 1
           },
           {
             "boss": 3,
-            "header": "15:10 バジリスク2(魔法 2.76億)",
-            "startSeconds": 910,
+            "header": "18:58    バジリスク           23,155万",
+            "startSeconds": 1138,
             "clockLines": 1
           },
           {
             "boss": 3,
-            "header": "16:48 バジリスク3(魔法 2.68億)",
-            "startSeconds": 1008,
+            "header": "20:27    バジリスク           22,360万",
+            "startSeconds": 1227,
+            "clockLines": 1
+          },
+          {
+            "boss": 3,
+            "header": "22:08    バジリスク           25,403万",
+            "startSeconds": 1328,
+            "clockLines": 1
+          },
+          {
+            "boss": 3,
+            "header": "23:37    バジリスク           22,774万",
+            "startSeconds": 1417,
+            "clockLines": 1
+          },
+          {
+            "boss": 3,
+            "header": "25:07    バジリスク           22,791万",
+            "startSeconds": 1507,
             "clockLines": 1
           },
           {
             "boss": 4,
-            "header": "18:26 ウールヴヘジン1(物理 2.65億)",
-            "startSeconds": 1106,
+            "header": "26:45    ウールヴヘジン   22,064万",
+            "startSeconds": 1605,
             "clockLines": 1
           },
           {
             "boss": 4,
-            "header": "21:26 ウールヴヘジン2(物理 2.57億)",
-            "startSeconds": 1286,
+            "header": "28:14    ウールヴヘジン   25,787万",
+            "startSeconds": 1694,
             "clockLines": 1
           },
           {
             "boss": 4,
-            "header": "23:07 ウールヴヘジン3(物理 2.26億)",
-            "startSeconds": 1387,
+            "header": "29:39    ウールヴヘジン   22,739万",
+            "startSeconds": 1779,
+            "clockLines": 1
+          },
+          {
+            "boss": 4,
+            "header": "31:12    ウールヴヘジン   22,730万",
+            "startSeconds": 1872,
             "clockLines": 1
           },
           {
             "boss": 5,
-            "header": "24:46 レサトパルト1(物理 2.75憶)",
-            "startSeconds": 1486,
+            "header": "32:40    レサトパルト       24,105万",
+            "startSeconds": 1960,
             "clockLines": 1
           },
           {
             "boss": 5,
-            "header": "26:12 レサトパルト2(物理 2.63億)",
-            "startSeconds": 1572,
+            "header": "33:49    レサトパルト       27,246万",
+            "startSeconds": 2029,
+            "clockLines": 1
+          },
+          {
+            "boss": 5,
+            "header": "35:24    レサトパルト       23,375万",
+            "startSeconds": 2124,
+            "clockLines": 1
+          },
+          {
+            "boss": 5,
+            "header": "36:48    レサトパルト       21,923万",
+            "startSeconds": 2208,
             "clockLines": 1
           }
         ],
         "bestPartyHits": 0,
-        "damageMatched": false,
+        "damageMatched": true,
         "sourceTimestamp": null,
-        "chapterCount": 3
-      }
+        "chapterCount": 8
+      },
+      "commentReadStatus": "complete"
+    },
+    {
+      "stage": 6,
+      "boss": 2,
+      "taskId": 14274,
+      "linkIndex": 1,
+      "linkOrdinal": 1,
+      "videoId": "vk2CIcU0AHM",
+      "status": "video-timeline-only",
+      "matching": "unique-damage-section",
+      "rowCount": 0,
+      "issues": [
+        "no-action-timeline"
+      ],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=vk2CIcU0AHM",
+      "youtubeHasTactic": true,
+      "tacticLocation": "description",
+      "conditions": {
+        "tp": "",
+        "fields": []
+      },
+      "diagnostics": {
+        "header": "9:25 タフガイスト2(物理 2.73億)",
+        "lineCount": 1,
+        "instructionLines": []
+      },
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -5686,6 +4917,7 @@
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=WtjU6gCeZVY",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "diagnostics": {
         "sections": [
           {
@@ -5705,7 +4937,8 @@
         "damageMatched": false,
         "sourceTimestamp": null,
         "chapterCount": 0
-      }
+      },
+      "commentReadStatus": "disabled"
     },
     {
       "stage": 6,
@@ -6207,6 +5440,7 @@
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=FnmA9QWZ11c",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "conditions": {
         "tp": "",
         "fields": []
@@ -6215,7 +5449,8 @@
       "unresolvedRows": 3,
       "translatedRows": 34,
       "warningCount": 3,
-      "unknownActorCount": 0
+      "unknownActorCount": 0,
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -6232,6 +5467,7 @@
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=NiPu8EUiHH8",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "diagnostics": {
         "sections": [
           {
@@ -6251,7 +5487,8 @@
         "damageMatched": false,
         "sourceTimestamp": null,
         "chapterCount": 1
-      }
+      },
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -6260,25 +5497,186 @@
       "linkIndex": 1,
       "linkOrdinal": 0,
       "videoId": "gcLTnp88aSo",
-      "status": "no-parsable-timeline",
-      "matching": "unique-damage-section",
+      "status": "needs-source-check",
+      "matching": "ambiguous-party-section",
       "rowCount": 0,
-      "issues": [
-        "no-action-timeline"
-      ],
+      "issues": [],
       "warnings": [],
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=gcLTnp88aSo",
       "youtubeHasTactic": true,
-      "conditions": {
-        "tp": "",
-        "fields": []
-      },
+      "tacticLocation": "description",
       "diagnostics": {
-        "header": "14:11    タフガイスト       24,067万",
-        "lineCount": 1,
-        "instructionLines": []
-      }
+        "sections": [
+          {
+            "boss": null,
+            "header": "",
+            "startSeconds": null,
+            "clockLines": 0
+          },
+          {
+            "boss": null,
+            "header": "00:00    プリンセスナイト強化状況  RANK 420",
+            "startSeconds": 0,
+            "clockLines": 1
+          },
+          {
+            "boss": 1,
+            "header": "00:39    ワイバーン           28,840万",
+            "startSeconds": 0,
+            "clockLines": 1
+          },
+          {
+            "boss": 1,
+            "header": "02:08    ワイバーン           33,065万",
+            "startSeconds": 128,
+            "clockLines": 1
+          },
+          {
+            "boss": 1,
+            "header": "03:36    ワイバーン           29,490万",
+            "startSeconds": 216,
+            "clockLines": 1
+          },
+          {
+            "boss": 1,
+            "header": "04:59    ワイバーン           25,242万",
+            "startSeconds": 299,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "06:31    タフガイスト       26,175万",
+            "startSeconds": 391,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "07:58    タフガイスト       24,949万",
+            "startSeconds": 478,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "09:49    タフガイスト       24,677万",
+            "startSeconds": 589,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "11:28    タフガイスト       24,758万",
+            "startSeconds": 688,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "12:54    タフガイスト       25,372万",
+            "startSeconds": 774,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "14:11    タフガイスト       24,067万",
+            "startSeconds": 851,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "15:46    タフガイスト       22,942万",
+            "startSeconds": 946,
+            "clockLines": 1
+          },
+          {
+            "boss": 3,
+            "header": "17:25    バジリスク           21,181万",
+            "startSeconds": 1045,
+            "clockLines": 1
+          },
+          {
+            "boss": 3,
+            "header": "18:58    バジリスク           23,155万",
+            "startSeconds": 1138,
+            "clockLines": 1
+          },
+          {
+            "boss": 3,
+            "header": "20:27    バジリスク           22,360万",
+            "startSeconds": 1227,
+            "clockLines": 1
+          },
+          {
+            "boss": 3,
+            "header": "22:08    バジリスク           25,403万",
+            "startSeconds": 1328,
+            "clockLines": 1
+          },
+          {
+            "boss": 3,
+            "header": "23:37    バジリスク           22,774万",
+            "startSeconds": 1417,
+            "clockLines": 1
+          },
+          {
+            "boss": 3,
+            "header": "25:07    バジリスク           22,791万",
+            "startSeconds": 1507,
+            "clockLines": 1
+          },
+          {
+            "boss": 4,
+            "header": "26:45    ウールヴヘジン   22,064万",
+            "startSeconds": 1605,
+            "clockLines": 1
+          },
+          {
+            "boss": 4,
+            "header": "28:14    ウールヴヘジン   25,787万",
+            "startSeconds": 1694,
+            "clockLines": 1
+          },
+          {
+            "boss": 4,
+            "header": "29:39    ウールヴヘジン   22,739万",
+            "startSeconds": 1779,
+            "clockLines": 1
+          },
+          {
+            "boss": 4,
+            "header": "31:12    ウールヴヘジン   22,730万",
+            "startSeconds": 1872,
+            "clockLines": 1
+          },
+          {
+            "boss": 5,
+            "header": "32:40    レサトパルト       24,105万",
+            "startSeconds": 1960,
+            "clockLines": 1
+          },
+          {
+            "boss": 5,
+            "header": "33:49    レサトパルト       27,246万",
+            "startSeconds": 2029,
+            "clockLines": 1
+          },
+          {
+            "boss": 5,
+            "header": "35:24    レサトパルト       23,375万",
+            "startSeconds": 2124,
+            "clockLines": 1
+          },
+          {
+            "boss": 5,
+            "header": "36:48    レサトパルト       21,923万",
+            "startSeconds": 2208,
+            "clockLines": 1
+          }
+        ],
+        "bestPartyHits": 0,
+        "damageMatched": true,
+        "sourceTimestamp": null,
+        "chapterCount": 8
+      },
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -6295,6 +5693,7 @@
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "diagnostics": {
         "sections": [
           {
@@ -6416,7 +5815,8 @@
         "damageMatched": false,
         "sourceTimestamp": null,
         "chapterCount": 5
-      }
+      },
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -6425,25 +5825,186 @@
       "linkIndex": 1,
       "linkOrdinal": 0,
       "videoId": "gcLTnp88aSo",
-      "status": "no-parsable-timeline",
-      "matching": "unique-damage-section",
+      "status": "needs-source-check",
+      "matching": "ambiguous-party-section",
       "rowCount": 0,
-      "issues": [
-        "no-action-timeline"
-      ],
+      "issues": [],
       "warnings": [],
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=gcLTnp88aSo",
       "youtubeHasTactic": true,
-      "conditions": {
-        "tp": "",
-        "fields": []
-      },
+      "tacticLocation": "description",
       "diagnostics": {
-        "header": "15:46    タフガイスト       22,942万",
-        "lineCount": 1,
-        "instructionLines": []
-      }
+        "sections": [
+          {
+            "boss": null,
+            "header": "",
+            "startSeconds": null,
+            "clockLines": 0
+          },
+          {
+            "boss": null,
+            "header": "00:00    プリンセスナイト強化状況  RANK 420",
+            "startSeconds": 0,
+            "clockLines": 1
+          },
+          {
+            "boss": 1,
+            "header": "00:39    ワイバーン           28,840万",
+            "startSeconds": 0,
+            "clockLines": 1
+          },
+          {
+            "boss": 1,
+            "header": "02:08    ワイバーン           33,065万",
+            "startSeconds": 128,
+            "clockLines": 1
+          },
+          {
+            "boss": 1,
+            "header": "03:36    ワイバーン           29,490万",
+            "startSeconds": 216,
+            "clockLines": 1
+          },
+          {
+            "boss": 1,
+            "header": "04:59    ワイバーン           25,242万",
+            "startSeconds": 299,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "06:31    タフガイスト       26,175万",
+            "startSeconds": 391,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "07:58    タフガイスト       24,949万",
+            "startSeconds": 478,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "09:49    タフガイスト       24,677万",
+            "startSeconds": 589,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "11:28    タフガイスト       24,758万",
+            "startSeconds": 688,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "12:54    タフガイスト       25,372万",
+            "startSeconds": 774,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "14:11    タフガイスト       24,067万",
+            "startSeconds": 851,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "15:46    タフガイスト       22,942万",
+            "startSeconds": 946,
+            "clockLines": 1
+          },
+          {
+            "boss": 3,
+            "header": "17:25    バジリスク           21,181万",
+            "startSeconds": 1045,
+            "clockLines": 1
+          },
+          {
+            "boss": 3,
+            "header": "18:58    バジリスク           23,155万",
+            "startSeconds": 1138,
+            "clockLines": 1
+          },
+          {
+            "boss": 3,
+            "header": "20:27    バジリスク           22,360万",
+            "startSeconds": 1227,
+            "clockLines": 1
+          },
+          {
+            "boss": 3,
+            "header": "22:08    バジリスク           25,403万",
+            "startSeconds": 1328,
+            "clockLines": 1
+          },
+          {
+            "boss": 3,
+            "header": "23:37    バジリスク           22,774万",
+            "startSeconds": 1417,
+            "clockLines": 1
+          },
+          {
+            "boss": 3,
+            "header": "25:07    バジリスク           22,791万",
+            "startSeconds": 1507,
+            "clockLines": 1
+          },
+          {
+            "boss": 4,
+            "header": "26:45    ウールヴヘジン   22,064万",
+            "startSeconds": 1605,
+            "clockLines": 1
+          },
+          {
+            "boss": 4,
+            "header": "28:14    ウールヴヘジン   25,787万",
+            "startSeconds": 1694,
+            "clockLines": 1
+          },
+          {
+            "boss": 4,
+            "header": "29:39    ウールヴヘジン   22,739万",
+            "startSeconds": 1779,
+            "clockLines": 1
+          },
+          {
+            "boss": 4,
+            "header": "31:12    ウールヴヘジン   22,730万",
+            "startSeconds": 1872,
+            "clockLines": 1
+          },
+          {
+            "boss": 5,
+            "header": "32:40    レサトパルト       24,105万",
+            "startSeconds": 1960,
+            "clockLines": 1
+          },
+          {
+            "boss": 5,
+            "header": "33:49    レサトパルト       27,246万",
+            "startSeconds": 2029,
+            "clockLines": 1
+          },
+          {
+            "boss": 5,
+            "header": "35:24    レサトパルト       23,375万",
+            "startSeconds": 2124,
+            "clockLines": 1
+          },
+          {
+            "boss": 5,
+            "header": "36:48    レサトパルト       21,923万",
+            "startSeconds": 2208,
+            "clockLines": 1
+          }
+        ],
+        "bestPartyHits": 0,
+        "damageMatched": true,
+        "sourceTimestamp": null,
+        "chapterCount": 8
+      },
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -6633,6 +6194,7 @@
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=xSXBe1r3Jes",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "conditions": {
         "tp": "",
         "fields": []
@@ -6641,7 +6203,8 @@
       "unresolvedRows": 10,
       "translatedRows": 3,
       "warningCount": 5,
-      "unknownActorCount": 0
+      "unknownActorCount": 0,
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -6779,6 +6342,7 @@
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=j0neZj-sYg0",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "conditions": {
         "tp": "",
         "fields": []
@@ -6787,7 +6351,8 @@
       "unresolvedRows": 6,
       "translatedRows": 3,
       "warningCount": 5,
-      "unknownActorCount": 0
+      "unknownActorCount": 0,
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -6857,6 +6422,7 @@
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=PCzxIzeK3vg",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "conditions": {
         "tp": "",
         "fields": []
@@ -6865,7 +6431,8 @@
       "unresolvedRows": 0,
       "translatedRows": 4,
       "warningCount": 0,
-      "unknownActorCount": 0
+      "unknownActorCount": 0,
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -7069,6 +6636,7 @@
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=qF5q2PLOMX8",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "conditions": {
         "tp": "",
         "fields": []
@@ -7077,7 +6645,8 @@
       "unresolvedRows": 11,
       "translatedRows": 3,
       "warningCount": 5,
-      "unknownActorCount": 1
+      "unknownActorCount": 1,
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -7358,7 +6927,7 @@
         },
         {
           "time": "1:14",
-          "text": "1:14 [원문 확인: ガングロは1 12초数최속で通clにすると 序盤の区間ダメは伸びが良い。]",
+          "text": "1:14 [원문 확인: ガングロは1 12초数최속で通캔슬にすると 序盤の区間ダメは伸びが良い。]",
           "checked": [
             true,
             true,
@@ -7410,7 +6979,7 @@
         },
         {
           "time": "1:14",
-          "text": "ㄴ 前TLとの変更点は수쥰を ON, [원문 확인: 打ちする事で2回通clを挟む事が出来た為]",
+          "text": "ㄴ 前TLとの変更点は수쥰を ON, [원문 확인: 打ちする事で2回通캔슬を挟む事が出来た為]",
           "checked": [
             true,
             true,
@@ -7437,6 +7006,7 @@
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=ZwVh18AGwDU",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "conditions": {
         "tp": "",
         "fields": []
@@ -7445,7 +7015,8 @@
       "unresolvedRows": 23,
       "translatedRows": 3,
       "warningCount": 19,
-      "unknownActorCount": 2
+      "unknownActorCount": 2,
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -7648,6 +7219,7 @@
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=RSQBqZp4QvM",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "conditions": {
         "tp": "",
         "fields": []
@@ -7656,7 +7228,8 @@
       "unresolvedRows": 11,
       "translatedRows": 3,
       "warningCount": 5,
-      "unknownActorCount": 0
+      "unknownActorCount": 0,
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -7673,6 +7246,7 @@
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "diagnostics": {
         "sections": [
           {
@@ -7794,7 +7368,8 @@
         "damageMatched": false,
         "sourceTimestamp": null,
         "chapterCount": 5
-      }
+      },
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -7811,6 +7386,7 @@
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=B97LQrFSmVM",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "diagnostics": {
         "sections": [
           {
@@ -7823,7 +7399,13 @@
             "boss": null,
             "header": "0:00 オープニング",
             "startSeconds": 0,
-            "clockLines": 2
+            "clockLines": 1
+          },
+          {
+            "boss": null,
+            "header": "1:25 騎士強化",
+            "startSeconds": 0,
+            "clockLines": 1
           },
           {
             "boss": 1,
@@ -7889,8 +7471,9 @@
         "bestPartyHits": 0,
         "damageMatched": false,
         "sourceTimestamp": null,
-        "chapterCount": 3
-      }
+        "chapterCount": 4
+      },
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -7907,6 +7490,7 @@
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=B97LQrFSmVM",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "diagnostics": {
         "sections": [
           {
@@ -7919,7 +7503,13 @@
             "boss": null,
             "header": "0:00 オープニング",
             "startSeconds": 0,
-            "clockLines": 2
+            "clockLines": 1
+          },
+          {
+            "boss": null,
+            "header": "1:25 騎士強化",
+            "startSeconds": 0,
+            "clockLines": 1
           },
           {
             "boss": 1,
@@ -7985,8 +7575,9 @@
         "bestPartyHits": 0,
         "damageMatched": false,
         "sourceTimestamp": null,
-        "chapterCount": 3
-      }
+        "chapterCount": 4
+      },
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -7997,7 +7588,7 @@
       "videoId": "_j29RP6f8g0",
       "status": "partial",
       "matching": "unique-party-section",
-      "rowCount": 15,
+      "rowCount": 12,
       "issues": [
         "unparsed-instructions",
         "translation-incomplete"
@@ -8159,49 +7750,11 @@
             true
           ],
           "needsReview": false
-        },
-        {
-          "time": "1:15",
-          "text": "1:15 봄쿄카 후 AUTO 오프",
-          "checked": [
-            true,
-            false,
-            true,
-            true,
-            true,
-            false
-          ],
-          "needsReview": false
-        },
-        {
-          "time": "1:14",
-          "text": "1:14 클요리 후 AUTO 온",
-          "checked": [
-            true,
-            false,
-            true,
-            true,
-            true,
-            true
-          ],
-          "needsReview": false
-        },
-        {
-          "time": "1:14",
-          "text": "ㄴ 클요리, 봄즈메, 봄쿄카, 수리스 OFF, [원문 확인: ーーー元TLに合流ーーーーーーーー]",
-          "checked": [
-            false,
-            false,
-            false,
-            false,
-            false,
-            true
-          ],
-          "needsReview": true
         }
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=_j29RP6f8g0",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "conditions": {
         "tp": "4.5",
         "fields": [
@@ -8212,10 +7765,11 @@
         ]
       },
       "omittedRows": 0,
-      "unresolvedRows": 4,
-      "translatedRows": 11,
-      "warningCount": 4,
-      "unknownActorCount": 0
+      "unresolvedRows": 3,
+      "translatedRows": 9,
+      "warningCount": 3,
+      "unknownActorCount": 0,
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -8232,6 +7786,7 @@
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=uVDL7cFffWM",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "diagnostics": {
         "sections": [
           {
@@ -8317,7 +7872,8 @@
         "damageMatched": false,
         "sourceTimestamp": null,
         "chapterCount": 1
-      }
+      },
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -8351,7 +7907,7 @@
         },
         {
           "time": "1:17",
-          "text": "1:17 봄쿄카 후 [원문 확인: #通常cl]",
+          "text": "1:17 봄쿄카 후 [원문 확인: #通常캔슬]",
           "checked": [
             false,
             false,
@@ -8403,7 +7959,7 @@
         },
         {
           "time": "1:08",
-          "text": "1:08 봄즈메 후 [원문 확인: 通常cl早め]",
+          "text": "1:08 봄즈메 후 [원문 확인: 通常캔슬早め]",
           "checked": [
             false,
             false,
@@ -8429,7 +7985,7 @@
         },
         {
           "time": "1:06",
-          "text": "1:06 봄쿄카 후 [원문 확인: #待機コーデ起動 通常clになると1 14が遅い]",
+          "text": "1:06 봄쿄카 후 [원문 확인: #待機コーデ起動 通常캔슬になると1 14が遅い]",
           "checked": [
             false,
             false,
@@ -8455,7 +8011,7 @@
         },
         {
           "time": "0:58",
-          "text": "0:58 피오 후 [원문 확인: #ルーチェcl]",
+          "text": "0:58 피오 후 [원문 확인: #ルーチェ캔슬]",
           "checked": [
             false,
             false,
@@ -8520,7 +8076,7 @@
         },
         {
           "time": "0:53",
-          "text": "0:53 보스 UB 후 [원문 확인: ペタラtp付与 通常cl ブレス버프 ペタルデ버프 ウィッシュcl]",
+          "text": "0:53 보스 UB 후 [원문 확인: ペタラtp付与 通常캔슬 ブレス버프 ペタルデ버프 ウィッシュ캔슬]",
           "checked": [
             false,
             false,
@@ -8546,7 +8102,7 @@
         },
         {
           "time": "0:48",
-          "text": "0:48 클요리 후 [원문 확인: #通常cl]",
+          "text": "0:48 클요리 후 [원문 확인: #通常캔슬]",
           "checked": [
             false,
             false,
@@ -8598,7 +8154,7 @@
         },
         {
           "time": "0:42",
-          "text": "ㄴ 수리스 후 [원문 확인: #プレースcl]",
+          "text": "ㄴ 수리스 후 [원문 확인: #プレース캔슬]",
           "checked": [
             false,
             false,
@@ -8611,7 +8167,7 @@
         },
         {
           "time": "0:38",
-          "text": "0:38 봄쿄카 후 [원문 확인: #通常cl 134.9 0 56早かったり0 45遅かったら減点]",
+          "text": "0:38 봄쿄카 후 [원문 확인: #通常캔슬 134.9 0 56早かったり0 45遅かったら減点]",
           "checked": [
             false,
             false,
@@ -8624,7 +8180,7 @@
         },
         {
           "time": "0:37",
-          "text": "0:37 클요리 후 [원문 확인: #通常cl]",
+          "text": "0:37 클요리 후 [원문 확인: #通常캔슬]",
           "checked": [
             false,
             false,
@@ -8637,7 +8193,7 @@
         },
         {
           "time": "0:34",
-          "text": "0:34 봄쿄카 후 [원문 확인: #ダンスcl]",
+          "text": "0:34 봄쿄카 후 [원문 확인: #ダンス캔슬]",
           "checked": [
             false,
             false,
@@ -8650,7 +8206,7 @@
         },
         {
           "time": "0:32",
-          "text": "0:32 피오 후 [원문 확인: #通常cl]",
+          "text": "0:32 피오 후 [원문 확인: #通常캔슬]",
           "checked": [
             false,
             false,
@@ -8663,7 +8219,7 @@
         },
         {
           "time": "0:28",
-          "text": "0:28 클요리 후 [원문 확인: #通常clペタラ起動]",
+          "text": "0:28 클요리 후 [원문 확인: #通常캔슬ペタラ起動]",
           "checked": [
             false,
             false,
@@ -8728,7 +8284,7 @@
         },
         {
           "time": "0:22",
-          "text": "0:22 보스 UB 후 [원문 확인: ペタラtp付与 ルーチェcl ブレス버프 ペタルデ버프 待機]",
+          "text": "0:22 보스 UB 후 [원문 확인: ペタラtp付与 ルーチェ캔슬 ブレス버프 ペタルデ버프 待機]",
           "checked": [
             false,
             false,
@@ -8741,7 +8297,7 @@
         },
         {
           "time": "0:22",
-          "text": "ㄴ [원문 확인: ᄂこの時피오のtpが全部埋まっていなければ setして0 18にルーチェclで발동し 以後피오操作しない -200万 ※2]",
+          "text": "ㄴ [원문 확인: ᄂこの時피오のtpが全部埋まっていなければ setして0 18にルーチェ캔슬で발동し 以後피오操作しない -200万 ※2]",
           "checked": [
             false,
             false,
@@ -8793,7 +8349,7 @@
         },
         {
           "time": "0:14",
-          "text": "ㄴ 피오 후 [원문 확인: 通常cl早め 暗転明けすぐ]",
+          "text": "ㄴ 피오 후 [원문 확인: 通常캔슬早め 暗転明けすぐ]",
           "checked": [
             false,
             false,
@@ -8832,7 +8388,7 @@
         },
         {
           "time": "0:07",
-          "text": "0:07 클요리 후 [원문 확인: #ウィッシュcl]",
+          "text": "0:07 클요리 후 [원문 확인: #ウィッシュ캔슬]",
           "checked": [
             false,
             false,
@@ -8845,7 +8401,7 @@
         },
         {
           "time": "0:03",
-          "text": "0:03 봄쿄카 후 [원문 확인: #ダンスcl]",
+          "text": "0:03 봄쿄카 후 [원문 확인: #ダンス캔슬]",
           "checked": [
             false,
             false,
@@ -8858,7 +8414,7 @@
         },
         {
           "time": "0:03",
-          "text": "ㄴ 피오 후 [원문 확인: #ルーチェcl]",
+          "text": "ㄴ 피오 후 [원문 확인: #ルーチェ캔슬]",
           "checked": [
             false,
             false,
@@ -8871,7 +8427,7 @@
         },
         {
           "time": "0:02",
-          "text": "0:02 봄즈메 후 [원문 확인: #通常cl あとペタル3hit入る]",
+          "text": "0:02 봄즈메 후 [원문 확인: #通常캔슬 あとペタル3hit入る]",
           "checked": [
             false,
             false,
@@ -9014,7 +8570,7 @@
         },
         {
           "time": "0:27",
-          "text": "ㄴ この場合0:22敵 UB 후 [원문 확인: 前にルーチェclできなくなるが 合流できてマイナス200万程度の妥協ルートになる]",
+          "text": "ㄴ この場合0:22敵 UB 후 [원문 확인: 前にルーチェ캔슬できなくなるが 合流できてマイナス200万程度の妥協ルートになる]",
           "checked": [
             false,
             false,
@@ -9028,6 +8584,7 @@
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=-HGT0MfwG6w",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "conditions": {
         "tp": "",
         "fields": []
@@ -9036,7 +8593,8 @@
       "unresolvedRows": 52,
       "translatedRows": 1,
       "warningCount": 47,
-      "unknownActorCount": 1
+      "unknownActorCount": 1,
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -9161,6 +8719,7 @@
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=QkKv4NQgakQ",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "conditions": {
         "tp": "",
         "fields": []
@@ -9169,7 +8728,8 @@
       "unresolvedRows": 2,
       "translatedRows": 6,
       "warningCount": 1,
-      "unknownActorCount": 0
+      "unknownActorCount": 0,
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -9255,7 +8815,7 @@
         },
         {
           "time": "1:08",
-          "text": "1:08 봄즈메 후 [원문 확인: 通常cl早め 초速최속 一応1 09ガチ最遅可]",
+          "text": "1:08 봄즈메 후 [원문 확인: 通常캔슬早め 초速최속 一応1 09ガチ最遅可]",
           "checked": [
             false,
             false,
@@ -9268,7 +8828,7 @@
         },
         {
           "time": "1:07",
-          "text": "1:07 수리스 후 [원문 확인: ペタルデ버프최속 56.8 遅いと減る]",
+          "text": "1:07 수리스 후 [원문 확인: ペタルデ버프최속 56.8 늦으면 감소]",
           "checked": [
             false,
             false,
@@ -9750,6 +9310,7 @@
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=ylhzE2D3UGk",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "conditions": {
         "tp": "",
         "fields": []
@@ -9758,7 +9319,8 @@
       "unresolvedRows": 26,
       "translatedRows": 17,
       "warningCount": 23,
-      "unknownActorCount": 1
+      "unknownActorCount": 1,
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -9775,6 +9337,7 @@
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=oag8z2B9oUU",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "diagnostics": {
         "sections": [
           {
@@ -9812,7 +9375,8 @@
         "damageMatched": false,
         "sourceTimestamp": null,
         "chapterCount": 1
-      }
+      },
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -9828,7 +9392,9 @@
       "warnings": [],
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=e7UQ94tu0xI",
-      "youtubeHasTactic": null
+      "youtubeHasTactic": null,
+      "tacticLocation": "description",
+      "commentReadStatus": "not-requested"
     },
     {
       "stage": 6,
@@ -9837,25 +9403,186 @@
       "linkIndex": 1,
       "linkOrdinal": 0,
       "videoId": "gcLTnp88aSo",
-      "status": "no-parsable-timeline",
-      "matching": "unique-damage-section",
+      "status": "needs-source-check",
+      "matching": "ambiguous-party-section",
       "rowCount": 0,
-      "issues": [
-        "no-action-timeline"
-      ],
+      "issues": [],
       "warnings": [],
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=gcLTnp88aSo",
       "youtubeHasTactic": true,
-      "conditions": {
-        "tp": "",
-        "fields": []
-      },
+      "tacticLocation": "description",
       "diagnostics": {
-        "header": "17:25    バジリスク           21,181万",
-        "lineCount": 1,
-        "instructionLines": []
-      }
+        "sections": [
+          {
+            "boss": null,
+            "header": "",
+            "startSeconds": null,
+            "clockLines": 0
+          },
+          {
+            "boss": null,
+            "header": "00:00    プリンセスナイト強化状況  RANK 420",
+            "startSeconds": 0,
+            "clockLines": 1
+          },
+          {
+            "boss": 1,
+            "header": "00:39    ワイバーン           28,840万",
+            "startSeconds": 0,
+            "clockLines": 1
+          },
+          {
+            "boss": 1,
+            "header": "02:08    ワイバーン           33,065万",
+            "startSeconds": 128,
+            "clockLines": 1
+          },
+          {
+            "boss": 1,
+            "header": "03:36    ワイバーン           29,490万",
+            "startSeconds": 216,
+            "clockLines": 1
+          },
+          {
+            "boss": 1,
+            "header": "04:59    ワイバーン           25,242万",
+            "startSeconds": 299,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "06:31    タフガイスト       26,175万",
+            "startSeconds": 391,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "07:58    タフガイスト       24,949万",
+            "startSeconds": 478,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "09:49    タフガイスト       24,677万",
+            "startSeconds": 589,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "11:28    タフガイスト       24,758万",
+            "startSeconds": 688,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "12:54    タフガイスト       25,372万",
+            "startSeconds": 774,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "14:11    タフガイスト       24,067万",
+            "startSeconds": 851,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "15:46    タフガイスト       22,942万",
+            "startSeconds": 946,
+            "clockLines": 1
+          },
+          {
+            "boss": 3,
+            "header": "17:25    バジリスク           21,181万",
+            "startSeconds": 1045,
+            "clockLines": 1
+          },
+          {
+            "boss": 3,
+            "header": "18:58    バジリスク           23,155万",
+            "startSeconds": 1138,
+            "clockLines": 1
+          },
+          {
+            "boss": 3,
+            "header": "20:27    バジリスク           22,360万",
+            "startSeconds": 1227,
+            "clockLines": 1
+          },
+          {
+            "boss": 3,
+            "header": "22:08    バジリスク           25,403万",
+            "startSeconds": 1328,
+            "clockLines": 1
+          },
+          {
+            "boss": 3,
+            "header": "23:37    バジリスク           22,774万",
+            "startSeconds": 1417,
+            "clockLines": 1
+          },
+          {
+            "boss": 3,
+            "header": "25:07    バジリスク           22,791万",
+            "startSeconds": 1507,
+            "clockLines": 1
+          },
+          {
+            "boss": 4,
+            "header": "26:45    ウールヴヘジン   22,064万",
+            "startSeconds": 1605,
+            "clockLines": 1
+          },
+          {
+            "boss": 4,
+            "header": "28:14    ウールヴヘジン   25,787万",
+            "startSeconds": 1694,
+            "clockLines": 1
+          },
+          {
+            "boss": 4,
+            "header": "29:39    ウールヴヘジン   22,739万",
+            "startSeconds": 1779,
+            "clockLines": 1
+          },
+          {
+            "boss": 4,
+            "header": "31:12    ウールヴヘジン   22,730万",
+            "startSeconds": 1872,
+            "clockLines": 1
+          },
+          {
+            "boss": 5,
+            "header": "32:40    レサトパルト       24,105万",
+            "startSeconds": 1960,
+            "clockLines": 1
+          },
+          {
+            "boss": 5,
+            "header": "33:49    レサトパルト       27,246万",
+            "startSeconds": 2029,
+            "clockLines": 1
+          },
+          {
+            "boss": 5,
+            "header": "35:24    レサトパルト       23,375万",
+            "startSeconds": 2124,
+            "clockLines": 1
+          },
+          {
+            "boss": 5,
+            "header": "36:48    レサトパルト       21,923万",
+            "startSeconds": 2208,
+            "clockLines": 1
+          }
+        ],
+        "bestPartyHits": 0,
+        "damageMatched": true,
+        "sourceTimestamp": null,
+        "chapterCount": 7
+      },
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -9872,6 +9599,7 @@
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "diagnostics": {
         "sections": [
           {
@@ -9993,7 +9721,8 @@
         "damageMatched": false,
         "sourceTimestamp": null,
         "chapterCount": 4
-      }
+      },
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -10002,25 +9731,186 @@
       "linkIndex": 1,
       "linkOrdinal": 0,
       "videoId": "gcLTnp88aSo",
-      "status": "no-parsable-timeline",
-      "matching": "unique-damage-section",
+      "status": "needs-source-check",
+      "matching": "ambiguous-party-section",
       "rowCount": 0,
-      "issues": [
-        "no-action-timeline"
-      ],
+      "issues": [],
       "warnings": [],
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=gcLTnp88aSo",
       "youtubeHasTactic": true,
-      "conditions": {
-        "tp": "",
-        "fields": []
-      },
+      "tacticLocation": "description",
       "diagnostics": {
-        "header": "18:58    バジリスク           23,155万",
-        "lineCount": 1,
-        "instructionLines": []
-      }
+        "sections": [
+          {
+            "boss": null,
+            "header": "",
+            "startSeconds": null,
+            "clockLines": 0
+          },
+          {
+            "boss": null,
+            "header": "00:00    プリンセスナイト強化状況  RANK 420",
+            "startSeconds": 0,
+            "clockLines": 1
+          },
+          {
+            "boss": 1,
+            "header": "00:39    ワイバーン           28,840万",
+            "startSeconds": 0,
+            "clockLines": 1
+          },
+          {
+            "boss": 1,
+            "header": "02:08    ワイバーン           33,065万",
+            "startSeconds": 128,
+            "clockLines": 1
+          },
+          {
+            "boss": 1,
+            "header": "03:36    ワイバーン           29,490万",
+            "startSeconds": 216,
+            "clockLines": 1
+          },
+          {
+            "boss": 1,
+            "header": "04:59    ワイバーン           25,242万",
+            "startSeconds": 299,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "06:31    タフガイスト       26,175万",
+            "startSeconds": 391,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "07:58    タフガイスト       24,949万",
+            "startSeconds": 478,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "09:49    タフガイスト       24,677万",
+            "startSeconds": 589,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "11:28    タフガイスト       24,758万",
+            "startSeconds": 688,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "12:54    タフガイスト       25,372万",
+            "startSeconds": 774,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "14:11    タフガイスト       24,067万",
+            "startSeconds": 851,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "15:46    タフガイスト       22,942万",
+            "startSeconds": 946,
+            "clockLines": 1
+          },
+          {
+            "boss": 3,
+            "header": "17:25    バジリスク           21,181万",
+            "startSeconds": 1045,
+            "clockLines": 1
+          },
+          {
+            "boss": 3,
+            "header": "18:58    バジリスク           23,155万",
+            "startSeconds": 1138,
+            "clockLines": 1
+          },
+          {
+            "boss": 3,
+            "header": "20:27    バジリスク           22,360万",
+            "startSeconds": 1227,
+            "clockLines": 1
+          },
+          {
+            "boss": 3,
+            "header": "22:08    バジリスク           25,403万",
+            "startSeconds": 1328,
+            "clockLines": 1
+          },
+          {
+            "boss": 3,
+            "header": "23:37    バジリスク           22,774万",
+            "startSeconds": 1417,
+            "clockLines": 1
+          },
+          {
+            "boss": 3,
+            "header": "25:07    バジリスク           22,791万",
+            "startSeconds": 1507,
+            "clockLines": 1
+          },
+          {
+            "boss": 4,
+            "header": "26:45    ウールヴヘジン   22,064万",
+            "startSeconds": 1605,
+            "clockLines": 1
+          },
+          {
+            "boss": 4,
+            "header": "28:14    ウールヴヘジン   25,787万",
+            "startSeconds": 1694,
+            "clockLines": 1
+          },
+          {
+            "boss": 4,
+            "header": "29:39    ウールヴヘジン   22,739万",
+            "startSeconds": 1779,
+            "clockLines": 1
+          },
+          {
+            "boss": 4,
+            "header": "31:12    ウールヴヘジン   22,730万",
+            "startSeconds": 1872,
+            "clockLines": 1
+          },
+          {
+            "boss": 5,
+            "header": "32:40    レサトパルト       24,105万",
+            "startSeconds": 1960,
+            "clockLines": 1
+          },
+          {
+            "boss": 5,
+            "header": "33:49    レサトパルト       27,246万",
+            "startSeconds": 2029,
+            "clockLines": 1
+          },
+          {
+            "boss": 5,
+            "header": "35:24    レサトパルト       23,375万",
+            "startSeconds": 2124,
+            "clockLines": 1
+          },
+          {
+            "boss": 5,
+            "header": "36:48    レサトパルト       21,923万",
+            "startSeconds": 2208,
+            "clockLines": 1
+          }
+        ],
+        "bestPartyHits": 0,
+        "damageMatched": true,
+        "sourceTimestamp": null,
+        "chapterCount": 7
+      },
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -10029,25 +9919,186 @@
       "linkIndex": 1,
       "linkOrdinal": 0,
       "videoId": "gcLTnp88aSo",
-      "status": "no-parsable-timeline",
-      "matching": "unique-damage-section",
+      "status": "needs-source-check",
+      "matching": "ambiguous-party-section",
       "rowCount": 0,
-      "issues": [
-        "no-action-timeline"
-      ],
+      "issues": [],
       "warnings": [],
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=gcLTnp88aSo",
       "youtubeHasTactic": true,
-      "conditions": {
-        "tp": "",
-        "fields": []
-      },
+      "tacticLocation": "description",
       "diagnostics": {
-        "header": "20:27    バジリスク           22,360万",
-        "lineCount": 1,
-        "instructionLines": []
-      }
+        "sections": [
+          {
+            "boss": null,
+            "header": "",
+            "startSeconds": null,
+            "clockLines": 0
+          },
+          {
+            "boss": null,
+            "header": "00:00    プリンセスナイト強化状況  RANK 420",
+            "startSeconds": 0,
+            "clockLines": 1
+          },
+          {
+            "boss": 1,
+            "header": "00:39    ワイバーン           28,840万",
+            "startSeconds": 0,
+            "clockLines": 1
+          },
+          {
+            "boss": 1,
+            "header": "02:08    ワイバーン           33,065万",
+            "startSeconds": 128,
+            "clockLines": 1
+          },
+          {
+            "boss": 1,
+            "header": "03:36    ワイバーン           29,490万",
+            "startSeconds": 216,
+            "clockLines": 1
+          },
+          {
+            "boss": 1,
+            "header": "04:59    ワイバーン           25,242万",
+            "startSeconds": 299,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "06:31    タフガイスト       26,175万",
+            "startSeconds": 391,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "07:58    タフガイスト       24,949万",
+            "startSeconds": 478,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "09:49    タフガイスト       24,677万",
+            "startSeconds": 589,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "11:28    タフガイスト       24,758万",
+            "startSeconds": 688,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "12:54    タフガイスト       25,372万",
+            "startSeconds": 774,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "14:11    タフガイスト       24,067万",
+            "startSeconds": 851,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "15:46    タフガイスト       22,942万",
+            "startSeconds": 946,
+            "clockLines": 1
+          },
+          {
+            "boss": 3,
+            "header": "17:25    バジリスク           21,181万",
+            "startSeconds": 1045,
+            "clockLines": 1
+          },
+          {
+            "boss": 3,
+            "header": "18:58    バジリスク           23,155万",
+            "startSeconds": 1138,
+            "clockLines": 1
+          },
+          {
+            "boss": 3,
+            "header": "20:27    バジリスク           22,360万",
+            "startSeconds": 1227,
+            "clockLines": 1
+          },
+          {
+            "boss": 3,
+            "header": "22:08    バジリスク           25,403万",
+            "startSeconds": 1328,
+            "clockLines": 1
+          },
+          {
+            "boss": 3,
+            "header": "23:37    バジリスク           22,774万",
+            "startSeconds": 1417,
+            "clockLines": 1
+          },
+          {
+            "boss": 3,
+            "header": "25:07    バジリスク           22,791万",
+            "startSeconds": 1507,
+            "clockLines": 1
+          },
+          {
+            "boss": 4,
+            "header": "26:45    ウールヴヘジン   22,064万",
+            "startSeconds": 1605,
+            "clockLines": 1
+          },
+          {
+            "boss": 4,
+            "header": "28:14    ウールヴヘジン   25,787万",
+            "startSeconds": 1694,
+            "clockLines": 1
+          },
+          {
+            "boss": 4,
+            "header": "29:39    ウールヴヘジン   22,739万",
+            "startSeconds": 1779,
+            "clockLines": 1
+          },
+          {
+            "boss": 4,
+            "header": "31:12    ウールヴヘジン   22,730万",
+            "startSeconds": 1872,
+            "clockLines": 1
+          },
+          {
+            "boss": 5,
+            "header": "32:40    レサトパルト       24,105万",
+            "startSeconds": 1960,
+            "clockLines": 1
+          },
+          {
+            "boss": 5,
+            "header": "33:49    レサトパルト       27,246万",
+            "startSeconds": 2029,
+            "clockLines": 1
+          },
+          {
+            "boss": 5,
+            "header": "35:24    レサトパルト       23,375万",
+            "startSeconds": 2124,
+            "clockLines": 1
+          },
+          {
+            "boss": 5,
+            "header": "36:48    レサトパルト       21,923万",
+            "startSeconds": 2208,
+            "clockLines": 1
+          }
+        ],
+        "bestPartyHits": 0,
+        "damageMatched": true,
+        "sourceTimestamp": null,
+        "chapterCount": 7
+      },
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -10056,7 +10107,7 @@
       "linkIndex": 1,
       "linkOrdinal": 0,
       "videoId": "gcLTnp88aSo",
-      "status": "no-parsable-timeline",
+      "status": "no-youtube-tl",
       "matching": "unique-damage-section",
       "rowCount": 0,
       "issues": [
@@ -10065,7 +10116,8 @@
       "warnings": [],
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=gcLTnp88aSo",
-      "youtubeHasTactic": true,
+      "youtubeHasTactic": false,
+      "tacticLocation": "description",
       "conditions": {
         "tp": "",
         "fields": []
@@ -10074,7 +10126,8 @@
         "header": "22:08    バジリスク           25,403万",
         "lineCount": 1,
         "instructionLines": []
-      }
+      },
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -10199,6 +10252,7 @@
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=kfFsDXBFetY",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "conditions": {
         "tp": "",
         "fields": [
@@ -10212,7 +10266,8 @@
       "unresolvedRows": 8,
       "translatedRows": 0,
       "warningCount": 8,
-      "unknownActorCount": 0
+      "unknownActorCount": 0,
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -10221,25 +10276,186 @@
       "linkIndex": 1,
       "linkOrdinal": 0,
       "videoId": "gcLTnp88aSo",
-      "status": "no-parsable-timeline",
-      "matching": "unique-damage-section",
+      "status": "needs-source-check",
+      "matching": "ambiguous-party-section",
       "rowCount": 0,
-      "issues": [
-        "no-action-timeline"
-      ],
+      "issues": [],
       "warnings": [],
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=gcLTnp88aSo",
       "youtubeHasTactic": true,
-      "conditions": {
-        "tp": "",
-        "fields": []
-      },
+      "tacticLocation": "description",
       "diagnostics": {
-        "header": "23:37    バジリスク           22,774万",
-        "lineCount": 1,
-        "instructionLines": []
-      }
+        "sections": [
+          {
+            "boss": null,
+            "header": "",
+            "startSeconds": null,
+            "clockLines": 0
+          },
+          {
+            "boss": null,
+            "header": "00:00    プリンセスナイト強化状況  RANK 420",
+            "startSeconds": 0,
+            "clockLines": 1
+          },
+          {
+            "boss": 1,
+            "header": "00:39    ワイバーン           28,840万",
+            "startSeconds": 0,
+            "clockLines": 1
+          },
+          {
+            "boss": 1,
+            "header": "02:08    ワイバーン           33,065万",
+            "startSeconds": 128,
+            "clockLines": 1
+          },
+          {
+            "boss": 1,
+            "header": "03:36    ワイバーン           29,490万",
+            "startSeconds": 216,
+            "clockLines": 1
+          },
+          {
+            "boss": 1,
+            "header": "04:59    ワイバーン           25,242万",
+            "startSeconds": 299,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "06:31    タフガイスト       26,175万",
+            "startSeconds": 391,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "07:58    タフガイスト       24,949万",
+            "startSeconds": 478,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "09:49    タフガイスト       24,677万",
+            "startSeconds": 589,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "11:28    タフガイスト       24,758万",
+            "startSeconds": 688,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "12:54    タフガイスト       25,372万",
+            "startSeconds": 774,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "14:11    タフガイスト       24,067万",
+            "startSeconds": 851,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "15:46    タフガイスト       22,942万",
+            "startSeconds": 946,
+            "clockLines": 1
+          },
+          {
+            "boss": 3,
+            "header": "17:25    バジリスク           21,181万",
+            "startSeconds": 1045,
+            "clockLines": 1
+          },
+          {
+            "boss": 3,
+            "header": "18:58    バジリスク           23,155万",
+            "startSeconds": 1138,
+            "clockLines": 1
+          },
+          {
+            "boss": 3,
+            "header": "20:27    バジリスク           22,360万",
+            "startSeconds": 1227,
+            "clockLines": 1
+          },
+          {
+            "boss": 3,
+            "header": "22:08    バジリスク           25,403万",
+            "startSeconds": 1328,
+            "clockLines": 1
+          },
+          {
+            "boss": 3,
+            "header": "23:37    バジリスク           22,774万",
+            "startSeconds": 1417,
+            "clockLines": 1
+          },
+          {
+            "boss": 3,
+            "header": "25:07    バジリスク           22,791万",
+            "startSeconds": 1507,
+            "clockLines": 1
+          },
+          {
+            "boss": 4,
+            "header": "26:45    ウールヴヘジン   22,064万",
+            "startSeconds": 1605,
+            "clockLines": 1
+          },
+          {
+            "boss": 4,
+            "header": "28:14    ウールヴヘジン   25,787万",
+            "startSeconds": 1694,
+            "clockLines": 1
+          },
+          {
+            "boss": 4,
+            "header": "29:39    ウールヴヘジン   22,739万",
+            "startSeconds": 1779,
+            "clockLines": 1
+          },
+          {
+            "boss": 4,
+            "header": "31:12    ウールヴヘジン   22,730万",
+            "startSeconds": 1872,
+            "clockLines": 1
+          },
+          {
+            "boss": 5,
+            "header": "32:40    レサトパルト       24,105万",
+            "startSeconds": 1960,
+            "clockLines": 1
+          },
+          {
+            "boss": 5,
+            "header": "33:49    レサトパルト       27,246万",
+            "startSeconds": 2029,
+            "clockLines": 1
+          },
+          {
+            "boss": 5,
+            "header": "35:24    レサトパルト       23,375万",
+            "startSeconds": 2124,
+            "clockLines": 1
+          },
+          {
+            "boss": 5,
+            "header": "36:48    レサトパルト       21,923万",
+            "startSeconds": 2208,
+            "clockLines": 1
+          }
+        ],
+        "bestPartyHits": 1,
+        "damageMatched": true,
+        "sourceTimestamp": null,
+        "chapterCount": 7
+      },
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -10248,25 +10464,186 @@
       "linkIndex": 1,
       "linkOrdinal": 0,
       "videoId": "gcLTnp88aSo",
-      "status": "no-parsable-timeline",
-      "matching": "unique-damage-section",
+      "status": "needs-source-check",
+      "matching": "ambiguous-party-section",
       "rowCount": 0,
-      "issues": [
-        "no-action-timeline"
-      ],
+      "issues": [],
       "warnings": [],
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=gcLTnp88aSo",
       "youtubeHasTactic": true,
-      "conditions": {
-        "tp": "",
-        "fields": []
-      },
+      "tacticLocation": "description",
       "diagnostics": {
-        "header": "25:07    バジリスク           22,791万",
-        "lineCount": 1,
-        "instructionLines": []
-      }
+        "sections": [
+          {
+            "boss": null,
+            "header": "",
+            "startSeconds": null,
+            "clockLines": 0
+          },
+          {
+            "boss": null,
+            "header": "00:00    プリンセスナイト強化状況  RANK 420",
+            "startSeconds": 0,
+            "clockLines": 1
+          },
+          {
+            "boss": 1,
+            "header": "00:39    ワイバーン           28,840万",
+            "startSeconds": 0,
+            "clockLines": 1
+          },
+          {
+            "boss": 1,
+            "header": "02:08    ワイバーン           33,065万",
+            "startSeconds": 128,
+            "clockLines": 1
+          },
+          {
+            "boss": 1,
+            "header": "03:36    ワイバーン           29,490万",
+            "startSeconds": 216,
+            "clockLines": 1
+          },
+          {
+            "boss": 1,
+            "header": "04:59    ワイバーン           25,242万",
+            "startSeconds": 299,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "06:31    タフガイスト       26,175万",
+            "startSeconds": 391,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "07:58    タフガイスト       24,949万",
+            "startSeconds": 478,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "09:49    タフガイスト       24,677万",
+            "startSeconds": 589,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "11:28    タフガイスト       24,758万",
+            "startSeconds": 688,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "12:54    タフガイスト       25,372万",
+            "startSeconds": 774,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "14:11    タフガイスト       24,067万",
+            "startSeconds": 851,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "15:46    タフガイスト       22,942万",
+            "startSeconds": 946,
+            "clockLines": 1
+          },
+          {
+            "boss": 3,
+            "header": "17:25    バジリスク           21,181万",
+            "startSeconds": 1045,
+            "clockLines": 1
+          },
+          {
+            "boss": 3,
+            "header": "18:58    バジリスク           23,155万",
+            "startSeconds": 1138,
+            "clockLines": 1
+          },
+          {
+            "boss": 3,
+            "header": "20:27    バジリスク           22,360万",
+            "startSeconds": 1227,
+            "clockLines": 1
+          },
+          {
+            "boss": 3,
+            "header": "22:08    バジリスク           25,403万",
+            "startSeconds": 1328,
+            "clockLines": 1
+          },
+          {
+            "boss": 3,
+            "header": "23:37    バジリスク           22,774万",
+            "startSeconds": 1417,
+            "clockLines": 1
+          },
+          {
+            "boss": 3,
+            "header": "25:07    バジリスク           22,791万",
+            "startSeconds": 1507,
+            "clockLines": 1
+          },
+          {
+            "boss": 4,
+            "header": "26:45    ウールヴヘジン   22,064万",
+            "startSeconds": 1605,
+            "clockLines": 1
+          },
+          {
+            "boss": 4,
+            "header": "28:14    ウールヴヘジン   25,787万",
+            "startSeconds": 1694,
+            "clockLines": 1
+          },
+          {
+            "boss": 4,
+            "header": "29:39    ウールヴヘジン   22,739万",
+            "startSeconds": 1779,
+            "clockLines": 1
+          },
+          {
+            "boss": 4,
+            "header": "31:12    ウールヴヘジン   22,730万",
+            "startSeconds": 1872,
+            "clockLines": 1
+          },
+          {
+            "boss": 5,
+            "header": "32:40    レサトパルト       24,105万",
+            "startSeconds": 1960,
+            "clockLines": 1
+          },
+          {
+            "boss": 5,
+            "header": "33:49    レサトパルト       27,246万",
+            "startSeconds": 2029,
+            "clockLines": 1
+          },
+          {
+            "boss": 5,
+            "header": "35:24    レサトパルト       23,375万",
+            "startSeconds": 2124,
+            "clockLines": 1
+          },
+          {
+            "boss": 5,
+            "header": "36:48    レサトパルト       21,923万",
+            "startSeconds": 2208,
+            "clockLines": 1
+          }
+        ],
+        "bestPartyHits": 1,
+        "damageMatched": true,
+        "sourceTimestamp": null,
+        "chapterCount": 7
+      },
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -10391,6 +10768,7 @@
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=G49kCTl26To",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "conditions": {
         "tp": "",
         "fields": []
@@ -10399,7 +10777,8 @@
       "unresolvedRows": 5,
       "translatedRows": 3,
       "warningCount": 4,
-      "unknownActorCount": 0
+      "unknownActorCount": 0,
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -10537,6 +10916,7 @@
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=bBX9S97R1Yg",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "conditions": {
         "tp": "",
         "fields": []
@@ -10545,7 +10925,8 @@
       "unresolvedRows": 8,
       "translatedRows": 1,
       "warningCount": 5,
-      "unknownActorCount": 0
+      "unknownActorCount": 0,
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -10787,6 +11168,7 @@
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=FXYfPgUC_Z4",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "conditions": {
         "tp": "",
         "fields": []
@@ -10795,7 +11177,8 @@
       "unresolvedRows": 14,
       "translatedRows": 3,
       "warningCount": 5,
-      "unknownActorCount": 0
+      "unknownActorCount": 0,
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -11011,6 +11394,7 @@
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=6Z6-twIpFew",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "conditions": {
         "tp": "",
         "fields": []
@@ -11019,7 +11403,8 @@
       "unresolvedRows": 10,
       "translatedRows": 5,
       "warningCount": 6,
-      "unknownActorCount": 0
+      "unknownActorCount": 0,
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -11223,6 +11608,7 @@
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=8818eU0TDnQ",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "conditions": {
         "tp": "",
         "fields": []
@@ -11231,7 +11617,8 @@
       "unresolvedRows": 11,
       "translatedRows": 3,
       "warningCount": 8,
-      "unknownActorCount": 2
+      "unknownActorCount": 2,
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -11248,6 +11635,7 @@
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=8818eU0TDnQ",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "diagnostics": {
         "sections": [
           {
@@ -11267,7 +11655,8 @@
         "damageMatched": false,
         "sourceTimestamp": null,
         "chapterCount": 0
-      }
+      },
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -11284,6 +11673,7 @@
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=-Z7rN4QWfS0",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "diagnostics": {
         "sections": [
           {
@@ -11387,7 +11777,8 @@
         "damageMatched": false,
         "sourceTimestamp": null,
         "chapterCount": 1
-      }
+      },
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -11564,6 +11955,7 @@
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=D2BLH6YYjKc",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "conditions": {
         "tp": "",
         "fields": []
@@ -11572,7 +11964,8 @@
       "unresolvedRows": 2,
       "translatedRows": 10,
       "warningCount": 2,
-      "unknownActorCount": 0
+      "unknownActorCount": 0,
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -11589,6 +11982,7 @@
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "diagnostics": {
         "sections": [
           {
@@ -11710,7 +12104,8 @@
         "damageMatched": false,
         "sourceTimestamp": null,
         "chapterCount": 4
-      }
+      },
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -11727,6 +12122,7 @@
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "diagnostics": {
         "sections": [
           {
@@ -11848,7 +12244,8 @@
         "damageMatched": false,
         "sourceTimestamp": null,
         "chapterCount": 4
-      }
+      },
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -11865,6 +12262,7 @@
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "diagnostics": {
         "sections": [
           {
@@ -11986,7 +12384,8 @@
         "damageMatched": false,
         "sourceTimestamp": null,
         "chapterCount": 4
-      }
+      },
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -12003,6 +12402,7 @@
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=B97LQrFSmVM",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "diagnostics": {
         "sections": [
           {
@@ -12015,7 +12415,13 @@
             "boss": null,
             "header": "0:00 オープニング",
             "startSeconds": 0,
-            "clockLines": 2
+            "clockLines": 1
+          },
+          {
+            "boss": null,
+            "header": "1:25 騎士強化",
+            "startSeconds": 0,
+            "clockLines": 1
           },
           {
             "boss": 1,
@@ -12081,8 +12487,9 @@
         "bestPartyHits": 0,
         "damageMatched": false,
         "sourceTimestamp": null,
-        "chapterCount": 5
-      }
+        "chapterCount": 6
+      },
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -12099,6 +12506,7 @@
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=cMxhNxI-4-Q",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "diagnostics": {
         "sections": [
           {
@@ -12118,7 +12526,8 @@
         "damageMatched": false,
         "sourceTimestamp": null,
         "chapterCount": 0
-      }
+      },
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -12127,25 +12536,186 @@
       "linkIndex": 1,
       "linkOrdinal": 0,
       "videoId": "gcLTnp88aSo",
-      "status": "no-parsable-timeline",
-      "matching": "unique-damage-section",
+      "status": "needs-source-check",
+      "matching": "ambiguous-party-section",
       "rowCount": 0,
-      "issues": [
-        "no-action-timeline"
-      ],
+      "issues": [],
       "warnings": [],
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=gcLTnp88aSo",
       "youtubeHasTactic": true,
-      "conditions": {
-        "tp": "",
-        "fields": []
-      },
+      "tacticLocation": "description",
       "diagnostics": {
-        "header": "26:45    ウールヴヘジン   22,064万",
-        "lineCount": 1,
-        "instructionLines": []
-      }
+        "sections": [
+          {
+            "boss": null,
+            "header": "",
+            "startSeconds": null,
+            "clockLines": 0
+          },
+          {
+            "boss": null,
+            "header": "00:00    プリンセスナイト強化状況  RANK 420",
+            "startSeconds": 0,
+            "clockLines": 1
+          },
+          {
+            "boss": 1,
+            "header": "00:39    ワイバーン           28,840万",
+            "startSeconds": 0,
+            "clockLines": 1
+          },
+          {
+            "boss": 1,
+            "header": "02:08    ワイバーン           33,065万",
+            "startSeconds": 128,
+            "clockLines": 1
+          },
+          {
+            "boss": 1,
+            "header": "03:36    ワイバーン           29,490万",
+            "startSeconds": 216,
+            "clockLines": 1
+          },
+          {
+            "boss": 1,
+            "header": "04:59    ワイバーン           25,242万",
+            "startSeconds": 299,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "06:31    タフガイスト       26,175万",
+            "startSeconds": 391,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "07:58    タフガイスト       24,949万",
+            "startSeconds": 478,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "09:49    タフガイスト       24,677万",
+            "startSeconds": 589,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "11:28    タフガイスト       24,758万",
+            "startSeconds": 688,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "12:54    タフガイスト       25,372万",
+            "startSeconds": 774,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "14:11    タフガイスト       24,067万",
+            "startSeconds": 851,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "15:46    タフガイスト       22,942万",
+            "startSeconds": 946,
+            "clockLines": 1
+          },
+          {
+            "boss": 3,
+            "header": "17:25    バジリスク           21,181万",
+            "startSeconds": 1045,
+            "clockLines": 1
+          },
+          {
+            "boss": 3,
+            "header": "18:58    バジリスク           23,155万",
+            "startSeconds": 1138,
+            "clockLines": 1
+          },
+          {
+            "boss": 3,
+            "header": "20:27    バジリスク           22,360万",
+            "startSeconds": 1227,
+            "clockLines": 1
+          },
+          {
+            "boss": 3,
+            "header": "22:08    バジリスク           25,403万",
+            "startSeconds": 1328,
+            "clockLines": 1
+          },
+          {
+            "boss": 3,
+            "header": "23:37    バジリスク           22,774万",
+            "startSeconds": 1417,
+            "clockLines": 1
+          },
+          {
+            "boss": 3,
+            "header": "25:07    バジリスク           22,791万",
+            "startSeconds": 1507,
+            "clockLines": 1
+          },
+          {
+            "boss": 4,
+            "header": "26:45    ウールヴヘジン   22,064万",
+            "startSeconds": 1605,
+            "clockLines": 1
+          },
+          {
+            "boss": 4,
+            "header": "28:14    ウールヴヘジン   25,787万",
+            "startSeconds": 1694,
+            "clockLines": 1
+          },
+          {
+            "boss": 4,
+            "header": "29:39    ウールヴヘジン   22,739万",
+            "startSeconds": 1779,
+            "clockLines": 1
+          },
+          {
+            "boss": 4,
+            "header": "31:12    ウールヴヘジン   22,730万",
+            "startSeconds": 1872,
+            "clockLines": 1
+          },
+          {
+            "boss": 5,
+            "header": "32:40    レサトパルト       24,105万",
+            "startSeconds": 1960,
+            "clockLines": 1
+          },
+          {
+            "boss": 5,
+            "header": "33:49    レサトパルト       27,246万",
+            "startSeconds": 2029,
+            "clockLines": 1
+          },
+          {
+            "boss": 5,
+            "header": "35:24    レサトパルト       23,375万",
+            "startSeconds": 2124,
+            "clockLines": 1
+          },
+          {
+            "boss": 5,
+            "header": "36:48    レサトパルト       21,923万",
+            "startSeconds": 2208,
+            "clockLines": 1
+          }
+        ],
+        "bestPartyHits": 0,
+        "damageMatched": true,
+        "sourceTimestamp": null,
+        "chapterCount": 5
+      },
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -12154,7 +12724,7 @@
       "linkIndex": 1,
       "linkOrdinal": 0,
       "videoId": "gcLTnp88aSo",
-      "status": "no-parsable-timeline",
+      "status": "no-youtube-tl",
       "matching": "unique-damage-section",
       "rowCount": 0,
       "issues": [
@@ -12163,7 +12733,8 @@
       "warnings": [],
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=gcLTnp88aSo",
-      "youtubeHasTactic": true,
+      "youtubeHasTactic": false,
+      "tacticLocation": "description",
       "conditions": {
         "tp": "",
         "fields": []
@@ -12172,7 +12743,8 @@
         "header": "28:14    ウールヴヘジン   25,787万",
         "lineCount": 1,
         "instructionLines": []
-      }
+      },
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -12181,25 +12753,186 @@
       "linkIndex": 1,
       "linkOrdinal": 0,
       "videoId": "gcLTnp88aSo",
-      "status": "no-parsable-timeline",
-      "matching": "unique-damage-section",
+      "status": "needs-source-check",
+      "matching": "ambiguous-party-section",
       "rowCount": 0,
-      "issues": [
-        "no-action-timeline"
-      ],
+      "issues": [],
       "warnings": [],
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=gcLTnp88aSo",
       "youtubeHasTactic": true,
-      "conditions": {
-        "tp": "",
-        "fields": []
-      },
+      "tacticLocation": "description",
       "diagnostics": {
-        "header": "29:39    ウールヴヘジン   22,739万",
-        "lineCount": 1,
-        "instructionLines": []
-      }
+        "sections": [
+          {
+            "boss": null,
+            "header": "",
+            "startSeconds": null,
+            "clockLines": 0
+          },
+          {
+            "boss": null,
+            "header": "00:00    プリンセスナイト強化状況  RANK 420",
+            "startSeconds": 0,
+            "clockLines": 1
+          },
+          {
+            "boss": 1,
+            "header": "00:39    ワイバーン           28,840万",
+            "startSeconds": 0,
+            "clockLines": 1
+          },
+          {
+            "boss": 1,
+            "header": "02:08    ワイバーン           33,065万",
+            "startSeconds": 128,
+            "clockLines": 1
+          },
+          {
+            "boss": 1,
+            "header": "03:36    ワイバーン           29,490万",
+            "startSeconds": 216,
+            "clockLines": 1
+          },
+          {
+            "boss": 1,
+            "header": "04:59    ワイバーン           25,242万",
+            "startSeconds": 299,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "06:31    タフガイスト       26,175万",
+            "startSeconds": 391,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "07:58    タフガイスト       24,949万",
+            "startSeconds": 478,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "09:49    タフガイスト       24,677万",
+            "startSeconds": 589,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "11:28    タフガイスト       24,758万",
+            "startSeconds": 688,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "12:54    タフガイスト       25,372万",
+            "startSeconds": 774,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "14:11    タフガイスト       24,067万",
+            "startSeconds": 851,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "15:46    タフガイスト       22,942万",
+            "startSeconds": 946,
+            "clockLines": 1
+          },
+          {
+            "boss": 3,
+            "header": "17:25    バジリスク           21,181万",
+            "startSeconds": 1045,
+            "clockLines": 1
+          },
+          {
+            "boss": 3,
+            "header": "18:58    バジリスク           23,155万",
+            "startSeconds": 1138,
+            "clockLines": 1
+          },
+          {
+            "boss": 3,
+            "header": "20:27    バジリスク           22,360万",
+            "startSeconds": 1227,
+            "clockLines": 1
+          },
+          {
+            "boss": 3,
+            "header": "22:08    バジリスク           25,403万",
+            "startSeconds": 1328,
+            "clockLines": 1
+          },
+          {
+            "boss": 3,
+            "header": "23:37    バジリスク           22,774万",
+            "startSeconds": 1417,
+            "clockLines": 1
+          },
+          {
+            "boss": 3,
+            "header": "25:07    バジリスク           22,791万",
+            "startSeconds": 1507,
+            "clockLines": 1
+          },
+          {
+            "boss": 4,
+            "header": "26:45    ウールヴヘジン   22,064万",
+            "startSeconds": 1605,
+            "clockLines": 1
+          },
+          {
+            "boss": 4,
+            "header": "28:14    ウールヴヘジン   25,787万",
+            "startSeconds": 1694,
+            "clockLines": 1
+          },
+          {
+            "boss": 4,
+            "header": "29:39    ウールヴヘジン   22,739万",
+            "startSeconds": 1779,
+            "clockLines": 1
+          },
+          {
+            "boss": 4,
+            "header": "31:12    ウールヴヘジン   22,730万",
+            "startSeconds": 1872,
+            "clockLines": 1
+          },
+          {
+            "boss": 5,
+            "header": "32:40    レサトパルト       24,105万",
+            "startSeconds": 1960,
+            "clockLines": 1
+          },
+          {
+            "boss": 5,
+            "header": "33:49    レサトパルト       27,246万",
+            "startSeconds": 2029,
+            "clockLines": 1
+          },
+          {
+            "boss": 5,
+            "header": "35:24    レサトパルト       23,375万",
+            "startSeconds": 2124,
+            "clockLines": 1
+          },
+          {
+            "boss": 5,
+            "header": "36:48    レサトパルト       21,923万",
+            "startSeconds": 2208,
+            "clockLines": 1
+          }
+        ],
+        "bestPartyHits": 0,
+        "damageMatched": true,
+        "sourceTimestamp": null,
+        "chapterCount": 5
+      },
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -12208,25 +12941,186 @@
       "linkIndex": 1,
       "linkOrdinal": 0,
       "videoId": "gcLTnp88aSo",
-      "status": "no-parsable-timeline",
-      "matching": "unique-damage-section",
+      "status": "needs-source-check",
+      "matching": "ambiguous-party-section",
       "rowCount": 0,
-      "issues": [
-        "no-action-timeline"
-      ],
+      "issues": [],
       "warnings": [],
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=gcLTnp88aSo",
       "youtubeHasTactic": true,
-      "conditions": {
-        "tp": "",
-        "fields": []
-      },
+      "tacticLocation": "description",
       "diagnostics": {
-        "header": "31:12    ウールヴヘジン   22,730万",
-        "lineCount": 1,
-        "instructionLines": []
-      }
+        "sections": [
+          {
+            "boss": null,
+            "header": "",
+            "startSeconds": null,
+            "clockLines": 0
+          },
+          {
+            "boss": null,
+            "header": "00:00    プリンセスナイト強化状況  RANK 420",
+            "startSeconds": 0,
+            "clockLines": 1
+          },
+          {
+            "boss": 1,
+            "header": "00:39    ワイバーン           28,840万",
+            "startSeconds": 0,
+            "clockLines": 1
+          },
+          {
+            "boss": 1,
+            "header": "02:08    ワイバーン           33,065万",
+            "startSeconds": 128,
+            "clockLines": 1
+          },
+          {
+            "boss": 1,
+            "header": "03:36    ワイバーン           29,490万",
+            "startSeconds": 216,
+            "clockLines": 1
+          },
+          {
+            "boss": 1,
+            "header": "04:59    ワイバーン           25,242万",
+            "startSeconds": 299,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "06:31    タフガイスト       26,175万",
+            "startSeconds": 391,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "07:58    タフガイスト       24,949万",
+            "startSeconds": 478,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "09:49    タフガイスト       24,677万",
+            "startSeconds": 589,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "11:28    タフガイスト       24,758万",
+            "startSeconds": 688,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "12:54    タフガイスト       25,372万",
+            "startSeconds": 774,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "14:11    タフガイスト       24,067万",
+            "startSeconds": 851,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "15:46    タフガイスト       22,942万",
+            "startSeconds": 946,
+            "clockLines": 1
+          },
+          {
+            "boss": 3,
+            "header": "17:25    バジリスク           21,181万",
+            "startSeconds": 1045,
+            "clockLines": 1
+          },
+          {
+            "boss": 3,
+            "header": "18:58    バジリスク           23,155万",
+            "startSeconds": 1138,
+            "clockLines": 1
+          },
+          {
+            "boss": 3,
+            "header": "20:27    バジリスク           22,360万",
+            "startSeconds": 1227,
+            "clockLines": 1
+          },
+          {
+            "boss": 3,
+            "header": "22:08    バジリスク           25,403万",
+            "startSeconds": 1328,
+            "clockLines": 1
+          },
+          {
+            "boss": 3,
+            "header": "23:37    バジリスク           22,774万",
+            "startSeconds": 1417,
+            "clockLines": 1
+          },
+          {
+            "boss": 3,
+            "header": "25:07    バジリスク           22,791万",
+            "startSeconds": 1507,
+            "clockLines": 1
+          },
+          {
+            "boss": 4,
+            "header": "26:45    ウールヴヘジン   22,064万",
+            "startSeconds": 1605,
+            "clockLines": 1
+          },
+          {
+            "boss": 4,
+            "header": "28:14    ウールヴヘジン   25,787万",
+            "startSeconds": 1694,
+            "clockLines": 1
+          },
+          {
+            "boss": 4,
+            "header": "29:39    ウールヴヘジン   22,739万",
+            "startSeconds": 1779,
+            "clockLines": 1
+          },
+          {
+            "boss": 4,
+            "header": "31:12    ウールヴヘジン   22,730万",
+            "startSeconds": 1872,
+            "clockLines": 1
+          },
+          {
+            "boss": 5,
+            "header": "32:40    レサトパルト       24,105万",
+            "startSeconds": 1960,
+            "clockLines": 1
+          },
+          {
+            "boss": 5,
+            "header": "33:49    レサトパルト       27,246万",
+            "startSeconds": 2029,
+            "clockLines": 1
+          },
+          {
+            "boss": 5,
+            "header": "35:24    レサトパルト       23,375万",
+            "startSeconds": 2124,
+            "clockLines": 1
+          },
+          {
+            "boss": 5,
+            "header": "36:48    レサトパルト       21,923万",
+            "startSeconds": 2208,
+            "clockLines": 1
+          }
+        ],
+        "bestPartyHits": 0,
+        "damageMatched": true,
+        "sourceTimestamp": null,
+        "chapterCount": 5
+      },
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -12481,6 +13375,7 @@
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=-wBhxkTYgU8",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "conditions": {
         "tp": "",
         "fields": []
@@ -12489,7 +13384,8 @@
       "unresolvedRows": 12,
       "translatedRows": 6,
       "warningCount": 5,
-      "unknownActorCount": 0
+      "unknownActorCount": 0,
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -12758,6 +13654,7 @@
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=Hyc9-AIDuts",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "conditions": {
         "tp": "",
         "fields": []
@@ -12766,7 +13663,8 @@
       "unresolvedRows": 11,
       "translatedRows": 8,
       "warningCount": 8,
-      "unknownActorCount": 1
+      "unknownActorCount": 1,
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -13008,6 +13906,7 @@
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=OvTt1H17-Gk",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "conditions": {
         "tp": "",
         "fields": []
@@ -13016,7 +13915,8 @@
       "unresolvedRows": 10,
       "translatedRows": 7,
       "warningCount": 7,
-      "unknownActorCount": 0
+      "unknownActorCount": 0,
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -13272,6 +14172,7 @@
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=0-C6osDOz44",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "conditions": {
         "tp": "",
         "fields": []
@@ -13280,7 +14181,8 @@
       "unresolvedRows": 11,
       "translatedRows": 7,
       "warningCount": 6,
-      "unknownActorCount": 3
+      "unknownActorCount": 3,
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -13535,6 +14437,7 @@
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=uUBQtVxVaBQ",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "conditions": {
         "tp": "",
         "fields": []
@@ -13543,7 +14446,8 @@
       "unresolvedRows": 11,
       "translatedRows": 7,
       "warningCount": 5,
-      "unknownActorCount": 0
+      "unknownActorCount": 0,
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -13759,6 +14663,7 @@
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=KTE-ezWKDfc",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "conditions": {
         "tp": "",
         "fields": []
@@ -13767,7 +14672,8 @@
       "unresolvedRows": 9,
       "translatedRows": 6,
       "warningCount": 6,
-      "unknownActorCount": 0
+      "unknownActorCount": 0,
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -13853,7 +14759,7 @@
         },
         {
           "time": "1:15",
-          "text": "1:15 [원문 확인: クリネ エールcl]",
+          "text": "1:15 [원문 확인: クリネ エール캔슬]",
           "checked": [
             false,
             false,
@@ -13866,7 +14772,7 @@
         },
         {
           "time": "1:10",
-          "text": "1:10 [원문 확인: クリネ エールcl]",
+          "text": "1:10 [원문 확인: クリネ エール캔슬]",
           "checked": [
             false,
             false,
@@ -13892,7 +14798,7 @@
         },
         {
           "time": "1:04",
-          "text": "1:04 [원문 확인: クリネ エールcl]",
+          "text": "1:04 [원문 확인: クリネ エール캔슬]",
           "checked": [
             false,
             false,
@@ -13944,7 +14850,7 @@
         },
         {
           "time": "0:57",
-          "text": "0:57 エールcl ON, [원문 확인: クリネ]",
+          "text": "0:57 エール캔슬 ON, [원문 확인: クリネ]",
           "checked": [
             false,
             true,
@@ -13971,6 +14877,7 @@
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=eNVvfgsbpcE",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "conditions": {
         "tp": "",
         "fields": []
@@ -13979,7 +14886,8 @@
       "unresolvedRows": 12,
       "translatedRows": 2,
       "warningCount": 7,
-      "unknownActorCount": 2
+      "unknownActorCount": 2,
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -13996,6 +14904,7 @@
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "diagnostics": {
         "sections": [
           {
@@ -14117,7 +15026,8 @@
         "damageMatched": false,
         "sourceTimestamp": null,
         "chapterCount": 5
-      }
+      },
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -14134,6 +15044,7 @@
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=1Jk9X6qrM2Q",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "diagnostics": {
         "sections": [
           {
@@ -14309,7 +15220,8 @@
         "damageMatched": false,
         "sourceTimestamp": null,
         "chapterCount": 0
-      }
+      },
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -14326,6 +15238,7 @@
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=1Lrg-sYOtEs",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "diagnostics": {
         "sections": [
           {
@@ -14495,7 +15408,8 @@
         "damageMatched": false,
         "sourceTimestamp": null,
         "chapterCount": 0
-      }
+      },
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -15284,6 +16198,7 @@
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=ctleNhaGa6c",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "conditions": {
         "tp": "",
         "fields": []
@@ -15292,7 +16207,8 @@
       "unresolvedRows": 1,
       "translatedRows": 58,
       "warningCount": 1,
-      "unknownActorCount": 0
+      "unknownActorCount": 0,
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -15665,7 +16581,7 @@
         },
         {
           "time": "0:39",
-          "text": "0:39 수셰피  1 스킬 후 [원문 확인: clデーレイ 敵通常2hit後]",
+          "text": "0:39 수셰피  1 스킬 후 [원문 확인: 캔슬デーレイ 敵通常2hit後]",
           "checked": [
             true,
             true,
@@ -15769,7 +16685,7 @@
         },
         {
           "time": "0:28",
-          "text": "ㄴ 파오이  通常cl(프셰피 UB 후 [원문 확인: UBOK]",
+          "text": "ㄴ 파오이  通常캔슬(프셰피 UB 후 [원문 확인: UBOK]",
           "checked": [
             true,
             false,
@@ -15782,7 +16698,7 @@
         },
         {
           "time": "0:28",
-          "text": "ㄴ 수셰피  1 스킬 후 수셰피, 파오이 ON, [원문 확인: cl 파오이UB後UBOK 최속NG 0 16の速버프間に合わない]",
+          "text": "ㄴ 수셰피  1 스킬 후 수셰피, 파오이 ON, [원문 확인: 캔슬 파오이UB後UBOK 최속NG 0 16の速버프間に合わない]",
           "checked": [
             true,
             true,
@@ -16042,7 +16958,7 @@
         },
         {
           "time": "0:02",
-          "text": "0:02 수셰피  2 스킬 후 [원문 확인: cl早め 초数視認 遅いと最後の通常欠損]",
+          "text": "0:02 수셰피  2 스킬 후 [원문 확인: 캔슬早め 초数視認 遅いと最後の通常欠損]",
           "checked": [
             true,
             true,
@@ -16069,6 +16985,7 @@
       ],
       "sourceUrl": "https://youtu.be/LSCOSiF1fv8https://youtu.be/LSCOSiF1fv8https://docs.google.com/spreadsheets/d/e/2PACX-1vR1Iyk-Y6LYURS-JTD1j9R96Sox1TzuhaWSv8yhy6ReM4vMTZxddLp_sRPjZJWQYRTxySbha6cHPIu1/pubhtml#gid=2047017564",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "conditions": {
         "tp": "",
         "fields": []
@@ -16077,7 +16994,8 @@
       "unresolvedRows": 36,
       "translatedRows": 22,
       "warningCount": 16,
-      "unknownActorCount": 1
+      "unknownActorCount": 1,
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -16345,7 +17263,7 @@
         },
         {
           "time": "0:51",
-          "text": "ㄴ 파오이 후 [원문 확인: 通常cl최속]",
+          "text": "ㄴ 파오이 후 [원문 확인: 通常캔슬최속]",
           "checked": [
             false,
             false,
@@ -16358,7 +17276,7 @@
         },
         {
           "time": "0:43",
-          "text": "0:43 윈에루 후 [원문 확인: 待機バリアTP えくそだすclはここまでの파오이下手]",
+          "text": "0:43 윈에루 후 [원문 확인: 待機バリアTP えくそだす캔슬はここまでの파오이下手]",
           "checked": [
             false,
             false,
@@ -16371,7 +17289,7 @@
         },
         {
           "time": "0:43",
-          "text": "ㄴ 파오이 후 [원문 확인: 一瞬지연 次コンバット말풍선前に速度버프]",
+          "text": "ㄴ 파오이 후 [원문 확인: 살짝지연 次コンバット말풍선前に速度버프]",
           "checked": [
             false,
             false,
@@ -16410,7 +17328,7 @@
         },
         {
           "time": "0:41",
-          "text": "0:41 윈유니 후 [원문 확인: トルネードcl최속]",
+          "text": "0:41 윈유니 후 [원문 확인: トルネード캔슬최속]",
           "checked": [
             false,
             false,
@@ -16462,7 +17380,7 @@
         },
         {
           "time": "0:39",
-          "text": "ㄴ 파오이 후 [원문 확인: 通常cl최속]",
+          "text": "ㄴ 파오이 후 [원문 확인: 通常캔슬최속]",
           "checked": [
             false,
             false,
@@ -16553,7 +17471,7 @@
         },
         {
           "time": "0:28",
-          "text": "0:28 수셰피 후 [원문 확인: 윈에루全桁貼り付け최속 氷菓cl一瞬지연]",
+          "text": "0:28 수셰피 후 [원문 확인: 윈에루全桁貼り付け최속 氷菓캔슬살짝지연]",
           "checked": [
             false,
             false,
@@ -16579,7 +17497,7 @@
         },
         {
           "time": "0:27",
-          "text": "0:27 파오이 通常cl최속(敵 공격 후 [원문 확인: デ버프前]",
+          "text": "0:27 파오이 通常캔슬최속(敵 공격 후 [원문 확인: デ버프前]",
           "checked": [
             false,
             false,
@@ -16696,7 +17614,7 @@
         },
         {
           "time": "0:15",
-          "text": "0:15 파오이 후 [원문 확인: 通常cl최속 프셰피後でも耐えるかもだけど직접 발동のほうが最後安泰]",
+          "text": "0:15 파오이 후 [원문 확인: 通常캔슬최속 프셰피後でも耐えるかもだけど직접 발동のほうが最後安泰]",
           "checked": [
             false,
             false,
@@ -16722,7 +17640,7 @@
         },
         {
           "time": "0:14",
-          "text": "0:14 윈유니 후 [원문 확인: トルネードcl최속]",
+          "text": "0:14 윈유니 후 [원문 확인: トルネード캔슬최속]",
           "checked": [
             false,
             false,
@@ -16839,7 +17757,7 @@
         },
         {
           "time": "0:03",
-          "text": "ㄴ 파오이 후 [원문 확인: 通常cl최속 ここまでの파오이遅いと最後コンバット全hitしない 動画早漏してて横転]",
+          "text": "ㄴ 파오이 후 [원문 확인: 通常캔슬최속 ここまでの파오이遅いと最後コンバット全hitしない 動画早漏してて横転]",
           "checked": [
             false,
             false,
@@ -16892,6 +17810,7 @@
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=QQSnlbW4bj4",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "conditions": {
         "tp": "",
         "fields": []
@@ -16900,7 +17819,8 @@
       "unresolvedRows": 36,
       "translatedRows": 25,
       "warningCount": 29,
-      "unknownActorCount": 0
+      "unknownActorCount": 0,
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -17012,7 +17932,7 @@
         },
         {
           "time": "1:04",
-          "text": "1:04 [원문 확인: パオイ #通常cl早め]",
+          "text": "1:04 [원문 확인: パオイ #通常캔슬早め]",
           "checked": [
             false,
             false,
@@ -17155,7 +18075,7 @@
         },
         {
           "time": "0:52",
-          "text": "ㄴ [원문 확인: パオイ 通常clであること]",
+          "text": "ㄴ [원문 확인: パオイ 通常캔슬であること]",
           "checked": [
             false,
             false,
@@ -17220,7 +18140,7 @@
         },
         {
           "time": "0:41",
-          "text": "0:41 [원문 확인: 水윈유니 #トルネcl]",
+          "text": "0:41 [원문 확인: 水윈유니 #トルネ캔슬]",
           "checked": [
             false,
             false,
@@ -17246,7 +18166,7 @@
         },
         {
           "time": "0:40",
-          "text": "0:40 [원문 확인: パオイ #通常cl]",
+          "text": "0:40 [원문 확인: パオイ #通常캔슬]",
           "checked": [
             false,
             false,
@@ -17363,7 +18283,7 @@
         },
         {
           "time": "0:28",
-          "text": "ㄴ [원문 확인: パオイ #通常cl]",
+          "text": "ㄴ [원문 확인: パオイ #通常캔슬]",
           "checked": [
             false,
             false,
@@ -17376,7 +18296,7 @@
         },
         {
           "time": "0:28",
-          "text": "ㄴ [원문 확인: 수셰피 氷菓clであること]",
+          "text": "ㄴ [원문 확인: 수셰피 氷菓캔슬であること]",
           "checked": [
             false,
             false,
@@ -17480,7 +18400,7 @@
         },
         {
           "time": "0:16",
-          "text": "ㄴ →パオイ # UB 후 [원문 확인: OKで通常cl]",
+          "text": "ㄴ →パオイ # UB 후 [원문 확인: OKで通常캔슬]",
           "checked": [
             false,
             false,
@@ -17506,7 +18426,7 @@
         },
         {
           "time": "0:15",
-          "text": "ㄴ [원문 확인: 水윈유니 #トルネcl]",
+          "text": "ㄴ [원문 확인: 水윈유니 #トルネ캔슬]",
           "checked": [
             false,
             false,
@@ -17636,7 +18556,7 @@
         },
         {
           "time": "0:02",
-          "text": "0:02 수셰피 후 [원문 확인: #汐沓cl]",
+          "text": "0:02 수셰피 후 [원문 확인: #汐沓캔슬]",
           "checked": [
             false,
             false,
@@ -17676,6 +18596,7 @@
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=V-eL_kyjT6o",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "conditions": {
         "tp": "",
         "fields": []
@@ -17684,7 +18605,8 @@
       "unresolvedRows": 44,
       "translatedRows": 14,
       "warningCount": 21,
-      "unknownActorCount": 0
+      "unknownActorCount": 0,
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -17978,6 +18900,7 @@
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=YjzkV-JOFmc",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "conditions": {
         "tp": "",
         "fields": []
@@ -17986,7 +18909,8 @@
       "unresolvedRows": 16,
       "translatedRows": 5,
       "warningCount": 6,
-      "unknownActorCount": 0
+      "unknownActorCount": 0,
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -18003,6 +18927,7 @@
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "diagnostics": {
         "sections": [
           {
@@ -18124,7 +19049,8 @@
         "damageMatched": false,
         "sourceTimestamp": null,
         "chapterCount": 5
-      }
+      },
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -18141,6 +19067,7 @@
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "diagnostics": {
         "sections": [
           {
@@ -18262,7 +19189,8 @@
         "damageMatched": false,
         "sourceTimestamp": null,
         "chapterCount": 5
-      }
+      },
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -18279,6 +19207,7 @@
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "diagnostics": {
         "sections": [
           {
@@ -18400,7 +19329,8 @@
         "damageMatched": false,
         "sourceTimestamp": null,
         "chapterCount": 5
-      }
+      },
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -18417,6 +19347,7 @@
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=B97LQrFSmVM",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "diagnostics": {
         "sections": [
           {
@@ -18429,7 +19360,13 @@
             "boss": null,
             "header": "0:00 オープニング",
             "startSeconds": 0,
-            "clockLines": 2
+            "clockLines": 1
+          },
+          {
+            "boss": null,
+            "header": "1:25 騎士強化",
+            "startSeconds": 0,
+            "clockLines": 1
           },
           {
             "boss": 1,
@@ -18495,8 +19432,9 @@
         "bestPartyHits": 0,
         "damageMatched": false,
         "sourceTimestamp": null,
-        "chapterCount": 1
-      }
+        "chapterCount": 2
+      },
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -18512,7 +19450,9 @@
       "warnings": [],
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=nUfbbPPjo44",
-      "youtubeHasTactic": null
+      "youtubeHasTactic": null,
+      "tacticLocation": "description",
+      "commentReadStatus": "not-requested"
     },
     {
       "stage": 6,
@@ -18521,25 +19461,186 @@
       "linkIndex": 1,
       "linkOrdinal": 0,
       "videoId": "gcLTnp88aSo",
-      "status": "no-parsable-timeline",
-      "matching": "unique-damage-section",
+      "status": "needs-source-check",
+      "matching": "ambiguous-party-section",
       "rowCount": 0,
-      "issues": [
-        "no-action-timeline"
-      ],
+      "issues": [],
       "warnings": [],
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=gcLTnp88aSo",
       "youtubeHasTactic": true,
-      "conditions": {
-        "tp": "",
-        "fields": []
-      },
+      "tacticLocation": "description",
       "diagnostics": {
-        "header": "32:40    レサトパルト       24,105万",
-        "lineCount": 1,
-        "instructionLines": []
-      }
+        "sections": [
+          {
+            "boss": null,
+            "header": "",
+            "startSeconds": null,
+            "clockLines": 0
+          },
+          {
+            "boss": null,
+            "header": "00:00    プリンセスナイト強化状況  RANK 420",
+            "startSeconds": 0,
+            "clockLines": 1
+          },
+          {
+            "boss": 1,
+            "header": "00:39    ワイバーン           28,840万",
+            "startSeconds": 0,
+            "clockLines": 1
+          },
+          {
+            "boss": 1,
+            "header": "02:08    ワイバーン           33,065万",
+            "startSeconds": 128,
+            "clockLines": 1
+          },
+          {
+            "boss": 1,
+            "header": "03:36    ワイバーン           29,490万",
+            "startSeconds": 216,
+            "clockLines": 1
+          },
+          {
+            "boss": 1,
+            "header": "04:59    ワイバーン           25,242万",
+            "startSeconds": 299,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "06:31    タフガイスト       26,175万",
+            "startSeconds": 391,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "07:58    タフガイスト       24,949万",
+            "startSeconds": 478,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "09:49    タフガイスト       24,677万",
+            "startSeconds": 589,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "11:28    タフガイスト       24,758万",
+            "startSeconds": 688,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "12:54    タフガイスト       25,372万",
+            "startSeconds": 774,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "14:11    タフガイスト       24,067万",
+            "startSeconds": 851,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "15:46    タフガイスト       22,942万",
+            "startSeconds": 946,
+            "clockLines": 1
+          },
+          {
+            "boss": 3,
+            "header": "17:25    バジリスク           21,181万",
+            "startSeconds": 1045,
+            "clockLines": 1
+          },
+          {
+            "boss": 3,
+            "header": "18:58    バジリスク           23,155万",
+            "startSeconds": 1138,
+            "clockLines": 1
+          },
+          {
+            "boss": 3,
+            "header": "20:27    バジリスク           22,360万",
+            "startSeconds": 1227,
+            "clockLines": 1
+          },
+          {
+            "boss": 3,
+            "header": "22:08    バジリスク           25,403万",
+            "startSeconds": 1328,
+            "clockLines": 1
+          },
+          {
+            "boss": 3,
+            "header": "23:37    バジリスク           22,774万",
+            "startSeconds": 1417,
+            "clockLines": 1
+          },
+          {
+            "boss": 3,
+            "header": "25:07    バジリスク           22,791万",
+            "startSeconds": 1507,
+            "clockLines": 1
+          },
+          {
+            "boss": 4,
+            "header": "26:45    ウールヴヘジン   22,064万",
+            "startSeconds": 1605,
+            "clockLines": 1
+          },
+          {
+            "boss": 4,
+            "header": "28:14    ウールヴヘジン   25,787万",
+            "startSeconds": 1694,
+            "clockLines": 1
+          },
+          {
+            "boss": 4,
+            "header": "29:39    ウールヴヘジン   22,739万",
+            "startSeconds": 1779,
+            "clockLines": 1
+          },
+          {
+            "boss": 4,
+            "header": "31:12    ウールヴヘジン   22,730万",
+            "startSeconds": 1872,
+            "clockLines": 1
+          },
+          {
+            "boss": 5,
+            "header": "32:40    レサトパルト       24,105万",
+            "startSeconds": 1960,
+            "clockLines": 1
+          },
+          {
+            "boss": 5,
+            "header": "33:49    レサトパルト       27,246万",
+            "startSeconds": 2029,
+            "clockLines": 1
+          },
+          {
+            "boss": 5,
+            "header": "35:24    レサトパルト       23,375万",
+            "startSeconds": 2124,
+            "clockLines": 1
+          },
+          {
+            "boss": 5,
+            "header": "36:48    レサトパルト       21,923万",
+            "startSeconds": 2208,
+            "clockLines": 1
+          }
+        ],
+        "bestPartyHits": 0,
+        "damageMatched": true,
+        "sourceTimestamp": null,
+        "chapterCount": 5
+      },
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -18742,6 +19843,7 @@
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=qfJLOb2ot5U",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "conditions": {
         "tp": "",
         "fields": []
@@ -18750,7 +19852,8 @@
       "unresolvedRows": 6,
       "translatedRows": 8,
       "warningCount": 5,
-      "unknownActorCount": 0
+      "unknownActorCount": 0,
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -18767,6 +19870,7 @@
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=vk2CIcU0AHM",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "diagnostics": {
         "sections": [
           {
@@ -18870,7 +19974,8 @@
         "damageMatched": false,
         "sourceTimestamp": null,
         "chapterCount": 4
-      }
+      },
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -18930,7 +20035,7 @@
         },
         {
           "time": "1:05",
-          "text": "1:05 아이라 후 [원문 확인: バーニングcl]",
+          "text": "1:05 아이라 후 [원문 확인: バーニング캔슬]",
           "checked": [
             false,
             false,
@@ -18956,7 +20061,7 @@
         },
         {
           "time": "1:01",
-          "text": "1:01 카논 후 [원문 확인: 滅多clになる]",
+          "text": "1:01 카논 후 [원문 확인: 滅多캔슬になる]",
           "checked": [
             false,
             false,
@@ -19008,7 +20113,7 @@
         },
         {
           "time": "0:55",
-          "text": "0:55 [원문 확인: 媛 通常cl起動 54は1 09が遅い]",
+          "text": "0:55 [원문 확인: 媛 通常캔슬起動 54は1 09が遅い]",
           "checked": [
             false,
             false,
@@ -19151,7 +20256,7 @@
         },
         {
           "time": "0:30",
-          "text": "0:30 [원문 확인: ほーちゃん リカバリーcl]",
+          "text": "0:30 [원문 확인: ほーちゃん リカバリー캔슬]",
           "checked": [
             false,
             false,
@@ -19242,7 +20347,7 @@
         },
         {
           "time": "0:10",
-          "text": "0:10 [원문 확인: ほーちゃん リカバリーcl최속]",
+          "text": "0:10 [원문 확인: ほーちゃん リカバリー캔슬최속]",
           "checked": [
             false,
             false,
@@ -19841,6 +20946,7 @@
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=EYApaOU-tDE",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "conditions": {
         "tp": "",
         "fields": []
@@ -19849,7 +20955,8 @@
       "unresolvedRows": 71,
       "translatedRows": 2,
       "warningCount": 67,
-      "unknownActorCount": 2
+      "unknownActorCount": 2,
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -19858,7 +20965,7 @@
       "linkIndex": 1,
       "linkOrdinal": 0,
       "videoId": "gcLTnp88aSo",
-      "status": "no-parsable-timeline",
+      "status": "no-youtube-tl",
       "matching": "unique-damage-section",
       "rowCount": 0,
       "issues": [
@@ -19867,7 +20974,8 @@
       "warnings": [],
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=gcLTnp88aSo",
-      "youtubeHasTactic": true,
+      "youtubeHasTactic": false,
+      "tacticLocation": "description",
       "conditions": {
         "tp": "",
         "fields": []
@@ -19876,7 +20984,8 @@
         "header": "33:49    レサトパルト       27,246万",
         "lineCount": 1,
         "instructionLines": []
-      }
+      },
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -19885,25 +20994,186 @@
       "linkIndex": 1,
       "linkOrdinal": 0,
       "videoId": "gcLTnp88aSo",
-      "status": "no-parsable-timeline",
-      "matching": "unique-damage-section",
+      "status": "needs-source-check",
+      "matching": "ambiguous-party-section",
       "rowCount": 0,
-      "issues": [
-        "no-action-timeline"
-      ],
+      "issues": [],
       "warnings": [],
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=gcLTnp88aSo",
       "youtubeHasTactic": true,
-      "conditions": {
-        "tp": "",
-        "fields": []
-      },
+      "tacticLocation": "description",
       "diagnostics": {
-        "header": "35:24    レサトパルト       23,375万",
-        "lineCount": 1,
-        "instructionLines": []
-      }
+        "sections": [
+          {
+            "boss": null,
+            "header": "",
+            "startSeconds": null,
+            "clockLines": 0
+          },
+          {
+            "boss": null,
+            "header": "00:00    プリンセスナイト強化状況  RANK 420",
+            "startSeconds": 0,
+            "clockLines": 1
+          },
+          {
+            "boss": 1,
+            "header": "00:39    ワイバーン           28,840万",
+            "startSeconds": 0,
+            "clockLines": 1
+          },
+          {
+            "boss": 1,
+            "header": "02:08    ワイバーン           33,065万",
+            "startSeconds": 128,
+            "clockLines": 1
+          },
+          {
+            "boss": 1,
+            "header": "03:36    ワイバーン           29,490万",
+            "startSeconds": 216,
+            "clockLines": 1
+          },
+          {
+            "boss": 1,
+            "header": "04:59    ワイバーン           25,242万",
+            "startSeconds": 299,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "06:31    タフガイスト       26,175万",
+            "startSeconds": 391,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "07:58    タフガイスト       24,949万",
+            "startSeconds": 478,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "09:49    タフガイスト       24,677万",
+            "startSeconds": 589,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "11:28    タフガイスト       24,758万",
+            "startSeconds": 688,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "12:54    タフガイスト       25,372万",
+            "startSeconds": 774,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "14:11    タフガイスト       24,067万",
+            "startSeconds": 851,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "15:46    タフガイスト       22,942万",
+            "startSeconds": 946,
+            "clockLines": 1
+          },
+          {
+            "boss": 3,
+            "header": "17:25    バジリスク           21,181万",
+            "startSeconds": 1045,
+            "clockLines": 1
+          },
+          {
+            "boss": 3,
+            "header": "18:58    バジリスク           23,155万",
+            "startSeconds": 1138,
+            "clockLines": 1
+          },
+          {
+            "boss": 3,
+            "header": "20:27    バジリスク           22,360万",
+            "startSeconds": 1227,
+            "clockLines": 1
+          },
+          {
+            "boss": 3,
+            "header": "22:08    バジリスク           25,403万",
+            "startSeconds": 1328,
+            "clockLines": 1
+          },
+          {
+            "boss": 3,
+            "header": "23:37    バジリスク           22,774万",
+            "startSeconds": 1417,
+            "clockLines": 1
+          },
+          {
+            "boss": 3,
+            "header": "25:07    バジリスク           22,791万",
+            "startSeconds": 1507,
+            "clockLines": 1
+          },
+          {
+            "boss": 4,
+            "header": "26:45    ウールヴヘジン   22,064万",
+            "startSeconds": 1605,
+            "clockLines": 1
+          },
+          {
+            "boss": 4,
+            "header": "28:14    ウールヴヘジン   25,787万",
+            "startSeconds": 1694,
+            "clockLines": 1
+          },
+          {
+            "boss": 4,
+            "header": "29:39    ウールヴヘジン   22,739万",
+            "startSeconds": 1779,
+            "clockLines": 1
+          },
+          {
+            "boss": 4,
+            "header": "31:12    ウールヴヘジン   22,730万",
+            "startSeconds": 1872,
+            "clockLines": 1
+          },
+          {
+            "boss": 5,
+            "header": "32:40    レサトパルト       24,105万",
+            "startSeconds": 1960,
+            "clockLines": 1
+          },
+          {
+            "boss": 5,
+            "header": "33:49    レサトパルト       27,246万",
+            "startSeconds": 2029,
+            "clockLines": 1
+          },
+          {
+            "boss": 5,
+            "header": "35:24    レサトパルト       23,375万",
+            "startSeconds": 2124,
+            "clockLines": 1
+          },
+          {
+            "boss": 5,
+            "header": "36:48    レサトパルト       21,923万",
+            "startSeconds": 2208,
+            "clockLines": 1
+          }
+        ],
+        "bestPartyHits": 0,
+        "damageMatched": true,
+        "sourceTimestamp": null,
+        "chapterCount": 5
+      },
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -19912,25 +21182,186 @@
       "linkIndex": 1,
       "linkOrdinal": 0,
       "videoId": "gcLTnp88aSo",
-      "status": "no-parsable-timeline",
-      "matching": "unique-damage-section",
+      "status": "needs-source-check",
+      "matching": "ambiguous-party-section",
       "rowCount": 0,
-      "issues": [
-        "no-action-timeline"
-      ],
+      "issues": [],
       "warnings": [],
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=gcLTnp88aSo",
       "youtubeHasTactic": true,
-      "conditions": {
-        "tp": "",
-        "fields": []
-      },
+      "tacticLocation": "description",
       "diagnostics": {
-        "header": "36:48    レサトパルト       21,923万",
-        "lineCount": 8,
-        "instructionLines": []
-      }
+        "sections": [
+          {
+            "boss": null,
+            "header": "",
+            "startSeconds": null,
+            "clockLines": 0
+          },
+          {
+            "boss": null,
+            "header": "00:00    プリンセスナイト強化状況  RANK 420",
+            "startSeconds": 0,
+            "clockLines": 1
+          },
+          {
+            "boss": 1,
+            "header": "00:39    ワイバーン           28,840万",
+            "startSeconds": 0,
+            "clockLines": 1
+          },
+          {
+            "boss": 1,
+            "header": "02:08    ワイバーン           33,065万",
+            "startSeconds": 128,
+            "clockLines": 1
+          },
+          {
+            "boss": 1,
+            "header": "03:36    ワイバーン           29,490万",
+            "startSeconds": 216,
+            "clockLines": 1
+          },
+          {
+            "boss": 1,
+            "header": "04:59    ワイバーン           25,242万",
+            "startSeconds": 299,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "06:31    タフガイスト       26,175万",
+            "startSeconds": 391,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "07:58    タフガイスト       24,949万",
+            "startSeconds": 478,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "09:49    タフガイスト       24,677万",
+            "startSeconds": 589,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "11:28    タフガイスト       24,758万",
+            "startSeconds": 688,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "12:54    タフガイスト       25,372万",
+            "startSeconds": 774,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "14:11    タフガイスト       24,067万",
+            "startSeconds": 851,
+            "clockLines": 1
+          },
+          {
+            "boss": 2,
+            "header": "15:46    タフガイスト       22,942万",
+            "startSeconds": 946,
+            "clockLines": 1
+          },
+          {
+            "boss": 3,
+            "header": "17:25    バジリスク           21,181万",
+            "startSeconds": 1045,
+            "clockLines": 1
+          },
+          {
+            "boss": 3,
+            "header": "18:58    バジリスク           23,155万",
+            "startSeconds": 1138,
+            "clockLines": 1
+          },
+          {
+            "boss": 3,
+            "header": "20:27    バジリスク           22,360万",
+            "startSeconds": 1227,
+            "clockLines": 1
+          },
+          {
+            "boss": 3,
+            "header": "22:08    バジリスク           25,403万",
+            "startSeconds": 1328,
+            "clockLines": 1
+          },
+          {
+            "boss": 3,
+            "header": "23:37    バジリスク           22,774万",
+            "startSeconds": 1417,
+            "clockLines": 1
+          },
+          {
+            "boss": 3,
+            "header": "25:07    バジリスク           22,791万",
+            "startSeconds": 1507,
+            "clockLines": 1
+          },
+          {
+            "boss": 4,
+            "header": "26:45    ウールヴヘジン   22,064万",
+            "startSeconds": 1605,
+            "clockLines": 1
+          },
+          {
+            "boss": 4,
+            "header": "28:14    ウールヴヘジン   25,787万",
+            "startSeconds": 1694,
+            "clockLines": 1
+          },
+          {
+            "boss": 4,
+            "header": "29:39    ウールヴヘジン   22,739万",
+            "startSeconds": 1779,
+            "clockLines": 1
+          },
+          {
+            "boss": 4,
+            "header": "31:12    ウールヴヘジン   22,730万",
+            "startSeconds": 1872,
+            "clockLines": 1
+          },
+          {
+            "boss": 5,
+            "header": "32:40    レサトパルト       24,105万",
+            "startSeconds": 1960,
+            "clockLines": 1
+          },
+          {
+            "boss": 5,
+            "header": "33:49    レサトパルト       27,246万",
+            "startSeconds": 2029,
+            "clockLines": 1
+          },
+          {
+            "boss": 5,
+            "header": "35:24    レサトパルト       23,375万",
+            "startSeconds": 2124,
+            "clockLines": 1
+          },
+          {
+            "boss": 5,
+            "header": "36:48    レサトパルト       21,923万",
+            "startSeconds": 2208,
+            "clockLines": 1
+          }
+        ],
+        "bestPartyHits": 0,
+        "damageMatched": true,
+        "sourceTimestamp": null,
+        "chapterCount": 5
+      },
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -20107,6 +21538,7 @@
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=KxcWIohBgyw",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "conditions": {
         "tp": "",
         "fields": []
@@ -20115,7 +21547,8 @@
       "unresolvedRows": 10,
       "translatedRows": 2,
       "warningCount": 6,
-      "unknownActorCount": 0
+      "unknownActorCount": 0,
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -20410,6 +21843,7 @@
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=mYFL8_5y_sE",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "conditions": {
         "tp": "",
         "fields": []
@@ -20418,7 +21852,8 @@
       "unresolvedRows": 13,
       "translatedRows": 8,
       "warningCount": 5,
-      "unknownActorCount": 3
+      "unknownActorCount": 3,
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -20435,6 +21870,7 @@
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=B97LQrFSmVM",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "diagnostics": {
         "sections": [
           {
@@ -20447,7 +21883,13 @@
             "boss": null,
             "header": "0:00 オープニング",
             "startSeconds": 0,
-            "clockLines": 2
+            "clockLines": 1
+          },
+          {
+            "boss": null,
+            "header": "1:25 騎士強化",
+            "startSeconds": 0,
+            "clockLines": 1
           },
           {
             "boss": 1,
@@ -20513,8 +21955,9 @@
         "bestPartyHits": 0,
         "damageMatched": false,
         "sourceTimestamp": null,
-        "chapterCount": 3
-      }
+        "chapterCount": 4
+      },
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -20531,6 +21974,7 @@
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "diagnostics": {
         "sections": [
           {
@@ -20652,7 +22096,8 @@
         "damageMatched": false,
         "sourceTimestamp": null,
         "chapterCount": 4
-      }
+      },
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -20803,6 +22248,7 @@
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=RXlBojG-o3E",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "conditions": {
         "tp": "",
         "fields": []
@@ -20811,7 +22257,8 @@
       "unresolvedRows": 1,
       "translatedRows": 9,
       "warningCount": 1,
-      "unknownActorCount": 0
+      "unknownActorCount": 0,
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -20828,6 +22275,7 @@
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "diagnostics": {
         "sections": [
           {
@@ -20949,7 +22397,8 @@
         "damageMatched": false,
         "sourceTimestamp": null,
         "chapterCount": 4
-      }
+      },
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -21217,6 +22666,7 @@
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=r18Zgya4o0Y",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "conditions": {
         "tp": "",
         "fields": []
@@ -21225,7 +22675,8 @@
       "unresolvedRows": 12,
       "translatedRows": 7,
       "warningCount": 6,
-      "unknownActorCount": 0
+      "unknownActorCount": 0,
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -21242,6 +22693,7 @@
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=DV-xRyk_tIA",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "diagnostics": {
         "sections": [
           {
@@ -21267,7 +22719,8 @@
         "damageMatched": false,
         "sourceTimestamp": null,
         "chapterCount": 1
-      }
+      },
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -21284,6 +22737,7 @@
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "diagnostics": {
         "sections": [
           {
@@ -21405,7 +22859,8 @@
         "damageMatched": false,
         "sourceTimestamp": null,
         "chapterCount": 4
-      }
+      },
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -21422,6 +22877,7 @@
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "diagnostics": {
         "sections": [
           {
@@ -21543,7 +22999,8 @@
         "damageMatched": false,
         "sourceTimestamp": null,
         "chapterCount": 4
-      }
+      },
+      "commentReadStatus": "complete"
     },
     {
       "stage": 6,
@@ -21560,6 +23017,7 @@
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8",
       "youtubeHasTactic": true,
+      "tacticLocation": "description",
       "diagnostics": {
         "sections": [
           {
@@ -21681,7 +23139,8 @@
         "damageMatched": false,
         "sourceTimestamp": null,
         "chapterCount": 4
-      }
+      },
+      "commentReadStatus": "complete"
     }
   ]
 }
