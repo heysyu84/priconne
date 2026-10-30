@@ -4,7 +4,6 @@ import {readFileSync} from 'node:fs';
 import {previewAikurumiTactic} from '../public/aikurumi-tactic-review.mjs';
 import {convertForeignTactic,selectPreferredDangoTimeline} from '../public/tactic-parser.mjs';
 import {buildReviewItems} from '../public/aikurumi-review-model.mjs';
-import {commandState} from '../public/tactic-set-state.mjs';
 import {repairImportedDangoTactics} from '../public/aikurumi-dango-repair.mjs';
 import {splitVideoDescription} from './aikurumi-youtube-segments.mjs';
 
@@ -12,70 +11,75 @@ const source=JSON.parse(readFileSync(new URL('../public/aikurumi-snapshot.json',
 const task=source.bosses[0].tasks.find(t=>t.id===14265);
 const ordinal=task.links.findIndex(l=>/39000/.test(l.name)&&/さんだ/.test(l.name));
 const link=task.links[ordinal];
-const options={unitMap:source.characterData.names,positionUnits:source.characterData.positionUnits,stage:source.stage,bossSlot:1,bossNames:source.bosses.map(b=>b.unitName)};
+const options={unitMap:source.characterData.names,positionUnits:source.characterData.positionUnits,
+ stage:source.stage,bossSlot:1,bossNames:source.bosses.map(b=>b.unitName)};
 const preview=()=>previewAikurumiTactic(task,link,options);
+const row=(text,checked)=>({text,checked,needsReview:false});
+const candidate=(overrides={})=>({stage:source.stage,boss:1,taskId:task.id,linkIndex:link.index,linkOrdinal:ordinal,
+ youtubeHasTactic:true,status:'candidate',rows:[row('1:30 AUTO 오프, 프캬루 SET',[false,false,true,false,false,false])],...overrides});
+const bundle=entry=>({expiresAt:'2099-01-01T00:00:00.000Z',references:[entry]});
+const chosen=entry=>buildReviewItems(source,bundle(entry)).find(i=>i.task.id===task.id&&i.ordinal===ordinal);
 
-test('さんだ 3.9억: the initial OOOOO ON is six true flags, not all OFF',()=>{
- assert.ok(link.remarks.includes('【お団子ver.】'));
+test('Sanda 3.9 Chinese dango is internally valid, but is NOT selected over YouTube',()=>{
+ const chinese=preview();
  assert.equal(selectPreferredDangoTimeline(link.remarks).preferred,true);
- const converted=preview();
- assert.equal(converted.preferredDango,true);
- assert.equal(converted.rows.length,9);
- assert.deepEqual(converted.rows[0].checked,[true,true,true,true,true,true]);
- assert.deepEqual(converted.rows[1].checked,[true,true,false,true,true,true]);
- assert.deepEqual(converted.rows.at(-1).checked,[false,true,true,true,true,true]);
- assert.match(converted.rows[0].text,/전부 SET/);
-});
-
-test('mixed prose TL and dango TL is parsed once, from dango section',()=>{
- const raw='全SET AUTO OFF\n0:15 A OFF\n【お団子ver.】\n1:30 〇〇〇〇〇 ON\n0:15 A ー〇〇〇〇 OFF';
- const r=convertForeignTactic(raw,['A','B','C','D','E']);
- assert.equal(r.format,'dango');
- assert.deepEqual(r.rows[0].checked,[true,true,true,true,true,true]);
- assert.deepEqual(r.rows.at(-1).checked,[false,true,true,true,true,false]);
- assert.equal(r.rows.length,2);
-});
-
-test('existing source-linked YouTube review uses dango rather than stale YouTube SET flags',()=>{
- const fake={expiresAt:'2099-01-01T00:00:00.000Z',references:[{
-  stage:source.stage,boss:1,taskId:task.id,linkIndex:link.index,linkOrdinal:ordinal,
-  youtubeHasTactic:true,status:'candidate',rows:[{text:'AUTO 온',checked:[false,false,false,false,false,true]}]
- }]};
- const item=buildReviewItems(source,fake).find(i=>i.task.id===task.id&&i.ordinal===ordinal);
- assert.ok(item);
+ assert.equal(chinese.preferredDango,true);
+ assert.deepEqual(chinese.rows[0].checked,[true,true,true,true,true,true]);
+ const youtube=candidate();
+ const item=chosen(youtube);
  assert.equal(item.source,'youtube');
- assert.equal(item.dangoPriority,true);
- assert.deepEqual(item.rows[0].checked,[true,true,true,true,true,true]);
+ assert.equal(item.dangoPriority,false);
+ assert.deepEqual(item.rows,youtube.rows);
+ assert.notDeepEqual(item.rows,chinese.rows);
 });
 
-test('legacy AUTO-only rows are repaired only when none were manually modified',()=>{
- const correct=preview().rows;
- const party=preview().matchedKoreanNames;
- let previous=[false,false,false,false,false,false];
- const old=correct.map((row,i)=>{
-  const text=i===0?'AUTO 온':row.text;
-  const checked=commandState(text,previous,party);
-  previous=checked;
-  return {id:'old-row-'+i,text,checked:[...checked],manualChecks:true};
- });
- const candidate={stage:source.stage,boss:1,taskId:task.id,linkIndex:link.index,linkOrdinal:ordinal,
-  rows:[...old.map(r=>({text:r.text,checked:r.checked})),{text:'ㄴ [원문 확인: ver.]',checked:previous}]};
- const makeEntry=rows=>({id:'existing',party,rows:structuredClone(rows),text:rows.map(r=>r.text).join('\n'),
-  externalSource:{month:source.krMonth,taskId:task.id,linkOrdinal:ordinal,url:link.link}});
- const entry=makeEntry(old),seasons={[source.krMonth]:{tactics:[entry]}};
- assert.equal(repairImportedDangoTactics(seasons,[source],{references:[candidate]}).repaired,1);
- assert.deepEqual(entry.rows[0].checked,[true,true,true,true,true,true]);
- assert.equal(entry.rows.length,9);
- const changed=structuredClone(old);changed[3].checked[0]=!changed[3].checked[0];
- const manual=makeEntry(changed);
- assert.equal(repairImportedDangoTactics({[source.krMonth]:{tactics:[manual]}},[source],{references:[candidate]}).repaired,0);
- assert.equal(manual.rows[0].checked[0],false);
+test('Only confirmed absence of YouTube TL allows Chinese dango fallback',()=>{
+ const absent=chosen(candidate({youtubeHasTactic:false,status:'no-youtube-tl',rows:[]}));
+ assert.equal(absent.source,'aikurumi');
+ assert.equal(absent.dangoPriority,true);
+ assert.deepEqual(absent.rows[0].checked,[true,true,true,true,true,true]);
+ const uncertain=chosen(candidate({youtubeHasTactic:null,status:'video-unavailable',rows:[]}));
+ assert.equal(uncertain.source,'youtube');
+ assert.equal(uncertain.dangoPriority,false);
+ assert.equal(uncertain.rows.length,0);
+ const partial=chosen(candidate({youtubeHasTactic:true,status:'needs-source-check',rows:[]}));
+ assert.equal(partial.source,'youtube');
+ assert.equal(partial.rows.length,0);
 });
 
-test('YouTube segmentation keeps dango with its parent tactic, not a later variant',()=>{
+test('Within a single TL, the dango O/X mode takes precedence over its prose mode',()=>{
+ const raw='全SET AUTO OFF\n0:15 A OFF\n【お団子ver.】\n1:30 〇〇〇〇〇 ON\n0:15 A ー〇〇〇〇 OFF';
+ const converted=convertForeignTactic(raw,['A','B','C','D','E']);
+ assert.equal(converted.format,'dango');
+ assert.deepEqual(converted.rows[0].checked,[true,true,true,true,true,true]);
+ assert.deepEqual(converted.rows.at(-1).checked,[false,true,true,true,true,false]);
+ assert.equal(converted.rows.length,2);
+});
+
+test('Previously imported Chinese rows can only restore a complete, trusted YouTube TL',()=>{
+ const original=preview().rows.map((r,i)=>({id:'row-'+i,text:r.text,checked:[...r.checked],manualChecks:false}));
+ const makeEntry=rows=>({id:'existing',party:preview().matchedKoreanNames,rows:structuredClone(rows),
+  text:rows.map(r=>r.text).join('\n'),externalSource:{month:source.krMonth,taskId:task.id,
+  linkOrdinal:ordinal,url:link.link,source:'youtube'}});
+ const cleanVideo=candidate({rows:[row('1:30 AUTO 온, 전부 SET',[true,true,true,true,true,true])]});
+ const apply=(entry,video)=>repairImportedDangoTactics({[source.krMonth]:{tactics:[entry]}},[source],bundle(video));
+ const saved=makeEntry(original);
+ assert.equal(apply(saved,cleanVideo).repaired,1);
+ assert.equal(saved.rows.length,1);
+ assert.deepEqual(saved.rows[0].checked,[true,true,true,true,true,true]);
+ const unresolved=makeEntry(original);
+ assert.equal(apply(unresolved,candidate({status:'partial',rows:[{...cleanVideo.rows[0],needsReview:true}]})).repaired,0);
+ assert.equal(unresolved.rows.length,9);
+ const manuallyEdited=structuredClone(original);manuallyEdited[0].manualChecks=true;
+ const manual=makeEntry(manuallyEdited);
+ assert.equal(apply(manual,cleanVideo).repaired,0);
+ assert.equal(manual.rows.length,9);
+});
+
+test('YouTube segmentation retains only the paired dango continuation',()=>{
  const description='1ボス 39000\n1:30 全SET AUTO ON\n0:03 ランファ OFF\n【お団子ver.】\n1:30 〇〇〇〇〇 ON\n0:03 ー〇〇〇〇\n【別編成】39001\n1:30 〇〇〇〇〇 ON';
- const parts=splitVideoDescription(description,source.bosses.map(b=>b.unitName));
- assert.equal(parts.length,2);
- assert.match(parts[0].text,/お団子ver/);
- assert.doesNotMatch(parts[1].text,/お団子ver/);
+ const sections=splitVideoDescription(description,source.bosses.map(b=>b.unitName));
+ assert.equal(sections.length,2);
+ assert.match(sections[0].text,/お団子ver/);
+ assert.doesNotMatch(sections[1].text,/お団子ver/);
 });
