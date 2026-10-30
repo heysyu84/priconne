@@ -7,7 +7,8 @@ const positive=v=>v!==null&&v!==''&&Number.isFinite(Number(v))&&Number(v)>0?Numb
 export const candidateKey=r=>[r.stage,r.boss,r.taskId,r.linkIndex??r.linkOrdinal,r.linkOrdinal].join(':');
 export const isYouTube=value=>{try{return /^(?:www\.|m\.|music\.)?(?:youtube\.com|youtu\.be)$/.test(new URL(value).hostname);}catch{return false;}};
 export const safeUrl=value=>{try{const u=new URL(value);return /^https?:$/.test(u.protocol)?u.href:'';}catch{return '';}};
-export const damageLabel=v=>v===null||v===''||!Number.isFinite(Number(v))?'미표기':Number(v).toLocaleString('ko-KR',{minimumFractionDigits:1,maximumFractionDigits:2})+'억';
+export const floorDamage=v=>Math.floor(Number(v)*10+1e-9)/10;
+export const damageLabel=v=>v===null||v===''||!Number.isFinite(Number(v))?'미표기':floorDamage(v).toLocaleString('ko-KR',{minimumFractionDigits:1,maximumFractionDigits:1})+'억';
 
 // Damage belongs to a particular source link, not the maximum of its whole party.
 export function sourceDamage(task,link){
@@ -95,7 +96,7 @@ export function buildReviewItems(snapshot,youtube,{youtubeReady=true,now=Date.no
 }
 
 export function reviewDraft(item){
- return {party:[...item.party],stars:[...item.stars],damage:item.damage.value??'',hands:item.operation==='full-auto'?0:'',
+ return {party:[...item.party],stars:[...item.stars],damage:item.damage.value==null?'':floorDamage(item.damage.value),hands:item.operation==='full-auto'?0:'',
   tp:item.conditions.tp,category:item.task.type===1&&item.stage===4?'carry':'main',support:-1,
   duration:90,requiredCarrySeconds:'',carry:item.stage===3?item.carry??'':'',
   note:item.conditions.fields.map(f=>f.label+': '+f.value).join('\n'),

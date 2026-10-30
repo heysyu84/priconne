@@ -4,6 +4,35 @@ import {runtimeFixture} from './runtime-fixture.mjs';
 let checks=0;
 const check=async(name,run)=>{await run();checks++;console.log('PASS '+name);};
 const clone=value=>JSON.parse(JSON.stringify(value));
+await check('initial sync and live month changes open the latest season without a menu round trip',()=>{
+ const reference=runtimeFixture().sharedDocument(),latest='2026-11';
+ reference.seasons[latest]=clone(reference.seasons[reference.activeMonth]);reference.seasons[latest].logs=[];reference.seasons[latest].dayClosures=[];reference.seasons[latest].rules.startDate='';reference.activeMonth=latest;
+ for(const section of ['overview','tactics','clan'])for(const initial of [false,true]){
+  const app=runtimeFixture();app.ui.section=section;app.ui.month='2026-10';app.ui.day=5;app.get().settings.defaultDayMode='auto';
+  app.applySharedDocument(clone(reference),{initial});
+  assert.equal(app.ui.month,latest);assert.equal(app.get().activeMonth,latest);assert.equal(app.get().logs.length,0);assert.equal(app.ui.day,1);
+ }
+});
+await check('sync preserves the month intentionally selected in historical records',()=>{
+ const reference=runtimeFixture().sharedDocument(),latest='2026-11';
+ reference.seasons[latest]=clone(reference.seasons[reference.activeMonth]);reference.seasons[latest].logs=[];reference.activeMonth=latest;
+ for(const initial of [false,true]){
+  const app=runtimeFixture();app.ui.section='records';app.ui.tabs.records='archive';app.ui.month='2026-10';
+  app.applySharedDocument(clone(reference),{initial});assert.equal(app.ui.month,'2026-10');assert.ok(app.get().logs.length);
+  app.evaluate("nav('overview')");assert.equal(app.ui.month,latest);assert.equal(app.get().logs.length,0);
+ }
+});
+await check('production startup waits for current data and uses a stale cache only after an offline failure',()=>{
+ const app=runtimeFixture(new Map(),{apiOrigin:'https://example.test'}),cached=app.sharedDocument();
+ cached.importedSource={key:'live-shared-clan-api'};cached.seasons[cached.activeMonth].bossSettings[0].name='지난달 캐시 보스';
+ app.sync.started=true;app.applySharedDocument(clone(cached),{initial:true});
+ assert.match(app.renderPage(),/기록 불러오는 중/);assert.doesNotMatch(app.renderPage(),/지난달 캐시 보스/);
+ app.sync.status='offline';assert.match(app.renderPage(),/지난달 캐시 보스/);
+ const latest='2026-11',fresh=clone(cached);fresh.seasons[latest]=clone(fresh.seasons[fresh.activeMonth]);fresh.activeMonth=latest;
+ fresh.seasons[latest].bossSettings[0].name='최신 월 보스';fresh.seasons[latest].logs=[];
+ app.sync.status='loading';app.applySharedDocument(fresh,{initial:true});app.sync.ready=true;app.sync.status='saved';
+ assert.equal(app.ui.month,latest);assert.match(app.renderPage(),/최신 월 보스/);assert.doesNotMatch(app.renderPage(),/지난달 캐시 보스|기록 불러오는 중/);
+});
 await check('the first frame never exposes tactic management, including an editable browser cache',()=>{
  const first=runtimeFixture(new Map(),{hash:'#tactics/workspace'}),stored=clone(first.get());stored.settings.editable=true;
  const key=first.evaluate('KEY'),storage=new Map([[key,JSON.stringify(stored)]]);

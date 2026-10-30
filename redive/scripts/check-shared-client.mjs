@@ -74,5 +74,14 @@ await check('delete buttons confirm one record and propagate its removal through
  await admin.click('entry-confirm-delete',log.id);assert.equal(admin.get().logs.length,before-1);assert.ok(!admin.get().logs.some(row=>row.id===log.id));await admin.flush();assert.equal(admin.sync.pending,'');
  await viewer.poll({force:true});assert.equal(viewer.get().logs.length,before-1);assert.ok(!viewer.get().logs.some(row=>row.id===log.id));
 });
+await check('a cached browser and an already open situation board follow a new server month without navigation',async()=>{
+ const storage=new Map(viewer.storage),latest='2026-11';
+ admin.get().seasons[latest]=structuredClone(admin.get().seasons['2026-10']);admin.get().seasons[latest].logs=[];admin.get().seasons[latest].rules.startDate='';
+ admin.persist();await admin.flush();assert.equal(admin.sync.pending,'');const before=writes;
+ const reopened=await client(false,storage);assert.equal(reopened.ui.month,latest);assert.equal(reopened.get().logs.length,0);assert.equal(writes,before);
+ await viewer.poll({force:true});assert.equal(viewer.ui.month,latest);assert.equal(viewer.get().logs.length,0);
+ reopened.ui.section='records';reopened.ui.tabs.records='archive';reopened.ui.month='2026-10';await reopened.poll({force:true});
+ assert.equal(reopened.ui.month,'2026-10');assert.ok(reopened.get().logs.length);assert.equal(writes,before);reopened.close();
+});
 for(const c of [admin,viewer,secondAdmin])c.close();sqlite.close();console.log(checks+' shared-client checks passed');
 

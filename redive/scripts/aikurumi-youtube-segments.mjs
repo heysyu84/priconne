@@ -33,7 +33,8 @@ export function splitVideoDescription(description,bossNames){
   const isBoss=boss!==null&&(ordinalTitle&&!battle||!/(?:\bUB\b|ユニオンバースト|通常攻撃|スキル|連打|目押し|SET|AUTO|解除)/i.test(bossTitle)&&!battle);
   const chapter=!!clock&&(seconds>90||seconds===0)&&!/(?:SET|OFF|UB|解除|連打|目押し)/i.test(clock[2]);
   const restart=battleSeconds!==null&&battleSeconds>=60&&battleSeconds<=90&&lastBattle<=45&&battleSeconds>lastBattle+30;
-  const variant=/^(?:[①-⑳◆■●★☆【\[<(（]|(?:編成|パーティ|pattern|TL)\s*\d)/i.test(trimmed)
+  const variant=!/^(?:[★☆⭐✩]\s*)?0?[01]:[0-5]\d/.test(trimmed)
+   &&/^(?:[①-⑳◆■●★☆【\[<(（]|(?:編成|パーティ|pattern|TL)\s*\d)/i.test(trimmed)
    &&/(?:\d[,.\d]*\s*(?:万|億)|全\s*(?:set|セット)|[ox〇○×✕ー-]{5}|編成|パーティ)/i.test(trimmed)
    &&current.lines.some(s=>/^\s*0?[01]:[0-5]\d/.test(s));
   if(isBoss||chapter||restart||variant){

@@ -1,4 +1,4 @@
-import {buildReviewItems,reviewDraft,stage3LineupDraft,validateReviewDraft,damageLabel,findImportedTactic,safeUrl,isYouTube} from './aikurumi-review-model.mjs?v=20261030-review06';
+import {buildReviewItems,reviewDraft,stage3LineupDraft,validateReviewDraft,damageLabel,floorDamage,findImportedTactic,safeUrl,isYouTube} from './aikurumi-review-model.mjs?v=20261030-startup01';
 import {findNonOverlappingStage3} from './aikurumi-stage3-composer.mjs';
 import {previewAikurumiTactic} from './aikurumi-tactic-review.mjs';
 
@@ -254,7 +254,7 @@ class ReviewWorkspace{
   }else{this.error='등록할 5개 조합을 확인하지 못했습니다. 자료를 새로고침해 주세요.';this.draw();}return;}
   if(!item)return;const draft=this.draft(item);
   if(kind==='edit'){this.editing.has(item.key)?this.editing.delete(item.key):this.editing.add(item.key);this.drawDetail();return;}
-  if(kind==='damage-option'){draft.damage=Number(action.dataset.value);draft.confirmed=false;draft.edited=true;this.drawDetail();return;}
+  if(kind==='damage-option'){draft.damage=floorDamage(action.dataset.value);draft.confirmed=false;draft.edited=true;this.drawDetail();return;}
   if(kind==='add-row'){draft.rows.push({text:'',checked:[...(draft.rows.at(-1)?.checked||Array(6).fill(false))]});draft.confirmed=false;draft.edited=true;this.drawDetail();return;}
   if(kind==='remove-row'){draft.rows.splice(Number(action.dataset.index),1);draft.confirmed=false;draft.edited=true;this.drawDetail();return;}
   if(kind==='convert'){

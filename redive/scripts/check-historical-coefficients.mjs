@@ -18,7 +18,7 @@ const archives={'2026-01':month},reference=runtimeFixture().sharedDocument(),dec
 assert.equal(decoded.seasons['2026-01'].rules.preserveContributionCoefficients,true);
 assert.equal(decoded.seasons['2026-10'].rules.preserveContributionCoefficients,false);
 assert.deepEqual(encodeLegacy(decoded,root,archives,reference).data,root);
-const app=runtimeFixture();app.ui.month='2026-01';app.applySharedDocument(decoded);
+const app=runtimeFixture();app.ui.section='records';app.ui.tabs.records='archive';app.ui.month='2026-01';app.applySharedDocument(decoded);
 assert.deepEqual(JSON.parse(JSON.stringify(app.get().bossSettings.map(b=>b.contribution))),coefficients);
 assert.equal(app.get().logs.reduce((sum,e)=>sum+e.contribution,0),27500000);
 console.log('PASS historical coefficients survive replay, codec round trip and actual UI recalculation; live automatic coefficients remain automatic');
