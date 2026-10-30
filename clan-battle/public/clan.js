@@ -1,4 +1,6 @@
 (async()=>{'use strict';
+const {beginLoading}=await import('./loading-indicator.mjs?v=20261031-01');
+const stopBootLoading=beginLoading();
 const {menuArtMarkup}=await import('./menu-art.mjs?v=20261022-sd01');
 const {summarizeArchive,sortArchiveRankings}=await import('./archive-summary.mjs?v=20261022-import01');
 const {createMonthView}=await import('./month-view.mjs?v=20261022-import01');
@@ -36,14 +38,14 @@ const monthFormat=m=>m.replace('-','년 ')+'월';
 
 let boot;
 try { const response=await apiFetch('/api/state?compact=1',{cache:'no-store',signal:AbortSignal.timeout(15000)});if(!response.ok)throw Error();boot=await response.json(); }
-catch { $('#content').innerHTML='<section class="panel"><h1>기록에 연결하지 못했습니다</h1><p class="muted">연결을 확인한 뒤 다시 시도해 주세요. 기존 기록은 변경되지 않았습니다.</p><button class="btn primary" onclick="location.reload()">다시 연결</button></section>';$('#sync-state').textContent='연결 실패';return; }
+catch { $('#content').innerHTML='<section class="panel"><h1>기록에 연결하지 못했습니다</h1><p class="muted">연결을 확인한 뒤 다시 시도해 주세요. 기존 기록은 변경되지 않았습니다.</p><button class="btn primary" onclick="location.reload()">다시 연결</button></section>';$('#sync-state').textContent='연결 실패';stopBootLoading();return; }
 // The packaged seed is used only when the shared database is truly empty.
  // Once a server state exists, it is authoritative; never merge packaged tactics into it.
  const newDatabase=boot.data==null&&Number(boot.revision)===0;
  if(!newDatabase&&(!boot.data?.months||!Object.keys(boot.data.months).length)){
    $('#content').innerHTML='<section class="panel"><h1>저장된 클랜 데이터를 확인하지 못했습니다</h1><p class="muted">기존 기록을 초기 자료로 대체하지 않았습니다. 서버 연결과 저장 상태를 확인해 주세요.</p></section>';
    $('#sync-state').textContent='기록 확인 실패';
-   return;
+   stopBootLoading();return;
  }
  // Source-sheet imports are not even loaded after the first successful server save.
  const DEFAULT=newDatabase?JSON.parse(document.getElementById('seed-data').textContent):null;
@@ -175,6 +177,7 @@ function goto(page){
 async function selectDetailMonth(key,overview=false){
   if(!monthView.keys().includes(key))return;
   if(!workflow.beforeNavigate()||!tacticWorkspace.beforeNavigate()){$('#month-select').value=monthView.key();return;}
+  const stopMonthLoading=beginLoading();
   const request=++detailMonthRequest;detailMonthLoading=key;render();
   try{
     if(!await monthView.select(key)||request!==detailMonthRequest)return;
@@ -182,7 +185,7 @@ async function selectDetailMonth(key,overview=false){
     ui.member=current().members[0];ui.tactic=current().tactics[0]?.id||'';ui.day='all';ui.logPage=1;
     if(overview||archiveVisible())goto('overview');
   }catch(error){if(request===detailMonthRequest)notice(error.message);}
-  finally{if(request===detailMonthRequest){detailMonthLoading='';render();}}
+  finally{stopMonthLoading();if(request===detailMonthRequest){detailMonthLoading='';render();}}
 }
 function sortedEvents(d=current()){return [...d.events].sort((a,b)=>(a.seq-b.seq)||Number(a.sourceRow||0)-Number(b.sourceRow||0))}
 function maxDay(){return Math.max(current().options.days||5,...current().events.map(e=>e.day||0),1)}
@@ -271,11 +274,11 @@ async function loadArchive(key){
   if(archiveVisible())window.history.replaceState(null,'','#archive='+key);
   if(archiveCache.has(key)||app.months[key]){if(archiveVisible())render();return;}
   if(archiveLoading===key)return;
-  archiveLoading=key;if(archiveVisible())render();
+  const stopArchiveLoading=beginLoading();archiveLoading=key;if(archiveVisible())render();
   try{
     await monthView.load(key);
   }catch(e){archiveError=e.message||'과거 기록 조회 실패';}
-  finally{if(archiveLoading===key)archiveLoading='';if(archiveVisible()&&ui.archiveMonth===key)render();}
+  finally{stopArchiveLoading();if(archiveLoading===key)archiveLoading='';if(archiveVisible()&&ui.archiveMonth===key)render();}
 }
 function archiveRecords(){
   const keys=archiveKeys(),key=ui.archiveMonth&&keys.includes(ui.archiveMonth)?ui.archiveMonth:keys[0];
@@ -371,6 +374,7 @@ saveStatus('saved');if(editor&&(!boot.data||rosterMigrated||tacticsMigrated||gui
 
 if(ui.page==='archive'){guild.openArchive();ui.page='db';}
 render();
+stopBootLoading();
 if(archiveVisible()){const key=archiveKeys().includes(ui.archiveMonth)?ui.archiveMonth:archiveKeys()[0];if(key)void loadArchive(key);}
 // Battle logs and tactic corrections synchronize silently between browsers.
 // Prefer a lightweight server-sent revision stream; legacy API deployments fall
