@@ -149,7 +149,7 @@ class ReviewWorkspace{
    +'<section class="review-apply"><div class="review-section-heading"><h4>사이트에 적용</h4><span>'+item.month.replace('-','.')+' · '+item.stage+'단계</span></div>'
    +(this.canApply()?'<div class="review-apply-options">'+(item.stage===4?'<label class="review-field"><span>분류</span><select data-review-field="category">'+[['main','택틱정리'],['tabi','타비비토'],['carry','이월 택틱']].map(([v,l])=>'<option value="'+v+'" '+(draft.category===v?'selected':'')+'>'+l+'</option>').join('')+'</select></label>':'')
     +(item.stage===4&&draft.category==='carry'?field('필요 이월 · 초','requiredCarrySeconds',draft.requiredCarrySeconds,'type="number" min="1" max="90" placeholder="입력"'):'')
-    +'<label class="review-field"><span>대여 캐릭터</span><select data-review-field="support"><option value="-1">미지정</option>'+item.party.map((n,i)=>'<option value="'+i+'" '+(Number(draft.support)===i?'selected':'')+'>'+escape(n)+'</option>').join('')+'</select></label></div>'
+    +'<label class="review-field"><span>서포트 캐릭터</span><select data-review-field="support"><option value="-1">미지정</option>'+item.party.map((n,i)=>'<option value="'+i+'" '+(Number(draft.support)===i?'selected':'')+'>'+escape(n)+'</option>').join('')+'</select></label></div>'
     +(!monthExists?'<label class="review-confirm"><input type="checkbox" data-review-field="createMonth" '+(draft.createMonth?'checked':'')+'> '+item.month.replace('-','.')+' 월을 새로 만들고 적용</label>':'')
     +'<label class="review-confirm"><input type="checkbox" data-review-field="confirmed" '+(draft.confirmed?'checked':'')+'> 원본의 조작·누락 구간과 조건을 확인했습니다.</label>'
     +(previous?'<p class="review-existing">같은 출처에서 적용한 택틱이 있습니다. 수정한 내용으로 업데이트합니다.</p>':'')
