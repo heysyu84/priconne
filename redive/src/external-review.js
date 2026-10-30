@@ -77,3 +77,38 @@ function openAppliedExternalTactic({month,stage,id}){
  if(stage===3){ext.openComboId=null;ext.comboDetails={};ui.tabs.tactics='combos';nav('tactics','combos');}
  else{const tactic=data.tactics.find(t=>t.id===id);ext.workGroup=tactic?.category||'main';nav('tactics','workspace');}
 }
+
+
+let importedDangoCheckRevision=null,importedDangoCheckBusy=false,importedDangoAssets=null;
+async function synchronizeImportedDangoSets(){
+ if(!syncState.started||!syncState.ready||syncState.pending||syncState.inFlight
+   ||ext.workEditing||importedDangoCheckBusy||importedDangoCheckRevision===syncState.revision)return;
+ const revision=syncState.revision;importedDangoCheckBusy=true;
+ try{
+  importedDangoAssets??=Promise.all([
+   import('./aikurumi-dango-repair.mjs?v=20261030-dango03'),
+   ...['aikurumi-snapshot-stage3.json','aikurumi-snapshot.json','aikurumi-youtube-candidates.json'].map(async name=>{
+    const response=await fetch(new URL('./'+name,import.meta.url),{cache:'no-store'});
+    if(!response.ok)throw Error('당고 검수 자료를 불러오지 못했습니다.');return response.json();
+   })
+  ]).catch(error=>{importedDangoAssets=null;throw error;});
+  const [module,stage3,stage4,youtube]=await importedDangoAssets;
+  if(revision!==syncState.revision||syncState.inFlight||syncState.pending||ext.workEditing)return;
+  // Only identical historical generated rows are corrected. User-edited rows remain untouched.
+  const {repaired}=module.repairImportedDangoTactics(data.seasons,[stage3,stage4],youtube);
+  importedDangoCheckRevision=revision;
+  if(repaired){
+   const current=data.seasons[ui.month];
+   if(current){data.tactics=structuredClone(current.tactics);data.recommendations=structuredClone(current.recommendations||[]);}
+   if(syncState.canEdit&&data.settings.editable)persist();
+   render();
+  }
+ }catch(error){console.warn('당고 SET 복구 건너뜀:',error?.message||error);}
+ finally{importedDangoCheckBusy=false;}
+}
+const previousDangoRenderComplete=afterOperationalRender;
+afterOperationalRender=()=>{
+ previousDangoRenderComplete();
+ if(syncState.started&&syncState.ready&&importedDangoCheckRevision!==syncState.revision)
+  queueMicrotask(synchronizeImportedDangoSets);
+};
