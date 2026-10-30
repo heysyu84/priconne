@@ -1,11 +1,11 @@
 {
   "schema": "nyang-youtube-tactic-candidates-v1",
-  "extractionVersion": "20261030-tl02",
+  "extractionVersion": "20261030-tl03",
   "source": "YouTube Data API v3",
   "readOnly": true,
   "registrationAllowed": false,
-  "fetchedAt": "2026-10-30T07:59:46.041Z",
-  "expiresAt": "2026-11-27T07:59:46.041Z",
+  "fetchedAt": "2026-10-30T09:14:56.372Z",
+  "expiresAt": "2026-11-27T09:14:56.372Z",
   "videoCount": 69,
   "requestedVideoCount": 72,
   "missingVideoCount": 3,
@@ -13,10 +13,10 @@
   "statuses": {
     "no-youtube-tl": 64,
     "candidate": 2,
-    "partial": 50,
-    "needs-source-check": 9,
+    "partial": 51,
     "video-timeline-only": 8,
-    "video-unavailable": 3
+    "video-unavailable": 3,
+    "needs-source-check": 8
   },
   "references": [
     {
@@ -2839,41 +2839,211 @@
       "linkIndex": 10,
       "linkOrdinal": 10,
       "videoId": "3XR7r4dwSJI",
-      "status": "needs-source-check",
-      "matching": "ambiguous-party-section",
-      "rowCount": 0,
-      "issues": [],
+      "status": "partial",
+      "matching": "single-video",
+      "rowCount": 14,
+      "issues": [
+        "time-range",
+        "unparsed-instructions",
+        "translation-incomplete"
+      ],
       "warnings": [],
-      "rows": [],
+      "rows": [
+        {
+          "time": null,
+          "text": "AUTO 온, 전부 SET",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "needsReview": false
+        },
+        {
+          "time": "1:11",
+          "text": "1:11 프캬루 후 프캬루 OFF",
+          "checked": [
+            true,
+            true,
+            false,
+            true,
+            true,
+            true
+          ],
+          "needsReview": false
+        },
+        {
+          "time": "1:06",
+          "text": "1:06 프캬루 후 AUTO 오프",
+          "checked": [
+            true,
+            true,
+            false,
+            true,
+            true,
+            false
+          ],
+          "needsReview": false
+        },
+        {
+          "time": "0:59",
+          "text": "0:59 スミレ 후 프캬루 ON",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            false
+          ],
+          "needsReview": true
+        },
+        {
+          "time": "0:59",
+          "text": "ㄴ 프캬루 후 프캬루 OFF",
+          "checked": [
+            true,
+            true,
+            false,
+            true,
+            true,
+            false
+          ],
+          "needsReview": false
+        },
+        {
+          "time": "0:50",
+          "text": "0:50 보스 후 프캬루 ON",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            false
+          ],
+          "needsReview": false
+        },
+        {
+          "time": "0:50",
+          "text": "ㄴ 프캬루 후 프캬루 OFF",
+          "checked": [
+            true,
+            true,
+            false,
+            true,
+            true,
+            false
+          ],
+          "needsReview": false
+        },
+        {
+          "time": "0:43",
+          "text": "0:43 프캬루 후 프캬루 ON, 바이올렛, 수키드나, 란파 OFF",
+          "checked": [
+            false,
+            false,
+            true,
+            true,
+            false,
+            false
+          ],
+          "needsReview": false
+        },
+        {
+          "time": "0:35",
+          "text": "0:35 보스 후 란파 ON, 프캬루 OFF",
+          "checked": [
+            true,
+            false,
+            false,
+            true,
+            false,
+            false
+          ],
+          "needsReview": false
+        },
+        {
+          "time": "0:33",
+          "text": "0:33 -32 프캬루(エイド캔슬) 후 AUTO 온",
+          "checked": [
+            true,
+            false,
+            false,
+            true,
+            false,
+            true
+          ],
+          "needsReview": true
+        },
+        {
+          "time": "0:29",
+          "text": "0:29 수키드나 후 수키드나 ON, AUTO 오프",
+          "checked": [
+            true,
+            true,
+            false,
+            true,
+            false,
+            false
+          ],
+          "needsReview": false
+        },
+        {
+          "time": "0:23",
+          "text": "0:23 프캬루 후 [원문 확인: エイド캔슬 넉백]",
+          "checked": [
+            true,
+            true,
+            false,
+            true,
+            false,
+            false
+          ],
+          "needsReview": true
+        },
+        {
+          "time": "0:17",
+          "text": "0:17 프캬루 후 프캬루 ON, AUTO 온",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            false,
+            true
+          ],
+          "needsReview": false
+        },
+        {
+          "time": "0:01",
+          "text": "0:01 프캬루 후 [원문 확인: 止めぽ +1000]",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            false,
+            true
+          ],
+          "needsReview": true
+        }
+      ],
       "sourceUrl": "https://www.youtube.com/watch?v=3XR7r4dwSJI",
       "youtubeHasTactic": true,
       "tacticLocation": "description",
-      "diagnostics": {
-        "sections": [
-          {
-            "boss": null,
-            "header": "",
-            "startSeconds": null,
-            "clockLines": 5
-          },
-          {
-            "boss": null,
-            "header": "☆0:43  キャル(エイドcl)✕✕○○✕",
-            "startSeconds": null,
-            "clockLines": 4
-          },
-          {
-            "boss": null,
-            "header": "☆0:17 キャル(エイドcl)○○○○✕ オートオン",
-            "startSeconds": null,
-            "clockLines": 2
-          }
-        ],
-        "bestPartyHits": 2,
-        "damageMatched": false,
-        "sourceTimestamp": null,
-        "chapterCount": 0
+      "conditions": {
+        "tp": "",
+        "fields": []
       },
+      "omittedRows": 0,
+      "unresolvedRows": 4,
+      "translatedRows": 10,
+      "warningCount": 2,
+      "unknownActorCount": 0,
       "commentReadStatus": "complete"
     },
     {
