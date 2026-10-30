@@ -30,7 +30,7 @@ export function splitVideoDescription(description,bossNames){
   const ordinalTitle=/(?:第\s*)?[1-5]\s*(?:ボス|ネームド|BOSS)|BOSS\s*[1-5]/i.test(bossTitle);
   const isBoss=boss!==null&&(ordinalTitle&&!battle||!/(?:\bUB\b|ユニオンバースト|通常攻撃|スキル|連打|目押し|SET|AUTO|解除)/i.test(bossTitle)&&!battle);
   const chapter=!!clock&&(seconds>90||seconds===0)&&!/(?:SET|OFF|UB|解除|連打|目押し)/i.test(clock[2]);
-  const restart=battleSeconds===90&&lastBattle<90;
+  const restart=battleSeconds!==null&&battleSeconds<=90&&lastBattle<90&&battleSeconds>lastBattle+3;
   const variant=/^(?:[①-⑳◆■●★☆【\[<(（]|(?:編成|パーティ|pattern|TL)\s*\d)/i.test(trimmed)
    &&/(?:\d[,.\d]*\s*(?:万|億)|全\s*(?:set|セット)|[ox〇○×✕ー-]{5}|編成|パーティ)/i.test(trimmed)
    &&current.lines.some(s=>/^\s*0?[01]:[0-5]\d/.test(s));
@@ -48,6 +48,16 @@ function damages(text){
  for(const m of normalized.matchAll(/(\d+(?:\.\d+)?)\s*万/g))values.add(Math.round(Number(m[1])));
  for(const m of normalized.matchAll(/(?:^|[^\d])(\d{4,6})(?=$|[^\d])/g))values.add(Number(m[1]));
  return values;
+}
+function damageMatches(text,target){
+ if(damages(text).has(target))return true;
+ const value=String(text).normalize('NFKC').replace(/(\d),(?=\d{3}(?:\D|$))/g,'$1');
+ // A source's 3.74億 is rounded; match only within the displayed precision.
+ for(const m of value.matchAll(/(\d+(?:\.(\d+))?)\s*億(?!\s*\d+\s*万)/g)){
+  const precision=10000/10**(m[2]?.length||0);
+  if(Math.abs(Number(m[1])*10000-target)<precision/2)return true;
+ }
+ return false;
 }
 const titleDamages=ref=>[...damages(String(ref.link.name||'').split('\n')[0])];
 function partyAliases(ref){
@@ -67,11 +77,11 @@ export function matchedYouTubeSegment(sections,ref,videoRefs){
   if(timed.length===1)return {segment:timed[0],match:'source-timestamp'};
  }
  const scored=options.map(segment=>{
-  const values=damages(segment.text),title=titleDamages(ref),exact=title.some(v=>values.has(v)),hits=partyHits(segment,aliases);
+  const title=titleDamages(ref),exact=title.some(v=>damageMatches(segment.text,v)),hits=partyHits(segment,aliases);
   const different=perBoss.filter(other=>other!==ref&&other.task.id!==ref.task.id).map(other=>partyHits(segment,partyAliases(other)));
   const uniqueParty=hits>=4&&different.every(n=>n<hits);
   const expectedMask=mask(ref.link.name),sourceMask=mask(segment.text),maskMatches=expectedMask&&expectedMask===sourceMask;
-  const conflict=perBoss.filter(other=>other!==ref&&titleDamages(other).some(v=>values.has(v))).length;
+  const conflict=perBoss.filter(other=>other!==ref&&titleDamages(other).some(v=>damageMatches(segment.text,v))).length;
   return {segment,exact,hits,uniqueParty,maskMatches,conflict,score:(exact?10:0)+(uniqueParty?8:0)+hits+(maskMatches?2:0)};
  }).sort((a,b)=>b.score-a.score);
  const best=scored[0],second=scored[1];

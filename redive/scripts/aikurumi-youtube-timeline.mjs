@@ -3,13 +3,14 @@ import {resolveAikurumiParty} from '../public/aikurumi-character-matcher.mjs';
 // explicitly marked in the review rows, never removed or guessed.
 const terms=[
  [/ユニオンバースト/g,'UB'],[/通常攻撃/g,'평타'],[/オート/g,'AUTO'],[/セット/g,'SET'],
- [/フルAUTO/gi,'全SET AUTO ON'],[/セミAUTO/gi,'세미오토'],[/最速/g,'최속'],[/連打/g,'연타'],
+ [/フルAUTO/gi,'풀오토'],[/セミAUTO/gi,'세미오토'],[/最速/g,'최속'],[/連打/g,'연타'],
  [/目押し/g,'직접 발동'],[/微ディレイ/g,'살짝 지연'],[/ディレイ/g,'지연'],[/キャンセル/g,'캔슬'],
  [/モーション/g,'모션'],[/クリティカル/g,'크리티컬'],[/クリティ/g,'크리티컬'],[/着弾/g,'명중'],[/被弾/g,'피격'],
  [/吹き出し|吹出し/g,'말풍선'],[/バフ/g,'버프'],[/デバフ/g,'디버프'],[/ダメージ/g,'피해량'],
  [/スキル\s*([12])/g,'$1스킬'],[/S([12])/g,'$1스킬'],[/スキル/g,'스킬'],[/発動/g,'발동'],
  [/直後/g,'직후'],[/直前/g,'직전'],[/開始/g,'시작'],[/終了/g,'종료'],[/確認/g,'확인'],[/即座に|即時|即/g,'즉시'],
- [/手動/g,'수동'],[/切り替え/g,'전환'],[/タップ/g,'탭'],[/ボス/g,'보스'],[/秒/g,'초']
+ [/手動/g,'수동'],[/切り替え/g,'전환'],[/タップ/g,'탭'],[/ボス/g,'보스'],[/秒/g,'초'],
+ [/ノックバック|ノクバ/g,'넉백'],[/一瞬/g,'살짝'],[/遅いと減る/g,'늦으면 감소'],[/^cl$|\bcl\b/gi,'캔슬']
 ];
 const translate=text=>terms.reduce((s,[pattern,replacement])=>s.replace(pattern,replacement),text);
 const escapeRegex=value=>value.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');

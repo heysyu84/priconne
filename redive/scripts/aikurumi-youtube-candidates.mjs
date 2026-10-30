@@ -18,23 +18,24 @@ export function createYouTubeTacticCandidates(snapshots,found,{fetchedAt=new Dat
  const videoMap=new Map((found?.videos||[]).map(v=>[v.videoId,v]));
  const references=refs.map(ref=>{
   const video=videoMap.get(ref.videoId),all=refs.filter(x=>x.videoId===ref.videoId);
+  function extract(description,tacticLocation='description',commentId=null){
   const base={stage:ref.stage,boss:ref.boss,taskId:ref.task.id,
     linkIndex:ref.link.index??ref.ordinal,linkOrdinal:ref.ordinal,videoId:ref.videoId,
     status:'needs-source-check',matching:'',rowCount:0,issues:[],warnings:[],rows:[],
-    sourceUrl:String(ref.link.link||''),youtubeHasTactic:null};
-  if(!video?.description)return {...base,status:video?'empty-description':'video-unavailable',
+    sourceUrl:String(ref.link.link||''),youtubeHasTactic:null,tacticLocation,...(commentId?{commentId}:{})};
+  if(!description)return {...base,status:video?'empty-description':'video-unavailable',
     matching:'no-description',youtubeHasTactic:video?false:null};
-  const inspection=inspectYouTubeDescription(video.description);
+  const inspection=inspectYouTubeDescription(description);
   // Stage 3 is often just "全SET", without two timestamped action lines.
   // That is still a tactic: prefer YouTube and request human verification
   // rather than silently replacing it with Aikurumi's Chinese translation.
   const fullSetOrAuto=/(?:全員|全|すべて|全部)\s*(?:SET|セット|セト)|(?:フルオート|セミオート|オート\s*(?:ON|OFF))/iu
-    .test(video.description);
+    .test(description);
   const japaneseTactic=inspection.mayContainTactic||fullSetOrAuto;
-  if(!japaneseTactic)return {...base,status:'no-youtube-tl',youtubeHasTactic:false,
-    matching:'no-tactic-evidence'};
+  if(!japaneseTactic)return {...base,status:/(?:タイムライン|\bTL\b)/i.test(description)?'video-timeline-only':'no-youtube-tl',youtubeHasTactic:/(?:タイムライン|\bTL\b)/i.test(description),
+    matching:'no-description-timeline'};
   base.youtubeHasTactic=true; // priority remains YouTube even when segmentation is ambiguous
-  const segments=splitVideoDescription(video.description,ref.bossNames);
+  const segments=splitVideoDescription(description,ref.bossNames);
   const matched=matchedYouTubeSegment(segments,ref,all);
   if(!matched.segment)return {...base,matching:matched.match,diagnostics:{...matched.diagnostics,
    sections:segments.slice(0,30).map(s=>({boss:s.boss,header:String(s.header||'').slice(0,160),startSeconds:s.startSeconds,
@@ -50,7 +51,7 @@ export function createYouTubeTacticCandidates(snapshots,found,{fetchedAt=new Dat
   const conditions=extractTacticConditions({...ref.task,remarks:'',exRemarks:''},{...ref.link,name:'',remarks:text},candidate);
   base.conditions={tp:conditions.tp,fields:conditions.fields.filter(f=>
     !/[\u3040-\u30ff\u3400-\u9fff]/u.test(f.value))};
-  if(!candidate.rows.length)return {...base,matching:matched.match,status:'no-parsable-timeline',
+  if(!candidate.rows.length)return {...base,matching:matched.match,status:/(?:タイムライン|\bTL\b)/i.test(description)?'video-timeline-only':'no-youtube-tl',youtubeHasTactic:/(?:タイムライン|\bTL\b)/i.test(description),
     diagnostics:{header:String(matched.segment.header||'').slice(0,160),lineCount:text.split('\n').length,
      instructionLines:text.split('\n').filter(s=>/(?:全|SET|AUTO|タイムライン|TL)/i.test(s)).map(s=>s.slice(0,180)).slice(0,12)},
     issues:candidate.issues.map(x=>x.code).slice(0,12)};
@@ -66,6 +67,12 @@ export function createYouTubeTacticCandidates(snapshots,found,{fetchedAt=new Dat
     rowCount:rows.length,omittedRows:0,unresolvedRows,translatedRows:rows.length-unresolvedRows,
     issues:[...new Set(issues)],warningCount:candidate.warnings.length,
     unknownActorCount:candidate.unmappedActors.length,rows};
+  }
+  const results=[extract(video?.description),...(video?.authorTimelines||[]).map(c=>extract(c.text,'author-comment',c.id))];
+  const quality=r=>(r.rows.length?1000:0)+(r.youtubeHasTactic===true?50:0)+(r.translatedRows||0)*2-(r.unresolvedRows||0)+(r.status==='candidate'?100:0)+(r.tacticLocation==='description'?1:0);
+  results.sort((a,b)=>quality(b)-quality(a));const chosen=results[0];
+  if(chosen.youtubeHasTactic===false&&['failed','limited','no-author-id'].includes(video?.commentsStatus))return {...chosen,status:'needs-source-check',youtubeHasTactic:null,issues:['comments-unavailable'],commentReadStatus:video.commentsStatus};
+  return {...chosen,commentReadStatus:video?.commentsStatus||'not-requested'};
  });
  const statuses={};
  for(const item of references)statuses[item.status]=(statuses[item.status]||0)+1;
