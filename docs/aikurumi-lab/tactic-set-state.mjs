@@ -2,7 +2,7 @@
 const norm = value => String(value ?? '').normalize('NFKC');
 const escapeRegex = value => value.replace(/[|\\{}()[\]^$+*?.]/g, '\\$&');
 const six = value => Array.from({length: 6}, (_, i) => value?.[i] === true || value?.[i] === 'TRUE');
-const FULL = /(?:전부|전원|전체|모두|全員|全员|全体|全部)/u;
+const FULL = /(?:전부|전원|전체|모두|全員|全员|全体|全部|全)/u;
 const AUTO = /(?<![\p{L}\p{N}])(?:AUTO|오토)(?![\p{L}\p{N}])/iu;
 const TRIGGER = /(?:후|다음|이후|직후)(?![\p{L}\p{N}])\s*/gu;
 const ACTION = /(?<![\p{L}\p{N}])(?:SET\s*(?:해제|OFF)|한번만|ON|OFF|SET|오프|온|해제|解除|切|켜기|끄기)(?![\p{L}\p{N}])/giu;
@@ -44,7 +44,9 @@ function namedSlots(fragment, matcher) {
 
 export function commandState(text, previous = [], characters = [], catalog = []) {
   const state = six(previous);
-  const source = norm(text);
+  const source = norm(text)
+    .replace(/(전부|전원|전체|모두|全員|全员|全体|全部|全)\s*(SET|ON|OFF)(?![A-Za-z])/giu,'$1 $2')
+    .replace(/(?:시작|초동|初動|开始|開幕)\s*UB\s*SET\s*[:：]\s*(全员|全員|전부|전원)/giu,'$1 SET');
   const matcher = characterTokens(characters, catalog);
   let end = 0;
   for (const match of source.matchAll(ACTION)) {
