@@ -1,8 +1,8 @@
 // Read-only bridge from an Aikurumi task/link into the Nyang tactic editor format.
 // The operator must separately approve registration; this module never writes site data.
 import {splitAikurumiTimeline} from './aikurumi-tactic-preprocess.mjs';
-import {convertForeignTactic} from './tactic-parser.mjs?v=20261030-once01';
-import {resolveAikurumiParty} from './aikurumi-character-matcher.mjs?v=20261030-once01';
+import {convertForeignTactic} from './tactic-parser.mjs?v=20261030-dango03';
+import {resolveAikurumiParty} from './aikurumi-character-matcher.mjs?v=20261030-dango03';
 
 const string=value=>String(value??'').trim();
 const positive=value=>Number.isFinite(Number(value))&&Number(value)>0?Number(value):null;
