@@ -21,6 +21,7 @@ test('follow-up actor, ordered actions, AUTO, exclusion and one-time UB',()=>{
   assert.deepEqual(commandState('수레시아, 수리아 순으로 ON, AUTO ON',bits([0,0,0,0,0,0]),party),bits([0,0,0,1,1,1]));
   assert.deepEqual(commandState('캬루 제외 전부 OFF',bits([1,1,1,1,1,1]),party),bits([0,1,0,0,0,1]));
   assert.deepEqual(commandState('전부 OFF (캬루 제외)',bits([1,1,1,1,1,1]),party),bits([0,1,0,0,0,1]));
+  for(const source of ['전부SET','全SET','开始UBSET:全员'])assert.deepEqual(commandState(source,bits([0,0,0,0,0,0]),party),bits([1,1,1,1,1,0]),source);
 });
 
 test('editing one row recalculates downstream auto rows, but respects checked overrides',()=>{
