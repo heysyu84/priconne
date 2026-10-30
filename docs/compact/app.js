@@ -2988,11 +2988,11 @@ function openAppliedExternalTactic({month,stage,id}){
 }
 
 
-let importedDangoCheckRevision=null,importedDangoCheckBusy=false,importedDangoAssets=null;
+let importedDangoCheckedSeasons=null,importedDangoCheckBusy=false,importedDangoAssets=null;
 async function synchronizeImportedDangoSets(){
  if(!syncState.started||!syncState.ready||syncState.pending||syncState.inFlight
-   ||ext.workEditing||importedDangoCheckBusy||importedDangoCheckRevision===syncState.revision)return;
- const revision=syncState.revision;importedDangoCheckBusy=true;
+   ||ext.workEditing||importedDangoCheckBusy||importedDangoCheckedSeasons===data.seasons)return;
+ const revision=syncState.revision,seasonsRef=data.seasons;importedDangoCheckBusy=true;
  try{
   importedDangoAssets??=Promise.all([
    import('./aikurumi-dango-repair.mjs?v=20261030-dango03'),
@@ -3002,10 +3002,10 @@ async function synchronizeImportedDangoSets(){
    })
   ]).catch(error=>{importedDangoAssets=null;throw error;});
   const [module,stage3,stage4,youtube]=await importedDangoAssets;
-  if(revision!==syncState.revision||syncState.inFlight||syncState.pending||ext.workEditing)return;
+  if(revision!==syncState.revision||seasonsRef!==data.seasons||syncState.inFlight||syncState.pending||ext.workEditing)return;
   // Only identical historical generated rows are corrected. User-edited rows remain untouched.
   const {repaired}=module.repairImportedDangoTactics(data.seasons,[stage3,stage4],youtube);
-  importedDangoCheckRevision=revision;
+  importedDangoCheckedSeasons=seasonsRef;
   if(repaired){
    const current=data.seasons[ui.month];
    if(current){data.tactics=structuredClone(current.tactics);data.recommendations=structuredClone(current.recommendations||[]);}
@@ -3018,7 +3018,7 @@ async function synchronizeImportedDangoSets(){
 const previousDangoRenderComplete=afterOperationalRender;
 afterOperationalRender=()=>{
  previousDangoRenderComplete();
- if(syncState.started&&syncState.ready&&importedDangoCheckRevision!==syncState.revision)
+ if(syncState.started&&syncState.ready&&importedDangoCheckedSeasons!==data.seasons)
   queueMicrotask(synchronizeImportedDangoSets);
 };
 
