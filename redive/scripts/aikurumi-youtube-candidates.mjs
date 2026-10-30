@@ -77,7 +77,7 @@ export function createYouTubeTacticCandidates(snapshots,found,{fetchedAt=new Dat
  const statuses={};
  for(const item of references)statuses[item.status]=(statuses[item.status]||0)+1;
  const expiresAt=new Date(Date.parse(fetchedAt)+28*24*60*60*1000).toISOString();
- return {schema:'nyang-youtube-tactic-candidates-v1',extractionVersion:'20261030-tl04',source:'YouTube Data API v3',
+ return {schema:'nyang-youtube-tactic-candidates-v1',extractionVersion:'20261030-dango03',source:'YouTube Data API v3',
    readOnly:true,registrationAllowed:false,fetchedAt,expiresAt,
    videoCount:videoMap.size,requestedVideoCount:found?.requested??new Set(refs.map(r=>r.videoId)).size,
    missingVideoCount:found?.missing?.length??0,totalReferences:references.length,statuses,references};
