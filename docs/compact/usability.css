@@ -1100,3 +1100,17 @@ form[data-form="v2-tactic"] #tactic-text{display:block;width:100%;min-width:0;mi
   }
   .recommendation-list>.combo-card:not(.stage3-combo-card){cursor:pointer;touch-action:manipulation}
 }
+
+
+/* Stage 4 mobile combos: hide the duplicate rarity card to keep video on the same row. */
+@media(max-width:760px){
+  .recommendation-list>.combo-card:not(.stage3-combo-card) .combo-metadata{
+    grid-template-columns:repeat(4,minmax(0,1fr));
+  }
+  .recommendation-list>.combo-card:not(.stage3-combo-card) .combo-metadata>div.combo-stars{
+    display:none!important;
+  }
+  .recommendation-list>.combo-card:not(.stage3-combo-card) .combo-metadata>div{
+    min-width:0;
+  }
+}
