@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import {commandState,recalculateSetRows} from '../public/tactic-set-state.mjs';
+import {commandState,recalculateSetRows,repairExcludedSetRows} from '../public/tactic-set-state.mjs';
 import {commandState as workspaceCommand,recalculateTacticRows} from '../public/compat/tactics-model.mjs';
 import {convertForeignTactic} from '../public/tactic-parser.mjs';
 
@@ -64,4 +64,42 @@ test('converted exclusion rows retain identical SET flags when the workspace rec
   recalculateSetRows(rows,party);
   assert.deepEqual(rows.map(row=>row.checked),result.rows.map(row=>row.checked),source);
  }
+});
+
+test('stored Grace exclusion repairs the initial row and all subsequent automatic rows',()=>{
+ const names=['메두사','사쿠라','그레이스','알리스','할무기'];
+ const rows=[
+  ['AUTO 온, 그레이스 제외 SET',[0,0,1,0,0,1]],
+  ['1:12 메두사 후 그레이스 ON, AUTO 온',[0,0,1,0,0,1]],
+  ['1:07 할무기 후 AUTO 온, 그레이스 OFF',[0,0,0,0,0,1]],
+  ['0:57 할무기 후 그레이스 ON, AUTO 온, 메두사 OFF',[0,0,1,0,0,1]],
+  ['0:50 메두사 후 메두사 ON, AUTO 온',[1,0,1,0,0,1]],
+  ['0:27 할무기 후 AUTO 온, 할무기 OFF',[1,0,1,0,0,1]]
+ ].map(([text,checked],i)=>({id:'grace-'+i,text,checked:bits(checked),manualChecks:false}));
+ const originals=rows.map(({checked,...rest})=>rest);
+ assert.equal(repairExcludedSetRows(rows,names),6);
+ assert.deepEqual(rows.map(row=>row.checked),[
+  [1,1,0,1,1,1],[1,1,1,1,1,1],[1,1,0,1,1,1],
+  [0,1,1,1,1,1],[1,1,1,1,1,1],[1,1,1,1,0,1]
+ ].map(bits));
+ assert.deepEqual(rows.map(({checked,...rest})=>rest),originals);
+ assert.equal(repairExcludedSetRows(rows,names),0);
+});
+
+test('exclusion repair respects manual and legacy checkbox rows and ignores unknown exception names',()=>{
+ const names=['메두사','사쿠라','그레이스','알리스','할무기'];
+ const rows=[
+  {text:'그레이스 제외 SET',checked:bits([0,0,1,0,0,0]),manualChecks:false},
+  {text:'메두사 OFF',checked:bits([0,1,0,0,0,0]),manualChecks:true},
+  {text:'그레이스 ON',checked:bits([1,1,1,1,1,1]),manualChecks:false},
+  {text:'할무기 OFF',checked:bits([1,0,1,0,1,1])}
+ ];
+ const manual=structuredClone(rows[1]),legacy=structuredClone(rows[3]);
+ assert.equal(repairExcludedSetRows(rows,names),2);
+ assert.deepEqual(rows[1],manual);assert.deepEqual(rows[3],legacy);
+ assert.deepEqual(rows[2].checked,bits([0,1,1,0,0,0]));
+ const unknown=[{text:'없는캐릭 제외 SET',checked:bits([0,1,0,0,0,0]),manualChecks:false}];
+ assert.equal(repairExcludedSetRows(unknown,names),0);
+ const explicit=[{text:'그레이스 제외 SET',checked:bits([0,0,1,0,0,0]),manualChecks:true}];
+ assert.equal(repairExcludedSetRows(explicit,names),0);
 });

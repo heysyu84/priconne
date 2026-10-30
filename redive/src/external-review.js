@@ -17,7 +17,7 @@ async function mountExternalReview(){
  const root=document.getElementById('external-tactic-review');
  if(!root||!adminMode()||ui.section!=='tactics'||ui.tabs.tactics!=='review')return;
  try{
-  externalReviewLoading??=Promise.all([import('./aikurumi-review-ui.mjs?v=20261030-except01'),import('./aikurumi-review-model.mjs?v=20261030-except01')]);
+  externalReviewLoading??=Promise.all([import('./aikurumi-review-ui.mjs?v=20261030-except02'),import('./aikurumi-review-model.mjs?v=20261030-except01')]);
   const [uiModule,model]=await externalReviewLoading;externalReviewModule=model;
   if(!adminMode()||document.getElementById('external-tactic-review')!==root)return;
   externalReviewController??=uiModule.createExternalReview({getContext:externalReviewContext,
@@ -79,6 +79,23 @@ function openAppliedExternalTactic({month,stage,id}){
 }
 
 
+let excludedSetsCheckedSeasons=null,excludedSetsCheckedMonth='',excludedSetsNeedsSave=false;
+function synchronizeSavedExcludedSets(){
+ if(!syncState.started||!syncState.ready||syncState.pending||syncState.inFlight||ext.workEditing||data.result?.sealed
+   ||['conflict','error','offline'].includes(syncState.status))return false;
+ if(excludedSetsCheckedSeasons!==data.seasons||excludedSetsCheckedMonth!==ui.month){
+  excludedSetsCheckedSeasons=data.seasons;excludedSetsCheckedMonth=ui.month;
+  let changed=0;
+  for(const tactic of data.tactics||[]){
+   if(tactic.deletedAt||!Array.isArray(tactic.rows))continue;
+   changed+=legacyTools.repairExcludedSetRows(tactic.rows,tactic.party,data.characters);
+  }
+  if(changed){excludedSetsNeedsSave=true;snapshotSeason();render();return true;}
+ }
+ if(excludedSetsNeedsSave&&syncState.canEdit&&data.settings.editable){excludedSetsNeedsSave=false;persist();}
+ return false;
+}
+
 let importedDangoCheckedSeasons=null,importedDangoCheckBusy=false,importedDangoAssets=null,importedDangoNeedsSave=false;
 async function synchronizeImportedDangoSets(){
  if(!syncState.started||!syncState.ready||syncState.pending||syncState.inFlight
@@ -110,6 +127,7 @@ async function synchronizeImportedDangoSets(){
 const previousDangoRenderComplete=afterOperationalRender;
 afterOperationalRender=()=>{
  previousDangoRenderComplete();
+ if(synchronizeSavedExcludedSets())return;
  if(importedDangoNeedsSave&&syncState.canEdit&&data.settings.editable&&!syncState.inFlight&&!syncState.pending){
   importedDangoNeedsSave=false;queueMicrotask(()=>persist());
  }

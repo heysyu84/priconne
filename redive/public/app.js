@@ -2,7 +2,7 @@ import {replayMonth as engineReplay,bossProgress as engineProgress,contribution 
 import {convertForeignTactic,foreignSuggestions} from './tactic-parser.mjs?v=20261030-except01';
 import * as partyTools from './party-tools.mjs?v=20261026-log-keys01';
 import * as logOrder from './log-order.mjs';
-import * as legacyTools from './legacy-tools.mjs?v=20261030-except01';
+import * as legacyTools from './legacy-tools.mjs?v=20261030-except02';
 const ICONS={
  cat:'M4 18V6l5 4 3-2 3 2 5-4v12c-3 4-13 4-16 0Z|M8 16h.1M16 16h.1M10 20l2 1 2-1',
  compass:'M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z|m15.5 8.5-2 5-5 2 2-5 5-2Z',
@@ -297,7 +297,13 @@ function simpleButton(text,action,id='',cls=''){if(/csv/i.test(action))return ''
 function boardSection(title,body,actions=''){return `<section class="sheet"><div class="sheet-heading"><h2>${title}</h2><div class="sheet-actions">${actions}</div></div>${body}</section>`;}
 function titleBar(title,action=''){const showDay=['overview','battle'].includes(ui.section)||(ui.section==='records'&&ui.tabs.records==='ranking');return `<div class="page-heading"><div class="page-heading-title"><h1>${title}</h1></div><div class="heading-actions">${showDay?dayButtons():''}${action}</div></div>`;}
 function portraitHtml(name,star){const c=data.characters.find(c=>c.name===name),base=GAME_ASSETS.characters[name],url=c?.images?.[star]||c?.images?.default||base?.[star]||base?.default;return url?`<img src="${X(url)}" alt="${X(name)}" width="128" height="128" loading="lazy">`:`<span aria-hidden="true">${X(name.slice(0,1))}</span>`;}
-function newParty(t){return `<div class="party">${t.party.map((name,i)=>`<div class="unit ${i===t.support?'support':''}"><span class="unit-face star-${t.stars[i]}">${portraitHtml(name,t.stars[i])}</span><strong class="${data.characters.find(c=>c.name===name)?.booster?'booster':''}">${X(name)}</strong><small class="${![5,6].includes(Number(t.stars[i]))?'danger':''}"><span class="unit-rarity">${t.stars[i]}성</span>${i===t.support?'<span class="unit-support-label"> · 대여</span>':''}</small></div>`).join('')}</div>`;}
+function partyNameClasses(t,name,index){
+ const character=characterReference(name),identity=character?.unitId||character?.name||name;
+ const overlapping=t.stage===3&&stage3RecommendationRecords().some(other=>other.id!==t.id&&other.boss!==t.boss&&!other.hidden&&!other.deletedAt
+  &&other.party.some(value=>{const entry=characterReference(value);return (entry?.unitId||entry?.name||value)===identity;}));
+ return [character?.booster?'booster':'',index===t.support||overlapping?'borrowed':''].filter(Boolean).join(' ');
+}
+function newParty(t){return `<div class="party">${t.party.map((name,i)=>`<div class="unit ${i===t.support?'support':''}"><span class="unit-face star-${t.stars[i]}">${portraitHtml(name,t.stars[i])}</span><strong class="${partyNameClasses(t,name,i)}">${X(name)}</strong><small class="${![5,6].includes(Number(t.stars[i]))?'danger':''}"><span class="unit-rarity">${t.stars[i]}성</span>${i===t.support?'<span class="unit-support-label"> · 대여</span>':''}</small></div>`).join('')}</div>`;}
 function compactNavigation(){return `<div class="section-nav" role="navigation" aria-label="주 메뉴">${NAV.map(([key,name])=>`<button data-action="nav" data-value="${key}" class="${ui.section===key?'active':''}" ${ui.section===key?'aria-current="page"':''}>${key==='overview'?'클랜전':key==='records'?'기록·통계':key==='clan'?'클랜 DB':name}</button>`).join('')}</div>`;}
 function headerResourceButtons(){
  const links=data.communityLinks.map(link=>({...link,label:/망령/.test(link.label)?'망령':/세미|semi/i.test(link.label)?'세미':/이월/.test(link.label)?'이월':link.label}));
@@ -2562,7 +2568,7 @@ if(pagesApiOrigin){
  const siteInitializeShared=initializeSharedSync;
  initializeSharedSync=async()=>{
   try{
-   const [{createLegacySharedClient},{startPresence},{createApiClient}]=await Promise.all([import('./legacy-shared-client.mjs?v=20261028-tactic-body01'),import('./presence.mjs'),import('./compat/api-client.mjs')]);
+   const [{createLegacySharedClient},{startPresence},{createApiClient}]=await Promise.all([import('./legacy-shared-client.mjs?v=20261030-except02'),import('./presence.mjs'),import('./compat/api-client.mjs')]);
    let storage;try{storage=sessionStorage;}catch{}
    productionClient=createLegacySharedClient({apiOrigin:pagesApiOrigin,pageOrigin:location.origin,storage,fetcher:(...args)=>fetch(...args),reference:sharedDocument(),selectedMonth:()=>ui.month});
    stateRequest=(path,options)=>productionClient.request(path,options);
@@ -2926,7 +2932,7 @@ async function mountExternalReview(){
  const root=document.getElementById('external-tactic-review');
  if(!root||!adminMode()||ui.section!=='tactics'||ui.tabs.tactics!=='review')return;
  try{
-  externalReviewLoading??=Promise.all([import('./aikurumi-review-ui.mjs?v=20261030-except01'),import('./aikurumi-review-model.mjs?v=20261030-except01')]);
+  externalReviewLoading??=Promise.all([import('./aikurumi-review-ui.mjs?v=20261030-except02'),import('./aikurumi-review-model.mjs?v=20261030-except01')]);
   const [uiModule,model]=await externalReviewLoading;externalReviewModule=model;
   if(!adminMode()||document.getElementById('external-tactic-review')!==root)return;
   externalReviewController??=uiModule.createExternalReview({getContext:externalReviewContext,
@@ -2988,6 +2994,23 @@ function openAppliedExternalTactic({month,stage,id}){
 }
 
 
+let excludedSetsCheckedSeasons=null,excludedSetsCheckedMonth='',excludedSetsNeedsSave=false;
+function synchronizeSavedExcludedSets(){
+ if(!syncState.started||!syncState.ready||syncState.pending||syncState.inFlight||ext.workEditing||data.result?.sealed
+   ||['conflict','error','offline'].includes(syncState.status))return false;
+ if(excludedSetsCheckedSeasons!==data.seasons||excludedSetsCheckedMonth!==ui.month){
+  excludedSetsCheckedSeasons=data.seasons;excludedSetsCheckedMonth=ui.month;
+  let changed=0;
+  for(const tactic of data.tactics||[]){
+   if(tactic.deletedAt||!Array.isArray(tactic.rows))continue;
+   changed+=legacyTools.repairExcludedSetRows(tactic.rows,tactic.party,data.characters);
+  }
+  if(changed){excludedSetsNeedsSave=true;snapshotSeason();render();return true;}
+ }
+ if(excludedSetsNeedsSave&&syncState.canEdit&&data.settings.editable){excludedSetsNeedsSave=false;persist();}
+ return false;
+}
+
 let importedDangoCheckedSeasons=null,importedDangoCheckBusy=false,importedDangoAssets=null,importedDangoNeedsSave=false;
 async function synchronizeImportedDangoSets(){
  if(!syncState.started||!syncState.ready||syncState.pending||syncState.inFlight
@@ -3019,6 +3042,7 @@ async function synchronizeImportedDangoSets(){
 const previousDangoRenderComplete=afterOperationalRender;
 afterOperationalRender=()=>{
  previousDangoRenderComplete();
+ if(synchronizeSavedExcludedSets())return;
  if(importedDangoNeedsSave&&syncState.canEdit&&data.settings.editable&&!syncState.inFlight&&!syncState.pending){
   importedDangoNeedsSave=false;queueMicrotask(()=>persist());
  }

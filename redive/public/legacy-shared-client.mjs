@@ -1,5 +1,5 @@
 import {createApiClient} from './compat/api-client.mjs';
-import {decodeLegacy,encodeLegacy} from './legacy-codec.mjs?v=20261030-dango03';
+import {decodeLegacy,encodeLegacy} from './legacy-codec.mjs?v=20261030-except02';
 
 export function createLegacySharedClient({apiOrigin,pageOrigin,storage,fetcher,reference,selectedMonth=()=>null,now=Date.now}){
   const client=createApiClient({apiOrigin,pageOrigin,storage,fetcher,now});

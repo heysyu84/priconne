@@ -9,6 +9,21 @@ const snapshots=[load('aikurumi-snapshot-stage3.json'),load('aikurumi-snapshot.j
 const items=snapshots.flatMap(s=>model.buildReviewItems(s,youtube));
 function reviewed(item){const d=model.reviewDraft(item);d.confirmed=true;d.rows=[{text:'1:30 전부 SET, AUTO 온',checked:[true,true,true,true,true,true]}];if(item.damage.ambiguous)d.damage=item.damage.options[0];return d;}
 function fixture(){const f=runtimeFixture(),context=f.evaluate('this');context.model=model;f.evaluate('externalReviewModule=this.model; data.settings.editable=true;');return f;}
+test('loading saved automatic exclusion states repairs readers immediately and saves once only in editable admin mode',()=>{
+ const f=runtimeFixture(),t=structuredClone(f.get().tactics[0]);
+ Object.assign(t,{party:['메두사','사쿠라','그레이스','알리스','할무기'],rows:[
+  {id:'old-grace',text:'AUTO 온, 그레이스 제외 SET',checked:[false,false,true,false,false,true],manualChecks:false},
+  {id:'next-grace',text:'1:12 메두사 후 그레이스 ON',checked:[false,false,true,false,false,true],manualChecks:false}
+ ]});
+ f.get().tactics=[t];f.get().result.sealed=false;
+ f.evaluate('syncState.started=true;syncState.ready=true;syncState.status="saved";syncState.canEdit=false;data.settings.editable=false;importedDangoCheckedSeasons=data.seasons;fixture.repairSaves=0;persist=()=>fixture.repairSaves++;');
+ f.evaluate('synchronizeSavedExcludedSets()');
+ assert.deepEqual(Array.from(t.rows[0].checked),[true,true,false,true,true,true]);
+ assert.deepEqual(Array.from(t.rows[1].checked),[true,true,true,true,true,true]);
+ assert.equal(f.evaluate('fixture.repairSaves'),0);
+ f.evaluate('syncState.canEdit=true;data.settings.editable=true;synchronizeSavedExcludedSets();synchronizeSavedExcludedSets();');
+ assert.equal(f.evaluate('fixture.repairSaves'),1);
+});
 test('video damage labels and initial imports floor to one decimal while retaining precise source matching values',()=>{
  for(const [value,label]of [[3.24,'3.2억'],[3.29,'3.2억'],[3.3,'3.3억'],[4.5172,'4.5억'],[4,'4.0억']])assert.equal(model.damageLabel(value),label);
  const item=items.find(i=>i.stage===4&&!i.damage.ambiguous&&i.damage.value!=null),copy={...item,damage:{...item.damage,value:3.29}};

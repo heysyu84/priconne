@@ -13,7 +13,7 @@ if(pagesApiOrigin){
  const siteInitializeShared=initializeSharedSync;
  initializeSharedSync=async()=>{
   try{
-   const [{createLegacySharedClient},{startPresence},{createApiClient}]=await Promise.all([import('./legacy-shared-client.mjs?v=20261028-tactic-body01'),import('./presence.mjs'),import('./compat/api-client.mjs')]);
+   const [{createLegacySharedClient},{startPresence},{createApiClient}]=await Promise.all([import('./legacy-shared-client.mjs?v=20261030-except02'),import('./presence.mjs'),import('./compat/api-client.mjs')]);
    let storage;try{storage=sessionStorage;}catch{}
    productionClient=createLegacySharedClient({apiOrigin:pagesApiOrigin,pageOrigin:location.origin,storage,fetcher:(...args)=>fetch(...args),reference:sharedDocument(),selectedMonth:()=>ui.month});
    stateRequest=(path,options)=>productionClient.request(path,options);
