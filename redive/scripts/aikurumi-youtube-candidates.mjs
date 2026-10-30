@@ -36,9 +36,11 @@ export function createYouTubeTacticCandidates(snapshots,found,{fetchedAt=new Dat
   base.youtubeHasTactic=true; // priority remains YouTube even when segmentation is ambiguous
   const segments=splitVideoDescription(video.description,ref.bossNames);
   const matched=matchedYouTubeSegment(segments,ref,all);
-  if(!matched.segment)return {...base,matching:matched.match,diagnostics:matched.diagnostics};
+  if(!matched.segment)return {...base,matching:matched.match,diagnostics:{...matched.diagnostics,
+   sections:segments.slice(0,30).map(s=>({boss:s.boss,header:String(s.header||'').slice(0,160),startSeconds:s.startSeconds,
+    clockLines:inspectYouTubeDescription(s.text).candidateClockLines}))}};
   // A section that contains multiple unrelated time-lines is not safe to bind.
-  const text=normalizeYouTubeTimeline(matched.segment.text);
+  const text=normalizeYouTubeTimeline(matched.segment.text,ref);
   if(text.length>14000||text.split('\n').length>200)
     return {...base,matching:'section-too-long'};
   const candidate=previewAikurumiTactic(ref.task,
@@ -49,6 +51,8 @@ export function createYouTubeTacticCandidates(snapshots,found,{fetchedAt=new Dat
   base.conditions={tp:conditions.tp,fields:conditions.fields.filter(f=>
     !/[\u3040-\u30ff\u3400-\u9fff]/u.test(f.value))};
   if(!candidate.rows.length)return {...base,matching:matched.match,status:'no-parsable-timeline',
+    diagnostics:{header:String(matched.segment.header||'').slice(0,160),lineCount:text.split('\n').length,
+     instructionLines:text.split('\n').filter(s=>/(?:全|SET|AUTO|タイムライン|TL)/i.test(s)).map(s=>s.slice(0,180)).slice(0,12)},
     issues:candidate.issues.map(x=>x.code).slice(0,12)};
   // Keep every parsed operational row. Unresolved words/conditions stay marked
   // for review; throwing away the entire row loses required battle actions.
