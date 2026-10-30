@@ -2345,6 +2345,26 @@ recommendationDistribution=()=>{
   return `<section class="distribution-panel" aria-label="추천 분배">${plans.length?rowTable(['추천 조합 · 서포트','합계 기대딜',''],plans.slice(0,5).map((p,i)=>`<tr data-mobile-plan="${i}" class="${p.ids.length===ui.picks.length&&p.ids.every(id=>ui.picks.includes(id))?'is-selected':''}" tabindex="0" aria-label="${i+1}번째 추천 3타 조합 선택"><td>${p.ids.map(id=>{const t=tacticById(id),support=p.supports?.[id]??-1;return `<span class="distribution-team"><span class="distribution-boss" style="${bossStyle(t.boss)}">${t.boss}넴</span><small>${support>=0?X(t.party[support]):'서포트 자유'}</small></span>`;}).join('')}</td><td class="right numeric"><strong>${expectedDamageValue(p.damage)}</strong></td><td class="right">${simpleButton('선택','v2-use-plan',String(i),'quiet')}</td></tr>`),'distribution-table'):'<p class="no-rows">겹치지 않는 3타 조합이 없습니다.</p>'}</section>`;
 };
 
+
+/* Mobile recommendation picking uses the whole row/card, without stealing taps
+   from video links, detail controls, or the existing keyboard-accessible inputs. */
+function pickMobileRecommendation(event){
+  if(!window.matchMedia('(max-width:760px)').matches || !(event.target instanceof Element))return;
+  const target=event.target;
+  if(target.closest('a,button,input,select,textarea,label,summary,[contenteditable="true"]'))return;
+  const plan=target.closest('.distribution-panel[aria-label="추천 분배"] .distribution-table tbody tr[data-mobile-plan]');
+  if(plan){plan.querySelector('button[data-action="v2-use-plan"]')?.click();return;}
+  const card=target.closest('.recommendation-list .combo-card[data-combo]:not(.stage3-combo-card)');
+  if(!card||target.closest('.combo-expansion'))return;
+  card.querySelector('input[data-input="v2-pick-tactic"]')?.click();
+}
+document.addEventListener('click',pickMobileRecommendation,true);
+document.addEventListener('keydown',event=>{
+  if(!['Enter',' '].includes(event.key)||!(event.target instanceof Element))return;
+  const plan=event.target.closest('.distribution-panel[aria-label="추천 분배"] .distribution-table tbody tr[data-mobile-plan]');
+  if(plan&&event.target===plan){event.preventDefault();plan.querySelector('button[data-action="v2-use-plan"]')?.click();}
+});
+
 const logContentWithoutWarnings=battleLogContent;
 battleLogContent=()=>{
   const warnings=data.replayWarnings||[];
