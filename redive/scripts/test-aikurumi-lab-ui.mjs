@@ -41,3 +41,21 @@ test('video grouping and stage-3 solver lead back to specific reviewed source li
   assert.equal(new Set(solution.flatMap(item=>item.task.charas.map(c=>c.prefabId))).size,25);
  }
 });
+test('a stage 3 group registers its five full-auto parties without fabricating or requiring a translated timeline',async()=>{
+ const {workspace,writes,root}=fixture(true);await workspace.load();workspace.view='compose';workspace.draw();
+ const items=workspace.solutions[0];for(const item of items){const d=workspace.draft(item);d.rows=[];d.confirmed=false;}
+ const action={dataset:{reviewAction:'apply-group',index:'0'}};
+ const event={type:'click',target:{matches(){return false;},closest:()=>action},preventDefault(){}};
+ workspace.event(event);await new Promise(resolve=>setImmediate(resolve));
+ assert.equal(writes.length,1);assert.equal(writes[0].length,5);
+ assert.ok(writes[0].every(({item,draft})=>item.stage===3&&item.operation==='full-auto'&&draft.lineupOnly&&draft.confirmed&&draft.rows.length===0));
+ assert.ok(items.every(item=>workspace.draft(item).confirmed===false));assert.match(root.innerHTML,/적용 완료/);
+});
+test('registration errors remain visible and missing months are explained before writing',async()=>{
+ const {workspace,writes,root}=fixture(true);await workspace.load();workspace.view='compose';workspace.draw();
+ const items=workspace.solutions[0];workspace.getContext=()=>({canEdit:true,seasons:{}});
+ const item=workspace.items.find(i=>i.stage===4&&!i.damage.ambiguous);workspace.draft(item).confirmed=true;
+ await workspace.apply([item]);assert.equal(writes.length,0);assert.match(root.innerHTML,/월을 새로 만들고 적용/);
+ workspace.onApply=async()=>{throw Error('저장 연결 확인');};
+ await workspace.apply(items,{lineupOnly:true,confirmed:true});assert.match(root.innerHTML,/role="alert">저장 연결 확인/);assert.equal(workspace.pending,false);
+});

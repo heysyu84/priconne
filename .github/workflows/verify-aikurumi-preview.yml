@@ -29,7 +29,7 @@ jobs:
           node --check docs/compact/app.js
           node --check redive/public/aikurumi-review-ui.mjs
           node --check redive/public/aikurumi-review-model.mjs
-          node --test redive/scripts/test-aikurumi-*.mjs
+          node --test redive/scripts/test-aikurumi-*.mjs redive/scripts/test-stage3-recommendations.mjs
           node redive/scripts/check-tactic-body-save.mjs
           node redive/scripts/check-usability.mjs
           node redive/scripts/check-shared-client.mjs
@@ -51,7 +51,7 @@ jobs:
             }
             throw last;
           }
-          await verify('/',text=>assert.match(text,/20261030-review02/));
+          await verify('/',text=>assert.match(text,/20261030-review03/));
           await verify('/aikurumi-lab/',text=>{assert.match(text,/aikurumi-review\.css/);assert.doesNotMatch(text,/TEST \/ 읽기 전용|API 수집/);});
           await verify('/compact/aikurumi-review-ui.mjs',text=>assert.match(text,/createExternalReview/));
           await verify('/compact/aikurumi-review-model.mjs',text=>assert.match(text,/buildReviewedTactic/));

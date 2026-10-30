@@ -1,4 +1,4 @@
-import {buildReviewItems,reviewDraft,validateReviewDraft,damageLabel,findImportedTactic,safeUrl,isYouTube} from './aikurumi-review-model.mjs';
+import {buildReviewItems,reviewDraft,stage3LineupDraft,validateReviewDraft,damageLabel,findImportedTactic,safeUrl,isYouTube} from './aikurumi-review-model.mjs?v=20261030-review03';
 import {findNonOverlappingStage3} from './aikurumi-stage3-composer.mjs';
 import {previewAikurumiTactic} from './aikurumi-tactic-review.mjs';
 
@@ -136,9 +136,10 @@ class ReviewWorkspace{
     +(!monthExists?'<label class="review-confirm"><input type="checkbox" data-review-field="createMonth" '+(draft.createMonth?'checked':'')+'> '+item.month.replace('-','.')+' 월을 새로 만들고 적용</label>':'')
     +'<label class="review-confirm"><input type="checkbox" data-review-field="confirmed" '+(draft.confirmed?'checked':'')+'> 원본의 조작·누락 구간과 조건을 확인했습니다.</label>'
     +(previous?'<p class="review-existing">같은 출처에서 적용한 택틱이 있습니다. 수정한 내용으로 업데이트합니다.</p>':'')
-    +'<div class="review-apply-actions"><button type="button" class="review-button primary" data-review-action="apply" '+(this.pending||!draft.confirmed||!draft.rows.length||!monthExists&&!draft.createMonth?'disabled':'')+'>'
+    +(item.stage===3&&item.operation==='full-auto'?'<p>조합 등록은 TL 없이 가능합니다. 조작문은 검수한 뒤 따로 적용할 수 있습니다.</p>':'')
+    +'<div class="review-apply-actions">'+(item.stage===3&&item.operation==='full-auto'?button(this.pending?'저장 중…':'조합만 등록','apply-lineup',this.pending?'disabled':''):'')+'<button type="button" class="review-button primary" data-review-action="apply" '+(this.pending||!draft.confirmed||!draft.rows.length||!monthExists&&!draft.createMonth?'disabled':'')+'>'
      +(this.pending?'저장 중…':previous?'검수 내용 업데이트':item.stage===3?'3단계 조합에 적용':draft.category==='carry'?'이월 택틱에 적용':'4단계 조합·택틱에 적용')+'</button>'
-    +(previous?button('적용한 택틱 열기','open-applied'):'')+'</div><p class="review-apply-status" role="status"></p>'
+    +(previous?button('적용한 택틱 열기','open-applied'):'')+'</div><p class="review-apply-status" role="status">'+escape(this.applyBlockReason(item,draft))+'</p>'
     :'<p>관리자 모드에서 검수한 택틱을 적용할 수 있습니다.</p><a class="review-button" href="../#tactics/review">관리자 화면 열기</a>')+'</section>';
  }
  timeline(item,draft,editing){
@@ -171,28 +172,38 @@ class ReviewWorkspace{
    +result.solutions.map((solution,index)=>{
     const items=solution.lineup.map(row=>this.items.find(i=>i.stage===3&&i.operation==='full-auto'&&i.boss===row.boss&&i.task.id===row.taskId&&String(i.link.index)===String(row.sourceLinkIndex)&&String(i.link.link||'')===row.sourceLink&&String(i.link.name||'')===row.sourceTitle));
     this.solutions.push(items);const verified=items.filter(i=>i&&this.draft(i).confirmed).length;
-    return '<section class="review-compose-result"><div class="review-section-heading"><h4>'+(index?'대체 조합 '+index:'우선 추천')+'</h4><span>검수 '+verified+' / 5</span></div><div class="review-compose-bosses">'
-     +solution.lineup.map((row,n)=>'<div><b class="review-boss review-boss-'+row.boss+'">'+row.boss+'넴</b><strong>'+escape(row.characterNames.join(' · '))+'</strong><span>풀오토 · 예상 이월 '+time(row.carry?.seconds)+'</span>'
-      +(items[n]?button(this.draft(items[n]).confirmed?'검수 완료':'검수하기','select','data-key="'+escape(items[n].key)+'"'):'')+'</div>').join('')+'</div>'
-     +(this.canApply()?(!this.context().seasons?.[snapshot.krMonth]?'<label class="review-confirm"><input type="checkbox" data-review-group-create '+(this.createMonthForGroup?'checked':'')+'> '+snapshot.krMonth.replace('-','.')+' 월을 새로 만들고 적용</label>':'')
-      +button('검수한 5개 조합 적용','apply-group','data-index="'+index+'" '+(verified===5&&(this.context().seasons?.[snapshot.krMonth]||this.createMonthForGroup)?'':'disabled')):'')+'</section>';
+     return '<section class="review-compose-result"><div class="review-section-heading"><h4>'+(index?'대체 조합 '+index:'우선 추천')+'</h4><span>풀오토 · 5개 편성</span></div><div class="review-compose-bosses">'
+     +solution.lineup.map((row,n)=>'<div><b class="review-boss review-boss-'+row.boss+'">'+row.boss+'넴</b><strong>'+escape(row.characterNames.join(' · '))+'</strong><span>풀오토 · 예상 이월 '+time(row.carry?.seconds)+'</span><span>성급 '+escape(items[n]?.stars.join('')||'미표기')+' · TP '+escape(items[n]?this.draft(items[n]).tp||'미표기':'미표기')+'</span>'
+      +(items[n]?button('조건 보기','select','data-key="'+escape(items[n].key)+'"'):'')+'</div>').join('')+'</div>'
+     +(this.canApply()?'<p>'+snapshot.krMonth.replace('-','.')+' 추천조합에 편성·성급·TP 조건·예상 이월을 등록합니다.</p>'
+      +button(this.pending?'저장 중…':'3단계 추천조합에 등록','apply-group','data-index="'+index+'" '+(this.pending?'disabled':''))
+      +(items.every(i=>i&&this.existing(i))?button('등록한 조합 열기','open-group','data-index="'+index+'"'):''):'')+'</section>';
    }).join('')+'</div>';
  }
  drawDetail(){const root=this.root.querySelector('.review-detail');if(root)root.innerHTML=this.detailView(this.current());}
+ applyBlockReason(item,draft){
+  if(this.pending)return '저장 중…';
+  if(!this.context().seasons?.[item.month]&&!draft.createMonth)return item.month.replace('-','.')+' 월을 새로 만들고 적용하려면 체크해 주세요.';
+  if(!draft.confirmed)return '원본의 편성·조건을 확인한 뒤 확인란에 체크해 주세요.';
+  if(!draft.rows.length)return 'TL을 포함하려면 조작문을 입력해 주세요.';
+  return '';
+ }
  updateApplyState(){
   const item=this.current();if(!item)return;const draft=this.draft(item),exists=!!this.context().seasons?.[item.month];
   const apply=this.root.querySelector('[data-review-action="apply"]');if(apply)apply.disabled=this.pending||!draft.confirmed||!draft.rows.length||!exists&&!draft.createMonth;
   const check=this.root.querySelector('[data-review-field="confirmed"]');if(check)check.checked=draft.confirmed;
+  const output=this.root.querySelector('.review-apply-status');if(output)output.textContent=this.applyBlockReason(item,draft);
  }
- async apply(items){
+ async apply(items,{lineupOnly=false,confirmed=false}={}){
   if(this.pending||!this.canApply())return;
-  const entries=items.map(item=>({item,draft:this.draft(item)}));
+  const entries=items.map(item=>({item,draft:lineupOnly?stage3LineupDraft(item,this.draft(item),{confirmed:true,createMonth:true}):this.draft(item)}));
+  if(entries.some(({item,draft})=>!this.context().seasons?.[item.month]&&!draft.createMonth)){this.error=items[0].month.replace('-','.')+' 월을 새로 만들고 적용하려면 체크해 주세요.';this.draw();return;}
   const errors=entries.flatMap(({item,draft})=>validateReviewDraft(item,draft));
   const output=this.root.querySelector('.review-apply-status');
-  if(errors.length){if(output)output.textContent=errors[0];else{this.message=errors[0];this.draw();}return;}
-  this.pending=true;this.updateApplyState();
+  if(errors.length){this.error=errors[0];if(output)output.textContent=errors[0];else this.draw();return;}
+  this.pending=true;this.error='';this.message='';this.draw();
   try{const result=await this.onApply(entries);this.message=result?.message||'사이트에 적용했습니다.';}
-  catch(error){this.message=error.message||'저장하지 못했습니다.';}
+  catch(error){this.error=error.message||'저장하지 못했습니다.';}
   finally{this.pending=false;this.draw();}
  }
  event(event){
@@ -229,10 +240,11 @@ class ReviewWorkspace{
   }
   if(kind==='list'){this.listOpen=true;this.draw();this.root.querySelector('.review-listpane')?.scrollIntoView({block:'start',behavior:'smooth'});return;}
   if(kind==='previous'||kind==='next'){const list=this.visible(),index=list.findIndex(i=>i.key===this.selected);this.selected=list[(index+(kind==='next'?1:-1)+list.length)%list.length]?.key;this.draw();return;}
-  if(kind==='apply-group'){const items=this.solutions?.[Number(action.dataset.index)];if(items?.length===5&&items.every(Boolean)){
+  if(kind==='open-group'){const first=this.solutions?.[Number(action.dataset.index)]?.[0],existing=first&&this.existing(first);if(existing)this.onOpen?.({month:first.month,stage:3,id:existing.id});return;}
+  if(kind==='apply-group'){const index=Number(action.dataset.index),items=this.solutions?.[index];if(items?.length===5&&items.every(Boolean)){
    if(this.createMonthForGroup)for(const item of items)this.draft(item).createMonth=true;
-   this.apply(items);
-  }return;}
+   this.apply(items,{lineupOnly:true,confirmed:true});
+  }else{this.error='등록할 5개 조합을 확인하지 못했습니다. 자료를 새로고침해 주세요.';this.draw();}return;}
   if(!item)return;const draft=this.draft(item);
   if(kind==='edit'){this.editing.has(item.key)?this.editing.delete(item.key):this.editing.add(item.key);this.drawDetail();return;}
   if(kind==='damage-option'){draft.damage=Number(action.dataset.value);draft.confirmed=false;draft.edited=true;this.drawDetail();return;}
@@ -245,6 +257,7 @@ class ReviewWorkspace{
    draft.rows=preview.rows.map(r=>({text:r.text,checked:[...r.checked]}));draft.confirmed=false;draft.edited=true;this.drawDetail();return;
   }
   if(kind==='apply')this.apply([item]);
+  if(kind==='apply-lineup')this.apply([item],{lineupOnly:true,confirmed:draft.confirmed});
   if(kind==='open-applied'){const existing=this.existing(item);if(existing)this.onOpen?.({month:item.month,stage:item.stage,id:existing.id});}
  }
 }

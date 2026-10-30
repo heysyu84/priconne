@@ -100,8 +100,17 @@ export function reviewDraft(item){
   source:item.source,confirmed:false,createMonth:false,edited:false};
 }
 
+// A full-auto party can be registered before its separate timeline is reviewed.
+// Do not copy partially converted instructions or mark them as reviewed.
+export function stage3LineupDraft(item,draft,{confirmed=false,createMonth=false}={}){
+ if(item.stage!==3||item.operation!=='full-auto')throw Error('3단계 풀오토 조합만 등록할 수 있습니다.');
+ return {...structuredClone(draft),lineupOnly:true,confirmed,createMonth,rows:[],hands:0};
+}
+
 export function validateReviewDraft(item,draft){
  const errors=[];
+ const lineupOnly=draft.lineupOnly===true;
+ if(lineupOnly&&(item.stage!==3||item.operation!=='full-auto'))errors.push('3단계 풀오토 조합만 등록할 수 있습니다.');
  if(!draft.confirmed)errors.push('원본 영상·누락 구간과 조건을 확인해 주세요.');
  if(!Array.isArray(draft.party)||draft.party.length!==5||draft.party.some(n=>!String(n||'').trim())||new Set(draft.party).size!==5||!item.preview.matchedKoreanNames)
   errors.push('캐릭터 5명을 확인해 주세요.');
@@ -112,8 +121,9 @@ export function validateReviewDraft(item,draft){
  if(!['main','tabi','carry'].includes(draft.category))errors.push('택틱 분류를 확인해 주세요.');
  if(!Number.isInteger(Number(draft.support))||Number(draft.support)<-1||Number(draft.support)>4)errors.push('대여 캐릭터를 확인해 주세요.');
  if(typeof draft.tp!=='string'||draft.tp.length>40||String(draft.note||'').length>12000)errors.push('조건과 메모 길이를 확인해 주세요.');
- if(!Array.isArray(draft.rows)||!draft.rows.length||draft.rows.length>250||draft.rows.some(r=>!r.text?.trim()||r.text.length>2000||r.checked?.length!==6||r.checked.some(v=>typeof v!=='boolean')))
+ if(!Array.isArray(draft.rows)||!lineupOnly&&!draft.rows.length||draft.rows.length>250||draft.rows.some(r=>!r.text?.trim()||r.text.length>2000||r.checked?.length!==6||r.checked.some(v=>typeof v!=='boolean')))
   errors.push('조작문과 SET 상태를 확인해 주세요.');
+ if(lineupOnly&&draft.rows?.length)errors.push('조합 등록에는 미검수 조작문을 포함할 수 없습니다.');
  if(draft.rows?.some(r=>/\[원문 확인:/.test(r.text)))errors.push('미해석 부분을 수정해 주세요.');
  if(draft.carry!==''&&(!Number.isInteger(Number(draft.carry))||Number(draft.carry)<0||Number(draft.carry)>90))errors.push('예상 이월은 0~90초로 입력해 주세요.');
  if(draft.category==='carry'&&(!Number.isInteger(Number(draft.requiredCarrySeconds))||Number(draft.requiredCarrySeconds)<1||Number(draft.requiredCarrySeconds)>90))errors.push('필요 이월은 1~90초로 입력해 주세요.');
@@ -127,7 +137,7 @@ export function buildReviewedTactic(item,draft,{id,now=new Date().toISOString()}
  const rows=draft.rows.map((r,i)=>({id:id+'-r'+i,text:r.text.trim(),checked:[...r.checked],manualChecks:true}));
  const externalSource={key:item.sourceKey,taskId:item.task.id,linkIndex:item.link.index??item.ordinal,
   linkOrdinal:item.ordinal,month:item.month,stage:item.stage,source:draft.source,
-  url:safeUrl(item.link.link),reviewedAt:now};
+  url:safeUrl(item.link.link),reviewedAt:now,reviewScope:draft.lineupOnly?'lineup':'timeline',operation:item.operation};
  const carry=draft.carry===''?null:Number(draft.carry);
  return {id,stage:item.stage,boss:item.boss,party:[...draft.party],stars:draft.stars.map(Number),
   title:draft.party.join(' '),damage:draft.damage===''?0:Number(draft.damage),

@@ -422,7 +422,7 @@ function completeRoster(alumni=false){
 function fullClan(){return titleBar(ui.tabs.clan==='settings'?'설정':'클랜 DB')+pageTabs([['members','클랜원'],['alumni','역대 클랜원'],['rates','기여도'],['characters','캐릭터·초상화'],['settings','설정']])+({members:()=>completeRoster(false),alumni:()=>completeRoster(true),rates:completeRates,characters:characterLibrary,settings:completeSettings}[ui.tabs.clan]||(()=>completeRoster(false)))();}
 
 
-function visibleTactics(){const source=ext.stage===3&&data.recommendations?.length?data.recommendations:data.tactics;return source.filter(t=>!t.deletedAt&&!t.hidden&&t.boss>0&&t.category!=='carry'&&t.boss>0&&t.stage===ext.stage&&(!ui.boss||t.boss===ui.boss)).sort((a,b)=>a.boss-b.boss||b.damage-a.damage);}
+function visibleTactics(){const source=ext.stage===3?[...new Map([...data.tactics.filter(t=>t.stage===3),...(data.recommendations||[])].map(t=>[t.id,t])).values()]:data.tactics;return source.filter(t=>!t.deletedAt&&!t.hidden&&t.boss>0&&t.category!=='carry'&&t.stage===ext.stage&&(!ui.boss||t.boss===ui.boss)).sort((a,b)=>a.boss-b.boss||b.damage-a.damage);}
 function completeBossFilter(){const values=[0,1,2,3,4,5,...(ui.section==='tactics'&&ui.tabs.tactics==='workspace'?[-1]:[])];return `<div class="filter-group boss-filter" role="group" aria-label="보스 필터">${values.map(n=>`<button data-action="boss-filter" data-value="${n}" class="${ui.boss===n?'active':''}" style="${n>0?bossStyle(n):''}" aria-pressed="${ui.boss===n}">${n===0?'전체':n===-1?'미분류':n+'넴'}</button>`).join('')}</div>`;}
 function parseDelimited(text,delimiter=','){const rows=[],row=[];let cell='',quoted=false;for(let i=0;i<text.length;i++){const c=text[i];if(c==='"'){if(quoted&&text[i+1]==='"'){cell+='"';i++;}else quoted=!quoted;}else if(c===delimiter&&!quoted){row.push(cell);cell='';}else if((c==='\n'||c==='\r')&&!quoted){if(c==='\r'&&text[i+1]==='\n')i++;row.push(cell);if(row.some(v=>String(v).trim()))rows.push([...row]);row.length=0;cell='';}else cell+=c;}row.push(cell);if(row.some(v=>String(v).trim()))rows.push(row);return rows;}
 function tacticStarString(t){return t.stars.map(n=>`<span class="${[5,6].includes(Number(n))?'':'danger'}">${n||'?'}</span>`).join('');}
@@ -1052,7 +1052,7 @@ recommendationRows=()=>{
   if(!thirdStageVisible()&&ext.stage===3)ext.stage=4;
   if(ext.onlyPicks&&!selectedParties().length)ext.onlyPicks=false;
   const early=ext.stage===3,rows=visibleTactics().filter(t=>!ext.onlyPicks||early||ui.picks.includes(t.id));
-  return `<div class="toolbar"><div class="toolbar-left">${stageButtons()}${bossFilter()}</div><div class="toolbar-right">${early?'':`<div class="recommendation-actions" role="group" aria-label="추천분배 조작">${simpleButton(selectedParties().length||ext.distributionOpen?'비우기':'추천분배',selectedParties().length||ext.distributionOpen?'r-clear-plan':'v3-distribution','',ext.distributionOpen?'selected':'')}${simpleButton(ext.distributionOpen?'닫기':'열기','r-toggle-distribution','','quiet')}${data.notices[ext.stage]?simpleButton('안내','v2-toggle-notice','','quiet'):''}</div>`}${early&&data.notices[ext.stage]?simpleButton('안내','v2-toggle-notice'):''}</div></div>${ext.noticeOpen&&data.notices[ext.stage]?`<div class="plain-notice">${X(data.notices[ext.stage]).replace(/\n/g,'<br>')}${simpleButton('안내 수정','v2-notice')}</div>`:''}${recommendationDistribution()}<div class="recommendation-list">${rows.map(t=>`<article class="combo-card ${ui.picks.includes(t.id)?'picked':''}" data-combo="${t.id}" style="${bossStyle(t.boss)}"><div class="combo-heading" style="${bossStyle(t.boss)}">${early?'':`<input type="checkbox" aria-label="${t.boss}넴 ${X(t.title)} 3타 선택" data-input="v2-pick-tactic" data-id="${t.id}" ${ui.picks.includes(t.id)?'checked':''}>`}<strong class="boss-tag">${t.boss}넴</strong><small class="combo-category category-${t.category}">${early?'3단계':t.category==='tabi'?'타비':'택틱'}</small></div><div class="combo-party">${party(t)}</div><dl class="combo-metadata"><div class="combo-stars"><dt>성급</dt><dd class="star-sequence">${tacticStarString(t)}</dd></div>${early?`<div><dt>필요 시간</dt><dd>${t.requiredSeconds==null?'—':t.requiredSeconds+'초'}</dd></div><div><dt>예상 이월</dt><dd>${t.remainingSeconds==null?'—':t.remainingSeconds+'초'}</dd></div>`:`<div><dt>손컨</dt><dd class="${t.hands?'danger':''}">${tacticHands(t)}</dd></div><div><dt>TP</dt><dd class="${tacticTpClass(t.tp)}">${X(t.tp||'—')}</dd></div><div class="combo-damage"><dt>기대딜</dt><dd>${tacticDamageLabel(t)}</dd></div>`}<div class="combo-link-cell">${videoButton(t,false,'combo')}</div></dl><div class="combo-open"><button class="button combo-toggle" data-action="ops-combo-toggle" data-id="${t.id}" aria-expanded="${ext.openComboId===t.id}" aria-controls="combo-details-${t.id}">${ext.openComboId===t.id?'닫기':'열기'}</button></div><div id="combo-details-${t.id}" class="combo-expansion ${ext.openComboId===t.id?'is-open':''}" ${ext.openComboId===t.id?'':'hidden'}><div class="combo-expansion-clip"><div class="combo-expansion-content">${ext.openComboId===t.id?comboDetailBody(t):''}</div></div></div></article>`).join('')||'<p class="no-rows">등록된 조합이 없습니다.</p>'}</div>${completePlanStrip()}`;
+  return `<div class="toolbar"><div class="toolbar-left">${stageButtons()}${bossFilter()}</div><div class="toolbar-right">${early?'':`<div class="recommendation-actions" role="group" aria-label="추천분배 조작">${simpleButton(selectedParties().length||ext.distributionOpen?'비우기':'추천분배',selectedParties().length||ext.distributionOpen?'r-clear-plan':'v3-distribution','',ext.distributionOpen?'selected':'')}${simpleButton(ext.distributionOpen?'닫기':'열기','r-toggle-distribution','','quiet')}${data.notices[ext.stage]?simpleButton('안내','v2-toggle-notice','','quiet'):''}</div>`}${early&&data.notices[ext.stage]?simpleButton('안내','v2-toggle-notice'):''}${early?stage3RecommendationActions():''}</div></div>${ext.noticeOpen&&data.notices[ext.stage]?`<div class="plain-notice">${X(data.notices[ext.stage]).replace(/\n/g,'<br>')}${simpleButton('안내 수정','v2-notice')}</div>`:''}${recommendationDistribution()}<div class="recommendation-list">${rows.map(t=>`<article class="combo-card ${ui.picks.includes(t.id)?'picked':''}" data-combo="${t.id}" style="${bossStyle(t.boss)}"><div class="combo-heading" style="${bossStyle(t.boss)}">${early?'':`<input type="checkbox" aria-label="${t.boss}넴 ${X(t.title)} 3타 선택" data-input="v2-pick-tactic" data-id="${t.id}" ${ui.picks.includes(t.id)?'checked':''}>`}<strong class="boss-tag">${t.boss}넴</strong><small class="combo-category category-${t.category}">${early?'3단계':t.category==='tabi'?'타비':'택틱'}</small></div><div class="combo-party">${party(t)}</div><dl class="combo-metadata"><div class="combo-stars"><dt>성급</dt><dd class="star-sequence">${tacticStarString(t)}</dd></div>${early?`<div><dt>TP</dt><dd class="${tacticTpClass(t.tp)}">${X(t.tp||'—')}</dd></div><div><dt>필요 시간</dt><dd>${t.requiredSeconds==null?'—':t.requiredSeconds+'초'}</dd></div><div><dt>예상 이월</dt><dd>${t.remainingSeconds==null?'—':t.remainingSeconds+'초'}</dd></div>`:`<div><dt>손컨</dt><dd class="${t.hands?'danger':''}">${tacticHands(t)}</dd></div><div><dt>TP</dt><dd class="${tacticTpClass(t.tp)}">${X(t.tp||'—')}</dd></div><div class="combo-damage"><dt>기대딜</dt><dd>${tacticDamageLabel(t)}</dd></div>`}<div class="combo-link-cell">${videoButton(t,false,'combo')}</div></dl><div class="combo-open">${early&&adminMode()?simpleButton('삭제','stage3-delete',t.id,'quiet danger'):''}<button class="button combo-toggle" data-action="ops-combo-toggle" data-id="${t.id}" aria-expanded="${ext.openComboId===t.id}" aria-controls="combo-details-${t.id}">${ext.openComboId===t.id?'닫기':'열기'}</button></div><div id="combo-details-${t.id}" class="combo-expansion ${ext.openComboId===t.id?'is-open':''}" ${ext.openComboId===t.id?'':'hidden'}><div class="combo-expansion-clip"><div class="combo-expansion-content">${ext.openComboId===t.id?comboDetailBody(t):''}</div></div></div></article>`).join('')||'<p class="no-rows">등록된 조합이 없습니다.</p>'}</div>${completePlanStrip()}`;
 };
 function selectionControls(){
   const chosen=selectedParties();if(!chosen.length)return '';const conflicts=partyConflicts(chosen);
@@ -1094,7 +1094,7 @@ const standardDisplaySettings=settingsDisplay;
 settingsDisplay=()=>standardDisplaySettings().replace(/<label class="setting-row"><h3>본문 확대<\/h3>[\s\S]*?<\/label>/,`<div class="setting-row"><h3>글자 크기</h3><select class="select-field" data-input="ops-text-scale" aria-label="화면 글자 크기">${[95,100,105,110,115].map(value=>`<option value="${value}" ${value===textScale()?'selected':''}>${value}%${value===100?' · 기본':''}</option>`).join('')}</select></div>`);
 document.addEventListener('change',event=>{if(event.target.dataset.input==='ops-text-scale')setTextScale(event.target.value);});
 function comboDetailBody(t){
- return `<div class="combo-detail-controls"><label>이월 받은 시간 <input aria-label="이월 받은 시간" data-input="ops-combo-carry" data-id="${t.id}" value="${fmtTime(ui.carry)}" inputmode="numeric"></label>${simpleButton('본문 복사','copy-tactic',t.id)}${t.recommendationOnly?'':simpleButton('작업실에서 열기','v2-open-workspace',t.id)}</div>${t.note?`<p class="tactic-note">${X(displayTacticNote(t)).replace(/\n/g,'<br>')}</p>`:''}${t.video?`<p class="source-links"><a href="${X(t.video)}" target="_blank" rel="noopener noreferrer">원본 영상</a></p>`:''}${renderTacticGrid(t,false)}`;
+ return `<div class="combo-detail-controls"><label>이월 받은 시간 <input aria-label="이월 받은 시간" data-input="ops-combo-carry" data-id="${t.id}" value="${fmtTime(ui.carry)}" inputmode="numeric"></label>${simpleButton('본문 복사','copy-tactic',t.id)}${t.recommendationOnly?'':simpleButton('작업실에서 열기','v2-open-workspace',t.id)}</div>${t.note?`<p class="tactic-note">${X(displayTacticNote(t)).replace(/\n/g,'<br>')}</p>`:''}${t.video?`<p class="source-links"><a href="${X(t.video)}" target="_blank" rel="noopener noreferrer">원본 영상</a></p>`:''}${t.stage===3&&!t.rows?.length&&!t.text?'<p class="field-help">풀오토 편성입니다. 조작문은 별도로 검수한 뒤 등록할 수 있습니다.</p>':renderTacticGrid(t,false)}`;
 }
 function toggleComboCard(id){
  const t=tacticById(id),panel=document.getElementById('combo-details-'+id);if(!t||!panel)return;
@@ -1447,7 +1447,7 @@ function downloadCsv(rows,filename){const protect=v=>{const s=String(v??'');retu
 function switchMonthTo(key,archive=true){flushGrid();if(!activateSeason(key))return;ext.bossDraft=null;ext.importMode=false;ext.archiveView='summary';if(archive)ext.allDays=true;if(archive)nav('records','archive');else render();}
 function sha256Text(value){const bytes=[...new TextEncoder().encode(value)],length=bytes.length*8;bytes.push(128);while(bytes.length%64!==56)bytes.push(0);for(let i=7;i>=0;i--)bytes.push(i>=4?0:(length>>>(i*8))&255);const k=[0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5,0xd807aa98,0x12835b01,0x243185be,0x550c7dc3,0x72be5d74,0x80deb1fe,0x9bdc06a7,0xc19bf174,0xe49b69c1,0xefbe4786,0x0fc19dc6,0x240ca1cc,0x2de92c6f,0x4a7484aa,0x5cb0a9dc,0x76f988da,0x983e5152,0xa831c66d,0xb00327c8,0xbf597fc7,0xc6e00bf3,0xd5a79147,0x06ca6351,0x14292967,0x27b70a85,0x2e1b2138,0x4d2c6dfc,0x53380d13,0x650a7354,0x766a0abb,0x81c2c92e,0x92722c85,0xa2bfe8a1,0xa81a664b,0xc24b8b70,0xc76c51a3,0xd192e819,0xd6990624,0xf40e3585,0x106aa070,0x19a4c116,0x1e376c08,0x2748774c,0x34b0bcb5,0x391c0cb3,0x4ed8aa4a,0x5b9cca4f,0x682e6ff3,0x748f82ee,0x78a5636f,0x84c87814,0x8cc70208,0x90befffa,0xa4506ceb,0xbef9a3f7,0xc67178f2],h=[0x6a09e667,0xbb67ae85,0x3c6ef372,0xa54ff53a,0x510e527f,0x9b05688c,0x1f83d9ab,0x5be0cd19],rot=(v,n)=>(v>>>n)|(v<<(32-n));for(let p=0;p<bytes.length;p+=64){const w=Array(64).fill(0);for(let i=0;i<16;i++)w[i]=((bytes[p+i*4]<<24)|(bytes[p+i*4+1]<<16)|(bytes[p+i*4+2]<<8)|bytes[p+i*4+3])>>>0;for(let i=16;i<64;i++){const a=w[i-15],b=w[i-2],s0=rot(a,7)^rot(a,18)^(a>>>3),s1=rot(b,17)^rot(b,19)^(b>>>10);w[i]=(w[i-16]+s0+w[i-7]+s1)>>>0;}let[a,b,c,d,e,f,g,q]=h;for(let i=0;i<64;i++){const s1=rot(e,6)^rot(e,11)^rot(e,25),ch=(e&f)^(~e&g),t1=(q+s1+ch+k[i]+w[i])>>>0,s0=rot(a,2)^rot(a,13)^rot(a,22),maj=(a&b)^(a&c)^(b&c),t2=(s0+maj)>>>0;q=g;g=f;f=e;e=(d+t1)>>>0;d=c;c=b;b=a;a=(t1+t2)>>>0;}[a,b,c,d,e,f,g,q].forEach((v,i)=>h[i]=(h[i]+v)>>>0);}return h.map(v=>v.toString(16).padStart(8,'0')).join('');}
 function toggleWriter(){if(syncState.started){if(!syncState.ready){toast('공용 자료를 불러온 뒤 수정할 수 있습니다.');return;}if(!syncState.canEdit){toast('관리자 로그인 후 수정할 수 있습니다.');return;}flushGrid();data.settings.editable=!data.settings.editable;ext.workEditing=false;persist();render();return;}if(data.settings.editable){data.settings.editable=false;ext.workEditing=false;persist();render();toast('작성 잠금');return;}if(!data.pinHash){data.settings.editable=true;persist();render();return;}openDrawer('작성 잠금 해제','<div class="field"><label for="unlock-pin">작성 비밀번호</label><input id="unlock-pin" name="pin" type="password" autocomplete="current-password" required></div>','<button type="button" class="button" data-action="close-drawer">취소</button><button type="submit" class="button primary">해제</button>','',false,'v2-unlock');}
-function openNewMonth(){const last=Object.keys(data.seasons).sort().at(-1),[year,month]=last.split('-').map(Number),next=month===12?(year+1)+'-01':year+'-'+String(month+1).padStart(2,'0');openDrawer('새 월 만들기',`<div class="field"><label for="new-month-key">월</label><input id="new-month-key" name="month" type="month" value="${next}" required></div><label class="inline-check"><input name="copyTactics" type="checkbox" checked>현재 월의 택틱 복사</label>`,'<button type="button" class="button" data-action="close-drawer">취소</button><button type="submit" class="button primary">만들기</button>','',false,'v2-new-month');}
+function openNewMonth(){const last=Object.keys(data.seasons).sort().at(-1),[year,month]=last.split('-').map(Number),next=month===12?(year+1)+'-01':year+'-'+String(month+1).padStart(2,'0');openDrawer('새 월 만들기',`<div class="field"><label for="new-month-key">월</label><input id="new-month-key" name="month" type="month" value="${next}" required></div><label class="inline-check"><input name="copyTactics" type="checkbox" checked>현재 월의 4단계 택틱 복사</label><p class="field-help">3단계 추천조합은 빈 목록으로 시작합니다.</p>`,'<button type="button" class="button" data-action="close-drawer">취소</button><button type="submit" class="button primary">만들기</button>','',false,'v2-new-month');}
 function showAwards(id){const rows=[];for(const [month,season]of Object.entries(data.seasons)){if(!season.result.sealed)continue;for(const metric of ['damage','contribution','game'])for(const [i,w]of (season.result.winners?.[metric]||[]).entries())if(w.id===id)rows.push(`<tr><td>${month.replace('-','.')}</td><td>${{damage:'피해량',contribution:'기여도',game:'인게임'}[metric]}</td><td>${i+1}위</td></tr>`);}openDrawer(currentMember(id).name+' 수상 기록',rowTable(['월','항목','순위'],rows),simpleButton('닫기','close-drawer'));}
 const capturedActions=new Set(['archive-detail','delete-tactic','confirm-delete-tactic','hide-tactic','duplicate-tactic','copy-tactic','export-json','set-theme','theme','reset-carry']);
 document.addEventListener('click',async event=>{const button=event.target.closest('[data-action]');if(!button||button.disabled)return;const action=button.dataset.action,id=button.dataset.id,value=button.dataset.value;if(action==='nav'||action==='tab'){flushGrid();ext.importMode=false;ext.workEditing=false;if(drawer.open)closeDrawer();return;}if(!action.startsWith('v2-')&&!capturedActions.has(action))return;event.preventDefault();event.stopImmediatePropagation();
@@ -1629,7 +1629,7 @@ document.addEventListener('submit',event=>{const form=event.target.closest('form
  if(kind==='v2-factor'){checkpoint();data.rules.factor=Number(fd.get('factor'))/100;recalculateSeason();persist();closeDrawer();render();toast('보정률 저장',true);return;}
  if(kind==='v2-links'){checkpoint();const links=[];for(let i=0;fd.has('label-'+i);i++){const label=String(fd.get('label-'+i)).trim(),url=String(fd.get('url-'+i)).trim();if(label&&/^https?:\/\//i.test(url))links.push({label,url});}data.communityLinks=links;persist();render();toast('자료 링크 저장',true);return;}
  if(kind==='v2-pin'){if(data.pinHash&&sha256Text(String(fd.get('current')))!==data.pinHash){toast('현재 비밀번호가 일치하지 않습니다.');return;}if(fd.get('next')!==fd.get('confirm')){toast('새 비밀번호 확인이 일치하지 않습니다.');return;}data.pinHash=sha256Text(String(fd.get('next')));persist();render();toast('작성 비밀번호 저장');return;}
- if(kind==='v2-new-month'){const key=String(fd.get('month'));if(data.seasons[key]){toast('이미 있는 월입니다.');return;}checkpoint();snapshotSeason();const next=structuredClone(data.seasons[ui.month]);next.logs=[];next.dayClosures=[];next.result={rank:null,sealed:false,winners:null};next.tactics=fd.has('copyTactics')?next.tactics.filter(t=>!t.deletedAt).map(t=>({...t,id:uid()})):[];next.rules.startDate=key+'-22';applyFutureLineupToSeason(next,key);data.seasons[key]=next;for(const k of SEASON_KEYS)data[k]=structuredClone(next[k]);ui.month=key;data.activeMonth=key;ui.day=1;ui.selectedTactic=data.tactics[0]?.id;recalculateSeason();persist();closeDrawer();nav('overview','bosses');toast('새 월 생성',true);return;}
+ if(kind==='v2-new-month'){const key=String(fd.get('month'));if(data.seasons[key]){toast('이미 있는 월입니다.');return;}checkpoint();snapshotSeason();const next=structuredClone(data.seasons[ui.month]);next.logs=[];next.dayClosures=[];next.result={rank:null,sealed:false,winners:null};next.recommendations=[];next.tactics=fd.has('copyTactics')?next.tactics.filter(t=>!t.deletedAt&&t.stage!==3).map(t=>({...t,id:uid()})):[];next.rules.startDate=key+'-22';applyFutureLineupToSeason(next,key);data.seasons[key]=next;for(const k of SEASON_KEYS)data[k]=structuredClone(next[k]);ui.month=key;data.activeMonth=key;ui.day=1;ui.selectedTactic=data.tactics[0]?.id;recalculateSeason();persist();closeDrawer();nav('overview','bosses');toast('새 월 생성',true);return;}
 },true);
 let v2SearchTimer;
 function refreshSearch(id,apply){const input=document.getElementById(id),pos=input?.selectionStart;apply();clearTimeout(v2SearchTimer);v2SearchTimer=setTimeout(()=>{render();const field=document.getElementById(id);field?.focus();if(typeof pos==='number')field?.setSelectionRange(pos,pos);},150);}
@@ -2862,6 +2862,49 @@ function completeClanArchive(){
 document.addEventListener('click',event=>{const link=event.target.closest('[data-action="clan-archive-year"]');if(!link)return;event.preventDefault();event.stopImmediatePropagation();document.getElementById('clan-archive-'+link.dataset.value)?.scrollIntoView({behavior:'smooth',block:'start'});},true);
 
 
+// Stage 3 parties belong to one month and have their own recoverable deletion.
+function stage3RecommendationRecords(season=data){
+ return [...(season.recommendations||[]),...(season.tactics||[])].filter(t=>t.stage===3);
+}
+function stage3RecommendationActions(){
+ if(!adminMode())return '';
+ const records=stage3RecommendationRecords(),active=records.filter(t=>!t.deletedAt).length,deleted=records.filter(t=>t.deletedAt).length;
+ return (active?simpleButton('초기화','stage3-reset','','quiet danger'):'')+(deleted?simpleButton('삭제함 '+deleted,'stage3-trash','','quiet'):'');
+}
+function stage3RecommendationTrash(){
+ const records=stage3RecommendationRecords().filter(t=>t.deletedAt).sort((a,b)=>a.boss-b.boss);
+ openDrawer(ui.month.replace('-','.')+' · 3단계 조합 삭제함',rowTable(['보스','편성','복원'],records.map(t=>`<tr><td>${t.boss}넴</td><td>${X(t.party.join(' · '))}</td><td>${simpleButton('복원','stage3-restore',t.id)}</td></tr>`)),simpleButton('닫기','close-drawer'),' ',true);
+}
+for(const action of ['stage3-reset','stage3-reset-confirm','stage3-delete','stage3-delete-confirm','stage3-trash','stage3-restore'])writerActions.add(action);
+document.addEventListener('click',event=>{
+ const button=event.target.closest('[data-action]'),action=button?.dataset.action;
+ if(!action?.startsWith('stage3-')||!writerActions.has(action))return;
+ event.preventDefault();event.stopImmediatePropagation();
+ if(!adminMode()||!ensureEdit())return;
+ if(data.result?.sealed){toast('확정된 월의 조합은 변경할 수 없습니다.');return;}
+ const id=button.dataset.id,records=stage3RecommendationRecords();
+ if(action==='stage3-trash'){stage3RecommendationTrash();return;}
+ if(action==='stage3-reset'){
+  const count=records.filter(t=>!t.deletedAt).length;if(!count)return;
+  openDrawer(ui.month.replace('-','.')+' · 3단계 조합 초기화',`<p>이 월의 3단계 추천조합 ${count}개를 삭제함으로 이동합니다. 삭제함에서 복원할 수 있습니다.</p>`,simpleButton('취소','close-drawer')+simpleButton('3단계 조합 초기화','stage3-reset-confirm',ui.month,'danger'));return;
+ }
+ const target=records.find(t=>t.id===id);
+ if(action==='stage3-delete'){
+  if(!target||target.deletedAt)return;
+  openDrawer('3단계 조합 삭제',`<p>${target.boss}넴 · ${X(target.party.join(' · '))}</p><p>삭제함에서 복원할 수 있습니다.</p>`,simpleButton('취소','close-drawer')+simpleButton('삭제','stage3-delete-confirm',id,'danger'),ui.month);return;
+ }
+ if(action==='stage3-reset-confirm'){
+  if(id!==ui.month){toast('선택한 월이 바뀌었습니다. 목록에서 다시 초기화해 주세요.');return;}
+  checkpoint();const now=Date.now();for(const t of records)if(!t.deletedAt)t.deletedAt=now;
+ }else if(action==='stage3-delete-confirm'){
+  if(!target||target.deletedAt)return;checkpoint();for(const t of records)if(t.id===id)t.deletedAt=Date.now();
+ }else if(action==='stage3-restore'){
+  if(!target?.deletedAt)return;checkpoint();for(const t of records)if(t.id===id)t.deletedAt=null;
+ }else return;
+ ext.openComboId=null;persist();closeDrawer();render();toast(action==='stage3-restore'?'3단계 조합 복원':'3단계 조합을 삭제함으로 이동',true);
+},true);
+
+
 // Lazy administrator workspace; registration follows the normal shared-state path.
 let externalReviewController=null,externalReviewModule=null,externalReviewLoading=null;
 subpageNames.tactics.review='외부 택틱';
@@ -2881,7 +2924,7 @@ async function mountExternalReview(){
  const root=document.getElementById('external-tactic-review');
  if(!root||!adminMode()||ui.section!=='tactics'||ui.tabs.tactics!=='review')return;
  try{
-  externalReviewLoading??=Promise.all([import('./aikurumi-review-ui.mjs?v=20261030-review01'),import('./aikurumi-review-model.mjs')]);
+  externalReviewLoading??=Promise.all([import('./aikurumi-review-ui.mjs?v=20261030-review03'),import('./aikurumi-review-model.mjs?v=20261030-review03')]);
   const [uiModule,model]=await externalReviewLoading;externalReviewModule=model;
   if(!adminMode()||document.getElementById('external-tactic-review')!==root)return;
   externalReviewController??=uiModule.createExternalReview({getContext:externalReviewContext,
@@ -2921,7 +2964,9 @@ async function applyExternalReviewedTactics(entries){
  }
  for(const {item,tactic,existing}of prepared){
   const list=item.stage===3?(target.recommendations??=[]):target.tactics;
-  if(existing){const index=list.findIndex(t=>t.id===existing.id);list[index]={...existing,...tactic};}
+  if(existing){const index=list.findIndex(t=>t.id===existing.id);list[index]={...existing,...tactic};
+   if(tactic.externalSource.reviewScope==='lineup'&&existing.rows?.length){list[index].rows=existing.rows;list[index].text=existing.text;list[index].externalSource={...tactic.externalSource,reviewScope:existing.externalSource?.reviewScope||'timeline',reviewedAt:existing.externalSource?.reviewedAt,lineupReviewedAt:tactic.externalSource.reviewedAt};}
+  }
   else list.push(tactic);
  }
  persist();
@@ -2936,7 +2981,7 @@ function openAppliedExternalTactic({month,stage,id}){
  if(!adminMode())return;
  if(month!==ui.month&&!activateSeason(month))return;
  ui.selectedTactic=id;ui.boss=0;ext.stage=stage;ext.comboDetails??={};
- if(stage===3){ext.comboDetails[id]=true;ui.tabs.tactics='combos';nav('tactics','combos');}
+ if(stage===3){ext.openComboId=id;ext.comboDetails[id]=true;ui.tabs.tactics='combos';nav('tactics','combos');}
  else{const tactic=data.tactics.find(t=>t.id===id);ext.workGroup=tactic?.category||'main';nav('tactics','workspace');}
 }
 

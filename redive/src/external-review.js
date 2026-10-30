@@ -17,7 +17,7 @@ async function mountExternalReview(){
  const root=document.getElementById('external-tactic-review');
  if(!root||!adminMode()||ui.section!=='tactics'||ui.tabs.tactics!=='review')return;
  try{
-  externalReviewLoading??=Promise.all([import('./aikurumi-review-ui.mjs?v=20261030-review01'),import('./aikurumi-review-model.mjs')]);
+  externalReviewLoading??=Promise.all([import('./aikurumi-review-ui.mjs?v=20261030-review03'),import('./aikurumi-review-model.mjs?v=20261030-review03')]);
   const [uiModule,model]=await externalReviewLoading;externalReviewModule=model;
   if(!adminMode()||document.getElementById('external-tactic-review')!==root)return;
   externalReviewController??=uiModule.createExternalReview({getContext:externalReviewContext,
@@ -57,7 +57,9 @@ async function applyExternalReviewedTactics(entries){
  }
  for(const {item,tactic,existing}of prepared){
   const list=item.stage===3?(target.recommendations??=[]):target.tactics;
-  if(existing){const index=list.findIndex(t=>t.id===existing.id);list[index]={...existing,...tactic};}
+  if(existing){const index=list.findIndex(t=>t.id===existing.id);list[index]={...existing,...tactic};
+   if(tactic.externalSource.reviewScope==='lineup'&&existing.rows?.length){list[index].rows=existing.rows;list[index].text=existing.text;list[index].externalSource={...tactic.externalSource,reviewScope:existing.externalSource?.reviewScope||'timeline',reviewedAt:existing.externalSource?.reviewedAt,lineupReviewedAt:tactic.externalSource.reviewedAt};}
+  }
   else list.push(tactic);
  }
  persist();
@@ -72,6 +74,6 @@ function openAppliedExternalTactic({month,stage,id}){
  if(!adminMode())return;
  if(month!==ui.month&&!activateSeason(month))return;
  ui.selectedTactic=id;ui.boss=0;ext.stage=stage;ext.comboDetails??={};
- if(stage===3){ext.comboDetails[id]=true;ui.tabs.tactics='combos';nav('tactics','combos');}
+ if(stage===3){ext.openComboId=id;ext.comboDetails[id]=true;ui.tabs.tactics='combos';nav('tactics','combos');}
  else{const tactic=data.tactics.find(t=>t.id===id);ext.workGroup=tactic?.category||'main';nav('tactics','workspace');}
 }
