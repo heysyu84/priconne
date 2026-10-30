@@ -51,8 +51,9 @@ function refreshSharedStatus(){
   status.innerHTML=failing?`<span>${X(syncState.error||'최신 자료에 연결하지 못했습니다.')}</span><button data-action="shared-retry">다시 연결</button>${syncState.pending?'<button data-action="shared-review">내 변경 확인</button>':''}`:draft?'<span>이 기기에 저장하지 못한 변경이 있습니다.</span><button data-action="shared-review">확인</button>':'';
 }
 function applySharedDocument(document,{initial=false}={}){
-  const followLatest=initial||data.settings.defaultDayMode!=='manual'&&ui.day===currentBattleDay();
-  const month=document.seasons[ui.month]?ui.month:document.activeMonth;
+  const latest=document.seasons[document.activeMonth]?document.activeMonth:Object.keys(document.seasons).sort().at(-1);
+  const month=ui.section==='records'&&document.seasons[ui.month]?ui.month:latest;
+  const followLatest=initial||month!==ui.month||data.settings.defaultDayMode!=='manual'&&ui.day===currentBattleDay();
   for(const key of ['members','characters','history','awards','communityLinks','seasons','importedSource','siteCopy','futureOverrides','referenceVersion'])data[key]=document[key]===undefined?undefined:structuredClone(document[key]);
   ui.month=month;data.activeMonth=month;data.pinHash=null;
   for(const key of SEASON_KEYS)data[key]=structuredClone(data.seasons[month][key]);

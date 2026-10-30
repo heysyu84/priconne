@@ -92,7 +92,7 @@ async function downloadCurrentProfile(target,preview=false){
   return module[preview?'previewProfilePdf':'downloadProfilePdf']({target,downloadLabel:copyFor('PDF 저장'),copy:copyFor,month:ui.month,day:data.rules.days,days:data.rules.days,all,p:m?{...m,tenureMonths:memberTenure(m)}:null,bosses:data.bossSettings,events,contribution:e=>e.contribution||0,summary:{name:all?'클랜 전체':m.name,damage:events.reduce((s,e)=>s+e.actual,0),contribution:events.reduce((s,e)=>s+(e.contribution||0),0),game:events.reduce((s,e)=>s+e.game,0)}});
 }
 
-function expectedDamageValue(value){return Number.isFinite(Number(value))?Number(value).toLocaleString('ko-KR',{minimumFractionDigits:1,maximumFractionDigits:1}):'—';}
+function expectedDamageValue(value){return Number.isFinite(Number(value))?(Math.floor(Number(value)*10+1e-9)/10).toLocaleString('ko-KR',{minimumFractionDigits:1,maximumFractionDigits:1}):'—';}
 tacticDamageLabel=t=>t.recommendationOnly&&t.sourceExpectedDamage===''?'—':expectedDamageValue(t.damage||0);
 function thirdStageVisible(){return data.rules.stage3Mode==='show'||data.rules.stage3Mode!=='hide'&&!data.bosses.some(b=>b.stage===4&&!b.locked);}
 stageButtons=()=>`<div class="filter-group" role="group" aria-label="조합 단계">${(thirdStageVisible()?[3,4]:[4]).map(stage=>`<button data-action="v2-combo-stage" data-value="${stage}" class="${ext.stage===stage?'active':''}">${stage}단계</button>`).join('')}</div>${data.settings.editable?simpleButton('단계 설정','ops-stage-settings','','quiet'):''}`;

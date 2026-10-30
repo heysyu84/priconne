@@ -9,6 +9,12 @@ const snapshots=[load('aikurumi-snapshot-stage3.json'),load('aikurumi-snapshot.j
 const items=snapshots.flatMap(s=>model.buildReviewItems(s,youtube));
 function reviewed(item){const d=model.reviewDraft(item);d.confirmed=true;d.rows=[{text:'1:30 전부 SET, AUTO 온',checked:[true,true,true,true,true,true]}];if(item.damage.ambiguous)d.damage=item.damage.options[0];return d;}
 function fixture(){const f=runtimeFixture(),context=f.evaluate('this');context.model=model;f.evaluate('externalReviewModule=this.model; data.settings.editable=true;');return f;}
+test('video damage labels and initial imports floor to one decimal while retaining precise source matching values',()=>{
+ for(const [value,label]of [[3.24,'3.2억'],[3.29,'3.2억'],[3.3,'3.3억'],[4.5172,'4.5억'],[4,'4.0억']])assert.equal(model.damageLabel(value),label);
+ const item=items.find(i=>i.stage===4&&!i.damage.ambiguous&&i.damage.value!=null),copy={...item,damage:{...item.damage,value:3.29}};
+ assert.equal(model.reviewDraft(copy).damage,3.2);assert.equal(copy.damage.value,3.29);
+ const f=runtimeFixture(),t=f.get().tactics[0];t.damage=3.29;assert.equal(f.evaluate('tacticDamageLabel(data.tactics[0])'),'3.2');assert.equal(t.damage,3.29);
+});
 
 test('expected damage belongs to the selected video, with variant choices kept separate',()=>{
  const task={damage:45000,autoDamage:31100};

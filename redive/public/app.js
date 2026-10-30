@@ -821,8 +821,9 @@ function refreshSharedStatus(){
   status.innerHTML=failing?`<span>${X(syncState.error||'최신 자료에 연결하지 못했습니다.')}</span><button data-action="shared-retry">다시 연결</button>${syncState.pending?'<button data-action="shared-review">내 변경 확인</button>':''}`:draft?'<span>이 기기에 저장하지 못한 변경이 있습니다.</span><button data-action="shared-review">확인</button>':'';
 }
 function applySharedDocument(document,{initial=false}={}){
-  const followLatest=initial||data.settings.defaultDayMode!=='manual'&&ui.day===currentBattleDay();
-  const month=document.seasons[ui.month]?ui.month:document.activeMonth;
+  const latest=document.seasons[document.activeMonth]?document.activeMonth:Object.keys(document.seasons).sort().at(-1);
+  const month=ui.section==='records'&&document.seasons[ui.month]?ui.month:latest;
+  const followLatest=initial||month!==ui.month||data.settings.defaultDayMode!=='manual'&&ui.day===currentBattleDay();
   for(const key of ['members','characters','history','awards','communityLinks','seasons','importedSource','siteCopy','futureOverrides','referenceVersion'])data[key]=document[key]===undefined?undefined:structuredClone(document[key]);
   ui.month=month;data.activeMonth=month;data.pinHash=null;
   for(const key of SEASON_KEYS)data[key]=structuredClone(data.seasons[month][key]);
@@ -1044,7 +1045,7 @@ async function downloadCurrentProfile(target,preview=false){
   return module[preview?'previewProfilePdf':'downloadProfilePdf']({target,downloadLabel:copyFor('PDF 저장'),copy:copyFor,month:ui.month,day:data.rules.days,days:data.rules.days,all,p:m?{...m,tenureMonths:memberTenure(m)}:null,bosses:data.bossSettings,events,contribution:e=>e.contribution||0,summary:{name:all?'클랜 전체':m.name,damage:events.reduce((s,e)=>s+e.actual,0),contribution:events.reduce((s,e)=>s+(e.contribution||0),0),game:events.reduce((s,e)=>s+e.game,0)}});
 }
 
-function expectedDamageValue(value){return Number.isFinite(Number(value))?Number(value).toLocaleString('ko-KR',{minimumFractionDigits:1,maximumFractionDigits:1}):'—';}
+function expectedDamageValue(value){return Number.isFinite(Number(value))?(Math.floor(Number(value)*10+1e-9)/10).toLocaleString('ko-KR',{minimumFractionDigits:1,maximumFractionDigits:1}):'—';}
 tacticDamageLabel=t=>t.recommendationOnly&&t.sourceExpectedDamage===''?'—':expectedDamageValue(t.damage||0);
 function thirdStageVisible(){return data.rules.stage3Mode==='show'||data.rules.stage3Mode!=='hide'&&!data.bosses.some(b=>b.stage===4&&!b.locked);}
 stageButtons=()=>`<div class="filter-group" role="group" aria-label="조합 단계">${(thirdStageVisible()?[3,4]:[4]).map(stage=>`<button data-action="v2-combo-stage" data-value="${stage}" class="${ext.stage===stage?'active':''}">${stage}단계</button>`).join('')}</div>${data.settings.editable?simpleButton('단계 설정','ops-stage-settings','','quiet'):''}`;
@@ -2555,7 +2556,7 @@ if(pagesApiOrigin){
  initializeCompletePrototype=()=>{data.settings.editable=false;localInitializer();};
  renderPage=()=>{
   const cached=readBrowser(SYNC_CACHE)?.document?.importedSource?.key==='live-shared-clan-api';
-  if(!syncState.started||!syncState.ready&&!cached)return `<section class="shared-loading"><h1>${syncState.status==='offline'?'공용 자료에 연결하지 못했습니다.':'기록 불러오는 중'}</h1>${syncState.status==='offline'?'<button class="button" data-action="legacy-retry">다시 연결</button>':''}</section>`;
+  if(!syncState.started||!syncState.ready&&!(cached&&syncState.status==='offline'))return `<section class="shared-loading"><h1>${syncState.status==='offline'?'공용 자료에 연결하지 못했습니다.':'기록 불러오는 중'}</h1>${syncState.status==='offline'?'<button class="button" data-action="legacy-retry">다시 연결</button>':''}</section>`;
   return loadedPage();
  };
  const siteInitializeShared=initializeSharedSync;
@@ -2925,7 +2926,7 @@ async function mountExternalReview(){
  const root=document.getElementById('external-tactic-review');
  if(!root||!adminMode()||ui.section!=='tactics'||ui.tabs.tactics!=='review')return;
  try{
-  externalReviewLoading??=Promise.all([import('./aikurumi-review-ui.mjs?v=20261030-review06'),import('./aikurumi-review-model.mjs?v=20261030-review06')]);
+  externalReviewLoading??=Promise.all([import('./aikurumi-review-ui.mjs?v=20261030-startup01'),import('./aikurumi-review-model.mjs?v=20261030-startup01')]);
   const [uiModule,model]=await externalReviewLoading;externalReviewModule=model;
   if(!adminMode()||document.getElementById('external-tactic-review')!==root)return;
   externalReviewController??=uiModule.createExternalReview({getContext:externalReviewContext,

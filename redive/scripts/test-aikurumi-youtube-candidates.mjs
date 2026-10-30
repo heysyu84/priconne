@@ -7,6 +7,18 @@ import {normalizeYouTubeTimeline} from './aikurumi-youtube-timeline.mjs';
 const load=n=>JSON.parse(readFileSync(new URL('../public/'+n,import.meta.url),'utf8'));
 const snapshots=[load('aikurumi-snapshot-stage3.json'),load('aikurumi-snapshot.json')];
 const report=videos=>({videos:videos.map(([id,description])=>({videoId:id,description}))});
+test('starred timed OX instructions stay in one timeline, including the 420-million source link',()=>{
+ const text='1:30 ○○○○○ オートオン\n1:11 キャル ○○✕○○\n1:06 キャル ○○✕○○ オートオフ\n0:59 ヴァイオレット ○○○○○\n☆0:43 キャル(エイドcl)✕✕○○✕\n0:35 ランファ ○✕✕○✕\n☆0:33-32 キャル オートオン\n0:29 エキドナ ○○✕○✕ オートオフ\n☆0:17 キャル ○○○○✕ オートオン\n0:01 キャル';
+ const sections=splitVideoDescription(text,[]);assert.equal(sections.length,1);
+ const output=createYouTubeTacticCandidates(snapshots,report([['3XR7r4dwSJI',text]]));
+ const ref=output.references.find(r=>r.videoId==='3XR7r4dwSJI');assert.ok(ref);assert.ok(['single-video','unique-party-section'].includes(ref.matching));
+ assert.equal(ref.youtubeHasTactic,true);assert.ok(ref.rows.length>=10);assert.equal(ref.omittedRows,0);
+ assert.ok(ref.rows.some(r=>r.time==='0:43'));assert.ok(ref.rows.some(r=>r.time==='0:17'));
+ assert.ok(ref.rows.some(r=>r.time==='0:43'&&r.checked.filter(Boolean).length===2));
+ assert.ok(ref.issues.includes('time-range'));
+ const variants=splitVideoDescription('【編成1 4.2億】\n1:30 ○○○○○ AUTO ON\n0:01 キャル\n【編成2 3.9億】\n1:30 ○○○○○ AUTO ON\n0:01 キャル',[]);
+ assert.equal(variants.length,2);
+});
 test('an unrecognized costume shorthand cannot silently become a different party costume',()=>{
  const snapshot=snapshots[1],task=snapshot.bosses.flatMap(b=>b.tasks).find(t=>t.charas.some(c=>snapshot.characterData.names[c.prefabId]?.includes('윈유니')));assert.ok(task);
  const text=normalizeYouTubeTimeline('1:12 水ユニ SET',{task,snapshot});assert.match(text,/水ユニ/);assert.doesNotMatch(text,/水윈유니/);
