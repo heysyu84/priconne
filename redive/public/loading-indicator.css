@@ -1,0 +1,6 @@
+/* Small in-game inspired loading mark; intentionally does not block input. */
+#nyang-now-loading[hidden]{display:none!important}
+#nyang-now-loading{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:80;pointer-events:none;padding:4px 7px;background:rgba(9,14,27,.78);border:1px solid rgba(255,255,255,.09);border-radius:9px;box-shadow:0 3px 10px rgba(0,0,0,.17)}
+#nyang-now-loading img{display:block;width:155px;height:auto;max-width:calc(100vw - 38px)}
+@media(max-width:760px){#nyang-now-loading{right:11px;bottom:calc(75px + env(safe-area-inset-bottom,0px));padding:3px 6px}#nyang-now-loading img{width:125px}}
+@media print{#nyang-now-loading{display:none!important}}
