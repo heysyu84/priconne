@@ -3,13 +3,16 @@
   "source": "YouTube Data API v3",
   "readOnly": true,
   "registrationAllowed": false,
-  "fetchedAt": "2026-10-29T23:25:49.932Z",
-  "expiresAt": "2026-11-26T23:25:49.932Z",
+  "fetchedAt": "2026-10-30T00:06:29.868Z",
+  "expiresAt": "2026-11-27T00:06:29.868Z",
   "videoCount": 69,
+  "requestedVideoCount": 72,
+  "missingVideoCount": 3,
   "totalReferences": 136,
   "statuses": {
     "no-youtube-tl": 18,
-    "needs-translation-review": 20,
+    "needs-translation-review": 19,
+    "candidate": 1,
     "needs-source-check": 63,
     "partial": 32,
     "video-unavailable": 3
@@ -97,6 +100,10 @@
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=QctI5DVFQDI",
       "youtubeHasTactic": true,
+      "conditions": {
+        "tp": "",
+        "fields": []
+      },
       "omittedRows": 2
     },
     {
@@ -202,15 +209,34 @@
       "linkIndex": 0,
       "linkOrdinal": 0,
       "videoId": "5fdadWNp5TM",
-      "status": "needs-translation-review",
+      "status": "candidate",
       "matching": "single-video",
       "rowCount": 1,
       "issues": [],
       "warnings": [],
-      "rows": [],
+      "rows": [
+        {
+          "time": null,
+          "text": "AUTO 오프, 전부 SET",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            false
+          ]
+        }
+      ],
       "sourceUrl": "https://www.youtube.com/watch?v=5fdadWNp5TM",
       "youtubeHasTactic": true,
-      "omittedRows": 1
+      "conditions": {
+        "tp": "",
+        "fields": []
+      },
+      "omittedRows": 0,
+      "warningCount": 0,
+      "unknownActorCount": 0
     },
     {
       "stage": 3,
@@ -230,6 +256,10 @@
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=QctI5DVFQDI",
       "youtubeHasTactic": true,
+      "conditions": {
+        "tp": "",
+        "fields": []
+      },
       "omittedRows": 3
     },
     {
@@ -395,6 +425,10 @@
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=JbytoTJVV2k",
       "youtubeHasTactic": true,
+      "conditions": {
+        "tp": "",
+        "fields": []
+      },
       "omittedRows": 4
     },
     {
@@ -431,6 +465,15 @@
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=9ZvfVTf-uMY",
       "youtubeHasTactic": true,
+      "conditions": {
+        "tp": "",
+        "fields": [
+          {
+            "label": "캐릭터 레벨",
+            "value": "Lv358"
+          }
+        ]
+      },
       "omittedRows": 9
     },
     {
@@ -488,6 +531,10 @@
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=CYRolchpI8g",
       "youtubeHasTactic": true,
+      "conditions": {
+        "tp": "",
+        "fields": []
+      },
       "omittedRows": 20,
       "warningCount": 10,
       "unknownActorCount": 0
@@ -700,6 +747,10 @@
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=dgRUnwQUuao",
       "youtubeHasTactic": true,
+      "conditions": {
+        "tp": "",
+        "fields": []
+      },
       "omittedRows": 61,
       "warningCount": 56,
       "unknownActorCount": 2
@@ -748,6 +799,10 @@
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=3XR7r4dwSJI",
       "youtubeHasTactic": true,
+      "conditions": {
+        "tp": "",
+        "fields": []
+      },
       "omittedRows": 5,
       "warningCount": 2,
       "unknownActorCount": 0
@@ -827,6 +882,10 @@
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=bHsEi2jOHIg",
       "youtubeHasTactic": true,
+      "conditions": {
+        "tp": "",
+        "fields": []
+      },
       "omittedRows": 20,
       "warningCount": 11,
       "unknownActorCount": 0
@@ -849,6 +908,10 @@
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=9AQSGX1D4Y8",
       "youtubeHasTactic": true,
+      "conditions": {
+        "tp": "",
+        "fields": []
+      },
       "omittedRows": 16
     },
     {
@@ -894,6 +957,10 @@
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=6NqcklSjatQ",
       "youtubeHasTactic": true,
+      "conditions": {
+        "tp": "",
+        "fields": []
+      },
       "omittedRows": 11,
       "warningCount": 10,
       "unknownActorCount": 0
@@ -1065,6 +1132,10 @@
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=EcAceF3P8rA",
       "youtubeHasTactic": true,
+      "conditions": {
+        "tp": "",
+        "fields": []
+      },
       "omittedRows": 4,
       "warningCount": 4,
       "unknownActorCount": 0
@@ -1120,6 +1191,10 @@
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=JcqLd2C8mTA",
       "youtubeHasTactic": true,
+      "conditions": {
+        "tp": "5.4",
+        "fields": []
+      },
       "omittedRows": 16
     },
     {
@@ -1282,6 +1357,10 @@
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=WtjU6gCeZVY",
       "youtubeHasTactic": true,
+      "conditions": {
+        "tp": "",
+        "fields": []
+      },
       "omittedRows": 68,
       "warningCount": 46,
       "unknownActorCount": 4
@@ -1430,6 +1509,10 @@
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=NiPu8EUiHH8",
       "youtubeHasTactic": true,
+      "conditions": {
+        "tp": "",
+        "fields": []
+      },
       "omittedRows": 58,
       "warningCount": 43,
       "unknownActorCount": 2
@@ -1537,6 +1620,10 @@
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=xSXBe1r3Jes",
       "youtubeHasTactic": true,
+      "conditions": {
+        "tp": "",
+        "fields": []
+      },
       "omittedRows": 16,
       "warningCount": 11,
       "unknownActorCount": 0
@@ -1596,6 +1683,10 @@
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=j0neZj-sYg0",
       "youtubeHasTactic": true,
+      "conditions": {
+        "tp": "",
+        "fields": []
+      },
       "omittedRows": 12,
       "warningCount": 11,
       "unknownActorCount": 0
@@ -1617,6 +1708,15 @@
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=PCzxIzeK3vg",
       "youtubeHasTactic": true,
+      "conditions": {
+        "tp": "",
+        "fields": [
+          {
+            "label": "마스터 스킬",
+            "value": "73"
+          }
+        ]
+      },
       "omittedRows": 4
     },
     {
@@ -1674,6 +1774,10 @@
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=qF5q2PLOMX8",
       "youtubeHasTactic": true,
+      "conditions": {
+        "tp": "",
+        "fields": []
+      },
       "omittedRows": 12,
       "warningCount": 6,
       "unknownActorCount": 0
@@ -1697,6 +1801,10 @@
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=ZwVh18AGwDU",
       "youtubeHasTactic": true,
+      "conditions": {
+        "tp": "",
+        "fields": []
+      },
       "omittedRows": 27
     },
     {
@@ -1754,6 +1862,10 @@
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=RSQBqZp4QvM",
       "youtubeHasTactic": true,
+      "conditions": {
+        "tp": "",
+        "fields": []
+      },
       "omittedRows": 17,
       "warningCount": 11,
       "unknownActorCount": 0
@@ -1850,6 +1962,15 @@
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=_j29RP6f8g0",
       "youtubeHasTactic": true,
+      "conditions": {
+        "tp": "4.5",
+        "fields": [
+          {
+            "label": "캐릭터 레벨",
+            "value": "Lv358"
+          }
+        ]
+      },
       "omittedRows": 13,
       "warningCount": 4,
       "unknownActorCount": 4
@@ -1994,6 +2115,10 @@
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=uVDL7cFffWM",
       "youtubeHasTactic": true,
+      "conditions": {
+        "tp": "",
+        "fields": []
+      },
       "omittedRows": 43,
       "warningCount": 14,
       "unknownActorCount": 2
@@ -2017,6 +2142,10 @@
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=-HGT0MfwG6w",
       "youtubeHasTactic": true,
+      "conditions": {
+        "tp": "",
+        "fields": []
+      },
       "omittedRows": 65
     },
     {
@@ -2063,6 +2192,10 @@
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=QkKv4NQgakQ",
       "youtubeHasTactic": true,
+      "conditions": {
+        "tp": "",
+        "fields": []
+      },
       "omittedRows": 6,
       "warningCount": 1,
       "unknownActorCount": 3
@@ -2151,6 +2284,10 @@
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=oag8z2B9oUU",
       "youtubeHasTactic": true,
+      "conditions": {
+        "tp": "",
+        "fields": []
+      },
       "omittedRows": 45,
       "warningCount": 19,
       "unknownActorCount": 1
@@ -2269,6 +2406,19 @@
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=kfFsDXBFetY",
       "youtubeHasTactic": true,
+      "conditions": {
+        "tp": "",
+        "fields": [
+          {
+            "label": "속성 레벨",
+            "value": "966"
+          },
+          {
+            "label": "마스터 스킬",
+            "value": "102"
+          }
+        ]
+      },
       "omittedRows": 9
     },
     {
@@ -2321,6 +2471,10 @@
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=G49kCTl26To",
       "youtubeHasTactic": true,
+      "conditions": {
+        "tp": "",
+        "fields": []
+      },
       "omittedRows": 14
     },
     {
@@ -2341,6 +2495,10 @@
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=bBX9S97R1Yg",
       "youtubeHasTactic": true,
+      "conditions": {
+        "tp": "",
+        "fields": []
+      },
       "omittedRows": 15
     },
     {
@@ -2398,6 +2556,10 @@
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=FXYfPgUC_Z4",
       "youtubeHasTactic": true,
+      "conditions": {
+        "tp": "",
+        "fields": []
+      },
       "omittedRows": 20,
       "warningCount": 11,
       "unknownActorCount": 0
@@ -2419,6 +2581,10 @@
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=6Z6-twIpFew",
       "youtubeHasTactic": true,
+      "conditions": {
+        "tp": "",
+        "fields": []
+      },
       "omittedRows": 5
     },
     {
@@ -2549,6 +2715,10 @@
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=8818eU0TDnQ",
       "youtubeHasTactic": true,
+      "conditions": {
+        "tp": "",
+        "fields": []
+      },
       "omittedRows": 23,
       "warningCount": 13,
       "unknownActorCount": 1
@@ -2781,6 +2951,10 @@
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=-Z7rN4QWfS0",
       "youtubeHasTactic": true,
+      "conditions": {
+        "tp": "",
+        "fields": []
+      },
       "omittedRows": 47,
       "warningCount": 11,
       "unknownActorCount": 1
@@ -2877,6 +3051,10 @@
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=D2BLH6YYjKc",
       "youtubeHasTactic": true,
+      "conditions": {
+        "tp": "",
+        "fields": []
+      },
       "omittedRows": 16,
       "warningCount": 9,
       "unknownActorCount": 1
@@ -2988,6 +3166,10 @@
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=cMxhNxI-4-Q",
       "youtubeHasTactic": true,
+      "conditions": {
+        "tp": "",
+        "fields": []
+      },
       "omittedRows": 23,
       "warningCount": 13,
       "unknownActorCount": 0
@@ -3099,6 +3281,10 @@
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=-wBhxkTYgU8",
       "youtubeHasTactic": true,
+      "conditions": {
+        "tp": "",
+        "fields": []
+      },
       "omittedRows": 22,
       "warningCount": 11,
       "unknownActorCount": 0
@@ -3121,6 +3307,10 @@
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=Hyc9-AIDuts",
       "youtubeHasTactic": true,
+      "conditions": {
+        "tp": "",
+        "fields": []
+      },
       "omittedRows": 19
     },
     {
@@ -3190,6 +3380,10 @@
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=OvTt1H17-Gk",
       "youtubeHasTactic": true,
+      "conditions": {
+        "tp": "",
+        "fields": []
+      },
       "omittedRows": 19,
       "warningCount": 13,
       "unknownActorCount": 0
@@ -3213,6 +3407,10 @@
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=0-C6osDOz44",
       "youtubeHasTactic": true,
+      "conditions": {
+        "tp": "",
+        "fields": []
+      },
       "omittedRows": 21
     },
     {
@@ -3258,6 +3456,10 @@
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=uUBQtVxVaBQ",
       "youtubeHasTactic": true,
+      "conditions": {
+        "tp": "",
+        "fields": []
+      },
       "omittedRows": 22,
       "warningCount": 11,
       "unknownActorCount": 0
@@ -3305,6 +3507,10 @@
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=KTE-ezWKDfc",
       "youtubeHasTactic": true,
+      "conditions": {
+        "tp": "",
+        "fields": []
+      },
       "omittedRows": 19,
       "warningCount": 12,
       "unknownActorCount": 0
@@ -3328,6 +3534,10 @@
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=eNVvfgsbpcE",
       "youtubeHasTactic": true,
+      "conditions": {
+        "tp": "",
+        "fields": []
+      },
       "omittedRows": 17
     },
     {
@@ -3390,6 +3600,15 @@
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=1Jk9X6qrM2Q",
       "youtubeHasTactic": true,
+      "conditions": {
+        "tp": "",
+        "fields": [
+          {
+            "label": "마스터 스킬",
+            "value": "103"
+          }
+        ]
+      },
       "omittedRows": 87,
       "warningCount": 14,
       "unknownActorCount": 12
@@ -3438,6 +3657,15 @@
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=1Lrg-sYOtEs",
       "youtubeHasTactic": true,
+      "conditions": {
+        "tp": "",
+        "fields": [
+          {
+            "label": "마스터 스킬",
+            "value": "103"
+          }
+        ]
+      },
       "omittedRows": 89,
       "warningCount": 20,
       "unknownActorCount": 12
@@ -3526,6 +3754,10 @@
       ],
       "sourceUrl": "https://youtu.be/LSCOSiF1fv8https://youtu.be/LSCOSiF1fv8https://docs.google.com/spreadsheets/d/e/2PACX-1vR1Iyk-Y6LYURS-JTD1j9R96Sox1TzuhaWSv8yhy6ReM4vMTZxddLp_sRPjZJWQYRTxySbha6cHPIu1/pubhtml#gid=2047017564",
       "youtubeHasTactic": true,
+      "conditions": {
+        "tp": "",
+        "fields": []
+      },
       "omittedRows": 54,
       "warningCount": 15,
       "unknownActorCount": 1
@@ -3564,6 +3796,15 @@
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=V-eL_kyjT6o",
       "youtubeHasTactic": true,
+      "conditions": {
+        "tp": "",
+        "fields": [
+          {
+            "label": "마스터 스킬",
+            "value": "103"
+          }
+        ]
+      },
       "omittedRows": 59
     },
     {
@@ -3609,6 +3850,10 @@
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=YjzkV-JOFmc",
       "youtubeHasTactic": true,
+      "conditions": {
+        "tp": "",
+        "fields": []
+      },
       "omittedRows": 25,
       "warningCount": 12,
       "unknownActorCount": 0
@@ -3836,6 +4081,10 @@
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=qfJLOb2ot5U",
       "youtubeHasTactic": true,
+      "conditions": {
+        "tp": "",
+        "fields": []
+      },
       "omittedRows": 6,
       "warningCount": 5,
       "unknownActorCount": 0
@@ -3938,6 +4187,10 @@
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=KxcWIohBgyw",
       "youtubeHasTactic": true,
+      "conditions": {
+        "tp": "",
+        "fields": []
+      },
       "omittedRows": 18
     },
     {
@@ -4008,6 +4261,10 @@
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=mYFL8_5y_sE",
       "youtubeHasTactic": true,
+      "conditions": {
+        "tp": "",
+        "fields": []
+      },
       "omittedRows": 20,
       "warningCount": 9,
       "unknownActorCount": 3
@@ -4063,6 +4320,10 @@
       "rows": [],
       "sourceUrl": "https://www.youtube.com/watch?v=RXlBojG-o3E",
       "youtubeHasTactic": true,
+      "conditions": {
+        "tp": "",
+        "fields": []
+      },
       "omittedRows": 10
     },
     {
@@ -4136,6 +4397,10 @@
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=r18Zgya4o0Y",
       "youtubeHasTactic": true,
+      "conditions": {
+        "tp": "",
+        "fields": []
+      },
       "omittedRows": 22,
       "warningCount": 12,
       "unknownActorCount": 0
