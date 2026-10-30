@@ -49,13 +49,13 @@ test('public export contains only safe derived previews with a 28-day expiration
    r.rows.every(row=>!Object.hasOwn(row,'source')&&!Object.hasOwn(row,'raw'))));
 });
 
-test('never publish unconverted Japanese source sentences even inside partial action rows',()=>{
+test('unresolved operative fragments remain marked in their rows instead of deleting battle actions',()=>{
  const data=createYouTubeTacticCandidates(snapshots,report([['JcqLd2C8mTA',
   '1:30 全SET AUTO ON\n1:12 ネネカ 後 SET\n1:04 プリキャル 目押し\n0:32 AUTO OFF']]));
  const text=JSON.stringify(data);
- assert.ok(!text.includes('ネネカ'));
- assert.ok(!text.includes('プリキャル'));
- assert.ok(!text.includes('目押し'));
  assert.ok(!text.includes('sourceText'));
- assert.ok(data.references.every(r=>r.rows.every(x=>!/[ぁ-ゟァ-ヿ一-龯]/u.test(x.text))));
+ const one=data.references.find(r=>r.videoId==='JcqLd2C8mTA');
+ assert.ok(one.rows.some(r=>r.time==='1:12'));assert.ok(one.rows.some(r=>r.time==='1:04'));
+ assert.equal(one.omittedRows,0);assert.ok(one.unresolvedRows>0);
+ assert.ok(one.rows.filter(r=>/[ぁ-ゟァ-ヿ一-龯]/u.test(r.text)).every(r=>r.needsReview));
 });

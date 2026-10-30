@@ -16,6 +16,20 @@ export const VERIFIED_SOURCE_ALIASES=Object.freeze({
  '135601':['诗夏']
 });
 
+// Short JP names are resolved only inside the known five-unit party. Any
+// collision between costumes is removed by the existing owner check below.
+export function japanesePartyAliases(japanese){
+ const full=clean(japanese),normal=full.normalize('NFKC'),base=normal.replace(/\s*\([^)]*\)\s*/g,'').trim();
+ if(!base)return [];
+ const aliases=[normal,base];
+ const costumes=[[/サマー|水着/,['水','水着']],[/プリンセス/,['プリ','P']],[/ニューイヤー|正月/,['ニュ','正月','新年']],
+  [/クリスマス/,['クリ','聖夜']],[/ハロウィン/,['ハロ']],[/アルファ|アルファ/,['アル','α']],
+  [/作業服|作業着/,['作','作業服']],[/オーバーロード/,['オバ']],[/儀装束/,['儀']],[/ステージ/,['ステ']],
+  [/ウィンター/,['冬']],[/バレンタイン/,['バレ']],[/スプリング/,['春']],[/ドレス/,['ドレス']]];
+ for(const [pattern,prefixes]of costumes)if(pattern.test(normal))for(const prefix of prefixes)aliases.push(prefix+base);
+ return [...new Set(aliases)];
+}
+
 export function resolveAikurumiParty(charas, unitNames={}, positionUnits=[], extraAliases={}){
   const units=new Map((Array.isArray(positionUnits)?positionUnits:positionUnits?.units||[])
     .map(u=>[Number(u.unitId),u]));
@@ -32,7 +46,7 @@ export function resolveAikurumiParty(charas, unitNames={}, positionUnits=[], ext
     const unit=units.get(id);
     if(!Number.isSafeInteger(id)||id<=0||!canonical||!unit)
       issues.push({code:'unmapped-unit-id',slot:index+1,id:Number.isSafeInteger(id)?id:null,message:'한국어 캐릭터 ID 대조 실패'});
-    const aliases=[clean(c?.unitName),clean(unit?.japanese),clean(unit?.english),
+    const aliases=[clean(c?.unitName),clean(unit?.japanese),clean(unit?.english),...japanesePartyAliases(unit?.japanese),
       ...korean,...(VERIFIED_SOURCE_ALIASES[String(id)]||[]),...(extraAliases[String(id)]||[])].filter(Boolean);
     return {slot:index+1,prefabId:Number.isSafeInteger(id)?id:null,
       koreanName:canonical,sourceName:clean(c?.unitName),aliases:[...new Set(aliases)],
