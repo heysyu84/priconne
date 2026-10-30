@@ -677,7 +677,59 @@
           "status": "verified"
         }
       ]
+    },
+    "2027-11": {
+      "jpMonth": "2026-10",
+      "krMonth": "2027-11",
+      "clanBattleId": 1105,
+      "bosses": [
+        {
+          "slot": 1,
+          "prefabId": 301204,
+          "sourceName": "グレーターゴーレム",
+          "name": "그레이터 골렘",
+          "referenceKey": "1.5",
+          "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/1.5.png",
+          "status": "verified"
+        },
+        {
+          "slot": 2,
+          "prefabId": 326100,
+          "sourceName": "ターボファング",
+          "name": "ターボファング",
+          "referenceKey": null,
+          "portrait": null,
+          "status": "unmatched"
+        },
+        {
+          "slot": 3,
+          "prefabId": 305900,
+          "sourceName": "マダムプリズム",
+          "name": "마담 프리즘",
+          "referenceKey": "3.15",
+          "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/3.15.png",
+          "status": "verified"
+        },
+        {
+          "slot": 4,
+          "prefabId": 326200,
+          "sourceName": "アーク・デアム",
+          "name": "アーク・デアム",
+          "referenceKey": null,
+          "portrait": null,
+          "status": "unmatched"
+        },
+        {
+          "slot": 5,
+          "prefabId": 300201,
+          "sourceName": "レサトパルト",
+          "name": "레사스 팔트",
+          "referenceKey": "5.11",
+          "portrait": "https://purikonekrsemi.github.io/PurikoneKrSheet/images/Boss/5.11.png",
+          "status": "verified"
+        }
+      ]
     }
   },
-  "updatedAt": "2026-10-22T13:37:54.343Z"
+  "updatedAt": "2026-10-30T18:54:56.447Z"
 }
