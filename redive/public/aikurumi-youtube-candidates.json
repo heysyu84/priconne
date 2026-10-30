@@ -4,8 +4,8 @@
   "source": "YouTube Data API v3",
   "readOnly": true,
   "registrationAllowed": false,
-  "fetchedAt": "2026-10-30T12:37:46.501Z",
-  "expiresAt": "2026-11-27T12:37:46.501Z",
+  "fetchedAt": "2026-10-30T12:41:44.966Z",
+  "expiresAt": "2026-11-27T12:41:44.966Z",
   "videoCount": 69,
   "requestedVideoCount": 72,
   "missingVideoCount": 3,
@@ -548,7 +548,7 @@
       "videoId": "9ZvfVTf-uMY",
       "status": "partial",
       "matching": "unique-party-section",
-      "rowCount": 10,
+      "rowCount": 13,
       "issues": [
         "unparsed-instructions",
         "translation-incomplete"
@@ -557,13 +557,13 @@
       "rows": [
         {
           "time": null,
-          "text": "AUTO 온",
+          "text": "AUTO 온, 전부 SET",
           "checked": [
-            false,
-            false,
-            false,
-            false,
-            false,
+            true,
+            true,
+            true,
+            true,
+            true,
             true
           ],
           "needsReview": false
@@ -572,11 +572,11 @@
           "time": "1:11",
           "text": "1:11 프캬루 후 프캬루 OFF",
           "checked": [
+            true,
+            true,
             false,
-            false,
-            false,
-            false,
-            false,
+            true,
+            true,
             true
           ],
           "needsReview": false
@@ -585,11 +585,11 @@
           "time": "1:06",
           "text": "1:06 프캬루 후 AUTO 오프",
           "checked": [
+            true,
+            true,
             false,
-            false,
-            false,
-            false,
-            false,
+            true,
+            true,
             false
           ],
           "needsReview": false
@@ -598,10 +598,10 @@
           "time": "0:59",
           "text": "0:59 바이올렛 후 프캬루 ON, 바이올렛 OFF",
           "checked": [
-            false,
-            false,
             true,
-            false,
+            true,
+            true,
+            true,
             false,
             false
           ],
@@ -614,7 +614,7 @@
             false,
             false,
             false,
-            false,
+            true,
             false,
             false
           ],
@@ -627,7 +627,7 @@
             false,
             false,
             true,
-            false,
+            true,
             false,
             false
           ],
@@ -640,7 +640,7 @@
             true,
             false,
             true,
-            false,
+            true,
             false,
             true
           ],
@@ -653,7 +653,7 @@
             false,
             true,
             true,
-            false,
+            true,
             false,
             true
           ],
@@ -666,7 +666,7 @@
             false,
             true,
             true,
-            false,
+            true,
             true,
             true
           ],
@@ -674,12 +674,51 @@
         },
         {
           "time": "0:03",
-          "text": "ㄴ [원문 확인: ver.]",
+          "text": "ㄴ [원문 확인: プリコネR関連動画はこちら↓]",
           "checked": [
             false,
             true,
             true,
+            true,
+            true,
+            true
+          ],
+          "needsReview": true
+        },
+        {
+          "time": "0:03",
+          "text": "ㄴ [원문 확인: ツイッター]",
+          "checked": [
             false,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "needsReview": true
+        },
+        {
+          "time": "0:03",
+          "text": "ㄴ [원문 확인: さんだ]",
+          "checked": [
+            false,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "needsReview": true
+        },
+        {
+          "time": "0:03",
+          "text": "ㄴ [원문 확인: プリコネR公式]",
+          "checked": [
+            false,
+            true,
+            true,
+            true,
             true,
             true
           ],
@@ -699,9 +738,9 @@
         ]
       },
       "omittedRows": 0,
-      "unresolvedRows": 4,
+      "unresolvedRows": 7,
       "translatedRows": 6,
-      "warningCount": 1,
+      "warningCount": 4,
       "unknownActorCount": 0,
       "commentReadStatus": "complete"
     },
@@ -7621,13 +7660,13 @@
       "rows": [
         {
           "time": null,
-          "text": "AUTO 온",
+          "text": "AUTO 온, 클요리, 봄즈메, 피오, 수리스 SET",
           "checked": [
+            true,
+            true,
             false,
-            false,
-            false,
-            false,
-            false,
+            true,
+            true,
             true
           ],
           "needsReview": false
@@ -7636,10 +7675,10 @@
           "time": "1:14",
           "text": "1:14 클요리 후 봄쿄카 ON, 클요리 OFF",
           "checked": [
-            false,
-            false,
             true,
-            false,
+            true,
+            true,
+            true,
             false,
             true
           ],
@@ -7649,10 +7688,10 @@
           "time": "0:58",
           "text": "0:58 피오 후 클요리 ON, 피오 OFF",
           "checked": [
-            false,
-            false,
             true,
             false,
+            true,
+            true,
             true,
             true
           ],
@@ -7662,7 +7701,7 @@
           "time": "0:42",
           "text": "0:42 피오 후 피오 ON, 봄즈메 OFF",
           "checked": [
-            false,
+            true,
             true,
             true,
             false,
@@ -7725,7 +7764,7 @@
         },
         {
           "time": "0:04",
-          "text": "ㄴ [원문 확인: ※TP4-5以上の場合]",
+          "text": "ㄴ [원문 확인: プリコネR関連動画はこちら↓]",
           "checked": [
             true,
             false,
@@ -7738,7 +7777,7 @@
         },
         {
           "time": "0:04",
-          "text": "ㄴ [원문 확인: ー操作ー]",
+          "text": "ㄴ [원문 확인: ツイッター]",
           "checked": [
             true,
             false,
@@ -7751,7 +7790,7 @@
         },
         {
           "time": "0:04",
-          "text": "ㄴ 初動 UB 후 [원문 확인: SET 봄즈메 피오 수리스]",
+          "text": "ㄴ [원문 확인: さんだ]",
           "checked": [
             true,
             false,
@@ -7764,7 +7803,7 @@
         },
         {
           "time": "0:04",
-          "text": "ㄴ AUTO 온",
+          "text": "ㄴ [원문 확인: プリコネR公式]",
           "checked": [
             true,
             false,
@@ -7773,7 +7812,7 @@
             true,
             true
           ],
-          "needsReview": false
+          "needsReview": true
         }
       ],
       "sourceUrl": "https://www.youtube.com/watch?v=_j29RP6f8g0",
@@ -7789,9 +7828,9 @@
         ]
       },
       "omittedRows": 0,
-      "unresolvedRows": 3,
-      "translatedRows": 9,
-      "warningCount": 3,
+      "unresolvedRows": 4,
+      "translatedRows": 8,
+      "warningCount": 4,
       "unknownActorCount": 0,
       "commentReadStatus": "complete"
     },
