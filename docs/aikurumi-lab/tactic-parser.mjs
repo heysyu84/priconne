@@ -1,6 +1,22 @@
 // 해외 클랜전 택틱 변환기: 당고 O/X·〇/ー, 일본식 SET/切 명령을 지원합니다.
 const trim=s=>String(s??'').trim();
 const reg=s=>s.replace(/[.*+?^$()|[\]{}]/g,'\\$&');
+// A creator may publish both a prose TL and an O/X (dango) TL.
+// The latter is the authoritative post-action SET snapshot, including the start state.
+export function selectPreferredDangoTimeline(raw) {
+ const source=String(raw??'').replace(/\r\n?/g,'\n');
+ const heading=/(?:^|\n)[^\S\n]*[【\[(（]?\s*(?:お団子|団子|ダンゴ|당고)\s*(?:ver(?:sion)?\.?|版)?\s*[】\])）]?[^\n]*\n/giu;
+ const headers=[...source.matchAll(heading)];
+ for(const hit of headers.reverse()){
+  const section=source.slice(hit.index+hit[0].length);
+  const next=section.search(/\n\s*[【\[(（]\s*(?:通常|ノーマル|normal|操作|別編成|別パターン)\s*(?:ver(?:sion)?\.?|版)?\s*[】\])）]/iu);
+  const body=(next>=0?section.slice(0,next):section).trim();
+  const masks=body.split('\n').filter(line=>/^\s*\d{1,2}:[0-5]\d/u.test(line)&&/[OX〇○◯●⭕❌✕×✖✗ー－—-]{5}/iu.test(line));
+  if(masks.length)return {text:body,preferred:true,maskRows:masks.length};
+ }
+ return {text:source,preferred:false,maskRows:0};
+}
+
 const suggested={
  '네피네라':['ネフィ','ネフィネラ'],'네피':['ネフィ','ネフィネラ'],
  '봉황':['ホウオウ','鳳凰'],'후부키':['フブキ'],'아이라':['アイラ'],
@@ -66,8 +82,8 @@ export function convertForeignTactic(raw, koreanNames=[], foreignNames=[], bossN
  const prioritize=(commands,initial=false)=>[...commands].sort((a,b)=>
    (initial&&/^AUTO /.test(a)?-2:orderPriority(a))-(initial&&/^AUTO /.test(b)?-2:orderPriority(b)));
  let src=trim(raw).replace(/\[(\d{1,2}:[0-5]\d)\]\(https?:\/\/[^)]*\)/g,'$1').replace(/https?:\/\/\S+/g,'');
- const section=src.search(/【\s*(?:お団子|団子|당고)\s*(?:ver\.?|版)?\s*】/i);
- if(section>=0 && /(?:SET|セット|切)/.test(src.slice(0,section)))src=src.slice(0,section);
+ const preferredDango=selectPreferredDangoTimeline(src);
+ src=preferredDango.text;
  src=src.replace(/[\uFE0E\uFE0F\u200D]/g,'');
  const dango=/[OX〇○◯●⭕❌✕×✖✗ー－—-]{5}/i.test(src);
  const format=dango?'dango':'commands';
