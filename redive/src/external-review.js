@@ -79,7 +79,7 @@ function openAppliedExternalTactic({month,stage,id}){
 }
 
 
-let importedDangoCheckedSeasons=null,importedDangoCheckBusy=false,importedDangoAssets=null;
+let importedDangoCheckedSeasons=null,importedDangoCheckBusy=false,importedDangoAssets=null,importedDangoNeedsSave=false;
 async function synchronizeImportedDangoSets(){
  if(!syncState.started||!syncState.ready||syncState.pending||syncState.inFlight
    ||ext.workEditing||importedDangoCheckBusy||importedDangoCheckedSeasons===data.seasons)return;
@@ -100,7 +100,8 @@ async function synchronizeImportedDangoSets(){
   if(repaired){
    const current=data.seasons[ui.month];
    if(current){data.tactics=structuredClone(current.tactics);data.recommendations=structuredClone(current.recommendations||[]);}
-   if(syncState.canEdit&&data.settings.editable)persist();
+   importedDangoNeedsSave=true;
+   if(syncState.canEdit&&data.settings.editable){importedDangoNeedsSave=false;persist();}
    render();
   }
  }catch(error){console.warn('당고 SET 복구 건너뜀:',error?.message||error);}
@@ -109,6 +110,9 @@ async function synchronizeImportedDangoSets(){
 const previousDangoRenderComplete=afterOperationalRender;
 afterOperationalRender=()=>{
  previousDangoRenderComplete();
+ if(importedDangoNeedsSave&&syncState.canEdit&&data.settings.editable&&!syncState.inFlight&&!syncState.pending){
+  importedDangoNeedsSave=false;queueMicrotask(()=>persist());
+ }
  if(syncState.started&&syncState.ready&&importedDangoCheckedSeasons!==data.seasons)
   queueMicrotask(synchronizeImportedDangoSets);
 };
