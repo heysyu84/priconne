@@ -1000,3 +1000,35 @@ form[data-form="v2-tactic"] #tactic-text{display:block;width:100%;min-width:0;mi
 .history-table .honors-note-cell{text-align:center!important;background:var(--wash);color:var(--muted);font-weight:600;white-space:normal}
 .history-table .honors-note-cell strong{font-size:inherit;font-weight:650}
 .history-table .honors-no-award td{vertical-align:middle}
+
+/* Mobile: plan rows and individual combo cards are the selection targets.
+   Remove the redundant selection column, preserve details/video controls,
+   and allow content to fit the available width without horizontal scrolling. */
+@media (max-width:760px){
+  .distribution-panel[aria-label="추천 분배"]{min-width:0;max-width:100%}
+  .distribution-panel[aria-label="추천 분배"]>.table-wrap{width:100%;min-width:0;max-width:100%;overflow-x:hidden}
+  .distribution-panel[aria-label="추천 분배"] .distribution-table{width:100%!important;min-width:0!important;max-width:100%;table-layout:fixed!important}
+  .distribution-panel[aria-label="추천 분배"] .distribution-table th:last-child,
+  .distribution-panel[aria-label="추천 분배"] .distribution-table td:last-child{display:none!important}
+  .distribution-panel[aria-label="추천 분배"] .distribution-table th:first-child,
+  .distribution-panel[aria-label="추천 분배"] .distribution-table td:first-child{width:70%!important;min-width:0;overflow-wrap:anywhere}
+  .distribution-panel[aria-label="추천 분배"] .distribution-table th:nth-child(2),
+  .distribution-panel[aria-label="추천 분배"] .distribution-table td:nth-child(2){width:30%!important;min-width:0;white-space:nowrap;text-align:right}
+  .distribution-panel[aria-label="추천 분배"] .distribution-team{max-width:100%;white-space:normal;flex-wrap:wrap;gap:3px;margin:2px 5px 2px 0}
+  .distribution-panel[aria-label="추천 분배"] .distribution-team small{white-space:normal;overflow-wrap:anywhere}
+  .distribution-panel[aria-label="추천 분배"] .distribution-table tbody tr[data-mobile-plan]{cursor:pointer}
+  .distribution-panel[aria-label="추천 분배"] .distribution-table tbody tr.is-selected{background:color-mix(in srgb,var(--surface) 85%,var(--accent))}
+  .distribution-panel[aria-label="추천 분배"] .distribution-table tbody tr:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+  .recommendation-list{min-width:0;max-width:100%;grid-template-columns:minmax(0,1fr)}
+  .recommendation-list>.combo-card{box-sizing:border-box;width:100%;max-width:100%;min-width:0}
+  .recommendation-list>.combo-card:not(.stage3-combo-card){cursor:pointer}
+  .recommendation-list .combo-heading input[data-input="v2-pick-tactic"]{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip-path:inset(50%)!important;border:0!important;white-space:nowrap!important}
+  .recommendation-list>.combo-card:focus-within{outline:2px solid color-mix(in srgb,var(--accent) 70%,transparent)}
+  .recommendation-list .combo-card .combo-party{min-width:0;max-width:100%;width:100%}
+  .recommendation-list .combo-card .party{min-width:0;max-width:100%;width:100%;grid-template-columns:repeat(5,minmax(0,1fr))}
+  .recommendation-list .combo-card .unit{min-width:0;max-width:100%}
+  .recommendation-list .combo-card .unit-face{max-width:100%}
+  .recommendation-list .combo-card .unit strong{white-space:normal;overflow-wrap:anywhere;word-break:break-word}
+  .recommendation-list .combo-card .combo-metadata,
+  .recommendation-list .combo-card .combo-metadata>div{min-width:0;max-width:100%}
+}
