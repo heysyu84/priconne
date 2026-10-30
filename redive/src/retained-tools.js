@@ -147,7 +147,7 @@ async function prepareCompatibleBackup(input){
   if(!root)return input;
   const missing=(root.archivedMonths||[]).filter(month=>!root.months[month]);
   if(missing.length)throw Error('보관 월 '+missing.join(', ')+'이 빠져 있습니다. 모든 월이 포함된 백업을 선택하세요.');
-  const {decodeLegacy}=await import('./legacy-codec.mjs?v=20261027-history-coeff01');
+  const {decodeLegacy}=await import('./legacy-codec.mjs?v=20261030-set-sync02');
   return sharedBackup(decodeLegacy(root,{},sharedDocument()));
 }
 function applyTransferMetadata(transfer,t){
