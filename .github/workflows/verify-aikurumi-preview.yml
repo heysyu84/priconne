@@ -12,6 +12,11 @@ on:
       - redive/src/external-review.js
       - redive/src/usability.js
       - redive/scripts/test-aikurumi-*
+      - redive/scripts/test-tactic-set-state.mjs
+      - redive/public/tactic-set-state.mjs
+      - redive/public/compat/tactics-model.mjs
+      - docs/compact/tactic-set-state.mjs
+      - docs/compact/compat/tactics-model.mjs
   workflow_dispatch:
 permissions:
   contents: read
@@ -29,7 +34,7 @@ jobs:
           node --check docs/compact/app.js
           node --check redive/public/aikurumi-review-ui.mjs
           node --check redive/public/aikurumi-review-model.mjs
-          node --test redive/scripts/test-aikurumi-*.mjs redive/scripts/test-stage3-recommendations.mjs
+          node --test redive/scripts/test-aikurumi-*.mjs redive/scripts/test-stage3-recommendations.mjs redive/scripts/test-tactic-set-state.mjs
           node redive/scripts/check-tactic-body-save.mjs
           node redive/scripts/check-usability.mjs
           node redive/scripts/check-shared-client.mjs
@@ -51,7 +56,7 @@ jobs:
             }
             throw last;
           }
-          await verify('/',text=>assert.match(text,/20261030-once01/));
+          await verify('/',text=>assert.match(text,/20261030-set-sync02/));
           await verify('/aikurumi-lab/',text=>{assert.match(text,/aikurumi-review\.css/);assert.doesNotMatch(text,/TEST \/ 읽기 전용|API 수집/);});
           await verify('/compact/aikurumi-review-ui.mjs',text=>assert.match(text,/createExternalReview/));
           await verify('/compact/aikurumi-review-model.mjs',text=>assert.match(text,/buildReviewedTactic/));
