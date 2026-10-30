@@ -9,7 +9,7 @@ const key=value=>clean(value).normalize('NFKC').replace(/[\s・·()（）]/g,'')
 export const VERIFIED_SOURCE_ALIASES=Object.freeze({
  '118101':['兰法龙'],
  '180601':['黑猫'],
- '133101':['紫罗兰'],
+ '133101':['紫罗兰','スミレ'],
  '103801':['栞'],
  '130101':['若菜'],
  '134001':['菲欧'],

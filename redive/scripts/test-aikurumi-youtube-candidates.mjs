@@ -7,6 +7,14 @@ import {normalizeYouTubeTimeline} from './aikurumi-youtube-timeline.mjs';
 const load=n=>JSON.parse(readFileSync(new URL('../public/'+n,import.meta.url),'utf8'));
 const snapshots=[load('aikurumi-snapshot-stage3.json'),load('aikurumi-snapshot.json')];
 const report=videos=>({videos:videos.map(([id,description])=>({videoId:id,description}))});
+test('YouTube aliases and direct converter rules produce one once-only row after Violet',()=>{
+ const text='1:30 ○○✕○○ オートオフ\n0:59 スミレ ○○○○○\nキャル ○○✕○○\n0:50 BOSS ○○○○○\nキャル ○○✕○○';
+ const data=createYouTubeTacticCandidates(snapshots,report([['3XR7r4dwSJI',text]]));
+ const item=data.references.find(r=>r.videoId==='3XR7r4dwSJI');assert.ok(item);assert.equal(item.rows.length,3);
+ assert.equal(item.rows[1].text,'0:59 바이올렛 후 프캬루 한번만');assert.equal(item.rows[1].needsReview,false);
+ assert.deepEqual(item.rows[1].checked,[true,true,false,true,true,false]);
+ assert.equal(item.rows[2].text,'0:50 보스 후 프캬루 한번만');
+});
 test('starred timed OX instructions stay in one timeline, including the 420-million source link',()=>{
  const text='1:30 ○○○○○ オートオン\n1:11 キャル ○○✕○○\n1:06 キャル ○○✕○○ オートオフ\n0:59 ヴァイオレット ○○○○○\n☆0:43 キャル(エイドcl)✕✕○○✕\n0:35 ランファ ○✕✕○✕\n☆0:33-32 キャル オートオン\n0:29 エキドナ ○○✕○✕ オートオフ\n☆0:17 キャル ○○○○✕ オートオン\n0:01 キャル';
  const sections=splitVideoDescription(text,[]);assert.equal(sections.length,1);

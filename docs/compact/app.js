@@ -1,5 +1,5 @@
 import {replayMonth as engineReplay,bossProgress as engineProgress,contribution as engineContribution,estimateCarry as engineEstimate} from './battle-engine.mjs?v=20261027-carry-link02';
-import {convertForeignTactic,foreignSuggestions} from './tactic-parser.mjs';
+import {convertForeignTactic,foreignSuggestions} from './tactic-parser.mjs?v=20261030-once01';
 import * as partyTools from './party-tools.mjs?v=20261026-log-keys01';
 import * as logOrder from './log-order.mjs';
 import * as legacyTools from './legacy-tools.mjs?v=20261026-ocr-regions09';
@@ -2926,7 +2926,7 @@ async function mountExternalReview(){
  const root=document.getElementById('external-tactic-review');
  if(!root||!adminMode()||ui.section!=='tactics'||ui.tabs.tactics!=='review')return;
  try{
-  externalReviewLoading??=Promise.all([import('./aikurumi-review-ui.mjs?v=20261030-startup01'),import('./aikurumi-review-model.mjs?v=20261030-startup01')]);
+  externalReviewLoading??=Promise.all([import('./aikurumi-review-ui.mjs?v=20261030-once01'),import('./aikurumi-review-model.mjs?v=20261030-once01')]);
   const [uiModule,model]=await externalReviewLoading;externalReviewModule=model;
   if(!adminMode()||document.getElementById('external-tactic-review')!==root)return;
   externalReviewController??=uiModule.createExternalReview({getContext:externalReviewContext,
