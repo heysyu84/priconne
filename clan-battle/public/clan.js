@@ -1,5 +1,5 @@
 (async()=>{'use strict';
-const {beginLoading}=await import('./loading-indicator.mjs?v=20261031-01');
+const {beginLoading}=await import('./loading-indicator.mjs?v=20261031-02');
 const stopBootLoading=beginLoading();
 const {menuArtMarkup}=await import('./menu-art.mjs?v=20261022-sd01');
 const {summarizeArchive,sortArchiveRankings}=await import('./archive-summary.mjs?v=20261022-import01');
@@ -285,7 +285,7 @@ function archiveRecords(){
   if(!key)return '<section class="panel empty">지난 클랜전 기록이 아직 없습니다.</section>';
   const d=archiveCache.get(key)||app.months[key];
   const nav=`<section class="panel archive-record-selector"><div class="field"><label for="archive-month-select">조회 월</label><select id="archive-month-select">${keys.map(k=>`<option value="${X(k)}" ${k===key?'selected':''}>${monthFormat(k)}</option>`).join('')}</select></div>${canEdit()?`<button class="btn sm" data-guild="edit-history" data-value="${X(key)}">클랜전 결과 수정</button>`:''}</section>`;
-  if(!d)return nav+`<section class="panel empty">${archiveLoading===key?'과거 기록을 불러오는 중입니다…':archiveError?X(archiveError)+' <button class="btn sm" data-open-archive="'+X(key)+'">다시 시도</button>':'월을 선택하면 해당 기록을 불러옵니다.'}</section>`;
+  if(!d)return archiveLoading===key?nav:nav+`<section class="panel empty">${archiveError?X(archiveError)+' <button class="btn sm" data-open-archive="'+X(key)+'">다시 시도</button>':'월을 선택하면 해당 기록을 불러옵니다.'}</section>`;
   const summary=summarizeArchive(d,app.roster,(app.clanHistory||[]).find(h=>h.month===key)),sorted=sortArchiveRankings(summary.rows,ui.archiveSort);
   const metrics=`<div class="metrics archive-record-metrics">${[['실제 피해량 합계',nf(summary.damage)],['인게임 점수 합계',nf(summary.game)],['클랜 등수',summary.clanRank?nf(summary.clanRank)+'위':'-'],['클랜원 수',nf(summary.memberCount)+'명']].map(([label,value])=>`<div class="metric"><div class="k">${label}</div><div class="v">${value}</div></div>`).join('')}</div>`;
   const columns=[['damage','실제 피해량'],['contribution','기여도'],['game','인게임 점수']];
