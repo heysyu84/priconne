@@ -59,7 +59,8 @@ export function buildReviewItems(snapshot,youtube,{youtubeReady=true,now=Date.no
    const policy=linked?selectPrimaryTacticSource(candidate,{youtubeReady:youtubeReady&&fresh,
     hasChineseTimeline:preview.rows.length>0,hasYouTubeLink:true}):
     {source:'aikurumi',chineseFallback:true,needsHumanCheck:true};
-   const rows=policy.source==='aikurumi'?preview.rows:candidate?.rows||[];
+   const dangoPriority=preview.preferredDango===true&&preview.rows.length>0;
+   const rows=dangoPriority?preview.rows:policy.source==='aikurumi'?preview.rows:candidate?.rows||[];
    const type=classifySourceTactic(task,link),conditions=extractTacticConditions(task,link,preview);
    const carry=parseStage3CarryTime(link.name);
    const source=policy.source==='aikurumi'?'aikurumi':'youtube';
@@ -83,7 +84,7 @@ export function buildReviewItems(snapshot,youtube,{youtubeReady=true,now=Date.no
    const conditionFields=candidate?.conditions?.fields?.length&&source==='youtube'?candidate.conditions.fields:conditions.fields;
    items.push({key,sourceKey:[snapshot.krMonth,key].join(':'),month:snapshot.krMonth,
     stage:Number(snapshot.stage)===3?3:4,sourceStage:snapshot.stage,boss:Number(boss.index),bossName:boss.unitName,
-    task,link,ordinal,preview,candidate,policy,source,rows,operation:type.operation,operationLabel:OPERATION_LABELS[type.operation],
+    task,link,ordinal,preview,candidate,policy,source,rows,dangoPriority,operation:type.operation,operationLabel:OPERATION_LABELS[type.operation],
     carry:carry.seconds,carryDetail:carry,damage,conditions:{...conditions,fields:conditionFields,
      tp:source==='youtube'&&candidate?.conditions?.tp?candidate.conditions.tp:conditions.tp},
     party:preview.matchedKoreanNames||preview.originalLineup.map(c=>c.unitName),
