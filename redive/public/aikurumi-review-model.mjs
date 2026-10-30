@@ -1,4 +1,4 @@
-import {previewAikurumiTactic} from './aikurumi-tactic-review.mjs?v=20261030-once01';
+import {previewAikurumiTactic} from './aikurumi-tactic-review.mjs?v=20261030-except01';
 import {classifySourceTactic,OPERATION_LABELS} from './aikurumi-operation-types.mjs';
 import {parseStage3CarryTime} from './aikurumi-stage3-carry.mjs';
 import {selectPrimaryTacticSource} from './aikurumi-source-priority.mjs';
@@ -59,7 +59,10 @@ export function buildReviewItems(snapshot,youtube,{youtubeReady=true,now=Date.no
    const policy=linked?selectPrimaryTacticSource(candidate,{youtubeReady:youtubeReady&&fresh,
     hasChineseTimeline:preview.rows.length>0,hasYouTubeLink:true}):
     {source:'aikurumi',chineseFallback:true,needsHumanCheck:true};
-   const rows=policy.source==='aikurumi'?preview.rows:candidate?.rows||[];
+   // Prefer YouTube Japanese TL whenever present. Dango priority applies
+   // only *within the selected source*, never over a confirmed YouTube TL.
+   const dangoPriority=policy.source==='aikurumi'&&preview.preferredDango===true&&preview.rows.length>0;
+   const rows=policy.source==='aikurumi'?preview.rows:policy.source==='youtube'?candidate?.rows||[]:[];
    const type=classifySourceTactic(task,link),conditions=extractTacticConditions(task,link,preview);
    const carry=parseStage3CarryTime(link.name);
    const source=policy.source==='aikurumi'?'aikurumi':'youtube';
@@ -83,7 +86,7 @@ export function buildReviewItems(snapshot,youtube,{youtubeReady=true,now=Date.no
    const conditionFields=candidate?.conditions?.fields?.length&&source==='youtube'?candidate.conditions.fields:conditions.fields;
    items.push({key,sourceKey:[snapshot.krMonth,key].join(':'),month:snapshot.krMonth,
     stage:Number(snapshot.stage)===3?3:4,sourceStage:snapshot.stage,boss:Number(boss.index),bossName:boss.unitName,
-    task,link,ordinal,preview,candidate,policy,source,rows,operation:type.operation,operationLabel:OPERATION_LABELS[type.operation],
+    task,link,ordinal,preview,candidate,policy,source,rows,dangoPriority,operation:type.operation,operationLabel:OPERATION_LABELS[type.operation],
     carry:carry.seconds,carryDetail:carry,damage,conditions:{...conditions,fields:conditionFields,
      tp:source==='youtube'&&candidate?.conditions?.tp?candidate.conditions.tp:conditions.tp},
     party:preview.matchedKoreanNames||preview.originalLineup.map(c=>c.unitName),
@@ -100,7 +103,7 @@ export function reviewDraft(item){
   tp:item.conditions.tp,category:item.task.type===1&&item.stage===4?'carry':'main',support:-1,
   duration:90,requiredCarrySeconds:'',carry:item.stage===3?item.carry??'':'',
   note:item.conditions.fields.map(f=>f.label+': '+f.value).join('\n'),
-  rows:item.rows.map(row=>({text:String(row.text||''),checked:[...(row.checked||Array(6).fill(false))],needsReview:row.needsReview===true})),
+  rows:item.rows.map(row=>({text:String(row.text||''),checked:[...(row.checked||Array(6).fill(false))],needsReview:row.needsReview===true,manualChecks:false})),
   source:item.source,confirmed:false,createMonth:false,edited:false};
 }
 
@@ -138,7 +141,7 @@ export function validateReviewDraft(item,draft){
 
 export function buildReviewedTactic(item,draft,{id,now=new Date().toISOString()}={}){
  const errors=validateReviewDraft(item,draft);if(errors.length)throw Error(errors[0]);
- const rows=draft.rows.map((r,i)=>({id:id+'-r'+i,text:r.text.trim(),checked:[...r.checked],manualChecks:true}));
+ const rows=draft.rows.map((r,i)=>({id:id+'-r'+i,text:r.text.trim(),checked:[...r.checked],manualChecks:r.manualChecks===true}));
  const externalSource={key:item.sourceKey,taskId:item.task.id,linkIndex:item.link.index??item.ordinal,
   linkOrdinal:item.ordinal,month:item.month,stage:item.stage,source:draft.source,
   url:safeUrl(item.link.link),reviewedAt:now,reviewScope:draft.lineupOnly?'lineup':'timeline',operation:item.operation};

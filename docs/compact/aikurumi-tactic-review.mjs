@@ -1,8 +1,8 @@
 // Read-only bridge from an Aikurumi task/link into the Nyang tactic editor format.
 // The operator must separately approve registration; this module never writes site data.
 import {splitAikurumiTimeline} from './aikurumi-tactic-preprocess.mjs';
-import {convertForeignTactic} from './tactic-parser.mjs?v=20261030-once01';
-import {resolveAikurumiParty} from './aikurumi-character-matcher.mjs?v=20261030-once01';
+import {convertForeignTactic} from './tactic-parser.mjs?v=20261030-except01';
+import {resolveAikurumiParty} from './aikurumi-character-matcher.mjs?v=20261030-except01';
 
 const string=value=>String(value??'').trim();
 const positive=value=>Number.isFinite(Number(value))&&Number(value)>0?Number(value):null;
@@ -52,7 +52,7 @@ export function previewAikurumiTactic(task, link, options={}){
     damageRaw:{manual:positive(task?.damage),auto:positive(task?.autoDamage),
       halfAuto:positive(task?.halfAutoDamage),easyManual:positive(task?.easyManualDamage)},
     isCarryCandidate:Number(task?.type)===1,
-    timeline:source.timeline,rows:parsed.rows,warnings:parsed.warnings,
+    timeline:source.timeline,rows:parsed.rows,preferredDango:parsed.format==='dango'&&/(?:お団子|団子|ダンゴ|당고)\s*(?:ver\.?|版)?/iu.test(source.timeline),warnings:parsed.warnings,
     unmappedActors:parsed.unmappedActors,issues,
     status:!hasFive?'invalid':!source.hasAction?'notes-only':'needs-review',
     registrationAllowed:false

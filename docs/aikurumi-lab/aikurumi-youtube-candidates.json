@@ -1,11 +1,11 @@
 {
   "schema": "nyang-youtube-tactic-candidates-v1",
-  "extractionVersion": "20261030-tl04",
+  "extractionVersion": "20261030-dango03",
   "source": "YouTube Data API v3",
   "readOnly": true,
   "registrationAllowed": false,
-  "fetchedAt": "2026-10-30T11:16:31.827Z",
-  "expiresAt": "2026-11-27T11:16:31.827Z",
+  "fetchedAt": "2026-10-30T13:09:01.401Z",
+  "expiresAt": "2026-11-27T13:09:01.401Z",
   "videoCount": 69,
   "requestedVideoCount": 72,
   "missingVideoCount": 3,
@@ -548,21 +548,22 @@
       "videoId": "9ZvfVTf-uMY",
       "status": "partial",
       "matching": "unique-party-section",
-      "rowCount": 9,
+      "rowCount": 13,
       "issues": [
+        "unparsed-instructions",
         "translation-incomplete"
       ],
       "warnings": [],
       "rows": [
         {
           "time": null,
-          "text": "AUTO 온",
+          "text": "AUTO 온, 전부 SET",
           "checked": [
-            false,
-            false,
-            false,
-            false,
-            false,
+            true,
+            true,
+            true,
+            true,
+            true,
             true
           ],
           "needsReview": false
@@ -571,11 +572,11 @@
           "time": "1:11",
           "text": "1:11 프캬루 후 프캬루 OFF",
           "checked": [
+            true,
+            true,
             false,
-            false,
-            false,
-            false,
-            false,
+            true,
+            true,
             true
           ],
           "needsReview": false
@@ -584,11 +585,11 @@
           "time": "1:06",
           "text": "1:06 프캬루 후 AUTO 오프",
           "checked": [
+            true,
+            true,
             false,
-            false,
-            false,
-            false,
-            false,
+            true,
+            true,
             false
           ],
           "needsReview": false
@@ -597,10 +598,10 @@
           "time": "0:59",
           "text": "0:59 바이올렛 후 프캬루 ON, 바이올렛 OFF",
           "checked": [
-            false,
-            false,
             true,
-            false,
+            true,
+            true,
+            true,
             false,
             false
           ],
@@ -613,7 +614,7 @@
             false,
             false,
             false,
-            false,
+            true,
             false,
             false
           ],
@@ -626,7 +627,7 @@
             false,
             false,
             true,
-            false,
+            true,
             false,
             false
           ],
@@ -639,7 +640,7 @@
             true,
             false,
             true,
-            false,
+            true,
             false,
             true
           ],
@@ -652,7 +653,7 @@
             false,
             true,
             true,
-            false,
+            true,
             false,
             true
           ],
@@ -665,7 +666,59 @@
             false,
             true,
             true,
+            true,
+            true,
+            true
+          ],
+          "needsReview": true
+        },
+        {
+          "time": "0:03",
+          "text": "ㄴ [원문 확인: プリコネR関連動画はこちら↓]",
+          "checked": [
             false,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "needsReview": true
+        },
+        {
+          "time": "0:03",
+          "text": "ㄴ [원문 확인: ツイッター]",
+          "checked": [
+            false,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "needsReview": true
+        },
+        {
+          "time": "0:03",
+          "text": "ㄴ [원문 확인: さんだ]",
+          "checked": [
+            false,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "needsReview": true
+        },
+        {
+          "time": "0:03",
+          "text": "ㄴ [원문 확인: プリコネR公式]",
+          "checked": [
+            false,
+            true,
+            true,
+            true,
             true,
             true
           ],
@@ -685,9 +738,9 @@
         ]
       },
       "omittedRows": 0,
-      "unresolvedRows": 3,
+      "unresolvedRows": 7,
       "translatedRows": 6,
-      "warningCount": 0,
+      "warningCount": 4,
       "unknownActorCount": 0,
       "commentReadStatus": "complete"
     },

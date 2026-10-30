@@ -1,5 +1,7 @@
 import { makeId } from './roster.mjs';
 import { shiftTimeline } from './engine.mjs';
+import {commandState,recalculateSetRows} from '../tactic-set-state.mjs?v=20261030-except01';
+export {commandState};
 
 export const CARRY_GROUP = '이월 택틱';
 export const GROUPS = ['택틱정리', '타비비토', CARRY_GROUP];
@@ -281,31 +283,8 @@ export function ensureTactics(app, metadata = {}, rowFormats = {}) {
 
 const regexEscape = s => String(s).replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
 const namesFor = (c, characters, catalog) => [...new Set([c,...(catalog.find(p=>p.name===c||p.aliases?.includes(c))?.aliases||[]),...[2,3].map(n=>c.length>n?c.slice(0,n):'').filter(short=>short&&characters.filter(name=>name.startsWith(short)).length===1)])].filter(Boolean);
-export function commandState(text, previous, characters, catalog = []) {
-  const result=checkedSix(previous);
-  const names=characters.map(c=>namesFor(c,characters,catalog));
-  const tokens=[...new Set(names.flat())].sort((a,b)=>b.length-a.length);
-  // AUTO and 전부 must still work before character slots are filled in.
-  const unit=`(?:${tokens.map(regexEscape).join('|')}|AUTO|전부)`;
-  const pattern=new RegExp(`((?:${unit}[\\s,，·.]*?)*${unit})\\s*(?:순으로|순서대로)?\\s*(제외\\s*(?:전부\\s*)?)?(한번만|ON|OFF|SET|오프|온)`,'gi');
-  for (const match of String(text).matchAll(pattern)) {
-    const [,subjects,except,command]=match;
-    const on=command!=='한번만' && /^(ON|SET|온)$/i.test(command);
-    const selected=names.map((aliases,i)=>aliases.some(n=>subjects.includes(n))?i:-1).filter(i=>i>=0);
-    if (/AUTO/i.test(subjects)) result[5]=on;
-    if (/전부/.test(subjects)) for(let i=0;i<5;i++) result[i]=on;
-    else if (except) { for(let i=0;i<5;i++) if(!selected.includes(i)) result[i]=on; }
-    else for (const i of selected) result[i]=on;
-  }
-  return result;
-}
-
 export function recalculateTacticRows(rows, characters, catalog = [], start = 0) {
-  for (let index = Math.max(0, start); index < rows.length; index++) {
-    const row = rows[index];
-    if (!row.manualChecks) row.checked = commandState(row.text, rows[index - 1]?.checked || [], characters, catalog);
-  }
-  return rows;
+  return recalculateSetRows(rows, characters, catalog, start);
 }
 
 export function colorRuns(text, characters, catalog = []) {

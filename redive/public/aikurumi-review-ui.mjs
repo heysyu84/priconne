@@ -1,6 +1,7 @@
-import {buildReviewItems,reviewDraft,stage3LineupDraft,validateReviewDraft,damageLabel,floorDamage,findImportedTactic,safeUrl,isYouTube} from './aikurumi-review-model.mjs?v=20261030-once01';
+import {buildReviewItems,reviewDraft,stage3LineupDraft,validateReviewDraft,damageLabel,floorDamage,findImportedTactic,safeUrl,isYouTube} from './aikurumi-review-model.mjs?v=20261030-except01';
 import {findNonOverlappingStage3} from './aikurumi-stage3-composer.mjs';
-import {previewAikurumiTactic} from './aikurumi-tactic-review.mjs?v=20261030-once01';
+import {recalculateSetRows} from './tactic-set-state.mjs?v=20261030-except01';
+import {previewAikurumiTactic} from './aikurumi-tactic-review.mjs?v=20261030-except01';
 
 const escape=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const time=value=>value===null||value===''||value===undefined?'—':Math.floor(Number(value)/60)+':'+String(Number(value)%60).padStart(2,'0');
@@ -38,7 +39,10 @@ class ReviewWorkspace{
     if(values[2].schema!=='nyang-youtube-tactic-candidates-v1'||!Array.isArray(values[2].references))throw Error('유튜브 수집 자료를 확인하지 못했습니다.');
     this.snapshots=values.slice(0,2);this.youtube=values[2];
     this.items=this.snapshots.flatMap(s=>buildReviewItems(s,this.youtube));this.ready=true;
-    for(const draft of this.drafts.values())draft.confirmed=false;
+    for(const [key,draft]of this.drafts){
+     if(draft.edited)draft.confirmed=false;
+     else this.drafts.delete(key);
+    }
     if(!this.items.some(i=>i.key===this.selected))this.selected=this.visible()[0]?.key||'';
    }catch(error){this.error=error.message;}
    finally{this.loading=null;this.draw();}
@@ -47,6 +51,16 @@ class ReviewWorkspace{
  context(){return this.getContext()||{};}
  canApply(){return !!this.onApply&&this.context().canEdit===true;}
  draft(item){if(!this.drafts.has(item.key))this.drafts.set(item.key,reviewDraft(item));return this.drafts.get(item.key);}
+ syncSetRows(draft,start=0){
+  recalculateSetRows(draft.rows,draft.party,this.context().characters||[],start);
+ }
+ refreshSetBoxes(draft){
+  this.root?.querySelectorAll('.review-grid [data-review-row][data-column]').forEach(input=>{
+   const checked=!!draft.rows[Number(input.dataset.reviewRow)]?.checked[Number(input.dataset.column)];
+   input.checked=checked;input.closest('.review-set')?.classList.toggle('on',checked);
+  });
+ }
+
  current(){return this.items.find(i=>i.key===this.selected);}
  existing(item){const context=this.context();return findImportedTactic(context.seasons?.[item.month],item);}
  bossName(item){return this.context().bossNames?.[item.month]?.[item.boss]||item.bossName;}
@@ -108,7 +122,7 @@ class ReviewWorkspace{
    +'<strong>'+escape(name)+'</strong><span>'+draft.stars[i]+'성 · R'+(item.conditions.ranks[i]||'—')+'</span></div>').join('');
   const youtube=item.source==='youtube',sourceUrl=safeUrl(item.link.link);
   const conditionFields=item.conditions.fields.map(f=>'<div><dt>'+escape(f.label)+'</dt><dd>'+escape(f.value)+'</dd></div>').join('');
-  const sourceNotice=youtube?(item.candidate?.status==='video-timeline-only'?'영상 화면의 TL · 설명란 본문 없음':item.candidate?.rows?.length?
+  const sourceNotice=item.dangoPriority?'ai쿠루미 당고 O/X · 유튜브 TL 없음':youtube?(item.candidate?.status==='video-timeline-only'?'영상 화면의 TL · 설명란 본문 없음':item.candidate?.rows?.length?
    (item.candidate.tacticLocation==='author-comment'?'작성자 댓글 TL':'설명란 TL')+' · '+item.candidate.rows.length+'행 수집':'일본어 TL 구간 확인 필요'):
    (isYouTube(item.link.link)?'설명란·작성자 댓글 TL 없음 · ai쿠루미 TL 사용':'ai쿠루미 TL');
   return '<div class="review-detail-heading"><div><span class="review-badge '+state+'">'+label+'</span><h3>'+item.boss+'넴 · '+escape(this.bossName(item))+'</h3><p>'+escape(item.creator)+' · '+escape(item.operationLabel)+' · <span class="review-row-count">출력 '+draft.rows.length+'행</span></p></div><div class="review-detail-nav">'
@@ -229,7 +243,10 @@ class ReviewWorkspace{
     if(key==='category'){this.drawDetail();return;}
    }else{
     const row=draft.rows[Number(target.dataset.reviewRow)];if(!row)return;
-    if(target.type==='checkbox')row.checked[Number(target.dataset.column)]=target.checked;else{row.text=target.value;row.needsReview=false;}
+    if(target.type==='checkbox'){row.checked[Number(target.dataset.column)]=target.checked;row.manualChecks=true;}
+    else{row.text=target.value;row.needsReview=false;row.manualChecks=false;}
+    this.syncSetRows(draft,Number(target.dataset.reviewRow)+(target.type==='checkbox'?1:0));
+    this.refreshSetBoxes(draft);
     draft.confirmed=false;draft.edited=true;
    }
    this.updateApplyState();return;
@@ -255,13 +272,13 @@ class ReviewWorkspace{
   if(!item)return;const draft=this.draft(item);
   if(kind==='edit'){this.editing.has(item.key)?this.editing.delete(item.key):this.editing.add(item.key);this.drawDetail();return;}
   if(kind==='damage-option'){draft.damage=floorDamage(action.dataset.value);draft.confirmed=false;draft.edited=true;this.drawDetail();return;}
-  if(kind==='add-row'){draft.rows.push({text:'',checked:[...(draft.rows.at(-1)?.checked||Array(6).fill(false))]});draft.confirmed=false;draft.edited=true;this.drawDetail();return;}
-  if(kind==='remove-row'){draft.rows.splice(Number(action.dataset.index),1);draft.confirmed=false;draft.edited=true;this.drawDetail();return;}
+  if(kind==='add-row'){draft.rows.push({text:'',checked:[...(draft.rows.at(-1)?.checked||Array(6).fill(false))],manualChecks:false});this.syncSetRows(draft,draft.rows.length-1);draft.confirmed=false;draft.edited=true;this.drawDetail();return;}
+  if(kind==='remove-row'){const index=Number(action.dataset.index);draft.rows.splice(index,1);this.syncSetRows(draft,index);draft.confirmed=false;draft.edited=true;this.drawDetail();return;}
   if(kind==='convert'){
    const text=this.root.querySelector('[data-review-paste]')?.value.trim();if(!text)return;
    const snapshot=this.snapshots.find(s=>s.stage===item.sourceStage),preview=previewAikurumiTactic(item.task,{...item.link,remarks:text},{unitMap:snapshot.characterData.names,positionUnits:snapshot.characterData.positionUnits,stage:item.sourceStage,bossSlot:item.boss,bossNames:snapshot.bosses.map(b=>b.unitName)});
    if(!preview.rows.length){this.root.querySelector('.review-paste-status').textContent='변환할 조작문을 찾지 못했습니다.';return;}
-   draft.rows=preview.rows.map(r=>({text:r.text,checked:[...r.checked]}));draft.confirmed=false;draft.edited=true;this.drawDetail();return;
+   draft.rows=preview.rows.map(r=>({text:r.text,checked:[...r.checked],manualChecks:false}));draft.confirmed=false;draft.edited=true;this.drawDetail();return;
   }
   if(kind==='apply')this.apply([item]);
   if(kind==='apply-lineup')this.apply([item],{lineupOnly:true,confirmed:draft.confirmed});

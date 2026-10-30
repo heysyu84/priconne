@@ -6,7 +6,7 @@ function externalReviewContext(){
  const months=[...new Set(externalReviewController?.items?.map(item=>item.month)||[])];
  const bossNames=Object.fromEntries(months.map(month=>[month,Object.fromEntries(
   (data.futureOverrides?.[month]?.bosses||FUTURE_REFERENCE.months[month]?.bosses||[]).map(b=>[b.slot,b.name]))]));
- return {canEdit:adminMode(),seasons,bossNames};
+ return {canEdit:adminMode(),seasons,bossNames,characters:data.characters};
 }
 function externalReviewPage(){
  if(!adminMode())return '';
@@ -17,7 +17,7 @@ async function mountExternalReview(){
  const root=document.getElementById('external-tactic-review');
  if(!root||!adminMode()||ui.section!=='tactics'||ui.tabs.tactics!=='review')return;
  try{
-  externalReviewLoading??=Promise.all([import('./aikurumi-review-ui.mjs?v=20261030-once01'),import('./aikurumi-review-model.mjs?v=20261030-once01')]);
+  externalReviewLoading??=Promise.all([import('./aikurumi-review-ui.mjs?v=20261030-except01'),import('./aikurumi-review-model.mjs?v=20261030-except01')]);
   const [uiModule,model]=await externalReviewLoading;externalReviewModule=model;
   if(!adminMode()||document.getElementById('external-tactic-review')!==root)return;
   externalReviewController??=uiModule.createExternalReview({getContext:externalReviewContext,
@@ -77,3 +77,42 @@ function openAppliedExternalTactic({month,stage,id}){
  if(stage===3){ext.openComboId=null;ext.comboDetails={};ui.tabs.tactics='combos';nav('tactics','combos');}
  else{const tactic=data.tactics.find(t=>t.id===id);ext.workGroup=tactic?.category||'main';nav('tactics','workspace');}
 }
+
+
+let importedDangoCheckedSeasons=null,importedDangoCheckBusy=false,importedDangoAssets=null,importedDangoNeedsSave=false;
+async function synchronizeImportedDangoSets(){
+ if(!syncState.started||!syncState.ready||syncState.pending||syncState.inFlight
+   ||ext.workEditing||importedDangoCheckBusy||importedDangoCheckedSeasons===data.seasons)return;
+ const revision=syncState.revision,seasonsRef=data.seasons;importedDangoCheckBusy=true;
+ try{
+  importedDangoAssets??=Promise.all([
+   import('./aikurumi-dango-repair.mjs?v=20261030-except01'),
+   ...['aikurumi-snapshot-stage3.json','aikurumi-snapshot.json','aikurumi-youtube-candidates.json'].map(async name=>{
+    const response=await fetch(new URL('./'+name,import.meta.url),{cache:'no-store'});
+    if(!response.ok)throw Error('당고 검수 자료를 불러오지 못했습니다.');return response.json();
+   })
+  ]).catch(error=>{importedDangoAssets=null;throw error;});
+  const [module,stage3,stage4,youtube]=await importedDangoAssets;
+  if(revision!==syncState.revision||seasonsRef!==data.seasons||syncState.inFlight||syncState.pending||ext.workEditing)return;
+  // Only identical historical generated rows are corrected. User-edited rows remain untouched.
+  const {repaired}=module.repairImportedDangoTactics(data.seasons,[stage3,stage4],youtube);
+  importedDangoCheckedSeasons=seasonsRef;
+  if(repaired){
+   const current=data.seasons[ui.month];
+   if(current){data.tactics=structuredClone(current.tactics);data.recommendations=structuredClone(current.recommendations||[]);}
+   importedDangoNeedsSave=true;
+   if(syncState.canEdit&&data.settings.editable){importedDangoNeedsSave=false;persist();}
+   render();
+  }
+ }catch(error){console.warn('당고 SET 복구 건너뜀:',error?.message||error);}
+ finally{importedDangoCheckBusy=false;}
+}
+const previousDangoRenderComplete=afterOperationalRender;
+afterOperationalRender=()=>{
+ previousDangoRenderComplete();
+ if(importedDangoNeedsSave&&syncState.canEdit&&data.settings.editable&&!syncState.inFlight&&!syncState.pending){
+  importedDangoNeedsSave=false;queueMicrotask(()=>persist());
+ }
+ if(syncState.started&&syncState.ready&&importedDangoCheckedSeasons!==data.seasons)
+  queueMicrotask(synchronizeImportedDangoSets);
+};
