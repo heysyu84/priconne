@@ -74,6 +74,6 @@ function openAppliedExternalTactic({month,stage,id}){
  if(!adminMode())return;
  if(month!==ui.month&&!activateSeason(month))return;
  ui.selectedTactic=id;ui.boss=0;ext.stage=stage;ext.comboDetails??={};
- if(stage===3){ext.openComboId=id;ext.comboDetails[id]=true;ui.tabs.tactics='combos';nav('tactics','combos');}
+ if(stage===3){ext.openComboId=null;ext.comboDetails={};ui.tabs.tactics='combos';nav('tactics','combos');}
  else{const tactic=data.tactics.find(t=>t.id===id);ext.workGroup=tactic?.category||'main';nav('tactics','workspace');}
 }
