@@ -38,9 +38,9 @@ function isVisibleDataRequest(input,options){
   return /\/(?:history-\d{4}\/[^/]+|archive-data\/[^/]+|future-bosses|aikurumi-snapshot(?:-stage3)?)\.json$/.test(path);
 }
 window.fetch=function(input,options){
-  if(!isVisibleDataRequest(input,options))return Reflect.apply(nativeFetch,this,arguments);
+  if(!isVisibleDataRequest(input,options))return Reflect.apply(nativeFetch,window,arguments);
   const complete=begin();
-  try{return Promise.resolve(Reflect.apply(nativeFetch,this,arguments)).finally(complete);}
+  try{return Promise.resolve(Reflect.apply(nativeFetch,window,arguments)).finally(complete);}
   catch(error){complete();throw error;}
 };
 })();
