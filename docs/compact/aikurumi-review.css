@@ -17,3 +17,4 @@
 @media(max-width:760px){.review-listpane{scroll-margin-top:100px}}
 
 .review-grid tr.needs-review .review-instruction{background:color-mix(in srgb,#ffb94a 14%,var(--review-surface));border-left:3px solid #d69a37}
+.review-row-count{white-space:nowrap;font-variant-numeric:tabular-nums}
