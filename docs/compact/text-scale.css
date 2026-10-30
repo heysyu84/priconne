@@ -1151,6 +1151,11 @@ html[data-text-scale] .data-table.battle-mobile-table .mobile-log-damage>strong{
 html[data-text-scale] .data-table.battle-mobile-table .mobile-log-member .member-link{font-size:inherit!important}
 html[data-text-scale] .data-table.battle-mobile-table .type-tag{font-size:calc((10px) * var(--text-scale,1))!important}
 }
+html[data-text-scale] .stage3-combo-card .combo-heading [data-action=stage3-delete]{font-size:calc((11px) * var(--text-scale,1))!important}
+html[data-text-scale] .stage3-combo-card .unit strong{font-size:calc((12px) * var(--text-scale,1))!important}
+html[data-text-scale] .stage3-combo-card .combo-metadata dt{font-size:calc((11px) * var(--text-scale,1))!important}
+html[data-text-scale] .stage3-combo-card .combo-metadata dd{font-size:calc((15px) * var(--text-scale,1))!important}
+html[data-text-scale] .stage3-combo-card .combo-metadata .star-sequence{font-size:calc((14px) * var(--text-scale,1))!important}
 @media(min-width:761px){
 html[data-text-scale] .combo-heading .boss-tag,
 html[data-text-scale] .combo-heading .combo-category{font-size:calc((12px) * var(--text-scale,1))!important}
@@ -1182,6 +1187,7 @@ html[data-text-scale] .boss-config-table .boss-art-label{font-size:calc((10px) *
 @media(max-width:760px){
 html[data-text-scale] .combo-heading .boss-tag,
 html[data-text-scale] .combo-heading .combo-category{font-size:calc((12px) * var(--text-scale,1))!important}
+html[data-text-scale] .stage3-combo-card .unit strong{font-size:calc((clamp(9px,3.8cqw,12px)) * var(--text-scale,1))!important}
 html[data-text-scale] .data-table.boss-config-table tbody th{font-size:calc((13px) * var(--text-scale,1))!important}
 html[data-text-scale] .boss-config-table .boss-name-label{font-size:calc((11px) * var(--text-scale,1))!important}
 html[data-text-scale] .boss-config-table .boss-art-label{font-size:calc((11px) * var(--text-scale,1))!important}

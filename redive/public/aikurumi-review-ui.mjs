@@ -1,4 +1,4 @@
-import {buildReviewItems,reviewDraft,stage3LineupDraft,validateReviewDraft,damageLabel,findImportedTactic,safeUrl,isYouTube} from './aikurumi-review-model.mjs?v=20261030-review05';
+import {buildReviewItems,reviewDraft,stage3LineupDraft,validateReviewDraft,damageLabel,findImportedTactic,safeUrl,isYouTube} from './aikurumi-review-model.mjs?v=20261030-review06';
 import {findNonOverlappingStage3} from './aikurumi-stage3-composer.mjs';
 import {previewAikurumiTactic} from './aikurumi-tactic-review.mjs';
 
@@ -97,6 +97,7 @@ class ReviewWorkspace{
   return '<button type="button" class="review-item '+(item.key===this.selected?'active':'')+'" data-review-action="select" data-key="'+escape(item.key)+'" aria-current="'+(item.key===this.selected)+'">'
    +'<span class="review-item-top"><b class="review-boss review-boss-'+item.boss+'">'+item.boss+'넴</b><strong>'+damageLabel(item.damage.value)+'</strong><span class="review-badge '+state+'">'+label+'</span></span>'
    +'<strong class="review-item-party">'+escape(item.party.join(' · '))+'</strong><span class="review-item-meta">'+escape(item.creator)+' · '+escape(item.operationLabel)
+   +' · <span class="review-row-count">출력 '+this.draft(item).rows.length+'행</span>'
    +(item.stage===3&&item.carry!==null?' · 이월 '+time(item.carry):'')+'</span></button>';
  }
  detailView(item){
@@ -110,7 +111,7 @@ class ReviewWorkspace{
   const sourceNotice=youtube?(item.candidate?.status==='video-timeline-only'?'영상 화면의 TL · 설명란 본문 없음':item.candidate?.rows?.length?
    (item.candidate.tacticLocation==='author-comment'?'작성자 댓글 TL':'설명란 TL')+' · '+item.candidate.rows.length+'행 수집':'일본어 TL 구간 확인 필요'):
    (isYouTube(item.link.link)?'설명란·작성자 댓글 TL 없음 · ai쿠루미 TL 사용':'ai쿠루미 TL');
-  return '<div class="review-detail-heading"><div><span class="review-badge '+state+'">'+label+'</span><h3>'+item.boss+'넴 · '+escape(this.bossName(item))+'</h3><p>'+escape(item.creator)+' · '+escape(item.operationLabel)+'</p></div><div class="review-detail-nav">'
+  return '<div class="review-detail-heading"><div><span class="review-badge '+state+'">'+label+'</span><h3>'+item.boss+'넴 · '+escape(this.bossName(item))+'</h3><p>'+escape(item.creator)+' · '+escape(item.operationLabel)+' · <span class="review-row-count">출력 '+draft.rows.length+'행</span></p></div><div class="review-detail-nav">'
    +button('목록','list')+button('이전','previous','aria-label="이전 택틱"')+button('다음','next','aria-label="다음 택틱"')+'</div></div>'
    +'<div class="review-party">'+names+'</div>'
    +'<section class="review-metadata"><div class="review-section-heading"><h4>기대딜</h4><span>'+escape(item.damage.basis)+'</span></div>'
@@ -182,7 +183,10 @@ class ReviewWorkspace{
       +(items.every(i=>i&&this.existing(i))?button('등록한 조합 열기','open-group','data-index="'+index+'"'):''):'')+'</section>';
    }).join('')+'</div>';
  }
- drawDetail(){const root=this.root.querySelector('.review-detail');if(root)root.innerHTML=this.detailView(this.current());}
+ drawDetail(){
+  const item=this.current(),root=this.root.querySelector('.review-detail');if(root)root.innerHTML=this.detailView(item);
+  const count=this.root.querySelector('.review-item.active .review-row-count');if(count&&item)count.textContent='출력 '+this.draft(item).rows.length+'행';
+ }
  applyBlockReason(item,draft){
   if(this.pending)return '저장 중…';
   if(!this.context().seasons?.[item.month]&&!draft.createMonth)return item.month.replace('-','.')+' 월을 새로 만들고 적용하려면 체크해 주세요.';
@@ -237,7 +241,8 @@ class ReviewWorkspace{
   if(kind==='view'){this.view=action.dataset.value;this.draw();return;}
   if(kind==='select'){
    const next=this.items.find(i=>i.key===action.dataset.key);if(!next)return;
-   this.stage=next.stage;this.boss='all';this.status='all';this.operation='all';this.query='';this.selected=next.key;this.view='tactics';this.listOpen=false;this.draw();
+   if(this.view!=='tactics'){this.stage=next.stage;this.boss='all';this.status='all';this.operation='all';this.query='';}
+   this.selected=next.key;this.view='tactics';this.listOpen=false;this.draw();
    this.root.querySelector('.review-detail')?.scrollIntoView({block:'start',behavior:'smooth'});return;
   }
   if(kind==='list'){this.listOpen=true;this.draw();this.root.querySelector('.review-listpane')?.scrollIntoView({block:'start',behavior:'smooth'});return;}

@@ -21,6 +21,33 @@ test('standalone reader has no application writer and inspecting sources never w
  const {workspace,root,writes}=fixture();await workspace.load();assert.doesNotMatch(root.innerHTML,/data-review-action="apply"/);
  await workspace.apply([workspace.current()]);assert.equal(writes.length,0);
 });
+test('selecting a filtered tactic preserves the boss, type, status, search and filtered navigation',async()=>{
+ const {workspace,root}=fixture();await workspace.load();
+ const item=workspace.items.find(i=>i.stage===4&&i.boss===1&&i.source==='youtube');assert.ok(item);
+ Object.assign(workspace,{stage:4,boss:'1',operation:item.operation,status:'youtube',query:item.party[0]});workspace.draw();
+ const before=workspace.visible().map(i=>i.key),chosen=workspace.visible().at(-1);assert.ok(chosen);
+ const click=(kind,key)=>workspace.event({type:'click',target:{closest:()=>({dataset:{reviewAction:kind,key}})},preventDefault(){}});
+ click('select',chosen.key);
+ assert.equal(workspace.selected,chosen.key);assert.equal(workspace.stage,4);assert.equal(workspace.boss,'1');
+ assert.equal(workspace.operation,item.operation);assert.equal(workspace.status,'youtube');assert.equal(workspace.query,item.party[0]);
+ assert.deepEqual(workspace.visible().map(i=>i.key),before);
+ assert.match(root.innerHTML,/data-review-filter="boss"[^>]*>[\s\S]*?<option value="1" selected>1넴<\/option>/);
+ click('next');assert.equal(workspace.selected,before[0]);assert.equal(workspace.boss,'1');
+ assert.deepEqual(workspace.visible().map(i=>i.key),before);
+});
+test('the title metadata shows the displayed row count, including row edits and empty timelines',async()=>{
+ const {workspace,root}=fixture();await workspace.load();
+ const item=workspace.items.find(i=>i.stage===4&&i.candidate?.rows?.length);assert.ok(item);
+ workspace.selected=item.key;const draft=workspace.draft(item),initial=draft.rows.length;
+ assert.match(workspace.detailView(item),new RegExp('review-row-count">출력 '+initial+'행'));
+ assert.match(workspace.listItem(item),new RegExp('review-row-count">출력 '+initial+'행'));
+ const detail={innerHTML:''},listCount={textContent:''};
+ root.querySelector=selector=>selector==='.review-detail'?detail:selector==='.review-item.active .review-row-count'?listCount:null;
+ const click=(kind,index)=>workspace.event({type:'click',target:{closest:()=>({dataset:{reviewAction:kind,index}})},preventDefault(){}});
+ click('add-row');assert.match(detail.innerHTML,new RegExp('출력 '+(initial+1)+'행'));assert.equal(listCount.textContent,'출력 '+(initial+1)+'행');
+ click('remove-row','0');assert.equal(listCount.textContent,'출력 '+initial+'행');
+ draft.rows=[];workspace.drawDetail();assert.match(detail.innerHTML,/출력 0행/);assert.equal(listCount.textContent,'출력 0행');
+});
 test('administrator application stays blocked until reviewed, then sends structured SET rows',async()=>{
  const {workspace,writes}=fixture(true);await workspace.load();const item=workspace.items.find(i=>i.stage===4&&i.preview.matchedKoreanNames&&!i.damage.ambiguous);
  workspace.selected=item.key;const draft=workspace.draft(item);draft.rows=[{text:'1:30 전부 SET, AUTO 온',checked:Array(6).fill(true)}];

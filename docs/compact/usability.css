@@ -702,6 +702,20 @@ form[data-form="v2-tactic"] #tactic-text{display:block;width:100%;min-width:0;mi
 .combo-source-box{width:100%;height:100%;min-height:39px;display:flex;align-items:center;justify-content:center;padding:0;border:1px solid color-mix(in srgb,var(--boss) 40%,var(--line));border-radius:7px;box-shadow:none;background:color-mix(in srgb,var(--surface) 85%,#d9ceef);color:var(--boss-ink)}
 .combo-source-box>span{display:none}.combo-source-box.missing{opacity:1;cursor:default}
 .combo-source-box .video-play{width:24px;height:18px}.combo-source-box .source-document{width:23px;height:23px}
+/* Stage 3 uses the source column's space for the party and battle conditions. */
+.combo-card.stage3-combo-card{grid-template-columns:60px minmax(250px,1.1fr) minmax(0,1fr);gap:12px;padding:14px 12px}
+.combo-card.stage3-combo-card .combo-heading{display:grid;grid-template-columns:minmax(0,1fr);gap:5px}
+.stage3-combo-card .combo-heading .boss-tag,.stage3-combo-card .combo-heading .combo-category{grid-column:1;width:100%}
+.stage3-combo-card .combo-heading [data-action=stage3-delete]{grid-column:1;width:100%;min-height:25px;padding:3px 5px;font-size:11px}
+.stage3-combo-card .combo-party{grid-column:2;grid-row:1;min-width:0}
+.stage3-combo-card .party{gap:6px;max-width:none}
+.stage3-combo-card .unit-face{width:44px;height:44px}
+.stage3-combo-card .unit strong{font-size:12px}
+.combo-card.stage3-combo-card .combo-metadata{grid-column:3;grid-row:1;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;align-items:stretch}
+.stage3-combo-card .combo-metadata>div,.stage3-combo-card .combo-metadata>div.combo-stars{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;min-height:52px;padding:7px 4px}
+.stage3-combo-card .combo-metadata dt{font-size:11px;line-height:1.3}
+.stage3-combo-card .combo-metadata dd{font-size:15px;line-height:1.3;white-space:normal;overflow-wrap:anywhere;text-align:center}
+.stage3-combo-card .combo-metadata .star-sequence{font-size:14px;letter-spacing:0}
 @media(min-width:761px){
   .combo-card{grid-template-columns:74px minmax(215px,1fr) minmax(280px,300px) 44px;gap:8px;padding:10px}
   .combo-card .combo-heading{display:grid;grid-template-columns:14px 54px;gap:4px 6px;align-content:center;align-items:center;justify-content:start}
@@ -776,6 +790,14 @@ form[data-form="v2-tactic"] #tactic-text{display:block;width:100%;min-width:0;mi
   .combo-metadata>div{display:flex;flex-direction:column;padding:4px 2px;gap:2px;min-height:38px}
   .combo-card .combo-metadata>.combo-link-cell{min-width:0;max-width:none;display:flex}
   .combo-source-box{min-height:38px}
+  .combo-card.stage3-combo-card{grid-template-columns:60px minmax(0,1fr);gap:10px;padding:12px 9px}
+  .combo-card.stage3-combo-card .combo-heading{grid-template-columns:minmax(0,1fr);gap:5px}
+  .stage3-combo-card .combo-party{grid-column:2;grid-row:1}
+  .stage3-combo-card .party{gap:4px}
+  .stage3-combo-card .unit-face{width:clamp(30px,16cqw,46px);height:auto;aspect-ratio:1}
+  .stage3-combo-card .unit strong{font-size:clamp(9px,3.8cqw,12px)}
+  .combo-card.stage3-combo-card .combo-metadata{grid-column:1/-1;grid-row:2;gap:7px}
+  .stage3-combo-card .combo-metadata>div,.stage3-combo-card .combo-metadata>div.combo-stars{min-height:48px;padding:6px 3px}
   #attack-entry .quick-log>.quick-damage{grid-column:1;grid-row:2}
   #attack-entry .quick-log>.quick-bonus{grid-column:2;grid-row:2}
   #attack-entry .quick-log>.quick-carry{grid-column:1;grid-row:3;align-self:center}
