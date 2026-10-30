@@ -1,7 +1,7 @@
-import {buildReviewItems,reviewDraft,stage3LineupDraft,validateReviewDraft,damageLabel,floorDamage,findImportedTactic,safeUrl,isYouTube} from './aikurumi-review-model.mjs?v=20261030-set-sync02';
+import {buildReviewItems,reviewDraft,stage3LineupDraft,validateReviewDraft,damageLabel,floorDamage,findImportedTactic,safeUrl,isYouTube} from './aikurumi-review-model.mjs?v=20261030-dango03';
 import {findNonOverlappingStage3} from './aikurumi-stage3-composer.mjs';
-import {recalculateSetRows} from './tactic-set-state.mjs?v=20261030-set-sync02';
-import {previewAikurumiTactic} from './aikurumi-tactic-review.mjs?v=20261030-once01';
+import {recalculateSetRows} from './tactic-set-state.mjs?v=20261030-dango03';
+import {previewAikurumiTactic} from './aikurumi-tactic-review.mjs?v=20261030-dango03';
 
 const escape=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const time=value=>value===null||value===''||value===undefined?'—':Math.floor(Number(value)/60)+':'+String(Number(value)%60).padStart(2,'0');
