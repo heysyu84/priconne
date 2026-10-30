@@ -100,7 +100,7 @@ export function reviewDraft(item){
   tp:item.conditions.tp,category:item.task.type===1&&item.stage===4?'carry':'main',support:-1,
   duration:90,requiredCarrySeconds:'',carry:item.stage===3?item.carry??'':'',
   note:item.conditions.fields.map(f=>f.label+': '+f.value).join('\n'),
-  rows:item.rows.map(row=>({text:String(row.text||''),checked:[...(row.checked||Array(6).fill(false))],needsReview:row.needsReview===true})),
+  rows:item.rows.map(row=>({text:String(row.text||''),checked:[...(row.checked||Array(6).fill(false))],needsReview:row.needsReview===true,manualChecks:false})),
   source:item.source,confirmed:false,createMonth:false,edited:false};
 }
 
@@ -138,7 +138,7 @@ export function validateReviewDraft(item,draft){
 
 export function buildReviewedTactic(item,draft,{id,now=new Date().toISOString()}={}){
  const errors=validateReviewDraft(item,draft);if(errors.length)throw Error(errors[0]);
- const rows=draft.rows.map((r,i)=>({id:id+'-r'+i,text:r.text.trim(),checked:[...r.checked],manualChecks:true}));
+ const rows=draft.rows.map((r,i)=>({id:id+'-r'+i,text:r.text.trim(),checked:[...r.checked],manualChecks:r.manualChecks===true}));
  const externalSource={key:item.sourceKey,taskId:item.task.id,linkIndex:item.link.index??item.ordinal,
   linkOrdinal:item.ordinal,month:item.month,stage:item.stage,source:draft.source,
   url:safeUrl(item.link.link),reviewedAt:now,reviewScope:draft.lineupOnly?'lineup':'timeline',operation:item.operation};
