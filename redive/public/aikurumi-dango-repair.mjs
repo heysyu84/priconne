@@ -1,6 +1,7 @@
 // Correct previously imported, unmodified YouTube TL rows from the
 // matching source-linked dango snapshots. Never overwrite user edits.
 import {previewAikurumiTactic} from './aikurumi-tactic-review.mjs?v=20261030-dango03';
+import {commandState} from './tactic-set-state.mjs?v=20261030-set-sync02';
 
 const identical=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
 const matchesOriginal=(saved,source)=>saved?.text===source?.text
@@ -35,7 +36,21 @@ export function repairImportedDangoTactics(seasons,snapshots,youtube){
       const generated=source.rows;
       const missingArtifact=generated.length===saved.length+1&&/^\s*(?:ㄴ\s*)?\[원문 확인:\s*ver\.\s*\]$/i.test(generated.at(-1)?.text||'');
       const exactSource=saved.length===generated.length||missingArtifact;
-      if(!exactSource||!saved.every((r,i)=>matchesOriginal(r,generated[i]))){skipped++;continue;}
+      const originalMatch=exactSource&&saved.every((r,i)=>matchesOriginal(r,generated[i]));
+      // Older (pre-fix) imports began with AUTO ON but omitted five SET flags.
+      // Accept them only if every row still matches its own textual commands.
+      const sameTimes=saved.length===preview.rows.length&&saved.every((row,i)=>{
+       const clock=value=>String(value||'').match(/^\s*(\d{1,2}:[0-5]\d)\b/)?.[1]||'';
+       return clock(row.text)===clock(preview.rows[i].text);
+      });
+      let previous=[false,false,false,false,false,false];
+      const autoOnlyLegacy=!!sameTimes&&/^\s*AUTO\s*(?:ON|온)\s*$/i.test(saved[0]?.text||'')
+       &&saved.every(row=>{
+        const expected=commandState(row.text,previous,existing.party||preview.matchedKoreanNames||[]);
+        const correct=identical(row.checked?.map(Boolean),expected);
+        previous=expected;return correct;
+       });
+      if(!originalMatch&&!autoOnlyLegacy){skipped++;continue;}
       const corrected=preview.rows.map((row,i)=>({
        ...(saved[i]||{id:existing.id+'-dango-'+i}),
        text:row.text,checked:[...row.checked],manualChecks:false
