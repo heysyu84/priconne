@@ -34,5 +34,9 @@ test('editing a reviewed condition clears verification and does not silently app
 });
 test('video grouping and stage-3 solver lead back to specific reviewed source links',async()=>{
  const {workspace}=fixture();await workspace.load();assert.match(workspace.videoView(),/3단계/);assert.match(workspace.videoView(),/4단계/);
- assert.match(workspace.composeView(),/캐릭터 중복 없는 조합/);assert.equal(workspace.solutions[0].length,5);assert.ok(workspace.solutions[0].every(Boolean));
+ assert.match(workspace.composeView(),/풀오토 · 1~5넴 캐릭터 중복 없는 조합/);assert.equal(workspace.solutions[0].length,5);assert.ok(workspace.solutions[0].every(Boolean));
+ for(const solution of workspace.solutions){
+  assert.ok(solution.every(item=>item.stage===3&&item.operation==='full-auto'));
+  assert.equal(new Set(solution.flatMap(item=>item.task.charas.map(c=>c.prefabId))).size,25);
+ }
 });
