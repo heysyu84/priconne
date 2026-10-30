@@ -1,0 +1,16 @@
+.nyang-loading-indicator{
+  position:fixed;right:max(15px,env(safe-area-inset-right));bottom:calc(17px + env(safe-area-inset-bottom));
+  z-index:700;display:flex;align-items:center;gap:2px;pointer-events:none;
+  padding:5px 9px 5px 3px;border-radius:12px;
+  background:rgba(14,20,34,.78);color:#fff;box-shadow:0 2px 14px rgba(0,0,0,.16);
+  max-width:calc(100vw - 24px);white-space:nowrap;
+}
+.nyang-loading-indicator[hidden]{display:none!important}
+.nyang-loading-silhouette{width:46px;height:50px;flex:none;overflow:visible;animation:nyang-loader-bob .55s ease-in-out infinite alternate;transform-origin:50% 55%}
+.nyang-loading-letters{display:flex;align-items:baseline;font-size:16px;font-family:Arial,'Apple SD Gothic Neo',sans-serif;font-weight:500;letter-spacing:-.6px;line-height:1}
+.nyang-loading-char{display:inline-block;animation:nyang-loader-wave 1.3s ease-in-out infinite;animation-delay:calc(var(--i)*65ms)}
+.nyang-loading-space{display:inline-block;width:4px}
+@keyframes nyang-loader-bob{from{transform:translateY(2px) rotate(-3deg)}to{transform:translateY(-2px) rotate(3deg)}}
+@keyframes nyang-loader-wave{0%,24%,78%,100%{transform:translateY(0)}46%{transform:translateY(-5px)}}
+@media(max-width:600px){.nyang-loading-indicator{right:12px;bottom:calc(14px + env(safe-area-inset-bottom));padding:3px 7px 3px 1px}.nyang-loading-silhouette{width:39px;height:44px}.nyang-loading-letters{font-size:14px}}
+@media(prefers-reduced-motion:reduce){.nyang-loading-silhouette,.nyang-loading-char{animation:none}}
