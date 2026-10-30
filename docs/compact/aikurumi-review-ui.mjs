@@ -164,13 +164,14 @@ class ReviewWorkspace{
  }
  composeView(){
   const snapshot=this.snapshots.find(s=>s.stage===3);if(!snapshot)return '';
-  const result=findNonOverlappingStage3(snapshot,{operation:'all',limit:3});this.solutions=[];
-  return '<div class="review-compose"><div class="review-section-heading"><h3>1~5넴 · 캐릭터 중복 없는 조합</h3></div>'
+  const result=findNonOverlappingStage3(snapshot,{operation:'full-auto',limit:3});this.solutions=[];
+  return '<div class="review-compose"><div class="review-section-heading"><h3>풀오토 · 1~5넴 캐릭터 중복 없는 조합</h3></div>'
+   +(!result.solutions.length?'<p class="review-empty">풀오토만으로 캐릭터가 겹치지 않는 1~5넴 조합을 찾지 못했습니다.</p>':'')
    +result.solutions.map((solution,index)=>{
-    const items=solution.lineup.map(row=>this.items.find(i=>i.stage===3&&i.boss===row.boss&&i.task.id===row.taskId&&String(i.link.index)===String(row.sourceLinkIndex)));
+    const items=solution.lineup.map(row=>this.items.find(i=>i.stage===3&&i.operation==='full-auto'&&i.boss===row.boss&&i.task.id===row.taskId&&String(i.link.index)===String(row.sourceLinkIndex)&&String(i.link.link||'')===row.sourceLink&&String(i.link.name||'')===row.sourceTitle));
     this.solutions.push(items);const verified=items.filter(i=>i&&this.draft(i).confirmed).length;
     return '<section class="review-compose-result"><div class="review-section-heading"><h4>'+(index?'대체 조합 '+index:'우선 추천')+'</h4><span>검수 '+verified+' / 5</span></div><div class="review-compose-bosses">'
-     +solution.lineup.map((row,n)=>'<div><b class="review-boss review-boss-'+row.boss+'">'+row.boss+'넴</b><strong>'+escape(row.characterNames.join(' · '))+'</strong><span>예상 이월 '+time(row.carry?.seconds)+'</span>'
+     +solution.lineup.map((row,n)=>'<div><b class="review-boss review-boss-'+row.boss+'">'+row.boss+'넴</b><strong>'+escape(row.characterNames.join(' · '))+'</strong><span>풀오토 · 예상 이월 '+time(row.carry?.seconds)+'</span>'
       +(items[n]?button(this.draft(items[n]).confirmed?'검수 완료':'검수하기','select','data-key="'+escape(items[n].key)+'"'):'')+'</div>').join('')+'</div>'
      +(this.canApply()?(!this.context().seasons?.[snapshot.krMonth]?'<label class="review-confirm"><input type="checkbox" data-review-group-create '+(this.createMonthForGroup?'checked':'')+'> '+snapshot.krMonth.replace('-','.')+' 월을 새로 만들고 적용</label>':'')
       +button('검수한 5개 조합 적용','apply-group','data-index="'+index+'" '+(verified===5&&(this.context().seasons?.[snapshot.krMonth]||this.createMonthForGroup)?'':'disabled')):'')+'</section>';
