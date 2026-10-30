@@ -17,7 +17,7 @@ async function mountExternalReview(){
  const root=document.getElementById('external-tactic-review');
  if(!root||!adminMode()||ui.section!=='tactics'||ui.tabs.tactics!=='review')return;
  try{
-  externalReviewLoading??=Promise.all([import('./aikurumi-review-ui.mjs?v=20261030-yt-first04'),import('./aikurumi-review-model.mjs?v=20261030-yt-first04')]);
+  externalReviewLoading??=Promise.all([import('./aikurumi-review-ui.mjs?v=20261030-except01'),import('./aikurumi-review-model.mjs?v=20261030-except01')]);
   const [uiModule,model]=await externalReviewLoading;externalReviewModule=model;
   if(!adminMode()||document.getElementById('external-tactic-review')!==root)return;
   externalReviewController??=uiModule.createExternalReview({getContext:externalReviewContext,
@@ -86,7 +86,7 @@ async function synchronizeImportedDangoSets(){
  const revision=syncState.revision,seasonsRef=data.seasons;importedDangoCheckBusy=true;
  try{
   importedDangoAssets??=Promise.all([
-   import('./aikurumi-dango-repair.mjs?v=20261030-yt-first04'),
+   import('./aikurumi-dango-repair.mjs?v=20261030-except01'),
    ...['aikurumi-snapshot-stage3.json','aikurumi-snapshot.json','aikurumi-youtube-candidates.json'].map(async name=>{
     const response=await fetch(new URL('./'+name,import.meta.url),{cache:'no-store'});
     if(!response.ok)throw Error('당고 검수 자료를 불러오지 못했습니다.');return response.json();

@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import {commandState,recalculateSetRows} from '../public/tactic-set-state.mjs';
 import {commandState as workspaceCommand,recalculateTacticRows} from '../public/compat/tactics-model.mjs';
+import {convertForeignTactic} from '../public/tactic-parser.mjs';
 
 const party=['바이올렛','캬루','스미레(바이올렛)','수레시아','수리아'];
 const bits=values=>values.map(Boolean);
@@ -40,4 +41,27 @@ test('editing one row recalculates downstream auto rows, but respects checked ov
   recalculateTacticRows(rows,party,[],1);
   assert.deepEqual(rows[2].checked,bits([0,0,0,0,1,0]));
   assert.deepEqual(rows[3].checked,bits([1,1,1,1,1,1]));
+});
+
+test('short exclusion commands preserve the named member for both starting states and AUTO settings',()=>{
+ for(let excluded=0;excluded<5;excluded++)for(const enabled of [false,true])for(const excludedState of [false,true]){
+  const before=Array(6).fill(!enabled);before[excluded]=excludedState;
+  const expected=Array(6).fill(enabled);expected[excluded]=excludedState;expected[5]=before[5];
+  const line=party[excluded]+' 제외 '+(enabled?'ON':'OFF');
+  assert.deepEqual(commandState(line,before,party),expected,line);
+  assert.deepEqual(workspaceCommand(line,before,party),expected,line);
+ }
+ assert.deepEqual(commandState('스미레(바이올렛) 후 캬루 한번만, 캬루 제외 SET, AUTO ON',[],party),bits([1,0,1,1,1,1]));
+});
+
+test('converted exclusion rows retain identical SET flags when the workspace recalculates them',()=>{
+ for(const source of [
+  '1:30 ○○✕○○ AUTO ON\n0:30 ✕✕✕✕✕\n0:20 ○○✕○○',
+  '1:30 ○○○○○ AUTO ON\n0:30 ✕✕○✕✕',
+  '1:30 ✕✕✕✕✕ AUTO OFF\n0:59 キャラ5 ○○○○○\nキャラ2 ○✕○○○'
+ ]){
+  const result=convertForeignTactic(source,party),rows=structuredClone(result.rows);
+  recalculateSetRows(rows,party);
+  assert.deepEqual(rows.map(row=>row.checked),result.rows.map(row=>row.checked),source);
+ }
 });

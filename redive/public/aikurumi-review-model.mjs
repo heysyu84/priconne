@@ -1,4 +1,4 @@
-import {previewAikurumiTactic} from './aikurumi-tactic-review.mjs?v=20261030-yt-first04';
+import {previewAikurumiTactic} from './aikurumi-tactic-review.mjs?v=20261030-except01';
 import {classifySourceTactic,OPERATION_LABELS} from './aikurumi-operation-types.mjs';
 import {parseStage3CarryTime} from './aikurumi-stage3-carry.mjs';
 import {selectPrimaryTacticSource} from './aikurumi-source-priority.mjs';

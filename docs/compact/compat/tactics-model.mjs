@@ -1,6 +1,6 @@
 import { makeId } from './roster.mjs';
 import { shiftTimeline } from './engine.mjs';
-import {commandState,recalculateSetRows} from '../tactic-set-state.mjs?v=20261030-set-sync02';
+import {commandState,recalculateSetRows} from '../tactic-set-state.mjs?v=20261030-except01';
 export {commandState};
 
 export const CARRY_GROUP = '이월 택틱';

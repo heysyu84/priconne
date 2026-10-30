@@ -1,7 +1,7 @@
-import {buildReviewItems,reviewDraft,stage3LineupDraft,validateReviewDraft,damageLabel,floorDamage,findImportedTactic,safeUrl,isYouTube} from './aikurumi-review-model.mjs?v=20261030-yt-first04';
+import {buildReviewItems,reviewDraft,stage3LineupDraft,validateReviewDraft,damageLabel,floorDamage,findImportedTactic,safeUrl,isYouTube} from './aikurumi-review-model.mjs?v=20261030-except01';
 import {findNonOverlappingStage3} from './aikurumi-stage3-composer.mjs';
-import {recalculateSetRows} from './tactic-set-state.mjs?v=20261030-yt-first04';
-import {previewAikurumiTactic} from './aikurumi-tactic-review.mjs?v=20261030-yt-first04';
+import {recalculateSetRows} from './tactic-set-state.mjs?v=20261030-except01';
+import {previewAikurumiTactic} from './aikurumi-tactic-review.mjs?v=20261030-except01';
 
 const escape=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const time=value=>value===null||value===''||value===undefined?'—':Math.floor(Number(value)/60)+':'+String(Number(value)%60).padStart(2,'0');
@@ -39,7 +39,10 @@ class ReviewWorkspace{
     if(values[2].schema!=='nyang-youtube-tactic-candidates-v1'||!Array.isArray(values[2].references))throw Error('유튜브 수집 자료를 확인하지 못했습니다.');
     this.snapshots=values.slice(0,2);this.youtube=values[2];
     this.items=this.snapshots.flatMap(s=>buildReviewItems(s,this.youtube));this.ready=true;
-    for(const draft of this.drafts.values())draft.confirmed=false;
+    for(const [key,draft]of this.drafts){
+     if(draft.edited)draft.confirmed=false;
+     else this.drafts.delete(key);
+    }
     if(!this.items.some(i=>i.key===this.selected))this.selected=this.visible()[0]?.key||'';
    }catch(error){this.error=error.message;}
    finally{this.loading=null;this.draw();}

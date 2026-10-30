@@ -78,6 +78,46 @@ test('explicit sequential ON with Japanese 順に retains source ordering',()=>{
   assert.match(r.text,/A, B 순으로 ON/);
 });
 
+test('four simultaneous SET changes become an exclusion without changing the excluded slot or AUTO',()=>{
+ for(let excluded=0;excluded<5;excluded++){
+  const mask=Array.from({length:5},(_,i)=>i===excluded?'○':'✕').join('');
+  const off=convertForeignTactic('1:30 ○○○○○ AUTO ON\n0:30 '+mask,names);
+  assert.equal(off.rows[1].instruction,names[excluded]+' 제외 OFF');
+  assert.deepEqual(off.rows[1].checked,[...names.map((_,i)=>i===excluded),true]);
+  const onMask=Array.from({length:5},(_,i)=>i===excluded?'✕':'○').join('');
+  const on=convertForeignTactic('1:30 ✕✕✕✕✕ AUTO OFF\n0:30 '+onMask,names);
+  assert.equal(on.rows[1].instruction,names[excluded]+' 제외 ON');
+  assert.deepEqual(on.rows[1].checked,[...names.map((_,i)=>i!==excluded),false]);
+  const initial=convertForeignTactic('1:30 '+onMask+' AUTO ON',names);
+  assert.equal(initial.rows[0].instruction,'AUTO 온, '+names[excluded]+' 제외 SET');
+ }
+});
+
+test('explicit four-member commands and arrow masks share exclusion formatting',()=>{
+ const party=['A','B','C','D','E'];
+ for(const [source,expected]of [
+  ['1:30 全SET AUTO ON\n0:30 A、B、D、E OFF','C 제외 OFF'],
+  ['1:30 全OFF AUTO OFF\n0:30 A、B、D、E ON','C 제외 ON'],
+  ['1:30 全SET AUTO ON\n0:30 キャラ5 ○○○○○ → ✕✕○✕✕','C 제외 OFF']
+ ]){
+  const result=convertForeignTactic(source,party);
+  assert.equal(result.rows[1].instruction,expected,source);assert.equal(result.warnings.length,0);
+ }
+});
+
+test('exclusion formatting preserves once-only precedence, explicit order and actual changed targets',()=>{
+ const party=['A','B','C','D','E'];
+ const once=convertForeignTactic('1:30 全OFF AUTO OFF\n0:59 E ○○○○○\nC ○○✕○○',party);
+ assert.equal(once.rows[1].instruction,'C 한번만, C 제외 ON');
+ assert.deepEqual(once.rows[1].checked,[true,true,false,true,true,false]);
+ const ordered=convertForeignTactic('1:30 全OFF AUTO OFF\n0:30 キャラ1、キャラ2、キャラ4、キャラ5 順にON',party);
+ assert.equal(ordered.rows[1].instruction,'A, B, D, E 순으로 ON');
+ const steps=convertForeignTactic('1:30 全OFF AUTO OFF\n0:30 キャラ5 ○○✕✕✕ → ○○✕○○',party);
+ assert.equal(steps.rows[1].instruction,'B, A, E, D 순으로 ON');
+ const unchanged=convertForeignTactic('1:30 ○✕○○○ AUTO ON\n0:30 ✕✕○✕✕',party);
+ assert.equal(unchanged.rows[1].instruction,'E, D, A OFF');
+});
+
 test('unrecognized instructions raise a warning instead of disappearing',()=>{
   const r=convertForeignTactic('全SET 自动ON\n0:30 触发未知機制',names,aliases);
   assert.ok(r.warnings.length>0);

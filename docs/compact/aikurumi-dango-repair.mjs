@@ -1,6 +1,6 @@
 // Legacy recovery: restore YouTube-derived SET rows only when a previous
 // dango fallback was copied verbatim. Never replace YouTube TL with Chinese TL.
-import {previewAikurumiTactic} from './aikurumi-tactic-review.mjs?v=20261030-yt-first04';
+import {previewAikurumiTactic} from './aikurumi-tactic-review.mjs?v=20261030-except01';
 
 const equal=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
 const identicalRows=(a,b)=>a?.length===b?.length&&a.every((r,i)=>

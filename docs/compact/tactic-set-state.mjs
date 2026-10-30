@@ -56,13 +56,13 @@ export function commandState(text, previous = [], characters = [], catalog = [])
     // The actor preceding "후" is a trigger, not a SET target.
     const triggers = [...subject.matchAll(TRIGGER)];
     if (triggers.length) subject = subject.slice(triggers.at(-1).index + triggers.at(-1)[0].length);
-    const wholeParty = FULL.test(subject);
+    const exceptions = subject.includes('제외') ? namedSlots(subject, matcher) : [];
+    const wholeParty = FULL.test(subject) || exceptions.length > 0;
     const auto = AUTO.test(subject);
     if (action === '한번만') continue; // A single UB does not change the persistent SET flag.
     const enabled = action === 'ON' || action === 'SET' || action === '온' || action === '켜기';
     if (auto) state[5] = enabled;
     if (wholeParty) {
-      const exceptions = subject.includes('제외') ? namedSlots(subject, matcher) : [];
       // Also support "전부 OFF (캬루 제외)".
       const after = source.slice(end).match(/^\s*[(（]([^()（）]{1,100}제외[^()（）]{0,40})[)）]/u);
       if (after) exceptions.push(...namedSlots(after[1], matcher));

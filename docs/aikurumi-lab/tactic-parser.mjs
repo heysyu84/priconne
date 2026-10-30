@@ -403,6 +403,19 @@ export function convertForeignTactic(raw, koreanNames=[], foreignNames=[], bossN
    const merged={...a,checked:[...b.checked],text:a.text.slice(0,-a.instruction.length)+instruction,instruction,source:[a.source,b.source].join('\n')};
    rows.splice(i,2,merged);rowCommands.set(merged,commands);i--;
  }
+ // Shorten a simultaneous four-member command only after once-only folding.
+ // Keep ordered actions and the excluded member's persistent SET state intact.
+ for(const row of rows){
+   const commands=rowCommands.get(row);if(!commands?.length)continue;
+   const compact=commands.map(command=>{
+     const match=command.match(/^(.+?) (ON|OFF|SET)$/);if(!match)return command;
+     const slots=match[1].split(/,\s*/).map(name=>label.indexOf(name));
+     if(slots.length!==4||new Set(slots).size!==4||slots.some(slot=>slot<0)||new Set(label).size!==5)return command;
+     return label.find((_,slot)=>!slots.includes(slot))+' 제외 '+match[2];
+   });
+   const instruction=compact.join(', ');
+   if(instruction!==row.instruction){row.text=row.text.slice(0,-row.instruction.length)+instruction;row.instruction=instruction;}
+ }
  // Missing initial AUTO means OFF. A later timed AUTO command is not
  // a starting-state declaration, so retain it after a separate initial row.
  if(rows.length){

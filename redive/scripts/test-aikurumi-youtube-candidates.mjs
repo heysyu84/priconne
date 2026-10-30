@@ -15,6 +15,16 @@ test('YouTube aliases and direct converter rules produce one once-only row after
  assert.deepEqual(item.rows[1].checked,[true,true,false,true,true,false]);
  assert.equal(item.rows[2].text,'0:50 보스 후 프캬루 한번만');
 });
+test('YouTube candidate rows shorten four-member commands and keep their exact SET flags',()=>{
+ const text='1:30 ○○○○○ オートオン\n0:30 キャル ✕✕○✕✕\n0:20 キャル ✕✕✕✕✕\n0:10 スミレ ○○✕○○';
+ const data=createYouTubeTacticCandidates(snapshots,report([['3XR7r4dwSJI',text]]));
+ const item=data.references.find(r=>r.videoId==='3XR7r4dwSJI');assert.ok(item);
+ assert.equal(item.rows[1].text,'0:30 프캬루 후 프캬루 제외 OFF');
+ assert.deepEqual(item.rows[1].checked,[false,false,true,false,false,true]);
+ assert.equal(item.rows[3].text,'0:10 바이올렛 후 프캬루 제외 ON');
+ assert.deepEqual(item.rows[3].checked,[true,true,false,true,true,true]);
+ assert.equal(item.rows[1].needsReview,false);assert.equal(item.rows[3].needsReview,false);
+});
 test('starred timed OX instructions stay in one timeline, including the 420-million source link',()=>{
  const text='1:30 ○○○○○ オートオン\n1:11 キャル ○○✕○○\n1:06 キャル ○○✕○○ オートオフ\n0:59 ヴァイオレット ○○○○○\n☆0:43 キャル(エイドcl)✕✕○○✕\n0:35 ランファ ○✕✕○✕\n☆0:33-32 キャル オートオン\n0:29 エキドナ ○○✕○✕ オートオフ\n☆0:17 キャル ○○○○✕ オートオン\n0:01 キャル';
  const sections=splitVideoDescription(text,[]);assert.equal(sections.length,1);

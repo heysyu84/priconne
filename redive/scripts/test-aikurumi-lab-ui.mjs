@@ -21,6 +21,18 @@ test('standalone reader has no application writer and inspecting sources never w
  const {workspace,root,writes}=fixture();await workspace.load();assert.doesNotMatch(root.innerHTML,/data-review-action="apply"/);
  await workspace.apply([workspace.current()]);assert.equal(writes.length,0);
 });
+test('refresh replaces unedited generated rows while keeping manual edits and clearing their confirmation',async()=>{
+ const {workspace,writes}=fixture(true);await workspace.load();
+ const item=workspace.items.find(i=>i.stage===4&&i.candidate?.rows?.length>3),other=workspace.items.find(i=>i.stage===4&&i.key!==item.key&&i.rows.length);assert.ok(other);
+ const generated=workspace.draft(item),edited=workspace.draft(other);edited.rows[0].text='직접 수정한 조작문';edited.edited=true;edited.confirmed=true;
+ const fresh=structuredClone(files['aikurumi-youtube-candidates.json']);
+ const ref=fresh.references.find(r=>r.videoId===item.candidate.videoId&&r.taskId===item.task.id&&r.linkIndex===item.link.index);
+ assert.ok(ref);ref.rows=ref.rows.slice(0,2);ref.rowCount=ref.rows.length;
+ workspace.fetcher=async uri=>{const file=new URL(uri).pathname.split('/').at(-1);return {ok:true,json:async()=>structuredClone(file.includes('candidates')?fresh:files[file])};};
+ await workspace.load();const refreshed=workspace.items.find(i=>i.key===item.key),manual=workspace.items.find(i=>i.key===other.key);
+ assert.equal(workspace.draft(refreshed).rows.length,2);assert.notEqual(workspace.draft(refreshed),generated);
+ assert.equal(workspace.draft(manual),edited);assert.equal(edited.rows[0].text,'직접 수정한 조작문');assert.equal(edited.confirmed,false);assert.equal(writes.length,0);
+});
 test('selecting a filtered tactic preserves the boss, type, status, search and filtered navigation',async()=>{
  const {workspace,root}=fixture();await workspace.load();
  const item=workspace.items.find(i=>i.stage===4&&i.boss===1&&i.source==='youtube');assert.ok(item);
