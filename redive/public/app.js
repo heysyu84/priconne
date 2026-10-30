@@ -1735,8 +1735,8 @@ fullTactics=()=>{
   if(ui.tabs.tactics==='planner'){ui.tabs.tactics='combos';ext.distributionOpen=true;findPlans();}
   const work=ui.tabs.tactics==='workspace';
   const activeMenuTactics=data.tactics.filter(t=>!t.hidden&&!t.deletedAt&&t.stage===4),comboCount=activeMenuTactics.filter(t=>t.category!=='carry').length,workCount=comboCount+(data.rules.carryVisible?activeMenuTactics.filter(t=>t.category==='carry').length:0);
-  const tabs=[['combos','추천 조합',comboCount],['workspace','택틱 작업실',workCount],['external','이월 계산기'],...(adminMode()?[['review','외부 택틱'],['converter','택틱 변환기']]:[])];
-  return titleBar('택틱',work&&adminMode()?simpleButton('삭제함','v2-tactic-trash')+simpleButton('택틱 추가','new-tactic','','primary'):'')+pageTabs(tabs)+({combos:recommendationRows,workspace:completeWorkspace,external:completeExternal,review:externalReviewPage,converter:completeConverter,trash:completeTrash}[ui.tabs.tactics]||recommendationRows)();
+  const tabs=[['workspace','택틱 작업실',workCount],['combos','추천 조합',comboCount],['external','이월 계산기'],...(adminMode()?[['review','외부 택틱'],['converter','택틱 변환기']]:[])];
+  return titleBar('택틱',work&&adminMode()?simpleButton('삭제함','v2-tactic-trash')+simpleButton('택틱 추가','new-tactic','','primary'):'')+pageTabs(tabs)+({combos:recommendationRows,workspace:completeWorkspace,external:completeExternal,review:externalReviewPage,converter:completeConverter,trash:completeTrash}[ui.tabs.tactics]||completeWorkspace)();
 };
 fullClan=()=>{
   if(ui.tabs.clan==='characters'&&!adminMode())ui.tabs.clan='members';
@@ -2362,16 +2362,16 @@ exportCurrentTable=()=>{
 
 function loadExternalDraft(){
   if(ext.externalDraftLoaded)return;ext.externalDraftLoaded=true;
-  try{const saved=JSON.parse(localStorage.getItem('nyang-external-tactic-carry:v1')||'null');if(saved){ext.externalText=saved.source||'';ext.externalBase=timeToSec(saved.original)||90;ext.externalSeconds=timeToSec(saved.carry)||90;}}catch{}
+  try{const saved=JSON.parse(localStorage.getItem('nyang-external-tactic-carry:v1')||'null');if(saved){ext.externalText=saved.source||'';ext.externalBase=90;ext.externalSeconds=timeToSec(saved.carry)||90;}}catch{}
 }
 const externalWithoutDraft=completeExternal;
 completeExternal=()=>{loadExternalDraft();return externalWithoutDraft();};
 updateExternal=()=>{
   const source=document.getElementById('external-text'),output=document.getElementById('external-output');if(!source||!output)return;
-  const original=document.getElementById('external-base').value,carry=document.getElementById('external-carry').value;
-  ext.externalText=source.value;ext.externalBase=timeToSec(original);ext.externalSeconds=timeToSec(carry);
-  try{localStorage.setItem('nyang-external-tactic-carry:v1',JSON.stringify({source:source.value,original,carry}));}catch{}
-  try{const result=legacyTools.shiftExternalTacticTimes(source.value,ext.externalBase,ext.externalSeconds);output.textContent=result.text;output.removeAttribute('aria-invalid');}
+  const carry=document.getElementById('external-carry').value;
+  ext.externalText=source.value;ext.externalBase=90;ext.externalSeconds=timeToSec(carry);
+  try{localStorage.setItem('nyang-external-tactic-carry:v1',JSON.stringify({source:source.value,carry}));}catch{}
+  try{const result=legacyTools.shiftExternalTacticTimes(source.value,90,ext.externalSeconds);output.textContent=result.text;output.removeAttribute('aria-invalid');}
   catch(error){output.textContent=error.message;output.setAttribute('aria-invalid','true');}
 };
 
@@ -2534,7 +2534,7 @@ function situationHud(){
   const stats=allSeasonStats().filter(s=>s.active),total=stats.length*data.rules.daily,remaining=stats.reduce((sum,s)=>sum+s.remaining,0),used=Math.max(0,total-remaining),carry=stats.reduce((sum,s)=>sum+s.carry,0);
   const damage=data.logs.filter(e=>e.day<=ui.day).reduce((sum,e)=>sum+e.actual,0),logs=data.logs.filter(e=>e.day===ui.day),max=Math.max(1,...data.bossSettings.map(b=>logs.filter(e=>e.boss===b.id).length));
   const radius=42,circumference=2*Math.PI*radius,fraction=total?Math.max(0,Math.min(1,remaining/total)):0;
-  return `<section class="battle-hud" aria-label="클랜전 상황판"><div class="hud-status-line"><span class="hud-status-light" aria-hidden="true"></span><span>이월 <b>${carry}타</b></span><span class="hud-damage">누적 피해량 <b>${eok(damage)}억</b></span></div>${bossStrip()}<div class="hud-charts"><section class="hud-attacks" aria-label="기본 공격 사용 현황"><div class="hud-ring" role="img" aria-label="기본 공격 ${total}타 중 ${used}타 사용, ${remaining}타 남음"><svg viewBox="0 0 112 112" aria-hidden="true"><circle class="hud-ring-track" cx="56" cy="56" r="${radius}"/><circle class="hud-ring-value" cx="56" cy="56" r="${radius}" stroke-dasharray="${circumference}" stroke-dashoffset="${circumference*(1-fraction)}"/></svg><div><span>남은 기본 타수</span><strong>${remaining}</strong><small>/ ${total}타</small></div></div><p><span class="hud-used-dot"></span>${used}타 사용</p></section><section class="hud-deployment"><div class="hud-chart-heading"><h2>보스별 공격</h2><span>${ui.day}일차</span></div><div class="hud-attack-bars">${data.bossSettings.map(b=>{const events=logs.filter(e=>e.boss===b.id),basic=events.filter(e=>!e.carry).length,carried=events.length-basic;return `<button class="hud-bar-row" style="${bossStyle(b.id)}" data-action="r-hud-boss" data-id="${b.id}" aria-label="${b.id}넴 ${basic}타, 이월 ${carried}타 배틀로그"><span class="hud-bar-boss">${b.id}넴</span><span class="hud-bar-track"><i class="hud-basic-bar" style="width:${basic/max*100}%"></i><i class="hud-carry-bar" style="width:${carried/max*100}%"></i></span><strong>${events.length}</strong></button>`;}).join('')}</div><div class="hud-chart-legend"><span><i></i>기본</span><span><i></i>이월</span></div></section></div></section>`;
+  return `<section class="battle-hud" aria-label="클랜전 상황판"><div class="hud-status-line"><span class="hud-status-light" aria-hidden="true"></span><span title="남은 기본 공격 타수">남은 타수 <b>${remaining}타</b></span><span>이월 <b>${carry}타</b></span><span class="hud-damage">누적 피해량 <b>${eok(damage)}억</b></span></div>${bossStrip()}<div class="hud-charts"><section class="hud-attacks" aria-label="기본 공격 사용 현황"><div class="hud-ring" role="img" aria-label="기본 공격 ${total}타 중 ${used}타 사용, ${remaining}타 남음"><svg viewBox="0 0 112 112" aria-hidden="true"><circle class="hud-ring-track" cx="56" cy="56" r="${radius}"/><circle class="hud-ring-value" cx="56" cy="56" r="${radius}" stroke-dasharray="${circumference}" stroke-dashoffset="${circumference*(1-fraction)}"/></svg><div><span>남은 기본 타수</span><strong>${remaining}</strong><small>/ ${total}타</small></div></div><p><span class="hud-used-dot"></span>${used}타 사용</p></section><section class="hud-deployment"><div class="hud-chart-heading"><h2>보스별 공격</h2><span>${ui.day}일차</span></div><div class="hud-attack-bars">${data.bossSettings.map(b=>{const events=logs.filter(e=>e.boss===b.id),basic=events.filter(e=>!e.carry).length,carried=events.length-basic;return `<button class="hud-bar-row" style="${bossStyle(b.id)}" data-action="r-hud-boss" data-id="${b.id}" aria-label="${b.id}넴 ${basic}타, 이월 ${carried}타 배틀로그"><span class="hud-bar-boss">${b.id}넴</span><span class="hud-bar-track"><i class="hud-basic-bar" style="width:${basic/max*100}%"></i><i class="hud-carry-bar" style="width:${carried/max*100}%"></i></span><strong>${events.length}</strong></button>`;}).join('')}</div><div class="hud-chart-legend"><span><i></i>기본</span><span><i></i>이월</span></div></section></div></section>`;
 }
 const clanBattleWithoutHud=fullOverview;
 fullOverview=()=>{
@@ -2601,9 +2601,9 @@ const recordNumber=value=>Number.isFinite(value)?nf(value):'—';
 const recordRank=(value,label='')=>Number.isFinite(value)?value+'위':X(label||'미보관');
 const recordDays=d=>d.dayDetailAvailable===false?0:Math.max(1,Number(d.days)||5);
 const recordScope=d=>d.coverage==='personal'?'보관 기록 전체':'클랜 전체';
-const recordState=entry=>entry.coverage==='personal'?'개인 기록':entry.coverage==='summary'?'순위 보관':'확정';
+const recordState=entry=>entry.awardNote|| (entry.coverage==='personal'?'개인 기록':entry.coverage==='summary'?'순위 보관':'확정');
 function recordCoverageNotice(d){
- const text=d.coverage==='summary'?'이 달은 클랜 순위와 연혁만 보관되어 있습니다. 개인 이력과 공격 상세 자료는 남아 있지 않습니다.':d.coverage==='personal'?(d.scopeName||'일부 클랜원')+'의 개인 기록만 보관되어 있습니다. 클랜 전체 합계와 순위 자료는 아닙니다.':d.dayDetailAvailable===false?'일차 정보가 남아 있지 않아 월 누적으로 표시합니다.':'';
+ const text=d.month>='2019-07'&&d.month<='2019-12'||d.month==='2020-03'||d.month==='2020-05'?'기록유실 · 해당 월의 클랜전 상세 자료가 남아 있지 않아 개인 이력과 공격 기록을 제공하지 않습니다.':d.month==='2020-01'?'신년 유이 동면 · 클랜전 참여 기록이 없습니다.':d.coverage==='summary'?'이 달은 클랜 순위와 연혁만 보관되어 있습니다. 개인 이력과 공격 상세 자료는 남아 있지 않습니다.':d.coverage==='personal'?(d.scopeName||'일부 클랜원')+'의 개인 기록만 보관되어 있습니다. 클랜 전체 합계와 순위 자료는 아닙니다.':d.dayDetailAvailable===false?'일차 정보가 남아 있지 않아 월 누적으로 표시합니다.':'';
  return text?'<p class="field-help record-coverage" role="note">'+X(text)+'</p>':'';
 }
 
@@ -2626,7 +2626,7 @@ function oldResumeOpen(month){
  oldResumeMonth=month;oldResumeData=null;oldResumeError='';oldResumePerson='__clan__';oldResumeSort='game';oldResumeDay=0;oldResumePage=1;oldResumeBoss=0;oldResumeSortDirection=-1;oldResumeLogType='all';oldResumeQuery='';oldResumeDetails=false;oldResumeSequence=false;oldResumeLogOrder='desc';oldResumeStage=0;oldResumeProfileDay=0;oldResumeMetric='damage';ext.archiveView='summary';
  nav('records','archive');
  const request=++oldResumeRequest;
- fetch(new URL('./history-'+month.slice(0,4)+'/'+month+'.json',import.meta.url),{cache:'force-cache'}).then(r=>{if(!r.ok)throw Error('이력서 기록을 불러오지 못했습니다.');return r.json();}).then(d=>{if(request!==oldResumeRequest)return;if(d.month!==month||!Array.isArray(d.members)||!Array.isArray(d.logs))throw Error('이력서 자료 형식 오류');oldResumeData=d;render();}).catch(e=>{if(request===oldResumeRequest){oldResumeError=e.message;render();}});
+ fetch(new URL('./history-'+month.slice(0,4)+'/'+month+'.json?v=20261028-missing-records04',import.meta.url),{cache:'force-cache'}).then(r=>{if(!r.ok)throw Error('이력서 기록을 불러오지 못했습니다.');return r.json();}).then(d=>{if(request!==oldResumeRequest)return;if(d.month!==month||!Array.isArray(d.members)||!Array.isArray(d.logs))throw Error('이력서 자료 형식 오류');oldResumeData=d;render();}).catch(e=>{if(request===oldResumeRequest){oldResumeError=e.message;render();}});
 }
 function oldResumePersonButton(p){
  return '<button type="button" class="text-button member-link" data-action="old-resume-person" data-name="'+X(p.name)+'">'+X(p.name)+'</button>';
@@ -2808,7 +2808,7 @@ document.addEventListener('click',event=>{
 async function oldResumeLoadIndex(){
  try{
   const indexList=await Promise.all(oldResumeYears.map(async year=>{
-   const res=await fetch(new URL('./history-'+year+'/manifest.json?v=20261028-history-all01',import.meta.url),{cache:'force-cache'});
+   const res=await fetch(new URL('./history-'+year+'/manifest.json?v=20261028-missing-records04',import.meta.url),{cache:'force-cache'});
    if(!res.ok)throw Error(year+'년 이력서 목록 다운로드 실패');
    const index=await res.json();
    if(index.year!==year||!Array.isArray(index.months)||index.months.length!==(year===2019?6:12)||new Set(index.months.map(m=>m.month)).size!==index.months.length)throw Error(year+'년 이력서 목록이 올바르지 않습니다.');

@@ -56,16 +56,16 @@ exportCurrentTable=()=>{
 
 function loadExternalDraft(){
   if(ext.externalDraftLoaded)return;ext.externalDraftLoaded=true;
-  try{const saved=JSON.parse(localStorage.getItem('nyang-external-tactic-carry:v1')||'null');if(saved){ext.externalText=saved.source||'';ext.externalBase=timeToSec(saved.original)||90;ext.externalSeconds=timeToSec(saved.carry)||90;}}catch{}
+  try{const saved=JSON.parse(localStorage.getItem('nyang-external-tactic-carry:v1')||'null');if(saved){ext.externalText=saved.source||'';ext.externalBase=90;ext.externalSeconds=timeToSec(saved.carry)||90;}}catch{}
 }
 const externalWithoutDraft=completeExternal;
 completeExternal=()=>{loadExternalDraft();return externalWithoutDraft();};
 updateExternal=()=>{
   const source=document.getElementById('external-text'),output=document.getElementById('external-output');if(!source||!output)return;
-  const original=document.getElementById('external-base').value,carry=document.getElementById('external-carry').value;
-  ext.externalText=source.value;ext.externalBase=timeToSec(original);ext.externalSeconds=timeToSec(carry);
-  try{localStorage.setItem('nyang-external-tactic-carry:v1',JSON.stringify({source:source.value,original,carry}));}catch{}
-  try{const result=legacyTools.shiftExternalTacticTimes(source.value,ext.externalBase,ext.externalSeconds);output.textContent=result.text;output.removeAttribute('aria-invalid');}
+  const carry=document.getElementById('external-carry').value;
+  ext.externalText=source.value;ext.externalBase=90;ext.externalSeconds=timeToSec(carry);
+  try{localStorage.setItem('nyang-external-tactic-carry:v1',JSON.stringify({source:source.value,carry}));}catch{}
+  try{const result=legacyTools.shiftExternalTacticTimes(source.value,90,ext.externalSeconds);output.textContent=result.text;output.removeAttribute('aria-invalid');}
   catch(error){output.textContent=error.message;output.setAttribute('aria-invalid','true');}
 };
 
