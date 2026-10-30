@@ -22,7 +22,7 @@ export function repairImportedDangoTactics(seasons,snapshots,youtube){
     const source=candidates.find(r=>Number(r.stage)===Number(snapshot.stage)&&Number(r.boss)===Number(boss.index)
       &&Number(r.taskId)===Number(task.id)&&Number(r.linkOrdinal)===ordinal
       &&r.linkIndex===(link.index??ordinal));
-    if(!source?.rows?.length||source.rows.length!==preview.rows.length)continue;
+    if(!source?.rows?.length)continue;
     for(const existing of [...(season.tactics||[]),...(season.recommendations||[])]){
       const meta=existing.externalSource;
       if(!meta||String(meta.month)!==String(snapshot.krMonth)||Number(meta.taskId)!==Number(task.id)
@@ -30,16 +30,22 @@ export function repairImportedDangoTactics(seasons,snapshots,youtube){
       // A legacy import marked generated checkboxes as manual. Only the exact
       // previous generated content is safe to migrate automatically.
       const saved=existing.rows||[];
-      if(saved.length!==source.rows.length||!saved.every((r,i)=>matchesOriginal(r,source.rows[i]))){skipped++;continue;}
-      let changed=false;
-      for(let i=0;i<saved.length;i++){
-       const expected=preview.rows[i];
-       if(!identical(saved[i].checked,expected.checked)||saved[i].text!==expected.text){
-        saved[i].text=expected.text;saved[i].checked=[...expected.checked];
-        saved[i].manualChecks=false;delete saved[i].runs;changed=true;
-       }
+      // The collection job sometimes emitted an extra "[원문 확인: ver.]"
+      // after a valid timeline. Only tolerate that exact generated suffix.
+      const generated=source.rows;
+      const missingArtifact=generated.length===saved.length+1&&/^\s*(?:ㄴ\s*)?\[원문 확인:\s*ver\.\s*\]$/i.test(generated.at(-1)?.text||'');
+      const exactSource=saved.length===generated.length||missingArtifact;
+      if(!exactSource||!saved.every((r,i)=>matchesOriginal(r,generated[i]))){skipped++;continue;}
+      const corrected=preview.rows.map((row,i)=>({
+       ...(saved[i]||{id:existing.id+'-dango-'+i}),
+       text:row.text,checked:[...row.checked],manualChecks:false
+      }));
+      if(!identical(saved.map(r=>[r.text,r.checked]),corrected.map(r=>[r.text,r.checked]))){
+       for(const row of corrected)delete row.runs;
+       existing.rows=corrected;
+       existing.text=corrected.map(r=>r.text).join('\n');
+       repaired++;
       }
-      if(changed){existing.text=saved.map(r=>r.text).join('\n');repaired++;}
     }
    }
  }
