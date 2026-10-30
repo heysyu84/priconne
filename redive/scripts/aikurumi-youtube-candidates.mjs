@@ -3,6 +3,7 @@
 // Never serialize YouTube's original description or Japanese source lines to public assets.
 import {previewAikurumiTactic} from '../public/aikurumi-tactic-review.mjs';
 import {youtubeVideoId,inspectYouTubeDescription} from './aikurumi-youtube-api.mjs';
+import {extractTacticConditions} from '../public/aikurumi-review-model.mjs';
 
 function bossHeader(text,bossNames){
  const line=String(text).trim().slice(0,130);
@@ -96,6 +97,9 @@ export function createYouTubeTacticCandidates(snapshots,found,{fetchedAt=new Dat
     {...ref.link,remarks:text},{unitMap:ref.snapshot.characterData?.names,
       positionUnits:ref.snapshot.characterData?.positionUnits,
       stage:ref.stage,bossSlot:ref.boss,bossNames:ref.bossNames});
+  const conditions=extractTacticConditions({...ref.task,remarks:'',exRemarks:''},{...ref.link,name:'',remarks:text},candidate);
+  base.conditions={tp:conditions.tp,fields:conditions.fields.filter(f=>
+    !/[\u3040-\u30ff\u3400-\u9fff]/u.test(f.value))};
   if(!candidate.rows.length)return {...base,matching:matched.match,status:'no-parsable-timeline',
     issues:candidate.issues.map(x=>x.code).slice(0,12)};
   // The parser can emit raw source for unknown actors. NEVER publish those
@@ -112,7 +116,9 @@ export function createYouTubeTacticCandidates(snapshots,found,{fetchedAt=new Dat
   const hasUnconverted=candidate.rows.length!==safeRows.length;
   const issues=candidate.issues.map(x=>x.code).slice(0,12);
   if(hasUnconverted)issues.push('source-lines-omitted');
-  if(!timed||safeRows.length<2)return {...base,matching:matched.match,
+  const explicitFullSet=safeRows.length===1&&candidate.rows.length===1&&
+    /전부 SET/.test(safeRows[0].text)&&!issues.length;
+  if((!timed||safeRows.length<2)&&!explicitFullSet)return {...base,matching:matched.match,
     status:'needs-translation-review',rowCount:candidate.rows.length,issues:[...new Set(issues)],
     omittedRows:candidate.rows.length};
   return {...base,status:hasUnconverted||issues.length?'partial':'candidate',matching:matched.match,
@@ -130,5 +136,6 @@ export function createYouTubeTacticCandidates(snapshots,found,{fetchedAt=new Dat
  const expiresAt=new Date(Date.parse(fetchedAt)+28*24*60*60*1000).toISOString();
  return {schema:'nyang-youtube-tactic-candidates-v1',source:'YouTube Data API v3',
    readOnly:true,registrationAllowed:false,fetchedAt,expiresAt,
-   videoCount:videoMap.size,totalReferences:references.length,statuses,references};
+   videoCount:videoMap.size,requestedVideoCount:found?.requested??new Set(refs.map(r=>r.videoId)).size,
+   missingVideoCount:found?.missing?.length??0,totalReferences:references.length,statuses,references};
 }

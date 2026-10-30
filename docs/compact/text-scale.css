@@ -387,6 +387,26 @@ html[data-text-scale] table{font-size:calc((10px) * var(--text-scale,1))!importa
 html[data-text-scale] .coefficient-table td.numeric,
 html[data-text-scale] .top-damage-table td.numeric{font-size:calc((11px) * var(--text-scale,1))!important}
 }
+html[data-text-scale] .archive-eyebrow{font-size:calc((11px) * var(--text-scale,1))!important}
+html[data-text-scale] .clan-archive-intro h2{font-size:calc((clamp(30px,4vw,48px)) * var(--text-scale,1))!important}
+html[data-text-scale] .archive-highlight>span,
+html[data-text-scale] .archive-highlight time{font-size:calc((12px) * var(--text-scale,1))!important}
+html[data-text-scale] .archive-highlight strong{font-size:calc((84px) * var(--text-scale,1))!important}
+html[data-text-scale] .archive-highlight strong small{font-size:calc((22px) * var(--text-scale,1))!important}
+html[data-text-scale] .archive-year-nav a{font-size:calc((13px) * var(--text-scale,1))!important}
+html[data-text-scale] .clan-archive-year>h2{font-size:calc((36px) * var(--text-scale,1))!important}
+html[data-text-scale] .clan-archive-year>h2 small{font-size:calc((11px) * var(--text-scale,1))!important}
+html[data-text-scale] .archive-event-date time{font-size:calc((14px) * var(--text-scale,1))!important}
+html[data-text-scale] .archive-event-date span{font-size:calc((10px) * var(--text-scale,1))!important}
+html[data-text-scale] .archive-event-copy h3{font-size:calc((17px) * var(--text-scale,1))!important}
+html[data-text-scale] .archive-event-copy p{font-size:calc((13px) * var(--text-scale,1))!important}
+html[data-text-scale] .clan-archive-source p{font-size:calc((12px) * var(--text-scale,1))!important}
+@media(max-width:650px){
+html[data-text-scale] .archive-highlight strong{font-size:calc((60px) * var(--text-scale,1))!important}
+html[data-text-scale] .clan-archive-year>h2{font-size:calc((28px) * var(--text-scale,1))!important}
+html[data-text-scale] .archive-event-date time{font-size:calc((12px) * var(--text-scale,1))!important}
+html[data-text-scale] .archive-event-copy h3{font-size:calc((16px) * var(--text-scale,1))!important}
+}
 /* game-ui.css */
 html[data-text-scale] .brand-text>strong{font-size:calc((21px) * var(--text-scale,1))!important}
 html[data-text-scale] .brand-text>span{font-size:calc((18px) * var(--text-scale,1))!important}
@@ -1187,6 +1207,18 @@ html[data-text-scale] .data-table .log-manage-actions .log-drag-handle{font-size
 @media(max-width:760px){
 html[data-text-scale] .recommendation-actions>.button{font-size:calc((11px) * var(--text-scale,1))!important}
 }
+html[data-text-scale] .carry-estimate-metric>span{font-size:calc((12px) * var(--text-scale,1))!important}
+html[data-text-scale] .carry-estimate-metric>strong{font-size:calc((23px) * var(--text-scale,1))!important}
+html[data-text-scale] .calculator-box .carry-estimate-metric>span{font-size:calc((10.5px) * var(--text-scale,1))!important}
+html[data-text-scale] .calculator-box .carry-estimate-metric>strong{font-size:calc((18px) * var(--text-scale,1))!important}
+html[data-text-scale] .calculator-box .carry-estimate-summary>.button{font-size:calc((11px) * var(--text-scale,1))!important}
+@media(max-width:760px){
+html[data-text-scale] .carry-estimate-metric>span{font-size:calc((11px) * var(--text-scale,1))!important}
+html[data-text-scale] .carry-estimate-metric>strong{font-size:calc((20px) * var(--text-scale,1))!important}
+html[data-text-scale] .calculator-box .carry-estimate-metric>span{font-size:calc((10px) * var(--text-scale,1))!important}
+html[data-text-scale] .calculator-box .carry-estimate-metric>strong{font-size:calc((17px) * var(--text-scale,1))!important}
+}
+html[data-text-scale] .history-table .honors-note-cell strong{font-size:inherit!important}
 /* compat/battle-image-import.css */
 html[data-text-scale] .bli-head h2{font-size:calc((clamp(20px,2vw,25px)) * var(--text-scale,1))!important}
 html[data-text-scale] .bli-pick span,
@@ -1205,6 +1237,94 @@ html[data-text-scale] .bli-head h2{font-size:calc((20px) * var(--text-scale,1))!
 }
 html[data-text-scale] .bli-crop-numbers input{font-size:inherit!important}
 html[data-text-scale] .bli-fields>label>small{font-size:calc((11px) * var(--text-scale,1))!important}
+/* branding.css */
+
+/* aikurumi-review.css */
+html[data-text-scale] .external-review{font-size:calc((15px) * var(--text-scale,1))!important}
+html[data-text-scale] .external-review button,
+html[data-text-scale] .external-review input,
+html[data-text-scale] .external-review textarea,
+html[data-text-scale] .external-review select{font-size:inherit!important}
+html[data-text-scale] .external-review h2{font-size:calc((22px) * var(--text-scale,1))!important}
+html[data-text-scale] .external-review h3{font-size:calc((20px) * var(--text-scale,1))!important}
+html[data-text-scale] .external-review h4{font-size:calc((16px) * var(--text-scale,1))!important}
+html[data-text-scale] .review-button{font-size:calc((14px) * var(--text-scale,1))!important}
+html[data-text-scale] .review-views button{font-size:calc((15px) * var(--text-scale,1))!important}
+html[data-text-scale] .review-fetch-status{font-size:calc((13px) * var(--text-scale,1))!important}
+html[data-text-scale] .review-empty{font-size:calc((15px) * var(--text-scale,1))!important}
+html[data-text-scale] .review-filter>span{font-size:calc((12px) * var(--text-scale,1))!important}
+html[data-text-scale] .review-list-heading strong{font-size:calc((14px) * var(--text-scale,1))!important}
+html[data-text-scale] .review-list-heading span{font-size:calc((12px) * var(--text-scale,1))!important}
+html[data-text-scale] .review-item-top>strong{font-size:calc((17px) * var(--text-scale,1))!important}
+html[data-text-scale] .review-boss{font-size:calc((12px) * var(--text-scale,1))!important}
+html[data-text-scale] .review-badge{font-size:calc((11px) * var(--text-scale,1))!important}
+html[data-text-scale] .review-item-party{font-size:calc((15px) * var(--text-scale,1))!important}
+html[data-text-scale] .review-item-meta{font-size:calc((12px) * var(--text-scale,1))!important}
+html[data-text-scale] .review-detail-heading p{font-size:calc((13px) * var(--text-scale,1))!important}
+html[data-text-scale] .review-detail-nav .review-button{font-size:calc((12px) * var(--text-scale,1))!important}
+html[data-text-scale] .review-unit strong{font-size:calc((13px) * var(--text-scale,1))!important}
+html[data-text-scale] .review-unit>span:last-child{font-size:calc((11px) * var(--text-scale,1))!important}
+html[data-text-scale] .review-unit-face>span{font-size:calc((19px) * var(--text-scale,1))!important}
+html[data-text-scale] .review-section-heading span{font-size:calc((12px) * var(--text-scale,1))!important}
+html[data-text-scale] .review-field>span{font-size:calc((12px) * var(--text-scale,1))!important}
+html[data-text-scale] .review-damage-entry input{font-size:calc((22px) * var(--text-scale,1))!important}
+html[data-text-scale] .review-damage-options button{font-size:calc((13px) * var(--text-scale,1))!important}
+html[data-text-scale] .review-condition-list dt{font-size:calc((12px) * var(--text-scale,1))!important}
+html[data-text-scale] .review-condition-list dd{font-size:calc((14px) * var(--text-scale,1))!important}
+html[data-text-scale] .review-fold summary{font-size:calc((13px) * var(--text-scale,1))!important}
+html[data-text-scale] .review-fold pre{font-size:calc((13px) * var(--text-scale,1))!important}
+html[data-text-scale] .review-findings{font-size:calc((12px) * var(--text-scale,1))!important}
+html[data-text-scale] .review-grid{font-size:calc((14px) * var(--text-scale,1))!important}
+html[data-text-scale] .review-grid th{font-size:calc((11px) * var(--text-scale,1))!important}
+html[data-text-scale] .review-grid .review-line-number{font-size:calc((10px) * var(--text-scale,1))!important}
+html[data-text-scale] .review-grid .review-instruction{font-size:calc((15px) * var(--text-scale,1))!important}
+html[data-text-scale] .review-grid .review-set{font-size:calc((14px) * var(--text-scale,1))!important}
+html[data-text-scale] .review-grid textarea{font-size:calc((15px) * var(--text-scale,1))!important}
+html[data-text-scale] .review-grid .review-remove button{font-size:calc((19px) * var(--text-scale,1))!important}
+html[data-text-scale] .review-confirm{font-size:calc((14px) * var(--text-scale,1))!important}
+html[data-text-scale] .review-apply-status,
+html[data-text-scale] .review-existing,
+html[data-text-scale] .review-paste-status{font-size:calc((13px) * var(--text-scale,1))!important}
+html[data-text-scale] .review-video-creator>summary{font-size:calc((17px) * var(--text-scale,1))!important}
+html[data-text-scale] .review-video-creator>summary>span{font-size:calc((12px) * var(--text-scale,1))!important}
+html[data-text-scale] .review-video .review-section-heading a{font-size:calc((13px) * var(--text-scale,1))!important}
+html[data-text-scale] .review-video-items b{font-size:calc((13px) * var(--text-scale,1))!important}
+html[data-text-scale] .review-video-items strong{font-size:calc((14px) * var(--text-scale,1))!important}
+html[data-text-scale] .review-video-items span{font-size:calc((12px) * var(--text-scale,1))!important}
+html[data-text-scale] .review-compose-bosses strong{font-size:calc((14px) * var(--text-scale,1))!important}
+html[data-text-scale] .review-compose-bosses span{font-size:calc((13px) * var(--text-scale,1))!important}
+@media(max-width:1000px){
+html[data-text-scale] .review-item-party{font-size:calc((14px) * var(--text-scale,1))!important}
+html[data-text-scale] .review-badge{font-size:calc((10px) * var(--text-scale,1))!important}
+}
+@media(max-width:760px){
+html[data-text-scale] .external-review{font-size:calc((15px) * var(--text-scale,1))!important}
+html[data-text-scale] .review-heading h2{font-size:calc((20px) * var(--text-scale,1))!important}
+html[data-text-scale] .review-heading p{font-size:calc((13px) * var(--text-scale,1))!important}
+html[data-text-scale] .review-heading .review-button{font-size:calc((12px) * var(--text-scale,1))!important}
+html[data-text-scale] .review-views button{font-size:calc((14px) * var(--text-scale,1))!important}
+html[data-text-scale] .review-fetch-status{font-size:calc((12px) * var(--text-scale,1))!important}
+html[data-text-scale] .review-filter>span{font-size:calc((11px) * var(--text-scale,1))!important}
+html[data-text-scale] .review-filter select{font-size:calc((13px) * var(--text-scale,1))!important}
+html[data-text-scale] .review-search input{font-size:calc((16px) * var(--text-scale,1))!important}
+html[data-text-scale] .review-item-party{font-size:calc((15px) * var(--text-scale,1))!important}
+html[data-text-scale] .review-detail-heading h3{font-size:calc((19px) * var(--text-scale,1))!important}
+html[data-text-scale] .review-detail-nav .review-button{font-size:calc((12px) * var(--text-scale,1))!important}
+html[data-text-scale] .review-unit strong{font-size:calc((12px) * var(--text-scale,1))!important}
+html[data-text-scale] .review-unit>span:last-child{font-size:calc((10px) * var(--text-scale,1))!important}
+html[data-text-scale] .review-section-heading h4{font-size:calc((15px) * var(--text-scale,1))!important}
+html[data-text-scale] .review-section-heading .review-button{font-size:calc((12px) * var(--text-scale,1))!important}
+html[data-text-scale] .review-condition-inputs .review-field input,
+html[data-text-scale] .review-apply-options input,
+html[data-text-scale] .review-apply-options select{font-size:calc((16px) * var(--text-scale,1))!important}
+html[data-text-scale] .review-condition-list dd{font-size:calc((13px) * var(--text-scale,1))!important}
+html[data-text-scale] .review-damage-entry input{font-size:calc((22px) * var(--text-scale,1))!important}
+html[data-text-scale] .review-grid .review-instruction{font-size:calc((15px) * var(--text-scale,1))!important}
+html[data-text-scale] .review-grid th{font-size:calc((10px) * var(--text-scale,1))!important}
+html[data-text-scale] .review-grid .review-set{font-size:calc((12px) * var(--text-scale,1))!important}
+html[data-text-scale] .review-confirm{font-size:calc((14px) * var(--text-scale,1))!important}
+html[data-text-scale] .review-compose-bosses strong{font-size:calc((14px) * var(--text-scale,1))!important}
+}
 
 /* iOS Safari: focused form fields must compute to at least 16px, even when text scale is 90%. */
 @media(max-width:760px){

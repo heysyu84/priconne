@@ -1,0 +1,4208 @@
+{
+  "schema": "nyang-youtube-tactic-candidates-v1",
+  "source": "YouTube Data API v3",
+  "readOnly": true,
+  "registrationAllowed": false,
+  "fetchedAt": "2026-10-29T23:25:49.932Z",
+  "expiresAt": "2026-11-26T23:25:49.932Z",
+  "videoCount": 69,
+  "totalReferences": 136,
+  "statuses": {
+    "no-youtube-tl": 18,
+    "needs-translation-review": 20,
+    "needs-source-check": 63,
+    "partial": 32,
+    "video-unavailable": 3
+  },
+  "references": [
+    {
+      "stage": 3,
+      "boss": 1,
+      "taskId": 14253,
+      "linkIndex": 0,
+      "linkOrdinal": 0,
+      "videoId": "YYSf-2wPFVA",
+      "status": "no-youtube-tl",
+      "matching": "no-tactic-evidence",
+      "rowCount": 0,
+      "issues": [],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=YYSf-2wPFVA",
+      "youtubeHasTactic": false
+    },
+    {
+      "stage": 3,
+      "boss": 1,
+      "taskId": 14257,
+      "linkIndex": 0,
+      "linkOrdinal": 0,
+      "videoId": "IL9D561pJZs",
+      "status": "no-youtube-tl",
+      "matching": "no-tactic-evidence",
+      "rowCount": 0,
+      "issues": [],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=IL9D561pJZs",
+      "youtubeHasTactic": false
+    },
+    {
+      "stage": 3,
+      "boss": 1,
+      "taskId": 14263,
+      "linkIndex": 0,
+      "linkOrdinal": 0,
+      "videoId": "IL9D561pJZs",
+      "status": "no-youtube-tl",
+      "matching": "no-tactic-evidence",
+      "rowCount": 0,
+      "issues": [],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=IL9D561pJZs",
+      "youtubeHasTactic": false
+    },
+    {
+      "stage": 3,
+      "boss": 1,
+      "taskId": 14296,
+      "linkIndex": 0,
+      "linkOrdinal": 0,
+      "videoId": "gBAMR9fVpfQ",
+      "status": "no-youtube-tl",
+      "matching": "no-tactic-evidence",
+      "rowCount": 0,
+      "issues": [],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=gBAMR9fVpfQ",
+      "youtubeHasTactic": false
+    },
+    {
+      "stage": 3,
+      "boss": 1,
+      "taskId": 14304,
+      "linkIndex": 0,
+      "linkOrdinal": 0,
+      "videoId": "QctI5DVFQDI",
+      "status": "needs-translation-review",
+      "matching": "unique-boss",
+      "rowCount": 2,
+      "issues": [
+        "unparsed-instructions",
+        "source-lines-omitted"
+      ],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=QctI5DVFQDI",
+      "youtubeHasTactic": true,
+      "omittedRows": 2
+    },
+    {
+      "stage": 3,
+      "boss": 1,
+      "taskId": 14454,
+      "linkIndex": 0,
+      "linkOrdinal": 0,
+      "videoId": "unG2c92lMTQ",
+      "status": "no-youtube-tl",
+      "matching": "no-tactic-evidence",
+      "rowCount": 0,
+      "issues": [],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=unG2c92lMTQ",
+      "youtubeHasTactic": false
+    },
+    {
+      "stage": 3,
+      "boss": 1,
+      "taskId": 14455,
+      "linkIndex": 0,
+      "linkOrdinal": 0,
+      "videoId": "unG2c92lMTQ",
+      "status": "no-youtube-tl",
+      "matching": "no-tactic-evidence",
+      "rowCount": 0,
+      "issues": [],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=unG2c92lMTQ",
+      "youtubeHasTactic": false
+    },
+    {
+      "stage": 3,
+      "boss": 1,
+      "taskId": 14456,
+      "linkIndex": 0,
+      "linkOrdinal": 0,
+      "videoId": "unG2c92lMTQ",
+      "status": "no-youtube-tl",
+      "matching": "no-tactic-evidence",
+      "rowCount": 0,
+      "issues": [],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=unG2c92lMTQ",
+      "youtubeHasTactic": false
+    },
+    {
+      "stage": 3,
+      "boss": 2,
+      "taskId": 14254,
+      "linkIndex": 0,
+      "linkOrdinal": 0,
+      "videoId": "YYSf-2wPFVA",
+      "status": "no-youtube-tl",
+      "matching": "no-tactic-evidence",
+      "rowCount": 0,
+      "issues": [],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=YYSf-2wPFVA",
+      "youtubeHasTactic": false
+    },
+    {
+      "stage": 3,
+      "boss": 2,
+      "taskId": 14259,
+      "linkIndex": 0,
+      "linkOrdinal": 0,
+      "videoId": "IL9D561pJZs",
+      "status": "no-youtube-tl",
+      "matching": "no-tactic-evidence",
+      "rowCount": 0,
+      "issues": [],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=IL9D561pJZs",
+      "youtubeHasTactic": false
+    },
+    {
+      "stage": 3,
+      "boss": 2,
+      "taskId": 14262,
+      "linkIndex": 0,
+      "linkOrdinal": 0,
+      "videoId": "IL9D561pJZs",
+      "status": "no-youtube-tl",
+      "matching": "no-tactic-evidence",
+      "rowCount": 0,
+      "issues": [],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=IL9D561pJZs",
+      "youtubeHasTactic": false
+    },
+    {
+      "stage": 3,
+      "boss": 2,
+      "taskId": 14294,
+      "linkIndex": 0,
+      "linkOrdinal": 0,
+      "videoId": "5fdadWNp5TM",
+      "status": "needs-translation-review",
+      "matching": "single-video",
+      "rowCount": 1,
+      "issues": [],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=5fdadWNp5TM",
+      "youtubeHasTactic": true,
+      "omittedRows": 1
+    },
+    {
+      "stage": 3,
+      "boss": 2,
+      "taskId": 14305,
+      "linkIndex": 0,
+      "linkOrdinal": 0,
+      "videoId": "QctI5DVFQDI",
+      "status": "needs-translation-review",
+      "matching": "unique-boss",
+      "rowCount": 3,
+      "issues": [
+        "unparsed-instructions",
+        "source-lines-omitted"
+      ],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=QctI5DVFQDI",
+      "youtubeHasTactic": true,
+      "omittedRows": 3
+    },
+    {
+      "stage": 3,
+      "boss": 2,
+      "taskId": 14457,
+      "linkIndex": 0,
+      "linkOrdinal": 0,
+      "videoId": "unG2c92lMTQ",
+      "status": "no-youtube-tl",
+      "matching": "no-tactic-evidence",
+      "rowCount": 0,
+      "issues": [],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=unG2c92lMTQ",
+      "youtubeHasTactic": false
+    },
+    {
+      "stage": 3,
+      "boss": 2,
+      "taskId": 14458,
+      "linkIndex": 0,
+      "linkOrdinal": 0,
+      "videoId": "unG2c92lMTQ",
+      "status": "no-youtube-tl",
+      "matching": "no-tactic-evidence",
+      "rowCount": 0,
+      "issues": [],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=unG2c92lMTQ",
+      "youtubeHasTactic": false
+    },
+    {
+      "stage": 3,
+      "boss": 2,
+      "taskId": 14459,
+      "linkIndex": 0,
+      "linkOrdinal": 0,
+      "videoId": "unG2c92lMTQ",
+      "status": "no-youtube-tl",
+      "matching": "no-tactic-evidence",
+      "rowCount": 0,
+      "issues": [],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=unG2c92lMTQ",
+      "youtubeHasTactic": false
+    },
+    {
+      "stage": 3,
+      "boss": 3,
+      "taskId": 14255,
+      "linkIndex": 0,
+      "linkOrdinal": 0,
+      "videoId": "YYSf-2wPFVA",
+      "status": "no-youtube-tl",
+      "matching": "no-tactic-evidence",
+      "rowCount": 0,
+      "issues": [],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=YYSf-2wPFVA",
+      "youtubeHasTactic": false
+    },
+    {
+      "stage": 3,
+      "boss": 3,
+      "taskId": 14261,
+      "linkIndex": 0,
+      "linkOrdinal": 0,
+      "videoId": "IL9D561pJZs",
+      "status": "no-youtube-tl",
+      "matching": "no-tactic-evidence",
+      "rowCount": 0,
+      "issues": [],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=IL9D561pJZs",
+      "youtubeHasTactic": false
+    },
+    {
+      "stage": 3,
+      "boss": 4,
+      "taskId": 14256,
+      "linkIndex": 0,
+      "linkOrdinal": 0,
+      "videoId": "YYSf-2wPFVA",
+      "status": "no-youtube-tl",
+      "matching": "no-tactic-evidence",
+      "rowCount": 0,
+      "issues": [],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=YYSf-2wPFVA",
+      "youtubeHasTactic": false
+    },
+    {
+      "stage": 3,
+      "boss": 4,
+      "taskId": 14260,
+      "linkIndex": 0,
+      "linkOrdinal": 0,
+      "videoId": "IL9D561pJZs",
+      "status": "no-youtube-tl",
+      "matching": "no-tactic-evidence",
+      "rowCount": 0,
+      "issues": [],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=IL9D561pJZs",
+      "youtubeHasTactic": false
+    },
+    {
+      "stage": 3,
+      "boss": 4,
+      "taskId": 14306,
+      "linkIndex": 0,
+      "linkOrdinal": 0,
+      "videoId": "QctI5DVFQDI",
+      "status": "needs-source-check",
+      "matching": "boss-section-not-found",
+      "rowCount": 0,
+      "issues": [],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=QctI5DVFQDI",
+      "youtubeHasTactic": true
+    },
+    {
+      "stage": 3,
+      "boss": 5,
+      "taskId": 14258,
+      "linkIndex": 0,
+      "linkOrdinal": 0,
+      "videoId": "IL9D561pJZs",
+      "status": "no-youtube-tl",
+      "matching": "no-tactic-evidence",
+      "rowCount": 0,
+      "issues": [],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=IL9D561pJZs",
+      "youtubeHasTactic": false
+    },
+    {
+      "stage": 3,
+      "boss": 5,
+      "taskId": 14310,
+      "linkIndex": 0,
+      "linkOrdinal": 0,
+      "videoId": "JbytoTJVV2k",
+      "status": "needs-translation-review",
+      "matching": "single-video",
+      "rowCount": 4,
+      "issues": [
+        "unparsed-instructions",
+        "unmapped-actors",
+        "source-lines-omitted"
+      ],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=JbytoTJVV2k",
+      "youtubeHasTactic": true,
+      "omittedRows": 4
+    },
+    {
+      "stage": 6,
+      "boss": 1,
+      "taskId": 14265,
+      "linkIndex": 1,
+      "linkOrdinal": 0,
+      "videoId": "gcLTnp88aSo",
+      "status": "needs-source-check",
+      "matching": "no-unique-damage-section",
+      "rowCount": 0,
+      "issues": [],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=gcLTnp88aSo",
+      "youtubeHasTactic": true
+    },
+    {
+      "stage": 6,
+      "boss": 1,
+      "taskId": 14265,
+      "linkIndex": 1,
+      "linkOrdinal": 3,
+      "videoId": "9ZvfVTf-uMY",
+      "status": "needs-translation-review",
+      "matching": "single-video",
+      "rowCount": 9,
+      "issues": [
+        "unmapped-actors",
+        "source-lines-omitted"
+      ],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=9ZvfVTf-uMY",
+      "youtubeHasTactic": true,
+      "omittedRows": 9
+    },
+    {
+      "stage": 6,
+      "boss": 1,
+      "taskId": 14265,
+      "linkIndex": 3,
+      "linkOrdinal": 4,
+      "videoId": "CYRolchpI8g",
+      "status": "partial",
+      "matching": "single-video",
+      "rowCount": 23,
+      "issues": [
+        "unparsed-instructions",
+        "source-lines-omitted"
+      ],
+      "warnings": [],
+      "rows": [
+        {
+          "time": "0:50",
+          "text": "0:50 보스 UB 후 프캬루 ON",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            false
+          ]
+        },
+        {
+          "time": "0:48",
+          "text": "0:48 란파 후 바이올렛, 수키드나, 란파 OFF",
+          "checked": [
+            false,
+            false,
+            true,
+            true,
+            false,
+            false
+          ]
+        },
+        {
+          "time": "0:20",
+          "text": "0:20 란파 후 프캬루 ON, AUTO 온, 란파 OFF",
+          "checked": [
+            false,
+            true,
+            true,
+            true,
+            false,
+            true
+          ]
+        }
+      ],
+      "sourceUrl": "https://www.youtube.com/watch?v=CYRolchpI8g",
+      "youtubeHasTactic": true,
+      "omittedRows": 20,
+      "warningCount": 10,
+      "unknownActorCount": 0
+    },
+    {
+      "stage": 6,
+      "boss": 1,
+      "taskId": 14265,
+      "linkIndex": 2,
+      "linkOrdinal": 5,
+      "videoId": "IZ1ISeHNccY",
+      "status": "needs-source-check",
+      "matching": "no-unique-damage-section",
+      "rowCount": 0,
+      "issues": [],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=IZ1ISeHNccY",
+      "youtubeHasTactic": true
+    },
+    {
+      "stage": 6,
+      "boss": 1,
+      "taskId": 14265,
+      "linkIndex": 7,
+      "linkOrdinal": 7,
+      "videoId": "93eu_UEr_EY",
+      "status": "needs-source-check",
+      "matching": "no-unique-damage-section",
+      "rowCount": 0,
+      "issues": [],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=93eu_UEr_EY",
+      "youtubeHasTactic": true
+    },
+    {
+      "stage": 6,
+      "boss": 1,
+      "taskId": 14265,
+      "linkIndex": 9,
+      "linkOrdinal": 9,
+      "videoId": "dgRUnwQUuao",
+      "status": "partial",
+      "matching": "unique-boss",
+      "rowCount": 74,
+      "issues": [
+        "unparsed-instructions",
+        "unmapped-actors",
+        "source-lines-omitted"
+      ],
+      "warnings": [],
+      "rows": [
+        {
+          "time": null,
+          "text": "AUTO 오프",
+          "checked": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "time": "01:07",
+          "text": "01:07 보스 UB",
+          "checked": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "time": "01:04",
+          "text": "01:04 란파 후 (SET 변경 없음)",
+          "checked": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "time": "01:03",
+          "text": "ㄴ 호마레 후 (SET 변경 없음)",
+          "checked": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "time": "00:48",
+          "text": "00:48 란파 후 (SET 변경 없음)",
+          "checked": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "time": "00:39",
+          "text": "00:39 호마레 후 (SET 변경 없음)",
+          "checked": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "time": "00:32",
+          "text": "00:32 보스 UB",
+          "checked": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "time": "00:28",
+          "text": "00:28 호마레 후 (SET 변경 없음)",
+          "checked": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "time": "00:20",
+          "text": "00:20 란파 후 (SET 변경 없음)",
+          "checked": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "time": "00:16",
+          "text": "00:16 보스 UB",
+          "checked": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "time": "00:07",
+          "text": "00:07 호마레 후 (SET 변경 없음)",
+          "checked": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "time": "0:16",
+          "text": "0:16 보스 UB",
+          "checked": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "time": "0:04",
+          "text": "0:04 호마레 후 (SET 변경 없음)",
+          "checked": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ]
+        }
+      ],
+      "sourceUrl": "https://www.youtube.com/watch?v=dgRUnwQUuao",
+      "youtubeHasTactic": true,
+      "omittedRows": 61,
+      "warningCount": 56,
+      "unknownActorCount": 2
+    },
+    {
+      "stage": 6,
+      "boss": 1,
+      "taskId": 14265,
+      "linkIndex": 10,
+      "linkOrdinal": 10,
+      "videoId": "3XR7r4dwSJI",
+      "status": "partial",
+      "matching": "unique-boss",
+      "rowCount": 7,
+      "issues": [
+        "time-range",
+        "unparsed-instructions",
+        "source-lines-omitted"
+      ],
+      "warnings": [],
+      "rows": [
+        {
+          "time": null,
+          "text": "AUTO 오프",
+          "checked": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "time": "0:35",
+          "text": "0:35 보스 후 호마레, 란파 ON",
+          "checked": [
+            true,
+            false,
+            false,
+            true,
+            false,
+            false
+          ]
+        }
+      ],
+      "sourceUrl": "https://www.youtube.com/watch?v=3XR7r4dwSJI",
+      "youtubeHasTactic": true,
+      "omittedRows": 5,
+      "warningCount": 2,
+      "unknownActorCount": 0
+    },
+    {
+      "stage": 6,
+      "boss": 1,
+      "taskId": 14271,
+      "linkIndex": 1,
+      "linkOrdinal": 0,
+      "videoId": "gcLTnp88aSo",
+      "status": "needs-source-check",
+      "matching": "no-unique-damage-section",
+      "rowCount": 0,
+      "issues": [],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=gcLTnp88aSo",
+      "youtubeHasTactic": true
+    },
+    {
+      "stage": 6,
+      "boss": 1,
+      "taskId": 14272,
+      "linkIndex": 1,
+      "linkOrdinal": 0,
+      "videoId": "gcLTnp88aSo",
+      "status": "needs-source-check",
+      "matching": "no-unique-damage-section",
+      "rowCount": 0,
+      "issues": [],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=gcLTnp88aSo",
+      "youtubeHasTactic": true
+    },
+    {
+      "stage": 6,
+      "boss": 1,
+      "taskId": 14311,
+      "linkIndex": 0,
+      "linkOrdinal": 0,
+      "videoId": "bHsEi2jOHIg",
+      "status": "partial",
+      "matching": "unique-boss",
+      "rowCount": 22,
+      "issues": [
+        "unparsed-instructions",
+        "source-lines-omitted"
+      ],
+      "warnings": [],
+      "rows": [
+        {
+          "time": null,
+          "text": "AUTO 온, 수리아, 와카나, 수레시아, 편오이 SET",
+          "checked": [
+            false,
+            true,
+            true,
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "time": "1:07",
+          "text": "ㄴ 보스 UB",
+          "checked": [
+            false,
+            true,
+            false,
+            true,
+            true,
+            true
+          ]
+        }
+      ],
+      "sourceUrl": "https://www.youtube.com/watch?v=bHsEi2jOHIg",
+      "youtubeHasTactic": true,
+      "omittedRows": 20,
+      "warningCount": 11,
+      "unknownActorCount": 0
+    },
+    {
+      "stage": 6,
+      "boss": 1,
+      "taskId": 14383,
+      "linkIndex": 0,
+      "linkOrdinal": 0,
+      "videoId": "9AQSGX1D4Y8",
+      "status": "needs-translation-review",
+      "matching": "unique-boss",
+      "rowCount": 16,
+      "issues": [
+        "unparsed-instructions",
+        "source-lines-omitted"
+      ],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=9AQSGX1D4Y8",
+      "youtubeHasTactic": true,
+      "omittedRows": 16
+    },
+    {
+      "stage": 6,
+      "boss": 1,
+      "taskId": 14452,
+      "linkIndex": 0,
+      "linkOrdinal": 0,
+      "videoId": "6NqcklSjatQ",
+      "status": "partial",
+      "matching": "unique-boss",
+      "rowCount": 13,
+      "issues": [
+        "unparsed-instructions",
+        "source-lines-omitted"
+      ],
+      "warnings": [],
+      "rows": [
+        {
+          "time": null,
+          "text": "AUTO 오프, 수사렌 SET",
+          "checked": [
+            false,
+            false,
+            false,
+            false,
+            true,
+            false
+          ]
+        },
+        {
+          "time": "1:17",
+          "text": "1:17 호마레 후 프캬루 ON",
+          "checked": [
+            false,
+            false,
+            true,
+            false,
+            true,
+            false
+          ]
+        }
+      ],
+      "sourceUrl": "https://www.youtube.com/watch?v=6NqcklSjatQ",
+      "youtubeHasTactic": true,
+      "omittedRows": 11,
+      "warningCount": 10,
+      "unknownActorCount": 0
+    },
+    {
+      "stage": 6,
+      "boss": 1,
+      "taskId": 14462,
+      "linkIndex": 0,
+      "linkOrdinal": 0,
+      "videoId": "7tgdVxW_rz8",
+      "status": "needs-source-check",
+      "matching": "no-unique-damage-section",
+      "rowCount": 0,
+      "issues": [],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8",
+      "youtubeHasTactic": true
+    },
+    {
+      "stage": 6,
+      "boss": 1,
+      "taskId": 14463,
+      "linkIndex": 0,
+      "linkOrdinal": 0,
+      "videoId": "7tgdVxW_rz8",
+      "status": "needs-source-check",
+      "matching": "no-unique-damage-section",
+      "rowCount": 0,
+      "issues": [],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8",
+      "youtubeHasTactic": true
+    },
+    {
+      "stage": 6,
+      "boss": 1,
+      "taskId": 14464,
+      "linkIndex": 0,
+      "linkOrdinal": 0,
+      "videoId": "7tgdVxW_rz8",
+      "status": "needs-source-check",
+      "matching": "no-unique-damage-section",
+      "rowCount": 0,
+      "issues": [],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8",
+      "youtubeHasTactic": true
+    },
+    {
+      "stage": 6,
+      "boss": 1,
+      "taskId": 14465,
+      "linkIndex": 0,
+      "linkOrdinal": 0,
+      "videoId": "7tgdVxW_rz8",
+      "status": "needs-source-check",
+      "matching": "no-unique-damage-section",
+      "rowCount": 0,
+      "issues": [],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8",
+      "youtubeHasTactic": true
+    },
+    {
+      "stage": 6,
+      "boss": 1,
+      "taskId": 14466,
+      "linkIndex": 0,
+      "linkOrdinal": 0,
+      "videoId": "7tgdVxW_rz8",
+      "status": "needs-source-check",
+      "matching": "no-unique-damage-section",
+      "rowCount": 0,
+      "issues": [],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8",
+      "youtubeHasTactic": true
+    },
+    {
+      "stage": 6,
+      "boss": 1,
+      "taskId": 14467,
+      "linkIndex": 0,
+      "linkOrdinal": 0,
+      "videoId": "7tgdVxW_rz8",
+      "status": "needs-source-check",
+      "matching": "no-unique-damage-section",
+      "rowCount": 0,
+      "issues": [],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8",
+      "youtubeHasTactic": true
+    },
+    {
+      "stage": 6,
+      "boss": 1,
+      "taskId": 14477,
+      "linkIndex": 0,
+      "linkOrdinal": 0,
+      "videoId": "B97LQrFSmVM",
+      "status": "needs-source-check",
+      "matching": "no-unique-damage-section",
+      "rowCount": 0,
+      "issues": [],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=B97LQrFSmVM",
+      "youtubeHasTactic": true
+    },
+    {
+      "stage": 6,
+      "boss": 1,
+      "taskId": 14482,
+      "linkIndex": 0,
+      "linkOrdinal": 0,
+      "videoId": "EcAceF3P8rA",
+      "status": "partial",
+      "matching": "unique-damage-section",
+      "rowCount": 7,
+      "issues": [
+        "unparsed-instructions",
+        "source-lines-omitted"
+      ],
+      "warnings": [],
+      "rows": [
+        {
+          "time": null,
+          "text": "AUTO 오프",
+          "checked": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "time": "0:50",
+          "text": "0:50 보스",
+          "checked": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "time": "0:47",
+          "text": "0:47 밤피 후 (SET 변경 없음)",
+          "checked": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ]
+        }
+      ],
+      "sourceUrl": "https://www.youtube.com/watch?v=EcAceF3P8rA",
+      "youtubeHasTactic": true,
+      "omittedRows": 4,
+      "warningCount": 4,
+      "unknownActorCount": 0
+    },
+    {
+      "stage": 6,
+      "boss": 1,
+      "taskId": 14486,
+      "linkIndex": 0,
+      "linkOrdinal": 0,
+      "videoId": "S5ZiViaMws8",
+      "status": "needs-source-check",
+      "matching": "no-unique-damage-section",
+      "rowCount": 0,
+      "issues": [],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=S5ZiViaMws8",
+      "youtubeHasTactic": true
+    },
+    {
+      "stage": 6,
+      "boss": 1,
+      "taskId": 14487,
+      "linkIndex": 0,
+      "linkOrdinal": 0,
+      "videoId": "BSSIs7TVqPs",
+      "status": "needs-source-check",
+      "matching": "no-unique-damage-section",
+      "rowCount": 0,
+      "issues": [],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=BSSIs7TVqPs",
+      "youtubeHasTactic": true
+    },
+    {
+      "stage": 6,
+      "boss": 2,
+      "taskId": 14264,
+      "linkIndex": 1,
+      "linkOrdinal": 0,
+      "videoId": "JcqLd2C8mTA",
+      "status": "needs-translation-review",
+      "matching": "single-video",
+      "rowCount": 16,
+      "issues": [
+        "unparsed-instructions",
+        "unmapped-actors",
+        "source-lines-omitted"
+      ],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=JcqLd2C8mTA",
+      "youtubeHasTactic": true,
+      "omittedRows": 16
+    },
+    {
+      "stage": 6,
+      "boss": 2,
+      "taskId": 14264,
+      "linkIndex": 2,
+      "linkOrdinal": 2,
+      "videoId": "7tgdVxW_rz8",
+      "status": "needs-source-check",
+      "matching": "no-unique-damage-section",
+      "rowCount": 0,
+      "issues": [],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8",
+      "youtubeHasTactic": true
+    },
+    {
+      "stage": 6,
+      "boss": 2,
+      "taskId": 14270,
+      "linkIndex": 1,
+      "linkOrdinal": 0,
+      "videoId": "0q-o6RY5wSA",
+      "status": "video-unavailable",
+      "matching": "no-description",
+      "rowCount": 0,
+      "issues": [],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=0q-o6RY5wSA",
+      "youtubeHasTactic": null
+    },
+    {
+      "stage": 6,
+      "boss": 2,
+      "taskId": 14273,
+      "linkIndex": 1,
+      "linkOrdinal": 0,
+      "videoId": "gcLTnp88aSo",
+      "status": "needs-source-check",
+      "matching": "no-unique-damage-section",
+      "rowCount": 0,
+      "issues": [],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=gcLTnp88aSo",
+      "youtubeHasTactic": true
+    },
+    {
+      "stage": 6,
+      "boss": 2,
+      "taskId": 14274,
+      "linkIndex": 1,
+      "linkOrdinal": 0,
+      "videoId": "gcLTnp88aSo",
+      "status": "needs-source-check",
+      "matching": "no-unique-damage-section",
+      "rowCount": 0,
+      "issues": [],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=gcLTnp88aSo",
+      "youtubeHasTactic": true
+    },
+    {
+      "stage": 6,
+      "boss": 2,
+      "taskId": 14274,
+      "linkIndex": 1,
+      "linkOrdinal": 1,
+      "videoId": "vk2CIcU0AHM",
+      "status": "needs-source-check",
+      "matching": "no-unique-damage-section",
+      "rowCount": 0,
+      "issues": [],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=vk2CIcU0AHM",
+      "youtubeHasTactic": true
+    },
+    {
+      "stage": 6,
+      "boss": 2,
+      "taskId": 14274,
+      "linkIndex": 2,
+      "linkOrdinal": 2,
+      "videoId": "WtjU6gCeZVY",
+      "status": "partial",
+      "matching": "unique-boss",
+      "rowCount": 73,
+      "issues": [
+        "unparsed-instructions",
+        "unmapped-actors",
+        "source-lines-omitted"
+      ],
+      "warnings": [],
+      "rows": [
+        {
+          "time": null,
+          "text": "AUTO 오프",
+          "checked": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "time": "1:14",
+          "text": "1:14 보스 UB",
+          "checked": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "time": "0:43",
+          "text": "0:43 보스 UB",
+          "checked": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "time": "0:27",
+          "text": "0:27 보스 UB",
+          "checked": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "time": "0:08",
+          "text": "0:08 아이라 후 (SET 변경 없음)",
+          "checked": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ]
+        }
+      ],
+      "sourceUrl": "https://www.youtube.com/watch?v=WtjU6gCeZVY",
+      "youtubeHasTactic": true,
+      "omittedRows": 68,
+      "warningCount": 46,
+      "unknownActorCount": 4
+    },
+    {
+      "stage": 6,
+      "boss": 2,
+      "taskId": 14276,
+      "linkIndex": 1,
+      "linkOrdinal": 1,
+      "videoId": "FnmA9QWZ11c",
+      "status": "needs-source-check",
+      "matching": "no-unique-damage-section",
+      "rowCount": 0,
+      "issues": [],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=FnmA9QWZ11c",
+      "youtubeHasTactic": true
+    },
+    {
+      "stage": 6,
+      "boss": 2,
+      "taskId": 14276,
+      "linkIndex": 8,
+      "linkOrdinal": 8,
+      "videoId": "NiPu8EUiHH8",
+      "status": "partial",
+      "matching": "single-video",
+      "rowCount": 67,
+      "issues": [
+        "unparsed-instructions",
+        "unmapped-actors",
+        "source-lines-omitted"
+      ],
+      "warnings": [],
+      "rows": [
+        {
+          "time": null,
+          "text": "AUTO 오프",
+          "checked": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "time": "01:30",
+          "text": "ㄴ 그레이스, 사쿠라 ON",
+          "checked": [
+            false,
+            true,
+            true,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "time": "01:13",
+          "text": "ㄴ 메두사 ON",
+          "checked": [
+            true,
+            true,
+            true,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "time": "01:13",
+          "text": "ㄴ 메두사 OFF",
+          "checked": [
+            false,
+            true,
+            true,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "time": "00:28",
+          "text": "ㄴ 메두사 ON, 알리스, 그레이스 OFF",
+          "checked": [
+            true,
+            true,
+            false,
+            false,
+            false,
+            true
+          ]
+        },
+        {
+          "time": "00:20",
+          "text": "ㄴ 그레이스 ON",
+          "checked": [
+            true,
+            true,
+            true,
+            false,
+            false,
+            true
+          ]
+        },
+        {
+          "time": "00:12",
+          "text": "ㄴ 바이올렛 ON, 알리스 OFF",
+          "checked": [
+            true,
+            true,
+            false,
+            false,
+            true,
+            true
+          ]
+        },
+        {
+          "time": "00:05",
+          "text": "ㄴ 그레이스 ON",
+          "checked": [
+            true,
+            true,
+            true,
+            false,
+            true,
+            true
+          ]
+        },
+        {
+          "time": "00:05",
+          "text": "ㄴ 알리스 ON",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ]
+        }
+      ],
+      "sourceUrl": "https://www.youtube.com/watch?v=NiPu8EUiHH8",
+      "youtubeHasTactic": true,
+      "omittedRows": 58,
+      "warningCount": 43,
+      "unknownActorCount": 2
+    },
+    {
+      "stage": 6,
+      "boss": 2,
+      "taskId": 14277,
+      "linkIndex": 1,
+      "linkOrdinal": 0,
+      "videoId": "gcLTnp88aSo",
+      "status": "needs-source-check",
+      "matching": "no-unique-damage-section",
+      "rowCount": 0,
+      "issues": [],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=gcLTnp88aSo",
+      "youtubeHasTactic": true
+    },
+    {
+      "stage": 6,
+      "boss": 2,
+      "taskId": 14277,
+      "linkIndex": 2,
+      "linkOrdinal": 2,
+      "videoId": "7tgdVxW_rz8",
+      "status": "needs-source-check",
+      "matching": "no-unique-damage-section",
+      "rowCount": 0,
+      "issues": [],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8",
+      "youtubeHasTactic": true
+    },
+    {
+      "stage": 6,
+      "boss": 2,
+      "taskId": 14278,
+      "linkIndex": 1,
+      "linkOrdinal": 0,
+      "videoId": "gcLTnp88aSo",
+      "status": "needs-source-check",
+      "matching": "no-unique-damage-section",
+      "rowCount": 0,
+      "issues": [],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=gcLTnp88aSo",
+      "youtubeHasTactic": true
+    },
+    {
+      "stage": 6,
+      "boss": 2,
+      "taskId": 14295,
+      "linkIndex": 0,
+      "linkOrdinal": 0,
+      "videoId": "xSXBe1r3Jes",
+      "status": "partial",
+      "matching": "unique-boss",
+      "rowCount": 19,
+      "issues": [
+        "unparsed-instructions",
+        "source-lines-omitted"
+      ],
+      "warnings": [],
+      "rows": [
+        {
+          "time": null,
+          "text": "AUTO 온, 바이올렛, 사쿠라, 수나카, 수사렌 SET",
+          "checked": [
+            true,
+            true,
+            true,
+            false,
+            true,
+            true
+          ]
+        },
+        {
+          "time": "1:18",
+          "text": "1:18 바이올렛 후 아이라 ON, 바이올렛 OFF",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            false,
+            true
+          ]
+        },
+        {
+          "time": "1:14",
+          "text": "1:14 보스 UB",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            false,
+            true
+          ]
+        }
+      ],
+      "sourceUrl": "https://www.youtube.com/watch?v=xSXBe1r3Jes",
+      "youtubeHasTactic": true,
+      "omittedRows": 16,
+      "warningCount": 11,
+      "unknownActorCount": 0
+    },
+    {
+      "stage": 6,
+      "boss": 2,
+      "taskId": 14297,
+      "linkIndex": 0,
+      "linkOrdinal": 0,
+      "videoId": "j0neZj-sYg0",
+      "status": "partial",
+      "matching": "unique-boss",
+      "rowCount": 15,
+      "issues": [
+        "unparsed-instructions",
+        "source-lines-omitted"
+      ],
+      "warnings": [],
+      "rows": [
+        {
+          "time": null,
+          "text": "AUTO 온, 수쥰, 사쿠라, 수나카, 수사렌 SET",
+          "checked": [
+            true,
+            true,
+            true,
+            false,
+            true,
+            true
+          ]
+        },
+        {
+          "time": "1:18",
+          "text": "1:18 아이라 후 아이라 ON, 수나카 OFF",
+          "checked": [
+            true,
+            false,
+            true,
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "time": "1:14",
+          "text": "1:14 보스 UB",
+          "checked": [
+            true,
+            false,
+            true,
+            true,
+            true,
+            true
+          ]
+        }
+      ],
+      "sourceUrl": "https://www.youtube.com/watch?v=j0neZj-sYg0",
+      "youtubeHasTactic": true,
+      "omittedRows": 12,
+      "warningCount": 11,
+      "unknownActorCount": 0
+    },
+    {
+      "stage": 6,
+      "boss": 2,
+      "taskId": 14302,
+      "linkIndex": 0,
+      "linkOrdinal": 0,
+      "videoId": "PCzxIzeK3vg",
+      "status": "needs-translation-review",
+      "matching": "single-video",
+      "rowCount": 4,
+      "issues": [
+        "source-lines-omitted"
+      ],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=PCzxIzeK3vg",
+      "youtubeHasTactic": true,
+      "omittedRows": 4
+    },
+    {
+      "stage": 6,
+      "boss": 2,
+      "taskId": 14382,
+      "linkIndex": 0,
+      "linkOrdinal": 0,
+      "videoId": "qF5q2PLOMX8",
+      "status": "partial",
+      "matching": "unique-boss",
+      "rowCount": 15,
+      "issues": [
+        "unparsed-instructions",
+        "source-lines-omitted"
+      ],
+      "warnings": [],
+      "rows": [
+        {
+          "time": "1:08",
+          "text": "1:08 아이라 후 (SET 변경 없음)",
+          "checked": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            true
+          ]
+        },
+        {
+          "time": "0:59",
+          "text": "0:59 아이라 후 (SET 변경 없음)",
+          "checked": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            true
+          ]
+        },
+        {
+          "time": "0:49",
+          "text": "0:49 아이라 후 (SET 변경 없음)",
+          "checked": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            true
+          ]
+        }
+      ],
+      "sourceUrl": "https://www.youtube.com/watch?v=qF5q2PLOMX8",
+      "youtubeHasTactic": true,
+      "omittedRows": 12,
+      "warningCount": 6,
+      "unknownActorCount": 0
+    },
+    {
+      "stage": 6,
+      "boss": 2,
+      "taskId": 14382,
+      "linkIndex": 1,
+      "linkOrdinal": 1,
+      "videoId": "ZwVh18AGwDU",
+      "status": "needs-translation-review",
+      "matching": "unique-boss",
+      "rowCount": 27,
+      "issues": [
+        "unparsed-instructions",
+        "unmapped-actors",
+        "source-lines-omitted"
+      ],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=ZwVh18AGwDU",
+      "youtubeHasTactic": true,
+      "omittedRows": 27
+    },
+    {
+      "stage": 6,
+      "boss": 2,
+      "taskId": 14460,
+      "linkIndex": 0,
+      "linkOrdinal": 0,
+      "videoId": "RSQBqZp4QvM",
+      "status": "partial",
+      "matching": "unique-boss",
+      "rowCount": 20,
+      "issues": [
+        "unparsed-instructions",
+        "source-lines-omitted"
+      ],
+      "warnings": [],
+      "rows": [
+        {
+          "time": null,
+          "text": "AUTO 오프, 전부 SET",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            false
+          ]
+        },
+        {
+          "time": "1:14",
+          "text": "1:14 보스 UB",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            false
+          ]
+        },
+        {
+          "time": "0:58",
+          "text": "0:58 보스 UB",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            false
+          ]
+        }
+      ],
+      "sourceUrl": "https://www.youtube.com/watch?v=RSQBqZp4QvM",
+      "youtubeHasTactic": true,
+      "omittedRows": 17,
+      "warningCount": 11,
+      "unknownActorCount": 0
+    },
+    {
+      "stage": 6,
+      "boss": 2,
+      "taskId": 14468,
+      "linkIndex": 0,
+      "linkOrdinal": 0,
+      "videoId": "7tgdVxW_rz8",
+      "status": "needs-source-check",
+      "matching": "no-unique-damage-section",
+      "rowCount": 0,
+      "issues": [],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8",
+      "youtubeHasTactic": true
+    },
+    {
+      "stage": 6,
+      "boss": 2,
+      "taskId": 14478,
+      "linkIndex": 0,
+      "linkOrdinal": 0,
+      "videoId": "B97LQrFSmVM",
+      "status": "needs-source-check",
+      "matching": "no-unique-damage-section",
+      "rowCount": 0,
+      "issues": [],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=B97LQrFSmVM",
+      "youtubeHasTactic": true
+    },
+    {
+      "stage": 6,
+      "boss": 2,
+      "taskId": 14479,
+      "linkIndex": 0,
+      "linkOrdinal": 0,
+      "videoId": "B97LQrFSmVM",
+      "status": "needs-source-check",
+      "matching": "no-unique-damage-section",
+      "rowCount": 0,
+      "issues": [],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=B97LQrFSmVM",
+      "youtubeHasTactic": true
+    },
+    {
+      "stage": 6,
+      "boss": 3,
+      "taskId": 14267,
+      "linkIndex": 4,
+      "linkOrdinal": 4,
+      "videoId": "_j29RP6f8g0",
+      "status": "partial",
+      "matching": "single-video",
+      "rowCount": 15,
+      "issues": [
+        "unparsed-instructions",
+        "unmapped-actors",
+        "source-lines-omitted"
+      ],
+      "warnings": [],
+      "rows": [
+        {
+          "time": null,
+          "text": "AUTO 온",
+          "checked": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            true
+          ]
+        },
+        {
+          "time": "0:04",
+          "text": "ㄴ AUTO 온",
+          "checked": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            true
+          ]
+        }
+      ],
+      "sourceUrl": "https://www.youtube.com/watch?v=_j29RP6f8g0",
+      "youtubeHasTactic": true,
+      "omittedRows": 13,
+      "warningCount": 4,
+      "unknownActorCount": 4
+    },
+    {
+      "stage": 6,
+      "boss": 3,
+      "taskId": 14267,
+      "linkIndex": 6,
+      "linkOrdinal": 6,
+      "videoId": "uVDL7cFffWM",
+      "status": "partial",
+      "matching": "single-video",
+      "rowCount": 53,
+      "issues": [
+        "unparsed-instructions",
+        "unmapped-actors",
+        "source-lines-omitted"
+      ],
+      "warnings": [],
+      "rows": [
+        {
+          "time": null,
+          "text": "AUTO 오프",
+          "checked": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "time": "01:30",
+          "text": "ㄴ 피오, 수리스 ON, AUTO 오프",
+          "checked": [
+            true,
+            true,
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "time": "01:14",
+          "text": "ㄴ 봄쿄카 ON",
+          "checked": [
+            true,
+            true,
+            true,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "time": "01:01",
+          "text": "ㄴ AUTO 오프",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            false,
+            false
+          ]
+        },
+        {
+          "time": "00:53",
+          "text": "00:53 보스 UB",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            false,
+            false
+          ]
+        },
+        {
+          "time": "00:42",
+          "text": "ㄴ 피오 ON, 봄즈메 OFF, AUTO 오프",
+          "checked": [
+            true,
+            true,
+            true,
+            false,
+            true,
+            false
+          ]
+        },
+        {
+          "time": "00:22",
+          "text": "00:22 보스 UB",
+          "checked": [
+            false,
+            false,
+            true,
+            false,
+            true,
+            false
+          ]
+        },
+        {
+          "time": "00:15",
+          "text": "ㄴ AUTO 오프",
+          "checked": [
+            false,
+            false,
+            true,
+            false,
+            true,
+            false
+          ]
+        },
+        {
+          "time": "00:12",
+          "text": "ㄴ AUTO 오프",
+          "checked": [
+            false,
+            false,
+            true,
+            true,
+            true,
+            false
+          ]
+        },
+        {
+          "time": "00:04",
+          "text": "ㄴ 수리스 ON",
+          "checked": [
+            true,
+            false,
+            true,
+            true,
+            true,
+            false
+          ]
+        }
+      ],
+      "sourceUrl": "https://www.youtube.com/watch?v=uVDL7cFffWM",
+      "youtubeHasTactic": true,
+      "omittedRows": 43,
+      "warningCount": 14,
+      "unknownActorCount": 2
+    },
+    {
+      "stage": 6,
+      "boss": 3,
+      "taskId": 14267,
+      "linkIndex": 8,
+      "linkOrdinal": 8,
+      "videoId": "-HGT0MfwG6w",
+      "status": "needs-translation-review",
+      "matching": "single-video",
+      "rowCount": 65,
+      "issues": [
+        "unparsed-instructions",
+        "unmapped-actors",
+        "source-lines-omitted"
+      ],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=-HGT0MfwG6w",
+      "youtubeHasTactic": true,
+      "omittedRows": 65
+    },
+    {
+      "stage": 6,
+      "boss": 3,
+      "taskId": 14267,
+      "linkIndex": 9,
+      "linkOrdinal": 9,
+      "videoId": "QkKv4NQgakQ",
+      "status": "partial",
+      "matching": "single-video",
+      "rowCount": 8,
+      "issues": [
+        "unparsed-instructions",
+        "unmapped-actors",
+        "source-lines-omitted"
+      ],
+      "warnings": [],
+      "rows": [
+        {
+          "time": null,
+          "text": "AUTO 오프",
+          "checked": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "time": "0:58",
+          "text": "0:58 피오 후 피오 OFF",
+          "checked": [
+            true,
+            false,
+            true,
+            true,
+            true,
+            false
+          ]
+        }
+      ],
+      "sourceUrl": "https://www.youtube.com/watch?v=QkKv4NQgakQ",
+      "youtubeHasTactic": true,
+      "omittedRows": 6,
+      "warningCount": 1,
+      "unknownActorCount": 3
+    },
+    {
+      "stage": 6,
+      "boss": 3,
+      "taskId": 14267,
+      "linkIndex": 10,
+      "linkOrdinal": 10,
+      "videoId": "ylhzE2D3UGk",
+      "status": "needs-source-check",
+      "matching": "no-unique-damage-section",
+      "rowCount": 0,
+      "issues": [],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=ylhzE2D3UGk",
+      "youtubeHasTactic": true
+    },
+    {
+      "stage": 6,
+      "boss": 3,
+      "taskId": 14267,
+      "linkIndex": 11,
+      "linkOrdinal": 11,
+      "videoId": "oag8z2B9oUU",
+      "status": "partial",
+      "matching": "single-video",
+      "rowCount": 49,
+      "issues": [
+        "unparsed-instructions",
+        "unmapped-actors",
+        "source-lines-omitted"
+      ],
+      "warnings": [],
+      "rows": [
+        {
+          "time": null,
+          "text": "AUTO 오프, 봄즈메, 봄쿄카, 피오, 수리스 SET",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            false,
+            false
+          ]
+        },
+        {
+          "time": "0:58",
+          "text": "ㄴ 피오 후 봄쿄카 ON, 클요리, 피오 OFF",
+          "checked": [
+            true,
+            false,
+            true,
+            true,
+            false,
+            false
+          ]
+        },
+        {
+          "time": "0:31",
+          "text": "ㄴ 봄즈메 ON, 피오 OFF",
+          "checked": [
+            true,
+            false,
+            true,
+            true,
+            true,
+            false
+          ]
+        },
+        {
+          "time": "0:13",
+          "text": "ㄴ 피오 ON, 봄즈메 OFF",
+          "checked": [
+            true,
+            true,
+            true,
+            false,
+            true,
+            false
+          ]
+        }
+      ],
+      "sourceUrl": "https://www.youtube.com/watch?v=oag8z2B9oUU",
+      "youtubeHasTactic": true,
+      "omittedRows": 45,
+      "warningCount": 19,
+      "unknownActorCount": 1
+    },
+    {
+      "stage": 6,
+      "boss": 3,
+      "taskId": 14268,
+      "linkIndex": 1,
+      "linkOrdinal": 0,
+      "videoId": "e7UQ94tu0xI",
+      "status": "video-unavailable",
+      "matching": "no-description",
+      "rowCount": 0,
+      "issues": [],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=e7UQ94tu0xI",
+      "youtubeHasTactic": null
+    },
+    {
+      "stage": 6,
+      "boss": 3,
+      "taskId": 14279,
+      "linkIndex": 1,
+      "linkOrdinal": 0,
+      "videoId": "gcLTnp88aSo",
+      "status": "needs-source-check",
+      "matching": "no-unique-damage-section",
+      "rowCount": 0,
+      "issues": [],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=gcLTnp88aSo",
+      "youtubeHasTactic": true
+    },
+    {
+      "stage": 6,
+      "boss": 3,
+      "taskId": 14279,
+      "linkIndex": 1,
+      "linkOrdinal": 1,
+      "videoId": "7tgdVxW_rz8",
+      "status": "needs-source-check",
+      "matching": "no-unique-damage-section",
+      "rowCount": 0,
+      "issues": [],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8",
+      "youtubeHasTactic": true
+    },
+    {
+      "stage": 6,
+      "boss": 3,
+      "taskId": 14280,
+      "linkIndex": 1,
+      "linkOrdinal": 0,
+      "videoId": "gcLTnp88aSo",
+      "status": "needs-source-check",
+      "matching": "no-unique-damage-section",
+      "rowCount": 0,
+      "issues": [],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=gcLTnp88aSo",
+      "youtubeHasTactic": true
+    },
+    {
+      "stage": 6,
+      "boss": 3,
+      "taskId": 14281,
+      "linkIndex": 1,
+      "linkOrdinal": 0,
+      "videoId": "gcLTnp88aSo",
+      "status": "needs-source-check",
+      "matching": "no-unique-damage-section",
+      "rowCount": 0,
+      "issues": [],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=gcLTnp88aSo",
+      "youtubeHasTactic": true
+    },
+    {
+      "stage": 6,
+      "boss": 3,
+      "taskId": 14282,
+      "linkIndex": 1,
+      "linkOrdinal": 0,
+      "videoId": "gcLTnp88aSo",
+      "status": "needs-source-check",
+      "matching": "no-unique-damage-section",
+      "rowCount": 0,
+      "issues": [],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=gcLTnp88aSo",
+      "youtubeHasTactic": true
+    },
+    {
+      "stage": 6,
+      "boss": 3,
+      "taskId": 14282,
+      "linkIndex": 1,
+      "linkOrdinal": 1,
+      "videoId": "kfFsDXBFetY",
+      "status": "needs-translation-review",
+      "matching": "single-video",
+      "rowCount": 9,
+      "issues": [
+        "unparsed-instructions",
+        "source-lines-omitted"
+      ],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=kfFsDXBFetY",
+      "youtubeHasTactic": true,
+      "omittedRows": 9
+    },
+    {
+      "stage": 6,
+      "boss": 3,
+      "taskId": 14283,
+      "linkIndex": 1,
+      "linkOrdinal": 0,
+      "videoId": "gcLTnp88aSo",
+      "status": "needs-source-check",
+      "matching": "no-unique-damage-section",
+      "rowCount": 0,
+      "issues": [],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=gcLTnp88aSo",
+      "youtubeHasTactic": true
+    },
+    {
+      "stage": 6,
+      "boss": 3,
+      "taskId": 14284,
+      "linkIndex": 1,
+      "linkOrdinal": 0,
+      "videoId": "gcLTnp88aSo",
+      "status": "needs-source-check",
+      "matching": "no-unique-damage-section",
+      "rowCount": 0,
+      "issues": [],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=gcLTnp88aSo",
+      "youtubeHasTactic": true
+    },
+    {
+      "stage": 6,
+      "boss": 3,
+      "taskId": 14307,
+      "linkIndex": 0,
+      "linkOrdinal": 0,
+      "videoId": "G49kCTl26To",
+      "status": "needs-translation-review",
+      "matching": "unique-boss",
+      "rowCount": 14,
+      "issues": [
+        "unparsed-instructions",
+        "source-lines-omitted"
+      ],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=G49kCTl26To",
+      "youtubeHasTactic": true,
+      "omittedRows": 14
+    },
+    {
+      "stage": 6,
+      "boss": 3,
+      "taskId": 14308,
+      "linkIndex": 0,
+      "linkOrdinal": 0,
+      "videoId": "bBX9S97R1Yg",
+      "status": "needs-translation-review",
+      "matching": "unique-boss",
+      "rowCount": 15,
+      "issues": [
+        "unparsed-instructions",
+        "source-lines-omitted"
+      ],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=bBX9S97R1Yg",
+      "youtubeHasTactic": true,
+      "omittedRows": 15
+    },
+    {
+      "stage": 6,
+      "boss": 3,
+      "taskId": 14309,
+      "linkIndex": 0,
+      "linkOrdinal": 0,
+      "videoId": "FXYfPgUC_Z4",
+      "status": "partial",
+      "matching": "unique-boss",
+      "rowCount": 23,
+      "issues": [
+        "unparsed-instructions",
+        "source-lines-omitted"
+      ],
+      "warnings": [],
+      "rows": [
+        {
+          "time": null,
+          "text": "AUTO 오프, 전부 SET",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            false
+          ]
+        },
+        {
+          "time": "1:17",
+          "text": "1:17 시나츠 후 시나츠 OFF",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            false,
+            false
+          ]
+        },
+        {
+          "time": "1:07",
+          "text": "1:07 와카나 후 시나츠 ON",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            false
+          ]
+        }
+      ],
+      "sourceUrl": "https://www.youtube.com/watch?v=FXYfPgUC_Z4",
+      "youtubeHasTactic": true,
+      "omittedRows": 20,
+      "warningCount": 11,
+      "unknownActorCount": 0
+    },
+    {
+      "stage": 6,
+      "boss": 3,
+      "taskId": 14365,
+      "linkIndex": 0,
+      "linkOrdinal": 0,
+      "videoId": "6Z6-twIpFew",
+      "status": "needs-translation-review",
+      "matching": "single-video",
+      "rowCount": 5,
+      "issues": [
+        "source-lines-omitted"
+      ],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=6Z6-twIpFew",
+      "youtubeHasTactic": true,
+      "omittedRows": 5
+    },
+    {
+      "stage": 6,
+      "boss": 3,
+      "taskId": 14366,
+      "linkIndex": 0,
+      "linkOrdinal": 0,
+      "videoId": "8818eU0TDnQ",
+      "status": "partial",
+      "matching": "unique-damage-section",
+      "rowCount": 32,
+      "issues": [
+        "unparsed-instructions",
+        "unmapped-actors",
+        "source-lines-omitted"
+      ],
+      "warnings": [],
+      "rows": [
+        {
+          "time": "1:19",
+          "text": "1:19 시오리 후 (SET 변경 없음)",
+          "checked": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "time": "1:12",
+          "text": "1:12 시나츠 후 (SET 변경 없음)",
+          "checked": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "time": "1:10",
+          "text": "1:10 시오리 후 (SET 변경 없음)",
+          "checked": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "time": "1:19",
+          "text": "1:19 시오리 후 (SET 변경 없음)",
+          "checked": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            true
+          ]
+        },
+        {
+          "time": "1:12",
+          "text": "1:12 시나츠 후 (SET 변경 없음)",
+          "checked": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            true
+          ]
+        },
+        {
+          "time": "1:11",
+          "text": "1:11 와카나 후 (SET 변경 없음)",
+          "checked": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            true
+          ]
+        },
+        {
+          "time": "1:10",
+          "text": "1:10 시오리 후 (SET 변경 없음)",
+          "checked": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            true
+          ]
+        },
+        {
+          "time": "1:07",
+          "text": "1:07 시오리 OFF",
+          "checked": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            true
+          ]
+        },
+        {
+          "time": "1:03",
+          "text": "1:03 시나츠 후 (SET 변경 없음)",
+          "checked": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            true
+          ]
+        }
+      ],
+      "sourceUrl": "https://www.youtube.com/watch?v=8818eU0TDnQ",
+      "youtubeHasTactic": true,
+      "omittedRows": 23,
+      "warningCount": 13,
+      "unknownActorCount": 1
+    },
+    {
+      "stage": 6,
+      "boss": 3,
+      "taskId": 14366,
+      "linkIndex": 1,
+      "linkOrdinal": 1,
+      "videoId": "8818eU0TDnQ",
+      "status": "needs-source-check",
+      "matching": "no-unique-damage-section",
+      "rowCount": 0,
+      "issues": [],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=8818eU0TDnQ",
+      "youtubeHasTactic": true
+    },
+    {
+      "stage": 6,
+      "boss": 3,
+      "taskId": 14372,
+      "linkIndex": 1,
+      "linkOrdinal": 1,
+      "videoId": "-Z7rN4QWfS0",
+      "status": "partial",
+      "matching": "single-video",
+      "rowCount": 63,
+      "issues": [
+        "unparsed-instructions",
+        "unmapped-actors",
+        "source-lines-omitted"
+      ],
+      "warnings": [],
+      "rows": [
+        {
+          "time": null,
+          "text": "AUTO 오프",
+          "checked": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "time": "01:16",
+          "text": "ㄴ 수메스 OFF",
+          "checked": [
+            false,
+            true,
+            true,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "time": "01:06",
+          "text": "ㄴ 소노 ON",
+          "checked": [
+            false,
+            true,
+            true,
+            true,
+            false,
+            false
+          ]
+        },
+        {
+          "time": "01:06",
+          "text": "ㄴ 소노 OFF",
+          "checked": [
+            false,
+            true,
+            true,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "time": "00:51",
+          "text": "ㄴ 소노, 수메스 ON",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            false,
+            false
+          ]
+        },
+        {
+          "time": "00:50",
+          "text": "ㄴ 알라비 OFF",
+          "checked": [
+            true,
+            true,
+            false,
+            true,
+            false,
+            false
+          ]
+        },
+        {
+          "time": "00:49",
+          "text": "00:49 보스 UB",
+          "checked": [
+            true,
+            true,
+            false,
+            true,
+            false,
+            false
+          ]
+        },
+        {
+          "time": "00:42",
+          "text": "ㄴ 알라비 ON",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            false,
+            false
+          ]
+        },
+        {
+          "time": "00:29",
+          "text": "ㄴ 수유이 ON, 수메스 OFF",
+          "checked": [
+            false,
+            true,
+            true,
+            true,
+            true,
+            false
+          ]
+        },
+        {
+          "time": "00:17",
+          "text": "ㄴ 수유이 OFF",
+          "checked": [
+            false,
+            true,
+            true,
+            true,
+            false,
+            false
+          ]
+        },
+        {
+          "time": "00:16",
+          "text": "ㄴ 알조미 OFF",
+          "checked": [
+            false,
+            false,
+            true,
+            true,
+            false,
+            false
+          ]
+        },
+        {
+          "time": "00:13",
+          "text": "ㄴ AUTO 오프",
+          "checked": [
+            false,
+            false,
+            true,
+            true,
+            false,
+            false
+          ]
+        },
+        {
+          "time": "00:12",
+          "text": "ㄴ 수유이, 알조미, 수메스 ON",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            false
+          ]
+        },
+        {
+          "time": "00:12",
+          "text": "ㄴ 보스 UB",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            false
+          ]
+        },
+        {
+          "time": "00:07",
+          "text": "ㄴ 알라비 OFF",
+          "checked": [
+            true,
+            true,
+            false,
+            true,
+            true,
+            false
+          ]
+        },
+        {
+          "time": "00:01",
+          "text": "ㄴ 알라비 ON",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            false
+          ]
+        }
+      ],
+      "sourceUrl": "https://www.youtube.com/watch?v=-Z7rN4QWfS0",
+      "youtubeHasTactic": true,
+      "omittedRows": 47,
+      "warningCount": 11,
+      "unknownActorCount": 1
+    },
+    {
+      "stage": 6,
+      "boss": 3,
+      "taskId": 14372,
+      "linkIndex": 2,
+      "linkOrdinal": 2,
+      "videoId": "D2BLH6YYjKc",
+      "status": "partial",
+      "matching": "single-video",
+      "rowCount": 22,
+      "issues": [
+        "unparsed-instructions",
+        "unmapped-actors",
+        "source-lines-omitted"
+      ],
+      "warnings": [],
+      "rows": [
+        {
+          "time": null,
+          "text": "AUTO 온, 소노, 알라비, 알조미, 수메스 SET",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            false,
+            true
+          ]
+        },
+        {
+          "time": "0:56",
+          "text": "0:56 소노 후 소노, 알조미 OFF",
+          "checked": [
+            true,
+            false,
+            true,
+            false,
+            true,
+            true
+          ]
+        },
+        {
+          "time": "0:34",
+          "text": "0:34 소노 후 AUTO 오프",
+          "checked": [
+            false,
+            true,
+            true,
+            true,
+            false,
+            false
+          ]
+        },
+        {
+          "time": "0:34",
+          "text": "0:34 소노 후 AUTO 오프",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            false,
+            false
+          ]
+        },
+        {
+          "time": "0:31",
+          "text": "0:31 ANozo ➜ 후 AUTO 온",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            false,
+            true
+          ]
+        },
+        {
+          "time": "0:31",
+          "text": "ㄴ SYui ➜ UNSET SYui & 후 AUTO 온",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            false,
+            true
+          ]
+        }
+      ],
+      "sourceUrl": "https://www.youtube.com/watch?v=D2BLH6YYjKc",
+      "youtubeHasTactic": true,
+      "omittedRows": 16,
+      "warningCount": 9,
+      "unknownActorCount": 1
+    },
+    {
+      "stage": 6,
+      "boss": 3,
+      "taskId": 14372,
+      "linkIndex": 3,
+      "linkOrdinal": 3,
+      "videoId": "7tgdVxW_rz8",
+      "status": "needs-source-check",
+      "matching": "no-unique-damage-section",
+      "rowCount": 0,
+      "issues": [],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8",
+      "youtubeHasTactic": true
+    },
+    {
+      "stage": 6,
+      "boss": 3,
+      "taskId": 14469,
+      "linkIndex": 0,
+      "linkOrdinal": 0,
+      "videoId": "7tgdVxW_rz8",
+      "status": "needs-source-check",
+      "matching": "no-unique-damage-section",
+      "rowCount": 0,
+      "issues": [],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8",
+      "youtubeHasTactic": true
+    },
+    {
+      "stage": 6,
+      "boss": 3,
+      "taskId": 14470,
+      "linkIndex": 0,
+      "linkOrdinal": 0,
+      "videoId": "7tgdVxW_rz8",
+      "status": "needs-source-check",
+      "matching": "no-unique-damage-section",
+      "rowCount": 0,
+      "issues": [],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8",
+      "youtubeHasTactic": true
+    },
+    {
+      "stage": 6,
+      "boss": 3,
+      "taskId": 14480,
+      "linkIndex": 0,
+      "linkOrdinal": 0,
+      "videoId": "B97LQrFSmVM",
+      "status": "needs-source-check",
+      "matching": "no-unique-damage-section",
+      "rowCount": 0,
+      "issues": [],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=B97LQrFSmVM",
+      "youtubeHasTactic": true
+    },
+    {
+      "stage": 6,
+      "boss": 3,
+      "taskId": 14490,
+      "linkIndex": 0,
+      "linkOrdinal": 0,
+      "videoId": "cMxhNxI-4-Q",
+      "status": "partial",
+      "matching": "unique-boss",
+      "rowCount": 25,
+      "issues": [
+        "unparsed-instructions",
+        "source-lines-omitted"
+      ],
+      "warnings": [],
+      "rows": [
+        {
+          "time": null,
+          "text": "AUTO 오프, 루카, 수사렌 SET",
+          "checked": [
+            true,
+            false,
+            false,
+            false,
+            true,
+            false
+          ]
+        },
+        {
+          "time": "1:30",
+          "text": "1:30 성야네, 프셰피, 수리코 OFF",
+          "checked": [
+            true,
+            false,
+            false,
+            false,
+            true,
+            false
+          ]
+        }
+      ],
+      "sourceUrl": "https://www.youtube.com/watch?v=cMxhNxI-4-Q",
+      "youtubeHasTactic": true,
+      "omittedRows": 23,
+      "warningCount": 13,
+      "unknownActorCount": 0
+    },
+    {
+      "stage": 6,
+      "boss": 4,
+      "taskId": 14285,
+      "linkIndex": 1,
+      "linkOrdinal": 0,
+      "videoId": "gcLTnp88aSo",
+      "status": "needs-source-check",
+      "matching": "no-unique-damage-section",
+      "rowCount": 0,
+      "issues": [],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=gcLTnp88aSo",
+      "youtubeHasTactic": true
+    },
+    {
+      "stage": 6,
+      "boss": 4,
+      "taskId": 14286,
+      "linkIndex": 1,
+      "linkOrdinal": 0,
+      "videoId": "gcLTnp88aSo",
+      "status": "needs-source-check",
+      "matching": "no-unique-damage-section",
+      "rowCount": 0,
+      "issues": [],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=gcLTnp88aSo",
+      "youtubeHasTactic": true
+    },
+    {
+      "stage": 6,
+      "boss": 4,
+      "taskId": 14287,
+      "linkIndex": 1,
+      "linkOrdinal": 0,
+      "videoId": "gcLTnp88aSo",
+      "status": "needs-source-check",
+      "matching": "no-unique-damage-section",
+      "rowCount": 0,
+      "issues": [],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=gcLTnp88aSo",
+      "youtubeHasTactic": true
+    },
+    {
+      "stage": 6,
+      "boss": 4,
+      "taskId": 14288,
+      "linkIndex": 1,
+      "linkOrdinal": 0,
+      "videoId": "gcLTnp88aSo",
+      "status": "needs-source-check",
+      "matching": "no-unique-damage-section",
+      "rowCount": 0,
+      "issues": [],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=gcLTnp88aSo",
+      "youtubeHasTactic": true
+    },
+    {
+      "stage": 6,
+      "boss": 4,
+      "taskId": 14293,
+      "linkIndex": 0,
+      "linkOrdinal": 0,
+      "videoId": "-wBhxkTYgU8",
+      "status": "partial",
+      "matching": "unique-boss",
+      "rowCount": 24,
+      "issues": [
+        "unparsed-instructions",
+        "source-lines-omitted"
+      ],
+      "warnings": [],
+      "rows": [
+        {
+          "time": null,
+          "text": "AUTO 오프, 엔요리, 수네모네, 라이라엘, 뉴츠네 SET",
+          "checked": [
+            true,
+            true,
+            false,
+            true,
+            true,
+            false
+          ]
+        },
+        {
+          "time": "1:03",
+          "text": "1:03 보스 UB",
+          "checked": [
+            true,
+            true,
+            false,
+            true,
+            true,
+            false
+          ]
+        }
+      ],
+      "sourceUrl": "https://www.youtube.com/watch?v=-wBhxkTYgU8",
+      "youtubeHasTactic": true,
+      "omittedRows": 22,
+      "warningCount": 11,
+      "unknownActorCount": 0
+    },
+    {
+      "stage": 6,
+      "boss": 4,
+      "taskId": 14293,
+      "linkIndex": 1,
+      "linkOrdinal": 1,
+      "videoId": "Hyc9-AIDuts",
+      "status": "needs-translation-review",
+      "matching": "unique-boss",
+      "rowCount": 19,
+      "issues": [
+        "unparsed-instructions",
+        "source-lines-omitted"
+      ],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=Hyc9-AIDuts",
+      "youtubeHasTactic": true,
+      "omittedRows": 19
+    },
+    {
+      "stage": 6,
+      "boss": 4,
+      "taskId": 14293,
+      "linkIndex": 2,
+      "linkOrdinal": 2,
+      "videoId": "OvTt1H17-Gk",
+      "status": "partial",
+      "matching": "unique-boss",
+      "rowCount": 23,
+      "issues": [
+        "unparsed-instructions",
+        "source-lines-omitted"
+      ],
+      "warnings": [],
+      "rows": [
+        {
+          "time": null,
+          "text": "AUTO 오프, 엔요리, 수네모네 SET",
+          "checked": [
+            false,
+            false,
+            false,
+            true,
+            true,
+            false
+          ]
+        },
+        {
+          "time": "1:18",
+          "text": "1:18 라이라엘 후 뉴츠네 ON",
+          "checked": [
+            true,
+            false,
+            false,
+            true,
+            true,
+            false
+          ]
+        },
+        {
+          "time": "1:08",
+          "text": "1:08 라이라엘 후 수네모네, 뉴사렌, 뉴츠네 OFF",
+          "checked": [
+            false,
+            false,
+            false,
+            false,
+            true,
+            false
+          ]
+        },
+        {
+          "time": "1:03",
+          "text": "1:03 보스 UB",
+          "checked": [
+            false,
+            false,
+            false,
+            false,
+            true,
+            false
+          ]
+        }
+      ],
+      "sourceUrl": "https://www.youtube.com/watch?v=OvTt1H17-Gk",
+      "youtubeHasTactic": true,
+      "omittedRows": 19,
+      "warningCount": 13,
+      "unknownActorCount": 0
+    },
+    {
+      "stage": 6,
+      "boss": 4,
+      "taskId": 14293,
+      "linkIndex": 3,
+      "linkOrdinal": 3,
+      "videoId": "0-C6osDOz44",
+      "status": "needs-translation-review",
+      "matching": "unique-boss",
+      "rowCount": 21,
+      "issues": [
+        "unparsed-instructions",
+        "unmapped-actors",
+        "source-lines-omitted"
+      ],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=0-C6osDOz44",
+      "youtubeHasTactic": true,
+      "omittedRows": 21
+    },
+    {
+      "stage": 6,
+      "boss": 4,
+      "taskId": 14312,
+      "linkIndex": 0,
+      "linkOrdinal": 0,
+      "videoId": "uUBQtVxVaBQ",
+      "status": "partial",
+      "matching": "unique-boss",
+      "rowCount": 24,
+      "issues": [
+        "unparsed-instructions",
+        "source-lines-omitted"
+      ],
+      "warnings": [],
+      "rows": [
+        {
+          "time": null,
+          "text": "AUTO 오프, 수렘, 리조미, 파오이, 수네모네 SET",
+          "checked": [
+            true,
+            true,
+            false,
+            true,
+            true,
+            false
+          ]
+        },
+        {
+          "time": "1:03",
+          "text": "1:03 보스 UB",
+          "checked": [
+            false,
+            true,
+            true,
+            true,
+            false,
+            true
+          ]
+        }
+      ],
+      "sourceUrl": "https://www.youtube.com/watch?v=uUBQtVxVaBQ",
+      "youtubeHasTactic": true,
+      "omittedRows": 22,
+      "warningCount": 11,
+      "unknownActorCount": 0
+    },
+    {
+      "stage": 6,
+      "boss": 4,
+      "taskId": 14312,
+      "linkIndex": 1,
+      "linkOrdinal": 1,
+      "videoId": "KTE-ezWKDfc",
+      "status": "partial",
+      "matching": "unique-boss",
+      "rowCount": 21,
+      "issues": [
+        "unparsed-instructions",
+        "source-lines-omitted"
+      ],
+      "warnings": [],
+      "rows": [
+        {
+          "time": null,
+          "text": "AUTO 오프, 수렘, 리조미, 파오이 SET",
+          "checked": [
+            false,
+            true,
+            false,
+            true,
+            true,
+            false
+          ]
+        },
+        {
+          "time": "1:03",
+          "text": "1:03 보스 UB",
+          "checked": [
+            true,
+            false,
+            true,
+            false,
+            true,
+            false
+          ]
+        }
+      ],
+      "sourceUrl": "https://www.youtube.com/watch?v=KTE-ezWKDfc",
+      "youtubeHasTactic": true,
+      "omittedRows": 19,
+      "warningCount": 12,
+      "unknownActorCount": 0
+    },
+    {
+      "stage": 6,
+      "boss": 4,
+      "taskId": 14367,
+      "linkIndex": 0,
+      "linkOrdinal": 0,
+      "videoId": "eNVvfgsbpcE",
+      "status": "needs-translation-review",
+      "matching": "unique-boss",
+      "rowCount": 17,
+      "issues": [
+        "unparsed-instructions",
+        "unmapped-actors",
+        "source-lines-omitted"
+      ],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=eNVvfgsbpcE",
+      "youtubeHasTactic": true,
+      "omittedRows": 17
+    },
+    {
+      "stage": 6,
+      "boss": 4,
+      "taskId": 14374,
+      "linkIndex": 3,
+      "linkOrdinal": 3,
+      "videoId": "7tgdVxW_rz8",
+      "status": "needs-source-check",
+      "matching": "no-unique-damage-section",
+      "rowCount": 0,
+      "issues": [],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8",
+      "youtubeHasTactic": true
+    },
+    {
+      "stage": 6,
+      "boss": 4,
+      "taskId": 14374,
+      "linkIndex": 4,
+      "linkOrdinal": 4,
+      "videoId": "1Jk9X6qrM2Q",
+      "status": "partial",
+      "matching": "single-video",
+      "rowCount": 89,
+      "issues": [
+        "unparsed-instructions",
+        "unmapped-actors",
+        "source-lines-omitted"
+      ],
+      "warnings": [],
+      "rows": [
+        {
+          "time": "1:30",
+          "text": "ㄴ AUTO 오프",
+          "checked": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "time": "0:03",
+          "text": "ㄴ 전부 ON",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            false
+          ]
+        }
+      ],
+      "sourceUrl": "https://www.youtube.com/watch?v=1Jk9X6qrM2Q",
+      "youtubeHasTactic": true,
+      "omittedRows": 87,
+      "warningCount": 14,
+      "unknownActorCount": 12
+    },
+    {
+      "stage": 6,
+      "boss": 4,
+      "taskId": 14374,
+      "linkIndex": 5,
+      "linkOrdinal": 5,
+      "videoId": "1Lrg-sYOtEs",
+      "status": "partial",
+      "matching": "single-video",
+      "rowCount": 91,
+      "issues": [
+        "unparsed-instructions",
+        "unmapped-actors",
+        "source-lines-omitted"
+      ],
+      "warnings": [],
+      "rows": [
+        {
+          "time": "1:30",
+          "text": "ㄴ AUTO 오프",
+          "checked": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "time": "0:03",
+          "text": "ㄴ 전부 ON",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            false
+          ]
+        }
+      ],
+      "sourceUrl": "https://www.youtube.com/watch?v=1Lrg-sYOtEs",
+      "youtubeHasTactic": true,
+      "omittedRows": 89,
+      "warningCount": 20,
+      "unknownActorCount": 12
+    },
+    {
+      "stage": 6,
+      "boss": 4,
+      "taskId": 14374,
+      "linkIndex": 6,
+      "linkOrdinal": 6,
+      "videoId": "ctleNhaGa6c",
+      "status": "needs-source-check",
+      "matching": "multiple-options-no-damage-marker",
+      "rowCount": 0,
+      "issues": [],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=ctleNhaGa6c",
+      "youtubeHasTactic": true
+    },
+    {
+      "stage": 6,
+      "boss": 4,
+      "taskId": 14374,
+      "linkIndex": 7,
+      "linkOrdinal": 7,
+      "videoId": "LSCOSiF1fv8",
+      "status": "partial",
+      "matching": "single-video",
+      "rowCount": 58,
+      "issues": [
+        "unparsed-instructions",
+        "unmapped-actors",
+        "source-lines-omitted"
+      ],
+      "warnings": [],
+      "rows": [
+        {
+          "time": null,
+          "text": "AUTO 오프, 수셰피, 파오이 SET",
+          "checked": [
+            false,
+            true,
+            false,
+            false,
+            true,
+            false
+          ]
+        },
+        {
+          "time": "1:03",
+          "text": "1:03 보스",
+          "checked": [
+            true,
+            false,
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "time": "0:39",
+          "text": "ㄴ 보스",
+          "checked": [
+            true,
+            true,
+            false,
+            true,
+            false,
+            false
+          ]
+        },
+        {
+          "time": "0:17",
+          "text": "0:17 보스",
+          "checked": [
+            false,
+            true,
+            false,
+            true,
+            true,
+            false
+          ]
+        }
+      ],
+      "sourceUrl": "https://youtu.be/LSCOSiF1fv8https://youtu.be/LSCOSiF1fv8https://docs.google.com/spreadsheets/d/e/2PACX-1vR1Iyk-Y6LYURS-JTD1j9R96Sox1TzuhaWSv8yhy6ReM4vMTZxddLp_sRPjZJWQYRTxySbha6cHPIu1/pubhtml#gid=2047017564",
+      "youtubeHasTactic": true,
+      "omittedRows": 54,
+      "warningCount": 15,
+      "unknownActorCount": 1
+    },
+    {
+      "stage": 6,
+      "boss": 4,
+      "taskId": 14374,
+      "linkIndex": 8,
+      "linkOrdinal": 8,
+      "videoId": "QQSnlbW4bj4",
+      "status": "needs-source-check",
+      "matching": "no-unique-damage-section",
+      "rowCount": 0,
+      "issues": [],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=QQSnlbW4bj4",
+      "youtubeHasTactic": true
+    },
+    {
+      "stage": 6,
+      "boss": 4,
+      "taskId": 14374,
+      "linkIndex": 9,
+      "linkOrdinal": 9,
+      "videoId": "V-eL_kyjT6o",
+      "status": "needs-translation-review",
+      "matching": "single-video",
+      "rowCount": 59,
+      "issues": [
+        "unparsed-instructions",
+        "source-lines-omitted"
+      ],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=V-eL_kyjT6o",
+      "youtubeHasTactic": true,
+      "omittedRows": 59
+    },
+    {
+      "stage": 6,
+      "boss": 4,
+      "taskId": 14461,
+      "linkIndex": 0,
+      "linkOrdinal": 0,
+      "videoId": "YjzkV-JOFmc",
+      "status": "partial",
+      "matching": "unique-boss",
+      "rowCount": 27,
+      "issues": [
+        "unparsed-instructions",
+        "source-lines-omitted"
+      ],
+      "warnings": [],
+      "rows": [
+        {
+          "time": null,
+          "text": "AUTO 오프, 수셰피, 리조미, 파오이, 수네모네 SET",
+          "checked": [
+            true,
+            true,
+            false,
+            true,
+            true,
+            false
+          ]
+        },
+        {
+          "time": "1:03",
+          "text": "ㄴ 보스 UB",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            false
+          ]
+        }
+      ],
+      "sourceUrl": "https://www.youtube.com/watch?v=YjzkV-JOFmc",
+      "youtubeHasTactic": true,
+      "omittedRows": 25,
+      "warningCount": 12,
+      "unknownActorCount": 0
+    },
+    {
+      "stage": 6,
+      "boss": 4,
+      "taskId": 14471,
+      "linkIndex": 0,
+      "linkOrdinal": 0,
+      "videoId": "7tgdVxW_rz8",
+      "status": "needs-source-check",
+      "matching": "no-unique-damage-section",
+      "rowCount": 0,
+      "issues": [],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8",
+      "youtubeHasTactic": true
+    },
+    {
+      "stage": 6,
+      "boss": 4,
+      "taskId": 14472,
+      "linkIndex": 0,
+      "linkOrdinal": 0,
+      "videoId": "7tgdVxW_rz8",
+      "status": "needs-source-check",
+      "matching": "no-unique-damage-section",
+      "rowCount": 0,
+      "issues": [],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8",
+      "youtubeHasTactic": true
+    },
+    {
+      "stage": 6,
+      "boss": 4,
+      "taskId": 14473,
+      "linkIndex": 0,
+      "linkOrdinal": 0,
+      "videoId": "7tgdVxW_rz8",
+      "status": "needs-source-check",
+      "matching": "no-unique-damage-section",
+      "rowCount": 0,
+      "issues": [],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8",
+      "youtubeHasTactic": true
+    },
+    {
+      "stage": 6,
+      "boss": 4,
+      "taskId": 14481,
+      "linkIndex": 0,
+      "linkOrdinal": 0,
+      "videoId": "B97LQrFSmVM",
+      "status": "needs-source-check",
+      "matching": "boss-section-not-found",
+      "rowCount": 0,
+      "issues": [],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=B97LQrFSmVM",
+      "youtubeHasTactic": true
+    },
+    {
+      "stage": 6,
+      "boss": 5,
+      "taskId": 14269,
+      "linkIndex": 1,
+      "linkOrdinal": 0,
+      "videoId": "nUfbbPPjo44",
+      "status": "video-unavailable",
+      "matching": "no-description",
+      "rowCount": 0,
+      "issues": [],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=nUfbbPPjo44",
+      "youtubeHasTactic": null
+    },
+    {
+      "stage": 6,
+      "boss": 5,
+      "taskId": 14289,
+      "linkIndex": 1,
+      "linkOrdinal": 0,
+      "videoId": "gcLTnp88aSo",
+      "status": "needs-source-check",
+      "matching": "no-unique-damage-section",
+      "rowCount": 0,
+      "issues": [],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=gcLTnp88aSo",
+      "youtubeHasTactic": true
+    },
+    {
+      "stage": 6,
+      "boss": 5,
+      "taskId": 14289,
+      "linkIndex": 1,
+      "linkOrdinal": 1,
+      "videoId": "qfJLOb2ot5U",
+      "status": "partial",
+      "matching": "single-video",
+      "rowCount": 15,
+      "issues": [
+        "unparsed-instructions",
+        "source-lines-omitted"
+      ],
+      "warnings": [],
+      "rows": [
+        {
+          "time": null,
+          "text": "AUTO 오프",
+          "checked": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "time": "00:57",
+          "text": "00:57 봉황 후 수네아, 봉황, 네피 ON, 아이라 OFF",
+          "checked": [
+            true,
+            true,
+            false,
+            true,
+            true,
+            false
+          ]
+        },
+        {
+          "time": "00:41",
+          "text": "00:41 수네아 후 수네아 OFF",
+          "checked": [
+            true,
+            true,
+            false,
+            true,
+            false,
+            false
+          ]
+        },
+        {
+          "time": "00:38",
+          "text": "00:38 봉황 후 아이라 ON",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            false,
+            false
+          ]
+        },
+        {
+          "time": "00:38",
+          "text": "ㄴ 아이라 후 아이라 OFF",
+          "checked": [
+            true,
+            true,
+            false,
+            true,
+            false,
+            false
+          ]
+        },
+        {
+          "time": "00:30",
+          "text": "00:30 카논 후 아이라 ON",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            false,
+            false
+          ]
+        },
+        {
+          "time": "00:30",
+          "text": "ㄴ 아이라 후 아이라 OFF",
+          "checked": [
+            true,
+            true,
+            false,
+            true,
+            false,
+            false
+          ]
+        },
+        {
+          "time": "00:16",
+          "text": "00:16 아이라 후 아이라 ON",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            false,
+            false
+          ]
+        },
+        {
+          "time": "00:11",
+          "text": "00:11 수네아 후 수네아 ON",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            false
+          ]
+        }
+      ],
+      "sourceUrl": "https://www.youtube.com/watch?v=qfJLOb2ot5U",
+      "youtubeHasTactic": true,
+      "omittedRows": 6,
+      "warningCount": 5,
+      "unknownActorCount": 0
+    },
+    {
+      "stage": 6,
+      "boss": 5,
+      "taskId": 14289,
+      "linkIndex": 11,
+      "linkOrdinal": 11,
+      "videoId": "vk2CIcU0AHM",
+      "status": "needs-source-check",
+      "matching": "no-unique-damage-section",
+      "rowCount": 0,
+      "issues": [],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=vk2CIcU0AHM",
+      "youtubeHasTactic": true
+    },
+    {
+      "stage": 6,
+      "boss": 5,
+      "taskId": 14289,
+      "linkIndex": 12,
+      "linkOrdinal": 12,
+      "videoId": "EYApaOU-tDE",
+      "status": "needs-source-check",
+      "matching": "boss-section-not-found",
+      "rowCount": 0,
+      "issues": [],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=EYApaOU-tDE",
+      "youtubeHasTactic": true
+    },
+    {
+      "stage": 6,
+      "boss": 5,
+      "taskId": 14290,
+      "linkIndex": 1,
+      "linkOrdinal": 0,
+      "videoId": "gcLTnp88aSo",
+      "status": "needs-source-check",
+      "matching": "no-unique-damage-section",
+      "rowCount": 0,
+      "issues": [],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=gcLTnp88aSo",
+      "youtubeHasTactic": true
+    },
+    {
+      "stage": 6,
+      "boss": 5,
+      "taskId": 14291,
+      "linkIndex": 1,
+      "linkOrdinal": 0,
+      "videoId": "gcLTnp88aSo",
+      "status": "needs-source-check",
+      "matching": "no-unique-damage-section",
+      "rowCount": 0,
+      "issues": [],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=gcLTnp88aSo",
+      "youtubeHasTactic": true
+    },
+    {
+      "stage": 6,
+      "boss": 5,
+      "taskId": 14292,
+      "linkIndex": 1,
+      "linkOrdinal": 0,
+      "videoId": "gcLTnp88aSo",
+      "status": "needs-source-check",
+      "matching": "no-unique-damage-section",
+      "rowCount": 0,
+      "issues": [],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=gcLTnp88aSo",
+      "youtubeHasTactic": true
+    },
+    {
+      "stage": 6,
+      "boss": 5,
+      "taskId": 14303,
+      "linkIndex": 0,
+      "linkOrdinal": 0,
+      "videoId": "KxcWIohBgyw",
+      "status": "needs-translation-review",
+      "matching": "unique-boss",
+      "rowCount": 18,
+      "issues": [
+        "unparsed-instructions",
+        "source-lines-omitted"
+      ],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=KxcWIohBgyw",
+      "youtubeHasTactic": true,
+      "omittedRows": 18
+    },
+    {
+      "stage": 6,
+      "boss": 5,
+      "taskId": 14368,
+      "linkIndex": 0,
+      "linkOrdinal": 0,
+      "videoId": "mYFL8_5y_sE",
+      "status": "partial",
+      "matching": "unique-boss",
+      "rowCount": 24,
+      "issues": [
+        "unparsed-instructions",
+        "unmapped-actors",
+        "source-lines-omitted"
+      ],
+      "warnings": [],
+      "rows": [
+        {
+          "time": "1:22",
+          "text": "1:22 네네카 후 (SET 변경 없음)",
+          "checked": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "time": "1:11",
+          "text": "1:11 네네카 후 (SET 변경 없음)",
+          "checked": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "time": "0:59",
+          "text": "0:59 네네카 후 (SET 변경 없음)",
+          "checked": [
+            false,
+            false,
+            false,
+            false,
+            true,
+            false
+          ]
+        },
+        {
+          "time": "0:52",
+          "text": "0:52 네네카 후 쿠루루 ON",
+          "checked": [
+            false,
+            false,
+            false,
+            false,
+            true,
+            false
+          ]
+        }
+      ],
+      "sourceUrl": "https://www.youtube.com/watch?v=mYFL8_5y_sE",
+      "youtubeHasTactic": true,
+      "omittedRows": 20,
+      "warningCount": 9,
+      "unknownActorCount": 3
+    },
+    {
+      "stage": 6,
+      "boss": 5,
+      "taskId": 14375,
+      "linkIndex": 2,
+      "linkOrdinal": 2,
+      "videoId": "B97LQrFSmVM",
+      "status": "needs-source-check",
+      "matching": "no-unique-damage-section",
+      "rowCount": 0,
+      "issues": [],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=B97LQrFSmVM",
+      "youtubeHasTactic": true
+    },
+    {
+      "stage": 6,
+      "boss": 5,
+      "taskId": 14376,
+      "linkIndex": 7,
+      "linkOrdinal": 7,
+      "videoId": "7tgdVxW_rz8",
+      "status": "needs-source-check",
+      "matching": "no-unique-damage-section",
+      "rowCount": 0,
+      "issues": [],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8",
+      "youtubeHasTactic": true
+    },
+    {
+      "stage": 6,
+      "boss": 5,
+      "taskId": 14376,
+      "linkIndex": 11,
+      "linkOrdinal": 11,
+      "videoId": "RXlBojG-o3E",
+      "status": "needs-translation-review",
+      "matching": "single-video",
+      "rowCount": 10,
+      "issues": [
+        "unparsed-instructions",
+        "unmapped-actors",
+        "source-lines-omitted"
+      ],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=RXlBojG-o3E",
+      "youtubeHasTactic": true,
+      "omittedRows": 10
+    },
+    {
+      "stage": 6,
+      "boss": 5,
+      "taskId": 14397,
+      "linkIndex": 2,
+      "linkOrdinal": 2,
+      "videoId": "7tgdVxW_rz8",
+      "status": "needs-source-check",
+      "matching": "no-unique-damage-section",
+      "rowCount": 0,
+      "issues": [],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8",
+      "youtubeHasTactic": true
+    },
+    {
+      "stage": 6,
+      "boss": 5,
+      "taskId": 14450,
+      "linkIndex": 0,
+      "linkOrdinal": 0,
+      "videoId": "r18Zgya4o0Y",
+      "status": "partial",
+      "matching": "unique-boss",
+      "rowCount": 25,
+      "issues": [
+        "unparsed-instructions",
+        "source-lines-omitted"
+      ],
+      "warnings": [],
+      "rows": [
+        {
+          "time": null,
+          "text": "AUTO 오프, 드마호, 뉴사렌 SET",
+          "checked": [
+            false,
+            true,
+            true,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "time": "1:16",
+          "text": "1:16 쿠루루 후 쿠루루, 라이라엘 ON, 수네모네 OFF",
+          "checked": [
+            true,
+            true,
+            true,
+            false,
+            true,
+            false
+          ]
+        },
+        {
+          "time": "1:00",
+          "text": "1:00 보스 UB",
+          "checked": [
+            true,
+            true,
+            true,
+            false,
+            true,
+            false
+          ]
+        }
+      ],
+      "sourceUrl": "https://www.youtube.com/watch?v=r18Zgya4o0Y",
+      "youtubeHasTactic": true,
+      "omittedRows": 22,
+      "warningCount": 12,
+      "unknownActorCount": 0
+    },
+    {
+      "stage": 6,
+      "boss": 5,
+      "taskId": 14453,
+      "linkIndex": 1,
+      "linkOrdinal": 1,
+      "videoId": "DV-xRyk_tIA",
+      "status": "needs-source-check",
+      "matching": "no-unique-damage-section",
+      "rowCount": 0,
+      "issues": [],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=DV-xRyk_tIA",
+      "youtubeHasTactic": true
+    },
+    {
+      "stage": 6,
+      "boss": 5,
+      "taskId": 14474,
+      "linkIndex": 0,
+      "linkOrdinal": 0,
+      "videoId": "7tgdVxW_rz8",
+      "status": "needs-source-check",
+      "matching": "no-unique-damage-section",
+      "rowCount": 0,
+      "issues": [],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8",
+      "youtubeHasTactic": true
+    },
+    {
+      "stage": 6,
+      "boss": 5,
+      "taskId": 14475,
+      "linkIndex": 0,
+      "linkOrdinal": 0,
+      "videoId": "7tgdVxW_rz8",
+      "status": "needs-source-check",
+      "matching": "no-unique-damage-section",
+      "rowCount": 0,
+      "issues": [],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8",
+      "youtubeHasTactic": true
+    },
+    {
+      "stage": 6,
+      "boss": 5,
+      "taskId": 14476,
+      "linkIndex": 0,
+      "linkOrdinal": 0,
+      "videoId": "7tgdVxW_rz8",
+      "status": "needs-source-check",
+      "matching": "no-unique-damage-section",
+      "rowCount": 0,
+      "issues": [],
+      "warnings": [],
+      "rows": [],
+      "sourceUrl": "https://www.youtube.com/watch?v=7tgdVxW_rz8",
+      "youtubeHasTactic": true
+    }
+  ]
+}

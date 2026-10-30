@@ -22,7 +22,7 @@ export function convertForeignTactic(raw, koreanNames=[], foreignNames=[], bossN
  // Preserve its spelling; it still has no positional SET slot until assigned.
  const sourceNames=[...String(raw).matchAll(/(?<![\p{L}\p{N}_])([\p{L}\p{M}][\p{L}\p{M}\d_・·]{0,23})[ \t]*(?=(?:SET(?:ON|OFF)?|ON|OFF|切|解除|オン|オフ|关|關|开|開)(?![A-Za-z]))/giu)]
    .map(match=>match[1]).filter(name=>
-     !/^(?:AUTO|オート|오토|자동|自動|自动|手動|수동|START|시작|初動|초동|ON|OFF|SET|全員|全体|全キャラ|전부|전체|전원)$/i.test(name)&&
+     !/^(?:AUTO|オート|오토|자동|自動|自动|手動|수동|START|시작|初動|초동|ON|OFF|SET|全員|全体|全キャラ|全员|全體|全部|全|전부|전체|전원|順に|順番に|순으로|순서대로)$/i.test(name)&&
      !/(?:不足|足り|場合|のみ|なら|たら|以上|以下|未満|必要|条件|조건|필요|부족|경우|이상|이하|미만|대기|지연|秒|초|만$)/.test(name));
  const otherNames=[...characterNames,...sourceNames,...Object.entries(suggested).flatMap(([name,values])=>[name,...values])]
    .flatMap(entry=>typeof entry==='string'?[entry]:[entry?.name,...(entry?.aliases||[])])
@@ -68,7 +68,7 @@ export function convertForeignTactic(raw, koreanNames=[], foreignNames=[], bossN
  const section=src.search(/【\s*(?:お団子|団子|당고)\s*(?:ver\.?|版)?\s*】/i);
  if(section>=0 && /(?:SET|セット|切)/.test(src.slice(0,section)))src=src.slice(0,section);
  src=src.replace(/[\uFE0E\uFE0F\u200D]/g,'');
- const dango=/[OX〇○◯●⭕❌ー－—-]{5}/i.test(src);
+ const dango=/[OX〇○◯●⭕❌✕×✖✗ー－—-]{5}/i.test(src);
  const format=dango?'dango':'commands';
  src=src.replace(/\u00a0/g,' ').replace(/[ \u3000]+(\d{1,2}:[0-5]\d)(?=[ \u3000\t]|$)/g,'\n$1 ');
  const rows=[],state=[false,false,false,false,false];let auto=false,time='',lastTime='',sourceLine='';
@@ -129,7 +129,7 @@ export function convertForeignTactic(raw, koreanNames=[], foreignNames=[], bossN
    const commands=[];
    let leadingActorAction=false;
    if(a.changed!==null)auto=a.changed;
-   const symbols=rest.match(/[OX〇○◯●⭕❌ー－—-]{5}/i);
+   const symbols=rest.match(/[OX〇○◯●⭕❌✕×✖✗ー－—-]{5}/i);
    if(symbols){
      commands.push(...a.events.map(e=>e.text));
      const on=[],off=[];
@@ -158,13 +158,15 @@ export function convertForeignTactic(raw, koreanNames=[], foreignNames=[], bossN
      }
      // Consume commands in source order. Arrows inside a subject list mean
      // ordered actions; arrows between commands must never reorder ON/OFF.
-     const subject='(?:'+dictPattern+'|全員|全体|全キャラ|전부)';
+     // Whole-party SET is commonly written as 全SET / 全部SET in Aikurumi notes.
+     // Match whole-party commands before character names; never treat 全 as a character.
+     const subject='(?:全キャラ|全員|全体|全员|全體|全部|전부|전체|전원|全|'+dictPattern+')';
      const regex=new RegExp('(?<![\\p{L}\\p{N}_])((?:'+subject+'[\\s、,，]*(?:(?:➡|→|➜|⇒|⟶)[\\s]*)?)+)\\s*(?:順に|順番に|순으로|순서대로)?\\s*(SET(?:ON|OFF)?|ON|OFF|切|解除|オン|オフ|关|關|开|開)','giu');
      let matched=false;const events=[...a.events];
      rest=rest.replace(regex,(whole,names,command,index)=>{
        matched=true;
        const enable=/^(?:SET|SETON|ON|オン|开|開)$/i.test(command);
-       const all=/(?:全員|全体|全キャラ|전부)/.test(names);
+       const all=/^(?:全キャラ|全員|全体|全员|全體|全部|전부|전체|전원|全)$/.test(names.trim());
        const actors=all?[0,1,2,3,4].map(i=>({name:label[i],i})):actorsIn(names);
        // Explicit instructions also matter when SET state is unchanged.
        applyActors(actors,enable);
@@ -179,7 +181,7 @@ export function convertForeignTactic(raw, koreanNames=[], foreignNames=[], bossN
        if(actors.length){commands.push(actors.length===5&&actors.every(actor=>actor.i>=0)?'전부 SET':actorList(actors)+' SET');rest=rest.replace(new RegExp(dictPattern,'g'),' ');}
      }
    }
-   const leftover=trim(rest.replace(/(?:初動|UBセット|お団子|시작|초동|開始|开局|初始|START)/gi,'').replace(/[\s、,，:：;；'‘’\"()[\]（）➡→➜⇒⟶]+/g,' '));
+   const leftover=trim(rest.replace(/(?:初動|UBセット|お団子|시작|초동|開始|开始|开局|初始|START)/gi,'').replace(/[\s、,，:：;；\/'‘’\"()[\]（）【】➡→➜⇒⟶]+/g,' '));
    if(leftover){warning('미해석 원문·조건 확인: '+leftover);commands.push('[원문 확인: '+leftover+']');}
    // A fully OFF initial row still establishes the initial time/state.
    if(initial&&!commands.length&&!actor)commands.push('전부 OFF');
@@ -189,15 +191,15 @@ export function convertForeignTactic(raw, koreanNames=[], foreignNames=[], bossN
  };
  const arrowDango=merged=>{
    const segments=merged.split(/\s*(?:➡|→|➜|⇒|⟶)\s*/);
-   if(segments.length<2||!segments.every(x=>/[OX〇○◯●⭕❌ー－—-]{5}/i.test(x)))return false;
-   const first=segments[0].match(/[OX〇○◯●⭕❌ー－—-]{5}/i);
-   const rawActor=cleanActor(segments[0].slice(0,first.index)).replace(/[\[\]]/g,' ').trim();
+   if(segments.length<2||!segments.every(x=>/[OX〇○◯●⭕❌✕×✖✗ー－—-]{5}/i.test(x)))return false;
+   const first=segments[0].match(/[OX〇○◯●⭕❌✕×✖✗ー－—-]{5}/i);
+   const rawActor=cleanActor(segments[0].slice(0,first.index)).replace(/[\[\]【】()（）]/g,' ').trim();
    const actor=actorStart(rawActor)?.name||rawActor;
    const previousTime=lastTime;
    const actions=[],autoActions=[],unresolved=[];
    const initial=!rows.length&&(!time||time==='1:30');
    for(let j=0;j<segments.length;j++){
-     const segment=segments[j],symbol=segment.match(/[OX〇○◯●⭕❌ー－—-]{5}/i);
+     const segment=segments[j],symbol=segment.match(/[OX〇○◯●⭕❌✕×✖✗ー－—-]{5}/i);
      const before=[...state],prevAuto=auto,rowStart=rows.length;
      // Later actor labels describe the second trigger. Do not interpret them
      // as a character number or an unknown error in the joined output.
@@ -285,7 +287,7 @@ export function convertForeignTactic(raw, koreanNames=[], foreignNames=[], bossN
    const t=line.match(/^(\d{1,2}:[0-5]\d)\s*/);
    if(t){time=t[1];line=trim(line.slice(t[0].length));}
    const autoLine=line.match(autoOnly);
-   if(autoLine&&!/[OX〇○◯●⭕❌ー－—-]{5}/i.test(line)&&cleanActor(autoLine[1])&&
+   if(autoLine&&!/[OX〇○◯●⭕❌✕×✖✗ー－—-]{5}/i.test(line)&&cleanActor(autoLine[1])&&
       !/(?:\b(?:SET(?:ON|OFF)?|ON|OFF)\b|切|解除|オン|オフ|关|關|开|開)/i.test(autoLine[1])){
      const rawActor=cleanActor(autoLine[1]);
      if(/(?:되자마자|보자마자|직후|즉시|見えたら|直後|すぐ)/.test(rawActor)){
@@ -306,9 +308,9 @@ export function convertForeignTactic(raw, koreanNames=[], foreignNames=[], bossN
    if(dango){
      const merged=parts.join(' ');
      if(arrowDango(merged))return;
-     const s=merged.match(/[OX〇○◯●⭕❌ー－—-]{5}/i);
+     const s=merged.match(/[OX〇○◯●⭕❌✕×✖✗ー－—-]{5}/i);
      if(s){
-       const rawActor=cleanActor(merged.slice(0,s.index)).replace(/[\[\]]/g,' ').trim().replace(/^(?:시작|초동|初動|開始|开局|初始|START)$/i,'');
+       const rawActor=cleanActor(merged.slice(0,s.index)).replace(/[\[\]【】()（）]/g,' ').trim().replace(/^(?:시작|초동|初動|開始|开始|开局|初始|START)$/i,'');
        const a=actorStart(rawActor);
        const actor=a?.name||rawActor;
        if(!rows.length&&!actor&&(time==='1:30'||!t))time='';
@@ -324,7 +326,7 @@ export function convertForeignTactic(raw, koreanNames=[], foreignNames=[], bossN
        }
      }
    }else{
-     if(!t&&!rows.length&&/(?:初動|UBセット|开局|初始)/i.test(line)){act(line,'',true);return;}
+     if(!t&&!rows.length&&/(?:初動|UBセット|开局|初始|(?:全キャラ|全員|全体|全员|全體|全部|전부|전체|전원|全)\s*SET)/i.test(line)){act(line,'',true);return;}
      for(let i=0;i<parts.length;){
        const a=actorStart(parts[i]);
        if(a){

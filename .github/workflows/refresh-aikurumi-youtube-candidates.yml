@@ -1,17 +1,22 @@
-name: Refresh isolated YouTube Korean TL candidates (read-only)
+name: Refresh YouTube tactic review data
 on:
   push:
-    branches: ['test/aikurumi-api-probe-20261030']
+    branches: ['main', 'test/aikurumi-api-probe-20261030']
     paths:
       - '.github/workflows/refresh-aikurumi-youtube-candidates.yml'
       - 'redive/scripts/refresh-aikurumi-youtube-candidates.mjs'
       - 'redive/scripts/aikurumi-youtube-candidates.mjs'
       - 'redive/scripts/test-aikurumi-youtube-candidates.mjs'
+      - 'redive/public/aikurumi-snapshot*.json'
+      - 'redive/public/aikurumi-tactic-*.mjs'
+      - 'redive/public/aikurumi-review-model.mjs'
   workflow_dispatch:
+  schedule:
+    - cron: '20 23 * * *'
 permissions:
   contents: write
 concurrency:
-  group: isolated-youtube-candidates
+  group: youtube-review-${{ github.ref_name }}
   cancel-in-progress: false
 jobs:
   build:
@@ -19,10 +24,11 @@ jobs:
     timeout-minutes: 7
     env:
       YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+      REVIEW_BRANCH: ${{ github.ref_name }}
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: test/aikurumi-api-probe-20261030
+          ref: ${{ github.ref_name }}
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
@@ -51,13 +57,13 @@ jobs:
             throw Error('Published mirror differs');
           console.log('DERIVED_ONLY_OK',JSON.stringify({references:data.references.length,statuses:data.statuses,expiresAt:data.expiresAt}));
           NODE
-      - name: Publish derived 28-day review candidates only to isolated test branch
+      - name: Publish refreshed review data
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add redive/public/aikurumi-youtube-candidates.json docs/aikurumi-lab/aikurumi-youtube-candidates.json
+          git add redive/public/aikurumi-youtube-candidates.json docs/aikurumi-lab/aikurumi-youtube-candidates.json docs/compact/aikurumi-youtube-candidates.json
           if ! git diff --cached --quiet; then
-            git commit -m 'test: refresh derived YouTube Korean tactic previews (expires after 28 days)'
-            git pull --rebase origin test/aikurumi-api-probe-20261030
-            git push origin HEAD:test/aikurumi-api-probe-20261030
+            git commit -m 'data: refresh YouTube tactic review candidates'
+            git pull --rebase origin "$REVIEW_BRANCH"
+            git push origin "HEAD:$REVIEW_BRANCH"
           fi

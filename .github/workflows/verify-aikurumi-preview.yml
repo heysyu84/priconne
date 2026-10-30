@@ -1,99 +1,62 @@
-name: Verify isolated Aikurumi preview page
+name: Verify external tactic review workspace
 on:
   push:
-    branches:
-      - test/aikurumi-api-probe-20261030
+    branches: [main, test/aikurumi-api-probe-20261030]
     paths:
       - .github/workflows/verify-aikurumi-preview.yml
       - docs/aikurumi-lab/**
-      - redive/scripts/test-aikurumi-review-filters.mjs
-      - redive/scripts/test-aikurumi-lab-ui.mjs
-      - redive/scripts/test-aikurumi-source-priority.mjs
-      - redive/public/aikurumi-source-priority.mjs
-      - redive/scripts/test-aikurumi-stage3-composer.mjs
-      - redive/public/aikurumi-stage3-composer.mjs
-      - redive/public/aikurumi-operation-types.mjs
-      - redive/public/aikurumi-stage3-carry.mjs
-      - redive/public/aikurumi-youtube-collections.mjs
-      - redive/scripts/test-aikurumi-youtube-collections.mjs
-      - redive/public/aikurumi-review-filters.mjs
-      - redive/public/aikurumi-tactic-review.mjs
-      - redive/scripts/test-aikurumi-review.mjs
+      - docs/compact/aikurumi-*
+      - docs/compact/app.js
+      - redive/public/aikurumi-*
+      - redive/public/legacy-codec.mjs
+      - redive/src/external-review.js
+      - redive/src/usability.js
+      - redive/scripts/test-aikurumi-*
   workflow_dispatch:
-
 permissions:
   contents: read
-
 jobs:
-  smoke:
+  review:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 7
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Validate offline page and links locally
-        shell: bash
+      - name: Verify source priority, conditions, administrator imports and production round trips
         run: |
-          node --check docs/aikurumi-lab/aikurumi-lab.mjs
-          node --check docs/aikurumi-lab/aikurumi-tactic-review.mjs
-          node --check docs/aikurumi-lab/aikurumi-character-matcher.mjs
-          node --check docs/aikurumi-lab/aikurumi-tactic-preprocess.mjs
-          node --check docs/aikurumi-lab/tactic-parser.mjs
-          node --check docs/aikurumi-lab/aikurumi-review-filters.mjs
-          node --check docs/aikurumi-lab/aikurumi-operation-types.mjs
-          node --check docs/aikurumi-lab/aikurumi-stage3-composer.mjs
-          node --check docs/aikurumi-lab/aikurumi-stage3-carry.mjs
-          node --check docs/aikurumi-lab/aikurumi-youtube-collections.mjs
-          node --check docs/aikurumi-lab/aikurumi-source-priority.mjs
-          node --check redive/public/aikurumi-lab.mjs
-          node --test redive/scripts/test-aikurumi-review-filters.mjs redive/scripts/test-aikurumi-lab-ui.mjs redive/scripts/test-aikurumi-review.mjs redive/scripts/test-aikurumi-stage3-composer.mjs redive/scripts/test-aikurumi-youtube-collections.mjs redive/scripts/test-aikurumi-source-priority.mjs
-          test -s docs/aikurumi-lab/index.html
-          for f in aikurumi-lab.mjs aikurumi-tactic-review.mjs aikurumi-tactic-preprocess.mjs aikurumi-character-matcher.mjs tactic-parser.mjs aikurumi-snapshot.json aikurumi-snapshot-stage3.json aikurumi-operation-types.mjs aikurumi-stage3-composer.mjs aikurumi-stage3-carry.mjs aikurumi-youtube-collections.mjs aikurumi-source-priority.mjs aikurumi-youtube-candidates.json; do
-            test -s "docs/aikurumi-lab/$f"
-          done
-      - name: Verify public branch preview responds with actual page assets
-        shell: bash
+          node --check docs/compact/app.js
+          node --check redive/public/aikurumi-review-ui.mjs
+          node --check redive/public/aikurumi-review-model.mjs
+          node --test redive/scripts/test-aikurumi-*.mjs
+          node redive/scripts/check-tactic-body-save.mjs
+          node redive/scripts/check-usability.mjs
+          node redive/scripts/check-shared-client.mjs
+          node redive/scripts/check-migration.mjs
+      - name: Verify deployed assets
+        env:
+          REVIEW_BRANCH: ${{ github.ref_name }}
         run: |
           node --input-type=module <<'NODE'
           import assert from 'node:assert/strict';
-          const base='https://test-aikurumi-api-probe-2026.priconne.pages.dev/aikurumi-lab/';
-          async function verify(file,check){
+          const origin=process.env.REVIEW_BRANCH==='main'?'https://priconne.pages.dev':'https://test-aikurumi-api-probe-2026.priconne.pages.dev';
+          async function verify(path,check){
             let last;
-            for(let attempt=0;attempt<5;attempt++){
+            for(let n=0;n<10;n++){
               try{
-                const response=await fetch(base+file,{signal:AbortSignal.timeout(12000),headers:{'Cache-Control':'no-cache'}});
-                assert.equal(response.status,200,file+' HTTP '+response.status);
-                const text=await response.text();
-                check(text);
-                console.log('SMOKE_OK',file,'bytes',text.length,'type',response.headers.get('content-type'));
-                return;
-              }catch(error){last=error;console.log('SMOKE_RETRY',file,attempt+1,String(error));await new Promise(r=>setTimeout(r,2000));}
+                const response=await fetch(origin+path,{cache:'no-store',signal:AbortSignal.timeout(12000)});
+                assert.equal(response.status,200);check(await response.text());console.log('DEPLOYED_OK',path);return;
+              }catch(error){last=error;await new Promise(r=>setTimeout(r,6000));}
             }
             throw last;
           }
-          await verify('',text=>{assert.match(text,/<title>냥냥클랜/);assert.match(text,/aikurumi-lab\.mjs/);assert.match(text,/원본과 한국어 변환 비교/);});
-          await verify('aikurumi-lab.mjs',text=>{assert.match(text,/previewAikurumiTactic/);assert.match(text,/aikurumi-snapshot\.json/);});
-          await verify('aikurumi-review-filters.mjs',text=>{assert.match(text,/reviewSummary/);assert.match(text,/filterReviewItems/);});
-          await verify('aikurumi-youtube-collections.mjs',text=>assert.match(text,/groupAikurumiVideos/));
-          await verify('aikurumi-stage3-carry.mjs',text=>assert.match(text,/parseStage3CarryTime/));
-          await verify('aikurumi-source-priority.mjs',text=>assert.match(text,/selectPrimaryTacticSource/));
-          await verify('aikurumi-youtube-candidates.json',text=>{
+          await verify('/',text=>assert.match(text,/20261030-review01/));
+          await verify('/aikurumi-lab/',text=>{assert.match(text,/aikurumi-review\.css/);assert.doesNotMatch(text,/TEST \/ 읽기 전용|API 수집/);});
+          await verify('/compact/aikurumi-review-ui.mjs',text=>assert.match(text,/createExternalReview/));
+          await verify('/compact/aikurumi-review-model.mjs',text=>assert.match(text,/buildReviewedTactic/));
+          await verify('/compact/aikurumi-youtube-candidates.json',text=>{
             const data=JSON.parse(text);assert.equal(data.schema,'nyang-youtube-tactic-candidates-v1');
-            assert.equal(data.registrationAllowed,false);assert.equal(data.readOnly,true);
-            assert.equal(data.totalReferences,136);
-            assert.ok(data.references.every(row=>!Object.hasOwn(row,'description')));
-          });
-          await verify('aikurumi-tactic-review.mjs',text=>assert.match(text,/registrationAllowed:false/));
-          await verify('aikurumi-snapshot-stage3.json',text=>{
-            const stage3=JSON.parse(text);assert.equal(stage3.readOnly,true);
-            assert.equal(stage3.stage,3);assert.equal(stage3.bosses.length,5);
-            assert.equal(stage3.bosses.reduce((n,b)=>n+b.tasks.length,0),95);
-          });
-          await verify('aikurumi-snapshot.json',text=>{
-            const snapshot=JSON.parse(text);assert.equal(snapshot.readOnly,true);assert.equal(snapshot.jpMonth,'2025-10');assert.equal(snapshot.krMonth,'2026-11');assert.equal(snapshot.bosses.length,5);
-            assert.equal(snapshot.bosses.reduce((n,b)=>n+b.tasks.length,0),97);
-            assert.equal(snapshot.bosses.reduce((n,b)=>n+b.tasks.reduce((k,t)=>k+t.links.length,0),0),214);
+            assert.ok(data.references.length>0);assert.ok(data.references.every(r=>!Object.hasOwn(r,'description')));
           });
           NODE

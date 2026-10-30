@@ -36,12 +36,12 @@ matchName=(member,query)=>partyTools.matchesMember(member,query,chosung);
 
 fullTactics=()=>{
   if(ui.tabs.tactics==='tools')ui.tabs.tactics='external';
-  if(['converter','trash'].includes(ui.tabs.tactics)&&!adminMode())ui.tabs.tactics='workspace';
+  if(['converter','trash','review'].includes(ui.tabs.tactics)&&!adminMode())ui.tabs.tactics='workspace';
   if(ui.tabs.tactics==='planner'){ui.tabs.tactics='combos';ext.distributionOpen=true;findPlans();}
   const work=ui.tabs.tactics==='workspace';
   const activeMenuTactics=data.tactics.filter(t=>!t.hidden&&!t.deletedAt&&t.stage===4),comboCount=activeMenuTactics.filter(t=>t.category!=='carry').length,workCount=comboCount+(data.rules.carryVisible?activeMenuTactics.filter(t=>t.category==='carry').length:0);
-  const tabs=[['combos','추천 조합',comboCount],['workspace','택틱 작업실',workCount],['external','이월 계산기'],...(adminMode()?[['converter','택틱 변환기']]:[])];
-  return titleBar('택틱',work&&adminMode()?simpleButton('삭제함','v2-tactic-trash')+simpleButton('택틱 추가','new-tactic','','primary'):'')+pageTabs(tabs)+({combos:recommendationRows,workspace:completeWorkspace,external:completeExternal,converter:completeConverter,trash:completeTrash}[ui.tabs.tactics]||recommendationRows)();
+  const tabs=[['combos','추천 조합',comboCount],['workspace','택틱 작업실',workCount],['external','이월 계산기'],...(adminMode()?[['review','외부 택틱'],['converter','택틱 변환기']]:[])];
+  return titleBar('택틱',work&&adminMode()?simpleButton('삭제함','v2-tactic-trash')+simpleButton('택틱 추가','new-tactic','','primary'):'')+pageTabs(tabs)+({combos:recommendationRows,workspace:completeWorkspace,external:completeExternal,review:externalReviewPage,converter:completeConverter,trash:completeTrash}[ui.tabs.tactics]||recommendationRows)();
 };
 fullClan=()=>{
   if(ui.tabs.clan==='characters'&&!adminMode())ui.tabs.clan='members';

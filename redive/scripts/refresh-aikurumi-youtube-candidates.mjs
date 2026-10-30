@@ -24,8 +24,10 @@ const counts={requested:found.requested,received:found.received,missing:found.mi
 console.log('YOUTUBE_CANDIDATE_COUNTS',JSON.stringify(counts));
 const output=resolve(root,'public/aikurumi-youtube-candidates.json');
 const published=resolve(root,'../docs/aikurumi-lab/aikurumi-youtube-candidates.json');
+const compact=resolve(root,'../docs/compact/aikurumi-youtube-candidates.json');
 writeFileSync(output,JSON.stringify(derived,null,2)+'\n');
 writeFileSync(published,JSON.stringify(derived,null,2)+'\n');
+writeFileSync(compact,JSON.stringify(derived,null,2)+'\n');
 if(process.env.GITHUB_STEP_SUMMARY)
  writeFileSync(process.env.GITHUB_STEP_SUMMARY,
   '## YouTube 일본어 TL 자동 매칭 / 변환 (검토용)\n'

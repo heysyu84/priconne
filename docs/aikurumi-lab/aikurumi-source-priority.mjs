@@ -2,7 +2,9 @@
 // YouTube ORIGINAL Japanese TL is authoritative when present. Chinese Aikurumi
 // TL is only a fallback after confirming the YouTube video has no actionable TL.
 // Ambiguous YouTube multi-tactic sections must never silently become Chinese TL.
-export function selectPrimaryTacticSource(entry,{youtubeReady=false,hasChineseTimeline=false}={}){
+export function selectPrimaryTacticSource(entry,{youtubeReady=false,hasChineseTimeline=false,hasYouTubeLink=false}={}){
+ if(!entry&&hasYouTubeLink)return {source:'youtube-unverified',label:'YouTube 확인 필요',
+  chineseFallback:false,needsHumanCheck:true,reason:youtubeReady?'missing-video-result':'not-fetched'};
  if(!entry)return {
   source:youtubeReady?'aikurumi':'awaiting-youtube',
   label:youtubeReady?'aikurumi 중국어 TL':'유튜브 조회 중',

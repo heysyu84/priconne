@@ -1,3 +1,4 @@
+import {stripTypeScriptTypes} from 'node:module';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
@@ -48,7 +49,7 @@ await check('booster changes patch the original list while retaining unknown ent
 // editor token. No production URL is contacted and no live records are changed.
 const legacy=process.env.REDIVE_LEGACY_SOURCE||fileURLToPath(new URL('../../clan-battle',import.meta.url));
 if(!fs.existsSync(path.join(legacy,'app/api/state/route.ts')))throw Error('Original API source missing. Set REDIVE_LEGACY_SOURCE to the clan-battle source directory.');
-const require=createRequire(import.meta.url);let ts;try{ts=require('typescript');}catch{ts=createRequire(path.join(legacy,'package.json'))('typescript');}
+const ts={ScriptTarget:{ES2022:99},ModuleKind:{ES2022:99},transpileModule(source){return {outputText:stripTypeScriptTypes(source,{mode:'transform'})};}};
 const sqlite=new DatabaseSync(':memory:');sqlite.exec('CREATE TABLE clan_state (id TEXT PRIMARY KEY,revision INTEGER,payload TEXT,updated_at TEXT);CREATE TABLE clan_archive_months(month TEXT PRIMARY KEY,payload TEXT,updated_at TEXT);CREATE TABLE clan_revisions(revision INTEGER PRIMARY KEY,payload TEXT,created_at TEXT);');
 sqlite.prepare('INSERT INTO clan_state VALUES (?,?,?,?)').run('main',1,JSON.stringify(activeOnly),new Date().toISOString());
 sqlite.prepare('INSERT INTO clan_archive_months VALUES (?,?,?)').run(past,JSON.stringify(archived),new Date().toISOString());
@@ -119,5 +120,25 @@ await check('a later archive selection refreshes an archive even when the curren
 await check('untrusted origins and writes without the version header are rejected by the original route',async()=>{
   const request=new Request(backend+'/api/state',{headers:{Origin:'https://untrusted.test'}});assert.equal((await stateRoute.GET(request)).status,403);
   assert.equal((await stateRoute.PUT(new Request(backend+'/api/state',{method:'PUT',headers:{Origin:origin,Authorization:'Bearer '+fixtureToken,'Content-Type':'application/json'},body:'{}'}))).status,409);
+});
+await check('verified external 3/4-stage tactics save through the actual production route without changing October',async()=>{
+ const model=await import('../public/aikurumi-review-model.mjs');
+ const youtube=JSON.parse(fs.readFileSync(path.join(root,'public/aikurumi-youtube-candidates.json'),'utf8'));
+ const latest=await newClient.request('/api/state'),doc=structuredClone(latest.document),before=JSON.stringify(doc.seasons[current].logs);
+ const target=structuredClone(doc.seasons[current]);target.logs=[];target.tactics=[];target.recommendations=[];target.dayClosures=[];target.result={rank:null,sealed:false,winners:null};target.rules.startDate='';doc.seasons['2026-11']=target;doc.activeMonth='2026-11';
+ for(const name of ['aikurumi-snapshot-stage3.json','aikurumi-snapshot.json']){
+  const snapshot=JSON.parse(fs.readFileSync(path.join(root,'public',name),'utf8'));
+  const item=model.buildReviewItems(snapshot,youtube).find(i=>i.preview.matchedKoreanNames&&!i.damage.ambiguous);
+  const draft=model.reviewDraft(item);draft.confirmed=true;draft.rows=[{text:'1:30 전부 SET, AUTO 온',checked:Array(6).fill(true)}];draft.damage=3.3065;draft.tp='4.3+';
+  const tactic=model.buildReviewedTactic(item,draft,{id:'fixture-external-'+item.stage});
+  (item.stage===3?target.recommendations:target.tactics).push(tactic);
+ }
+ const saved=await newClient.request('/api/state',{method:'PUT',body:JSON.stringify({revision:latest.revision,document:doc})});
+ assert.ok(saved.revision>latest.revision);
+ const result=await newClient.request('/api/state');
+ assert.equal(result.document.seasons['2026-11'].tactics.length,1);assert.equal(result.document.seasons['2026-11'].recommendations.length,1);
+ assert.equal(result.document.seasons['2026-11'].tactics[0].damage,3.3065);assert.equal(result.document.seasons['2026-11'].tactics[0].tp,'4.3+');
+ assert.ok(result.document.seasons['2026-11'].tactics[0].externalSource.key);
+ assert.equal(JSON.stringify(result.document.seasons[current].logs),before);
 });
 await newClient.lock();sqlite.close();delete globalThis.__rediveFixtureEnv;fs.rmSync(directory,{recursive:true,force:true});console.log(checks+' migration checks passed');

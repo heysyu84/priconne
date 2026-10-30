@@ -1,115 +1,13 @@
 <!doctype html>
 <html lang="ko"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>냥냥클랜 · 외부 택틱 검토실 (실험용)</title>
+<meta name="theme-color" content="#fbfaf7"><title>냥냥클랜 · 외부 택틱</title>
+<link rel="icon" href="../favicon.svg"><link rel="stylesheet" href="./aikurumi-review.css?v=20261030-review01">
 <style>
-:root{color-scheme:dark;--bg:#0b111c;--surface:#151e2d;--surface2:#1d293d;--line:#354157;--ink:#edf2ff;--muted:#a6b4cd;--accent:#a9bdf9;--warn:#ffc88b;--green:#94dcb9}*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.6 system-ui,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif}main{max-width:1220px;margin:auto;padding:30px 20px 70px}
-header{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;margin-bottom:20px}header h1{font-size:1.65rem;letter-spacing:-.03em;margin:0 0 6px}p{margin:.25rem 0 1rem}.muted,small{color:var(--muted)}.label{display:block;color:var(--muted);font-size:.78rem;font-weight:650;margin-bottom:6px}.badge{font-size:.73rem;border:1px solid var(--line);border-radius:25px;padding:4px 10px;color:var(--muted);white-space:nowrap}
-.notice{border:1px solid #627499;background:#1a2942;padding:13px 16px;border-radius:12px;margin-bottom:16px}.notice strong{color:var(--accent)}
-.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:end;margin-bottom:15px}select,input{background:var(--surface2);color:var(--ink);border:1px solid var(--line);border-radius:9px;padding:9px 12px;min-height:42px;max-width:100%;font:inherit}
-input{min-width:210px}select{min-width:168px}.panes{display:grid;grid-template-columns:minmax(280px,.85fr) minmax(0,1.55fr);gap:14px;align-items:start}
-.panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden}.panel>h2,.panel-title{font-size:1rem;margin:0;padding:14px 16px;border-bottom:1px solid var(--line)}.list{max-height:73vh;overflow:auto}.item{width:100%;border:0;border-bottom:1px solid var(--line);display:block;text-align:left;background:none;color:inherit;font:inherit;padding:13px 15px;cursor:pointer}.item:hover,.item.selected{background:#273858}.item:last-child{border-bottom:0}.item-title{display:flex;gap:10px;align-items:center;justify-content:space-between;font-weight:700}.item small{display:block;margin-top:4px}.review{color:var(--warn)}.ok{color:var(--green)}
-.detail{padding:16px;min-height:420px}.detail h2{margin:0;font-size:1.22rem}.data-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:15px 0}.stat{border:1px solid var(--line);background:var(--surface2);border-radius:10px;padding:11px 12px}.stat strong{display:block;word-break:break-word}
-.party{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;margin:12px 0}.party>div{padding:9px 4px;text-align:center;border-radius:9px;background:var(--surface2);border:1px solid var(--line)}.party strong{display:block;font-size:.85rem;overflow-wrap:anywhere}
-.step{border-top:1px solid var(--line);padding:9px 0}.step header{margin:0;display:flex;align-items:flex-start;gap:8px;justify-content:space-between}.step-text{overflow-wrap:anywhere;font-size:.89rem}.state{white-space:nowrap;font:700 .7rem/1.6 ui-monospace,SFMono-Regular,monospace;color:#6a748a}.state .on{color:var(--green)}pre{white-space:pre-wrap;overflow-wrap:anywhere;max-height:400px;overflow:auto;border:1px solid var(--line);padding:14px;border-radius:10px;background:#0b1525;font:13px/1.7 ui-monospace,SFMono-Regular,monospace}
-summary{cursor:pointer;font-weight:700;margin:12px 0}a{color:var(--accent)}.warnings{background:#352a24;border:1px solid #7e604c;border-radius:10px;padding:13px 16px;overflow-wrap:anywhere}.empty{padding:24px 16px;color:var(--muted)}
-
-.summary-bar{margin:0 0 15px;color:var(--muted);font-size:.84rem;line-height:1.5}
-.item-status{font-size:.73rem;font-weight:650;white-space:nowrap}
-.item-title span:first-child{min-width:0;overflow-wrap:anywhere}
-.detail-heading{display:flex;gap:12px;align-items:center;justify-content:space-between}
-.detail-heading p{margin:4px 0 10px}.nav-actions{display:flex;gap:6px}
-.nav-actions button{border:1px solid var(--line);border-radius:9px;background:var(--surface2);color:var(--ink);padding:8px 12px;cursor:pointer;white-space:nowrap}
-.nav-actions button:hover{background:#344a6c}
-.compare-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:start;gap:16px;margin:18px 0}
-.compare-grid section{min-width:0}.compare-grid h3{font-size:1rem;margin:0 0 12px}
-.compare-grid pre{max-height:600px;margin:0;overflow:auto}
-.step{padding:12px 0}.step-head{display:flex;gap:8px;justify-content:space-between;align-items:start}
-.step-warning{border-left:2px solid var(--warn);padding-left:8px}
-.source-line{font-size:.79rem;color:var(--muted);margin-top:5px;overflow-wrap:anywhere}
-.source-line>span{font-size:.69rem;color:var(--accent);margin-right:6px}
-.warnings{margin:12px 0}.warnings>summary{margin:0;font-weight:700}.warnings ul{margin:10px 0 0;padding-left:18px}
-.party small{display:block;font-size:.72rem}
-.youtube-paste{border-top:1px solid var(--line);margin-top:20px;padding-top:14px}
-.youtube-paste textarea{display:block;width:100%;min-height:150px;resize:vertical;background:#0b1525;border:1px solid var(--line);border-radius:10px;color:var(--ink);font:13px/1.65 ui-monospace,monospace;padding:12px;overflow-wrap:anywhere}
-.youtube-actions{display:flex;gap:9px;flex-wrap:wrap;margin:10px 0}
-.youtube-actions button{padding:9px 14px;border:1px solid var(--line);border-radius:9px;background:var(--surface2);color:var(--ink);font:inherit;cursor:pointer}
-.youtube-actions button:first-child{background:#2e4270;border-color:#5c74a6}
-
-.source-priority{border:1px solid var(--line);border-radius:10px;padding:13px 15px;background:var(--surface2);margin:14px 0}
-.source-priority p{margin:6px 0 0}
-.youtube-auto-status{border-left:3px solid var(--accent);padding:9px 12px;margin:9px 0;background:var(--surface2);overflow-wrap:anywhere}
-.youtube-auto-rows{padding:10px 0;margin:10px 0}
-.youtube-auto-rows h4{margin:7px 0 10px}
-.secondary-source{border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:15px 0}
-.secondary-source>summary{margin:2px 0}
-.compose-carry{display:block;color:var(--green);font-size:.88rem;margin:5px 0}
-.youtube-paste h4{font-size:.95rem;margin:14px 0 8px}
-[data-youtube-output]{border-radius:10px;overflow-wrap:anywhere}
-
-.stage3-panel{margin-bottom:16px}
-.stage3-panel[hidden]{display:none}
-.stage3-content{padding:14px 16px}
-.stage3-toolbar{display:flex;gap:12px;align-items:end;flex-wrap:wrap;margin-bottom:12px}
-.stage3-toolbar button{border:1px solid #6e88bf;background:#2a4171;border-radius:9px;color:#fff;font:inherit;padding:10px 14px;min-height:42px;cursor:pointer}
-.stage3-toolbar button:hover{background:#3a578f}
-.compose-result{border:1px solid var(--line);background:var(--surface2);border-radius:12px;padding:13px;margin:10px 0}
-.compose-result h3{margin:0 0 8px;font-size:1rem}
-.compose-list{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
-.compose-boss{background:#111b2b;border:1px solid var(--line);border-radius:9px;padding:10px;min-width:0}
-.compose-boss b,.compose-boss small{display:block}
-.compose-boss small{font-size:.75rem;margin:4px 0;line-height:1.5}
-.compose-boss button{color:var(--accent);border:1px solid var(--line);border-radius:8px;background:transparent;padding:5px 8px;font:inherit;font-size:.75rem;cursor:pointer}
-.stage3-notice{margin:12px 0;color:var(--muted);font-size:.82rem}
-@media(max-width:1000px){.compose-list{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:600px){.compose-list{grid-template-columns:minmax(0,1fr)}}
-
-.video-collections{margin-bottom:18px}.video-collections[hidden]{display:none}
-.video-only-toggle{display:inline-flex;align-items:center;gap:7px;margin:0 0 13px;color:var(--muted);font-size:.85rem}
-.video-only-toggle input{min-width:0;min-height:0;accent-color:var(--accent)}
-.video-creator{background:var(--surface2);border:1px solid var(--line);border-radius:12px;margin:12px 0;padding:12px 14px}
-.video-creator>summary{font-size:1.02rem;margin:0;cursor:pointer}
-.video-creator>p{font-size:.8rem;color:var(--muted);margin:7px 0}
-.video-card{margin:10px 0;border:1px solid var(--line);background:#101b2c;border-radius:10px;padding:12px;min-width:0}
-.video-card h4{margin:0 0 4px;font-size:.96rem}
-.video-card .video-meta{color:var(--muted);font-size:.8rem;margin:5px 0 9px}
-.video-card a{overflow-wrap:anywhere}
-.video-references{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:9px}
-.video-reference{background:#1d2a40;border:1px solid var(--line);border-radius:8px;padding:9px 10px;min-width:0}
-.video-reference span,.video-reference small{display:block;overflow-wrap:anywhere}
-.video-reference span{font-weight:650;font-size:.87rem}.video-reference small{font-size:.76rem;margin-top:4px}
-.video-reference button{background:#2c4470;border:1px solid #5373ac;color:#fff;border-radius:7px;padding:6px 9px;margin-top:8px;font:inherit;font-size:.76rem;cursor:pointer}
-@media(max-width:700px){.video-references{grid-template-columns:minmax(0,1fr)}}
-@media(max-width:1040px){.compare-grid{grid-template-columns:minmax(0,1fr)}}
-@media(max-width:760px){.detail-heading{align-items:flex-start;flex-direction:column}.nav-actions{align-self:flex-end}.item-title{align-items:flex-start}.item-title span:first-child{font-size:.85rem}.item-status{flex-shrink:0}}
-@media(max-width:760px){main{padding:18px 12px 50px}.panes{grid-template-columns:minmax(0,1fr)}.list{max-height:280px}.data-grid{grid-template-columns:1fr}.party strong{font-size:.73rem}header h1{font-size:1.35rem}.step-head{flex-wrap:wrap}.state{font-size:.82rem}.toolbar>*{flex:1 1 42%;min-width:0}.toolbar select,.toolbar input{width:100%;min-width:0}.item{padding:12px}.detail{padding:13px}}
-</style></head><body><main>
-<header><div><h1>외부 택틱 검토실</h1><p class="muted">냥냥클랜 · aikurumi 수동 수집 기능의 독립 검증 화면</p></div><span class="badge">TEST / 읽기 전용</span></header>
-<div class="notice"><strong>운영 사이트와 완전히 분리</strong> · 수집 자료는 검토 전용입니다. 기존 택틱을 수정하거나 추천조합에 등록할 수 없습니다.</div>
-<div class="toolbar">
-<label><span class="label">검토 메뉴</span><select id="view-mode"><option value="tactics">택틱 검토</option><option value="videos">유튜브 모음집</option></select></label>
-<label><span class="label">한섭 / 일섭 / 단계</span><select id="month"><option value="6">한섭 2026-11 · 4단계</option><option value="3">한섭 2026-11 · 3단계</option></select></label>
-<label><span class="label">보스</span><select id="boss"><option value="all">전체 보스</option></select></label>
-<label><span class="label">택틱 유형</span><select id="operation"><option value="all">전체 유형</option><option value="manual">손컨</option><option value="easy-manual">간단손컨</option><option value="semi-auto">세미오토</option><option value="full-auto">풀오토</option><option value="carry">이월용</option><option value="unknown">미분류</option></select></label>
-<label><span class="label">검토 상태</span><select id="filter"><option value="all">전체</option><option value="timeline">조작문 있음</option><option value="warning">미해석 경고</option><option value="unknown">행동 대상 미확인</option><option value="clean">형식 경고 없음</option><option value="notes">본문 없음</option></select></label>
-<label><span class="label">캐릭터명·원본 검색</span><input id="search" placeholder="캐릭터 / 보스 / ID 검색"></label>
-</div>
-<p id="summary" class="summary-bar" aria-live="polite">원본 자료 분석 중…</p>
-<section id="youtube-collections" class="panel video-collections" hidden>
-<div class="panel-title">유튜브 모음집 · 유튜버별 / 동일 영상별 택틱</div>
-<div class="stage3-content">
-<p class="muted">같은 유튜브 영상 ID에 연결된 택틱을 보스·단계에 관계없이 묶습니다. 영상의 시간 지정 링크는 원본 그대로 유지됩니다. 제작자명은 aikurumi의 출처 표기 기준입니다.</p>
-<label class="video-only-toggle"><input type="checkbox" id="repeated-only" checked/> 여러 택틱이 연결된 영상만 보기</label>
-<div id="collection-status" class="summary-bar" aria-live="polite"></div>
-<div id="collection-output"><p class="muted">유튜브 모음집 준비 중…</p></div>
-</div></section>
-<section id="stage3-section" class="panel stage3-panel" hidden>
-  <div class="panel-title">3단계 · 1~5넴 캐릭터 중복 없는 조합 추출</div>
-  <div class="stage3-content"><p class="muted">5개 보스의 편성에서 동일한 캐릭터 ID를 중복 사용하지 않는 조합을 찾습니다. 원본 자료에 없는 조합은 생성하지 않습니다.</p>
-  <div class="stage3-toolbar"><label><span class="label">조합 유형</span><select id="compose-mode"><option value="full-auto">풀오토 우선</option><option value="all">모든 유형</option><option value="semi-auto">세미오토만</option><option value="easy-manual">간단손컨만</option><option value="manual">손컨만</option></select></label>
-  <button id="compose-button" type="button">중복 없는 조합 찾기</button></div>
-  <div id="compose-output" aria-live="polite"><p class="muted">추출 버튼을 누르면 결과를 표시합니다.</p></div></div>
-</section>
-<div class="panes" id="tactic-panes"><section class="panel"><h2 class="panel-title" id="list-title">수집된 자료</h2><div class="list" id="list"><p class="empty">자료 읽는 중…</p></div></section><section class="panel"><h2 class="panel-title">원본과 한국어 변환 비교</h2><div class="detail" id="detail"><p class="muted">왼쪽에서 택틱을 선택하세요.</p></div></section></div>
-</main><script type="module" src="./aikurumi-lab.mjs"></script></body></html>
+:root{--paper:#fbfaf7;--surface:#fff;--wash:#f1f0ec;--text:#27262b;--muted:#716e75;--line:#d9d6d4;--accent:#525a89;--accent-wash:#eeeff7;--red:#b53f43;--green:#3a7a55;color-scheme:light}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--text);font:15px/1.55 system-ui,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;letter-spacing:-.025em}main{max-width:1240px;padding:28px 24px 60px;margin:auto}a{color:var(--accent)}.review-site-header{display:flex;align-items:center;justify-content:space-between;gap:15px;padding:17px 24px;border-bottom:1px solid var(--line);max-width:1240px;margin:auto}.review-site-header strong{font-size:17px}.review-site-header a{font-size:13px;text-decoration:none}.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}button{cursor:pointer}pre{margin:0}@media(max-width:760px){main{padding:18px 12px 50px}.review-site-header{padding:14px 12px}}@media(prefers-color-scheme:dark){:root{--paper:#202126;--surface:#25262b;--wash:#2c2d33;--text:#ecebef;--muted:#b6b3bd;--line:#45444d;--accent:#b3b7ea;--accent-wash:#343749;--red:#f5a0a4;--green:#9fd2af;color-scheme:dark}}
+</style></head><body>
+<header class="review-site-header"><strong>냥냥클랜</strong><a href="../#tactics/review">관리자 화면에서 적용 ↗</a></header>
+<main><div id="external-tactic-review" aria-label="외부 택틱"></div></main>
+<script type="module" src="./aikurumi-lab.mjs?v=20261030-review01"></script>
+</body></html>

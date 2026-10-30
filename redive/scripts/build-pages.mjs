@@ -5,7 +5,7 @@ import {fileURLToPath} from 'node:url';
 const root=fileURLToPath(new URL('..',import.meta.url));
 export const API_ORIGIN='https://nyang-clan-manager.heysyu457310.chatgpt.site';
 export const PUBLIC_ORIGIN='https://priconne.pages.dev';
-export const RELEASE='20261028-cleanup-carry01';
+export const RELEASE='20261030-review01';
 export function canonicalHead(legacy=false){
   const page=legacy?'/legacy.html':'/';
   return `<link rel="canonical" href="${PUBLIC_ORIGIN}${page}"><script>if(location.hostname==='heysyu84.github.io'&&!new URLSearchParams(location.search).has('github-preview')){location.replace('${PUBLIC_ORIGIN}'+(location.pathname.replace(/^\\/priconne(?=\\/|$)/,'')||'/')+location.search+location.hash)}</script>`;
@@ -30,6 +30,12 @@ export function buildRedivePages(output,{legacyHtml}={}){
     return `${prefix}./${branding?'':'compact/'}${file}?v=${branding?'20261026-nyang-pink02':RELEASE}"`;
   });
   fs.writeFileSync(path.join(output,'index.html'),html);
+  // Keep the original review link on the same reusable workspace as the admin tab.
+  const lab=path.join(output,'aikurumi-lab');
+  fs.mkdirSync(lab,{recursive:true});
+  const reviewFiles=fs.readdirSync(path.join(root,'public')).filter(name=>name.startsWith('aikurumi-')&&name!=='aikurumi-lab.html');
+  for(const name of [...reviewFiles,'tactic-parser.mjs'])fs.copyFileSync(path.join(root,'public',name),path.join(lab,name));
+  fs.copyFileSync(path.join(root,'public/aikurumi-lab.html'),path.join(lab,'index.html'));
   // This is an asset directory, not a second application entry point.
   fs.rmSync(path.join(compact,'index.html'),{force:true});
   if(legacyHtml){
