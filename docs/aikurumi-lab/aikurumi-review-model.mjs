@@ -59,8 +59,10 @@ export function buildReviewItems(snapshot,youtube,{youtubeReady=true,now=Date.no
    const policy=linked?selectPrimaryTacticSource(candidate,{youtubeReady:youtubeReady&&fresh,
     hasChineseTimeline:preview.rows.length>0,hasYouTubeLink:true}):
     {source:'aikurumi',chineseFallback:true,needsHumanCheck:true};
-   const dangoPriority=preview.preferredDango===true&&preview.rows.length>0;
-   const rows=dangoPriority?preview.rows:policy.source==='aikurumi'?preview.rows:candidate?.rows||[];
+   // Prefer YouTube Japanese TL whenever present. Dango priority applies
+   // only *within the selected source*, never over a confirmed YouTube TL.
+   const dangoPriority=policy.source==='aikurumi'&&preview.preferredDango===true&&preview.rows.length>0;
+   const rows=policy.source==='aikurumi'?preview.rows:policy.source==='youtube'?candidate?.rows||[]:[];
    const type=classifySourceTactic(task,link),conditions=extractTacticConditions(task,link,preview);
    const carry=parseStage3CarryTime(link.name);
    const source=policy.source==='aikurumi'?'aikurumi':'youtube';
