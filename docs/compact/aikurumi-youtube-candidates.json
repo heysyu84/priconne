@@ -4,8 +4,8 @@
   "source": "YouTube Data API v3",
   "readOnly": true,
   "registrationAllowed": false,
-  "fetchedAt": "2026-10-30T07:49:21.741Z",
-  "expiresAt": "2026-11-27T07:49:21.741Z",
+  "fetchedAt": "2026-10-30T07:59:46.041Z",
+  "expiresAt": "2026-11-27T07:59:46.041Z",
   "videoCount": 69,
   "requestedVideoCount": 72,
   "missingVideoCount": 3,
@@ -3671,7 +3671,7 @@
         },
         {
           "time": "1:17",
-          "text": "1:17 [원문 확인: -16 プ프캬루 吹き飛ばし後 초数切り替わり]",
+          "text": "1:17 [원문 확인: -16 프캬루 吹き飛ばし後 초数切り替わり]",
           "checked": [
             false,
             false,
@@ -3684,7 +3684,7 @@
         },
         {
           "time": "1:10",
-          "text": "1:10 [원문 확인: プ프캬루]",
+          "text": "1:10 프캬루 UB",
           "checked": [
             false,
             false,
@@ -3693,7 +3693,7 @@
             false,
             false
           ],
-          "needsReview": true
+          "needsReview": false
         },
         {
           "time": "1:08",
@@ -3736,7 +3736,7 @@
         },
         {
           "time": "1:05",
-          "text": "ㄴ [원문 확인: プ프캬루 AUTO]",
+          "text": "ㄴ [원문 확인: 프캬루 AUTO]",
           "checked": [
             false,
             false,
@@ -3762,7 +3762,7 @@
         },
         {
           "time": "0:59",
-          "text": "0:59 [원문 확인: プ프캬루]",
+          "text": "0:59 프캬루 UB",
           "checked": [
             false,
             false,
@@ -3771,7 +3771,7 @@
             false,
             false
           ],
-          "needsReview": true
+          "needsReview": false
         },
         {
           "time": "0:57",
@@ -3801,7 +3801,7 @@
         },
         {
           "time": "0:53",
-          "text": "0:53 [원문 확인: プ프캬루]",
+          "text": "0:53 프캬루 UB",
           "checked": [
             false,
             false,
@@ -3810,7 +3810,7 @@
             false,
             false
           ],
-          "needsReview": true
+          "needsReview": false
         },
         {
           "time": "0:50",
@@ -3853,7 +3853,7 @@
         },
         {
           "time": "0:45",
-          "text": "0:45 [원문 확인: プ프캬루 12250]",
+          "text": "0:45 프캬루 후 [원문 확인: 12250]",
           "checked": [
             false,
             false,
@@ -3886,9 +3886,9 @@
         "fields": []
       },
       "omittedRows": 0,
-      "unresolvedRows": 11,
-      "translatedRows": 6,
-      "warningCount": 9,
+      "unresolvedRows": 8,
+      "translatedRows": 9,
+      "warningCount": 8,
       "unknownActorCount": 0,
       "commentReadStatus": "complete"
     },
@@ -15909,7 +15909,7 @@
         },
         {
           "time": "1:08",
-          "text": "1:08 [원문 확인: 水윈유니 #トルネ버프早め]",
+          "text": "1:08 [원문 확인: 水ユニ #トルネ버프早め]",
           "checked": [
             false,
             false,
@@ -16000,7 +16000,7 @@
         },
         {
           "time": "0:55",
-          "text": "0:55 [원문 확인: 水윈유니]",
+          "text": "0:55 [원문 확인: 水ユニ]",
           "checked": [
             false,
             false,
@@ -16091,7 +16091,7 @@
         },
         {
           "time": "0:52",
-          "text": "ㄴ [원문 확인: 水윈유니]",
+          "text": "ㄴ [원문 확인: 水ユニ]",
           "checked": [
             false,
             false,
@@ -16169,7 +16169,7 @@
         },
         {
           "time": "0:41",
-          "text": "0:41 [원문 확인: 水윈유니 #トルネ캔슬]",
+          "text": "0:41 [원문 확인: 水ユニ #トルネ캔슬]",
           "checked": [
             false,
             false,
@@ -16273,7 +16273,7 @@
         },
         {
           "time": "0:29",
-          "text": "ㄴ [원문 확인: 水윈유니]",
+          "text": "ㄴ [원문 확인: 水ユニ]",
           "checked": [
             false,
             false,
@@ -16351,7 +16351,7 @@
         },
         {
           "time": "0:25",
-          "text": "0:25 [원문 확인: 水윈유니]",
+          "text": "0:25 [원문 확인: 水ユニ]",
           "checked": [
             false,
             false,
@@ -16455,7 +16455,7 @@
         },
         {
           "time": "0:15",
-          "text": "ㄴ [원문 확인: 水윈유니 #トルネ캔슬]",
+          "text": "ㄴ [원문 확인: 水ユニ #トルネ캔슬]",
           "checked": [
             false,
             false,
@@ -16533,7 +16533,7 @@
         },
         {
           "time": "0:03",
-          "text": "0:03 [원문 확인: 水윈유니]",
+          "text": "0:03 [원문 확인: 水ユニ]",
           "checked": [
             false,
             false,
