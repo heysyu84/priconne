@@ -51,7 +51,7 @@ jobs:
             }
             throw last;
           }
-          await verify('/',text=>assert.match(text,/20261030-startup01/));
+          await verify('/',text=>assert.match(text,/20261030-once01/));
           await verify('/aikurumi-lab/',text=>{assert.match(text,/aikurumi-review\.css/);assert.doesNotMatch(text,/TEST \/ 읽기 전용|API 수집/);});
           await verify('/compact/aikurumi-review-ui.mjs',text=>assert.match(text,/createExternalReview/));
           await verify('/compact/aikurumi-review-model.mjs',text=>assert.match(text,/buildReviewedTactic/));

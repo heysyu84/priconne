@@ -4,7 +4,8 @@ const reg=s=>s.replace(/[.*+?^$()|[\]{}]/g,'\\$&');
 const suggested={
  '네피네라':['ネフィ','ネフィネラ'],'네피':['ネフィ','ネフィネラ'],
  '봉황':['ホウオウ','鳳凰'],'후부키':['フブキ'],'아이라':['アイラ'],
- '수네아':['ネア'],'라비':['ラビリスタ','ラビ'],'리리컬':['リリカル','페리컬']
+ '수네아':['ネア'],'라비':['ラビリスタ','ラビ'],'리리컬':['リリカル','페리컬'],
+ '바이올렛':['ヴァイオレット','スミレ']
 };
 export const foreignSuggestions=name=>(suggested[trim(name)]||[])[0]||'';
 export function convertForeignTactic(raw, koreanNames=[], foreignNames=[], bossNames=[], characterNames=[]) {
@@ -71,14 +72,15 @@ export function convertForeignTactic(raw, koreanNames=[], foreignNames=[], bossN
  const dango=/[OX〇○◯●⭕❌✕×✖✗ー－—-]{5}/i.test(src);
  const format=dango?'dango':'commands';
  src=src.replace(/\u00a0/g,' ').replace(/[ \u3000]+(\d{1,2}:[0-5]\d)(?=[ \u3000\t]|$)/g,'\n$1 ');
- const rows=[],state=[false,false,false,false,false];let auto=false,time='',lastTime='',sourceLine='';
+ const rows=[],rowCommands=new Map(),state=[false,false,false,false,false];let auto=false,time='',lastTime='',sourceLine='';
  const append=(actor,cmds,condition='')=>{
    if(!cmds.length&&!actor)return;
    const head=time?(rows.length&&time===lastTime?'ㄴ ':time+' '):'';
    const directUB=cmds.length===1&&/^UB(?:\s|$)/.test(cmds[0]);
    const name=actor?(find(actor)>=0?label[find(actor)]:actor)+(directUB?' ':condition?' '+condition+' ':' 후 '):'';
    const text=trim(head+name+(cmds.join(', ')||'(SET 변경 없음)'));
-   rows.push({text,checked:[...state,auto],source:sourceLine,time,actor,instruction:cmds.join(', ')});lastTime=time;
+   const row={text,checked:[...state,auto],source:sourceLine,time,actor,instruction:cmds.join(', ')};
+   rows.push(row);rowCommands.set(row,[...cmds]);lastTime=time;
  };
  const actorsIn=s=>{
    const result=[],seen=new Set();
@@ -242,10 +244,11 @@ export function convertForeignTactic(raw, koreanNames=[], foreignNames=[], bossN
    if(off.length)commands.push(ordered(off)+' OFF');
    commands.push(...[...new Set(autoActions)]);
    commands.push(...[...new Set(unresolved)]);
-   const instruction=prioritize(commands,initial).join(', ')||'(SET 변경 없음)';
+   const arranged=prioritize(commands,initial),instruction=arranged.join(', ')||'(SET 변경 없음)';
    const head=time?(rows.length&&time===previousTime?'ㄴ ':time+' '):'';
    const named=actor?(find(actor)>=0?label[find(actor)]:actor)+' 후 ':'';
-   rows.push({text:trim(head+named+instruction),checked:[...state,auto],source:sourceLine,time,actor,instruction});
+   const row={text:trim(head+named+instruction),checked:[...state,auto],source:sourceLine,time,actor,instruction};
+   rows.push(row);rowCommands.set(row,arranged);
    lastTime=time;
    return true;
  };
@@ -346,13 +349,43 @@ export function convertForeignTactic(raw, koreanNames=[], foreignNames=[], bossN
    }
  };
  for(const line of src.replace(/\r\n?/g,'\n').split('\n'))processLine(line);
- // Same-time ON then OFF is one UB, with final SET disabled.
+ // The trigger may change from X to Y: X -> Y ON, then Y -> Y OFF.
+ // Keep X as the trigger, collapse Y to one UB and retain the final SET flags.
+ const commandGroup=command=>{
+   const match=command.match(/^(.+?)( 순으로)? (ON|OFF)$/);if(!match)return null;
+   const slots=match[1]==='전부'?[0,1,2,3,4]:match[1].split(/,\s*/).map(name=>label.indexOf(name));
+   return slots.length&&slots.every(slot=>slot>=0)?{slots,sequential:!!match[2],action:match[3]}:null;
+ };
+ const touched=commands=>new Set(commands.flatMap(command=>commandGroup(command)?.slots||[]));
  for(let i=0;i<rows.length-1;i++){
-   const a=rows[i],b=rows[i+1],on=a.instruction.match(/^([^,]+) ON$/);
-   if(on&&a.time===b.time&&a.actor===b.actor&&b.instruction===on[1]+' OFF'){
-     const instruction=on[1]+' 한번만';
-     rows.splice(i,2,{...b,text:a.text.slice(0,-a.instruction.length)+instruction,instruction,source:[a.source,b.source].join('\n')});i--;
-   }
+   const a=rows[i],b=rows[i+1],first=rowCommands.get(a),second=rowCommands.get(b);
+   if(a.time!==b.time||!first?.length||!second?.length)continue;
+   const trigger=find(b.actor),sameTrigger=a.actor===b.actor;
+   const off=new Set(second.flatMap(command=>{const group=commandGroup(command);return group?.action==='OFF'?group.slots:[];}));
+   const before=rows[i-1]?.checked||Array(6).fill(false);
+   const once=new Set(first.flatMap(command=>{
+     const group=commandGroup(command);if(group?.action!=='ON')return [];
+     return group.slots.filter((slot,index)=>off.has(slot)&&!before[slot]&&a.checked[slot]&&!b.checked[slot]
+       &&(trigger===slot||sameTrigger)&&(!group.sequential||index===0));
+   }));
+   if(!once.size)continue;
+   // Do not drop a second trigger condition or reorder another character's
+   // OFF -> ON sequence while simplifying this pair.
+   const prefix=b.text.slice(0,-b.instruction.length).replace(/^(?:\d{1,2}:[0-5]\d|ㄴ)\s*/,'').trim();
+   if(b.actor&&prefix!==(trigger>=0?label[trigger]:b.actor)+' 후')continue;
+   if(second.some(command=>!commandGroup(command)&&!/^AUTO (온|오프)$/.test(command)&&!command.endsWith(' 한번만')))continue;
+   if([...touched(first)].some(slot=>!once.has(slot)&&touched(second).has(slot)))continue;
+   if(first.some(c=>/^AUTO /.test(c))&&second.some(c=>/^AUTO /.test(c)))continue;
+   const simplify=(commands,action)=>commands.flatMap(command=>{
+     const group=commandGroup(command);if(group?.action!==action)return [command];
+     const removed=group.slots.filter(slot=>once.has(slot)),remaining=group.slots.filter(slot=>!once.has(slot));
+     if(!removed.length)return [command];
+     return [...(action==='ON'?removed.map(slot=>label[slot]+' 한번만'):[]),
+       ...(remaining.length?[remaining.map(slot=>label[slot]).join(', ')+(group.sequential&&remaining.length>1?' 순으로':'')+' '+action]:[])];
+   });
+   const commands=prioritize([...simplify(first,'ON'),...simplify(second,'OFF')]),instruction=commands.join(', ');
+   const merged={...a,checked:[...b.checked],text:a.text.slice(0,-a.instruction.length)+instruction,instruction,source:[a.source,b.source].join('\n')};
+   rows.splice(i,2,merged);rowCommands.set(merged,commands);i--;
  }
  // Missing initial AUTO means OFF. A later timed AUTO command is not
  // a starting-state declaration, so retain it after a separate initial row.
