@@ -6,6 +6,7 @@ import {convertForeignTactic,selectPreferredDangoTimeline} from '../public/tacti
 import {buildReviewItems} from '../public/aikurumi-review-model.mjs';
 import {commandState} from '../public/tactic-set-state.mjs';
 import {repairImportedDangoTactics} from '../public/aikurumi-dango-repair.mjs';
+import {splitVideoDescription} from './aikurumi-youtube-segments.mjs';
 
 const source=JSON.parse(readFileSync(new URL('../public/aikurumi-snapshot.json',import.meta.url),'utf8'));
 const task=source.bosses[0].tasks.find(t=>t.id===14265);
@@ -69,4 +70,12 @@ test('legacy AUTO-only rows are repaired only when none were manually modified',
  const manual=makeEntry(changed);
  assert.equal(repairImportedDangoTactics({[source.krMonth]:{tactics:[manual]}},[source],{references:[candidate]}).repaired,0);
  assert.equal(manual.rows[0].checked[0],false);
+});
+
+test('YouTube segmentation keeps dango with its parent tactic, not a later variant',()=>{
+ const description='1ボス 39000\n1:30 全SET AUTO ON\n0:03 ランファ OFF\n【お団子ver.】\n1:30 〇〇〇〇〇 ON\n0:03 ー〇〇〇〇\n【別編成】39001\n1:30 〇〇〇〇〇 ON';
+ const parts=splitVideoDescription(description,source.bosses.map(b=>b.unitName));
+ assert.equal(parts.length,2);
+ assert.match(parts[0].text,/お団子ver/);
+ assert.doesNotMatch(parts[1].text,/お団子ver/);
 });
