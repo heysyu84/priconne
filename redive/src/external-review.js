@@ -6,7 +6,7 @@ function externalReviewContext(){
  const months=[...new Set(externalReviewController?.items?.map(item=>item.month)||[])];
  const bossNames=Object.fromEntries(months.map(month=>[month,Object.fromEntries(
   (data.futureOverrides?.[month]?.bosses||FUTURE_REFERENCE.months[month]?.bosses||[]).map(b=>[b.slot,b.name]))]));
- return {canEdit:adminMode(),seasons,bossNames};
+ return {canEdit:adminMode(),seasons,bossNames,characters:data.characters};
 }
 function externalReviewPage(){
  if(!adminMode())return '';
@@ -17,7 +17,7 @@ async function mountExternalReview(){
  const root=document.getElementById('external-tactic-review');
  if(!root||!adminMode()||ui.section!=='tactics'||ui.tabs.tactics!=='review')return;
  try{
-  externalReviewLoading??=Promise.all([import('./aikurumi-review-ui.mjs?v=20261030-once01'),import('./aikurumi-review-model.mjs?v=20261030-once01')]);
+  externalReviewLoading??=Promise.all([import('./aikurumi-review-ui.mjs?v=20261030-set-sync02'),import('./aikurumi-review-model.mjs?v=20261030-once01')]);
   const [uiModule,model]=await externalReviewLoading;externalReviewModule=model;
   if(!adminMode()||document.getElementById('external-tactic-review')!==root)return;
   externalReviewController??=uiModule.createExternalReview({getContext:externalReviewContext,
