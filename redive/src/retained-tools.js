@@ -135,7 +135,7 @@ function commitCompatibleCarry(){
   if(!ensureEdit())return;const rows=ext.carryImport||[];if(!rows.length){toast('가져올 표를 먼저 확인하세요.');return;}
   if(rows.some(t=>t.party.length!==5||new Set(t.party).size!==5)){toast('각 택틱의 캐릭터 5명을 확인하세요.');return;}
   checkpoint();
-  for(const row of rows){const t={...structuredClone(row),id:uid(),party:[...row.party],stars:Array.from({length:5},(_,i)=>Number(row.stars[i])||defaultCharacterStars([row.party[i]])[0]),stage:4,category:'carry',title:row.party.join(' '),support:1,hidden:false,links:[],duration:Number.isFinite(row.duration)?row.duration:90,rows:row.rows?row.rows.map(r=>({...r,id:uid()})):null};t.requiredCarrySeconds=minimumCarry(t);t.note=displayTacticNote(t);data.tactics.push(t);ui.selectedTactic=t.id;}
+  for(const row of rows){const t={...structuredClone(row),id:uid(),party:[...row.party],stars:Array.from({length:5},(_,i)=>Number(row.stars[i])||defaultCharacterStars([row.party[i]])[0]),stage:4,category:'carry',title:row.party.join(' '),support:-1,hidden:false,links:[],duration:Number.isFinite(row.duration)?row.duration:90,rows:row.rows?row.rows.map(r=>({...r,id:uid()})):null};t.requiredCarrySeconds=minimumCarry(t);t.note=displayTacticNote(t);data.tactics.push(t);ui.selectedTactic=t.id;}
   persist();closeDrawer();ext.workGroup='carry';ext.carryTimeRange='all';nav('tactics','workspace');toast(rows.length+'개 이월 택틱 등록',true);
 }
 renderCarryPreview=()=>{
