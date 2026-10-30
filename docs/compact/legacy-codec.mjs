@@ -42,7 +42,7 @@ function updateTactic(t,old,previous){
  set('hands','manualCount',t.hands===null?'':String(t.hands));set('tp','tp',t.tp);set('video','video',t.video);set('links','links',clone(t.links||[]));set('hidden','hidden',!!t.hidden);set('deletedAt','trashedAt',t.deletedAt||null);set('duration','baseSeconds',t.duration||90);set('requiredCarrySeconds','requiredCarrySeconds',t.requiredCarrySeconds??null);set('support','supportIndex',t.support??-1);
  if(t.externalSource&&(fresh||!same(t.externalSource,previous.externalSource)))out.externalSource=clone(t.externalSource);
  if(fresh||t.note!==previous.note||t.requiredCarrySeconds!==previous.requiredCarrySeconds||t.category!==previous.category){const note=t.category==='carry'?carryNote(t.note):t.note;out.note=t.category==='carry'&&t.requiredCarrySeconds?`필요 이월시간: ${t.requiredCarrySeconds}초${note?' · '+note:''}`:note;}
- if(fresh||!same(t.rows,previous.rows)||t.text!==previous.text){const prior=new Map((old?.rows||[]).map(r=>[r.id,r]));out.rows=(t.rows??pastedRows(t.text||'',[],t.party)).map(r=>({...clone(prior.get(r.id)||{}),...clone(r),manualChecks:true}));}
+ if(fresh||!same(t.rows,previous.rows)||t.text!==previous.text){const prior=new Map((old?.rows||[]).map(r=>[r.id,r]));out.rows=(t.rows??pastedRows(t.text||'',[],t.party)).map(r=>({...clone(prior.get(r.id)||{}),...clone(r),manualChecks:r.manualChecks!==false}));}
  if(fresh||t.title!==previous.title)out.title=t.title;
  return out;
 }
