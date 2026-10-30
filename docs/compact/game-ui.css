@@ -132,7 +132,7 @@
 .combo-table .unit-face{height:43px;width:43px;border-radius:5px}
 .work-editor>.party{gap:15px;padding-top:17px;padding-bottom:18px}
 .work-editor>.party .unit-face{height:58px;width:58px}
-.support .unit-face:after{content:"대여";position:absolute;bottom:0;right:0;padding:0 3px;border-radius:2px 0 0 0;font-size:7px;line-height:12px;letter-spacing:-.2px;color:white;background:#397ea8e6;font-weight:500}
+.unit.support .unit-face::after{content:"서포트";position:absolute;inset:0;display:flex;align-items:flex-end;justify-content:center;padding:0 1px 2px;border-radius:inherit;font-size:7px;line-height:1.2;letter-spacing:-.2px;color:#fff;background:linear-gradient(180deg,rgba(51,119,184,.30),rgba(29,76,130,.50));text-shadow:0 1px 2px #102e5e,0 0 3px #102e5e;font-weight:700;pointer-events:none}
 .character-thumb{border:1px solid var(--gold);border-radius:5px;width:38px;height:38px}
 .character-thumb img{height:100%;width:100%;object-fit:cover}
 .boss-config-table th:first-child{width:61px}
