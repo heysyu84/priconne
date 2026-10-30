@@ -2,7 +2,7 @@ import {replayMonth as engineReplay,bossProgress as engineProgress,contribution 
 import {convertForeignTactic,foreignSuggestions} from './tactic-parser.mjs?v=20261030-once01';
 import * as partyTools from './party-tools.mjs?v=20261026-log-keys01';
 import * as logOrder from './log-order.mjs';
-import * as legacyTools from './legacy-tools.mjs?v=20261026-ocr-regions09';
+import * as legacyTools from './legacy-tools.mjs?v=20261030-set-sync02';
 const ICONS={
  cat:'M4 18V6l5 4 3-2 3 2 5-4v12c-3 4-13 4-16 0Z|M8 16h.1M16 16h.1M10 20l2 1 2-1',
  compass:'M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z|m15.5 8.5-2 5-5 2 2-5 5-2Z',
@@ -515,7 +515,7 @@ function completeConverter(){return `<div class="converter-lineup">${Array.from(
 function refreshConverter(){const source=document.getElementById('converter-source');if(!source)return;ext.converterRaw=source.value;ext.converterNames=Array.from({length:5},(_,i)=>document.getElementById('convert-name-'+i).value);ext.converterAliases=Array.from({length:5},(_,i)=>document.getElementById('convert-alias-'+i).value);if(!source.value.trim()){document.getElementById('converter-output').textContent='';document.getElementById('converter-warnings').innerHTML='';return;}const result=convertForeignTactic(source.value,ext.converterNames,ext.converterAliases,data.bossSettings.map(b=>b.name),data.characters.map(c=>c.name));ext.converterResult=result;document.getElementById('converter-output').textContent=result.text;document.getElementById('converter-warnings').innerHTML=(result.warnings||[]).map(w=>`<p class="field-help danger">${X(w)}</p>`).join('');}
 function saveGridText(t){t.text=tacticRows(t).map(r=>r.text).join('\n');t.title=t.party.join(' ');persist();const status=document.getElementById('tactic-save-state');if(status)status.textContent='저장됨';}
 function rememberRows(t){ext.rowUndo.push({id:t.id,rows:structuredClone(tacticRows(t))});if(ext.rowUndo.length>60)ext.rowUndo.shift();ext.rowRedo=[];}
-function inferChecked(text,previous,t){const checked=[...previous];const auto=text.match(/AUTO\s*(?:먼저\s*)?(ON|OFF|온|오프)/i);if(auto)checked[5]=/^(ON|온)$/i.test(auto[1]);if(/전원\s*(SET|ON)/.test(text))for(let i=0;i<5;i++)checked[i]=true;for(const [i,name]of t.party.entries()){if(!text.includes(name))continue;const at=text.indexOf(name),tail=text.slice(at+name.length);if(/^[^\n]*?(OFF|오프)/.test(tail))checked[i]=false;else if(/^[^\n]*?(SET|ON|온|한번만)/.test(tail))checked[i]=true;}return checked;}
+function inferChecked(text,previous,t){return legacyTools.commandState(text,previous,t.party,data.characters);}
 function pasteRows(text,t){const lines=String(text).replace(/\r/g,'').split('\n').filter(Boolean),rows=[];let previous=Array(6).fill(false);for(const line of lines){const cells=line.split('\t');let checked,body;if(cells.length>=7&&cells.slice(0,6).every(v=>/^(true|false|0|1|o|x|⭕|❌)$/i.test(v.trim()))){checked=cells.slice(0,6).map(v=>/^(true|1|o|⭕)$/i.test(v.trim()));body=cells.slice(6).join('\t');}else{body=line;checked=inferChecked(line,previous,t);}rows.push({id:uid(),text:body,checked});previous=checked;}return rows;}
 function openPasteRows(){if(!ensureEdit())return;openDrawer('여러 행 붙여넣기',`<div class="field"><label for="paste-grid-source">택틱 또는 SET 6칸이 포함된 표</label><textarea id="paste-grid-source" rows="13"></textarea></div><label class="inline-check"><input id="paste-grid-replace" type="checkbox">현재 본문 교체</label>`,simpleButton('취소','close-drawer')+simpleButton('적용','v2-commit-paste','','primary'),'',true);}
 async function xlsxRows(file){const zip=await JSZip.loadAsync(file),parser=new DOMParser(),sharedFile=zip.file('xl/sharedStrings.xml');let shared=[];if(sharedFile){const xml=parser.parseFromString(await sharedFile.async('string'),'application/xml');shared=[...xml.getElementsByTagName('si')].map(si=>[...si.getElementsByTagName('t')].map(t=>t.textContent).join(''));}const sheets=Object.keys(zip.files).filter(name=>/^xl\/worksheets\/sheet\d+\.xml$/.test(name)).sort();if(!sheets.length)throw new Error('시트 없음');const xml=parser.parseFromString(await zip.file(sheets[0]).async('string'),'application/xml');return [...xml.getElementsByTagName('row')].map(row=>{const values=[];for(const c of row.getElementsByTagName('c')){const ref=c.getAttribute('r')||'A1',letters=ref.match(/[A-Z]+/)[0];let col=0;for(const char of letters)col=col*26+char.charCodeAt(0)-64;const type=c.getAttribute('t'),v=c.getElementsByTagName('v')[0]?.textContent||'';values[col-1]=type==='s'?shared[Number(v)]||'':type==='inlineStr'?[...c.getElementsByTagName('t')].map(t=>t.textContent).join(''):v;}return values;});}
@@ -1484,7 +1484,7 @@ document.addEventListener('click',async event=>{const button=event.target.closes
  if(action==='v2-delete-row'){if(!ensureEdit())return;const t=activeTactic();rememberRows(t);t.rows=t.rows.filter(r=>r.id!==id);saveGridText(t);render();return;}
  if(action==='v2-row-undo'||action==='v2-row-redo'){if(!ensureEdit())return;const source=action==='v2-row-undo'?ext.rowUndo:ext.rowRedo,target=action==='v2-row-undo'?ext.rowRedo:ext.rowUndo;const snapshot=source.pop();if(!snapshot)return;const t=data.tactics.find(t=>t.id===snapshot.id);target.push({id:t.id,rows:structuredClone(t.rows)});t.rows=snapshot.rows;saveGridText(t);render();return;}
  if(action==='v2-paste-rows'){openPasteRows();return;}if(action==='v2-commit-paste'){commitPastedRows();return;}
- if(action==='v2-restate'){if(!ensureEdit())return;const t=activeTactic();rememberRows(t);let previous=Array(6).fill(false);for(const row of tacticRows(t)){row.checked=inferChecked(row.text,previous,t);previous=row.checked;}saveGridText(t);render();return;}
+ if(action==='v2-restate'){if(!ensureEdit())return;const t=activeTactic();rememberRows(t);const rows=tacticRows(t);for(const row of rows)row.manualChecks=false;legacyTools.recalculateTacticRows(rows,t.party,data.characters);saveGridText(t);render();return;}
  if(action==='v2-apply-estimate'){const result=estimateResult();if(result.error||!result.seconds){toast(result.error||'적용할 이월 시간이 없습니다.');return;}ui.carry=result.seconds;ext.showEstimator=false;nav('tactics','workspace');return;}
  if(action==='v2-apply-remaining'){const seconds=timeToSec(document.getElementById('carry-remaining').value);if(!(seconds>=0&&seconds<=90)){toast('시간을 확인하세요.');return;}ui.carry=Math.min(90,seconds+20);nav('tactics','workspace');return;}
  if(action==='v2-external-reset'){ext.externalBase=90;ext.externalSeconds=90;render();return;}
@@ -1655,7 +1655,7 @@ document.addEventListener('change',async event=>{const el=event.target,key=el.da
  if(key==='v2-all-days'){ext.allDays=el.checked;ui.page=1;render();return;}if(key==='v2-sequence'){ext.sequence=el.checked;render();return;}if(key==='v2-details'){ext.details=el.checked;render();return;}
  if(key==='v2-profile-member'){ui.profile=el.value;render();return;}if(key==='v2-profile-stage'){ext.profileStage=Number(el.value);render();return;}if(key==='v2-work-stage'){ext.stage=Number(el.value);render();return;}
  if(key==='v2-pick-tactic'){const id=el.dataset.id;if(el.checked){if(ui.picks.length>=3){el.checked=false;toast('3개까지 선택할 수 있습니다.');return;}ui.picks.push(id);}else ui.picks=ui.picks.filter(i=>i!==id);render();return;}
- if(key==='v2-row-check'){if(!ensureEdit())return;const t=activeTactic();rememberRows(t);const row=tacticRows(t).find(r=>r.id===el.dataset.row);row.manualChecks=true;row.checked[Number(el.dataset.column)]=el.checked;saveGridText(t);return;}
+ if(key==='v2-row-check'){if(!ensureEdit())return;const t=activeTactic();rememberRows(t);const row=tacticRows(t).find(r=>r.id===el.dataset.row);row.manualChecks=true;row.checked[Number(el.dataset.column)]=el.checked;const rows=tacticRows(t),index=rows.findIndex(r=>r.id===row.id);legacyTools.recalculateTacticRows(rows,t.party,data.characters,index+1);saveGridText(t);document.querySelectorAll('.set-grid [data-input="v2-row-check"]').forEach(input=>{const next=rows.find(r=>r.id===input.dataset.row);if(next)input.checked=!!next.checked[Number(input.dataset.column)];});return;}
  if(key==='v2-editable'){if(syncState.started){el.checked=false;toggleWriter();return;}if(!data.settings.editable&&data.pinHash){el.checked=false;toggleWriter();return;}data.settings.editable=el.checked;persist();render();return;}if(key==='v2-default-day'){data.settings.defaultDay=Number(el.value);data.settings.defaultDayMode=data.settings.defaultDay>0?'manual':'auto';ui.day=defaultBattleDay();persist();render();return;}
  if(key==='v2-carry-sheet'&&el.files[0]){try{const file=el.files[0],rows=file.name.toLowerCase().endsWith('.xlsx')?await xlsxRows(file):parseDelimited(await file.text(),file.name.toLowerCase().endsWith('.tsv')?'\t':',');ext.carryImport=parseCarrySheet(rows);renderCarryPreview();}catch(error){toast(error.message);}return;}
  if(key==='v2-ocr-mode'){ext.ocrMode=el.value;return;}
@@ -2915,7 +2915,7 @@ function externalReviewContext(){
  const months=[...new Set(externalReviewController?.items?.map(item=>item.month)||[])];
  const bossNames=Object.fromEntries(months.map(month=>[month,Object.fromEntries(
   (data.futureOverrides?.[month]?.bosses||FUTURE_REFERENCE.months[month]?.bosses||[]).map(b=>[b.slot,b.name]))]));
- return {canEdit:adminMode(),seasons,bossNames};
+ return {canEdit:adminMode(),seasons,bossNames,characters:data.characters};
 }
 function externalReviewPage(){
  if(!adminMode())return '';
@@ -2926,7 +2926,7 @@ async function mountExternalReview(){
  const root=document.getElementById('external-tactic-review');
  if(!root||!adminMode()||ui.section!=='tactics'||ui.tabs.tactics!=='review')return;
  try{
-  externalReviewLoading??=Promise.all([import('./aikurumi-review-ui.mjs?v=20261030-once01'),import('./aikurumi-review-model.mjs?v=20261030-once01')]);
+  externalReviewLoading??=Promise.all([import('./aikurumi-review-ui.mjs?v=20261030-set-sync02'),import('./aikurumi-review-model.mjs?v=20261030-once01')]);
   const [uiModule,model]=await externalReviewLoading;externalReviewModule=model;
   if(!adminMode()||document.getElementById('external-tactic-review')!==root)return;
   externalReviewController??=uiModule.createExternalReview({getContext:externalReviewContext,
