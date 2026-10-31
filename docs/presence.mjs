@@ -1,4 +1,4 @@
-export const PRESENCE_INTERVAL_MS = 20_000;
+export const PRESENCE_INTERVAL_MS = 60_000;
 export const BROWSER_PRESENCE_KEY = 'nyang-browser-presence';
 const validId = value => typeof value === 'string' && /^[a-f0-9]{32}$/.test(value);
 
