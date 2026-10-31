@@ -9,13 +9,13 @@
   color:var(--text,#27262b);
 }
 #nyang-now-loading .nyang-loader-icon{
-  width:57px;height:67px;overflow:hidden;display:block;flex:none;
+  width:106px;height:54px;overflow:visible;display:flex;align-items:center;flex:none;
 }
 #nyang-now-loading .nyang-loader-icon img{
-  display:block;width:222px;height:67px;max-width:none;
-  filter:brightness(0) opacity(.84);
+  display:block;width:106px;height:auto;max-width:none;
+  filter:none; /* original cat asset is already dark for light-mode */
 }
-:root[data-theme="dark"] #nyang-now-loading .nyang-loader-icon img{filter:none}
+:root[data-theme="dark"] #nyang-now-loading .nyang-loader-icon img{filter:brightness(0) invert(1)}
 #nyang-now-loading .nyang-loader-label{
   display:inline-flex;align-items:baseline;white-space:nowrap;
   font:500 18.5px/1 Arial,Helvetica,sans-serif;letter-spacing:-.4px;
@@ -37,8 +37,8 @@
 @keyframes nyang-dot-pulse{0%,100%{opacity:.28}45%{opacity:1}}
 @media(max-width:760px){
   #nyang-now-loading{top:50%;left:50%;right:auto;bottom:auto}
-  #nyang-now-loading .nyang-loader-icon{width:52px;height:60px}
-  #nyang-now-loading .nyang-loader-icon img{width:199px;height:60px}
+  #nyang-now-loading .nyang-loader-icon{width:92px;height:48px}
+  #nyang-now-loading .nyang-loader-icon img{width:92px;height:auto}
   #nyang-now-loading .nyang-loader-label{font-size:17px}
 }
 @media(prefers-reduced-motion:reduce){
