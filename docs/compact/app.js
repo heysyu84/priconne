@@ -2582,7 +2582,14 @@ if(pagesApiOrigin){
  initializeCompletePrototype=()=>{data.settings.editable=false;localInitializer();};
  renderPage=()=>{
   const cached=readBrowser(SYNC_CACHE)?.document?.importedSource?.key==='live-shared-clan-api';
-  if(!syncState.started||!syncState.ready&&!(cached&&syncState.status==='offline'))return `<section class="shared-loading"><h1>${syncState.status==='offline'?'공용 자료에 연결하지 못했습니다.':'기록 불러오는 중'}</h1>${syncState.status==='offline'?'<button class="button" data-action="legacy-retry">다시 연결</button>':''}</section>`;
+  if(!syncState.started||!syncState.ready&&!(cached&&syncState.status==='offline')){
+   if(syncState.status==='offline'){
+    window.dispatchEvent(new Event('nyang:shared-ready'));
+    return '<section class="shared-loading"><h1>공용 자료에 연결하지 못했습니다.</h1><button class="button" data-action="legacy-retry">다시 연결</button></section>';
+   }
+   return '';
+  }
+  window.dispatchEvent(new Event('nyang:shared-ready'));
   return loadedPage();
  };
  const siteInitializeShared=initializeSharedSync;
