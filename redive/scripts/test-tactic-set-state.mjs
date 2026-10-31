@@ -1,7 +1,8 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
+import fs from 'node:fs';
 import {commandState,recalculateSetRows,restateSetRows,repairExcludedSetRows} from '../public/tactic-set-state.mjs';
-import {commandState as workspaceCommand,recalculateTacticRows} from '../public/compat/tactics-model.mjs';
+import {commandState as workspaceCommand,recalculateTacticRows,restateTacticRows} from '../public/compat/tactics-model.mjs';
 import {convertForeignTactic} from '../public/tactic-parser.mjs';
 
 const party=['바이올렛','캬루','스미레(바이올렛)','수레시아','수리아'];
@@ -149,4 +150,16 @@ test('imported sourceSnapshot and first-row AUTO-only instructions retain real s
  assert.deepEqual(rows.map(row=>row.checked),[
   [1,1,1,1,1,0],[1,1,0,0,1,0],[1,1,0,1,1,1]
  ].map(bits));
+});
+
+
+test('both deployed editors use the safe restatement path without wiping every manual checkbox',()=>{
+ for(const relative of ['../public/app.js','../../docs/compact/app.js']){
+  const source=fs.readFileSync(new URL(relative,import.meta.url),'utf8');
+  assert.match(source,/if\(action==='v2-restate'\)[^\n]*legacyTools\.restateTacticRows/);
+  assert.doesNotMatch(source,/for\(const row of rows\)row\.manualChecks=false/);
+ }
+ const party=['수사렌','수리코','수미미','수페코','사루카'];
+ const rows=[{text:'1:30 [OOOOO] AUTO ON',checked:Array(6).fill(false),manualChecks:true}];
+ assert.deepEqual(restateTacticRows(structuredClone(rows),party),restateSetRows(structuredClone(rows),party));
 });
