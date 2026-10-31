@@ -1,7 +1,8 @@
 import {env} from "cloudflare:workers";
 import {allowedOrigin, apiJSON, preflight} from "../../api-access";
 
-export const PRESENCE_TTL_MS = 60_000;
+// Keep active browsers counted across 60-second heartbeats with network/scheduling jitter.
+export const PRESENCE_TTL_MS = 150_000;
 
 async function countOnline(now: number) {
   const row = await env.DB!.prepare("SELECT COUNT(*) AS online FROM clan_presence WHERE last_seen > ?")
