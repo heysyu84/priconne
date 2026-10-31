@@ -1,6 +1,6 @@
 import { makeId } from './roster.mjs';
 import { shiftTimeline } from './engine.mjs';
-import {commandState,recalculateSetRows} from '../tactic-set-state.mjs?v=20261030-except02';
+import {commandState,recalculateSetRows,restateSetRows} from '../tactic-set-state.mjs?v=20261031-set32fix01';
 export {commandState};
 
 export const CARRY_GROUP = '이월 택틱';
@@ -285,6 +285,9 @@ const regexEscape = s => String(s).replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
 const namesFor = (c, characters, catalog) => [...new Set([c,...(catalog.find(p=>p.name===c||p.aliases?.includes(c))?.aliases||[]),...[2,3].map(n=>c.length>n?c.slice(0,n):'').filter(short=>short&&characters.filter(name=>name.startsWith(short)).length===1)])].filter(Boolean);
 export function recalculateTacticRows(rows, characters, catalog = [], start = 0) {
   return recalculateSetRows(rows, characters, catalog, start);
+}
+export function restateTacticRows(rows, characters, catalog = []) {
+  return restateSetRows(rows, characters, catalog);
 }
 
 export function colorRuns(text, characters, catalog = []) {
