@@ -307,7 +307,13 @@ function newParty(t){return `<div class="party">${t.party.map((name,i)=>`<div cl
 function compactNavigation(){return `<div class="section-nav" role="navigation" aria-label="주 메뉴">${NAV.map(([key,name])=>`<button data-action="nav" data-value="${key}" class="${ui.section===key?'active':''}" ${ui.section===key?'aria-current="page"':''}>${key==='overview'?'클랜전':key==='records'?'기록·통계':key==='clan'?'클랜 DB':name}</button>`).join('')}</div>`;}
 function headerResourceButtons(){
  const links=data.communityLinks.map(link=>({...link,label:/망령/.test(link.label)?'망령':/세미|semi/i.test(link.label)?'세미':/이월/.test(link.label)?'이월':link.label}));
- return `<nav class="header-resource-links" aria-label="클랜전 자료 링크">${links.map(link=>`<a class="button header-resource-button" data-resource="${link.label==='망령'?'ghost':link.label==='세미'?'semi':link.label==='이월'?'carry':'other'}" href="${X(link.url)}" target="_blank" rel="noopener noreferrer">${X(link.label)}</a>`).join('')}</nav>`;
+ return '<nav class="header-resource-links" aria-label="클랜전 자료 링크">'+links.map(link=>{
+  const resource=link.label==='망령'?'ghost':link.label==='세미'?'semi':link.label==='이월'?'carry':'other';
+  const label=X(link.label),url=String(link.url||'').trim();
+  return /^https?:\/\//i.test(url)
+   ? '<a class="button header-resource-button" data-resource="'+resource+'" href="'+X(url)+'" target="_blank" rel="noopener noreferrer">'+label+'</a>'
+   : '<span class="button header-resource-button header-resource-disabled" data-resource="'+resource+'" aria-disabled="true" title="링크 미등록">'+label+'</span>';
+ }).join('')+'</nav>';
 }
 function clanWordmark(){return `<a href="#overview/bosses" class="wordmark clan-wordmark" aria-label="냥냥클랜 Re²:다이브 · 상황판"><img class="clan-logo clan-logo-light" src="./compact/assets/branding/nyang-re2-dive-light.png?v=20261027-brand01" alt="" aria-hidden="true" width="1920" height="819" decoding="async" fetchpriority="high"><img class="clan-logo clan-logo-dark" src="./compact/assets/branding/nyang-re2-dive-dark.png?v=20261027-brand01" alt="" aria-hidden="true" width="1920" height="819" decoding="async"></a>`;}
 function settingsVersionLink(){return `<div class="setting-row version-setting"><h3>기존 버전</h3><a class="button" href="https://priconne.pages.dev/legacy.html" target="_blank" rel="noopener noreferrer">기존 버전 열기 <span aria-hidden="true">↗</span></a></div>`;}
@@ -1635,7 +1641,7 @@ document.addEventListener('submit',event=>{const form=event.target.closest('form
  if(kind==='v2-notice'){checkpoint();data.notices[ext.stage]=String(fd.get('notice'));persist();closeDrawer();ext.noticeOpen=true;render();return;}
  if(kind==='v2-history-rank'){checkpoint();const s=fd.get('month')===ui.month?data:data.seasons[fd.get('month')];s.result.rank=fd.get('rank')?Number(fd.get('rank')):null;persist();closeDrawer();render();return;}
  if(kind==='v2-factor'){checkpoint();data.rules.factor=Number(fd.get('factor'))/100;recalculateSeason();persist();closeDrawer();render();toast('보정률 저장',true);return;}
- if(kind==='v2-links'){checkpoint();const links=[];for(let i=0;fd.has('label-'+i);i++){const label=String(fd.get('label-'+i)).trim(),url=String(fd.get('url-'+i)).trim();if(label&&/^https?:\/\//i.test(url))links.push({label,url});}data.communityLinks=links;persist();render();toast('자료 링크 저장',true);return;}
+ if(kind==='v2-links'){checkpoint();const links=[];for(let i=0;fd.has('label-'+i);i++){const label=String(fd.get('label-'+i)).trim(),url=String(fd.get('url-'+i)).trim();if(label)links.push({label,url:/^https?:\/\//i.test(url)?url:''});}data.communityLinks=links;persist();render();toast('자료 링크 저장',true);return;}
  if(kind==='v2-pin'){if(data.pinHash&&sha256Text(String(fd.get('current')))!==data.pinHash){toast('현재 비밀번호가 일치하지 않습니다.');return;}if(fd.get('next')!==fd.get('confirm')){toast('새 비밀번호 확인이 일치하지 않습니다.');return;}data.pinHash=sha256Text(String(fd.get('next')));persist();render();toast('작성 비밀번호 저장');return;}
  if(kind==='v2-new-month'){const key=String(fd.get('month'));if(data.seasons[key]){toast('이미 있는 월입니다.');return;}checkpoint();snapshotSeason();const next=structuredClone(data.seasons[ui.month]);next.logs=[];next.dayClosures=[];next.result={rank:null,sealed:false,winners:null};next.recommendations=[];next.tactics=fd.has('copyTactics')?next.tactics.filter(t=>!t.deletedAt&&t.stage!==3).map(t=>({...t,id:uid()})):[];next.rules.startDate=key+'-22';applyFutureLineupToSeason(next,key);data.seasons[key]=next;for(const k of SEASON_KEYS)data[k]=structuredClone(next[k]);ui.month=key;data.activeMonth=key;ui.day=1;ui.selectedTactic=data.tactics[0]?.id;recalculateSeason();persist();closeDrawer();nav('overview','bosses');toast('새 월 생성',true);return;}
 },true);

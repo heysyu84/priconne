@@ -95,3 +95,22 @@
   .site-header.branding-header{padding-left:10px;padding-right:10px}
   .branding-header .header-resource-links .header-resource-button{padding-left:3px;padding-right:3px}
 }
+
+/* A link without a URL remains visible but cannot be opened. */
+.branding-header .header-resource-links .header-resource-button.header-resource-disabled {
+ background:#e5e5e5;
+ border-color:#c8c8c8;
+ color:#757575;
+ filter:grayscale(1);
+ opacity:.85;
+ cursor:default;
+ pointer-events:none;
+ box-shadow:none;
+ text-decoration:none;
+ user-select:none;
+}
+:root[data-theme=dark] .branding-header .header-resource-links .header-resource-button.header-resource-disabled {
+ background:#383838;
+ border-color:#585858;
+ color:#aaa;
+}
