@@ -28,6 +28,7 @@ jobs:
         run: |
           node --check redive/public/app.js
           node --check docs/compact/app.js
+          node redive/scripts/test-tactic-set-state.mjs
           node redive/scripts/check-tactic-body-save.mjs
           node redive/scripts/check-cleanup-carry.mjs
           node redive/scripts/check-archive-startup.mjs
