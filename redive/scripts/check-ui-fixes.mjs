@@ -68,7 +68,7 @@ check('link editor saves empty URL with its label and original ordering',()=>{
  const handler=app.listeners.submit.find(fn=>fn.toString().includes("if(kind==='v2-links')"));
  assert.ok(handler);
  const values={'label-0':'망령 링크','url-0':'','label-1':'세미 모음','url-1':'https://example.org/guide','label-2':'이월 모음','url-2':''};
- const form={dataset:{form:'v2-links'},values,closest(){return this;}};
+ const form={dataset:{form:'v2-links'},...values,closest(){return this;}};
  let prevented=false;
  handler({target:form,preventDefault(){prevented=true;},stopImmediatePropagation(){}});
  assert.equal(prevented,true);
