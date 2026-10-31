@@ -9,10 +9,10 @@
   color:var(--text,#27262b);
 }
 #nyang-now-loading .nyang-loader-icon{
-  width:106px;height:54px;overflow:visible;display:flex;align-items:center;flex:none;
+  width:32px;height:16px;overflow:visible;display:flex;align-items:center;flex:none;
 }
 #nyang-now-loading .nyang-loader-icon img{
-  display:block;width:106px;height:auto;max-width:none;
+  display:block;width:32px;height:auto;max-width:none;
   filter:none; /* original cat asset is already dark for light-mode */
 }
 :root[data-theme="dark"] #nyang-now-loading .nyang-loader-icon img{filter:brightness(0) invert(1)}
@@ -37,8 +37,8 @@
 @keyframes nyang-dot-pulse{0%,100%{opacity:.28}45%{opacity:1}}
 @media(max-width:760px){
   #nyang-now-loading{top:50%;left:50%;right:auto;bottom:auto}
-  #nyang-now-loading .nyang-loader-icon{width:92px;height:48px}
-  #nyang-now-loading .nyang-loader-icon img{width:92px;height:auto}
+  #nyang-now-loading .nyang-loader-icon{width:28px;height:14px}
+  #nyang-now-loading .nyang-loader-icon img{width:28px;height:auto}
   #nyang-now-loading .nyang-loader-label{font-size:17px}
 }
 @media(prefers-reduced-motion:reduce){
