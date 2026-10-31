@@ -10,7 +10,7 @@ installPortraitFallback();
 const {assetUrl}=await import('./site-paths.mjs?v=20261023-image-cleanup01');
 const {browserApiClient}=await import('./api-client.mjs?v=20261024-public-battle-append01');
 const apiFetch=browserApiClient();
-const {startPresence}=await import('./presence.mjs?v=20261023-combo01');
+const {startPresence}=await import('./presence.mjs?v=20261031-presence-60sec');
 startPresence({apiFetch,onCount:count=>{const value=document.getElementById('online-count'),badge=document.getElementById('online-presence');if(!value||!badge)return;const text=count===null?'—':String(count);if(value.textContent!==text)value.textContent=text;badge.dataset.connected=String(count!==null);}});
 const Engine=await import('./engine.mjs?v=20261024-carry-sheet01');
 const {ensureRoster,syncRoster,memberLabel}=await import('./roster.mjs?v=20261024-db-stage-ranges01');
