@@ -3,19 +3,18 @@
 'use strict';
 const marker=document.getElementById('nyang-now-loading');
 if(!marker||typeof window.fetch!=='function')return;
-let pending=0,showTimer=null;
-function update(){
-  if(showTimer!==null){clearTimeout(showTimer);showTimer=null;}
-  if(!pending){marker.hidden=true;return;}
-  if(marker.hidden)showTimer=setTimeout(()=>{showTimer=null;if(pending)marker.hidden=false;},300);
-}
+let pending=0;
+function update(){marker.hidden=pending===0;}
 function begin(){
   pending++;update();let finished=false;
   return ()=>{if(finished)return;finished=true;pending=Math.max(0,pending-1);update();};
 }
 const finishStartup=begin();
 const app=document.getElementById('app');
-if(app){
+if(document.querySelector('meta[name="nyang-legacy-api-origin"]')){
+  // Keep visible until shared records are ready, not just the header.
+  window.addEventListener('nyang:shared-ready',finishStartup,{once:true});
+}else if(app){
   let observer;
   const completed=()=>{if(!app.firstElementChild)return;observer?.disconnect();finishStartup();};
   if(app.firstElementChild)queueMicrotask(completed);
