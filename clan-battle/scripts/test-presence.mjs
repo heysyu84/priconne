@@ -27,8 +27,8 @@ try {
   time+=30_000;
   assert.deepEqual(await (await route.POST(request('b'.repeat(32),'https://heysyu84.github.io'))).json(),{online:2});
   time+=30_000;
-  assert.deepEqual(await (await read()).json(),{online:1},'An inactive browser expires after 60 seconds');
-  await route.POST(request('b'.repeat(32)));assert.equal(sqlite.prepare('SELECT COUNT(*) AS n FROM clan_presence').get().n,1);
+  assert.deepEqual(await (await read()).json(),{online:2},'An active browser remains counted over the 60-second heartbeat interval');
+  await route.POST(request('b'.repeat(32)));assert.equal(sqlite.prepare('SELECT COUNT(*) AS n FROM clan_presence').get().n,2);
   for(const id of ['',null,'bad','c'.repeat(33),{name:'invalid'}])assert.equal((await route.POST(request(id))).status,400);
   assert.equal((await route.POST(request('c'.repeat(32),origin,{'content-length':'999'}))).status,413);
   for(const source of ['https://untrusted.pages.dev','https://priconne.pages.dev.attacker.invalid','http://priconne.pages.dev']) {
@@ -57,4 +57,4 @@ assert.equal(calls[0].path,'/api/presence');assert.equal(timers[0].delay,PRESENC
 document.visibilityState='hidden';await first.heartbeat();assert.equal(calls.length,2);
 document.visibilityState='visible';status=503;await first.heartbeat();assert.equal(counts.at(-1),null,'A failed count is not displayed as zero');
 first.stop();second.stop();const before=calls.length;await first.heartbeat();assert.equal(calls.length,before);
-console.log('PASS: shared browser identities, 60-second expiry, inactive cleanup, exact CORS allowlist, isolated counts, graceful failures and non-blocking client heartbeats');
+console.log('PASS: shared browser identities, 150-second expiry, inactive cleanup, exact CORS allowlist, isolated counts, graceful failures and non-blocking client heartbeats');
