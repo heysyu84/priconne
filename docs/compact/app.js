@@ -2,7 +2,7 @@ import {replayMonth as engineReplay,bossProgress as engineProgress,contribution 
 import {convertForeignTactic,foreignSuggestions} from './tactic-parser.mjs?v=20261030-except01';
 import * as partyTools from './party-tools.mjs?v=20261026-log-keys01';
 import * as logOrder from './log-order.mjs';
-import * as legacyTools from './legacy-tools.mjs?v=20261030-except02';
+import * as legacyTools from './legacy-tools.mjs?v=20261031-set32fix01';
 const ICONS={
  cat:'M4 18V6l5 4 3-2 3 2 5-4v12c-3 4-13 4-16 0Z|M8 16h.1M16 16h.1M10 20l2 1 2-1',
  compass:'M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z|m15.5 8.5-2 5-5 2 2-5 5-2Z',
@@ -1490,7 +1490,7 @@ document.addEventListener('click',async event=>{const button=event.target.closes
  if(action==='v2-delete-row'){if(!ensureEdit())return;const t=activeTactic();rememberRows(t);t.rows=t.rows.filter(r=>r.id!==id);saveGridText(t);render();return;}
  if(action==='v2-row-undo'||action==='v2-row-redo'){if(!ensureEdit())return;const source=action==='v2-row-undo'?ext.rowUndo:ext.rowRedo,target=action==='v2-row-undo'?ext.rowRedo:ext.rowUndo;const snapshot=source.pop();if(!snapshot)return;const t=data.tactics.find(t=>t.id===snapshot.id);target.push({id:t.id,rows:structuredClone(t.rows)});t.rows=snapshot.rows;saveGridText(t);render();return;}
  if(action==='v2-paste-rows'){openPasteRows();return;}if(action==='v2-commit-paste'){commitPastedRows();return;}
- if(action==='v2-restate'){if(!ensureEdit())return;const t=activeTactic();rememberRows(t);const rows=tacticRows(t);for(const row of rows)row.manualChecks=false;legacyTools.recalculateTacticRows(rows,t.party,data.characters);saveGridText(t);render();return;}
+ if(action==='v2-restate'){if(!ensureEdit())return;const t=activeTactic();rememberRows(t);const rows=tacticRows(t);const report=legacyTools.restateTacticRows(rows,t.party,data.characters);saveGridText(t);render();if(report.preserved)toast(`문장만으로 판단할 수 없는 ${report.preserved}개 행의 기존 SET 상태를 유지했습니다.`);return;}
  if(action==='v2-apply-estimate'){const result=estimateResult();if(result.error||!result.seconds){toast(result.error||'적용할 이월 시간이 없습니다.');return;}ui.carry=result.seconds;ext.showEstimator=false;nav('tactics','workspace');return;}
  if(action==='v2-apply-remaining'){const seconds=timeToSec(document.getElementById('carry-remaining').value);if(!(seconds>=0&&seconds<=90)){toast('시간을 확인하세요.');return;}ui.carry=Math.min(90,seconds+20);nav('tactics','workspace');return;}
  if(action==='v2-external-reset'){ext.externalBase=90;ext.externalSeconds=90;render();return;}
