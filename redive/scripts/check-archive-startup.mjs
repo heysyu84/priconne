@@ -26,7 +26,7 @@ await check('production startup waits for current data and uses a stale cache on
  const app=runtimeFixture(new Map(),{apiOrigin:'https://example.test'}),cached=app.sharedDocument();
  cached.importedSource={key:'live-shared-clan-api'};cached.seasons[cached.activeMonth].bossSettings[0].name='지난달 캐시 보스';
  app.sync.started=true;app.applySharedDocument(clone(cached),{initial:true});
- assert.match(app.renderPage(),/기록 불러오는 중/);assert.doesNotMatch(app.renderPage(),/지난달 캐시 보스/);
+ assert.equal(app.renderPage(),'');assert.doesNotMatch(app.renderPage(),/지난달 캐시 보스/);
  app.sync.status='offline';assert.match(app.renderPage(),/지난달 캐시 보스/);
  const latest='2026-11',fresh=clone(cached);fresh.seasons[latest]=clone(fresh.seasons[fresh.activeMonth]);fresh.activeMonth=latest;
  fresh.seasons[latest].bossSettings[0].name='최신 월 보스';fresh.seasons[latest].logs=[];
