@@ -132,7 +132,9 @@ export function restateSetRows(rows, characters = [], catalog = []) {
     }
     const seed= savedSnapshot
       ? [...savedSnapshot.slice(0,5),savedSnapshot.length===6?savedSnapshot[5]:before[5]]
-      : i===0 && row.manualChecks===true && !inline && !/전부|전원|전체|모두|全員|全员|全体|全部|全/.test(norm(row.text))
+      : i===0 && row.manualChecks===true && !inline
+          && AUTO.test(norm(row.text)) && !FULL.test(norm(row.text))
+          && !/제외/.test(norm(row.text)) && namedSlots(norm(row.text),matcher).length===0
         ? six(row.checked) : before;
     row.checked=commandState(row.text,seed,characters,catalog);
     row.manualChecks=false;
