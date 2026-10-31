@@ -1114,3 +1114,16 @@ form[data-form="v2-tactic"] #tactic-text{display:block;width:100%;min-width:0;mi
     min-width:0;
   }
 }
+
+/* All primary pages: keep the H1 at the same top edge even when day controls wrap. */
+.page-heading{
+ align-items:flex-start;
+ align-content:flex-start;
+}
+.page-heading>.page-heading-title{
+ align-self:flex-start;
+ margin:0;
+}
+.page-heading>.page-heading-title>h1{
+ margin:0;
+}
