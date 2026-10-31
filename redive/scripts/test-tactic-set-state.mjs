@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import {commandState,recalculateSetRows,repairExcludedSetRows} from '../public/tactic-set-state.mjs';
+import {commandState,recalculateSetRows,restateSetRows,repairExcludedSetRows} from '../public/tactic-set-state.mjs';
 import {commandState as workspaceCommand,recalculateTacticRows} from '../public/compat/tactics-model.mjs';
 import {convertForeignTactic} from '../public/tactic-parser.mjs';
 
@@ -102,4 +102,51 @@ test('exclusion repair respects manual and legacy checkbox rows and ignores unkn
  assert.equal(repairExcludedSetRows(unknown,names),0);
  const explicit=[{text:'그레이스 제외 SET',checked:bits([0,0,1,0,0,0]),manualChecks:true}];
  assert.equal(repairExcludedSetRows(explicit,names),0);
+});
+
+
+test('initial five-symbol O/X snapshots are interpreted before AUTO commands',()=>{
+ const party=['수사렌','수리코','수미미','수페코','사루카'];
+ const zeros=bits([0,0,0,0,0,0]);
+ assert.deepEqual(commandState('1:30 OOOOO AUTO ON',zeros,party),bits([1,1,1,1,1,1]));
+ assert.deepEqual(commandState('1:30 [xoxxo] AUTO OFF',zeros,party),bits([0,1,0,0,1,0]));
+ assert.deepEqual(commandState('1:30 [〇⭕️ー❌○] AUTO OFF',zeros,party),bits([1,1,0,0,1,0]));
+ assert.deepEqual(commandState('1:30 [OOOOO] 오토 OFF',zeros,party),bits([1,1,1,1,1,0]));
+});
+
+test('SET restatement preserves manual snapshots with descriptive rows and recomputes explicit commands',()=>{
+ const party=['수사렌','수리코','수미미','수페코','사루카'];
+ const rows=[
+  {text:'AUTO OFF, 수페코 제외 SET',checked:bits([1,1,1,0,1,0]),manualChecks:true},
+  {text:'1:14 수페코 디저트 버프 후딜캔',checked:bits([1,1,1,0,1,0]),manualChecks:true},
+  {text:'1:08 수페코 ON',checked:bits([1,1,1,1,1,0]),manualChecks:true},
+  {text:'1:05 사루카 (중간딜 6020만)',checked:bits([1,1,1,1,1,0]),manualChecks:true},
+  {text:'0:32 수페코 OFF',checked:bits([0,0,0,0,0,0]),manualChecks:false}
+ ];
+ const result=restateSetRows(rows,party);
+ assert.equal(result.preserved,2);
+ assert.deepEqual(rows.map(row=>row.checked),[
+  [1,1,1,0,1,0],
+  [1,1,1,0,1,0],
+  [1,1,1,1,1,0],
+  [1,1,1,1,1,0],
+  [1,1,1,0,1,0]
+ ].map(bits));
+ assert.equal(rows[1].manualChecks,true);
+ assert.equal(rows[3].manualChecks,true);
+ assert.equal(rows[2].manualChecks,false);
+});
+
+test('imported sourceSnapshot and first-row AUTO-only instructions retain real starting state',()=>{
+ const party=['바이올렛','캬루','스미레(바이올렛)','수레시아','수리아'];
+ const rows=[
+  {text:'AUTO OFF',checked:bits([1,1,1,1,1,1]),manualChecks:true},
+  {text:'1:24 표시만',sourceSnapshot:'[OOXXO]',checked:bits([1,1,0,0,1,0]),manualChecks:false},
+  {text:'0:32 수레시아 ON, AUTO ON',checked:bits([0,0,0,0,0,0]),manualChecks:false}
+ ];
+ const result=restateSetRows(rows,party);
+ assert.equal(result.preserved,1);
+ assert.deepEqual(rows.map(row=>row.checked),[
+  [1,1,1,1,1,0],[1,1,0,0,1,0],[1,1,0,1,1,1]
+ ].map(bits));
 });
