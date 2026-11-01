@@ -229,6 +229,7 @@ document.addEventListener('change',async event=>{
 document.addEventListener('click',event=>{
   const button=event.target.closest('[data-action]');if(!button||!button.dataset.action.startsWith('r-'))return;event.preventDefault();event.stopImmediatePropagation();
   if(button.dataset.action==='r-clear-plan'){clearRecommendedPlan();return;}
+  if(button.dataset.action==='r-apply-supports'){const plan=manualPlanComparison();if(plan.unresolved.length)return;ext.selectedSupports??={};plan.chosen.forEach((t,i)=>{ext.selectedSupports[t.id]=plan.assignment[i];});render();toast('서포트 배치를 적용했습니다.',true);return;}
   if(button.dataset.action==='r-toggle-distribution'){ext.distributionOpen=!ext.distributionOpen;if(ext.distributionOpen)findPlans();render();return;}
   if(button.dataset.action==='r-image-back'){ext.importMode=false;nav('overview','logs');}
   if(button.dataset.action==='r-log-warnings'){ext.warningOnly=!ext.warningOnly;ui.page=1;render();}
