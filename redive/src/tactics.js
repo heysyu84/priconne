@@ -13,12 +13,99 @@ function recommendationRows(){
  const page=pagedList(rows,'combos',8,'개');
  const headers=early?['보스','편성','성급','필요 시간','예상 이월','조작']:['선택','보스','편성','성급','손컨','TP','기대딜','택틱'];
  const body=page.rows.map(t=>`<tr class="${ui.picks.includes(t.id)?'picked':''}">${early?'':`<td><input type="checkbox" aria-label="${t.boss}넴 ${X(t.title)} 3타 선택" data-input="v2-pick-tactic" data-id="${t.id}" ${ui.picks.includes(t.id)?'checked':''}></td>`}<td><span class="boss-tag" style="${bossStyle(t.boss)}">${t.boss}넴</span><small>${early?'3단계':t.category==='tabi'?'타비비토':'택틱'}</small></td><td class="combo-party">${party(t)}</td><td class="center star-sequence">${tacticStarString(t)}</td>${early?`<td class="right numeric">${t.requiredSeconds==null?'—':t.requiredSeconds+'초'}</td><td class="right numeric">${t.remainingSeconds==null?'—':t.remainingSeconds+'초'}</td>`:`<td class="right ${t.hands?'danger':''}">${tacticHands(t)}</td><td class="right ${tacticTpClass(t.tp)}">${X(t.tp||'—')}</td><td class="right numeric"><strong>${tacticDamageLabel(t)}</strong></td>`}<td>${simpleButton('열기','tactic-detail',t.id,'quiet')}</td></tr>`);
- return toolbar+recommendationDistribution()+rowTable(headers,body,early?'combo-table early-combo-table':'combo-table')+page.footer+completePlanStrip();
+ return toolbar+recommendationDistribution()+(early?'':completePlanStrip())+rowTable(headers,body,early?'combo-table early-combo-table':'combo-table')+page.footer;
 }
 
 function selectedParties(){ui.picks=ui.picks.filter(id=>data.tactics.some(t=>t.id===id&&!t.deletedAt&&!t.hidden));return ui.picks.map(id=>data.tactics.find(t=>t.id===id));}
 function partyConflicts(chosen){const seen=new Map(),conflicts=new Set();for(const t of chosen)for(const [i,c]of t.party.entries()){if(i===t.support)continue;if(seen.has(c))conflicts.add(c);seen.set(c,true);}return [...conflicts];}
-function completePlanStrip(){const chosen=selectedParties();if(!chosen.length)return '';const conflict=partyConflicts(chosen);return `<div class="selection-strip"><strong>선택 ${chosen.length}/3</strong><span class="numeric">${decimal(chosen.reduce((sum,t)=>sum+t.damage,0))}억</span>${conflict.length?`<span class="danger">중복 ${X(conflict.join(', '))}</span>`:''}<span class="push"></span>${simpleButton(ext.onlyPicks?'전체 보기':'선택만 보기','v3-selected-only')}${simpleButton('복사','v2-copy-plan')}${simpleButton('비우기','clear-plan')}</div>`;}
+function manualPlanComparison(){
+  const chosen=selectedParties().slice(0,3);
+  const identity=name=>{
+    const c=characterReference(name);
+    return String(c?.unitId||c?.name||name).trim();
+  };
+  const appearances=new Map();
+  chosen.forEach((t,team)=>(t.party||[]).forEach((name,index)=>{
+    const id=identity(name);
+    if(!appearances.has(id))appearances.set(id,[]);
+    appearances.get(id).push({team,index,name});
+  }));
+  const duplicates=[...appearances.entries()].filter(([,items])=>new Set(items.map(item=>item.team)).size>1).map(([id,items])=>({id,name:items[0].name}));
+  const duplicateIds=new Set(duplicates.map(item=>item.id));
+  const initial=chosen.map(t=>{
+    const n=Number(t.support);
+    return t.support!==null&&t.support!==undefined&&t.support!==''&&Number.isInteger(n)&&n>=0&&n<(t.party||[]).length?n:-1;
+  });
+  const candidates=chosen.map((t,team)=>initial[team]>=0?[initial[team]]:[-1,...(t.party||[]).flatMap((name,index)=>duplicateIds.has(identity(name))?[index]:[])]);
+  let best=null;
+  const evaluate=assignment=>{
+    const uses=new Map();
+    chosen.forEach((t,team)=>(t.party||[]).forEach((name,index)=>{
+      if(assignment[team]===index)return;
+      const id=identity(name);
+      if(!uses.has(id))uses.set(id,{name,teams:new Set()});
+      uses.get(id).teams.add(team);
+    }));
+    const unresolved=[...uses.values()].filter(entry=>entry.teams.size>1).map(entry=>entry.name);
+    const supportCount=assignment.filter(index=>index>=0).length;
+    const preference=assignment.reduce((sum,index,team)=>sum+(index>=0?chosen.length-team:0),0);
+    const score=[unresolved.length,supportCount,preference];
+    if(!best||score.some((v,i)=>v<best.score[i]&&score.slice(0,i).every((p,j)=>p===best.score[j]))){
+      best={assignment:[...assignment],score,unresolved,supportCount};
+    }
+  };
+  const search=(team,assignment)=>{
+    if(team===chosen.length){evaluate(assignment);return;}
+    for(const option of candidates[team]){assignment.push(option);search(team+1,assignment);assignment.pop();}
+  };
+  search(0,[]);
+  const assignment=best?.assignment||[];
+  const supports=chosen.flatMap((t,team)=>assignment[team]>=0?[{
+    team:team+1,boss:t.boss,name:t.party[assignment[team]],preset:initial[team]===assignment[team]
+  }]:[]);
+  const total=chosen.reduce((sum,t)=>sum+(Number(t.damage)||0),0);
+  const missingDamage=chosen.some(t=>t.recommendationOnly&&t.sourceExpectedDamage==='');
+  const needsApply=assignment.some((index,team)=>index!==initial[team]);
+  return {chosen,duplicates,assignment,supports,total,missingDamage,needsApply,
+    unresolved:best?.unresolved||[],supportCount:best?.supportCount||0};
+}
+
+function manualPlanCopyText(){
+  const plan=manualPlanComparison();
+  if(!plan.chosen.length)return '';
+  const rows=plan.chosen.map((t,i)=>`${i+1}타 · ${t.boss}넴 · ${t.party.join(' / ')} · 기대딜 ${tacticDamageLabel(t)} · 서포트 ${plan.assignment[i]>=0?t.party[plan.assignment[i]]:'없음'}`);
+  rows.push(`합계 기대딜 ${plan.missingDamage?'일부 미입력':expectedDamageValue(plan.total)+'억'}`);
+  rows.push(plan.unresolved.length?'해결되지 않은 중복: '+plan.unresolved.join(', '):plan.duplicates.length?`중복 ${plan.duplicates.length}종 · 서포트 ${plan.supportCount}명으로 해결 가능`:'중복 없음');
+  return rows.join('\n');
+}
+
+function manualPlanStrip(){
+  const p=manualPlanComparison(),count=p.chosen.length;
+  if(!count||ext.stage===3)return '';
+  const damage=p.missingDamage?'일부 미입력':expectedDamageValue(p.total)+'억';
+  const status=p.unresolved.length?`중복 미해결 ${p.unresolved.length}종`:p.duplicates.length?`중복 ${p.duplicates.length}종 · 서포트 ${p.supportCount}명`:'중복 없음';
+  const support=p.supports.length?p.supports.map(s=>`${s.team}타 ${s.boss}넴 ${X(s.name)}${s.preset?'':' (추천)'}`).join(' · '):'필요 없음';
+  const message=p.unresolved.length?`미해결: ${p.unresolved.map(X).join(', ')} · 덱당 서포트 1명으로 해결할 수 없습니다.`:p.duplicates.length?'중복 캐릭터를 서포트로 해결할 수 있습니다.':count<3?`${3-count}개 더 선택하면 3타 편성이 완성됩니다.`:'3타 편성 완료 · 캐릭터 중복 없음';
+  return `<section class="manual-plan ${p.unresolved.length?'manual-plan-warning':''}" aria-label="직접 선택한 3타 비교" role="region">
+    <div class="manual-plan-line">
+      <span class="manual-plan-count">직접 선택 <strong>${count}/3</strong></span>
+      <span class="manual-plan-stat">기대딜 합계 <strong class="numeric">${damage}</strong></span>
+      <span class="manual-plan-status ${p.unresolved.length?'danger':''}">${status}</span>
+      <div class="manual-plan-actions">
+        ${simpleButton(ext.onlyPicks?'전체 보기':'선택만','v3-selected-only','','quiet')}
+        ${simpleButton('복사','v2-copy-plan','','quiet')}
+        ${simpleButton('비우기','r-clear-plan','','quiet')}
+      </div>
+    </div>
+    <div class="manual-plan-note">
+      ${p.duplicates.length?`<span class="manual-plan-conflicts">중복: ${p.duplicates.map(item=>X(item.name)).join(', ')}</span>`:''}
+      <span class="manual-plan-support">서포트: ${support}</span>
+      <span class="${p.unresolved.length?'danger':'muted'}">${message}</span>
+      ${p.needsApply&&!p.unresolved.length?simpleButton('서포트 적용','r-apply-supports','','quiet'):''}
+    </div>
+  </section>`;
+}
+function completePlanStrip(){return manualPlanStrip();}
 
 function completePlanner(){ext.distributionOpen=true;if(!ext.foundPlans)findPlans();return recommendationRows();}
 
