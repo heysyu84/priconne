@@ -1065,14 +1065,101 @@ recommendationRows=()=>{
   if(!thirdStageVisible()&&ext.stage===3)ext.stage=4;
   if(ext.onlyPicks&&!selectedParties().length)ext.onlyPicks=false;
   const early=ext.stage===3,rows=visibleTactics().filter(t=>!ext.onlyPicks||early||ui.picks.includes(t.id));
-  return `<div class="toolbar"><div class="toolbar-left">${stageButtons()}${bossFilter()}</div><div class="toolbar-right">${early?'':`<div class="recommendation-actions" role="group" aria-label="추천분배 조작">${simpleButton(selectedParties().length||ext.distributionOpen?'비우기':'추천분배',selectedParties().length||ext.distributionOpen?'r-clear-plan':'v3-distribution','',ext.distributionOpen?'selected':'')}${simpleButton(ext.distributionOpen?'닫기':'열기','r-toggle-distribution','','quiet')}${data.notices[ext.stage]?simpleButton('안내','v2-toggle-notice','','quiet'):''}</div>`}${early&&data.notices[ext.stage]?simpleButton('안내','v2-toggle-notice'):''}${early?stage3RecommendationActions():''}</div></div>${ext.noticeOpen&&data.notices[ext.stage]?`<div class="plain-notice">${X(data.notices[ext.stage]).replace(/\n/g,'<br>')}${simpleButton('안내 수정','v2-notice')}</div>`:''}${recommendationDistribution()}<div class="recommendation-list">${rows.map(t=>`<article class="combo-card ${early?'stage3-combo-card':''} ${ui.picks.includes(t.id)?'picked':''}" data-combo="${t.id}" style="${bossStyle(t.boss)}"><div class="combo-heading" style="${bossStyle(t.boss)}">${early?'':`<input type="checkbox" aria-label="${t.boss}넴 ${X(t.title)} 3타 선택" data-input="v2-pick-tactic" data-id="${t.id}" ${ui.picks.includes(t.id)?'checked':''}>`}<strong class="boss-tag">${t.boss}넴</strong><small class="combo-category category-${t.category}">${early?'3단계':t.category==='tabi'?'타비':'택틱'}</small>${early&&adminMode()?simpleButton('삭제','stage3-delete',t.id,'quiet danger'):''}</div><div class="combo-party">${party(t)}</div><dl class="combo-metadata"><div class="combo-stars"><dt>성급</dt><dd class="star-sequence">${tacticStarString(t)}</dd></div>${early?`<div><dt>TP</dt><dd class="${tacticTpClass(t.tp)}">${X(t.tp||'—')}</dd></div><div><dt>필요 시간</dt><dd>${t.requiredSeconds==null?'—':t.requiredSeconds+'초'}</dd></div><div><dt>예상 이월</dt><dd>${t.remainingSeconds==null?'—':t.remainingSeconds+'초'}</dd></div>`:`<div><dt>손컨</dt><dd class="${t.hands?'danger':''}">${tacticHands(t)}</dd></div><div><dt>TP</dt><dd class="${tacticTpClass(t.tp)}">${X(t.tp||'—')}</dd></div><div class="combo-damage"><dt>기대딜</dt><dd>${tacticDamageLabel(t)}</dd></div>`}${early?'':`<div class="combo-link-cell">${videoButton(t,false,'combo')}</div>`}</dl>${early?'':`<div class="combo-open"><button class="button combo-toggle" data-action="ops-combo-toggle" data-id="${t.id}" aria-expanded="${ext.openComboId===t.id}" aria-controls="combo-details-${t.id}">${ext.openComboId===t.id?'닫기':'열기'}</button></div><div id="combo-details-${t.id}" class="combo-expansion ${ext.openComboId===t.id?'is-open':''}" ${ext.openComboId===t.id?'':'hidden'}><div class="combo-expansion-clip"><div class="combo-expansion-content">${ext.openComboId===t.id?comboDetailBody(t):''}</div></div></div>`}</article>`).join('')||'<p class="no-rows">등록된 조합이 없습니다.</p>'}</div>${completePlanStrip()}`;
+  return `<div class="toolbar"><div class="toolbar-left">${stageButtons()}${bossFilter()}</div><div class="toolbar-right">${early?'':`<div class="recommendation-actions" role="group" aria-label="추천분배 조작">${simpleButton(selectedParties().length||ext.distributionOpen?'비우기':'추천분배',selectedParties().length||ext.distributionOpen?'r-clear-plan':'v3-distribution','',ext.distributionOpen?'selected':'')}${simpleButton(ext.distributionOpen?'닫기':'열기','r-toggle-distribution','','quiet')}${data.notices[ext.stage]?simpleButton('안내','v2-toggle-notice','','quiet'):''}</div>`}${early&&data.notices[ext.stage]?simpleButton('안내','v2-toggle-notice'):''}${early?stage3RecommendationActions():''}</div></div>${ext.noticeOpen&&data.notices[ext.stage]?`<div class="plain-notice">${X(data.notices[ext.stage]).replace(/\n/g,'<br>')}${simpleButton('안내 수정','v2-notice')}</div>`:''}${recommendationDistribution()}${early?'':completePlanStrip()}<div class="recommendation-list">${rows.map(t=>`<article class="combo-card ${early?'stage3-combo-card':''} ${ui.picks.includes(t.id)?'picked':''}" data-combo="${t.id}" style="${bossStyle(t.boss)}"><div class="combo-heading" style="${bossStyle(t.boss)}">${early?'':`<input type="checkbox" aria-label="${t.boss}넴 ${X(t.title)} 3타 선택" data-input="v2-pick-tactic" data-id="${t.id}" ${ui.picks.includes(t.id)?'checked':''}>`}<strong class="boss-tag">${t.boss}넴</strong><small class="combo-category category-${t.category}">${early?'3단계':t.category==='tabi'?'타비':'택틱'}</small>${early&&adminMode()?simpleButton('삭제','stage3-delete',t.id,'quiet danger'):''}</div><div class="combo-party">${party(t)}</div><dl class="combo-metadata"><div class="combo-stars"><dt>성급</dt><dd class="star-sequence">${tacticStarString(t)}</dd></div>${early?`<div><dt>TP</dt><dd class="${tacticTpClass(t.tp)}">${X(t.tp||'—')}</dd></div><div><dt>필요 시간</dt><dd>${t.requiredSeconds==null?'—':t.requiredSeconds+'초'}</dd></div><div><dt>예상 이월</dt><dd>${t.remainingSeconds==null?'—':t.remainingSeconds+'초'}</dd></div>`:`<div><dt>손컨</dt><dd class="${t.hands?'danger':''}">${tacticHands(t)}</dd></div><div><dt>TP</dt><dd class="${tacticTpClass(t.tp)}">${X(t.tp||'—')}</dd></div><div class="combo-damage"><dt>기대딜</dt><dd>${tacticDamageLabel(t)}</dd></div>`}${early?'':`<div class="combo-link-cell">${videoButton(t,false,'combo')}</div>`}</dl>${early?'':`<div class="combo-open"><button class="button combo-toggle" data-action="ops-combo-toggle" data-id="${t.id}" aria-expanded="${ext.openComboId===t.id}" aria-controls="combo-details-${t.id}">${ext.openComboId===t.id?'닫기':'열기'}</button></div><div id="combo-details-${t.id}" class="combo-expansion ${ext.openComboId===t.id?'is-open':''}" ${ext.openComboId===t.id?'':'hidden'}><div class="combo-expansion-clip"><div class="combo-expansion-content">${ext.openComboId===t.id?comboDetailBody(t):''}</div></div></div>`}</article>`).join('')||'<p class="no-rows">등록된 조합이 없습니다.</p>'}</div>`;
 };
 function selectionControls(){
   const chosen=selectedParties();if(!chosen.length)return '';const conflicts=partyConflicts(chosen);
   return `<strong class="plan-selection-count" role="status">선택 ${chosen.length}/3</strong><span class="numeric plan-selection-total">합계 ${expectedDamageValue(chosen.reduce((sum,t)=>sum+t.damage,0))}</span>${conflicts.length?`<span class="danger">중복 ${X(conflicts.join(', '))}</span>`:''}${simpleButton('복사','v2-copy-plan')}`;
 }
 function clearRecommendedPlan(){ui.picks=[];ext.onlyPicks=false;ext.distributionOpen=false;ext.selectedSupports={};ext.foundPlans=[];render();}
-completePlanStrip=()=>'';
+function manualPlanComparison(){
+  const chosen=selectedParties().slice(0,3);
+  const identity=name=>{
+    const c=characterReference(name);
+    return String(c?.unitId||c?.name||name).trim();
+  };
+  const appearances=new Map();
+  chosen.forEach((t,team)=>(t.party||[]).forEach((name,index)=>{
+    const id=identity(name);
+    if(!appearances.has(id))appearances.set(id,[]);
+    appearances.get(id).push({team,index,name});
+  }));
+  const duplicates=[...appearances.entries()].filter(([,items])=>new Set(items.map(item=>item.team)).size>1).map(([id,items])=>({id,name:items[0].name}));
+  const duplicateIds=new Set(duplicates.map(item=>item.id));
+  const initial=chosen.map(t=>{
+    const n=Number(t.support);
+    return t.support!==null&&t.support!==undefined&&t.support!==''&&Number.isInteger(n)&&n>=0&&n<(t.party||[]).length?n:-1;
+  });
+  const candidates=chosen.map((t,team)=>initial[team]>=0?[initial[team]]:[-1,...(t.party||[]).flatMap((name,index)=>duplicateIds.has(identity(name))?[index]:[])]);
+  let best=null;
+  const evaluate=assignment=>{
+    const uses=new Map();
+    chosen.forEach((t,team)=>(t.party||[]).forEach((name,index)=>{
+      if(assignment[team]===index)return;
+      const id=identity(name);
+      if(!uses.has(id))uses.set(id,{name,teams:new Set()});
+      uses.get(id).teams.add(team);
+    }));
+    const unresolved=[...uses.values()].filter(entry=>entry.teams.size>1).map(entry=>entry.name);
+    const supportCount=assignment.filter(index=>index>=0).length;
+    const preference=assignment.reduce((sum,index,team)=>sum+(index>=0?chosen.length-team:0),0);
+    const score=[unresolved.length,supportCount,preference];
+    if(!best||score.some((v,i)=>v<best.score[i]&&score.slice(0,i).every((p,j)=>p===best.score[j]))){
+      best={assignment:[...assignment],score,unresolved,supportCount};
+    }
+  };
+  const search=(team,assignment)=>{
+    if(team===chosen.length){evaluate(assignment);return;}
+    for(const option of candidates[team]){assignment.push(option);search(team+1,assignment);assignment.pop();}
+  };
+  search(0,[]);
+  const assignment=best?.assignment||[];
+  const supports=chosen.flatMap((t,team)=>assignment[team]>=0?[{
+    team:team+1,boss:t.boss,name:t.party[assignment[team]],preset:initial[team]===assignment[team]
+  }]:[]);
+  const total=chosen.reduce((sum,t)=>sum+(Number(t.damage)||0),0);
+  const missingDamage=chosen.some(t=>t.recommendationOnly&&t.sourceExpectedDamage==='');
+  const needsApply=assignment.some((index,team)=>index!==initial[team]);
+  return {chosen,duplicates,assignment,supports,total,missingDamage,needsApply,
+    unresolved:best?.unresolved||[],supportCount:best?.supportCount||0};
+}
+
+function manualPlanCopyText(){
+  const plan=manualPlanComparison();
+  if(!plan.chosen.length)return '';
+  const rows=plan.chosen.map((t,i)=>`${i+1}타 · ${t.boss}넴 · ${t.party.join(' / ')} · 기대딜 ${tacticDamageLabel(t)} · 서포트 ${plan.assignment[i]>=0?t.party[plan.assignment[i]]:'없음'}`);
+  rows.push(`합계 기대딜 ${plan.missingDamage?'일부 미입력':expectedDamageValue(plan.total)+'억'}`);
+  rows.push(plan.unresolved.length?'해결되지 않은 중복: '+plan.unresolved.join(', '):plan.duplicates.length?`중복 ${plan.duplicates.length}종 · 서포트 ${plan.supportCount}명으로 해결 가능`:'중복 없음');
+  return rows.join('\n');
+}
+
+function manualPlanStrip(){
+  const p=manualPlanComparison(),count=p.chosen.length;
+  if(!count||ext.stage===3)return '';
+  const damage=p.missingDamage?'일부 미입력':expectedDamageValue(p.total)+'억';
+  const status=p.unresolved.length?`중복 미해결 ${p.unresolved.length}종`:p.duplicates.length?`중복 ${p.duplicates.length}종 · 서포트 ${p.supportCount}명`:'중복 없음';
+  const support=p.supports.length?p.supports.map(s=>`${s.team}타 ${s.boss}넴 ${X(s.name)}${s.preset?'':' (추천)'}`).join(' · '):'필요 없음';
+  const message=p.unresolved.length?`미해결: ${p.unresolved.map(X).join(', ')} · 덱당 서포트 1명으로 해결할 수 없습니다.`:p.duplicates.length?'중복 캐릭터를 서포트로 해결할 수 있습니다.':count<3?`${3-count}개 더 선택하면 3타 편성이 완성됩니다.`:'3타 편성 완료 · 캐릭터 중복 없음';
+  return `<section class="manual-plan ${p.unresolved.length?'manual-plan-warning':''}" aria-label="직접 선택한 3타 비교" role="region">
+    <div class="manual-plan-line">
+      <span class="manual-plan-count">직접 선택 <strong>${count}/3</strong></span>
+      <span class="manual-plan-stat">기대딜 합계 <strong class="numeric">${damage}</strong></span>
+      <span class="manual-plan-status ${p.unresolved.length?'danger':''}">${status}</span>
+      <div class="manual-plan-actions">
+        ${simpleButton(ext.onlyPicks?'전체 보기':'선택만','v3-selected-only','','quiet')}
+        ${simpleButton('복사','v2-copy-plan','','quiet')}
+        ${simpleButton('비우기','r-clear-plan','','quiet')}
+      </div>
+    </div>
+    <div class="manual-plan-note">
+      ${p.duplicates.length?`<span class="manual-plan-conflicts">중복: ${p.duplicates.map(item=>X(item.name)).join(', ')}</span>`:''}
+      <span class="manual-plan-support">서포트: ${support}</span>
+      <span class="${p.unresolved.length?'danger':'muted'}">${message}</span>
+      ${p.needsApply&&!p.unresolved.length?simpleButton('서포트 적용','r-apply-supports','','quiet'):''}
+    </div>
+  </section>`;
+}
+completePlanStrip=manualPlanStrip;
 
 function minimumCarry(t){
   if(Number(t.requiredCarrySeconds)>0)return Number(t.requiredCarrySeconds);
@@ -1470,7 +1557,7 @@ document.addEventListener('click',async event=>{const button=event.target.closes
  if(action==='v2-settings'){ext.settingsPage='display';nav('clan','settings');return;}if(action==='v2-settings-page'){ext.settingsPage=value;render();return;}if(action==='v2-lock'){toggleWriter();return;}
  if(action==='v2-combo-stage'){ext.stage=Number(value);render();return;}if(action==='v2-toggle-notice'){ext.noticeOpen=!ext.noticeOpen;render();return;}
  if(action==='v2-notice'){if(!ensureEdit())return;openDrawer(ext.stage+'단계 조합 안내',`<div class="field"><label for="combo-notice">안내</label><textarea id="combo-notice" name="notice" rows="10">${X(data.notices[ext.stage]||'')}</textarea></div>`,`<button type="submit" class="button primary">저장</button>`,'',true,'v2-notice');return;}
- if(action==='v2-open-planner'){ext.distributionOpen=true;findPlans();nav('tactics','combos');return;}if(action==='v2-copy-plan'){const text=selectedParties().map((t,i)=>`${i+1}타 ${t.boss}넴 ${t.party.join(' ')} / ${tacticDamageLabel(t)} / 서포트 ${t.party[t.support]||'없음'}`).join('\n');await copyText(text);return;}if(action==='v2-find-plans'){findPlans();render();return;}if(action==='v2-use-plan'){applyFoundPlan(Number(id));return;}
+ if(action==='v2-open-planner'){ext.distributionOpen=true;findPlans();nav('tactics','combos');return;}if(action==='v2-copy-plan'){await copyText(manualPlanCopyText());return;}if(action==='v2-find-plans'){findPlans();render();return;}if(action==='v2-use-plan'){applyFoundPlan(Number(id));return;}
  if(action==='v2-work-group'){ext.workGroup=value;ext.carryTimeRange='all';ext.workEditing=false;ui.carry=90;render();return;}if(action==='v2-select-tactic'){flushGrid();ui.selectedTactic=id;ui.libraryOpen=true;ext.rowUndo=[];ext.rowRedo=[];ui.carry=activeTactic()?.duration||90;render();return;}
  if(action==='v2-open-workspace'){const t=data.tactics.find(t=>t.id===id);ext.workGroup=t.hidden?'hidden':t.category;ext.carryTimeRange='all';ext.stage=t.stage;ui.selectedTactic=id;ui.carry=t.duration||90;closeDrawer();nav('tactics','workspace');return;}
  if(action==='v2-tactic-trash'){nav('tactics','trash');return;}if(action==='v2-back-workspace'){nav('tactics','workspace');return;}
@@ -1666,7 +1753,7 @@ document.addEventListener('change',async event=>{const el=event.target,key=el.da
  if(key==='v2-month'){switchMonthTo(el.value,el.value!==Object.keys(data.seasons).sort().at(-1));return;}if(key==='v2-archive-month'){switchMonthTo(el.value,true);return;}
  if(key==='v2-all-days'){ext.allDays=el.checked;ui.page=1;render();return;}if(key==='v2-sequence'){ext.sequence=el.checked;render();return;}if(key==='v2-details'){ext.details=el.checked;render();return;}
  if(key==='v2-profile-member'){ui.profile=el.value;render();return;}if(key==='v2-profile-stage'){ext.profileStage=Number(el.value);render();return;}if(key==='v2-work-stage'){ext.stage=Number(el.value);render();return;}
- if(key==='v2-pick-tactic'){const id=el.dataset.id;if(el.checked){if(ui.picks.length>=3){el.checked=false;toast('3개까지 선택할 수 있습니다.');return;}ui.picks.push(id);}else ui.picks=ui.picks.filter(i=>i!==id);render();return;}
+ if(key==='v2-pick-tactic'){const id=el.dataset.id;if(el.checked){if(ui.picks.length>=3){el.checked=false;toast('3개까지 선택할 수 있습니다.');return;}ui.picks.push(id);}else ui.picks=ui.picks.filter(i=>i!==id);ext.selectedSupports??={};delete ext.selectedSupports[id];render();return;}
  if(key==='v2-row-check'){if(!ensureEdit())return;const t=activeTactic();rememberRows(t);const row=tacticRows(t).find(r=>r.id===el.dataset.row);row.manualChecks=true;row.checked[Number(el.dataset.column)]=el.checked;const rows=tacticRows(t),index=rows.findIndex(r=>r.id===row.id);legacyTools.recalculateTacticRows(rows,t.party,data.characters,index+1);saveGridText(t);document.querySelectorAll('.set-grid [data-input="v2-row-check"]').forEach(input=>{const next=rows.find(r=>r.id===input.dataset.row);if(next)input.checked=!!next.checked[Number(input.dataset.column)];});return;}
  if(key==='v2-editable'){if(syncState.started){el.checked=false;toggleWriter();return;}if(!data.settings.editable&&data.pinHash){el.checked=false;toggleWriter();return;}data.settings.editable=el.checked;persist();render();return;}if(key==='v2-default-day'){data.settings.defaultDay=Number(el.value);data.settings.defaultDayMode=data.settings.defaultDay>0?'manual':'auto';ui.day=defaultBattleDay();persist();render();return;}
  if(key==='v2-carry-sheet'&&el.files[0]){try{const file=el.files[0],rows=file.name.toLowerCase().endsWith('.xlsx')?await xlsxRows(file):parseDelimited(await file.text(),file.name.toLowerCase().endsWith('.tsv')?'\t':',');ext.carryImport=parseCarrySheet(rows);renderCarryPreview();}catch(error){toast(error.message);}return;}
@@ -2549,6 +2636,7 @@ document.addEventListener('change',async event=>{
 document.addEventListener('click',event=>{
   const button=event.target.closest('[data-action]');if(!button||!button.dataset.action.startsWith('r-'))return;event.preventDefault();event.stopImmediatePropagation();
   if(button.dataset.action==='r-clear-plan'){clearRecommendedPlan();return;}
+  if(button.dataset.action==='r-apply-supports'){const plan=manualPlanComparison();if(plan.unresolved.length)return;ext.selectedSupports??={};plan.chosen.forEach((t,i)=>{ext.selectedSupports[t.id]=plan.assignment[i];});render();toast('서포트 배치를 적용했습니다.',true);return;}
   if(button.dataset.action==='r-toggle-distribution'){ext.distributionOpen=!ext.distributionOpen;if(ext.distributionOpen)findPlans();render();return;}
   if(button.dataset.action==='r-image-back'){ext.importMode=false;nav('overview','logs');}
   if(button.dataset.action==='r-log-warnings'){ext.warningOnly=!ext.warningOnly;ui.page=1;render();}
