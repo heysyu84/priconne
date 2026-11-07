@@ -559,3 +559,173 @@ html[data-text-scale] .workspace-timeline .instruction-cell textarea {
   #app > .content { max-width: none; padding: 0; }
   #app > .workspace-nav { display: none !important; }
 }
+
+/* Inline deck rows keep the same fields and spacing across boss filters. */
+.tactic-accordion {
+  min-width: 0;
+  padding: 8px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--workspace-panel);
+}
+.tactic-accordion > .sheet-heading { margin: 0; padding: 3px 4px 8px; gap: 7px; }
+.tactic-table-head, .tactic-accordion .tactic-list-button {
+  display: grid;
+  grid-template-columns: 58px minmax(0, 1fr) 70px 54px 66px 70px;
+  column-gap: 10px;
+  align-items: center;
+}
+.tactic-table-head {
+  padding: 4px 9px;
+  color: var(--muted);
+  background: var(--wash);
+  border-radius: 6px;
+  text-align: center;
+  font-size: .72rem;
+}
+.tactic-table-head > span:nth-child(2) { text-align: left; }
+.tactic-accordion .tactic-list-entry {
+  display: block;
+  margin-top: 5px;
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--boss, var(--accent));
+  border-radius: 8px;
+  background: var(--boss-wash, var(--surface));
+  overflow: hidden;
+}
+.tactic-accordion .tactic-list-button {
+  width: 100%;
+  padding: 8px 7px;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  color: var(--text);
+  background: transparent;
+  text-align: center;
+  box-shadow: none;
+}
+.tactic-accordion .tactic-list-button:hover,
+.tactic-accordion .tactic-list-button.active {
+  background: color-mix(in srgb, var(--boss, var(--accent)) 18%, var(--boss-wash, var(--wash)));
+  box-shadow: none;
+}
+.tactic-accordion .work-list-party {
+  display: block;
+  min-width: 0;
+  margin: 0;
+  text-align: left;
+  font-size: .86rem;
+  line-height: 1.4;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+.tactic-accordion :is(.tactic-list-stars,.tactic-list-hands,.tactic-list-tp,.tactic-list-score) {
+  margin: 0;
+  font-size: .84rem;
+  line-height: 1.4;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.tactic-accordion .tactic-list-boss { font-size: .8rem; background: transparent; padding: 0; }
+.tactic-accordion .tactic-list-carry { display: block; font-size: .65rem; margin-top: 2px; }
+.tactic-accordion-body { background: var(--surface); border-top: 1px solid var(--line); }
+.tactic-accordion-body[hidden] { display: none; }
+.tactic-accordion .work-editor { min-width: 0; padding: 12px; }
+.tactic-title-line { display: flex; align-items: center; justify-content: space-between; gap: 9px; margin-bottom: 6px; }
+.tactic-title-line h2 { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px; margin: 0; font-size: 1.03rem; }
+.tactic-control-bar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 7px; margin: 9px 0; }
+.tactic-time-controls, .tactic-copy-controls { display: flex; align-items: center; flex-wrap: wrap; gap: 5px; min-width: 0; }
+.tactic-time-controls { margin-right: auto; font-size: .77rem; }
+.tactic-received-time { display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; }
+.tactic-received-time input { width: 56px; min-height: 32px; padding: 4px; border: 1px solid var(--line); border-radius: 6px; font-variant-numeric: tabular-nums; }
+.tactic-required-time { padding: 5px 6px; border-radius: 6px; background: var(--boss-wash, var(--wash)); white-space: nowrap; }
+.tactic-source-mobile { display: none; }
+.tactic-source-desktop { display: inline-flex; }
+.tactic-control-bar .tactic-icon-button,
+.tactic-title-line .video-link,
+.tactic-copy-controls .video-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  width: 32px;
+  height: 32px;
+  min-height: 32px;
+  padding: 5px;
+  box-sizing: border-box;
+}
+.tactic-control-bar .tactic-icon-button svg { width: 17px; height: 17px; }
+.tactic-title-line .video-link > span, .tactic-copy-controls .video-link > span { display: none; }
+.tactic-copy-menu { position: relative; }
+.tactic-copy-menu > summary { list-style: none; cursor: pointer; }
+.tactic-copy-menu > summary::-webkit-details-marker { display: none; }
+.tactic-copy-options {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 4px);
+  z-index: 15;
+  display: grid;
+  gap: 3px;
+  min-width: 132px;
+  padding: 5px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: 0 8px 24px #21133125;
+}
+.tactic-copy-options .button { white-space: nowrap; text-align: left; }
+.tactic-control-bar > .carry-warning { flex-basis: 100%; margin: 0; font-size: .75rem; }
+.workspace-distribution > summary { list-style: none; cursor: pointer; user-select: none; }
+.workspace-distribution > summary::-webkit-details-marker { display: none; }
+.workspace-distribution > summary > svg { width: 15px; height: 15px; margin-left: auto; }
+.workspace-distribution[open] > summary > svg { transform: rotate(180deg); }
+.workspace-distribution:not([open]) > summary { border-bottom: 0; }
+.distribution-count { font-size: .75rem; color: var(--muted); }
+.workspace-timeline .set-grid :is(td,th):nth-child(2) { border-left-width: 1px; }
+.workspace-timeline .set-grid :is(td,th):nth-child(7) { border-left: 2px solid var(--line); }
+.workspace-timeline .set-grid th.set-auto { text-align: center !important; padding-inline: 0; vertical-align: middle; }
+.workspace-timeline .set-grid th.set-auto > span { display: block; width: 100%; margin: 0; text-align: center; }
+
+/* Day selection uses the same selected state as the page and phase menus. */
+.content .day-switch {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 4px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: var(--wash);
+}
+.content .day-switch button {
+  min-height: 29px;
+  padding: 4px 8px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  color: var(--muted);
+  background: transparent;
+  box-shadow: none;
+}
+.content .day-switch button.day-current { border-color: color-mix(in srgb, var(--accent) 40%, var(--line)); color: var(--accent); background: var(--surface); }
+.content .day-switch button.active,
+.content .day-switch button.active.day-current { border-color: var(--accent); color: var(--surface); background: var(--accent); box-shadow: none; }
+@media (max-width:760px) {
+  .tactic-accordion { padding: 5px; }
+  .tactic-table-head, .tactic-accordion .tactic-list-button {
+    grid-template-columns: 29px minmax(0,1fr) 36px 28px 36px 40px;
+    column-gap: 4px;
+  }
+  .tactic-table-head { padding: 4px; font-size: .65rem; }
+  .tactic-accordion .tactic-list-button { padding: 6px 3px; }
+  html[data-text-scale] .tactic-accordion .work-list-party { font-size: .76rem !important; }
+  .tactic-accordion :is(.tactic-list-stars,.tactic-list-hands,.tactic-list-tp,.tactic-list-score) { font-size: .74rem; }
+  .tactic-accordion .tactic-list-boss { font-size: .7rem; }
+  .tactic-accordion .tactic-list-carry { font-size: .6rem; white-space: normal; }
+  .tactic-accordion .work-editor { padding: 7px; }
+  .tactic-source-mobile { display: inline-flex; margin-left: auto; flex: none; }
+  .tactic-source-desktop { display: none; }
+  .tactic-control-bar { gap: 5px; }
+  .tactic-copy-controls { margin-left: auto; }
+  .tactic-time-controls { gap: 4px; font-size: .7rem; }
+  .tactic-time-controls .button { padding-inline: 6px; }
+  .tactic-received-time input { width: 46px; }
+}
