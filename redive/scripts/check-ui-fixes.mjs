@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import {runtimeFixture} from './runtime-fixture.mjs';
+import {decodeLegacy,encodeLegacy} from '../public/legacy-codec.mjs';
 
 const app=runtimeFixture(),data=app.get();
 let checks=0;
@@ -67,6 +68,44 @@ check('record tabs precede day selection and keep the same heading across tabs',
   assert.equal(html.slice(0,html.indexOf('role="tablist"')),heading,tab);
   assert.doesNotMatch(html.slice(0,html.indexOf('role="tablist"')),/day-switch/);
  }
+});
+
+check('one common guide serves every tactic tab and stage 3 ignores the prior boss filter',()=>{
+ const f=runtimeFixture(),d=f.get();d.rules.stage3Mode='show';
+ f.ui.section='tactics';f.ui.boss=2;f.ext.noticeOpen=true;
+ const before=JSON.stringify(f.sharedDocument());
+ for(const tab of ['stage3','workspace','external']){
+  f.ui.tabs.tactics=tab;
+  const html=f.fullTactics();
+  assert.equal((html.match(/data-action="v2-toggle-notice"/g)||[]).length,1,tab);
+  assert.match(html,/class="tactics-subnav"/);
+  assert.match(html,/빨간색 이름 = 부스터 캐릭터/);
+  assert.match(html,/추천 서포트를 파란색/);
+  assert.equal((html.match(/모의전/g)||[]).length,1,tab);
+  if(tab==='stage3'){
+   assert.doesNotMatch(html,/workspace-boss-filters|data-action="boss-filter"/);
+   assert.ok(f.workspaceList().some(t=>t.boss!==2));
+  }else if(tab==='workspace')assert.match(html,/data-action="boss-filter"/);
+ }
+ assert.equal(JSON.stringify(f.sharedDocument()),before);
+});
+check('common guide edits remain identical across stages and survive the shared storage format',()=>{
+ const f=runtimeFixture(),d=f.get(),text='【공통 안내】\n• 새 안내 <확인>';
+ d.settings.editable=true;
+ const handler=f.listeners.submit.find(fn=>String(fn).includes("kind==='v2-notice'"));
+ const form={notice:text,dataset:{form:'v2-notice'}};form.closest=()=>form;
+ handler({target:form,preventDefault(){},stopImmediatePropagation(){}});
+ assert.equal(d.notices[3],text);assert.equal(d.notices[4],text);
+ f.ui.section='tactics';d.rules.stage3Mode='show';
+ for(const tab of ['stage3','workspace']){f.ui.tabs.tactics=tab;assert.match(f.fullTactics(),/새 안내 &lt;확인&gt;/);}
+ const reference=f.sharedDocument(),month=f.ui.month,s=reference.seasons[month];
+ const root={months:{[month]:{month,options:{days:5,dailyAttacks:3,startStage:2},bosses:s.bossSettings,levels:s.rules.levels,events:[],tactics:[],recommendations:[],memberIds:[],membership:{}}},roster:[]};
+ const doc=decodeLegacy(root,{},reference);doc.seasons[month].notices={3:text,4:text};
+ const encoded=encodeLegacy(doc,root,{},reference),restored=decodeLegacy(encoded.data,{},reference);
+ assert.equal(restored.seasons[month].notices[3],text);assert.equal(restored.seasons[month].notices[4],text);
+ d.settings.editable=false;form.notice='수정 불가';
+ handler({target:form,preventDefault(){},stopImmediatePropagation(){}});
+ assert.equal(d.notices[3],text);assert.equal(d.notices[4],text);
 });
 
 check('empty resource URLs remain as disabled monochrome header items',()=>{

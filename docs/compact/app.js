@@ -479,7 +479,7 @@ function workspaceTactics(group,stage=ext.stage){
 function workspaceList(){
   normalizeWorkspace();
   const group=ext.workGroup;
-  return workspaceTactics(group).filter(t=>(!ui.boss||(ui.boss===-1?!t.boss:t.boss===ui.boss))
+  return workspaceTactics(group).filter(t=>(ext.stage===3||!ui.boss||(ui.boss===-1?!t.boss:t.boss===ui.boss))
     &&(group!=='carry'||matchesCarryTimeRange(t)))
     .sort((a,b)=>a.boss-b.boss||b.damage-a.damage);
 }
@@ -488,7 +488,8 @@ function completeWorkspace(archive=false){
   const early=ext.stage===3;
   if(archive&&ext.workGroup==='hidden')ext.workGroup='main';
   const list=workspaceList(),groups=early?[]:workspaceGroups(archive);
-  const navigation=`<div class="tactic-controls">${workspaceTools(archive)}<div class="workspace-toolbar">${groups.length?`<div class="workspace-navigation" role="group" aria-label="택틱 분류">${groups.map(([key,name])=>`<button type="button" class="button ${ext.workGroup===key?'selected':''}" data-action="v2-work-group" data-value="${key}" aria-pressed="${ext.workGroup===key}">${name}<span class="count">${workspaceTactics(key).length}</span></button>`).join('')}</div>`:''}<div class="workspace-boss-filters">${bossFilter()}</div></div></div>`;
+  const tools=workspaceTools(archive);
+  const navigation=early?(tools?`<div class="tactic-controls">${tools}</div>`:''):`<div class="tactic-controls">${tools}<div class="workspace-toolbar">${groups.length?`<div class="workspace-navigation" role="group" aria-label="택틱 분류">${groups.map(([key,name])=>`<button type="button" class="button ${ext.workGroup===key?'selected':''}" data-action="v2-work-group" data-value="${key}" aria-pressed="${ext.workGroup===key}">${name}<span class="count">${workspaceTactics(key).length}</span></button>`).join('')}</div>`:''}<div class="workspace-boss-filters">${bossFilter()}</div></div></div>`;
   if(early)return navigation+stage3Lineups(list,archive);
   const t=list.find(t=>t.id===ui.selectedTactic)||list[0];
   if(t&&ui.selectedTactic!==t.id){ui.selectedTactic=t.id;ui.carry=defaultReceivedTime(t);}
@@ -1133,12 +1134,34 @@ function stageButtons(){
   const stages=thirdStageVisible()?[3,4]:[4];
   return `<div class="filter-group" role="group" aria-label="택틱 단계">${stages.map(stage=>`<button type="button" data-action="v2-combo-stage" data-value="${stage}" class="${ext.stage===stage?'active':''}" aria-pressed="${ext.stage===stage}">${stage}단계</button>`).join('')}</div>`;
 }
+const DEFAULT_TACTIC_GUIDE=`【덱 편성 및 서포트】
+• 다른 보스를 관통하는 경우 상황에 맞게 덱을 변경하셔도 됩니다.
+• 캐릭터 중복을 최소화했으며, 불가피하게 겹치는 경우 추천 서포트를 파란색으로 표시했습니다.
+• 보유 캐릭터와 육성 상태에 따라 더 효율적인 조합이 있을 수 있습니다.
+• 타수를 남기고 4단계에 진입할 때를 대비해, 4단계에서 자주 쓰는 캐릭터는 서포트로 빌리는 것을 권장합니다.
+
+【택틱 및 기대 대미지】
+• 이월 시간은 레벨·전용장비·EX장비 등 최상위 육성 상태를 기준으로 산정했습니다.
+• 기대 대미지는 원본 영상 기준이며, 대부분 풀초기화 스펙으로 작성되었습니다.
+• 요구 스펙이 다르므로 기대 대미지만으로 조합 성능을 비교하기 어렵습니다. 동일한 조건에서는 표기된 기대 대미지가 낮은 조합이 더 높은 대미지를 기록할 수도 있습니다.
+
+【택틱 수행 시 주의사항】
+• 택틱이 정상적으로 진행되지 않으면 전용장비 유무·레벨, 인연 레벨, EX장비 착용 여부, 노드 개방 상태 등을 확인해 주세요.
+• 심역 스펙에 따라 택틱 수행이 불가능할 수 있으며, 영상의 TP는 필수 조건이 아닌 참고 수치입니다. 실전 전에 반드시 모의전을 진행해 주세요.
+• 파티에 부스터 캐릭터가 없다면 TP 레벨의 영향을 받지 않습니다. (빨간색 이름 = 부스터 캐릭터)`;
+function tacticGuideText(){
+ const notices=data.notices||{};
+ return typeof notices[3]==='string'&&notices[3]===notices[4]&&notices[3].trim()?notices[3]:DEFAULT_TACTIC_GUIDE;
+}
+function tacticGuidePanel(){
+ if(!ext.noticeOpen)return '';
+ const body=tacticGuideText().split('\n').map(line=>line.trim()).filter(Boolean).map(line=>/^【.*】$/.test(line)?`<h3>${X(line.slice(1,-1))}</h3>`:`<p>${X(line)}</p>`).join('');
+ return `<section class="plain-notice tactic-common-guide" id="tactic-common-guide" aria-label="택틱 공통 안내">${body}${adminMode()?simpleButton('안내 수정','v2-notice','','quiet'):''}</section>`;
+}
 function workspaceTools(archive){
-  const early=ext.stage===3,notice=data.notices[ext.stage];
-  const actions=(notice?simpleButton('안내','v2-toggle-notice','','quiet'):'')+(early&&!archive?stage3RecommendationActions():'');
-  const settings=!archive&&adminMode()?simpleButton('단계 설정','ops-stage-settings','','quiet'):'';
-  return `<div class="toolbar tactic-stage-toolbar"><div class="toolbar-left">${settings}</div><div class="toolbar-right">${actions}</div></div>`
-    +(ext.noticeOpen&&notice?`<div class="plain-notice">${X(notice).replace(/\n/g,'<br>')}${!archive&&adminMode()?simpleButton('안내 수정','v2-notice'):''}</div>`:'');
+ const actions=ext.stage===3&&!archive?stage3RecommendationActions():'';
+ const settings=!archive&&adminMode()?simpleButton('단계 설정','ops-stage-settings','','quiet'):'';
+ return settings||actions?`<div class="toolbar tactic-stage-toolbar"><div class="toolbar-left">${settings}</div><div class="toolbar-right">${actions}</div></div>`:'';
 }
 function minimumCarry(t){
   if(Number(t.requiredCarrySeconds)>0)return Number(t.requiredCarrySeconds);
@@ -1506,7 +1529,7 @@ document.addEventListener('click',async event=>{const button=event.target.closes
  if(action==='archive-detail'||action==='v2-switch-month'){switchMonthTo(id,action==='archive-detail');return;}
  if(action==='v2-settings'){ext.settingsPage='display';nav('clan','settings');return;}if(action==='v2-settings-page'){ext.settingsPage=value;render();return;}if(action==='v2-lock'){toggleWriter();return;}
  if(action==='v2-combo-stage'){const stage=Number(value);if(stage===ext.stage||!(stage===4||stage===3&&thirdStageVisible()))return;flushGrid();ext.stage=stage;ui.tabs.tactics=stage===3?'stage3':'workspace';ext.workGroup='main';ext.workEditing=false;if(ui.boss===-1)ui.boss=0;history.replaceState(null,'','#tactics/'+ui.tabs.tactics);render();return;}if(action==='v2-toggle-notice'){ext.noticeOpen=!ext.noticeOpen;render();return;}
- if(action==='v2-notice'){if(!ensureEdit())return;openDrawer(ext.stage+'단계 조합 안내',`<div class="field"><label for="combo-notice">안내</label><textarea id="combo-notice" name="notice" rows="10">${X(data.notices[ext.stage]||'')}</textarea></div>`,`<button type="submit" class="button primary">저장</button>`,'',true,'v2-notice');return;}
+ if(action==='v2-notice'){if(!ensureEdit())return;openDrawer('택틱 공통 안내',`<div class="field"><label for="combo-notice">안내</label><textarea id="combo-notice" name="notice" rows="10">${X(tacticGuideText())}</textarea></div>`,`<button type="submit" class="button primary">저장</button>`,'',true,'v2-notice');return;}
  if(action==='v2-work-group'){flushGrid();ext.workGroup=value;ext.carryTimeRange='all';ext.workEditing=false;ui.carry=90;render();return;}if(action==='v2-select-tactic'){
   flushGrid();if(ui.selectedTactic!==id){ui.selectedTactic=id;ui.carry=defaultReceivedTime(activeTactic());}
   ext.workEditing=false;ext.rowUndo=[];ext.rowRedo=[];ext.rowSelection=null;render();return;
@@ -1677,7 +1700,7 @@ function backupValid(incoming){return incoming?.schema===2&&(incoming.monthExpor
 function restorePreparedBackup(){const editable=data.settings.editable;const incoming=ext.pendingRestore;if(!backupValid(incoming))return;checkpoint();const previous=structuredClone(data);try{if(incoming.monthExport){snapshotSeason();data.seasons[incoming.month]=incoming.season;for(const m of incoming.members||[])if(!data.members.some(p=>p.id===m.id))data.members.push(m);activateSeason(incoming.month);}else{data=incoming;if(syncState.started)data.settings.editable=!!(editable&&syncState.canEdit);ui.month=data.activeMonth||Object.keys(data.seasons).sort().at(-1);for(const key of SEASON_KEYS)data[key]=structuredClone(data.seasons[ui.month][key]);recalculateSeason();}persist();closeDrawer();nav('overview','bosses');toast('백업 복원',true);}catch{data=previous;recalculateSeason();toast('백업 형식을 확인하세요.');}}
 document.addEventListener('submit',event=>{const form=event.target.closest('form[data-form]');if(!form||!form.dataset.form.startsWith('v2-'))return;event.preventDefault();event.stopImmediatePropagation();const kind=form.dataset.form,fd=new FormData(form);if(kind==='v2-unlock'){if(sha256Text(String(fd.get('pin')))!==data.pinHash){toast('비밀번호가 일치하지 않습니다.');return;}data.settings.editable=true;persist();closeDrawer();render();return;}if(!ensureEdit())return;
  if(kind==='v2-log'||kind==='v2-quick-log'){saveCompleteLog(form);return;}if(kind==='v2-tactic'){saveCompleteTactic(form);return;}if(kind==='v2-member'){saveCompleteMember(form);return;}if(kind==='v2-rules'){saveRulesComplete(form);return;}if(kind==='v2-character'){saveCharacter(form);return;}
- if(kind==='v2-notice'){checkpoint();data.notices[ext.stage]=String(fd.get('notice'));persist();closeDrawer();ext.noticeOpen=true;render();return;}
+ if(kind==='v2-notice'){checkpoint();data.notices={...data.notices,3:String(fd.get('notice')),4:String(fd.get('notice'))};persist();closeDrawer();ext.noticeOpen=true;render();return;}
  if(kind==='v2-history-rank'){checkpoint();const s=fd.get('month')===ui.month?data:data.seasons[fd.get('month')];s.result.rank=fd.get('rank')?Number(fd.get('rank')):null;persist();closeDrawer();render();return;}
  if(kind==='v2-factor'){checkpoint();data.rules.factor=Number(fd.get('factor'))/100;recalculateSeason();persist();closeDrawer();render();toast('보정률 저장',true);return;}
  if(kind==='v2-links'){checkpoint();const links=[];for(let i=0;fd.has('label-'+i);i++){const label=String(fd.get('label-'+i)).trim(),url=String(fd.get('url-'+i)).trim();if(label)links.push({label,url:/^https?:\/\//i.test(url)?url:''});}data.communityLinks=links;persist();render();toast('자료 링크 저장',true);return;}
@@ -1795,7 +1818,8 @@ function fullTactics(){
   const tabs=[...(thirdStageVisible()?[['stage3','3단계 분배',workspaceTactics('all',3).length]]:[]),['workspace','택틱 작업실',workCount],['external','이월 계산기'],...(adminMode()?[['review','외부 택틱'],['converter','택틱 변환기']]:[])];
   const actions=work&&adminMode()?simpleButton('삭제함','v2-tactic-trash')+simpleButton('택틱 추가','new-tactic','','primary'):'';
   const views={stage3:completeWorkspace,workspace:completeWorkspace,external:completeExternal,review:externalReviewPage,converter:completeConverter,trash:completeTrash};
-  return titleBar(ui.tabs.tactics==='stage3'?'3단계 분배':subpageNames.tactics[ui.tabs.tactics]||'택틱 작업실',actions)+pageTabs(tabs)+(views[ui.tabs.tactics]||completeWorkspace)();
+  const navigation=`<div class="tactics-subnav">${pageTabs(tabs)}<button type="button" class="button icon-button tactic-guide-toggle ${ext.noticeOpen?'active':''}" data-action="v2-toggle-notice" aria-label="택틱 공통 안내" title="택틱 안내" aria-expanded="${ext.noticeOpen}" aria-controls="tactic-common-guide">${icon('info')}</button></div>`;
+  return titleBar(ui.tabs.tactics==='stage3'?'3단계 분배':subpageNames.tactics[ui.tabs.tactics]||'택틱 작업실',actions)+navigation+tacticGuidePanel()+(views[ui.tabs.tactics]||completeWorkspace)();
 }
 subpageNames.tactics.stage3='3단계 분배';
 

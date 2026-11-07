@@ -993,3 +993,44 @@ html[data-text-scale] .tactic-reference-head .tactic-specs > div:first-child dd 
   .workspace-restored .work-list-video .video-play rect { fill: var(--accent); }
   .workspace-restored .work-list-video .video-play path { fill: var(--surface); }
 }
+
+/* One shared guide at the end of the tactics navigation. */
+.tactics-subnav { display: flex; align-items: center; gap: 6px; min-width: 0; margin-bottom: 15px; }
+.content .tactics-subnav .page-tabs { flex: 1; min-width: 0; flex-wrap: nowrap; overflow-x: auto; margin: 0; scrollbar-width: none; }
+.tactics-subnav .page-tabs > button { flex: none; white-space: nowrap; }
+.tactics-subnav .tactic-guide-toggle { flex: none; width: 34px; height: 34px; min-height: 34px; padding: 6px; color: var(--accent); }
+.tactics-subnav .tactic-guide-toggle svg { width: 20px; height: 20px; }
+.tactics-subnav .tactic-guide-toggle.active { border-color: var(--accent); background: var(--accent-wash); }
+.tactic-common-guide { margin: 0 0 14px; padding: 12px 14px; line-height: 1.65; }
+.tactic-common-guide h3 { margin: 15px 0 6px; font-size: inherit; }
+.tactic-common-guide h3:first-child { margin-top: 0; }
+.tactic-common-guide p { margin: 5px 0; padding-left: 1em; text-indent: -1em; }
+.tactic-common-guide > .button { margin-top: 10px; }
+
+/* Selected lineups use their boss color in both list layouts. */
+.workspace-restored .work-list-row:has(> .work-item.active) {
+  background: var(--boss-wash, var(--wash));
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--boss) 65%, var(--line));
+}
+@media (min-width: 761px) {
+  html[data-text-scale] .workspace-restored .work-list-fields > .work-list-party {
+    font-size: calc(.875rem * var(--text-scale, 1) - 1px) !important;
+  }
+}
+@media (max-width: 760px) {
+  .tactics-subnav { gap: 4px; margin-bottom: 9px; }
+  .content .tactics-subnav .page-tabs { gap: 2px; padding: 4px; }
+  .content .tactics-subnav .page-tabs > button { padding-inline: 5px; }
+  .content .tactics-subnav .page-tabs button small { margin-left: 2px; padding-inline: 3px; }
+  .tactics-subnav .tactic-guide-toggle { width: 30px; height: 32px; min-height: 32px; padding: 5px; }
+  .data-table.attack-dashboard th:nth-last-child(-n+2) { width: 38px !important; }
+  .data-table.attack-dashboard .dashboard-attack { --attack-box-width: 25px; }
+  .data-table.attack-dashboard .table-sort { gap: 2px; }
+  .data-table.attack-dashboard .table-sort > span {
+    position: static; transform: none; flex: none; font-size: .8em; line-height: 1;
+  }
+  .data-table.attack-dashboard thead th { padding-bottom: 4px !important; }
+}
+@media (max-width: 370px) {
+  .data-table.attack-dashboard .dashboard-attack { --attack-box-width: 22px; }
+}
