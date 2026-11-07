@@ -5,7 +5,7 @@ import {fileURLToPath} from 'node:url';
 const root=fileURLToPath(new URL('..',import.meta.url));
 export const API_ORIGIN='https://nyang-clan-manager.heysyu457310.chatgpt.site';
 export const PUBLIC_ORIGIN='https://priconne.pages.dev';
-export const RELEASE='20261030-support-default01';
+export const RELEASE='20261107-tactic-refine02';
 export function canonicalHead(legacy=false){
   const page=legacy?'/legacy.html':'/';
   return `<link rel="canonical" href="${PUBLIC_ORIGIN}${page}"><script>if(location.hostname==='heysyu84.github.io'&&!new URLSearchParams(location.search).has('github-preview')){location.replace('${PUBLIC_ORIGIN}'+(location.pathname.replace(/^\\/priconne(?=\\/|$)/,'')||'/')+location.search+location.hash)}</script>`;
@@ -24,7 +24,7 @@ export function buildRedivePages(output,{legacyHtml}={}){
   app=app.replaceAll('./assets/','./compact/assets/');
   fs.writeFileSync(path.join(compact,'app.js'),app);
   let html=fs.readFileSync(path.join(root,'public/index.html'),'utf8');
-  html=html.replace('<head>',`<head><meta name="nyang-legacy-api-origin" content="${API_ORIGIN}">${canonicalHead()}`);
+  html=html.replace('<head>',`<head><meta name="nyang-legacy-api-origin" content="${API_ORIGIN}"><script>if(location.hostname.endsWith('.priconne.pages.dev'))document.querySelector('meta[name="nyang-legacy-api-origin"]').content=location.origin;</script>${canonicalHead()}`);
   html=html.replace(/((?:src|href)=")\.\/([^"?#]+)(?:\?[^"#]*)?"/g,(_,prefix,file)=>{
     const branding=file.startsWith('images/branding/')||['apple-touch-icon.png','site.webmanifest'].includes(file);
     return `${prefix}./${branding?'':'compact/'}${file}?v=${branding?'20261026-nyang-pink02':RELEASE}"`;

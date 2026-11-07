@@ -1,4 +1,4 @@
-import {buildReviewItems,reviewDraft,stage3LineupDraft,validateReviewDraft,damageLabel,floorDamage,findImportedTactic,safeUrl,isYouTube} from './aikurumi-review-model.mjs?v=20261030-except01';
+import {buildReviewItems,reviewDraft,stage3LineupDraft,validateReviewDraft,damageLabel,floorDamage,findImportedTactic,safeUrl,isYouTube} from './aikurumi-review-model.mjs?v=20261107-stage3-no-source01';
 import {findNonOverlappingStage3} from './aikurumi-stage3-composer.mjs';
 import {recalculateSetRows} from './tactic-set-state.mjs?v=20261030-except02';
 import {previewAikurumiTactic} from './aikurumi-tactic-review.mjs?v=20261030-except01';
@@ -139,7 +139,7 @@ class ReviewWorkspace{
    +'<details class="review-fold"><summary>육성 조건·메모</summary><label class="review-field"><span>적용할 메모</span><textarea data-review-field="note" rows="3" placeholder="추가 조건">'+escape(draft.note)+'</textarea></label>'
    +(item.preview.notes?'<details><summary>조건 원문</summary><pre>'+escape(item.preview.notes)+'</pre></details>':'')+'</details></section>'
    +'<section class="review-timeline"><div class="review-section-heading"><div><h4>조작문</h4><span>'+sourceNotice+'</span></div><div>'
-   +(sourceUrl?'<a class="review-button" href="'+escape(sourceUrl)+'" target="_blank" rel="noopener noreferrer">원본 '+(isYouTube(sourceUrl)?'영상':'자료')+' ↗</a>':'')
+   +(sourceUrl&&item.stage!==3?'<a class="review-button" href="'+escape(sourceUrl)+'" target="_blank" rel="noopener noreferrer">원본 '+(isYouTube(sourceUrl)?'영상':'자료')+' ↗</a>':'')
    +button(editing?'수정 마침':'TL 수정','edit')+'</div></div>'
    +(item.problems.length?'<div class="review-findings">'+item.problems.map(p=>'<span>'+escape(p)+'</span>').join('')+'</div>':'')
    +this.timeline(item,draft,editing)
