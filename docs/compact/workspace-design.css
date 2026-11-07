@@ -489,8 +489,6 @@ html[data-text-scale] .workspace-timeline .instruction-cell textarea {
 .tactic-received-time { display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; }
 .tactic-received-time input { width: 56px; min-height: 32px; padding: 4px; border: 1px solid var(--line); border-radius: 6px; font-variant-numeric: tabular-nums; }
 .tactic-required-time { padding: 5px 6px; border-radius: 6px; background: var(--boss-wash, var(--wash)); white-space: nowrap; }
-.tactic-source-mobile { display: none; }
-.tactic-source-desktop { display: inline-flex; }
 .tactic-control-bar .tactic-icon-button,
 .tactic-title-line .video-link,
 .tactic-copy-controls .video-link {
@@ -541,8 +539,6 @@ html[data-text-scale] .workspace-timeline .instruction-cell textarea {
 .content .day-switch button.active,
 .content .day-switch button.active.day-current { border-color: var(--accent); color: var(--surface); background: var(--accent); box-shadow: none; }
 @media (max-width:760px) {
-  .tactic-source-mobile { display: inline-flex; margin-left: auto; flex: none; }
-  .tactic-source-desktop { display: none; }
   .tactic-control-bar { gap: 5px; }
   .tactic-copy-controls { margin-left: 0; }
   .tactic-time-controls { gap: 4px; font-size: .7rem; }
@@ -605,4 +601,90 @@ html[data-text-scale] .workspace-timeline .instruction-cell textarea {
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
+/* Compact tactic header; source and copy controls share one responsive location. */
+.workspace-restored .work-editor .tactic-reading-head { padding: 0 0 8px; }
+.tactic-reading-head .tactic-title-line {
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 5px 10px;
+  margin: 0 0 8px;
+}
+.tactic-reading-head .tactic-title-line h2 { margin: 0; line-height: 1.35; }
+.tactic-reading-head .tactic-specs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  width: auto;
+  margin: 0 0 0 auto;
+}
+.tactic-reading-head .tactic-specs > div {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 4px;
+  padding: 4px 6px;
+  border-radius: 6px;
+}
+.tactic-reading-head .tactic-specs dt,
+.tactic-reading-head .tactic-specs dd { white-space: nowrap; }
+.tactic-reading-head .tactic-specs dd { margin: 0; }
+.tactic-reading-head .tactic-summary-row {
+  display: grid;
+  grid-template-columns: minmax(0,1fr) auto;
+  align-items: center;
+  gap: 10px;
+}
+.tactic-reading-head .tactic-header-party .party {
+  display: grid;
+  grid-template-columns: repeat(5,minmax(0,1fr));
+  gap: 4px;
+  width: 100%;
+  max-width: 336px;
+  margin: 0;
+  padding: 0;
+}
+.tactic-reading-head .tactic-header-party .unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 0;
+}
+.tactic-reading-head .tactic-header-party .unit-face {
+  margin: 0 0 3px;
+}
+.tactic-reading-head .tactic-header-party .unit strong { min-height: 0; }
+.tactic-reading-head .tactic-header-party .unit small { margin-top: 1px; line-height: 1.25; }
+.tactic-reading-head .tactic-control-bar {
+  display: grid;
+  grid-template-columns: minmax(0,1fr);
+  justify-items: end;
+  align-content: center;
+  gap: 4px;
+  width: max-content;
+  max-width: 248px;
+  padding: 0;
+  margin: 0;
+}
+.tactic-control-bar .tactic-time-controls { gap: 4px; }
+.tactic-control-bar .tactic-copy-controls { justify-content: flex-end; gap: 4px; }
+.tactic-control-bar .tactic-received-time input { box-sizing: border-box; width: 58px; }
+.tactic-control-bar .tactic-source { display: inline-flex; flex: none; }
+.tactic-control-bar .tactic-source > .video-link { display: inline-flex; margin: 0; }
+.tactic-reading-head > .tactic-reading-note { margin: 6px 0; padding: 5px 8px; line-height: 1.45; }
+.tactic-reading-head > .tactic-intro-links { margin: 6px 0 0; }
+.tactic-reading-head > .work-actions { gap: 4px; margin-top: 6px; }
+@container (max-width: 480px) {
+  .tactic-reading-head .tactic-summary-row { grid-template-columns: minmax(0,1fr); gap: 7px; }
+  .tactic-reading-head .tactic-control-bar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    max-width: none;
+  }
+  .tactic-control-bar .tactic-copy-controls { justify-content: flex-start; }
+  .tactic-control-bar > .carry-warning { width: 100%; }
+}
+
 
