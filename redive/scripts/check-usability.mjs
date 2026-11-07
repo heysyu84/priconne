@@ -54,8 +54,9 @@ await check('a clan-wide profile survives polling and an intentional member sele
 });
 await check('recommendations render automatically without controls and recompute after a saved deck changes',()=>{
   const q=runtimeFixture(),data=q.get(),before=q.sharedDocument(),plans=q.recommendedPlans();
-  const html=q.completeWorkspace(),panel=html.match(/<section class="distribution-panel[\s\S]*?<\/section>/)?.[0];
+  const html=q.completeWorkspace(),panel=html.match(/<details class="distribution-panel[\s\S]*?<\/details>/)?.[0];
   assert.ok(panel?.includes('추천 분배'));
+  assert.doesNotMatch(panel, /id="recommendation-distribution" open/);
   assert.ok(plans.length>0&&plans.length<=5);
   assert.doesNotMatch(panel,/<button|<input|data-action=/);
   assert.doesNotMatch(html,/v2-pick-tactic|v2-use-plan|r-clear-plan|직접 선택/);
@@ -126,7 +127,7 @@ await check('all stage 3 lineups render directly with timing and no tactic reade
   assert.equal((html.match(/data-lineup-id="test-stage-three"/g)||[]).length,1);
   assert.match(html,/data-lineup-id="test-second-stage-three"/);
   assert.doesNotMatch(html,/work-library|set-grid|등록된 조작문이 없습니다|distribution-heading|test-archived-stage-three/);
-  assert.match(html,/www\.youtube\.com\/watch\?v=test/);
+  assert.doesNotMatch(html,/www\.youtube\.com\/watch\?v=test|원본 영상|원본 자료/);
   assert.doesNotMatch(html,/data-input="v2-pick-tactic"/);
   data.bosses[0].stage=4;data.bosses[0].locked=true;
   assert.match(q.fullTactics(),/data-action="v2-combo-stage" data-value="3"/);
@@ -167,6 +168,50 @@ await check('recommendations do not narrow the tactic library and both battle pa
       assert.ok(html.includes(boss.max.toLocaleString('ko-KR')),tab+' max HP for boss '+boss.id);
     }
   }
+});
+
+
+await check('boss demand distributes more feasible routes to the boss requiring more attacks',()=>{
+  const decks=Array.from({length:5},(_,i)=>({id:String(i+1),boss:i+1,stage:4,expectedDamage:1,characters:Array.from({length:5},(_,j)=>'boss'+(i+1)+'c'+j)}));
+  const options={bossHp:{1:1,2:1,3:1,4:1,5:10},limit:5};
+  const plans=legacyTools.planThreeAttacks(decks,[],options).plans;
+  assert.equal(plans.length,5);
+  assert.equal(plans.filter(p=>p.attacks.some(a=>a.combo.boss===5)).length,5);
+  const coverage=new Set(plans.flatMap(p=>p.attacks.map(a=>a.combo.boss)));
+  assert.equal(coverage.size,5);
+  assert.ok(plans.every(p=>new Set(p.attacks.map(a=>a.combo.boss)).size===3));
+  const equal=legacyTools.planThreeAttacks(decks,[],{bossHp:{1:1,2:1,3:1,4:1,5:1},limit:5}).plans;
+  const counts=decks.map(d=>equal.filter(p=>p.attacks.some(a=>a.combo.boss===d.boss)).length);
+  assert.ok(Math.max(...counts)-Math.min(...counts)<=1);
+});
+await check('boss All restores all decks and each click opens the matching tactic inline',async()=>{
+  const q=runtimeFixture(),d=q.get();q.ui.section='tactics';q.ui.tabs.tactics='workspace';q.ext.workGroup='all';q.ui.boss=2;
+  const bossClick=q.listeners.click.find(h=>h.toString().includes("if(a==='boss-filter')"));
+  const event=(action,id,value)=>({target:{closest:()=>({dataset:{action,id,value}})},preventDefault(){},stopImmediatePropagation(){}});
+  await bossClick(event('boss-filter',null,'0'));
+  assert.equal(q.ui.boss,0);
+  const rows=q.workspaceList();assert.equal(new Set(rows.map(t=>t.boss)).size,5);
+  const click=q.listeners.click.find(h=>h.toString().includes("if(action==='v2-select-tactic')"));
+  const t=rows[0];await click(event('v2-select-tactic',t.id));
+  const open=q.fullTactics();
+  assert.match(open,new RegExp('data-tactic-id="'+t.id+'"'));
+  assert.ok(open.indexOf('data-id="'+t.id+'"')<open.indexOf('data-tactic-id="'+t.id+'"'));
+  assert.ok(open.indexOf('class="set-check ')<open.indexOf('class="instruction-cell"'));
+  assert.equal((open.match(/aria-label="택틱 복사"/g)||[]).length,1);
+  assert.match(open,/tactic-copy-options/);
+  await click(event('v2-select-tactic',t.id));
+  assert.doesNotMatch(q.fullTactics(),/data-tactic-id=/);
+});
+await check('carry tactics always start at 90 seconds without discarding the entered time on rerender',async()=>{
+  const q=runtimeFixture();q.ui.section='tactics';q.ext.workGroup='carry';q.ui.boss=0;
+  const t=q.workspaceList()[0];t.requiredCarrySeconds=26;
+  const click=q.listeners.click.find(h=>h.toString().includes("if(action==='v2-select-tactic')"));
+  await click({target:{closest:()=>({dataset:{action:'v2-select-tactic',id:t.id}})},preventDefault(){},stopImmediatePropagation(){}});
+  assert.equal(q.ui.carry,90);
+  let html=q.fullTactics();assert.match(html,/data-time-unit="seconds" data-input="v2-work-carry" value="90"/);
+  assert.match(html,/필요 <strong>26초/);
+  q.ui.carry=38;html=q.fullTactics();assert.equal(q.ui.carry,38);
+  assert.match(html,/data-time-unit="seconds" data-input="v2-work-carry" value="38"/);
 });
 
 console.log(checks+' usability checks passed');
