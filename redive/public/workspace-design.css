@@ -35,7 +35,7 @@
 body { background: var(--paper); }
 #app > .workspace-masthead, #app > .section-nav.workspace-nav, #app > .content {
   width: 100%;
-  max-width: 900px;
+  max-width: 800px;
   box-sizing: border-box;
 }
 #app > .workspace-masthead {
@@ -726,3 +726,237 @@ html[data-text-scale] .tactic-reference-head .tactic-specs > div:first-child dd 
 }
 
 
+
+/* Reference palette, shared across navigation and action buttons. */
+:root {
+  --paper: #f7f6fb;
+  --surface: #fff;
+  --wash: #fcfbfe;
+  --text: #29263b;
+  --muted: #787285;
+  --line: #e6e2ee;
+  --accent: #7b52aa;
+  --accent-wash: #f1eaf8;
+  --red: #c14860;
+  --blue: #3e77a8;
+  --green: #2d8970;
+  --workspace-nav: #fff;
+  --workspace-nav-text: #787285;
+  --workspace-nav-active: #f1eaf8;
+  --workspace-nav-ink: #7b52aa;
+  --workspace-panel: #fff;
+  --workspace-shadow: none;
+}
+:root[data-theme=dark] {
+  --paper: #1b1923;
+  --surface: #25212f;
+  --wash: #2b2534;
+  --text: #eee8f6;
+  --muted: #b0a6bd;
+  --line: #403747;
+  --accent: #c09ce4;
+  --accent-wash: #3c2d4c;
+  --red: #ef8a9d;
+  --blue: #99c2e9;
+  --green: #8ad0b5;
+  --workspace-nav: #25212f;
+  --workspace-nav-text: #b0a6bd;
+  --workspace-nav-active: #3c2d4c;
+  --workspace-nav-ink: #c09ce4;
+  --workspace-panel: #25212f;
+  --workspace-shadow: none;
+}
+.workspace-nav button:not(.active):hover { color: var(--accent); background: var(--accent-wash); }
+.workspace-masthead :is(.header-write,.header-settings,.header-resource-button),
+.content :is(.button,.filter-group button,.workspace-navigation button,.day-switch button) {
+  box-shadow: none;
+  border-color: var(--line);
+  color: var(--muted);
+  background: var(--surface);
+}
+.content .button.primary,
+.content .tactic-stage-toolbar .filter-group button.active,
+.content .day-switch button.active {
+  color: var(--accent);
+  background: var(--accent-wash);
+  border-color: color-mix(in srgb, var(--accent) 30%, var(--line));
+}
+.content :is(.page-tabs,.subview-tabs) button.active,
+.settings-navigation button.active,
+.content .boss-filter button.active {
+  color: var(--accent);
+  background: var(--accent-wash);
+  border-color: color-mix(in srgb, var(--accent) 25%, var(--line));
+}
+.tactic-controls .workspace-navigation button.selected {
+  color: var(--accent);
+  background: var(--surface);
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--line));
+}
+.header-resource-disabled { color: var(--muted) !important; background: var(--wash) !important; }
+.tactic-reference-head .tactic-control-bar .video-link {
+  display: inline-flex;
+  width: auto;
+  height: auto;
+  min-width: 0;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-height: 32px;
+  padding: 4px 7px;
+  border: 1px solid color-mix(in srgb, var(--red) 20%, var(--line));
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--red);
+  font-size: .72rem;
+  white-space: nowrap;
+}
+.tactic-reference-head .tactic-control-bar .video-link > span { display: inline; }
+.tactic-reference-head .tactic-control-bar .tactic-icon-button { color: var(--muted); background: transparent; border-color: transparent; }
+.tactic-reference-head .tactic-identity { min-width: 0; }
+.tactic-reference-head .tactic-reference-top > :is(.tactic-intro-links,.tactic-reading-note,.work-actions) { grid-column: 1 / -1; }
+.work-list-reference-head, .work-list-damage-unit { display: none; }
+
+/* One desktop composition until the single mobile breakpoint. */
+@media (min-width: 761px) {
+  #app > :is(.workspace-masthead,.section-nav.workspace-nav,.content) { width: min(800px, calc(100% - 24px)); }
+  #app > .workspace-masthead { padding-inline: 10px; }
+  .workspace-restored.workbench {
+    display: grid;
+    grid-template-columns: minmax(0, .31fr) minmax(0, .69fr);
+    gap: 12px;
+    align-items: start;
+  }
+  .workspace-restored .work-library { align-self: start; }
+  .workspace-restored .work-library > .sheet-heading { padding: 11px 12px; gap: 6px; }
+  .workspace-restored .work-library > .sheet-heading h2 { font-size: .9rem; font-weight: 750; }
+  .workspace-restored .work-library > .sheet-heading h2 small { margin-left: 4px; color: var(--muted); font-size: .7rem; font-weight: 500; }
+  .workspace-restored .work-list-reference-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 7px 11px;
+    border-block: 1px solid var(--line);
+    background: var(--wash);
+    color: var(--muted);
+    font-size: .68rem;
+  }
+  .workspace-restored .work-library .work-list { display: block; max-height: 780px; overflow-y: auto; scrollbar-width: thin; scrollbar-color: #d8cbe8 transparent; }
+  .workspace-restored .work-list-column-heads,
+  .workspace-restored .work-list-video { display: none; }
+  .workspace-restored .work-list-row {
+    display: block;
+    border-left: 3px solid var(--boss);
+    border-bottom: 1px solid var(--line);
+    background: var(--surface);
+  }
+  .workspace-restored .work-list-row:last-child { border-bottom: 0; }
+  .workspace-restored .work-list-row:has(> .work-item.active) {
+    background: var(--accent-wash);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 45%, transparent);
+  }
+  .workspace-restored .work-list-row .work-list-fields {
+    display: grid;
+    grid-template-columns: 20px auto auto minmax(0,1fr) auto;
+    grid-template-areas: "party party party party party" "boss stars hands tp damage";
+    align-items: baseline;
+    gap: 5px 5px;
+    width: 100%;
+    min-width: 0;
+    padding: 9px 9px 9px 8px;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+    color: var(--text);
+    text-align: left;
+  }
+  .workspace-restored .work-list-row .work-item:hover { background: var(--wash); }
+  .workspace-restored .work-list-row:has(> .work-item.active) .work-item:hover { background: transparent; }
+  .workspace-restored .work-list-fields > * { width: auto; min-width: 0; order: initial; margin: 0; }
+  .workspace-restored .work-list-fields > .work-list-party { grid-area: party; }
+  html[data-text-scale] .workspace-restored .work-list-fields > .work-list-party {
+    font-size: calc(.875rem * var(--text-scale,1)) !important;
+    font-weight: 550;
+    line-height: 1.4;
+    letter-spacing: -.035em;
+    white-space: normal;
+    word-break: keep-all;
+    overflow-wrap: anywhere;
+  }
+  .workspace-restored .work-list-fields > .work-list-boss {
+    grid-area: boss;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 20px;
+    border-radius: 4px;
+    background: var(--boss-wash);
+    color: var(--boss-ink, var(--boss));
+    font-size: .7rem;
+    font-weight: 750;
+    line-height: 1.2;
+  }
+  .workspace-restored .work-list-boss-suffix { display: none; }
+  .workspace-restored .work-list-fields > .work-list-stars { grid-area: stars; letter-spacing: .02em; }
+  .workspace-restored .work-list-fields > .work-list-hands { grid-area: hands; }
+  .workspace-restored .work-list-fields > .work-list-tp { grid-area: tp; }
+  .workspace-restored .work-list-fields > :is(.work-list-stars,.work-list-hands,.work-list-tp) { color: var(--muted); font-size: .75rem; line-height: 1.4; white-space: nowrap; }
+  .workspace-restored .work-list-fields .work-field-label { color: var(--muted); font-size: .65rem; }
+  .workspace-restored .work-list-fields > .work-list-damage { grid-area: damage; font-size: .86rem; font-weight: 750; line-height: 1.4; white-space: nowrap; text-align: right; }
+  .workspace-restored .work-list-damage > .work-field-label { display: none; }
+  .workspace-restored .work-list-damage-unit { display: inline; margin-left: 1px; color: var(--muted); font-size: .6rem; font-weight: 500; }
+  .tactic-controls .workspace-toolbar { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1.02fr); gap: 10px; }
+  .tactic-controls .workspace-navigation { flex-wrap: nowrap; gap: 4px; }
+  .tactic-controls .workspace-navigation > button { flex: 1; min-width: 0; padding-inline: 6px; white-space: nowrap; }
+  .tactic-controls .workspace-boss-filters .filter-group { display: flex; width: 100%; }
+  .tactic-controls .workspace-boss-filters button { min-width: 0; flex: 1; padding-inline: 4px; border: 0; border-radius: 6px; }
+  .tactic-reference-head .tactic-reference-top {
+    display: grid;
+    grid-template-columns: minmax(0,1fr) minmax(0,1.18fr);
+    align-items: center;
+    gap: 8px 10px;
+    padding: 10px 11px;
+  }
+  .tactic-reference-head .tactic-reference-title { flex-wrap: nowrap; gap: 6px; }
+  .tactic-reference-head .tactic-reference-boss { flex: none; width: 30px; height: 30px; }
+  html[data-text-scale] .tactic-reference-head .tactic-title-line h2 { font-size: calc(.96rem * var(--text-scale,1)) !important; overflow-wrap: anywhere; }
+  .tactic-reference-head .tactic-stage-badge { display: none; }
+  .tactic-reference-head .tactic-specs { flex-wrap: nowrap; margin: 9px 0 0; gap: 0; }
+  .tactic-reference-head .tactic-specs > div { padding-inline: 6px; }
+  .tactic-reference-head .tactic-specs > div:first-child { padding-left: 0; }
+  .tactic-reference-head .tactic-specs dt { font-size: .66rem; }
+  .tactic-reference-head .tactic-specs dd { font-size: .74rem; }
+  html[data-text-scale] .tactic-reference-head .tactic-specs > div:first-child dd { font-size: calc(1rem * var(--text-scale,1)) !important; }
+  .tactic-reference-head .tactic-header-party { min-width: 0; }
+  .tactic-reference-head .tactic-header-party .party { gap: 4px; align-items: start; }
+  .tactic-reference-head .tactic-header-party .unit-face { width: clamp(30px,8cqw,42px); }
+  html[data-text-scale] .tactic-reference-head .tactic-header-party .unit strong { font-size: calc(.6rem * var(--text-scale,1)) !important; line-height: 1.3; letter-spacing: -.04em; white-space: normal; word-break: keep-all; overflow-wrap: anywhere; }
+  .tactic-reference-head .tactic-header-party .unit small { font-size: .67rem; }
+  .tactic-reference-head .tactic-control-bar { flex-wrap: nowrap; gap: 5px; padding: 7px 9px; }
+  .tactic-reference-head .tactic-time-controls { flex-wrap: nowrap; gap: 4px; font-size: .7rem; }
+  .tactic-reference-head .tactic-received-time { gap: 4px; }
+  .tactic-reference-head .tactic-received-time input { width: 53px; }
+  .tactic-reference-head .tactic-copy-controls { flex-wrap: nowrap; gap: 4px; }
+  .tactic-reference-head .tactic-control-bar .video-link { font-size: .68rem; padding-inline: 5px; }
+  .tactic-reference-head .tactic-control-bar > .carry-warning { position: static; }
+  .tactic-reference-head:has(.carry-warning:not([hidden])) .tactic-control-bar { flex-wrap: wrap; }
+  .workspace-timeline .set-check-col { width: 1.5rem; }
+  .workspace-timeline { --tactic-time-col: 2.8rem; }
+}
+@media (max-width: 760px) {
+  .tactic-reference-head .tactic-specs { margin-bottom: 12px; }
+}
+
+@media (min-width: 761px) {
+  .tactic-controls .workspace-toolbar .workspace-boss-filters { width: 100%; max-width: none; min-width: 0; margin: 0; }
+  .tactic-controls .workspace-boss-filters .boss-filter { max-width: none; margin: 0; }
+  .tactic-controls .workspace-navigation .count { padding: 0; margin-left: 4px; background: none; color: inherit; box-shadow: none; }
+  html[data-text-scale] .workspace-restored .work-list-fields > :is(.work-list-stars,.work-list-hands,.work-list-tp) { font-size: calc(.76rem * var(--text-scale,1)) !important; }
+  html[data-text-scale] .workspace-restored .work-list-fields > .work-list-damage { font-size: calc(.86rem * var(--text-scale,1)) !important; }
+  html[data-text-scale] .workspace-restored .work-list-fields .work-field-label { font-size: calc(.66rem * var(--text-scale,1)) !important; }
+  html[data-text-scale] .workspace-restored .work-list-damage-unit { font-size: calc(.6rem * var(--text-scale,1)) !important; }
+}
+
+.workspace-masthead .header-resource-button[data-resource] { color: var(--muted); border-color: var(--line); background: var(--surface); }
+.workspace-masthead .header-resource-button[data-resource]:hover { color: var(--accent); background: var(--accent-wash); }
+.content .button.danger { color: var(--red); border-color: color-mix(in srgb, var(--red) 30%, var(--line)); background: color-mix(in srgb, var(--red) 7%, var(--surface)); }

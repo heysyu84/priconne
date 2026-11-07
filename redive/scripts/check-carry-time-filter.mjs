@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import {runtimeFixture} from './runtime-fixture.mjs';
 
 let checks=0;
+const listHeading=view=>(view.match(/<aside class="work-library[^"]*"[^>]*>[\s\S]*?<h2>([\s\S]*?)<\/h2>/)?.[1]||'').replace(/<[^>]*>/g,'').trim();
 const check=async(name,run)=>{await run();checks++;console.log('PASS '+name);};
 function setup(){
  const app=runtimeFixture(),data=app.get(),base=data.tactics.find(t=>t.category==='carry')||data.tactics[0];
@@ -32,7 +33,7 @@ await check('the carry-only selector sits above the production deck list and kee
 
 await check('readers can filter immediately, expand the list and keep shared records untouched',async()=>{
  const {app,data,html,ids,choose}=setup();html();const before=JSON.stringify(app.sharedDocument());app.ui.libraryOpen=false;
- await choose('30');assert.deepEqual(ids(),['legacy37','s30','s39']);assert.equal(app.ui.libraryOpen,true);assert.ok(html().includes('<h2>택틱 3</h2>'));
+ await choose('30');assert.deepEqual(ids(),['legacy37','s30','s39']);assert.equal(app.ui.libraryOpen,true);assert.equal(listHeading(html()),'택틱 목록 3개');
  assert.ok(html().includes('class="work-editor"'));assert.ok(html().includes('data-tactic-id="'+app.ui.selectedTactic+'"'));assert.equal(data.settings.editable,false);assert.equal(JSON.stringify(app.sharedDocument()),before);
 });
 
@@ -43,7 +44,7 @@ await check('time and boss filters combine without leaking hidden, deleted or no
 
 await check('an empty band shows an empty result instead of another tactic, and All restores the list',async()=>{
  const {app,html,ids,choose}=setup();app.ui.boss=5;await choose('40');assert.deepEqual(ids(),[]);
- const view=html();assert.ok(view.includes('<h2>택틱 0</h2>'));assert.ok(view.includes('해당 시간대의 이월 택틱이 없습니다.'));assert.ok(!view.includes('class="set-grid"'));
+ const view=html();assert.equal(listHeading(view),'택틱 목록 0개');assert.ok(view.includes('해당 시간대의 이월 택틱이 없습니다.'));assert.ok(!view.includes('class="set-grid"'));
  app.ui.boss=0;await choose('all');assert.equal(ids().length,11);
 });
 
