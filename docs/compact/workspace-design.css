@@ -568,6 +568,7 @@ html[data-text-scale] .workspace-timeline .instruction-cell textarea {
   border-radius: 12px;
   background: var(--workspace-panel);
 }
+.tactic-accordion .work-list { max-height: none; overflow: visible; }
 .tactic-accordion > .sheet-heading { margin: 0; padding: 3px 4px 8px; gap: 7px; }
 .tactic-table-head, .tactic-accordion .tactic-list-button {
   display: grid;
@@ -633,9 +634,9 @@ html[data-text-scale] .workspace-timeline .instruction-cell textarea {
 .tactic-accordion .work-editor { min-width: 0; padding: 12px; }
 .tactic-title-line { display: flex; align-items: center; justify-content: space-between; gap: 9px; margin-bottom: 6px; }
 .tactic-title-line h2 { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px; margin: 0; font-size: 1.03rem; }
-.tactic-control-bar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 7px; margin: 9px 0; }
+.tactic-control-bar { display: flex; align-items: center; justify-content: flex-start; flex-wrap: wrap; gap: 7px; margin: 9px 0; }
 .tactic-time-controls, .tactic-copy-controls { display: flex; align-items: center; flex-wrap: wrap; gap: 5px; min-width: 0; }
-.tactic-time-controls { margin-right: auto; font-size: .77rem; }
+.tactic-time-controls { margin-right: 0; font-size: .77rem; }
 .tactic-received-time { display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; }
 .tactic-received-time input { width: 56px; min-height: 32px; padding: 4px; border: 1px solid var(--line); border-radius: 6px; font-variant-numeric: tabular-nums; }
 .tactic-required-time { padding: 5px 6px; border-radius: 6px; background: var(--boss-wash, var(--wash)); white-space: nowrap; }
@@ -724,7 +725,7 @@ html[data-text-scale] .workspace-timeline .instruction-cell textarea {
   .tactic-source-mobile { display: inline-flex; margin-left: auto; flex: none; }
   .tactic-source-desktop { display: none; }
   .tactic-control-bar { gap: 5px; }
-  .tactic-copy-controls { margin-left: auto; }
+  .tactic-copy-controls { margin-left: 0; }
   .tactic-time-controls { gap: 4px; font-size: .7rem; }
   .tactic-time-controls .button { padding-inline: 6px; }
   .tactic-received-time input { width: 46px; }
