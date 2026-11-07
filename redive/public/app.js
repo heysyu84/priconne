@@ -1103,8 +1103,17 @@ function profilePhaseShares(events){
 dailyRecordTable=(all,m)=>rowTable(['일차','피해량','기여도'],Array.from({length:data.rules.days},(_,i)=>{const rows=data.logs.filter(e=>e.day===i+1&&(all||e.memberId===m.id)&&(!ext.profileStage||e.stage===ext.profileStage));return `<tr><td>${i+1}일차</td><td class="right numeric">${nf(rows.reduce((s,e)=>s+e.actual,0))}</td><td class="right numeric">${points(rows.reduce((s,e)=>s+(e.contribution||0),0))}</td></tr>`;}),'daily-records exact-table');
 completeProfile=()=>{
   const all=ui.profile==='__clan__',member=all?null:currentMember(ui.profile),events=profileEvents(),whole=wholeProfileEvents(),stages=[2,3,4].filter(s=>data.logs.some(e=>e.stage===s));
-  return `<div class="toolbar profile-toolbar"><select id="full-profile-member" class="select-field" aria-label="기록 대상" data-input="v2-profile-member"><option value="__clan__" ${all?'selected':''}>클랜 전체</option>${data.members.filter(p=>allSeasonStats().some(s=>s.member.id===p.id)||p.id===ui.profile).map(p=>`<option value="${p.id}" ${p.id===ui.profile?'selected':''}>${X(p.name)}</option>`).join('')}</select><select class="select-field" aria-label="이력 단계" data-input="v2-profile-stage"><option value="0" ${!ext.profileStage?'selected':''}>전체 단계</option>${stages.map(s=>`<option value="${s}" ${s===ext.profileStage?'selected':''}>${s}단계</option>`).join('')}</select>${simpleButton('PDF 보기','ops-profile-pdf','','primary')}${simpleButton('PDF 저장','ops-profile-download','','quiet')}${simpleButton('인쇄','print','','quiet')}</div><dl class="profile-totals"><div><dt>피해량</dt><dd>${nf(events.reduce((s,e)=>s+e.actual,0))}</dd></div><div><dt>기여도</dt><dd>${points(events.reduce((s,e)=>s+(e.contribution||0),0))}</dd></div><div><dt>인게임</dt><dd>${nf(events.reduce((s,e)=>s+e.game,0))}</dd></div></dl>${dailyProfileBars(whole.filter(e=>!ext.profileStage||e.stage===ext.profileStage))}${profileDayDonut(events)}${profilePhaseShares(whole)}<details class="fold"><summary>일차별 수치</summary>${dailyRecordTable(all,member)}</details><details class="fold"><summary>보스별 통계</summary>${bossStatistics(events)}</details><details class="fold"><summary>단계별 통계</summary>${stages.map(stage=>`<h3 class="detail-stage-heading">${stage}단계</h3>${bossStatistics(events.filter(e=>e.stage===stage))}`).join('')}</details><details class="fold"><summary>공격 상세 · ${events.length}건</summary>${rowTable(['일차','보스','단계·회차','실제 피해량','기여도','이월'],events.map(e=>`<tr><td>${e.day}일차</td><td>${e.boss}넴</td><td class="attack-phase">${e.stage}단계 ${e.lap}회차</td><td class="right numeric">${nf(e.actual)}</td><td class="right numeric">${points(e.contribution)}</td><td class="center">${e.carry?'사용':'—'}</td></tr>`),'profile-attacks exact-table')}</details>`;
+  return `<div class="toolbar profile-toolbar"><select id="full-profile-member" class="select-field" aria-label="기록 대상" data-input="v2-profile-member"><option value="__clan__" ${all?'selected':''}>클랜 전체</option>${data.members.filter(p=>allSeasonStats().some(s=>s.member.id===p.id)||p.id===ui.profile).map(p=>`<option value="${p.id}" ${p.id===ui.profile?'selected':''}>${X(p.name)}</option>`).join('')}</select><select class="select-field" aria-label="이력 단계" data-input="v2-profile-stage"><option value="0" ${!ext.profileStage?'selected':''}>전체 단계</option>${stages.map(s=>`<option value="${s}" ${s===ext.profileStage?'selected':''}>${s}단계</option>`).join('')}</select>${profilePdfButton('ops-profile-pdf')}${simpleButton('인쇄','print','','quiet')}</div><dl class="profile-totals"><div><dt>피해량</dt><dd>${nf(events.reduce((s,e)=>s+e.actual,0))}</dd></div><div><dt>기여도</dt><dd>${points(events.reduce((s,e)=>s+(e.contribution||0),0))}</dd></div><div><dt>인게임</dt><dd>${nf(events.reduce((s,e)=>s+e.game,0))}</dd></div></dl>${dailyProfileBars(whole.filter(e=>!ext.profileStage||e.stage===ext.profileStage))}${profileDayDonut(events)}${profilePhaseShares(whole)}<details class="fold"><summary>일차별 수치</summary>${dailyRecordTable(all,member)}</details><details class="fold"><summary>보스별 통계</summary>${bossStatistics(events)}</details><details class="fold"><summary>단계별 통계</summary>${stages.map(stage=>`<h3 class="detail-stage-heading">${stage}단계</h3>${bossStatistics(events.filter(e=>e.stage===stage))}`).join('')}</details><details class="fold"><summary>공격 상세 · ${events.length}건</summary>${rowTable(['일차','보스','단계·회차','실제 피해량','기여도','이월'],events.map(e=>`<tr><td>${e.day}일차</td><td>${e.boss}넴</td><td class="attack-phase">${e.stage}단계 ${e.lap}회차</td><td class="right numeric">${nf(e.actual)}</td><td class="right numeric">${points(e.contribution)}</td><td class="center">${e.carry?'사용':'—'}</td></tr>`),'profile-attacks exact-table')}</details>`;
 };
+function profilePdfButton(action){
+  return `<button type="button" class="button quiet profile-pdf-button" data-action="${action}" aria-label="개인 이력 PDF 보기 및 저장" title="PDF 보기 · 저장">${icon('file')}</button>`;
+}
+async function openProfilePdf(button,create){
+  if(button.disabled)return;
+  button.disabled=true;button.setAttribute('aria-busy','true');
+  try{await create();}catch(error){console.error('Profile PDF export failed',error);toast('PDF를 만들지 못했습니다. '+error.message);}
+  finally{button.disabled=false;button.removeAttribute('aria-busy');}
+}
 async function downloadCurrentProfile(target,preview=false){
   const events=wholeProfileEvents(),all=ui.profile==='__clan__',m=all?null:currentMember(ui.profile);
   const module=await import('./report-pdf.mjs?v=20261028-history01');
@@ -1204,7 +1213,7 @@ document.addEventListener('click',async event=>{
   }
   if(!action.startsWith('ops-'))return;event.preventDefault();event.stopImmediatePropagation();
   if(action==='ops-rank-sort'){const metric=button.dataset.value;if(!['game','contribution','damage'].includes(metric))return;ext.rankDirection=(ext.rankMetric||'game')===metric?-(ext.rankDirection??-1):-1;ext.rankMetric=metric;render();}
-  if(action==='ops-profile-pdf'||action==='ops-profile-download'){const label=button.textContent;button.disabled=true;button.textContent='PDF 생성 중';try{await downloadCurrentProfile(button,action==='ops-profile-pdf');}catch(error){console.error('Profile PDF export failed',error);toast('PDF를 만들지 못했습니다. '+error.message);}finally{button.disabled=false;button.textContent=label;}}
+  if(action==='ops-profile-pdf'){await openProfilePdf(button,()=>downloadCurrentProfile(button,true));return;}
   if(action==='ops-stage-settings'){ext.settingsPage='rules';nav('clan','settings');}
 },true);
 document.addEventListener('change',event=>{if(event.target.name==='category'){
@@ -2371,8 +2380,8 @@ function recommendedPlans(){
 function recommendationDistribution(){
   const plans=recommendedPlans();
   const rows=plans.map((plan,index)=>`<tr><th scope="row">${index+1}안</th>${plan.attacks.map(({combo,expectedDamage,supportIndex})=>{
-    const support=supportIndex<0?'자유':combo.characters[supportIndex];
-    return `<td title="${X(combo.characters.join(' · '))}"><span class="distribution-attack" style="${bossStyle(combo.boss)}"><b>${combo.boss}넴</b><span class="numeric">${expectedDamageValue(expectedDamage)}</span></span><small class="distribution-support">대여 ${X(support)}</small></td>`;
+    const support=supportIndex<0?'-':combo.characters[supportIndex];
+    return `<td title="${X(combo.characters.join(' · '))}"><span class="distribution-attack" style="${bossStyle(combo.boss)}"><b>${combo.boss}넴</b><span class="numeric">${expectedDamageValue(expectedDamage)}</span></span><small class="distribution-support">서포트 ${X(support)}</small></td>`;
   }).join('')}<td class="distribution-total numeric"><strong>${expectedDamageValue(plan.totalDamage)}</strong><span>억</span></td></tr>`).join('');
   return `<details class="distribution-panel workspace-distribution" id="recommendation-distribution" ${ext.recommendationOpen?'open':''}><summary class="workspace-panel-title"><span class="panel-symbol">${icon('spark')}</span><strong>추천 분배</strong><span class="distribution-count">${plans.length}가지</span>${icon('down')}</summary>${plans.length?`<table class="distribution-board"><thead><tr><th scope="col">분배</th><th scope="col">1타</th><th scope="col">2타</th><th scope="col">3타</th><th scope="col">합계</th></tr></thead><tbody>${rows}</tbody></table>`:'<p class="no-rows">서로 다른 보스로 구성할 수 있는 3타 조합이 없습니다.</p>'}</details>`;
 }
@@ -2666,7 +2675,7 @@ function recordMonthTable(){
  return boardSection('월별 기록',rowTable(['월','참가','인게임 점수','클랜 순위','결과'],months.map(month=>{
   const imported=!data.seasons[month]&&oldResumeMeta(month),sum=imported?{rank:imported.rank,count:imported.count,gameTotal:imported.totals.game,sealed:true}:seasonSummary(month);
   const action=imported?'old-resume-open':'archive-detail';
-  return '<tr><td><button type="button" class="text-button" data-action="'+action+'" data-id="'+month+'">'+month.replace('-','.')+'</button></td><td class="center">'+(Number.isFinite(sum.count)?sum.count+'명':'—')+'</td><td class="right numeric">'+recordNumber(sum.gameTotal)+'</td><td class="center">'+recordRank(sum.rank,imported?.rankLabel)+'</td><td><span class="result-status '+(sum.sealed?'sealed':'')+'">'+(imported?recordState(imported):sum.sealed?'확정':'진행 중')+'</span></td></tr>';
+  return '<tr><td><button type="button" class="text-button record-month-button" data-action="'+action+'" data-id="'+month+'">'+month.replace('-','.')+'</button></td><td class="center">'+(Number.isFinite(sum.count)?sum.count+'명':'—')+'</td><td class="right numeric">'+recordNumber(sum.gameTotal)+'</td><td class="center">'+recordRank(sum.rank,imported?.rankLabel)+'</td><td><span class="result-status '+(sum.sealed?'sealed':'')+'">'+(imported?recordState(imported):sum.sealed?'확정':'진행 중')+'</span></td></tr>';
  }),'archive-month-table exact-table'));
 }
 const oldResumeLink=d=>!d.source?'':'<p class="field-help">Google 시트의 '+X(d.month.slice(0,4))+'년 원본 기록 · 읽기 전용 <a target="_blank" rel="noopener noreferrer" href="'+X(d.source)+'">'+(d.month==='2020-10'?'원본 배틀로그 보기':'원본 이력서 보기')+'</a></p>';
@@ -2704,7 +2713,7 @@ function oldResumeProfile(d){
  const stages=[...new Set(d.logs.map(l=>Number(l.stage)).filter(Boolean))].sort((a,b)=>a-b);
  const whole=d.logs.filter(l=>all||l.name===name),events=whole.filter(l=>(!oldResumeStage||l.stage===oldResumeStage)&&(!oldResumeProfileDay||l.day===oldResumeProfileDay));
  const score=key=>!oldResumeStage&&!oldResumeProfileDay?(all?d.totals[key]:p[key]):key==='game'?null:events.reduce((v,l)=>v+(key==='damage'?l.actual:l.contribution),0);
- const toolbar='<div class="toolbar profile-toolbar"><select id="full-profile-member" class="select-field" aria-label="기록 대상" data-input="old-resume-person"><option value="__clan__" '+(all?'selected':'')+'>'+recordScope(d)+'</option>'+d.members.map(m=>'<option value="'+X(m.name)+'" '+(!all&&m.name===name?'selected':'')+'>'+X(m.name)+'</option>').join('')+'</select><select class="select-field" aria-label="이력 단계" data-input="old-resume-stage"><option value="0" '+(!oldResumeStage?'selected':'')+'>전체 단계</option>'+stages.map(stage=>'<option value="'+stage+'" '+(stage===oldResumeStage?'selected':'')+'>'+stage+'단계</option>').join('')+'</select>'+simpleButton('PDF 보기','old-resume-pdf-preview','','primary')+simpleButton('PDF 저장','old-resume-pdf-download','','quiet')+simpleButton('인쇄','old-resume-print','','quiet')+'</div>';
+ const toolbar='<div class="toolbar profile-toolbar"><select id="full-profile-member" class="select-field" aria-label="기록 대상" data-input="old-resume-person"><option value="__clan__" '+(all?'selected':'')+'>'+recordScope(d)+'</option>'+d.members.map(m=>'<option value="'+X(m.name)+'" '+(!all&&m.name===name?'selected':'')+'>'+X(m.name)+'</option>').join('')+'</select><select class="select-field" aria-label="이력 단계" data-input="old-resume-stage"><option value="0" '+(!oldResumeStage?'selected':'')+'>전체 단계</option>'+stages.map(stage=>'<option value="'+stage+'" '+(stage===oldResumeStage?'selected':'')+'>'+stage+'단계</option>').join('')+'</select>'+profilePdfButton('old-resume-pdf-preview')+simpleButton('인쇄','old-resume-print','','quiet')+'</div>';
  const totals='<dl class="profile-totals">'+[['damage','피해량'],['contribution','기여도'],['game','인게임']].map(([key,label])=>'<div><dt>'+label+'</dt><dd>'+ (score(key)===null?'—':key==='contribution'?nf(Math.round(score(key))):nf(score(key)))+'</dd></div>').join('')+'</dl>';
  const pills='<div class="day-pills" role="group" aria-label="개인 이력 일차">'+[[0,'전체'],...Array.from({length:recordDays(d)},(_,i)=>[i+1,(i+1)+'일차'])].map(([day,label])=>'<button type="button" data-action="old-resume-profile-day" data-value="'+day+'" class="'+(oldResumeProfileDay===day?'active':'')+'" aria-pressed="'+(oldResumeProfileDay===day)+'">'+label+'</button>').join('')+'</div>';
  const metric='<div class="filter-group" role="group" aria-label="개인 이력 지표">'+[['damage','피해량'],['contribution','기여도']].map(([key,label])=>'<button type="button" data-action="old-resume-metric" data-value="'+key+'" class="'+(oldResumeMetric===key?'active':'')+'">'+label+'</button>').join('')+'</div>';
@@ -2839,7 +2848,7 @@ document.addEventListener('input',event=>{
 document.addEventListener('click',event=>{
  const button=event.target.closest('[data-action]');if(!button)return;
  const action=button.dataset.action;
- const supported=['old-resume-open','old-resume-person','old-resume-sort','old-resume-day','old-resume-page','old-resume-profile-day','old-resume-metric','old-resume-order','old-resume-csv','old-resume-pdf-preview','old-resume-pdf-download','old-resume-print'];
+ const supported=['old-resume-open','old-resume-person','old-resume-sort','old-resume-day','old-resume-page','old-resume-profile-day','old-resume-metric','old-resume-order','old-resume-csv','old-resume-pdf-preview','old-resume-print'];
  if(!supported.includes(action))return;
  event.preventDefault();event.stopImmediatePropagation();
  if(action==='old-resume-open'){oldResumeOpen(button.dataset.id);return;}
@@ -2852,7 +2861,7 @@ document.addEventListener('click',event=>{
  if(action==='old-resume-order'){oldResumeLogOrder=oldResumeLogOrder==='asc'?'desc':'asc';oldResumePage=1;render();return;}
  if(action==='old-resume-csv'){oldResumeCSV();return;}
  if(action==='old-resume-print'){if(adminMode())window.print();return;}
- if(action==='old-resume-pdf-preview'||action==='old-resume-pdf-download')void oldResumePDF(action==='old-resume-pdf-preview').catch(error=>{console.error(error);toast('PDF 생성 실패: '+error.message);});
+ if(action==='old-resume-pdf-preview')void openProfilePdf(button,()=>oldResumePDF(true));
 },true);
 async function oldResumeLoadIndex(){
  try{
@@ -2973,7 +2982,7 @@ async function mountExternalReview(){
  const root=document.getElementById('external-tactic-review');
  if(!root||!adminMode()||ui.section!=='tactics'||ui.tabs.tactics!=='review')return;
  try{
-  externalReviewLoading??=Promise.all([import('./aikurumi-review-ui.mjs?v=20261107-stage3-no-source01'),import('./aikurumi-review-model.mjs?v=20261107-stage3-no-source01')]);
+  externalReviewLoading??=Promise.all([import('./aikurumi-review-ui.mjs?v=20261107-record-controls01'),import('./aikurumi-review-model.mjs?v=20261107-record-controls01')]);
   const [uiModule,model]=await externalReviewLoading;externalReviewModule=model;
   if(!adminMode()||document.getElementById('external-tactic-review')!==root)return;
   externalReviewController??=uiModule.createExternalReview({getContext:externalReviewContext,

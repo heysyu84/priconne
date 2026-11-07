@@ -577,3 +577,32 @@ html[data-text-scale] .workspace-timeline .instruction-cell textarea {
 @media (max-width: 760px) {
   .workspace-restored .work-editor { padding: 7px; }
 }
+/* Shared PDF entry and equal-sized monthly record links. */
+.content .profile-toolbar .profile-pdf-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 36px;
+  min-width: 36px;
+  height: 34px;
+  min-height: 34px;
+  padding: 6px;
+  box-sizing: border-box;
+}
+.profile-pdf-button svg { width: 19px; height: 19px; }
+.profile-pdf-button[aria-busy=true] { opacity: .6; }
+.archive-month-table .record-month-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 6.25em;
+  min-width: 6.25em;
+  height: 30px;
+  min-height: 30px;
+  padding: 0;
+  box-sizing: border-box;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
