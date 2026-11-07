@@ -24,7 +24,7 @@ export function buildRedivePages(output,{legacyHtml}={}){
   app=app.replaceAll('./assets/','./compact/assets/');
   fs.writeFileSync(path.join(compact,'app.js'),app);
   let html=fs.readFileSync(path.join(root,'public/index.html'),'utf8');
-  html=html.replace('<head>',`<head><meta name="nyang-legacy-api-origin" content="${API_ORIGIN}">${canonicalHead()}`);
+  html=html.replace('<head>',`<head><meta name="nyang-legacy-api-origin" content="${API_ORIGIN}"><script>if(location.hostname.endsWith('.priconne.pages.dev'))document.querySelector('meta[name="nyang-legacy-api-origin"]').content=location.origin;</script>${canonicalHead()}`);
   html=html.replace(/((?:src|href)=")\.\/([^"?#]+)(?:\?[^"#]*)?"/g,(_,prefix,file)=>{
     const branding=file.startsWith('images/branding/')||['apple-touch-icon.png','site.webmanifest'].includes(file);
     return `${prefix}./${branding?'':'compact/'}${file}?v=${branding?'20261026-nyang-pink02':RELEASE}"`;
