@@ -44,7 +44,7 @@ h1,h2,h3,strong,b{font-weight:700}
 .unit-face:after{content:'';position:absolute;inset:0;border:1px solid #fff8;border-radius:inherit;pointer-events:none}
 .unit-face.star-6{border-color:#bd95d9!important;background:linear-gradient(140deg,#f8cfdf,#b5d5ef 46%,#e5d3a6);box-shadow:inset 0 0 0 1px #fff9,0 2px 4px #8766a32b}
 .unit-face.star-3,.unit-face.star-4{border-color:#b1b6c9!important;background:linear-gradient(145deg,#f4f5fc,#b9c6dd)}
-.unit.support .unit-face{outline:1px solid #dc849a;outline-offset:1px}
+.unit.support .unit-face{outline:1px solid #6098ce;outline-offset:1px}
 .set-character-face,.character-thumb{border:1px solid #cbb686;border-radius:4px;box-shadow:0 1px 2px #35486222;overflow:hidden}
 .unit strong{font-weight:650}.unit small{font-weight:600}
 
@@ -1001,6 +1001,24 @@ form[data-form="v2-tactic"] #tactic-text{display:block;width:100%;min-width:0;mi
 .history-table .honors-note-cell strong{font-size:inherit;font-weight:650}
 .history-table .honors-no-award td{vertical-align:middle}
 
+/* Keep the three-attack recommendation table within a mobile viewport. */
+@media (max-width:760px){
+  .distribution-panel[aria-label="추천 분배"]{min-width:0;max-width:100%}
+  .distribution-panel[aria-label="추천 분배"]>.table-wrap{width:100%;min-width:0;max-width:100%;overflow-x:hidden}
+  .distribution-panel[aria-label="추천 분배"] .distribution-table{width:100%!important;min-width:0!important;max-width:100%;table-layout:fixed!important}
+  .distribution-panel[aria-label="추천 분배"] .distribution-table th:last-child,
+  .distribution-panel[aria-label="추천 분배"] .distribution-table td:last-child{display:none!important}
+  .distribution-panel[aria-label="추천 분배"] .distribution-table th:first-child,
+  .distribution-panel[aria-label="추천 분배"] .distribution-table td:first-child{width:70%!important;min-width:0;overflow-wrap:anywhere}
+  .distribution-panel[aria-label="추천 분배"] .distribution-table th:nth-child(2),
+  .distribution-panel[aria-label="추천 분배"] .distribution-table td:nth-child(2){width:30%!important;min-width:0;white-space:nowrap;text-align:right}
+  .distribution-panel[aria-label="추천 분배"] .distribution-team{max-width:100%;white-space:normal;flex-wrap:wrap;gap:3px;margin:2px 5px 2px 0}
+  .distribution-panel[aria-label="추천 분배"] .distribution-team small{white-space:normal;overflow-wrap:anywhere}
+  .distribution-panel[aria-label="추천 분배"] .distribution-table tbody tr[data-mobile-plan]{cursor:pointer}
+  .distribution-panel[aria-label="추천 분배"] .distribution-table tbody tr.is-selected{background:color-mix(in srgb,var(--surface) 85%,var(--accent))}
+  .distribution-panel[aria-label="추천 분배"] .distribution-table tbody tr:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+}
+
 /* All primary pages: keep the H1 at the same top edge even when day controls wrap. */
 .page-heading{
  align-items:flex-start;
@@ -1012,4 +1030,106 @@ form[data-form="v2-tactic"] #tactic-text{display:block;width:100%;min-width:0;mi
 }
 .page-heading>.page-heading-title>h1{
  margin:0;
+}
+
+
+/* Manual 3-attack comparison: compact, conditional, and touch-friendly. */
+.manual-plan{
+  margin:7px 0 11px;
+  padding:8px 10px;
+  border:1px solid var(--line);
+  border-left:3px solid var(--accent);
+  border-radius:8px;
+  background:color-mix(in srgb,var(--surface) 88%,var(--accent-wash));
+  min-width:0;
+  max-width:100%;
+}
+.manual-plan-warning{border-left-color:var(--red)}
+.manual-plan-line{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:5px 10px;
+  min-width:0;
+}
+.manual-plan-count{font-size:12px;font-weight:650;white-space:nowrap}
+.manual-plan-count strong{color:var(--accent);font-size:13px}
+.manual-plan-stat{font-size:12px;white-space:nowrap}
+.manual-plan-stat strong{font-size:13px;color:var(--text)}
+.manual-plan-status{
+  font-size:11px;
+  font-weight:650;
+  color:var(--green);
+  white-space:normal;
+  overflow-wrap:anywhere;
+}
+.manual-plan-actions{display:flex;flex-wrap:nowrap;align-items:center;gap:4px;margin-left:auto}
+.manual-plan-actions>.button{
+  min-width:0;
+  min-height:27px;
+  padding:3px 7px;
+  font-size:11px;
+  white-space:nowrap;
+}
+.manual-plan-note{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:4px 9px;
+  border-top:1px solid var(--line);
+  margin-top:7px;
+  padding-top:6px;
+  font-size:11px;
+  line-height:1.45;
+  min-width:0;
+  overflow-wrap:anywhere;
+}
+.manual-plan-conflicts{color:var(--red);font-weight:600}
+.manual-plan-support{color:var(--text);font-weight:600}
+.manual-plan-note>.button{min-height:25px;font-size:11px;padding:3px 7px}
+@media(max-width:760px){
+  .manual-plan{padding:7px 8px;margin:6px 0 9px}
+  .manual-plan-line{gap:5px 8px}
+  .manual-plan-count,.manual-plan-stat{font-size:11px}
+  .manual-plan-count strong,.manual-plan-stat strong{font-size:12px}
+  .manual-plan-status{font-size:10.5px}
+  .manual-plan-actions{gap:4px}
+  .manual-plan-actions>.button{min-height:29px;padding:4px 7px}
+  .manual-plan-note{margin-top:6px;padding-top:5px;gap:3px 7px}
+}
+@media(max-width:360px){
+  .manual-plan-actions{width:100%;justify-content:flex-end}
+}
+
+/* Tactic lookup and three-attack planning share the same list. */
+.tactic-stage-toolbar{margin-bottom:0;gap:7px}
+.tactic-stage-toolbar .toolbar-left,.tactic-stage-toolbar .toolbar-right{flex-wrap:wrap}
+.tactic-stage-toolbar+.workspace-toolbar{margin-top:8px}
+.work-list-pick{display:grid;place-items:center;min-height:32px;cursor:pointer}
+.work-list-pick input{margin:0;accent-color:var(--accent)}
+.work-list-row.is-picked .work-list-pick{background:var(--boss)}
+.work-list-party .booster{color:var(--red)}
+.work-list-party .borrowed{color:var(--blue)}
+.tactic-stage3-timing{display:flex;flex-wrap:wrap;gap:6px;margin:5px 0 0}
+.tactic-stage3-timing>div{display:flex;align-items:baseline;gap:5px;padding:4px 7px;border:1px solid var(--line);border-radius:5px}
+.tactic-stage3-timing dt{color:var(--muted);font-size:.8rem}
+.tactic-stage3-timing dd{margin:0;font-weight:700;font-variant-numeric:tabular-nums}
+.battle-health-value{flex-wrap:wrap}
+@media(min-width:761px){
+  .work-library .work-list-row.can-pick{display:grid;grid-template-columns:25px minmax(0,1fr);align-items:stretch}
+  .work-library .work-list-row.can-pick .work-item{min-width:0}
+}
+@media(max-width:760px){
+  .work-library.with-pick-column .work-list-row,.work-library.with-pick-column .work-list-column-heads{grid-template-columns:24px minmax(0,1fr) var(--work-video-width)}
+  .work-list-row.can-pick .work-list-pick{grid-column:1;grid-row:1;align-self:stretch}
+  .with-pick-column .work-item,.with-pick-column .work-list-column-heads .work-list-fields{grid-column:2}
+  .with-pick-column .work-list-video,.with-pick-column .work-list-column-heads>span{grid-column:3}
+}
+@media(max-width:420px){
+  .work-library{--work-video-width:32px;--work-row-gap:3px}
+  .work-library .work-list-column-heads{display:none}
+  .work-library .work-list-row .work-list-fields{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .work-library .work-list-fields>.work-list-party{grid-column:2/-1;font-size:12px}
+  .work-library .work-list-row .work-field-label{display:block;color:var(--muted);font-size:9px}
+  .work-library .work-list-row .work-list-fields>span,.work-library .work-list-row .work-list-fields>small{white-space:normal}
 }
