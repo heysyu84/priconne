@@ -52,9 +52,17 @@ await check('a clan-wide profile survives polling and an intentional member sele
   const q=runtimeFixture(),d=q.get();assert.equal(q.ui.profile,'__clan__');q.applySharedDocument(q.sharedDocument());assert.equal(q.ui.profile,'__clan__');
   q.ui.profile=d.members[0].id;q.applySharedDocument(q.sharedDocument());assert.equal(q.ui.profile,d.members[0].id);
 });
-await check('clearing a recommendation resets the selection, support choices and filter together',()=>{
-  const q=runtimeFixture();q.findPlans();q.applyFoundPlan(0);q.ext.distributionOpen=true;assert.equal(q.selectedParties().length,3);assert.ok(q.completeWorkspace().includes('r-clear-plan'));
-  q.clearRecommendedPlan();assert.equal(q.selectedParties().length,0);assert.equal(q.ext.onlyPicks,false);assert.equal(q.ext.distributionOpen,false);assert.ok(q.completeWorkspace().includes('data-action="v3-distribution"'));
+await check('recommendations render automatically without controls and recompute after a saved deck changes',()=>{
+  const q=runtimeFixture(),data=q.get(),before=q.sharedDocument(),plans=q.recommendedPlans();
+  const html=q.completeWorkspace(),panel=html.match(/<section class="distribution-panel[\s\S]*?<\/section>/)?.[0];
+  assert.ok(panel?.includes('추천 분배'));
+  assert.ok(plans.length>0&&plans.length<=5);
+  assert.doesNotMatch(panel,/<button|<input|data-action=/);
+  assert.doesNotMatch(html,/v2-pick-tactic|v2-use-plan|r-clear-plan|직접 선택/);
+  assert.deepEqual(q.sharedDocument(),before);
+  data.tactics.find(t=>t.id===plans[0].attacks[0].combo.id).hidden=true;
+  assert.notEqual(q.recommendedPlans(),plans);
+  assert.ok(q.recommendedPlans().every(plan=>plan.attacks.every(({combo})=>!data.tactics.find(t=>t.id===combo.id).hidden)));
 });
 await check('a rounded coefficient presentation never overwrites the unedited exact value',()=>{
   const input={value:'0.11',dataset:{display:'0.11',exact:'0.1123456789'}},form={querySelector:()=>input},fd={get:()=>input.value};
@@ -85,7 +93,7 @@ await check('result confirmation updates both hall of fame and award counts exac
 });
 await check('support assignment recovers feasible overlaps instead of rejecting them',()=>{
   const assignment=legacyTools.assignSupports([['a','b','c','d','e'],['a','f','g','h','i'],['b','f','j','k','l']]);assert.ok(assignment);assert.equal(assignment.supports.filter(Boolean).length,3);
-  app.findPlans();assert.ok(app.ext.foundPlans.length>0);app.applyFoundPlan(0);assert.equal(app.selectedParties().length,3);assert.ok(app.selectedParties().every(t=>Number.isInteger(t.support)));
+  const [plan]=app.recommendedPlans();assert.equal(plan.attacks.length,3);assert.ok(plan.attacks.every(t=>Number.isInteger(t.supportIndex)));
 });
 await check('workbook transfers preserve party, carry requirement, video and six SET columns',()=>{
   const names=['수사렌','수리코','수미미','수페코','사루카'],body='TRUE\tFALSE\tTRUE\tFALSE\tTRUE\tFALSE\t1:30 AUTO OFF';
@@ -97,7 +105,7 @@ await check('original text colours survive time shifting without accepting unsaf
   const html=legacyTools.richLine(row,[],[],60,90);assert.ok(html.includes('0:50'));assert.ok(html.includes('color:#cc3355'));assert.ok(!html.includes('javascript:'));assert.ok(html.includes('위험 안내'));
 });
 
-await check('one tactic workspace keeps early-stage records, source links and detailed SET rows',()=>{
+await check('all stage 3 lineups render directly with timing and no tactic reader',()=>{
   const q=runtimeFixture(new Map(),{hash:'#tactics/combos'}),data=q.get();
   assert.equal(q.ui.tabs.tactics,'workspace');
   data.bosses.forEach(b=>{b.stage=3;b.locked=false;});
@@ -105,7 +113,7 @@ await check('one tactic workspace keeps early-stage records, source links and de
   const normal=data.tactics.find(t=>t.stage===4&&t.category==='main'&&!t.hidden&&!t.deletedAt);
   const early={...structuredClone(normal),id:'test-stage-three',stage:3,category:'recommendation',requiredSeconds:26,remainingSeconds:84,
     video:'https://www.youtube.com/watch?v=test',recommendationOnly:true};
-  data.recommendations=[early,{...early,id:'test-archived-stage-three',deletedAt:1}];
+  data.recommendations=[early,{...early,id:'test-second-stage-three',boss:2},{...early,id:'test-archived-stage-three',deletedAt:1}];
   data.tactics.push({...early});
   q.ext.stage=3;q.ui.selectedTactic=early.id;
   let html=q.fullTactics();
@@ -115,7 +123,9 @@ await check('one tactic workspace keeps early-stage records, source links and de
   assert.ok(!q.workspaceList().some(t=>t.deletedAt||t.stage!==3));
   assert.match(html,/필요 시간<\/dt><dd>26초/);
   assert.match(html,/예상 이월<\/dt><dd>84초/);
-  assert.match(html,/data-tactic-id="test-stage-three"/);
+  assert.equal((html.match(/data-lineup-id="test-stage-three"/g)||[]).length,1);
+  assert.match(html,/data-lineup-id="test-second-stage-three"/);
+  assert.doesNotMatch(html,/work-library|set-grid|등록된 조작문이 없습니다|distribution-heading|test-archived-stage-three/);
   assert.match(html,/www\.youtube\.com\/watch\?v=test/);
   assert.doesNotMatch(html,/data-input="v2-pick-tactic"/);
   data.bosses[0].stage=4;data.bosses[0].locked=true;
@@ -130,15 +140,22 @@ await check('one tactic workspace keeps early-stage records, source links and de
   assert.match(q.fullTactics(),/data-action="v2-combo-stage" data-value="3"/);
 });
 
-await check('three-attack picks and exact boss HP stay available in the unified layout',()=>{
+await check('time ranges remain aligned after carry adjustments and instruction colors survive',()=>{
+  const q=runtimeFixture(),text='1:20 ~ 1:18 위험 안내';
+  const row={text,runs:[{text:'1:20 ~ 1:18 위',color:'#aa3355'},{text:'험 안내',color:'#3344aa'}]};
+  const html=q.tacticInstructionMarkup(row,{party:[],duration:90},60);
+  assert.match(html,/class="tactic-time">0:50~<wbr>0:48/);
+  assert.match(html,/class="tactic-instruction"><span style="color:#aa3355">위<\/span><span style="color:#3344aa">험 안내/);
+  assert.equal(row.text,text);
+});
+await check('recommendations do not narrow the tactic library and both battle pages retain exact HP',()=>{
   const q=runtimeFixture(),data=q.get();
   q.ui.section='tactics';q.ext.stage=4;q.ext.workGroup='tabi';q.ui.boss=1;
-  q.findPlans();q.applyFoundPlan(0);
-  assert.equal(q.workspaceList().length,3);
-  assert.equal(q.ext.workGroup,'all');
-  assert.equal(q.ui.boss,0);
-  assert.match(q.fullTactics(),/직접 선택 <strong>3\/3/);
-  assert.equal((q.fullTactics().match(/data-input="v2-pick-tactic"[^>]+checked/g)||[]).length,3);
+  const ids=q.workspaceList().map(t=>t.id);
+  assert.match(q.fullTactics(),/추천 분배/);
+  assert.deepEqual(q.workspaceList().map(t=>t.id),ids);
+  assert.equal(q.ext.workGroup,'tabi');
+  assert.equal(q.ui.boss,1);
   data.bosses.forEach((boss,index)=>{boss.hp=123456789+index;boss.max=987654321+index;});
   q.ui.section='overview';
   for(const [tab,css] of [['bosses','raid-banner'],['logs','battle-health-boss']]){
