@@ -519,7 +519,7 @@ function tacticReadingHeader(t,canEdit=adminMode()){
   return `<div class="work-editor-head tactic-reading-head ${carry?'is-carry':''}">${carry?`<div class="tactic-intro-top">${received}</div>`:''}<div class="tactic-summary-row"><div class="tactic-identity"><h2>${t.boss?t.boss+'넴 · '+X(bossBy(t.boss).name):'미분류'}</h2><div class="tactic-metadata"><span class="${t.hands?'danger':''}">손컨 <b>${tacticHands(t)}</b></span> · <span class="${tacticTpClass(t.tp)}">TP <b>${X(t.tp||'—')}</b></span> · <span class="tactic-damage-group"><span class="tactic-damage-meta">기대딜 <strong>${tacticDamageLabel(t)}</strong></span>${videoButton(t)}</span></div>${t.stage===3?stage3Timing(t):''}${sources}</div><div class="tactic-header-party">${party(tacticWithPlanSupport(t))}</div></div>${memo}${canEdit?`<div class="work-actions">${simpleButton('편성 수정','edit-tactic',t.id)}${simpleButton(t.hidden?'다시 표시':'숨기기','hide-tactic',t.id)}${simpleButton('복제','duplicate-tactic',t.id)}${simpleButton('삭제','delete-tactic',t.id,'danger')}</div>`:''}</div>`;
 }
 function stage3Timing(t){
-  const time=value=>value==null?'—':value+'초';
+  const time=value=>value==null?'—':X(value)+'초';
   return `<dl class="tactic-stage3-timing"><div><dt>필요 시간</dt><dd>${time(t.requiredSeconds)}</dd></div><div><dt>예상 이월</dt><dd>${time(t.remainingSeconds)}</dd></div></dl>`;
 }
 function readOnlyWorkspaceTactic(t,archive){
@@ -1098,7 +1098,7 @@ function expectedDamageValue(value){return Number.isFinite(Number(value))?(Math.
 tacticDamageLabel=t=>t.recommendationOnly&&t.sourceExpectedDamage===''?'—':expectedDamageValue(t.damage||0);
 function thirdStageVisible(){return data.rules.stage3Mode==='show'||data.rules.stage3Mode!=='hide'&&!data.bosses.some(b=>b.stage===4&&!b.locked);}
 function tacticTab(tab){
-  if(tab==='planner'){ext.distributionOpen=true;findPlans();}
+  if(tab==='planner'){ext.stage=4;ext.distributionOpen=true;findPlans();}
   if(tab==='tools')return 'external';
   return !tab||tab==='combos'||tab==='planner'?'workspace':tab;
 }
@@ -1904,7 +1904,7 @@ function workspaceListItem(item,selectedId){
   const pick=pickable?`<label class="work-list-pick"><input type="checkbox" aria-label="${X(item.boss+'넴 '+item.party.join(' ')+' 3타 편성 선택')}" data-input="v2-pick-tactic" data-id="${X(item.id)}" ${picked?'checked':''}></label>`:'';
   const label=`${item.boss?item.boss+'넴':'미분류'} ${item.party.join(' ')}, 성급 ${item.stars.join('')}, TP ${item.tp||'—'}, ${early?'필요 시간 '+required+', 예상 이월 '+remaining:'손컨 '+tacticHands(item)+', 기대딜 '+tacticDamageLabel(item)}`;
   const names=shown.party.map((name,index)=>`<span class="${partyNameClasses(shown,name,index)}"${index===shown.support?' title="서포트"':''}>${X(name)}</span>`).join(' ');
-  return `<div class="work-list-row ${carry?'is-carry':''} ${pickable?'can-pick':''} ${picked?'is-picked':''}" style="${item.boss?bossStyle(item.boss):'--boss:#aeb5c1'}">${carry?`<div class="work-list-carry">${seconds===null?'이월시간 미입력':seconds+'초 이월'}</div>`:''}${pick}<button type="button" class="work-item work-list-fields ${item.id===selectedId?'active':''}" data-action="v2-select-tactic" data-id="${X(item.id)}" aria-pressed="${item.id===selectedId}" aria-label="${X(label)}"><span class="work-list-boss">${item.boss?item.boss+'넴':'미분류'}</span><strong class="work-list-party">${names}</strong><span class="work-list-stars"><span class="work-field-label">성급 </span>${tacticStarString(item)}</span><small class="work-list-hands ${!early&&item.hands?'danger':''}"><span class="work-field-label">${early?'필요 ':'손컨 '}</span>${early?required:tacticHands(item)}</small><small class="work-list-tp ${tacticTpClass(item.tp)}"><span class="work-field-label">TP </span>${X(item.tp||'—')}</small><span class="work-list-damage"><span class="work-field-label">${early?'이월 ':'기대딜 '}</span>${early?remaining:tacticDamageLabel(item)}</span></button>${videoButton(item,true)}</div>`;
+  return `<div class="work-list-row ${carry?'is-carry':''} ${pickable?'can-pick':''} ${picked?'is-picked':''}" style="${item.boss?bossStyle(item.boss):'--boss:#aeb5c1'}">${carry?`<div class="work-list-carry">${seconds===null?'이월시간 미입력':seconds+'초 이월'}</div>`:''}${pick}<button type="button" class="work-item work-list-fields ${item.id===selectedId?'active':''}" data-action="v2-select-tactic" data-id="${X(item.id)}" aria-pressed="${item.id===selectedId}" aria-label="${X(label)}"><span class="work-list-boss">${item.boss?item.boss+'넴':'미분류'}</span><strong class="work-list-party">${names}</strong><span class="work-list-stars"><span class="work-field-label">성급 </span>${tacticStarString(item)}</span><small class="work-list-hands ${!early&&item.hands?'danger':''}"><span class="work-field-label">${early?'필요 ':'손컨 '}</span>${early?X(required):tacticHands(item)}</small><small class="work-list-tp ${tacticTpClass(item.tp)}"><span class="work-field-label">TP </span>${X(item.tp||'—')}</small><span class="work-list-damage"><span class="work-field-label">${early?'이월 ':'기대딜 '}</span>${early?X(remaining):tacticDamageLabel(item)}</span></button>${videoButton(item,true)}</div>`;
 }
 
 function calculatorPopover(){
