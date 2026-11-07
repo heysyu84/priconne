@@ -15,6 +15,7 @@ reopened=decodeLegacy(saved);Object.assign(reopened.seasons['2026-10'].tactics[0
 for(const file of ['../src/tactics.js','../public/app.js','../../docs/compact/app.js']){
  const code=readFileSync(new URL(file,import.meta.url),'utf8'),fn=code.slice(code.indexOf('function saveCompleteTactic('),code.indexOf('\n',code.indexOf('function saveCompleteTactic(')));
  const ctx={FormData:class{constructor(){return new Map(Object.entries({tacticId:'',duration:'1:30',damage:'2.6',category:'tabi',boss:'2',hands:'0',tp:'4.2',text:body,note:'',video:'',support:'-1',...Object.fromEntries(original.party.map((p,i)=>['party-'+i,p])),...Object.fromEntries(original.stars.map((p,i)=>['star-'+i,String(p)]))}));}},timeToSec:()=>90,checkpoint(){},uid:()=> 'new',data:{tactics:[]},ui:{},ext:{},pasteRows:(text)=>text.split('\n').map(text=>({text,checked:[false,false,false,false,false,false]})),persist(){assert.equal(ctx.data.tactics[0].rows.length,3);},closeDrawer(){},nav(){},toast(){}};
- vm.runInNewContext(fn+';saveCompleteTactic({});',ctx);
+ const received=code.match(/function defaultReceivedTime\(t\)\{[^\n]+\}/)?.[0]||'';
+ vm.runInNewContext(received+'\n'+fn+';saveCompleteTactic({});',ctx);
 }
 console.log('PASS tactic form persists parsed rows before render; new/changed body round-trips; metadata preserves SET and formatting; explicit clearing remains supported');

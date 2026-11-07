@@ -17,10 +17,10 @@ function click(f,action,id){
 }
 test('stage 3 deletion and restoration preserve stage 4 and all other months',()=>{
  const f=fixture(),data=f.get(),otherMonths=JSON.stringify(data.seasons),stage4=JSON.stringify(data.tactics.filter(t=>t.stage===4));
- assert.match(f.recommendationRows(),/stage3-delete/);click(f,'stage3-delete-confirm','stage3-a');
- assert.ok(data.recommendations[0].deletedAt);assert.doesNotMatch(f.recommendationRows(),/data-combo="stage3-a"/);
+ assert.match(f.completeWorkspace(),/stage3-delete/);click(f,'stage3-delete-confirm','stage3-a');
+ assert.ok(data.recommendations[0].deletedAt);assert.doesNotMatch(f.completeWorkspace(),/data-lineup-id="stage3-a"/);
  click(f,'stage3-restore','stage3-a');assert.equal(data.recommendations[0].deletedAt,null);
- assert.match(f.recommendationRows(),/data-combo="stage3-a"/);assert.equal(JSON.stringify(data.seasons).includes('stage3-a'),true);
+ assert.match(f.completeWorkspace(),/data-lineup-id="stage3-a"/);assert.equal(JSON.stringify(data.seasons).includes('stage3-a'),true);
  assert.equal(JSON.stringify(data.tactics.filter(t=>t.stage===4)),stage4);
  const initialOther=JSON.parse(otherMonths);for(const month of Object.keys(initialOther))if(month!==f.ui.month)assert.equal(JSON.stringify(data.seasons[month]),JSON.stringify(initialOther[month]));
 });
@@ -28,14 +28,14 @@ test('reset moves all current-month stage 3 parties to recoverable trash, withou
  const f=fixture(),data=f.get(),stage4=JSON.stringify(data.tactics.filter(t=>t.stage===4));
  click(f,'stage3-reset-confirm',f.ui.month);
  const records=f.evaluate('stage3RecommendationRecords()');assert.ok(records.length>=2);assert.ok(records.every(t=>t.deletedAt));
- assert.match(f.recommendationRows(),/등록된 조합이 없습니다/);assert.match(f.recommendationRows(),/stage3-trash/);
+ assert.match(f.completeWorkspace(),/등록된 3단계 조합이 없습니다/);assert.match(f.completeWorkspace(),/stage3-trash/);
  assert.equal(data.recommendations.find(t=>t.id==='stage4-recommendation').deletedAt,null);
  assert.equal(JSON.stringify(data.tactics.filter(t=>t.stage===4)),stage4);
- click(f,'stage3-restore','stage3-legacy');assert.match(f.recommendationRows(),/data-combo="stage3-legacy"/);
+ click(f,'stage3-restore','stage3-legacy');assert.match(f.completeWorkspace(),/data-lineup-id="stage3-legacy"/);
 });
 test('readers, sealed months and stale month confirmations cannot reset or delete parties',()=>{
  const f=fixture(),before=JSON.stringify(f.get().recommendations);
- f.get().settings.editable=false;assert.doesNotMatch(f.recommendationRows(),/stage3-delete|stage3-reset/);
+ f.get().settings.editable=false;assert.doesNotMatch(f.completeWorkspace(),/stage3-delete|stage3-reset/);
  click(f,'stage3-reset-confirm',f.ui.month);assert.equal(JSON.stringify(f.get().recommendations),before);
  f.get().settings.editable=true;f.get().result.sealed=true;click(f,'stage3-delete-confirm','stage3-a');assert.equal(JSON.stringify(f.get().recommendations),before);
  f.get().result.sealed=false;click(f,'stage3-reset-confirm','1999-01');assert.equal(JSON.stringify(f.get().recommendations),before);
@@ -60,11 +60,13 @@ test('stage 3 soft deletion and restoration survive the original storage format'
  assert.equal(restored.seasons[month].recommendations[0].deletedAt,null);
 });
 test('stage 3 parties never render a tactic expander or received-carry calculator, including after opening an imported party',()=>{
- const f=fixture();f.ext.openComboId='stage3-a';
- let html=f.recommendationRows();assert.match(html,/stage3-delete/);assert.match(html,/<dt>TP<\/dt>/);
+ const f=fixture();
+ let html=f.completeWorkspace();assert.match(html,/stage3-delete/);assert.match(html,/<dt>TP<\/dt>/);
  assert.doesNotMatch(html,/ops-combo-toggle|combo-expansion|ops-combo-carry|이월 받은 시간/);
  f.evaluate('openAppliedExternalTactic')({month:f.ui.month,stage:3,id:'stage3-a'});
- assert.equal(f.ext.openComboId,null);assert.equal(f.ui.tabs.tactics,'combos');
- html=f.recommendationRows();assert.doesNotMatch(html,/ops-combo-toggle|combo-expansion|ops-combo-carry/);
- f.ext.stage=4;assert.match(f.recommendationRows(),/ops-combo-toggle/);
+ assert.equal(f.ext.stage,3);assert.equal(f.ui.tabs.tactics,'workspace');
+ html=f.completeWorkspace();assert.doesNotMatch(html,/ops-combo-toggle|combo-expansion|ops-combo-carry/);
+ const selectStage=f.listeners.click.find(fn=>String(fn).includes("action==='v2-combo-stage'"));
+ selectStage({target:{closest:()=>({dataset:{action:'v2-combo-stage',value:'4'}})},preventDefault(){},stopImmediatePropagation(){}});
+ assert.equal(f.ext.stage,4);assert.match(f.completeWorkspace(),/data-action="v2-select-tactic"/);
 });
