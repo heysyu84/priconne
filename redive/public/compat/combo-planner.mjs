@@ -54,7 +54,7 @@ const comparePlans = (a, b) => b.totalDamage - a.totalDamage || a.borrowCount - 
 // Keep the strongest feasible plan for each boss combination. All candidate
 // parties remain eligible; no arbitrary top-N candidate cutoff hides a result.
 export function planThreeAttacks(recommendations, catalog = [], options = {}) {
-  const {bossIds, distinctBosses = true, limit = 5} = options;
+  const {bossIds, distinctBosses = true, limit = 5, bossHp = {}} = options;
   const allowedBosses = bossIds ? new Set(bossIds.map(Number)) : null;
   const parties = new Map();
   let skippedCount = 0;
@@ -71,6 +71,19 @@ export function planThreeAttacks(recommendations, catalog = [], options = {}) {
     if (!previous || damage > previous.damage || (damage === previous.damage && candidate.manualCount < previous.manualCount)) parties.set(identity, candidate);
   }
   const candidates = [...parties.values()].sort((a, b) => b.damage - a.damage || a.id.localeCompare(b.id));
+  const strongest = new Map();
+  for (const candidate of candidates) strongest.set(candidate.boss, Math.max(strongest.get(candidate.boss) || 0, candidate.damage));
+  const demand = new Map([...strongest].map(([boss, damage]) => [boss, Number(bossHp[boss]) / damage]));
+  const balanced = demand.size > 0 && [...demand.values()].every(value => Number.isFinite(value) && value > 0);
+  // Weighted proportional allocation gives more occurrences to bosses requiring
+  // more attacks, while reducing repeat allocations to bosses already covered.
+  function gain(plan, allocated = new Map()) {
+    return plan.attacks.reduce((sum, attack) => {
+      const boss = Number(attack.combo.boss);
+      const contribution = attack.expectedDamage / strongest.get(boss);
+      return sum + demand.get(boss) * Math.log1p(contribution / (1 + (allocated.get(boss) || 0)));
+    }, 0);
+  }
   const routes = new Map(), n = candidates.length, pairOK = new Uint8Array(n * n);
   for (let i = 0; i < n; i++) for (let j = i + 1; j < n; j++) {
     if (distinctBosses && candidates[i].boss === candidates[j].boss) continue;
@@ -79,10 +92,11 @@ export function planThreeAttacks(recommendations, catalog = [], options = {}) {
   let cutoff = -Infinity;
   function keep(plan) {
     const previous = routes.get(plan.route);
-    if (previous && comparePlans(plan, previous) >= 0) return;
+    const difference = previous && balanced ? gain(plan) - gain(previous) : 0;
+    if (previous && (balanced && Math.abs(difference) > 1e-9 ? difference < 0 : comparePlans(plan, previous) >= 0)) return;
     routes.set(plan.route, plan);
     const ranked = [...routes.values()].sort(comparePlans);
-    if (ranked.length >= limit) cutoff = ranked[limit - 1].totalDamage;
+    if (!balanced && ranked.length >= limit) cutoff = ranked[limit - 1].totalDamage;
   }
   for (let i = 0; i < n - 2; i++) {
     if (candidates[i].damage + candidates[i + 1].damage + candidates[i + 2].damage < cutoff - 1e-9) break;
@@ -106,6 +120,20 @@ export function planThreeAttacks(recommendations, catalog = [], options = {}) {
       }
     }
   }
-  return {plans: [...routes.values()].sort(comparePlans).slice(0, Math.max(0, limit)),
+  let plans = [...routes.values()].sort(comparePlans);
+  if (balanced) {
+    const allocated = new Map(), selected = [];
+    while (plans.length && selected.length < limit) {
+      plans.sort((a, b) => gain(b, allocated) - gain(a, allocated) || comparePlans(a, b));
+      const plan = plans.shift();
+      selected.push(plan);
+      for (const attack of plan.attacks) {
+        const boss = Number(attack.combo.boss);
+        allocated.set(boss, (allocated.get(boss) || 0) + attack.expectedDamage / strongest.get(boss));
+      }
+    }
+    plans = selected;
+  }
+  return {plans: plans.slice(0, Math.max(0, limit)),
     candidateCount: candidates.length, skippedCount};
 }

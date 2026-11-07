@@ -23,9 +23,9 @@ await check('required-time bands have no gaps or overlap at 20/29/30/39/40/49/50
  app.ext.carryTimeRange='all';const all=ids();assert.equal(all.length,11);assert.ok(all.includes('unknown'));assert.ok(all.includes('s19'));
 });
 
-await check('the carry-only selector sits between the title and list toggle, with exact seconds kept on cards',()=>{
- const {app,html}=setup(),view=html(),heading=view.indexOf('<h2>택틱 '),filter=view.indexOf('id="carry-time-range"'),toggle=view.indexOf('data-action="toggle-library"');
- assert.ok(heading<filter&&filter<toggle);for(const label of ['전체','20초대','30초대','40초대','50초+'])assert.ok(view.includes('>'+label+'</option>'));
+await check('the carry-only selector sits above the production deck list and keeps exact seconds',()=>{
+ const {app,html}=setup(),view=html(),heading=view.indexOf('<h2>택틱 '),filter=view.indexOf('id="carry-time-range"'),entries=view.indexOf('class="work-list"');
+ assert.ok(heading<filter&&filter<entries);for(const label of ['전체','20초대','30초대','40초대','50초+'])assert.ok(view.includes('>'+label+'</option>'));
  assert.ok(view.includes('29초 이월'));assert.ok(view.includes('37초 이월'));
  app.ext.workGroup='main';assert.ok(!html().includes('id="carry-time-range"'));
 });
@@ -33,7 +33,7 @@ await check('the carry-only selector sits between the title and list toggle, wit
 await check('readers can filter immediately, expand the list and keep shared records untouched',async()=>{
  const {app,data,html,ids,choose}=setup();html();const before=JSON.stringify(app.sharedDocument());app.ui.libraryOpen=false;
  await choose('30');assert.deepEqual(ids(),['legacy37','s30','s39']);assert.equal(app.ui.libraryOpen,true);assert.ok(html().includes('<h2>택틱 3</h2>'));
- assert.ok(ids().includes(app.ui.selectedTactic));assert.equal(data.settings.editable,false);assert.equal(JSON.stringify(app.sharedDocument()),before);
+ assert.ok(html().includes('class="work-editor"'));assert.ok(html().includes('data-tactic-id="'+app.ui.selectedTactic+'"'));assert.equal(data.settings.editable,false);assert.equal(JSON.stringify(app.sharedDocument()),before);
 });
 
 await check('time and boss filters combine without leaking hidden, deleted or normal tactics',()=>{

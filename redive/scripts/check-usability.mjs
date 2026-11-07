@@ -52,9 +52,18 @@ await check('a clan-wide profile survives polling and an intentional member sele
   const q=runtimeFixture(),d=q.get();assert.equal(q.ui.profile,'__clan__');q.applySharedDocument(q.sharedDocument());assert.equal(q.ui.profile,'__clan__');
   q.ui.profile=d.members[0].id;q.applySharedDocument(q.sharedDocument());assert.equal(q.ui.profile,d.members[0].id);
 });
-await check('clearing a recommendation resets the selection, support choices and filter together',()=>{
-  const q=runtimeFixture();q.findPlans();q.applyFoundPlan(0);q.ext.distributionOpen=true;assert.equal(q.selectedParties().length,3);assert.ok(q.recommendationRows().includes('r-clear-plan'));
-  q.clearRecommendedPlan();assert.equal(q.selectedParties().length,0);assert.equal(q.ext.onlyPicks,false);assert.equal(q.ext.distributionOpen,false);assert.ok(q.recommendationRows().includes('data-action="v3-distribution"'));
+await check('recommendations render automatically without controls and recompute after a saved deck changes',()=>{
+  const q=runtimeFixture(),data=q.get(),before=q.sharedDocument(),plans=q.recommendedPlans();
+  const html=q.completeWorkspace(),panel=html.match(/<details class="distribution-panel[\s\S]*?<\/details>/)?.[0];
+  assert.ok(panel?.includes('추천 분배'));
+  assert.doesNotMatch(panel, /id="recommendation-distribution" open/);
+  assert.ok(plans.length>0&&plans.length<=5);
+  assert.doesNotMatch(panel,/<button|<input|data-action=/);
+  assert.doesNotMatch(html,/v2-pick-tactic|v2-use-plan|r-clear-plan|직접 선택/);
+  assert.deepEqual(q.sharedDocument(),before);
+  data.tactics.find(t=>t.id===plans[0].attacks[0].combo.id).hidden=true;
+  assert.notEqual(q.recommendedPlans(),plans);
+  assert.ok(q.recommendedPlans().every(plan=>plan.attacks.every(({combo})=>!data.tactics.find(t=>t.id===combo.id).hidden)));
 });
 await check('a rounded coefficient presentation never overwrites the unedited exact value',()=>{
   const input={value:'0.11',dataset:{display:'0.11',exact:'0.1123456789'}},form={querySelector:()=>input},fd={get:()=>input.value};
@@ -85,7 +94,7 @@ await check('result confirmation updates both hall of fame and award counts exac
 });
 await check('support assignment recovers feasible overlaps instead of rejecting them',()=>{
   const assignment=legacyTools.assignSupports([['a','b','c','d','e'],['a','f','g','h','i'],['b','f','j','k','l']]);assert.ok(assignment);assert.equal(assignment.supports.filter(Boolean).length,3);
-  app.findPlans();assert.ok(app.ext.foundPlans.length>0);app.applyFoundPlan(0);assert.equal(app.selectedParties().length,3);assert.ok(app.selectedParties().every(t=>Number.isInteger(t.support)));
+  const [plan]=app.recommendedPlans();assert.equal(plan.attacks.length,3);assert.ok(plan.attacks.every(t=>Number.isInteger(t.supportIndex)));
 });
 await check('workbook transfers preserve party, carry requirement, video and six SET columns',()=>{
   const names=['수사렌','수리코','수미미','수페코','사루카'],body='TRUE\tFALSE\tTRUE\tFALSE\tTRUE\tFALSE\t1:30 AUTO OFF';
@@ -95,6 +104,152 @@ await check('workbook transfers preserve party, carry requirement, video and six
 await check('original text colours survive time shifting without accepting unsafe styles',()=>{
   const row={text:'1:20 위험 안내',runs:[{text:'1:20 ',color:'#cc3355'},{text:'위험 안내',color:'url(javascript:alert(1))'}]};
   const html=legacyTools.richLine(row,[],[],60,90);assert.ok(html.includes('0:50'));assert.ok(html.includes('color:#cc3355'));assert.ok(!html.includes('javascript:'));assert.ok(html.includes('위험 안내'));
+});
+
+await check('all stage 3 lineups render directly with timing and no tactic reader',()=>{
+  const q=runtimeFixture(new Map(),{hash:'#tactics/combos'}),data=q.get();
+  assert.equal(q.ui.tabs.tactics,'workspace');
+  data.bosses.forEach(b=>{b.stage=3;b.locked=false;});
+  data.rules.stage3Mode='auto';
+  const normal=data.tactics.find(t=>t.stage===4&&t.category==='main'&&!t.hidden&&!t.deletedAt);
+  const early={...structuredClone(normal),id:'test-stage-three',stage:3,category:'recommendation',requiredSeconds:26,remainingSeconds:84,
+    video:'https://www.youtube.com/watch?v=test',recommendationOnly:true};
+  data.recommendations=[early,{...early,id:'test-second-stage-three',boss:2},{...early,id:'test-archived-stage-three',deletedAt:1}];
+  data.tactics.push({...early});
+  q.ext.stage=3;q.ui.selectedTactic=early.id;
+  let html=q.fullTactics();
+  assert.match(html,/data-action="v2-combo-stage" data-value="3"[^>]+aria-pressed="true"/);
+  assert.doesNotMatch(html,/data-action="tab"[^>]*data-value="combos"/);
+  assert.equal(q.workspaceList().filter(t=>t.id===early.id).length,1);
+  assert.ok(!q.workspaceList().some(t=>t.deletedAt||t.stage!==3));
+  assert.match(html,/필요 시간<\/dt><dd>26초/);
+  assert.match(html,/예상 이월<\/dt><dd>84초/);
+  assert.equal((html.match(/data-lineup-id="test-stage-three"/g)||[]).length,1);
+  assert.match(html,/data-lineup-id="test-second-stage-three"/);
+  assert.doesNotMatch(html,/work-library|set-grid|등록된 조작문이 없습니다|distribution-heading|test-archived-stage-three/);
+  assert.doesNotMatch(html,/www\.youtube\.com\/watch\?v=test|원본 영상|원본 자료/);
+  assert.doesNotMatch(html,/data-input="v2-pick-tactic"/);
+  data.bosses[0].stage=4;data.bosses[0].locked=true;
+  assert.match(q.fullTactics(),/data-action="v2-combo-stage" data-value="3"/);
+  data.bosses[0].locked=false;
+  html=q.fullTactics();
+  assert.equal(q.ext.stage,4);
+  assert.doesNotMatch(html,/data-action="v2-combo-stage" data-value="3"/);
+  assert.ok(!q.workspaceList().some(t=>t.stage===3));
+  assert.equal(data.recommendations[0].id,early.id);
+  data.rules.stage3Mode='show';
+  assert.match(q.fullTactics(),/data-action="v2-combo-stage" data-value="3"/);
+});
+
+await check('time ranges remain aligned after carry adjustments and instruction colors survive',()=>{
+  const q=runtimeFixture(),text='1:20 ~ 1:18 위험 안내';
+  const row={text,runs:[{text:'1:20 ~ 1:18 위',color:'#aa3355'},{text:'험 안내',color:'#3344aa'}]};
+  const html=q.tacticInstructionMarkup(row,{party:[],duration:90},60);
+  assert.match(html,/class="tactic-time">0:50~<wbr>0:48/);
+  assert.match(html,/class="tactic-instruction"><span style="color:#aa3355">위<\/span><span style="color:#3344aa">험 안내/);
+  assert.equal(row.text,text);
+});
+await check('recommendations do not narrow the tactic library and both battle pages retain exact HP',()=>{
+  const q=runtimeFixture(),data=q.get();
+  q.ui.section='tactics';q.ext.stage=4;q.ext.workGroup='tabi';q.ui.boss=1;
+  const ids=q.workspaceList().map(t=>t.id);
+  assert.match(q.fullTactics(),/추천 분배/);
+  assert.deepEqual(q.workspaceList().map(t=>t.id),ids);
+  assert.equal(q.ext.workGroup,'tabi');
+  assert.equal(q.ui.boss,1);
+  data.bosses.forEach((boss,index)=>{boss.hp=123456789+index;boss.max=987654321+index;});
+  q.ui.section='overview';
+  for(const [tab,css] of [['bosses','raid-banner'],['logs','battle-health-boss']]){
+    q.ui.tabs.overview=tab;
+    const html=q.fullOverview();
+    assert.equal((html.match(new RegExp('class="'+css+' ', 'g'))||[]).length,5);
+    for(const boss of data.bosses){
+      assert.ok(html.includes(boss.hp.toLocaleString('ko-KR')),tab+' current HP for boss '+boss.id);
+      assert.ok(html.includes(boss.max.toLocaleString('ko-KR')),tab+' max HP for boss '+boss.id);
+    }
+  }
+});
+
+
+await check('boss demand distributes more feasible routes to the boss requiring more attacks',()=>{
+  const decks=Array.from({length:5},(_,i)=>({id:String(i+1),boss:i+1,stage:4,expectedDamage:1,characters:Array.from({length:5},(_,j)=>'boss'+(i+1)+'c'+j)}));
+  const options={bossHp:{1:1,2:1,3:1,4:1,5:10},limit:5};
+  const plans=legacyTools.planThreeAttacks(decks,[],options).plans;
+  assert.equal(plans.length,5);
+  assert.equal(plans.filter(p=>p.attacks.some(a=>a.combo.boss===5)).length,5);
+  const coverage=new Set(plans.flatMap(p=>p.attacks.map(a=>a.combo.boss)));
+  assert.equal(coverage.size,5);
+  assert.ok(plans.every(p=>new Set(p.attacks.map(a=>a.combo.boss)).size===3));
+  const equal=legacyTools.planThreeAttacks(decks,[],{bossHp:{1:1,2:1,3:1,4:1,5:1},limit:5}).plans;
+  const counts=decks.map(d=>equal.filter(p=>p.attacks.some(a=>a.combo.boss===d.boss)).length);
+  assert.ok(Math.max(...counts)-Math.min(...counts)<=1);
+});
+await check('boss All restores the production library and selection keeps one detail pane',async()=>{
+  const q=runtimeFixture(),d=q.get();q.ui.section='tactics';q.ui.tabs.tactics='workspace';q.ext.workGroup='main';q.ui.boss=2;
+  const bossClick=q.listeners.click.find(h=>h.toString().includes("if(a==='boss-filter')"));
+  const event=(action,id,value)=>({target:{closest:()=>({dataset:{action,id,value}})},preventDefault(){},stopImmediatePropagation(){}});
+  await bossClick(event('boss-filter',null,'0'));
+  assert.equal(q.ui.boss,0);
+  const rows=q.workspaceList();assert.equal(new Set(rows.map(t=>t.boss)).size,5);
+  const click=q.listeners.click.find(h=>h.toString().includes("if(action==='v2-select-tactic')"));
+  const t=rows[0];await click(event('v2-select-tactic',t.id));
+  const open=q.fullTactics();
+  assert.match(open,new RegExp('data-tactic-id="'+t.id+'"'));
+  assert.ok(open.indexOf('data-id="'+t.id+'"')<open.indexOf('data-tactic-id="'+t.id+'"'));
+  assert.ok(open.indexOf('class="set-check ')<open.indexOf('class="instruction-cell"'));
+  assert.equal((open.match(/aria-label="본문 복사"/g)||[]).length,1);
+  assert.match(open,/class="workbench workspace-restored"/);
+  assert.match(open,/class="work-library /);
+  assert.doesNotMatch(open,/tactic-accordion|tactic-copy-menu|tactic-copy-options/);
+  await click(event('v2-select-tactic',t.id));
+  assert.match(q.fullTactics(),new RegExp('data-tactic-id="'+t.id+'"'));
+});
+await check('carry tactics always start at 90 seconds without discarding the entered time on rerender',async()=>{
+  const q=runtimeFixture();q.ui.section='tactics';q.ext.workGroup='carry';q.ui.boss=0;
+  const t=q.workspaceList()[0];t.requiredCarrySeconds=26;
+  const click=q.listeners.click.find(h=>h.toString().includes("if(action==='v2-select-tactic')"));
+  await click({target:{closest:()=>({dataset:{action:'v2-select-tactic',id:t.id}})},preventDefault(){},stopImmediatePropagation(){}});
+  assert.equal(q.ui.carry,90);
+  let html=q.fullTactics();assert.match(html,/data-input="v2-work-carry" value="1:30"/);
+  assert.match(html,/필요 <strong>26초/);
+  q.ui.carry=38;html=q.fullTactics();assert.equal(q.ui.carry,38);
+  assert.match(html,/data-input="v2-work-carry" value="0:38"/);
+});
+
+await check('direct body copy reaches the clipboard and the copy editor does not intercept it',async()=>{
+  const q=runtimeFixture();q.ui.section='tactics';q.ext.workGroup='main';q.fullTactics();
+  const t=q.get().tactics.find(t=>t.id===q.ui.selectedTactic);
+  t.rows=[{id:'copy-row',text:'1:20 전원 SET',checked:[true,false,true,false,true,false]}];q.ui.carry=70;
+  let stopped=false;const event={target:{closest:()=>({dataset:{action:'copy-tactic',id:t.id}})},preventDefault(){},stopImmediatePropagation(){stopped=true;}};
+  const copyEditor=q.listeners.click.find(h=>h.toString().includes("!action.startsWith('future-')"));
+  await copyEditor(event);assert.equal(stopped,false);
+  const copy=q.listeners.click.find(h=>h.toString().includes("if(action==='copy-tactic')"));
+  await copy(event);assert.deepEqual(q.copied,['1:00 전원 SET']);
+  const html=q.fullTactics();assert.match(html,/<button[^>]+data-action="copy-tactic"[^>]+aria-label="본문 복사"[^>]*><svg/);
+  assert.doesNotMatch(html,/tactic-copy-menu|data-action="v2-work-estimate"|estimate-hp/);
+});
+await check('SET copy is a separate admin-only action and uses the clicked tactic',async()=>{
+  const q=runtimeFixture(),d=q.get();q.ui.section='tactics';q.ext.workGroup='main';d.settings.editable=false;
+  assert.doesNotMatch(q.fullTactics(),/data-action="v2-copy-set"/);
+  const t=d.tactics.find(t=>t.id===q.ui.selectedTactic);t.rows=[{id:'set-row',text:'1:30 시작',checked:[true,false,true,false,true,false]}];
+  const click=q.listeners.click.find(h=>h.toString().includes("if(action==='v2-copy-set')"));
+  const event={target:{closest:()=>({dataset:{action:'v2-copy-set',id:t.id}})},preventDefault(){},stopImmediatePropagation(){}};
+  await click(event);assert.equal(q.copied.length,0);
+  d.settings.editable=true;
+  const html=q.fullTactics();assert.match(html,/data-action="copy-tactic"[\s\S]*data-action="v2-copy-set"/);
+  q.ui.carry=90;await click(event);assert.deepEqual(q.copied,['TRUE\tFALSE\tTRUE\tFALSE\tTRUE\tFALSE\t1:30 시작']);
+  assert.doesNotMatch(q.completeWorkspace(true),/data-action="v2-copy-set"/);
+});
+await check('received carry accepts minute or second input and normalizes without changing saved tactics',async()=>{
+  const q=runtimeFixture();q.ui.section='tactics';q.fullTactics();const before=JSON.stringify(q.sharedDocument());
+  const input=q.listeners.input.find(h=>h.toString().includes("key==='v2-work-carry'"));
+  const change=q.listeners.change.find(h=>h.toString().includes('const eligible='));
+  for(const value of ['1:10','70']){
+    const el={value,dataset:{input:'v2-work-carry'},setAttribute(){},removeAttribute(){}};
+    await input({target:el});assert.equal(q.ui.carry,70);await change({target:el});assert.equal(el.value,'1:10');
+  }
+  const html=q.fullTactics();assert.match(html,/id="workspace-carry" type="text"/);
+  assert.equal(JSON.stringify(q.sharedDocument()),before);
 });
 console.log(checks+' usability checks passed');
 

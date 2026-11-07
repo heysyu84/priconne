@@ -1,0 +1,579 @@
+/* Re²:Dive workspace. Shared chrome, battle surfaces and tactic reading. */
+:root {
+  --paper: #f3f0f7;
+  --surface: #fff;
+  --wash: #f6f3fa;
+  --text: #251e36;
+  --muted: #655b75;
+  --line: #e2dceb;
+  --accent: #6243ab;
+  --accent-wash: #ede5fc;
+  --workspace-nav: #28203b;
+  --workspace-nav-text: #efe8fd;
+  --workspace-nav-active: #ddcdfb;
+  --workspace-nav-ink: #30204e;
+  --workspace-panel: #fff;
+  --workspace-shadow: 0 7px 22px #2c174b0a;
+  --workspace-radius: 15px;
+}
+:root[data-theme=dark] {
+  --paper: #1b1823;
+  --surface: #242030;
+  --wash: #2d273b;
+  --text: #f1eafa;
+  --muted: #bfb4ce;
+  --line: #413850;
+  --accent: #c8adff;
+  --accent-wash: #38294f;
+  --workspace-nav: #2a2339;
+  --workspace-nav-text: #e9def7;
+  --workspace-nav-active: #dac7f7;
+  --workspace-nav-ink: #30204e;
+  --workspace-panel: #272232;
+  --workspace-shadow: 0 8px 24px #120a1940;
+}
+body { background: var(--paper); }
+#app > .workspace-masthead, #app > .section-nav.workspace-nav, #app > .content {
+  width: 100%;
+  max-width: 900px;
+  box-sizing: border-box;
+}
+#app > .workspace-masthead {
+  min-height: 76px;
+  padding-inline: 15px;
+  background: var(--paper);
+  border: 0;
+}
+.workspace-masthead .header-controls { gap: 7px; }
+.workspace-masthead .header-settings,
+.workspace-masthead .header-write,
+.workspace-masthead .header-resource-button {
+  border-radius: 9px;
+  box-shadow: none;
+}
+.workspace-masthead .current-month-label {
+  padding-inline: 9px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  font-variant-numeric: tabular-nums;
+}
+#app > .section-nav.workspace-nav {
+  top: 80px;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 5px;
+  padding: 6px;
+  border: 0;
+  border-radius: 13px;
+  background: var(--workspace-nav);
+  box-shadow: var(--workspace-shadow);
+}
+.workspace-nav button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  gap: 8px;
+  color: var(--workspace-nav-text);
+  font-weight: 700;
+  border-radius: 8px;
+}
+.workspace-nav button svg { flex: none; width: 17px; height: 17px; }
+.workspace-nav button.active {
+  background: var(--workspace-nav-active);
+  color: var(--workspace-nav-ink);
+}
+.workspace-nav button.active::before, .workspace-nav button.active::after { content: none; }
+.workspace-nav button:not(.active):hover { background: #ffffff13; }
+#app > .content { padding: 19px 0 64px; }
+.content .workspace-heading {
+  min-height: 0;
+  align-items: center;
+  margin: 0 0 9px;
+  padding: 15px 17px 13px;
+  background: var(--workspace-panel);
+  border: 1px solid var(--line);
+  border-radius: var(--workspace-radius);
+  box-shadow: var(--workspace-shadow);
+}
+.content .workspace-heading .page-heading-title { align-self: center; }
+html[data-text-scale] .content .workspace-heading h1 {
+  font-size: 1.8rem !important;
+  font-weight: 820;
+  letter-spacing: -.055em;
+  line-height: 1.2;
+}
+.workspace-heading .page-heading-title::before {
+  content: "";
+  width: 5px;
+  height: 1.45rem;
+  flex: none;
+  border-radius: 4px;
+  background: var(--accent);
+}
+.content .page-tabs, .content .subview-tabs, .settings-navigation {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  padding: 5px;
+  margin: 0 0 15px;
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  background: var(--workspace-panel);
+}
+.content .page-tabs button, .content .subview-tabs button, .settings-navigation button {
+  min-height: 34px;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  background: transparent;
+  box-shadow: none;
+  color: var(--muted);
+  font-weight: 670;
+}
+.content .page-tabs button.active, .content .subview-tabs button.active, .settings-navigation button.active {
+  background: var(--accent-wash);
+  border-color: transparent;
+  color: var(--accent);
+  font-weight: 770;
+}
+.content .page-tabs button small {
+  margin-left: 3px;
+  padding: 1px 5px;
+  border-radius: 5px;
+  background: var(--wash);
+  color: var(--muted);
+}
+.content .button { border-radius: 8px; box-shadow: none; }
+.content .button.primary { background: var(--accent); border-color: var(--accent); color: var(--surface); }
+.content .filter-group { border-radius: 8px; overflow: clip; }
+.content .filter-group button { min-height: 31px; }
+.content .boss-filter button.active {
+  background: var(--boss-wash, var(--accent-wash));
+  color: var(--boss-ink, var(--accent));
+}
+.content :is(.table-wrap, .attack-entry, .fold, .settings-sheet) { border-radius: 11px; }
+.content .data-table thead th { background: var(--wash); color: var(--muted); }
+.content .data-table :is(th,td) { border-color: var(--line); }
+.content .data-table tbody tr:hover > td { background: color-mix(in srgb, var(--accent-wash) 30%, var(--surface)); }
+.content .attack-entry {
+  border: 1px solid var(--line);
+  background: var(--workspace-panel);
+  box-shadow: var(--workspace-shadow);
+}
+.content .fold { border-color: var(--line); background: var(--workspace-panel); }
+:where(.workspace-nav,.content,.workspace-masthead) :is(button,a,input,select,textarea):focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.workspace-nav button:focus-visible { outline-color: var(--workspace-nav-active); outline-offset: -2px; }
+
+/* Boss colors are used for identification; numbers retain full precision. */
+.content .battle-hud {
+  padding: 13px;
+  border: 1px solid var(--line) !important;
+  border-radius: var(--workspace-radius);
+  background: var(--workspace-panel) !important;
+  box-shadow: var(--workspace-shadow) !important;
+}
+.battle-hud .hud-status-line {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 7px;
+  margin: 0 0 11px;
+}
+.battle-hud .hud-status-line > span:not(.hud-status-light) {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 8px 9px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: var(--wash);
+  color: var(--muted);
+}
+.battle-hud .hud-status-line b { color: var(--text) !important; font-variant-numeric: tabular-nums; }
+.battle-hud .hud-status-light { display: none; }
+.content .battle-hud .raid-banners { gap: 8px; margin: 0; }
+.content .battle-hud .raid-banner, .content .battle-health-boss {
+  border: 1px solid color-mix(in srgb, var(--boss) 40%, var(--line)) !important;
+  border-top: 3px solid var(--boss) !important;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--boss-wash) 42%, var(--surface)) !important;
+  box-shadow: none !important;
+}
+.content .battle-hud .raid-banner:hover, .content .battle-health-boss:hover {
+  background: color-mix(in srgb, var(--boss-wash) 74%, var(--surface)) !important;
+}
+.content .battle-hud .raid-life > strong,
+.content .battle-health-boss .battle-health-value strong {
+  color: var(--text) !important;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -.04em;
+}
+.content .battle-hud .raid-name > strong,
+.content .battle-health-name > strong { color: var(--text) !important; }
+.content .battle-hud .raid-life small,
+.content .battle-health-value small { color: var(--muted) !important; }
+.content .battle-hud .raid-hp, .content .battle-health-track { border-radius: 4px; }
+.content .battle-hud .hud-charts { margin-top: 13px; border-color: var(--line); }
+.content .battle-hud .hud-bar-row { border-radius: 7px; }
+.content .battle-health { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; margin: 0 0 14px; }
+.content .battle-health-value { display: grid; gap: 2px; text-align: left; }
+html[data-text-scale] .content .battle-health-value strong { font-size: .9rem !important; }
+html[data-text-scale] .content .battle-health-value small { font-size: .69rem !important; }
+
+/* Tactic tools and automatic recommendations. */
+.tactic-controls {
+  margin-bottom: 12px;
+  padding: 9px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--workspace-panel);
+}
+.tactic-controls .tactic-stage-toolbar { margin: 0; }
+.tactic-controls .tactic-stage-toolbar .filter-group {
+  padding: 3px;
+  border: 0;
+  background: var(--wash);
+}
+.tactic-controls .tactic-stage-toolbar .filter-group button {
+  padding-inline: 13px;
+  border: 0;
+  border-radius: 6px;
+  font-weight: 740;
+}
+.tactic-controls .tactic-stage-toolbar .filter-group button.active {
+  background: var(--accent);
+  color: var(--surface);
+}
+.tactic-controls .workspace-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 7px;
+  margin: 7px 0 0;
+  padding: 7px 0 0;
+  border-top: 1px solid var(--line);
+}
+.tactic-controls:not(:has(.workspace-navigation)) {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+}
+.tactic-controls:not(:has(.workspace-navigation)) .workspace-toolbar {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.tactic-controls:not(:has(.workspace-navigation)) .plain-notice { order: 1; width: 100%; }
+.tactic-controls .workspace-navigation { display: flex; flex-wrap: wrap; min-width: 0; }
+.tactic-controls .workspace-boss-filters { min-width: 0; }
+.tactic-controls .workspace-navigation button.selected {
+  color: var(--accent);
+  background: var(--accent-wash);
+  border-color: color-mix(in srgb, var(--accent) 26%, var(--line));
+}
+.workspace-distribution {
+  margin: 0 0 13px;
+  border: 1px solid var(--line);
+  border-radius: var(--workspace-radius);
+  background: var(--workspace-panel);
+  box-shadow: var(--workspace-shadow);
+  overflow: hidden;
+}
+.workspace-panel-title {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--line);
+}
+.workspace-panel-title h2 { margin: 0; font-size: 1rem; }
+.panel-symbol {
+  display: inline-grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 7px;
+  color: var(--accent);
+  background: var(--accent-wash);
+}
+.panel-symbol svg { width: 14px; height: 14px; }
+.distribution-board { width: 100%; table-layout: fixed; border-collapse: collapse; text-align: left; }
+.distribution-board :is(th,td) { padding: 4px 8px; border-bottom: 1px solid var(--line); line-height: 1.3; }
+.distribution-board tr:last-child td, .distribution-board tbody tr:last-child th { border-bottom: 0; }
+.distribution-board thead { background: var(--wash); color: var(--muted); font-size: .69rem; }
+.distribution-board th:first-child { width: 44px; text-align: center; }
+.distribution-board tbody th { color: var(--muted); font-size: .75rem; }
+.distribution-board th:last-child, .distribution-board td:last-child { width: 14%; text-align: right; }
+.distribution-board tbody tr:first-child { background: color-mix(in srgb, var(--accent-wash) 37%, var(--surface)); }
+.distribution-attack { display: inline-flex; align-items: baseline; gap: 5px; margin-right: 6px; font-size: .79rem; }
+.distribution-attack b, .tactic-boss-label {
+  padding: 2px 5px;
+  border-radius: 5px;
+  color: var(--boss-ink, var(--accent));
+  background: var(--boss-wash, var(--accent-wash));
+  white-space: nowrap;
+}
+.workspace-distribution .distribution-support { display: inline; margin: 0; color: var(--muted); font-size: .7rem; }
+.distribution-total strong { color: var(--accent); font-size: .92rem; }
+.distribution-total span { margin-left: 2px; color: var(--muted); font-size: .65rem; }
+
+/* Stage 3 is a board of lineups with no selection pane. */
+.stage-lineups { display: grid; gap: 12px; }
+.stage-lineup-group {
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: var(--workspace-radius);
+  background: var(--workspace-panel);
+  box-shadow: var(--workspace-shadow);
+  overflow: hidden;
+}
+.stage-lineup-group > h2 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  padding: 8px 13px;
+  background: color-mix(in srgb, var(--boss-wash, var(--accent-wash)) 65%, var(--surface));
+  border-left: 4px solid var(--boss, var(--accent));
+  font-size: 1rem;
+}
+.stage-lineup-group > h2 span { font-size: .8rem; color: var(--boss-ink, var(--accent)); }
+.stage-lineup {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(180px, 1fr);
+  align-items: center;
+  gap: 8px 17px;
+  padding: 11px 13px;
+}
+.stage-lineup:has(.stage-lineup-links) { grid-template-columns: minmax(0, 1.35fr) minmax(180px, 1fr) auto; }
+.stage-lineup + .stage-lineup { border-top: 1px solid var(--line); }
+.stage-lineup-party .party {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 5px;
+  justify-items: center;
+  margin: 0;
+  padding: 0;
+}
+.stage-lineup-party .unit { width: 100%; max-width: none; min-width: 0; text-align: center; }
+.stage-lineup-party .unit-face { width: min(42px, 100%); height: auto; aspect-ratio: 1; }
+html[data-text-scale] .stage-lineup-party .unit strong { font-size: .78rem !important; line-height: 1.25; white-space: normal; }
+.stage-lineup-stats, .tactic-specs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 5px; margin: 0; }
+.stage-lineup-stats > div, .tactic-specs > div { padding: 5px 6px; border-radius: 7px; background: var(--wash); }
+.stage-lineup-stats dt, .tactic-specs dt { color: var(--muted); font-size: .69rem; }
+.stage-lineup-stats dd, .tactic-specs dd {
+  margin: 2px 0 0;
+  font-size: .9rem;
+  font-weight: 780;
+  font-variant-numeric: tabular-nums;
+}
+.stage-lineup-links { display: flex; flex-wrap: wrap; gap: 5px; justify-content: flex-end; }
+.stage-lineup-links .button { white-space: nowrap; }
+.stage-lineup .tactic-note { grid-column: 1/-1; margin: 0; }
+.tactic-identity h2 { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px; }
+.tactic-boss-label { font-size: .75rem; }
+.tactic-specs { margin: 5px 0; }
+.tactic-specs dd small { padding-left: 2px; font-size: .65em; color: var(--muted); }
+.workspace-timeline {
+  --tactic-time-col: 3.25rem;
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: var(--surface);
+}
+.workspace-timeline .set-grid { width: 100%; min-width: 0; table-layout: fixed; }
+.workspace-timeline .set-check-col { width: 1.65rem; }
+.workspace-timeline .set-tools-col { width: 1.45rem; }
+.workspace-timeline .set-grid :is(th,td) { border-color: var(--line); }
+.workspace-timeline .set-grid th { background: var(--wash); }
+.workspace-timeline .set-grid th.set-auto {
+  background: color-mix(in srgb, var(--b1-wash) 82%, var(--surface));
+  color: var(--b1-ink);
+}
+.workspace-timeline .set-grid .instruction-heading {
+  padding: 6px;
+  text-align: left;
+  color: var(--muted);
+}
+.workspace-timeline .instruction-heading > span:first-child {
+  display: inline-block;
+  width: var(--tactic-time-col);
+  padding-left: 2px;
+  box-sizing: border-box;
+}
+.workspace-timeline .set-grid td.set-check:nth-child(2),
+.workspace-timeline .set-grid th:nth-child(2) { border-left: 2px solid var(--line); }
+.workspace-timeline .set-grid .instruction-cell { padding: 5px 6px; vertical-align: middle; }
+.workspace-timeline .tactic-instruction-line { display: grid; grid-template-columns: var(--tactic-time-col) minmax(0,1fr); align-items: baseline; }
+.workspace-timeline .tactic-time { color: var(--accent); font-weight: 740; font-variant-numeric: tabular-nums; padding-right: 4px; }
+.workspace-timeline .tactic-instruction { min-width: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+.workspace-timeline .set-grid tbody tr:nth-child(even) .instruction-cell { background: color-mix(in srgb, var(--wash) 54%, var(--surface)); }
+.workspace-timeline .set-grid .tactic-active-row .instruction-cell { background: var(--accent-wash) !important; }
+html[data-text-scale] .workspace-timeline .set-grid .instruction-cell,
+html[data-text-scale] .workspace-timeline .instruction-cell textarea {
+  font-size: .86rem !important;
+  line-height: 1.42;
+}
+
+@media (min-width: 761px) and (max-width: 928px) {
+  #app > :is(.workspace-masthead,.section-nav.workspace-nav,.content) { width: calc(100% - 24px); }
+}
+@media (max-width: 760px) {
+  #app > .workspace-masthead {
+    min-height: 0;
+    height: auto;
+    padding: 5px 10px;
+    border-bottom: 1px solid var(--line);
+  }
+  #app > .section-nav.workspace-nav { display: none; }
+  #app > .mobile-nav.workspace-nav {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 4px;
+    padding: 5px 6px calc(5px + env(safe-area-inset-bottom));
+    border: 0;
+    background: var(--workspace-nav);
+  }
+  .workspace-nav.mobile-nav button { min-height: 42px; gap: 3px; }
+  html[data-text-scale] .workspace-nav.mobile-nav button { font-size: .69rem !important; }
+  #app > .content { padding: 9px 9px 64px; }
+  .content .workspace-heading { padding: 9px 10px; gap: 5px; }
+  html[data-text-scale] .content .workspace-heading h1 { font-size: 1.42rem !important; }
+  .workspace-heading .page-heading-title::before { height: 1.1rem; }
+  .content .page-tabs { margin-bottom: 9px; }
+  .content .page-tabs button { min-height: 31px; padding-inline: 7px; }
+  .content .battle-health { grid-template-columns: minmax(0,1fr); gap: 5px; }
+  .content .battle-health-value { text-align: right; }
+  .content .battle-hud { padding: 8px; }
+  .battle-hud .hud-status-line { gap: 4px; }
+  .battle-hud .hud-status-line > span:not(.hud-status-light) { padding: 4px 5px; }
+  .tactic-controls { padding: 6px; margin-bottom: 8px; }
+  .tactic-controls .workspace-toolbar { gap: 4px; }
+  .tactic-controls .workspace-navigation button, .tactic-controls .boss-filter button { padding-inline: 6px; }
+  .workspace-distribution { margin-bottom: 8px; }
+  .workspace-panel-title { padding: 4px 7px; }
+  .distribution-board :is(th,td) { padding: 3px 3px; }
+  .distribution-board th:first-child { width: 28px; }
+  .distribution-board th:last-child, .distribution-board td:last-child { width: 15%; }
+  .workspace-distribution .distribution-support { display: block; overflow-wrap: anywhere; }
+  .distribution-attack { margin-right: 0; gap: 3px; }
+  .distribution-attack b { padding-inline: 3px; }
+  .stage-lineups { gap: 8px; }
+  .stage-lineup, .stage-lineup:has(.stage-lineup-links) { grid-template-columns: minmax(0,1fr); gap: 6px; padding: 7px 8px; }
+  .stage-lineup-group > h2 { padding: 5px 8px; }
+  .stage-lineup-stats > div { display: flex; justify-content: space-between; align-items: baseline; gap: 3px; padding: 4px; }
+  .stage-lineup-stats dd { margin: 0; }
+  .workspace-timeline { --tactic-time-col: 2.45rem; }
+  .workspace-timeline .set-check-col { width: 1.14rem; }
+  .workspace-timeline .set-grid .set-check { padding-inline: 1px; }
+  .workspace-timeline .set-grid .instruction-cell { padding: 4px 3px; }
+  html[data-text-scale] .workspace-timeline .set-grid .instruction-cell,
+  html[data-text-scale] .workspace-timeline .instruction-cell textarea { font-size: .79rem !important; }
+}
+@media print {
+  #app > .content { max-width: none; padding: 0; }
+  #app > .workspace-nav { display: none !important; }
+}
+.tactic-title-line { display: flex; align-items: center; justify-content: space-between; gap: 9px; margin-bottom: 6px; }
+.tactic-title-line h2 { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px; margin: 0; font-size: 1.03rem; }
+.tactic-control-bar { display: flex; align-items: center; justify-content: flex-start; flex-wrap: wrap; gap: 7px; margin: 9px 0; }
+.tactic-time-controls, .tactic-copy-controls { display: flex; align-items: center; flex-wrap: wrap; gap: 5px; min-width: 0; }
+.tactic-time-controls { margin-right: 0; font-size: .77rem; }
+.tactic-received-time { display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; }
+.tactic-received-time input { width: 56px; min-height: 32px; padding: 4px; border: 1px solid var(--line); border-radius: 6px; font-variant-numeric: tabular-nums; }
+.tactic-required-time { padding: 5px 6px; border-radius: 6px; background: var(--boss-wash, var(--wash)); white-space: nowrap; }
+.tactic-source-mobile { display: none; }
+.tactic-source-desktop { display: inline-flex; }
+.tactic-control-bar .tactic-icon-button,
+.tactic-title-line .video-link,
+.tactic-copy-controls .video-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  width: 32px;
+  height: 32px;
+  min-height: 32px;
+  padding: 5px;
+  box-sizing: border-box;
+}
+.tactic-control-bar .tactic-icon-button svg { width: 17px; height: 17px; }
+.tactic-title-line .video-link > span, .tactic-copy-controls .video-link > span { display: none; }
+.tactic-control-bar > .carry-warning { flex-basis: 100%; margin: 0; font-size: .75rem; }
+.workspace-distribution > summary { list-style: none; cursor: pointer; user-select: none; }
+.workspace-distribution > summary::-webkit-details-marker { display: none; }
+.workspace-distribution > summary > svg { width: 15px; height: 15px; margin-left: auto; }
+.workspace-distribution[open] > summary > svg { transform: rotate(180deg); }
+.workspace-distribution:not([open]) > summary { border-bottom: 0; }
+.distribution-count { font-size: .75rem; color: var(--muted); }
+.workspace-timeline .set-grid :is(td,th):nth-child(2) { border-left-width: 1px; }
+.workspace-timeline .set-grid :is(td,th):nth-child(7) { border-left: 2px solid var(--line); }
+.workspace-timeline .set-grid th.set-auto { text-align: center !important; padding-inline: 0; vertical-align: middle; }
+.workspace-timeline .set-grid th.set-auto > span { display: block; width: 100%; margin: 0; text-align: center; }
+
+/* Day selection uses the same selected state as the page and phase menus. */
+.content .day-switch {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 4px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: var(--wash);
+}
+.content .day-switch button {
+  min-height: 29px;
+  padding: 4px 8px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  color: var(--muted);
+  background: transparent;
+  box-shadow: none;
+}
+.content .day-switch button.day-current { border-color: color-mix(in srgb, var(--accent) 40%, var(--line)); color: var(--accent); background: var(--surface); }
+.content .day-switch button.active,
+.content .day-switch button.active.day-current { border-color: var(--accent); color: var(--surface); background: var(--accent); box-shadow: none; }
+@media (max-width:760px) {
+  .tactic-source-mobile { display: inline-flex; margin-left: auto; flex: none; }
+  .tactic-source-desktop { display: none; }
+  .tactic-control-bar { gap: 5px; }
+  .tactic-copy-controls { margin-left: 0; }
+  .tactic-time-controls { gap: 4px; font-size: .7rem; }
+  .tactic-time-controls .button { padding-inline: 6px; }
+  .tactic-received-time input { width: 58px; }
+}
+
+/* Preserve the production library/detail layout at every breakpoint. */
+.workspace-restored .work-library {
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  background: var(--workspace-panel);
+  overflow: hidden;
+}
+.workspace-restored .work-library > .sheet-heading { padding: 8px; margin: 0; }
+.workspace-restored .work-editor {
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  background: var(--workspace-panel);
+}
+.workspace-restored .work-list-row .work-item { border-radius: 0; }
+.workspace-restored .work-list-row .work-list-party .booster { color: var(--red); }
+.workspace-restored .work-list-row .work-list-party .borrowed { color: var(--blue); }
+.tactic-set-copy { display: inline-flex; align-items: center; gap: 4px; min-height: 32px; padding: 4px 7px; }
+.tactic-set-copy svg { width: 16px; height: 16px; }
+@media (min-width: 761px) {
+  #app > .workspace-masthead { height: 80px; min-height: 80px; }
+}
+@media (max-width: 760px) {
+  .workspace-restored .work-editor { padding: 7px; }
+}

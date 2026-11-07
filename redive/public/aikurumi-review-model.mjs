@@ -154,7 +154,7 @@ export function buildReviewedTactic(item,draft,{id,now=new Date().toISOString()}
   requiredSeconds:item.stage===3&&carry===item.carry&&item.carryDetail.status==='remaining-plus-bonus'
    ?90-item.carryDetail.remainingSeconds:null,
   remainingSeconds:item.stage===3?carry:null,recommendationOnly:item.stage===3,
-  hidden:false,deletedAt:null,video:safeUrl(item.link.link),links:[],note:String(draft.note||'').trim(),
+  hidden:false,deletedAt:null,video:item.stage===3?'':safeUrl(item.link.link),links:[],note:String(draft.note||'').trim(),
   text:rows.map(r=>r.text).join('\n'),rows,externalSource};
 }
 
