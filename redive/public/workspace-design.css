@@ -443,7 +443,8 @@ html[data-text-scale] .workspace-timeline .instruction-cell textarea {
   }
   .workspace-nav.mobile-nav button { min-height: 42px; gap: 3px; }
   html[data-text-scale] .workspace-nav.mobile-nav button { font-size: .69rem !important; }
-  #app > .content { padding: 9px 9px 64px; }
+  #app > .content { padding: 9px 9px calc(80px + env(safe-area-inset-bottom, 0px)); }
+  html { scroll-padding-bottom: calc(80px + env(safe-area-inset-bottom, 0px)); }
   .content .workspace-heading { padding: 9px 10px; gap: 5px; }
   html[data-text-scale] .content .workspace-heading h1 { font-size: 1.42rem !important; }
   .workspace-heading .page-heading-title::before { height: 1.1rem; }
