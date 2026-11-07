@@ -53,8 +53,8 @@ await check('a clan-wide profile survives polling and an intentional member sele
   q.ui.profile=d.members[0].id;q.applySharedDocument(q.sharedDocument());assert.equal(q.ui.profile,d.members[0].id);
 });
 await check('clearing a recommendation resets the selection, support choices and filter together',()=>{
-  const q=runtimeFixture();q.findPlans();q.applyFoundPlan(0);q.ext.distributionOpen=true;assert.equal(q.selectedParties().length,3);assert.ok(q.recommendationRows().includes('r-clear-plan'));
-  q.clearRecommendedPlan();assert.equal(q.selectedParties().length,0);assert.equal(q.ext.onlyPicks,false);assert.equal(q.ext.distributionOpen,false);assert.ok(q.recommendationRows().includes('data-action="v3-distribution"'));
+  const q=runtimeFixture();q.findPlans();q.applyFoundPlan(0);q.ext.distributionOpen=true;assert.equal(q.selectedParties().length,3);assert.ok(q.completeWorkspace().includes('r-clear-plan'));
+  q.clearRecommendedPlan();assert.equal(q.selectedParties().length,0);assert.equal(q.ext.onlyPicks,false);assert.equal(q.ext.distributionOpen,false);assert.ok(q.completeWorkspace().includes('data-action="v3-distribution"'));
 });
 await check('a rounded coefficient presentation never overwrites the unedited exact value',()=>{
   const input={value:'0.11',dataset:{display:'0.11',exact:'0.1123456789'}},form={querySelector:()=>input},fd={get:()=>input.value};
@@ -96,5 +96,61 @@ await check('original text colours survive time shifting without accepting unsaf
   const row={text:'1:20 위험 안내',runs:[{text:'1:20 ',color:'#cc3355'},{text:'위험 안내',color:'url(javascript:alert(1))'}]};
   const html=legacyTools.richLine(row,[],[],60,90);assert.ok(html.includes('0:50'));assert.ok(html.includes('color:#cc3355'));assert.ok(!html.includes('javascript:'));assert.ok(html.includes('위험 안내'));
 });
+
+await check('one tactic workspace keeps early-stage records, source links and detailed SET rows',()=>{
+  const q=runtimeFixture(new Map(),{hash:'#tactics/combos'}),data=q.get();
+  assert.equal(q.ui.tabs.tactics,'workspace');
+  data.bosses.forEach(b=>{b.stage=3;b.locked=false;});
+  data.rules.stage3Mode='auto';
+  const normal=data.tactics.find(t=>t.stage===4&&t.category==='main'&&!t.hidden&&!t.deletedAt);
+  const early={...structuredClone(normal),id:'test-stage-three',stage:3,category:'recommendation',requiredSeconds:26,remainingSeconds:84,
+    video:'https://www.youtube.com/watch?v=test',recommendationOnly:true};
+  data.recommendations=[early,{...early,id:'test-archived-stage-three',deletedAt:1}];
+  data.tactics.push({...early});
+  q.ext.stage=3;q.ui.selectedTactic=early.id;
+  let html=q.fullTactics();
+  assert.match(html,/data-action="v2-combo-stage" data-value="3"[^>]+aria-pressed="true"/);
+  assert.doesNotMatch(html,/data-action="tab"[^>]*data-value="combos"/);
+  assert.equal(q.workspaceList().filter(t=>t.id===early.id).length,1);
+  assert.ok(!q.workspaceList().some(t=>t.deletedAt||t.stage!==3));
+  assert.match(html,/필요 시간<\/dt><dd>26초/);
+  assert.match(html,/예상 이월<\/dt><dd>84초/);
+  assert.match(html,/data-tactic-id="test-stage-three"/);
+  assert.match(html,/www\.youtube\.com\/watch\?v=test/);
+  assert.doesNotMatch(html,/data-input="v2-pick-tactic"/);
+  data.bosses[0].stage=4;data.bosses[0].locked=true;
+  assert.match(q.fullTactics(),/data-action="v2-combo-stage" data-value="3"/);
+  data.bosses[0].locked=false;
+  html=q.fullTactics();
+  assert.equal(q.ext.stage,4);
+  assert.doesNotMatch(html,/data-action="v2-combo-stage" data-value="3"/);
+  assert.ok(!q.workspaceList().some(t=>t.stage===3));
+  assert.equal(data.recommendations[0].id,early.id);
+  data.rules.stage3Mode='show';
+  assert.match(q.fullTactics(),/data-action="v2-combo-stage" data-value="3"/);
+});
+
+await check('three-attack picks and exact boss HP stay available in the unified layout',()=>{
+  const q=runtimeFixture(),data=q.get();
+  q.ui.section='tactics';q.ext.stage=4;q.ext.workGroup='tabi';q.ui.boss=1;
+  q.findPlans();q.applyFoundPlan(0);
+  assert.equal(q.workspaceList().length,3);
+  assert.equal(q.ext.workGroup,'all');
+  assert.equal(q.ui.boss,0);
+  assert.match(q.fullTactics(),/직접 선택 <strong>3\/3/);
+  assert.equal((q.fullTactics().match(/data-input="v2-pick-tactic"[^>]+checked/g)||[]).length,3);
+  data.bosses.forEach((boss,index)=>{boss.hp=123456789+index;boss.max=987654321+index;});
+  q.ui.section='overview';
+  for(const [tab,css] of [['bosses','raid-banner'],['logs','battle-health-boss']]){
+    q.ui.tabs.overview=tab;
+    const html=q.fullOverview();
+    assert.equal((html.match(new RegExp('class="'+css+' ', 'g'))||[]).length,5);
+    for(const boss of data.bosses){
+      assert.ok(html.includes(boss.hp.toLocaleString('ko-KR')),tab+' current HP for boss '+boss.id);
+      assert.ok(html.includes(boss.max.toLocaleString('ko-KR')),tab+' max HP for boss '+boss.id);
+    }
+  }
+});
+
 console.log(checks+' usability checks passed');
 
