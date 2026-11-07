@@ -8,7 +8,12 @@ export default {
     if (request.method !== 'GET') return new Response('Read-only preview', {status: 405});
     if (url.pathname === '/api/editor') return Response.json({editor:false}, {headers:{'Cache-Control':'no-store'}});
     if (url.pathname !== '/api/state' && url.pathname !== '/api/archive') return new Response(null, {status:404});
-    const result = await fetch(upstream + url.pathname + url.search, {redirect:'error'});
+    let result;
+    try {
+      result = await fetch(upstream + url.pathname + url.search);
+    } catch {
+      return Response.json({error:'Preview upstream unavailable'}, {status:502});
+    }
     return new Response(result.body, {status:result.status, headers:{
       'Content-Type': result.headers.get('Content-Type') || 'application/json',
       'Cache-Control': 'no-store',
