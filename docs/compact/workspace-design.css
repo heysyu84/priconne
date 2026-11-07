@@ -1032,5 +1032,8 @@ html[data-text-scale] .tactic-reference-head .tactic-specs > div:first-child dd 
   .data-table.attack-dashboard thead th { padding-bottom: 4px !important; }
 }
 @media (max-width: 370px) {
+  .content .tactics-subnav .page-tabs { gap: 1px; padding: 3px; }
+  .content .tactics-subnav .page-tabs > button { padding-inline: 3px; }
+  .content .tactics-subnav .page-tabs button small { padding-inline: 2px; }
   .data-table.attack-dashboard .dashboard-attack { --attack-box-width: 22px; }
 }
