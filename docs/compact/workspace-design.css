@@ -691,6 +691,7 @@ html[data-text-scale] .tactic-reference-head .tactic-specs > div:first-child dd 
   display: block; margin-top: 3px; color: #a98943; line-height: 1.2; white-space: nowrap;
 }
 .tactic-reference-head .unit-rarity { color: inherit; font-weight: 600; letter-spacing: .02em; }
+.unit-rarity.danger, .work-list-stars > .danger { color: var(--red) !important; }
 .tactic-reference-head .unit-support-label { display: none; }
 .tactic-reference-head .tactic-reference-top .tactic-reading-note { margin: 8px 0 0; padding: 5px 8px; }
 .tactic-reference-head .tactic-reference-top .tactic-intro-links { margin: 8px 0 0; }
