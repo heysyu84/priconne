@@ -1,5 +1,5 @@
 // Retained algorithms from the original interface; UI integration lives in src/.
-export {assignSupports,planThreeAttacks,characterKey} from './compat/combo-planner.mjs';
+export {assignSupports,planThreeAttacks,characterKey} from './compat/combo-planner.mjs?v=20261107-balanced01';
 export {shiftExternalTacticTimes,parseExternalCarryTime} from './compat/external-tactic-carry.mjs';
 export {createBattleImageImport} from './compat/battle-image-import.mjs?v=20261026-ocr-regions09';
 export * from './compat/battle-image-parser.mjs';
