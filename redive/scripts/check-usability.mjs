@@ -116,9 +116,11 @@ await check('all stage 3 lineups render directly with timing and no tactic reade
     video:'https://www.youtube.com/watch?v=test',recommendationOnly:true};
   data.recommendations=[early,{...early,id:'test-second-stage-three',boss:2},{...early,id:'test-archived-stage-three',deletedAt:1}];
   data.tactics.push({...early});
-  q.ext.stage=3;q.ui.selectedTactic=early.id;
+  q.ext.stage=3;q.ui.tabs.tactics='stage3';q.ui.selectedTactic=early.id;
   let html=q.fullTactics();
-  assert.match(html,/data-action="v2-combo-stage" data-value="3"[^>]+aria-pressed="true"/);
+  assert.match(html,/role="tab" aria-selected="true"[^>]+data-value="stage3"/);
+  assert.ok(html.indexOf('data-value="stage3"')<html.indexOf('data-value="workspace"'));
+  assert.doesNotMatch(html,/data-action="v2-combo-stage"/);
   assert.doesNotMatch(html,/data-action="tab"[^>]*data-value="combos"/);
   assert.equal(q.workspaceList().filter(t=>t.id===early.id).length,1);
   assert.ok(!q.workspaceList().some(t=>t.deletedAt||t.stage!==3));
@@ -130,15 +132,21 @@ await check('all stage 3 lineups render directly with timing and no tactic reade
   assert.doesNotMatch(html,/www\.youtube\.com\/watch\?v=test|원본 영상|원본 자료/);
   assert.doesNotMatch(html,/data-input="v2-pick-tactic"/);
   data.bosses[0].stage=4;data.bosses[0].locked=true;
-  assert.match(q.fullTactics(),/data-action="v2-combo-stage" data-value="3"/);
+  assert.match(q.fullTactics(),/data-action="tab"[^>]+data-value="stage3"/);
   data.bosses[0].locked=false;
   html=q.fullTactics();
   assert.equal(q.ext.stage,4);
-  assert.doesNotMatch(html,/data-action="v2-combo-stage" data-value="3"/);
+  assert.equal(q.ui.tabs.tactics,'workspace');
+  assert.doesNotMatch(html,/data-action="tab"[^>]+data-value="stage3"/);
   assert.ok(!q.workspaceList().some(t=>t.stage===3));
   assert.equal(data.recommendations[0].id,early.id);
   data.rules.stage3Mode='show';
-  assert.match(q.fullTactics(),/data-action="v2-combo-stage" data-value="3"/);
+  assert.match(q.fullTactics(),/data-action="tab"[^>]+data-value="stage3"/);
+  q.ext.stage=3;q.ui.tabs.tactics='workspace';
+  html=q.fullTactics();
+  assert.equal(q.ext.stage,4);
+  assert.doesNotMatch(html,/data-action="v2-combo-stage"/);
+  assert.ok(!q.workspaceList().some(t=>t.stage===3));
 });
 
 await check('time ranges remain aligned after carry adjustments and instruction colors survive',()=>{

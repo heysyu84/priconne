@@ -64,7 +64,7 @@ test('stage 3 parties never render a tactic expander or received-carry calculato
  let html=f.completeWorkspace();assert.match(html,/stage3-delete/);assert.match(html,/<dt>TP<\/dt>/);
  assert.doesNotMatch(html,/ops-combo-toggle|combo-expansion|ops-combo-carry|이월 받은 시간/);
  f.evaluate('openAppliedExternalTactic')({month:f.ui.month,stage:3,id:'stage3-a'});
- assert.equal(f.ext.stage,3);assert.equal(f.ui.tabs.tactics,'workspace');
+ assert.equal(f.ext.stage,3);assert.equal(f.ui.tabs.tactics,'stage3');
  html=f.completeWorkspace();assert.doesNotMatch(html,/ops-combo-toggle|combo-expansion|ops-combo-carry/);
  const selectStage=f.listeners.click.find(fn=>String(fn).includes("action==='v2-combo-stage'"));
  selectStage({target:{closest:()=>({dataset:{action:'v2-combo-stage',value:'4'}})},preventDefault(){},stopImmediatePropagation(){}});

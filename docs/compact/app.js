@@ -296,7 +296,7 @@ function rowTable(headers,rows,cls=''){
 
 function simpleButton(text,action,id='',cls=''){if(/csv/i.test(action))return '';if(/print/i.test(action)&&!adminMode())return '';if(syncState.started&&writerActions.has(action)&&!data.settings.editable)return '';return `<button type="button" class="button ${cls}" data-action="${action}" ${id?`data-id="${X(id)}"`:''}>${text}</button>`;}
 function boardSection(title,body,actions=''){return `<section class="sheet"><div class="sheet-heading"><h2>${title}</h2><div class="sheet-actions">${actions}</div></div>${body}</section>`;}
-function titleBar(title,action=''){const showDay=['overview','battle'].includes(ui.section)||(ui.section==='records'&&ui.tabs.records==='ranking');return `<div class="page-heading workspace-heading"><div class="page-heading-title"><h1>${title}</h1></div><div class="heading-actions">${showDay?dayButtons():''}${action}</div></div>`;}
+function titleBar(title,action=''){const showDay=['overview','battle'].includes(ui.section);return `<div class="page-heading workspace-heading"><div class="page-heading-title"><h1>${title}</h1></div><div class="heading-actions">${showDay?dayButtons():''}${action}</div></div>`;}
 function portraitHtml(name,star){const c=data.characters.find(c=>c.name===name),base=GAME_ASSETS.characters[name],url=c?.images?.[star]||c?.images?.default||base?.[star]||base?.default;return url?`<img src="${X(url)}" alt="${X(name)}" width="128" height="128" loading="lazy">`:`<span aria-hidden="true">${X(name.slice(0,1))}</span>`;}
 function partyNameClasses(t,name,index){
  const character=characterReference(name),identity=character?.unitId||character?.name||name;
@@ -464,8 +464,8 @@ function workspaceGroups(archive){
   return [['main','택틱정리'],['tabi','타비비토'],['carry','이월 택틱'],['hidden','숨김']].filter(([key])=>
     (key!=='carry'||data.rules.carryVisible)&&(key!=='hidden'||!archive&&adminMode()));
 }
-function workspaceTactics(group){
-  const early=ext.stage===3;
+function workspaceTactics(group,stage=ext.stage){
+  const early=stage===3;
   const source=early?[...new Map(stage3RecommendationRecords().map(t=>[t.id,t])).values()]:data.tactics;
   return source.filter(t=>{
     if(t.deletedAt)return false;
@@ -827,7 +827,7 @@ document.addEventListener('click',event=>{
   if(action==='v3-list-page'){listPages[b.dataset.group]=Number(b.dataset.value);render();}
   if(action==='v3-member-info')openMemberInfo(b.dataset.id);
   if(action==='v3-profile-day'){ext.profileDay=Number(b.dataset.value);chartView.boss=0;render();}
-  if(action==='v3-boss-tactics'){const boss=bossBy(Number(b.dataset.id));ext.stage=boss.stage===3&&thirdStageVisible()?3:4;ext.workGroup='main';nav('tactics','workspace',{boss:boss.id});}
+  if(action==='v3-boss-tactics'){const boss=bossBy(Number(b.dataset.id));ext.stage=boss.stage===3&&thirdStageVisible()?3:4;ext.workGroup='main';nav('tactics',ext.stage===3?'stage3':'workspace',{boss:boss.id});}
 },true);
 document.addEventListener('change',event=>{
   const el=event.target;
@@ -1065,7 +1065,7 @@ function rankedStats(metric=ext.rankMetric||'game',direction=ext.rankDirection??
 completeRanking=()=>{
  const metrics=[['game','인게임'],['contribution','기여도'],['damage','피해량']],metric=ext.rankMetric||'game',direction=ext.rankDirection??-1,rows=rankedStats(metric,direction),ranks=new Map(rankedStats(metric,-1).map((s,i)=>[s.member.id,i+1]));
  const desktop=`<div class="ranking-columns desktop-ranking">${metrics.map(([key,label])=>`<section class="ranking-column"><h2>${label}</h2>${rowTable(['순위','클랜원',label],rankedStats(key,-1).map((s,i)=>`<tr><td class="center rank-cell desktop">${i+1}</td><td>${memberLink(s.member)}</td><td class="right numeric"><strong>${nf(Math.round(s[key]))}</strong></td></tr>`),'ranking-detail dense-table')}</section>`).join('')}</div>`;
- return `<div class="toolbar"><span>${ui.day}일차까지 · ${rows.length}명</span>${simpleButton('CSV','v2-ranking-csv')}</div>${desktop}<div class="table-wrap mobile-ranking"><table class="data-table ranking-unified"><thead><tr><th class="center">순위</th><th>클랜원</th>${metrics.map(([key,label])=>`<th class="right" aria-sort="${metric===key?(direction<0?'descending':'ascending'):'none'}"><button data-action="ops-rank-sort" data-value="${key}">${label} <span aria-hidden="true">${metric===key?(direction<0?'↓':'↑'):'↕'}</span></button></th>`).join('')}</tr></thead><tbody>${rows.map(s=>`<tr><td class="center rank-cell">${ranks.get(s.member.id)}</td><td>${memberLink(s.member)}</td>${metrics.map(([key])=>`<td class="right numeric">${nf(Math.round(s[key]))}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+ return `<div class="records-day-filter">${dayButtons()}</div><div class="toolbar"><span>${ui.day}일차까지 · ${rows.length}명</span>${simpleButton('CSV','v2-ranking-csv')}</div>${desktop}<div class="table-wrap mobile-ranking"><table class="data-table ranking-unified"><thead><tr><th class="center">순위</th><th>클랜원</th>${metrics.map(([key,label])=>`<th class="right" aria-sort="${metric===key?(direction<0?'descending':'ascending'):'none'}"><button data-action="ops-rank-sort" data-value="${key}">${label} <span aria-hidden="true">${metric===key?(direction<0?'↓':'↑'):'↕'}</span></button></th>`).join('')}</tr></thead><tbody>${rows.map(s=>`<tr><td class="center rank-cell">${ranks.get(s.member.id)}</td><td>${memberLink(s.member)}</td>${metrics.map(([key])=>`<td class="right numeric">${nf(Math.round(s[key]))}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
 };
 
 function memberTenure(m,asOf=new Date().toLocaleDateString('sv-SE',{timeZone:'Asia/Seoul'}).slice(0,7)){
@@ -1137,7 +1137,7 @@ function workspaceTools(archive){
   const early=ext.stage===3,notice=data.notices[ext.stage];
   const actions=(notice?simpleButton('안내','v2-toggle-notice','','quiet'):'')+(early&&!archive?stage3RecommendationActions():'');
   const settings=!archive&&adminMode()?simpleButton('단계 설정','ops-stage-settings','','quiet'):'';
-  return `<div class="toolbar tactic-stage-toolbar"><div class="toolbar-left">${stageButtons()}${settings}</div><div class="toolbar-right">${actions}</div></div>`
+  return `<div class="toolbar tactic-stage-toolbar"><div class="toolbar-left">${settings}</div><div class="toolbar-right">${actions}</div></div>`
     +(ext.noticeOpen&&notice?`<div class="plain-notice">${X(notice).replace(/\n/g,'<br>')}${!archive&&adminMode()?simpleButton('안내 수정','v2-notice'):''}</div>`:'');
 }
 function minimumCarry(t){
@@ -1230,7 +1230,7 @@ function selectTacticRow(table,index){
  rows.forEach(row=>{const active=row===selected;row.classList.toggle('tactic-active-row',active);row.setAttribute('aria-selected',String(active));});return selected;
 }
 document.addEventListener('click',event=>{
- const cell=event.target.closest('.tactic-grid-wrap .instruction-cell');if(!cell)return;const table=cell.closest('.set-grid'),rows=[...table.querySelectorAll('tbody tr')];selectTacticRow(table,rows.indexOf(cell.closest('tr')));if(!event.target.closest('input,textarea,[contenteditable="true"]'))table.focus({preventScroll:true});
+ const cell=event.target.closest('.tactic-grid-wrap .set-grid tbody td');if(!cell)return;const table=cell.closest('.set-grid'),rows=[...table.querySelectorAll('tbody tr')];selectTacticRow(table,rows.indexOf(cell.closest('tr')));if(!event.target.closest('input,textarea,[contenteditable="true"]'))table.focus({preventScroll:true});
 });
 document.addEventListener('keydown',event=>{
  if(!['ArrowUp','ArrowDown','Home','End'].includes(event.key)||event.altKey||event.ctrlKey||event.metaKey||event.shiftKey||event.target.closest('input,textarea,[contenteditable="true"]'))return;
@@ -1505,7 +1505,7 @@ document.addEventListener('click',async event=>{const button=event.target.closes
  if(action==='set-theme'||action==='theme'){data.settings.theme=action==='theme'?(data.settings.theme==='light'?'dark':'light'):value;persist();render();return;}
  if(action==='archive-detail'||action==='v2-switch-month'){switchMonthTo(id,action==='archive-detail');return;}
  if(action==='v2-settings'){ext.settingsPage='display';nav('clan','settings');return;}if(action==='v2-settings-page'){ext.settingsPage=value;render();return;}if(action==='v2-lock'){toggleWriter();return;}
- if(action==='v2-combo-stage'){const stage=Number(value);if(stage===ext.stage||!(stage===4||stage===3&&thirdStageVisible()))return;flushGrid();ext.stage=stage;ext.workGroup='main';ext.workEditing=false;if(ui.boss===-1)ui.boss=0;render();return;}if(action==='v2-toggle-notice'){ext.noticeOpen=!ext.noticeOpen;render();return;}
+ if(action==='v2-combo-stage'){const stage=Number(value);if(stage===ext.stage||!(stage===4||stage===3&&thirdStageVisible()))return;flushGrid();ext.stage=stage;ui.tabs.tactics=stage===3?'stage3':'workspace';ext.workGroup='main';ext.workEditing=false;if(ui.boss===-1)ui.boss=0;history.replaceState(null,'','#tactics/'+ui.tabs.tactics);render();return;}if(action==='v2-toggle-notice'){ext.noticeOpen=!ext.noticeOpen;render();return;}
  if(action==='v2-notice'){if(!ensureEdit())return;openDrawer(ext.stage+'단계 조합 안내',`<div class="field"><label for="combo-notice">안내</label><textarea id="combo-notice" name="notice" rows="10">${X(data.notices[ext.stage]||'')}</textarea></div>`,`<button type="submit" class="button primary">저장</button>`,'',true,'v2-notice');return;}
  if(action==='v2-work-group'){flushGrid();ext.workGroup=value;ext.carryTimeRange='all';ext.workEditing=false;ui.carry=90;render();return;}if(action==='v2-select-tactic'){
   flushGrid();if(ui.selectedTactic!==id){ui.selectedTactic=id;ui.carry=defaultReceivedTime(activeTactic());}
@@ -1784,14 +1784,21 @@ matchName=(member,query)=>partyTools.matchesMember(member,query,chosung);
 function fullTactics(){
   ui.tabs.tactics=tacticTab(ui.tabs.tactics);
   if(['converter','trash','review'].includes(ui.tabs.tactics)&&!adminMode())ui.tabs.tactics='workspace';
-  const work=ui.tabs.tactics==='workspace';
+  if(ui.tabs.tactics==='stage3'&&!thirdStageVisible()){
+    ui.tabs.tactics='workspace';
+    history.replaceState(null,'','#tactics/workspace');
+  }
+  ext.stage=ui.tabs.tactics==='stage3'?3:4;
   normalizeWorkspace();
-  const workCount=workspaceTactics('all').length+(ext.stage===4&&data.rules.carryVisible?workspaceTactics('carry').length:0);
-  const tabs=[['workspace','택틱 작업실',workCount],['external','이월 계산기'],...(adminMode()?[['review','외부 택틱'],['converter','택틱 변환기']]:[])];
-  const actions=work&&adminMode()&&ext.stage===4?simpleButton('삭제함','v2-tactic-trash')+simpleButton('택틱 추가','new-tactic','','primary'):'';
-  const views={workspace:completeWorkspace,external:completeExternal,review:externalReviewPage,converter:completeConverter,trash:completeTrash};
-  return titleBar(subpageNames.tactics[ui.tabs.tactics]||'택틱 작업실',actions)+pageTabs(tabs)+(views[ui.tabs.tactics]||completeWorkspace)();
+  const work=ui.tabs.tactics==='workspace';
+  const workCount=workspaceTactics('all',4).length+(data.rules.carryVisible?workspaceTactics('carry',4).length:0);
+  const tabs=[...(thirdStageVisible()?[['stage3','3단계 분배',workspaceTactics('all',3).length]]:[]),['workspace','택틱 작업실',workCount],['external','이월 계산기'],...(adminMode()?[['review','외부 택틱'],['converter','택틱 변환기']]:[])];
+  const actions=work&&adminMode()?simpleButton('삭제함','v2-tactic-trash')+simpleButton('택틱 추가','new-tactic','','primary'):'';
+  const views={stage3:completeWorkspace,workspace:completeWorkspace,external:completeExternal,review:externalReviewPage,converter:completeConverter,trash:completeTrash};
+  return titleBar(ui.tabs.tactics==='stage3'?'3단계 분배':subpageNames.tactics[ui.tabs.tactics]||'택틱 작업실',actions)+pageTabs(tabs)+(views[ui.tabs.tactics]||completeWorkspace)();
 }
+subpageNames.tactics.stage3='3단계 분배';
+
 fullClan=()=>{
   if(ui.tabs.clan==='characters'&&!adminMode())ui.tabs.clan='members';
   return titleBar(ui.tabs.clan==='settings'?'설정':'클랜 DB')+pageTabs([['members','클랜원'],['alumni','역대 클랜원'],['rates','기여도'],['future','미래 보스'],...(adminMode()?[['characters','캐릭터·초상화']]:[]),['settings','설정']])+({members:()=>completeRoster(false),alumni:()=>completeRoster(true),rates:completeRates,future:futureBossSettings,characters:characterLibrary,settings:completeSettings}[ui.tabs.clan]||(()=>completeRoster(false)))();
@@ -3040,7 +3047,7 @@ function openWorkspaceTactic(t){
   flushGrid();ui.selectedTactic=t.id;ui.carry=defaultReceivedTime(t);
   ext.stage=t.stage;ext.workGroup=t.hidden?'hidden':t.category==='carry'?'carry':t.category;
   ext.carryTimeRange='all';ext.workEditing=false;
-  nav('tactics','workspace',{keepMonth:true});
+  nav('tactics',ext.stage===3?'stage3':'workspace',{keepMonth:true});
 }
 function openAppliedExternalTactic({month,stage,id}){
   if(!adminMode()||month!==ui.month&&!activateSeason(month))return;

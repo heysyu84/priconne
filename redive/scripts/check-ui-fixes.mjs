@@ -55,6 +55,20 @@ check('skip link focuses the current content without replacing the route or filt
 });
 
 
+check('record tabs precede day selection and keep the same heading across tabs',()=>{
+ const f=runtimeFixture();f.ui.section='records';f.ui.tabs.records='ranking';
+ const ranking=f.fullRecords(),tabs=ranking.indexOf('role="tablist"'),days=ranking.indexOf('class="records-day-filter"');
+ assert.ok(tabs>=0&&days>tabs);
+ assert.match(ranking.slice(days),/class="day-switch"/);
+ const heading=ranking.slice(0,tabs);
+ for(const tab of ['profile','history','hall','archive']){
+  f.ui.tabs.records=tab;
+  const html=f.fullRecords();
+  assert.equal(html.slice(0,html.indexOf('role="tablist"')),heading,tab);
+  assert.doesNotMatch(html.slice(0,html.indexOf('role="tablist"')),/day-switch/);
+ }
+});
+
 check('empty resource URLs remain as disabled monochrome header items',()=>{
  data.communityLinks=[{label:'망령 링크',url:''},{label:'세미 모음',url:'https://example.org/guide'},{label:'이월 모음',url:' '}];
  const html=app.evaluate('headerResourceButtons()');
