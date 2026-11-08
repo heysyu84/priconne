@@ -103,4 +103,38 @@ await check('the clan archive contains sourced events and excludes membership co
  assert.doesNotMatch(html,/\d+인|\d+명|클랜원 수|참가 인원/);
  assert.match(html,/<small class="archive-retirement-note">은퇴 이력은 2년 이상 소속된 클랜원만 기재했습니다\.<\/small><\/footer>/);
 });
+await check('the archive lists every long-serving retiree at the recorded month without modifying shared records',()=>{
+ const app=runtimeFixture();app.ui.section='records';app.ui.tabs.records='chronicle';
+ const before=JSON.stringify(app.sharedDocument()),html=app.fullRecords(),events=JSON.parse(JSON.stringify(app.evaluate('clanRetirementEvents()')));
+ const names=['SyN','깔콘','Zaahid','50091(상현)','둥둥팡팡','레예','루나','마르가리떼','송화가루','신유','아랑','아지르','앙쥬','JB','Nera','VoiDive'];
+ for(const name of names)assert.ok(events.some(event=>event[2].includes(name)),name);
+ assert.ok(events.some(event=>event[0]==='2025-06'&&event[2].includes('레예')));
+ assert.ok(events.some(event=>event[0]==='2026-07'&&event[2].includes('50091(상현)')&&event[2].includes('SyN')));
+ const dates=app.evaluate('clanArchiveEvents().map(event=>event[0])');
+ assert.equal(JSON.stringify(dates),JSON.stringify([...dates].sort()));
+ assert.match(html,/둥둥팡팡 · 송화가루 은퇴/);
+ assert.equal(JSON.stringify(app.sharedDocument()),before);
+});
+await check('retirement qualification uses unique membership months and retains earlier retirements after a return',()=>{
+ const app=runtimeFixture(),member=(id,name,from,to,extra={})=>({id,name,uid:id,status:'graduated',joined:from,left:to,periods:[{from,to}],...extra});
+ app.get().members=[
+  member('short','23개월','2024-01','2025-11'),
+  member('exact','24개월','2024-01','2025-12'),
+  member('overlap','중복 기간','2024-01','2025-11',{periods:[{from:'2024-01',to:'2024-12'},{from:'2024-06',to:'2025-11'}]}),
+  member('gap','두 번 소속','2020-01','2022-12',{periods:[{from:'2020-01',to:'2020-12'},{from:'2022-01',to:'2022-12'}]}),
+  member('return','복귀자','2020-01','',{status:'active',periods:[{from:'2020-01',to:'2022-01'},{from:'2024-01',to:null}]}),
+  member('exact','중복 UID','2024-01','2025-12'),
+  member('curated','메이코패스','2019-11','2023-05'),
+  member('unsafe','<b>이름</b>','2024-01','2025-12'),
+  member('invalid','잘못된 날짜','2024-01','2025-13')
+ ];
+ const events=JSON.parse(JSON.stringify(app.evaluate('clanRetirementEvents()'))),titles=events.map(event=>event[2]).join(' ');
+ assert.ok(titles.includes('24개월'));assert.ok(!titles.includes('23개월'));assert.ok(!titles.includes('중복 기간'));
+ assert.ok(titles.includes('두 번 소속'));assert.ok(!titles.includes('중복 UID'));assert.ok(!titles.includes('잘못된 날짜'));
+ assert.ok(events.some(event=>event[0]==='2022-01'&&event[2].includes('복귀자')));
+ assert.ok(!events.some(event=>event[0]==='2020-12'&&event[2].includes('두 번 소속')));
+ assert.equal(app.evaluate("clanArchiveEvents().filter(event=>event[2]==='메이코패스 은퇴').length"),1);
+ app.ui.section='records';app.ui.tabs.records='chronicle';const html=app.fullRecords();
+ assert.match(html,/&lt;b&gt;이름&lt;\/b&gt;/);assert.doesNotMatch(html,/<b>이름<\/b>/);
+});
 console.log(checks+' startup/archive regression checks passed');

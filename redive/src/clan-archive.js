@@ -35,9 +35,34 @@ const CLAN_ARCHIVE_EVENTS=[
  ['2026-07','전투','여명계 라비린스 업데이트','여명계 라비린스가 새로운 전투 콘텐츠로 추가됐다.']
 ];
 subpageNames.records.chronicle='아카이브';copyRegistry.add('아카이브');
+function clanRetirementEvents(){
+ const month=value=>String(value||'').slice(0,7),valid=value=>/^\d{4}-(0[1-9]|1[0-2])$/.test(value);
+ const recorded=new Set(CLAN_ARCHIVE_EVENTS.filter(event=>event[1]==='사람'&&event[2].endsWith(' 은퇴')).map(event=>event[0]+'|'+canonicalAwardName(event[2].slice(0,-3))));
+ const seen=new Set(),groups=new Map();
+ for(const member of data.members||[]){
+  const spans=(member.periods?.length?member.periods:[{from:member.joined,to:member.left}]).map(period=>({from:month(period.from),to:month(period.to)})).filter(period=>valid(period.from));
+  const dates=new Set(spans.map(period=>period.to).filter(valid));
+  if(member.status!=='active'&&valid(month(member.left)))dates.add(month(member.left));
+  const name=canonicalAwardName(member.name);
+  for(const date of dates){
+   const key=(member.uid||member.id||name)+'|'+date;
+   if(seen.has(key)||recorded.has(date+'|'+name))continue;
+   const periods=spans.filter(period=>period.from<=date).map(period=>({from:period.from,to:valid(period.to)&&period.to<date?period.to:date}));
+   const months=memberTenure({...member,periods},date);
+   if(months===null||months<24)continue;
+   seen.add(key);if(!groups.has(date))groups.set(date,[]);groups.get(date).push({name,months});
+  }
+ }
+ const tenure=months=>Math.floor(months/12)+'년'+(months%12?' '+months%12+'개월':'');
+ return [...groups].sort(([a],[b])=>a.localeCompare(b)).map(([date,people])=>{
+  people.sort((a,b)=>a.name.localeCompare(b.name,'ko'));
+  return [date,'사람',people.map(person=>person.name).join(' · ')+' 은퇴',people.map(person=>person.name+' · '+tenure(person.months)+' 소속').join(' / ')];
+ });
+}
+function clanArchiveEvents(){return [...CLAN_ARCHIVE_EVENTS,...clanRetirementEvents()].sort((a,b)=>a[0].localeCompare(b[0]));}
 function completeClanArchive(){
- const years=[...new Set(CLAN_ARCHIVE_EVENTS.map(e=>e[0].slice(0,4)))];
- const items=years.map(year=>'<section class="clan-archive-year" id="clan-archive-'+year+'" aria-labelledby="clan-archive-title-'+year+'"><h2 id="clan-archive-title-'+year+'">'+year+'<small>냥냥클랜의 기록</small></h2><ol>'+CLAN_ARCHIVE_EVENTS.filter(e=>e[0].startsWith(year)).map(([date,tag,title,body])=>'<li class="'+(tag==='기록 갱신'?'is-milestone':'')+'"><div class="archive-event-date"><time datetime="'+date+'">'+date.replace('-','.')+'</time><span>'+tag+'</span></div><div class="archive-event-copy"><h3>'+title+'</h3><p>'+body+'</p></div></li>').join('')+'</ol></section>').join('');
+ const events=clanArchiveEvents(),years=[...new Set(events.map(e=>e[0].slice(0,4)))];
+ const items=years.map(year=>'<section class="clan-archive-year" id="clan-archive-'+year+'" aria-labelledby="clan-archive-title-'+year+'"><h2 id="clan-archive-title-'+year+'">'+year+'<small>냥냥클랜의 기록</small></h2><ol>'+events.filter(e=>e[0].startsWith(year)).map(([date,tag,title,body])=>'<li class="'+(tag==='기록 갱신'?'is-milestone':'')+'"><div class="archive-event-date"><time datetime="'+date+'">'+date.replace('-','.')+'</time><span>'+X(tag)+'</span></div><div class="archive-event-copy"><h3>'+X(title)+'</h3><p>'+X(body)+'</p></div></li>').join('')+'</ol></section>').join('');
  return '<article class="clan-archive"><header class="clan-archive-intro"><div><span class="archive-eyebrow">NYANGNYANG CLAN · SINCE 2019</span><h2>다시 모여,<br>이어 온 이야기.</h2><p>결성과 동면, 두 번의 재결성.<br>함께 쌓아 온 냥냥클랜의 굵직한 순간들을 펼칩니다.</p></div><div class="archive-highlight"><span>기록으로 남은 최고 순위</span><strong>2<small>위</small></strong><time datetime="2025-10">2025년 10월 달성</time></div></header><nav class="archive-year-nav" aria-label="연혁 연도">'+years.map(year=>'<a href="#clan-archive-'+year+'" data-action="clan-archive-year" data-value="'+year+'">'+year+'</a>').join('')+'</nav><div class="clan-archive-timeline">'+items+'</div><footer class="clan-archive-source"><p>2019년부터 이어 온 냥냥클랜의 발자취.<br>함께 만드는 다음 이야기도 이곳에 이어집니다.</p><small class="archive-retirement-note">은퇴 이력은 2년 이상 소속된 클랜원만 기재했습니다.</small></footer></article>';
 }
 document.addEventListener('click',event=>{const link=event.target.closest('[data-action="clan-archive-year"]');if(!link)return;event.preventDefault();event.stopImmediatePropagation();document.getElementById('clan-archive-'+link.dataset.value)?.scrollIntoView({behavior:'smooth',block:'start'});},true);
