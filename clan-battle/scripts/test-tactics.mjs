@@ -23,7 +23,7 @@ assert.equal(carry.filter(t=>t.boss===3).length,6);
 assert.equal(carry.filter(t=>t.boss===4).length,4);
 assert.equal(carry.filter(t=>t.boss===5).length,6);
 const firstCarry=carry.find(t=>t.id==='carry-2026-10-1-3');
-assert.deepEqual(firstCarry.rows[0].checked,[true,false,true,true,true,false],'SET characters reverse with display lineup');
+assert.deepEqual(firstCarry.rows[0].checked,[true,true,true,false,true,false],'SET characters match the preserved OOOXO source snapshot and displayed lineup');
 assert.equal(firstCarry.expectedDamage,'6,010만~6,020만');
 assert.equal([...carry].sort(compareTactics)[0].id,firstCarry.id);
 firstCarry.note='관리자 수정 유의사항';
