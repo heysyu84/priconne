@@ -408,8 +408,6 @@ html[data-text-scale] .stage-lineup-party .unit strong { font-size: .78rem !impo
   padding-left: 2px;
   box-sizing: border-box;
 }
-.workspace-timeline .set-grid td.set-check:nth-child(2),
-.workspace-timeline .set-grid th:nth-child(2) { border-left: 2px solid var(--line); }
 .workspace-timeline .set-grid .instruction-cell { padding: 5px 6px; vertical-align: middle; }
 .workspace-timeline .tactic-instruction-line { display: grid; grid-template-columns: var(--tactic-time-col) minmax(0,1fr); align-items: baseline; }
 .workspace-timeline .tactic-time { color: var(--accent); font-weight: 740; font-variant-numeric: tabular-nums; padding-right: 4px; }
@@ -512,7 +510,6 @@ html[data-text-scale] .workspace-timeline .instruction-cell textarea {
 .workspace-distribution[open] > summary > svg { transform: rotate(180deg); }
 .workspace-distribution:not([open]) > summary { border-bottom: 0; }
 .distribution-count { font-size: .75rem; color: var(--muted); }
-.workspace-timeline .set-grid :is(td,th):nth-child(2) { border-left-width: 1px; }
 .workspace-timeline .set-grid :is(td,th):nth-child(7) { border-left: 2px solid var(--line); }
 .workspace-timeline .set-grid th.set-auto { text-align: center !important; padding-inline: 0; vertical-align: middle; }
 .workspace-timeline .set-grid th.set-auto > span { display: block; width: 100%; margin: 0; text-align: center; }
