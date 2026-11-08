@@ -2,7 +2,7 @@ import {replayMonth as engineReplay,bossProgress as engineProgress,contribution 
 import {convertForeignTactic,foreignSuggestions} from './tactic-parser.mjs?v=20261030-except01';
 import * as partyTools from './party-tools.mjs?v=20261026-log-keys01';
 import * as logOrder from './log-order.mjs';
-import * as legacyTools from './legacy-tools.mjs?v=20261107-balanced01';
+import * as legacyTools from './legacy-tools.mjs?v=20261108-clan-identity-cat03';
 const ICONS={
  battle:'M4 3 14 13M3 3l1 5 4-4-5-1ZM10 15l-5 5M3 18l3 3M20 3 10 13M21 3l-1 5-4-4 5-1ZM14 15l5 5M18 21l3-3',
  strategy:'M8 3h8v3H8V3ZM7 4H4v18h16V4h-3M8 11h8M8 15h5M8 19h7',

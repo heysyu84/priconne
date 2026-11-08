@@ -7,7 +7,8 @@ for(const path of ['redive/public/app.js','docs/compact/app.js'])assert.ok(read(
 for(const name of ['battle-image-import.mjs','battle-image-ocr.mjs','battle-image-readings.mjs']){
  assert.equal(read('redive/public/compat/'+name),read('docs/compact/compat/'+name),name+' deployment copy');
 }
-const version='20261026-ocr-regions09';
-for(const path of ['redive/public/app.js','docs/compact/app.js','redive/public/legacy-tools.mjs','docs/compact/legacy-tools.mjs','redive/scripts/build.mjs'])assert.ok(read(path).includes('?v='+version),path+' must invalidate cached OCR imports');
+const version='20261026-ocr-regions09',wrapperVersion='20261108-clan-identity-cat03';
+for(const path of ['redive/public/legacy-tools.mjs','docs/compact/legacy-tools.mjs'])assert.ok(read(path).includes('battle-image-import.mjs?v='+version),path+' must invalidate the OCR module');
+for(const path of ['redive/public/app.js','docs/compact/app.js','redive/scripts/build.mjs'])assert.ok(read(path).includes('legacy-tools.mjs?v='+wrapperVersion),path+' must invalidate the retained-tools wrapper');
 for(const path of ['redive/public/index.html','docs/index.html'])assert.match(read(path),/app\.js\?v=[^\"]+/,path+' must invalidate the application entrypoint');
 console.log('PASS: source and deployment modules, alias handlers and OCR cache versions are synchronized');

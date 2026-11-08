@@ -1225,6 +1225,27 @@ html[data-text-scale] .calculator-box .carry-estimate-metric>span{font-size:calc
 html[data-text-scale] .calculator-box .carry-estimate-metric>strong{font-size:calc((17px) * var(--text-scale,1))!important}
 }
 html[data-text-scale] .history-table .honors-note-cell strong{font-size:inherit!important}
+@media(max-width:760px){
+html[data-text-scale] .recommendation-list>.combo-card .unit strong{font-size:calc((clamp(9px,3.6cqw,12px)) * var(--text-scale,1))!important}
+html[data-text-scale] .recommendation-list>.combo-card .unit small{font-size:calc((10px) * var(--text-scale,1))!important}
+html[data-text-scale] .recommendation-list>.combo-card .combo-metadata dt{font-size:calc((10px) * var(--text-scale,1))!important}
+html[data-text-scale] .recommendation-list>.combo-card .combo-metadata dd{font-size:calc((12px) * var(--text-scale,1))!important}
+}
+html[data-text-scale] .manual-plan-count{font-size:calc((12px) * var(--text-scale,1))!important}
+html[data-text-scale] .manual-plan-count strong{font-size:calc((13px) * var(--text-scale,1))!important}
+html[data-text-scale] .manual-plan-stat{font-size:calc((12px) * var(--text-scale,1))!important}
+html[data-text-scale] .manual-plan-stat strong{font-size:calc((13px) * var(--text-scale,1))!important}
+html[data-text-scale] .manual-plan-status{font-size:calc((11px) * var(--text-scale,1))!important}
+html[data-text-scale] .manual-plan-actions>.button{font-size:calc((11px) * var(--text-scale,1))!important}
+html[data-text-scale] .manual-plan-note{font-size:calc((11px) * var(--text-scale,1))!important}
+html[data-text-scale] .manual-plan-note>.button{font-size:calc((11px) * var(--text-scale,1))!important}
+@media(max-width:760px){
+html[data-text-scale] .manual-plan-count,
+html[data-text-scale] .manual-plan-stat{font-size:calc((11px) * var(--text-scale,1))!important}
+html[data-text-scale] .manual-plan-count strong,
+html[data-text-scale] .manual-plan-stat strong{font-size:calc((12px) * var(--text-scale,1))!important}
+html[data-text-scale] .manual-plan-status{font-size:calc((10.5px) * var(--text-scale,1))!important}
+}
 /* compat/battle-image-import.css */
 html[data-text-scale] .bli-head h2{font-size:calc((clamp(20px,2vw,25px)) * var(--text-scale,1))!important}
 html[data-text-scale] .bli-pick span,

@@ -71,7 +71,7 @@ assert.ok(archiveBundle.includes("archiveMode:splitStorage?'v1':undefined"));
 assert.ok(archiveBundle.includes('data-open-archive'));
 const finishCss=fs.readFileSync(new URL('../public/finish.css',import.meta.url),'utf8');
 assert.ok(finishCss.includes('Eight desktop destinations use the whole navigation row'));
-assert.ok(finishCss.includes('.content{max-width:1360px}'),'Desktop canvas should have a readable cap without squashing tables');
+assert.ok(finishCss.includes('.content{max-width:980px}'),'Desktop canvas should retain the configured 980px cap');
 assert.ok(finishCss.includes('grid-template-columns:repeat(8,minmax(0,1fr))'),'Eight desktop destinations should get eight grid cells');
 assert.ok(finishCss.includes('.sidebar .nav .symbol {display:inline-flex'),'Mid-width desktop symbols must remain visible');
 assert.ok(!finishCss.includes('.sidebar .nav .symbol {display:none}'),'Do not hide nav icons above the mobile breakpoint');
@@ -90,6 +90,7 @@ console.log('PASS: both DB tables share boss-chip dimensions and all top-record 
 
 
 // The collapsed battle-log entry form must not be shown or usable without editor privileges.
+const battleWorkflow=fs.readFileSync(new URL('../public/workflow.mjs',import.meta.url),'utf8');
 assert.ok(battleWorkflow.includes('const canSubmit=()=>canEdit();'),
   'Public battle-log viewers must not see the entry composer');
 assert.ok(battleWorkflow.includes("if(!canSubmit())return '';"),
@@ -101,7 +102,6 @@ assert.ok(battleWorkflow.includes('<details class="panel quick-panel"'),
 
 // Mobile battle-log table must not inherit oversized desktop column minima.
 // Leave exact numeric damage and HP content intact; shrink only its layout.
-const battleWorkflow=fs.readFileSync(new URL('../public/workflow.mjs',import.meta.url),'utf8');
 assert.ok(battleWorkflow.includes("b.locked?'disabled aria-disabled=")&&battleWorkflow.includes("selectedBoss?.locked")&&battleWorkflow.includes("b.locked?' (잠김)':''"),
   'Locked bosses should be unavailable in the quick-entry boss picker and refused at submission');
 assert.ok(battleWorkflow.includes("el.id === 'quick-damage' && (event.code === 'Space' || event.key === ' ')"),
@@ -150,7 +150,7 @@ const guildDashboardCss=fs.readFileSync(new URL('../public/guild.css',import.met
 const responsiveDashboardCss=fs.readFileSync(new URL('../public/responsive.css',import.meta.url),'utf8');
 assert.ok(guildUi.includes("solo=!!slot&&!slot.carry&&!slot.pending")&&guildUi.includes("solo?' is-solo':''"),
   'A normal attack without carry should receive a full-width slot');
-assert.ok(guildUi.includes('title="미사용 이월">★')&&guildUi.includes('chip(slot.carry.boss)'),
+assert.ok(guildUi.includes('aria-label="미사용 이월')&&guildUi.includes("seconds+'초':'★'")&&guildUi.includes('chip(slot.carry.boss)'),
   'Unused and used carry indicators should remain visible');
 assert.ok(guildDashboardCss.includes('.dashboard-table .attack-slot.is-solo .boss-chip')&&responsiveDashboardCss.includes('grid-column:1/-1'),
   'Single-boss attack should occupy both halves on desktop and mobile');
@@ -160,7 +160,7 @@ assert.ok(!tacticalUi.includes('state.query'),'Tactic list must not be filtered 
 assert.ok(tacticalUi.includes('class="tw-carry-entry"')&&tacticalUi.includes('>초기화</button>'),'Mobile carry field and apply action should be grouped and reset labeled correctly');
 assert.ok(battleWorkflow.includes('mini-boss-inline')&&battleWorkflow.includes('mini-boss-progress'),'Mobile boss needs horizontal name, stage and lap');
 assert.ok(battleWorkflow.includes('class="pill ${e.carry?')&&battleWorkflow.includes('battle-kind'),'Battle log type must use shared colored pills');
-assert.ok(guildUi.includes('daily-stat daily-damage')&&guildUi.includes('daily-stat daily-contribution'),'Daily historical damage and contribution must have separate labels and values');
+assert.ok(guildUi.includes('daily-metric daily-damage')&&guildUi.includes('daily-metric daily-contribution'),'Daily historical damage and contribution must have separate labels and values');
 assert.match(finishCss,/\.datatable thead th,[\s\S]*?table\.tw-grid thead th\s*\{\s*text-align:center!important/,'Data table headings should be centered by default');
 assert.match(finishCss,/\.tw-group-tabs \.tw-carry-controls\s*\{\s*display:flex/,'Mobile carry controls should pack together on the right');
 assert.match(finishCss,/\.profile-activity-grid \.daily-profile-bars>div>\.daily-damage\s*\{grid-column:2/,'Daily history should separate damage and contribution');
@@ -189,7 +189,7 @@ const appClient=fs.readFileSync(new URL('../public/clan.js',import.meta.url),'ut
 const displayScript=fs.readFileSync(new URL('../public/display-settings.mjs',import.meta.url),'utf8');
 assert.ok(!compactCombos.includes("['detail', '상세']") && !compactCombos.includes('savedView()'),
   'Recommendation cards must no longer offer or restore the deleted detailed mode');
-assert.ok(compactCombos.includes("['4', '4단계']") && compactCombos.includes("['planner', '3타 분배']"),
+assert.ok(compactCombos.includes("['4', '4단계']") && compactCombos.includes('data-combo-action="recommend"') && compactCombos.includes('data-combo-action="toggle-planner"'),
   'The 3-attack optimizer remains reachable alongside the single list');
 assert.ok(compactCombos.includes('TP ${tpLabel(combo.tp)}') && compactCombos.includes('combo-mini-chip is-tp'),
   'Integer TP values must be displayed with a decimal and fixed width');
@@ -200,14 +200,11 @@ assert.ok(compactCss.includes('border-top:5px solid var(--boss-accent') &&
 const logStart=appClient.indexOf('function logTable('),logEnd=appClient.indexOf('function battle(){',logStart);
 const recentLog=appClient.slice(logStart,logEnd);
 assert.ok(recentLog.includes('<th class="member-heading">클랜원</th>'));
-assert.ok(recentLog.indexOf('기록 피해량</th>') < recentLog.indexOf('<th>유형</th>') &&
-  recentLog.indexOf('<th>유형</th>') < recentLog.indexOf('실제 피해량</th>') &&
-  recentLog.indexOf('실제 피해량</th>') < recentLog.indexOf('기여도</th>'),
-  'Recent log columns should follow recorded damage, type, actual damage and contribution');
-assert.ok(recentLog.indexOf('<td class="number">${nf(e.damage)}</td>') <
-  recentLog.indexOf('<td class="carry-cell">') &&
-  recentLog.indexOf('<td class="carry-cell">') <
-  recentLog.indexOf('<td class="number calculated">${nf(e.actual)}</td>'),
+assert.match(recentLog,/기록 피해량<\/th><th class="type-heading">유형<\/th>/,
+  'Recent compact logs keep recorded damage followed by attack type');
+assert.doesNotMatch(recentLog,/>실제 피해량<\/th>|>기여도<\/th>/,
+  'Calculated metrics remain in the detailed battle log');
+assert.ok(recentLog.indexOf('${nf(e.damage)') < recentLog.indexOf('<td class="carry-cell">'),
   'Recent log body must follow its column headings');
 assert.ok(readabilityCss.includes('white-space:nowrap!important') &&
   readabilityCss.includes('.recent-battle-table .member-heading{width:19%}'),
