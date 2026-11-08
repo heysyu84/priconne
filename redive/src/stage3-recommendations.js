@@ -37,5 +37,5 @@ document.addEventListener('click',event=>{
  }else if(action==='stage3-restore'){
   if(!target?.deletedAt)return;checkpoint();for(const t of records)if(t.id===id)t.deletedAt=null;
  }else return;
- ext.openComboId=null;persist();closeDrawer();render();toast(action==='stage3-restore'?'3단계 조합 복원':'3단계 조합을 삭제함으로 이동',true);
+ persist();closeDrawer();render();toast(action==='stage3-restore'?'3단계 조합 복원':'3단계 조합을 삭제함으로 이동',true);
 },true);

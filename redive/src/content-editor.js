@@ -38,7 +38,7 @@ function applySiteCopy(root){
 }
 function collectCopyCatalog(){
   if(!document.createElement)return;
-  const savedUi={...ui,tabs:{...ui.tabs},picks:[...ui.picks]},savedExt={...ext};
+  const savedUi={...ui,tabs:{...ui.tabs}},savedExt={...ext};
   for(const [section,tabs]of Object.entries({overview:['bosses','members','logs'],tactics:['combos','workspace','tools','external','converter','trash'],records:['ranking','profile','archive','history','hall'],clan:['members','alumni','rates','characters']}))for(const tab of tabs){
     try{ui.section=section;if(tab)ui.tabs[section]=tab;const template=document.createElement('template');template.innerHTML=renderPage();applySiteCopy(template.content);}catch{}
   }
@@ -86,7 +86,7 @@ completeSettings=()=>{
 };
 fullClan=()=>titleBar(ui.tabs.clan==='settings'?'설정':'클랜 DB')+pageTabs([['members','클랜원'],['alumni','역대 클랜원'],['rates','기여도'],['future','미래 보스'],['characters','캐릭터·초상화'],['settings','설정']])+({members:()=>completeRoster(false),alumni:()=>completeRoster(true),rates:completeRates,future:futureBossSettings,characters:characterLibrary,settings:completeSettings}[ui.tabs.clan]||(()=>completeRoster(false)))();
 document.addEventListener('click',async event=>{
-  const button=event.target.closest('[data-action]');if(!button||button.disabled)return;const action=button.dataset.action;if(!/^(copy-|future-)/.test(action))return;
+  const button=event.target.closest('[data-action]');if(!button||button.disabled)return;const action=button.dataset.action;if(!['copy-edit','copy-pick-start','copy-pick-stop','copy-reset'].includes(action)&&!action.startsWith('future-'))return;
   event.preventDefault();event.stopImmediatePropagation();
   if(action==='copy-edit')openCopyEditor(button.dataset.key);
   if(action==='copy-pick-start'){if(!ensureEdit())return;ext.copyPickMode=true;applySiteCopy(app);}

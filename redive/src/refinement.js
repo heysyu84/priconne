@@ -3,9 +3,9 @@ function applyGameScope(){
   for(const season of [data,...Object.values(data.seasons||{})]){
     season.rules.startStage=Math.min(4,Number(season.rules.startStage)||2);
     season.rules.levels=[1,2,3,4].map(stage=>({stage,count:stage===4?9999:Number(season.rules.levels.find(l=>l.stage===stage)?.count)||0}));
-    for(const t of season.tactics)t.stage=4;
+    for(const t of season.tactics)if(t.stage!==3)t.stage=4;
   }
-  if(ui.section==='tactics'&&ui.tabs.tactics==='planner'){ui.tabs.tactics='combos';ext.distributionOpen=true;}
+  if(ui.section==='tactics')ui.tabs.tactics=tacticTab(ui.tabs.tactics);
 }
 function pagedList(rows,key,size=10,unit='명'){
   const pages=Math.max(1,Math.ceil(rows.length/size));listPages[key]=Math.max(1,Math.min(pages,listPages[key]||1));
@@ -18,11 +18,6 @@ function openMemberInfo(id){
 function profileDayDonut(events){
   const days=Array.from({length:Math.min(Math.max(currentBattleDay(),ui.day,...data.logs.map(e=>e.day)),data.rules.days)},(_,i)=>i+1),day=Number(ext.profileDay)||0,rows=day?events.filter(e=>e.day===day):events;
   return `<section class="profile-donut"><div class="profile-chart-controls"><div class="day-pills" role="group" aria-label="개인 이력 일차">${[[0,'전체'],...days.map(d=>[d,d+'일차'])].map(([d,name])=>`<button data-action="v3-profile-day" data-value="${d}" class="${day===d?'active ':''}${d===currentBattleDay()?'day-current':''}" aria-pressed="${day===d}">${name}</button>`).join('')}</div>${metricSwitch('개인 이력')}</div>${richBossShare(rows,chartView.metric)}<div class="profile-chart-foot">${day?day+'일차':'전체 일차'} · 공격 ${rows.length}건</div></section>`;
-}
-function recommendationDistribution(){
-  if(!ext.distributionOpen)return '';
-  const plans=ext.foundPlans||[];
-  return `<section class="distribution-panel"><div class="sheet-heading"><h2>추천 분배</h2>${simpleButton('닫기','v3-distribution')}</div>${plans.length?rowTable(['추천 조합','합계 기대딜',''],plans.slice(0,5).map((p,i)=>`<tr><td>${p.ids.map(id=>{const t=tacticById(id);return `<span class="distribution-boss" style="${bossStyle(t.boss)}">${t.boss}넴</span>`;}).join('<span class="separator"> / </span>')}</td><td class="right numeric">${expectedDamageValue(p.damage)}</td><td class="right">${simpleButton('선택','v2-use-plan',String(i),'quiet')}</td></tr>`),'distribution-table'):'<p class="no-rows">겹치지 않는 3타 조합이 없습니다.</p>'}</section>`;
 }
 function attackSlot(slot,index){
   if(!slot)return '<span class="slot-unused">—</span>';
@@ -48,15 +43,13 @@ function syncAttackEntry(form){
   }
 }
 document.addEventListener('click',event=>{
-  const b=event.target.closest('[data-action]');if(b?.dataset.action==='clear-plan'){ext.onlyPicks=false;return;}if(!b||!b.dataset.action.startsWith('v3-'))return;
+  const b=event.target.closest('[data-action]');if(!b||!b.dataset.action.startsWith('v3-'))return;
   event.preventDefault();event.stopImmediatePropagation();
   const action=b.dataset.action;
   if(action==='v3-list-page'){listPages[b.dataset.group]=Number(b.dataset.value);render();}
   if(action==='v3-member-info')openMemberInfo(b.dataset.id);
   if(action==='v3-profile-day'){ext.profileDay=Number(b.dataset.value);chartView.boss=0;render();}
-  if(action==='v3-distribution'){ext.distributionOpen=!ext.distributionOpen;if(ext.distributionOpen){findPlans();if(ext.foundPlans?.length){ui.picks=[...ext.foundPlans[0].ids];ext.selectedSupports={...(ext.foundPlans[0].supports||{})};ext.onlyPicks=true;}}render();}
-  if(action==='v3-selected-only'){ext.onlyPicks=!ext.onlyPicks;render();}
-  if(action==='v3-boss-tactics'){nav('tactics','combos');ui.boss=Number(b.dataset.id);ext.stage=4;render();}
+  if(action==='v3-boss-tactics'){const boss=bossBy(Number(b.dataset.id));ext.stage=boss.stage===3&&thirdStageVisible()?3:4;ext.workGroup='main';nav('tactics',ext.stage===3?'stage3':'workspace',{boss:boss.id});}
 },true);
 document.addEventListener('change',event=>{
   const el=event.target;

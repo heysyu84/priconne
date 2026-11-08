@@ -61,7 +61,6 @@ function applySharedDocument(document,{initial=false}={}){
   ui.day=followLatest?defaultBattleDay():Math.min(ui.day,data.rules.days);
   if(ui.profile!=='__clan__'&&!data.members.some(m=>m.id===ui.profile))ui.profile='__clan__';
   if(!data.tactics.some(t=>t.id===ui.selectedTactic))ui.selectedTactic=data.tactics.find(t=>!t.hidden&&!t.deletedAt)?.id;
-  ui.picks=ui.picks.filter(id=>data.tactics.some(t=>t.id===id&&!t.hidden&&!t.deletedAt));
   ext.bossDraft=null;ext.rowUndo=[];ext.rowRedo=[];
   data.settings.editable=!!(syncState.canEdit&&data.settings.editable);
   syncState.baseline=sharedText();
@@ -132,7 +131,7 @@ function legacyDocument(){
   const old=readBrowser(KEY);if(old?.schema!==2||!old.seasons)return null;
   const seasons=structuredClone(old.seasons);
   if(old.activeMonth&&seasons[old.activeMonth])for(const key of SEASON_KEYS)if(old[key]!==undefined)seasons[old.activeMonth][key]=structuredClone(old[key]);
-  for(const season of Object.values(seasons)){season.rules.levels=season.rules.levels.filter(l=>l.stage<=4);for(const t of season.tactics)t.stage=4;}
+  for(const season of Object.values(seasons)){season.rules.levels=season.rules.levels.filter(l=>l.stage<=4);for(const t of season.tactics)if(t.stage!==3)t.stage=4;}
   return {schema:1,members:old.members,characters:old.characters,communityLinks:old.communityLinks||[],seasons,activeMonth:Object.keys(seasons).sort().at(-1),importedSource:old.importedSource};
 }
 function showLegacyReview(){

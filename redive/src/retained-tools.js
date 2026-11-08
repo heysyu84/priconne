@@ -1,7 +1,7 @@
 // Retain the useful original workflows inside the new navigation.
 const simplePastedRows=pasteRows;
 pasteRows=(text,t)=>/^(?:[01oOxX⭕❌]\t){5}[01oOxX⭕❌]\t/m.test(text)?simplePastedRows(text,t):legacyTools.pastedRows(text,[],t.party,data.characters);
-tacticRows=t=>{if(!t.rows)t.rows=pasteRows(t.text,t);return t.rows;};
+tacticRows=t=>{if(!t.rows)t.rows=pasteRows(t.text||'',t);return t.rows;};
 subpageNames.overview.logs='배틀로그';
 fullOverview=()=>{
   if(ext.importMode&&adminMode())return batchImportPage();
@@ -9,47 +9,36 @@ fullOverview=()=>{
   const action=tab==='logs'?simpleButton('이미지 등록','v2-import-images'):'';
   const heading=titleBar(name,action)+pageTabs([['bosses','상황판'],['members','대시보드'],['logs','배틀로그']]);
   if(tab==='members')return heading+operatingLine(false)+fullDashboard();
-  if(tab==='logs')return heading+battleLogContent();
+  if(tab==='logs')return heading+battleBossHealth()+battleLogContent();
   return heading+operatingLine(true)+bossStrip()+`<details class="fold optional-stats"><summary>전투 통계</summary>${overviewCharts()}</details>`;
 };
 fullBattle=()=>{ui.section='overview';ui.tabs.overview='logs';return fullOverview();};
 
-findPlans=()=>{
-  const rows=data.tactics.filter(t=>!t.hidden&&!t.deletedAt&&t.stage===4&&t.category!=='carry').map(t=>({...t,characters:t.party,expectedDamage:t.damage,manualCount:t.hands}));
-  const catalog=data.characters.map(c=>({...c,name:String(c.unitId||c.name),aliases:[c.name,...(c.aliases||[])]}));
-  const result=legacyTools.planThreeAttacks(rows,catalog,{distinctBosses:true,limit:12});
-  ext.foundPlans=result.plans.map(plan=>({ids:plan.attacks.map(a=>a.combo.id),damage:plan.totalDamage,supports:Object.fromEntries(plan.attacks.map(a=>[a.combo.id,a.supportIndex])),borrowCount:plan.borrowCount}));
-};
-function applyFoundPlan(index){const plan=ext.foundPlans?.[index];if(!plan)return;ui.picks=[...plan.ids];ext.selectedSupports={...plan.supports};ext.onlyPicks=true;render();}
-const rawSelectedParties=selectedParties;
-selectedParties=()=>rawSelectedParties().map(t=>({...t,support:ext.selectedSupports?.[t.id]??t.support}));
-const rawVisibleTactics=visibleTactics;
-visibleTactics=()=>rawVisibleTactics().map(t=>ui.picks.includes(t.id)&&ext.selectedSupports?.[t.id]!==undefined?{...t,support:ext.selectedSupports[t.id]}:t);
-recommendationDistribution=()=>{
-  if(!ext.distributionOpen)return '';
-  const plans=ext.foundPlans||[];
-  return `<section class="distribution-panel" aria-label="추천 분배">${plans.length?rowTable(['추천 조합 · 서포트','합계 기대딜',''],plans.slice(0,5).map((p,i)=>`<tr data-mobile-plan="${i}" class="${p.ids.length===ui.picks.length&&p.ids.every(id=>ui.picks.includes(id))?'is-selected':''}" tabindex="0" aria-label="${i+1}번째 추천 3타 조합 선택"><td>${p.ids.map(id=>{const t=tacticById(id),support=p.supports?.[id]??-1;return `<span class="distribution-team"><span class="distribution-boss" style="${bossStyle(t.boss)}">${t.boss}넴</span><small>${support>=0?X(t.party[support]):'서포트 자유'}</small></span>`;}).join('')}</td><td class="right numeric"><strong>${expectedDamageValue(p.damage)}</strong></td><td class="right">${simpleButton('선택','v2-use-plan',String(i),'quiet')}</td></tr>`),'distribution-table'):'<p class="no-rows">겹치지 않는 3타 조합이 없습니다.</p>'}</section>`;
-};
-
-
-/* Mobile recommendation picking uses the whole row/card, without stealing taps
-   from video links, detail controls, or the existing keyboard-accessible inputs. */
-function pickMobileRecommendation(event){
-  if(!window.matchMedia('(max-width:760px)').matches || !(event.target instanceof Element))return;
-  const target=event.target;
-  if(target.closest('a,button,input,select,textarea,label,summary,[contenteditable="true"]'))return;
-  const plan=target.closest('.distribution-panel[aria-label="추천 분배"] .distribution-table tbody tr[data-mobile-plan]');
-  if(plan){plan.querySelector('button[data-action="v2-use-plan"]')?.click();return;}
-  const card=target.closest('.recommendation-list .combo-card[data-combo]:not(.stage3-combo-card)');
-  if(!card||target.closest('.combo-expansion'))return;
-  card.querySelector('input[data-input="v2-pick-tactic"]')?.click();
+// Recommendations are display-only. Recalculate when the month, decks or aliases change.
+let distributionCache;
+function recommendedPlans(){
+  const rows=data.tactics.filter(t=>t.stage===4&&t.boss>0&&t.category!=='carry'&&!t.hidden&&!t.deletedAt)
+    .map(t=>({id:t.id,stage:t.stage,boss:t.boss,characters:t.party,expectedDamage:t.damage,manualCount:t.hands}));
+  const catalog=data.characters.map(c=>({name:String(c.unitId||c.name),aliases:[c.name,...(c.aliases||[])]}));
+  const bossHp=Object.fromEntries(data.bossSettings.map(b=>[b.id,Number(b.hp[4])/1e8]));
+  const signature=JSON.stringify([ui.month,rows,catalog,bossHp]);
+  if(distributionCache?.signature!==signature){
+    distributionCache={signature,plans:legacyTools.planThreeAttacks(rows,catalog,{distinctBosses:true,limit:5,bossHp}).plans};
+  }
+  return distributionCache.plans;
 }
-document.addEventListener('click',pickMobileRecommendation,true);
-document.addEventListener('keydown',event=>{
-  if(!['Enter',' '].includes(event.key)||!(event.target instanceof Element))return;
-  const plan=event.target.closest('.distribution-panel[aria-label="추천 분배"] .distribution-table tbody tr[data-mobile-plan]');
-  if(plan&&event.target===plan){event.preventDefault();plan.querySelector('button[data-action="v2-use-plan"]')?.click();}
-});
+function recommendationDistribution(){
+  const plans=recommendedPlans();
+  const rows=plans.map((plan,index)=>`<tr><th scope="row">${index+1}안</th>${plan.attacks.map(({combo,expectedDamage,supportIndex})=>{
+    const support=supportIndex<0?'-':combo.characters[supportIndex];
+    return `<td title="${X(combo.characters.join(' · '))}"><span class="distribution-attack" style="${bossStyle(combo.boss)}"><b>${combo.boss}넴</b><span class="numeric">${expectedDamageValue(expectedDamage)}</span></span><small class="distribution-support">서포트 ${X(support)}</small></td>`;
+  }).join('')}<td class="distribution-total numeric"><strong>${expectedDamageValue(plan.totalDamage)}</strong><span>억</span></td></tr>`).join('');
+  return `<details class="distribution-panel workspace-distribution" id="recommendation-distribution" ${ext.recommendationOpen?'open':''}><summary class="workspace-panel-title"><span class="panel-symbol">${icon('spark')}</span><strong>추천 분배</strong><span class="distribution-count">${plans.length}가지</span>${icon('down')}</summary>${plans.length?`<table class="distribution-board"><thead><tr><th scope="col">분배</th><th scope="col">1타</th><th scope="col">2타</th><th scope="col">3타</th><th scope="col">합계</th></tr></thead><tbody>${rows}</tbody></table>`:'<p class="no-rows">서로 다른 보스로 구성할 수 있는 3타 조합이 없습니다.</p>'}</details>`;
+}
+
+document.addEventListener('toggle',event=>{
+  if(event.target.id==='recommendation-distribution'&&event.target.isConnected)ext.recommendationOpen=event.target.open;
+},true);
 
 const logContentWithoutWarnings=battleLogContent;
 battleLogContent=()=>{
@@ -155,7 +144,7 @@ function commitCompatibleCarry(){
   if(!ensureEdit())return;const rows=ext.carryImport||[];if(!rows.length){toast('가져올 표를 먼저 확인하세요.');return;}
   if(rows.some(t=>t.party.length!==5||new Set(t.party).size!==5)){toast('각 택틱의 캐릭터 5명을 확인하세요.');return;}
   checkpoint();
-  for(const row of rows){const t={...structuredClone(row),id:uid(),party:[...row.party],stars:Array.from({length:5},(_,i)=>Number(row.stars[i])||defaultCharacterStars([row.party[i]])[0]),stage:4,category:'carry',title:row.party.join(' '),support:-1,hidden:false,links:[],duration:Number.isFinite(row.duration)?row.duration:90,rows:row.rows?row.rows.map(r=>({...r,id:uid()})):null};t.requiredCarrySeconds=minimumCarry(t);t.note=displayTacticNote(t);data.tactics.push(t);ui.selectedTactic=t.id;}
+  for(const row of rows){const t={...structuredClone(row),id:uid(),party:[...row.party],stars:Array.from({length:5},(_,i)=>Number(row.stars[i])||defaultCharacterStars([row.party[i]])[0]),stage:4,category:'carry',title:row.party.join(' '),support:-1,hidden:false,links:[],duration:Number.isFinite(row.duration)?row.duration:90,rows:row.rows?row.rows.map(r=>({...r,id:uid()})):null};t.requiredCarrySeconds=minimumCarry(t);t.note=displayTacticNote(t);data.tactics.push(t);ui.selectedTactic=t.id;ui.carry=defaultReceivedTime(t);}
   persist();closeDrawer();ext.workGroup='carry';ext.carryTimeRange='all';nav('tactics','workspace');toast(rows.length+'개 이월 택틱 등록',true);
 }
 renderCarryPreview=()=>{
@@ -228,9 +217,6 @@ document.addEventListener('change',async event=>{
 },true);
 document.addEventListener('click',event=>{
   const button=event.target.closest('[data-action]');if(!button||!button.dataset.action.startsWith('r-'))return;event.preventDefault();event.stopImmediatePropagation();
-  if(button.dataset.action==='r-clear-plan'){clearRecommendedPlan();return;}
-  if(button.dataset.action==='r-apply-supports'){const plan=manualPlanComparison();if(plan.unresolved.length)return;ext.selectedSupports??={};plan.chosen.forEach((t,i)=>{ext.selectedSupports[t.id]=plan.assignment[i];});render();toast('서포트 배치를 적용했습니다.',true);return;}
-  if(button.dataset.action==='r-toggle-distribution'){ext.distributionOpen=!ext.distributionOpen;if(ext.distributionOpen)findPlans();render();return;}
   if(button.dataset.action==='r-image-back'){ext.importMode=false;nav('overview','logs');}
   if(button.dataset.action==='r-log-warnings'){ext.warningOnly=!ext.warningOnly;ui.page=1;render();}
   if(button.dataset.action==='r-hud-boss'){nav('overview','logs');ui.boss=Number(button.dataset.id);render();}

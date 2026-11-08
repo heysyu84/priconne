@@ -34,15 +34,25 @@ portraitHtml=(name,star)=>{
 };
 matchName=(member,query)=>partyTools.matchesMember(member,query,chosung);
 
-fullTactics=()=>{
-  if(ui.tabs.tactics==='tools')ui.tabs.tactics='external';
+function fullTactics(){
+  ui.tabs.tactics=tacticTab(ui.tabs.tactics);
   if(['converter','trash','review'].includes(ui.tabs.tactics)&&!adminMode())ui.tabs.tactics='workspace';
-  if(ui.tabs.tactics==='planner'){ui.tabs.tactics='combos';ext.distributionOpen=true;findPlans();}
+  if(ui.tabs.tactics==='stage3'&&!thirdStageVisible()){
+    ui.tabs.tactics='workspace';
+    history.replaceState(null,'','#tactics/workspace');
+  }
+  ext.stage=ui.tabs.tactics==='stage3'?3:4;
+  normalizeWorkspace();
   const work=ui.tabs.tactics==='workspace';
-  const activeMenuTactics=data.tactics.filter(t=>!t.hidden&&!t.deletedAt&&t.stage===4),comboCount=activeMenuTactics.filter(t=>t.category!=='carry').length,workCount=comboCount+(data.rules.carryVisible?activeMenuTactics.filter(t=>t.category==='carry').length:0);
-  const tabs=[['workspace','택틱 작업실',workCount],['combos','추천 조합',comboCount],['external','이월 계산기'],...(adminMode()?[['review','외부 택틱'],['converter','택틱 변환기']]:[])];
-  return titleBar('택틱',work&&adminMode()?simpleButton('삭제함','v2-tactic-trash')+simpleButton('택틱 추가','new-tactic','','primary'):'')+pageTabs(tabs)+({combos:recommendationRows,workspace:completeWorkspace,external:completeExternal,review:externalReviewPage,converter:completeConverter,trash:completeTrash}[ui.tabs.tactics]||completeWorkspace)();
-};
+  const workCount=workspaceTactics('all',4).length+(data.rules.carryVisible?workspaceTactics('carry',4).length:0);
+  const tabs=[...(thirdStageVisible()?[['stage3','3단계 분배',workspaceTactics('all',3).length]]:[]),['workspace','택틱 작업실',workCount],['external','이월 계산기'],...(adminMode()?[['review','외부 택틱'],['converter','택틱 변환기']]:[])];
+  const actions=work&&adminMode()?simpleButton('삭제함','v2-tactic-trash')+simpleButton('택틱 추가','new-tactic','','primary'):'';
+  const views={stage3:completeWorkspace,workspace:completeWorkspace,external:completeExternal,review:externalReviewPage,converter:completeConverter,trash:completeTrash};
+  const navigation=`<div class="tactics-subnav"><button type="button" class="button icon-button tactic-guide-toggle ${ext.noticeOpen?'active':''}" data-action="v2-toggle-notice" aria-label="택틱 공통 안내" title="택틱 안내" aria-expanded="${ext.noticeOpen}" aria-controls="tactic-common-guide">${icon('info')}</button>${pageTabs(tabs)}</div>`;
+  return titleBar(ui.tabs.tactics==='stage3'?'3단계 분배':subpageNames.tactics[ui.tabs.tactics]||'택틱 작업실',actions)+navigation+tacticGuidePanel()+(views[ui.tabs.tactics]||completeWorkspace)();
+}
+subpageNames.tactics.stage3='3단계 분배';
+
 fullClan=()=>{
   if(ui.tabs.clan==='characters'&&!adminMode())ui.tabs.clan='members';
   return titleBar(ui.tabs.clan==='settings'?'설정':'클랜 DB')+pageTabs([['members','클랜원'],['alumni','역대 클랜원'],['rates','기여도'],['future','미래 보스'],...(adminMode()?[['characters','캐릭터·초상화']]:[]),['settings','설정']])+({members:()=>completeRoster(false),alumni:()=>completeRoster(true),rates:completeRates,future:futureBossSettings,characters:characterLibrary,settings:completeSettings}[ui.tabs.clan]||(()=>completeRoster(false)))();
@@ -68,23 +78,14 @@ function videoButton(t,small=false,context=''){
   const label=video?(small?'영상':'원본 영상'):(small?'자료':'원본 자료');
   const cls=`button video-link${small&&context!=='combo'?' work-list-video':''}${context==='combo'?' combo-source-box':''}`;
   if(!url)return context==='combo'?`<span class="${cls} missing" aria-hidden="true"></span>`:small?`<span class="${cls} missing" aria-label="등록된 링크 없음"></span>`:'';
-  const glyph=video?'<svg class="video-play" viewBox="0 0 24 18" aria-hidden="true"><rect x="1" y="1" width="22" height="16" rx="5"/><path d="m10 5 7 4-7 4Z"/></svg>':'<svg class="source-document" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M14 3H6v18h12V7zM14 3v5h4M9 12h6M9 16h6"/></svg>';
+  const glyph=video&&context==='tactic-header'?'<svg class="video-play reference-play" viewBox="0 0 16 16" aria-hidden="true"><path d="m5 3 7 5-7 5Z"/></svg>':video?'<svg class="video-play" viewBox="0 0 24 18" aria-hidden="true"><rect x="1" y="1" width="22" height="16" rx="5"/><path d="m10 5 7 4-7 4Z"/></svg>':'<svg class="source-document" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M14 3H6v18h12V7zM14 3v5h4M9 12h6M9 16h6"/></svg>';
   return `<a class="${cls}" href="${X(url)}" style="${t.boss?bossStyle(t.boss):'--boss:#7186a1'}" target="_blank" rel="noopener noreferrer" aria-label="${X(t.boss+'넴 '+t.party.join(' ')+' '+label)}" title="${label}">${glyph}<span>${label}</span></a>`;
 }
-workspaceListItem=(item,selectedId)=>{
+function workspaceListItem(item,selectedId){
   const carry=item.category==='carry',seconds=carry?minimumCarry(item):null;
   const label=`${item.boss?item.boss+'넴':'미분류'} ${item.party.join(' ')}, 성급 ${item.stars.join('')}, 손컨 ${tacticHands(item)}, TP ${item.tp||'—'}, 기대딜 ${tacticDamageLabel(item)}`;
-  return `<div class="work-list-row ${carry?'is-carry':''}" style="${item.boss?bossStyle(item.boss):'--boss:#aeb5c1'}">${carry?`<div class="work-list-carry">${seconds===null?'이월시간 미입력':seconds+'초 이월'}</div>`:''}<button type="button" class="work-item work-list-fields ${item.id===selectedId?'active':''}" data-action="v2-select-tactic" data-id="${item.id}" aria-label="${X(label)}"><span class="work-list-boss">${item.boss?item.boss+'넴':'미분류'}</span><strong class="work-list-party">${X(item.party.join(' '))}</strong><span class="work-list-stars">${tacticStarString(item)}</span><small class="work-list-hands ${item.hands?'danger':''}"><span class="work-field-label">손컨 </span>${tacticHands(item)}</small><small class="work-list-tp ${tacticTpClass(item.tp)}"><span class="work-field-label">TP </span>${X(item.tp||'—')}</small><span class="work-list-damage"><span class="work-field-label">기대딜 </span>${tacticDamageLabel(item)}</span></button>${videoButton(item,true)}</div>`;
-};
-tacticReadingHeader=t=>{
-  const carry=t.category==='carry',note=displayTacticNote(t),needed=carry?minimumCarry(t):null,warning=carry&&needed!==null&&ui.carry<needed;
-  const memo=note?`<div class="tactic-note tactic-reading-note">${X(note).replace(/\n/g,'<br>')}</div>`:'';
-  const received=carry?`<section class="carry-summary"><div><span>필요 이월</span><strong>${needed===null?'—':needed+'초'}</strong></div><div class="field"><label for="carry-main-received">받은 이월 · 초</label><input id="carry-main-received" type="number" min="1" max="90" inputmode="numeric" data-input="ops-carry-received" value="${ui.carry}"></div><p class="carry-warning danger" ${warning?'':'hidden'}>필요 이월보다 짧습니다.</p></section>`:'';
-  const links=(t.links||[]).filter(link=>/^https?:\/\//i.test(link.url||''));
-  const sources=links.length?`<div class="tactic-intro-links">${links.map(link=>`<a class="button source-link" href="${X(link.url)}" target="_blank" rel="noopener noreferrer">${X(link.label)}</a>`).join('')}</div>`:'';
-  return `<div class="work-editor-head tactic-reading-head ${carry?'is-carry':''}">${carry?`<div class="tactic-intro-top">${received}</div>`:''}<div class="tactic-summary-row"><div class="tactic-identity"><h2>${t.boss?t.boss+'넴 · '+X(bossBy(t.boss).name):'미분류'}</h2><div class="tactic-metadata"><span class="${t.hands?'danger':''}">손컨 <b>${tacticHands(t)}</b></span> · <span class="${tacticTpClass(t.tp)}">TP <b>${X(t.tp||'—')}</b></span> · <span class="tactic-damage-group"><span class="tactic-damage-meta">기대딜 <strong>${tacticDamageLabel(t)}</strong></span>${videoButton(t)}</span></div>${sources}</div><div class="tactic-header-party">${party(t)}</div></div>${memo}${adminMode()?`<div class="work-actions">${simpleButton('편성 수정','edit-tactic',t.id)}${simpleButton(t.hidden?'다시 표시':'숨기기','hide-tactic',t.id)}${simpleButton('복제','duplicate-tactic',t.id)}${simpleButton('삭제','delete-tactic',t.id,'danger')}</div>`:''}</div>`;
-};
-comboDetailBody=t=>`<div class="combo-detail-controls"><label>이월 받은 시간 <input aria-label="이월 받은 시간" data-input="ops-combo-carry" data-id="${t.id}" value="${fmtTime(ui.carry)}" inputmode="numeric"></label>${simpleButton('본문 복사','copy-tactic',t.id)}${t.recommendationOnly?'':simpleButton('작업실에서 열기','v2-open-workspace',t.id)}${videoButton(t)}</div>${displayTacticNote(t)?`<p class="tactic-note">${X(displayTacticNote(t)).replace(/\n/g,'<br>')}</p>`:''}${renderTacticGrid(t,false)}`;
+  return `<div class="work-list-row ${carry?'is-carry':''}" style="${item.boss?bossStyle(item.boss):'--boss:#aeb5c1'}">${carry?`<div class="work-list-carry">${seconds===null?'이월시간 미입력':seconds+'초 이월'}</div>`:''}<button type="button" class="work-item work-list-fields ${item.id===selectedId?'active':''}" data-action="v2-select-tactic" data-id="${item.id}" aria-label="${X(label)}"><span class="work-list-boss">${item.boss?item.boss+'<span class="work-list-boss-suffix">넴</span>':'미분류'}</span><strong class="work-list-party">${item.party.map((name,index)=>`<span class="${partyNameClasses(item,name,index)}">${X(name)}</span>`).join(' ')}</strong><span class="work-list-stars">${tacticStarString(item)}</span><small class="work-list-hands ${item.hands?'danger':''}"><span class="work-field-label">손컨 </span>${tacticHands(item)}</small><small class="work-list-tp ${tacticTpClass(item.tp)}"><span class="work-field-label">TP </span>${X(item.tp||'—')}</small><span class="work-list-damage"><span class="work-field-label">기대딜 </span>${tacticDamageLabel(item)}<small class="work-list-damage-unit">억</small></span></button>${videoButton(item,true)}</div>`;
+}
 
 function calculatorPopover(){
   const b=bossBy(activeTactic()?.boss||ui.boss||1);
@@ -122,7 +123,7 @@ completeArchive=()=>{
   return html.replace(/<th[^>]*data-label="열기"[^>]*>열기<\/th>/g,'').replace(/<td[^>]*data-label="열기"[^>]*>[\s\S]*?<\/td>/g,'');
 };
 
-const canonicalAwardName=name=>name==='대기중(1호기)'?'대기중':name;
+const canonicalAwardName=name=>name==='대기중(1호기)'?'대기중':['50091','상현','50091 (상현)'].includes(name)?'50091(상현)':name;
 // A missing record or deliberate dormancy is not a personal award.
 const HISTORICAL_NO_AWARD_MONTHS=new Set(['2019-07','2019-08','2019-09','2019-10','2019-11','2019-12','2020-01','2020-03','2020-05']);
 const historicalAwardNote=month=>month==='2020-01'?'신년 유이 동면':HISTORICAL_NO_AWARD_MONTHS.has(month)?'기록유실':'';
@@ -315,5 +316,5 @@ document.addEventListener('keydown',event=>{if(event.key==='Escape')for(const po
 
 
 // Accept raw seconds or M:SS without rewriting the unfinished entry during typing.
-document.addEventListener('change',event=>{const field=event.target,key=field?.dataset?.input;const eligible=key==='v2-work-carry'||key==='v2-detail-carry'||key==='ops-combo-carry'||key==='v2-remaining-calculator'||key==='v2-external'&&field.id==='external-carry';if(!eligible)return;const seconds=timeToSec(field.value),cap=key==='v2-remaining-calculator'||key==='ops-combo-carry'?90:130;if(Number.isInteger(seconds)&&seconds>0&&seconds<=cap){field.value=fmtTime(seconds);field.removeAttribute('aria-invalid');}else field.setAttribute('aria-invalid','true');});
+document.addEventListener('change',event=>{const field=event.target,key=field?.dataset?.input;const eligible=key==='v2-work-carry'||key==='v2-detail-carry'||key==='v2-remaining-calculator'||key==='v2-external'&&field.id==='external-carry';if(!eligible)return;const seconds=timeToSec(field.value),cap=key==='v2-remaining-calculator'?90:130;if(Number.isInteger(seconds)&&seconds>0&&seconds<=cap){field.value=field.dataset.timeUnit==='seconds'?String(seconds):fmtTime(seconds);field.removeAttribute('aria-invalid');}else field.setAttribute('aria-invalid','true');});
 

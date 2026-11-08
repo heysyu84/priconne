@@ -101,5 +101,6 @@ await check('the clan archive contains sourced events and excludes membership co
  const app=runtimeFixture();app.ui.section='records';app.ui.tabs.records='chronicle';const html=app.fullRecords();
  assert.match(html,/리리다이브/);assert.match(html,/궁극 연성/);assert.match(html,/2025\.10/);assert.match(app.evaluate('CLAN_ARCHIVE_SOURCE'),/gid=1411801387/);assert.doesNotMatch(html,/원본|메코/);assert.match(html,/메이코패스/);
  assert.doesNotMatch(html,/\d+인|\d+명|클랜원 수|참가 인원/);
+ assert.match(html,/<small class="archive-retirement-note">은퇴 이력은 2년 이상 소속된 클랜원만 기재했습니다\.<\/small><\/footer>/);
 });
 console.log(checks+' startup/archive regression checks passed');

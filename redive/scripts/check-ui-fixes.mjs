@@ -79,6 +79,7 @@ check('one common guide serves every tactic tab and stage 3 ignores the prior bo
   const html=f.fullTactics();
   assert.equal((html.match(/data-action="v2-toggle-notice"/g)||[]).length,1,tab);
   assert.match(html,/class="tactics-subnav"/);
+  assert.ok(html.indexOf('tactic-guide-toggle')<html.indexOf('role="tablist"'),'the common guide is first in keyboard and visual order');
   assert.match(html,/빨간색 이름 = 부스터 캐릭터/);
   assert.match(html,/추천 서포트를 파란색/);
   assert.equal((html.match(/모의전/g)||[]).length,1,tab);

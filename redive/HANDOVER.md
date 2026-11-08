@@ -33,6 +33,10 @@
 
 ## 재빌드
 
+최근 화면 변경은 `src/`와 `public/app.js`를 함께 유지합니다. 생성 파일만 직접 수정하지 마세요. `node scripts/check-member-identities.mjs`가 과거 기록의 UID·이름과 원본 모듈/묶음 파일의 일치를 검사합니다. 화면 마지막 스타일인 `workspace-design.css`와 로딩 스타일은 자체 배율을 사용하므로 `text-scale.css`에 다시 중복 생성하지 않습니다.
+
+50091의 표시명은 `50091(상현)`이며 레예의 은퇴월은 `2025-06`입니다. SyN·VoDive·Nera UID는 각각 `236721957548`, `113821923458`, `716721947178`입니다. 기록을 다시 이관할 때도 이 확인값을 우선합니다.
+
 `redive/`에서 `node scripts/prepare-server.mjs`로 브라우저 묶음을 만들고, 저장소 루트에서 `node clan-battle/scripts/build-pages.mjs docs`를 실행합니다. 원래 루트 자산을 지우지 마세요. 공개 빌드는 `compact/` 자산 경로와 공용 API 메타를 자동으로 설정합니다. 미래 보스는 기존 자동 갱신 JSON을 사용하며 수동 수정이 우선합니다.
 
 검증 명령과 출처는 README에 있습니다. 새 캐릭터는 위치·별칭 자료에 추가하고 `build-character-reference.mjs`로 생성합니다. 수리아는 Summer Clear(135301), 수밀리아는 Summer Emilia(131901)입니다.

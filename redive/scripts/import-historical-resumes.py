@@ -8,7 +8,11 @@ import json,math,re,sys,datetime
 
 def number(v):return isinstance(v,(int,float)) and not isinstance(v,bool) and math.isfinite(v)
 def cell(row,col,default=None):return row[col] if col is not None and col<len(row) else default
-def name(v):return v.strip() if isinstance(v,str) else ''
+def name(v):
+ value=v.strip() if isinstance(v,str) else ''
+ return '50091(상현)' if value in ['50091','상현','50091 (상현)'] else value
+IDENTITY_UIDS={'syn':'236721957548','vodive':'113821923458','voidive':'113821923458','nera':'716721947178'}
+def member_uid(person,value):return IDENTITY_UIDS.get(person.lower(),re.sub(r'\s+','',str(value)))
 def close(a,b):return abs(a-b)<max(.001,abs(b)*1e-12)
 def col(header,*keys):return next((header.index(key) for key in keys if key in header),None)
 def save(p,data):p.parent.mkdir(parents=True,exist_ok=True);p.write_text(json.dumps(data,ensure_ascii=False,separators=(',',':'))+'\n')
@@ -22,7 +26,7 @@ def parse_book(book,reference):
  if month.startswith('2019'):
   resume=ranges['resume'];rows=ranges['logs'];person=name(cell(resume[3],2));days=cell(resume[6],8)
   out.update(coverage='personal',days=days,scopeName=person,bossNames=[str(x) for x in resume[9][2:7]])
-  out['members']=[{'name':person,'uid':str(cell(resume[3],6,'')),'damage':cell(resume[4],2),'contribution':cell(resume[4],6),'game':cell(resume[4],10),'damageRank':None,'contributionRank':None,'gameRank':None}]
+  out['members']=[{'name':person,'uid':member_uid(person,cell(resume[3],6,'')),'damage':cell(resume[4],2),'contribution':cell(resume[4],6),'game':cell(resume[4],10),'damageRank':None,'contributionRank':None,'gameRank':None}]
   out['totals']={k:out['members'][0][k] for k in ['damage','contribution','game']}
   last_day=None
   for ri,row in enumerate(rows[2:22],2):
@@ -102,7 +106,7 @@ def parse_book(book,reference):
   audit['checks'].append('Recovered the complete period from all attacks instead of a saved partial-day view')
  for row in ranges.get('roster',[]):
   person=name(cell(row,2));uid=cell(row,4)
-  if person in members and uid is not None:members[person]['uid']=re.sub(r'\s+','',str(uid))
+  if person in members and uid is not None:members[person]['uid']=member_uid(person,uid)
  unknown=set(l['name'] for l in out['logs'])-set(members)
  assert not unknown,(month,'unranked names',unknown)
  if month=='2020-04':

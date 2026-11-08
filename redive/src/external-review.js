@@ -17,7 +17,7 @@ async function mountExternalReview(){
  const root=document.getElementById('external-tactic-review');
  if(!root||!adminMode()||ui.section!=='tactics'||ui.tabs.tactics!=='review')return;
  try{
-  externalReviewLoading??=Promise.all([import('./aikurumi-review-ui.mjs?v=20261030-except02'),import('./aikurumi-review-model.mjs?v=20261030-except01')]);
+  externalReviewLoading??=Promise.all([import('./aikurumi-review-ui.mjs?v=20261107-record-controls01'),import('./aikurumi-review-model.mjs?v=20261107-record-controls01')]);
   const [uiModule,model]=await externalReviewLoading;externalReviewModule=model;
   if(!adminMode()||document.getElementById('external-tactic-review')!==root)return;
   externalReviewController??=uiModule.createExternalReview({getContext:externalReviewContext,
@@ -70,14 +70,22 @@ async function applyExternalReviewedTactics(entries){
  const updated=prepared.filter(p=>p.existing).length;
  return {message:month.replace('-','.')+' · '+prepared.length+'개 '+(updated===prepared.length?'업데이트 완료':'적용 완료')};
 }
-function openAppliedExternalTactic({month,stage,id}){
- if(!adminMode())return;
- if(month!==ui.month&&!activateSeason(month))return;
- ui.selectedTactic=id;ui.boss=0;ext.stage=stage;ext.comboDetails??={};
- if(stage===3){ext.openComboId=null;ext.comboDetails={};ui.tabs.tactics='combos';nav('tactics','combos');}
- else{const tactic=data.tactics.find(t=>t.id===id);ext.workGroup=tactic?.category||'main';nav('tactics','workspace');}
+function openWorkspaceTactic(t){
+  flushGrid();ui.selectedTactic=t.id;ui.carry=defaultReceivedTime(t);
+  ext.stage=t.stage;ext.workGroup=t.hidden?'hidden':t.category==='carry'?'carry':t.category;
+  ext.carryTimeRange='all';ext.workEditing=false;
+  nav('tactics',ext.stage===3?'stage3':'workspace',{keepMonth:true});
 }
-
+function openAppliedExternalTactic({month,stage,id}){
+  if(!adminMode()||month!==ui.month&&!activateSeason(month))return;
+  const t=tacticById(id);
+  if(!t||t.stage!==stage)return;
+  if(stage===3&&!thirdStageVisible()){
+    openDrawer(t.boss+'넴 · 3단계',stage3Lineup(t),simpleButton('닫기','close-drawer'));
+    return;
+  }
+  openWorkspaceTactic(t);
+}
 
 let excludedSetsCheckedSeasons=null,excludedSetsCheckedMonth='',excludedSetsNeedsSave=false;
 function synchronizeSavedExcludedSets(){

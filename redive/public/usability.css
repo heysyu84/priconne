@@ -44,7 +44,7 @@ h1,h2,h3,strong,b{font-weight:700}
 .unit-face:after{content:'';position:absolute;inset:0;border:1px solid #fff8;border-radius:inherit;pointer-events:none}
 .unit-face.star-6{border-color:#bd95d9!important;background:linear-gradient(140deg,#f8cfdf,#b5d5ef 46%,#e5d3a6);box-shadow:inset 0 0 0 1px #fff9,0 2px 4px #8766a32b}
 .unit-face.star-3,.unit-face.star-4{border-color:#b1b6c9!important;background:linear-gradient(145deg,#f4f5fc,#b9c6dd)}
-.unit.support .unit-face{outline:1px solid #dc849a;outline-offset:1px}
+.unit.support .unit-face{outline:1px solid #6098ce;outline-offset:1px}
 .set-character-face,.character-thumb{border:1px solid #cbb686;border-radius:4px;box-shadow:0 1px 2px #35486222;overflow:hidden}
 .unit strong{font-weight:650}.unit small{font-weight:600}
 
@@ -1001,6 +1001,120 @@ form[data-form="v2-tactic"] #tactic-text{display:block;width:100%;min-width:0;mi
 .history-table .honors-note-cell strong{font-size:inherit;font-weight:650}
 .history-table .honors-no-award td{vertical-align:middle}
 
+/* Mobile: plan rows and individual combo cards are the selection targets.
+   Remove the redundant selection column, preserve details/video controls,
+   and allow content to fit the available width without horizontal scrolling. */
+@media (max-width:760px){
+  .distribution-panel[aria-label="추천 분배"]{min-width:0;max-width:100%}
+  .distribution-panel[aria-label="추천 분배"]>.table-wrap{width:100%;min-width:0;max-width:100%;overflow-x:hidden}
+  .distribution-panel[aria-label="추천 분배"] .distribution-table{width:100%!important;min-width:0!important;max-width:100%;table-layout:fixed!important}
+  .distribution-panel[aria-label="추천 분배"] .distribution-table th:last-child,
+  .distribution-panel[aria-label="추천 분배"] .distribution-table td:last-child{display:none!important}
+  .distribution-panel[aria-label="추천 분배"] .distribution-table th:first-child,
+  .distribution-panel[aria-label="추천 분배"] .distribution-table td:first-child{width:70%!important;min-width:0;overflow-wrap:anywhere}
+  .distribution-panel[aria-label="추천 분배"] .distribution-table th:nth-child(2),
+  .distribution-panel[aria-label="추천 분배"] .distribution-table td:nth-child(2){width:30%!important;min-width:0;white-space:nowrap;text-align:right}
+  .distribution-panel[aria-label="추천 분배"] .distribution-team{max-width:100%;white-space:normal;flex-wrap:wrap;gap:3px;margin:2px 5px 2px 0}
+  .distribution-panel[aria-label="추천 분배"] .distribution-team small{white-space:normal;overflow-wrap:anywhere}
+  .distribution-panel[aria-label="추천 분배"] .distribution-table tbody tr[data-mobile-plan]{cursor:pointer}
+  .distribution-panel[aria-label="추천 분배"] .distribution-table tbody tr.is-selected{background:color-mix(in srgb,var(--surface) 85%,var(--accent))}
+  .distribution-panel[aria-label="추천 분배"] .distribution-table tbody tr:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+  .recommendation-list{min-width:0;max-width:100%;grid-template-columns:minmax(0,1fr)}
+  .recommendation-list>.combo-card{box-sizing:border-box;width:100%;max-width:100%;min-width:0}
+  .recommendation-list>.combo-card:not(.stage3-combo-card){cursor:pointer}
+  .recommendation-list .combo-heading input[data-input="v2-pick-tactic"]{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip-path:inset(50%)!important;border:0!important;white-space:nowrap!important}
+  .recommendation-list>.combo-card:focus-within{outline:2px solid color-mix(in srgb,var(--accent) 70%,transparent)}
+  .recommendation-list .combo-card .combo-party{min-width:0;max-width:100%;width:100%}
+  .recommendation-list .combo-card .party{min-width:0;max-width:100%;width:100%;grid-template-columns:repeat(5,minmax(0,1fr))}
+  .recommendation-list .combo-card .unit{min-width:0;max-width:100%}
+  .recommendation-list .combo-card .unit-face{max-width:100%}
+  .recommendation-list .combo-card .unit strong{white-space:normal;overflow-wrap:anywhere;word-break:break-word}
+  .recommendation-list .combo-card .combo-metadata,
+  .recommendation-list .combo-card .combo-metadata>div{min-width:0;max-width:100%}
+}
+
+
+/* Mobile combo width: the entire card replaces the select checkbox. */
+@media(max-width:760px){
+  .recommendation-list{width:100%;min-width:0;max-width:100%;overflow-x:clip}
+  .recommendation-list>.combo-card{
+    grid-template-columns:clamp(45px,13vw,54px) minmax(0,1fr)!important;
+    column-gap:6px;row-gap:6px;
+    min-width:0;max-width:100%;width:100%;box-sizing:border-box;
+  }
+  .recommendation-list>.combo-card .combo-heading{
+    grid-column:1;grid-row:1;min-width:0;
+    align-items:center;justify-content:center;gap:3px;
+  }
+  .recommendation-list .combo-heading input[data-input="v2-pick-tactic"]{
+    position:absolute!important;width:1px!important;height:1px!important;
+    clip-path:inset(50%)!important;overflow:hidden!important;
+  }
+  .recommendation-list>.combo-card .combo-party{
+    grid-column:2;grid-row:1;min-width:0;max-width:100%;width:100%;
+    container-type:inline-size;
+  }
+  .recommendation-list>.combo-card .party{
+    width:100%;max-width:100%;min-width:0;
+    display:grid;grid-template-columns:repeat(5,minmax(0,1fr));
+    gap:clamp(2px,1.2cqw,5px);
+  }
+  .recommendation-list>.combo-card .unit{width:100%;min-width:0;max-width:100%}
+  .recommendation-list>.combo-card .unit-face{
+    width:clamp(26px,15.5cqw,44px);max-width:100%;
+    height:auto;aspect-ratio:1;margin:0 auto 3px;
+  }
+  .recommendation-list>.combo-card .unit strong{
+    display:block;min-width:0;max-width:100%;min-height:0;
+    font-size:clamp(9px,3.6cqw,12px);line-height:1.25;
+    white-space:normal!important;word-break:keep-all;overflow-wrap:anywhere;
+    text-align:center;
+  }
+  .recommendation-list>.combo-card .unit small{
+    white-space:normal;overflow-wrap:anywhere;font-size:10px;
+  }
+  .recommendation-list>.combo-card .combo-metadata{
+    grid-column:2;grid-row:2;width:100%;min-width:0;max-width:100%;
+    display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+    gap:3px;justify-content:stretch;align-items:stretch;
+  }
+  .recommendation-list>.combo-card .combo-metadata>div{
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    min-width:0;max-width:100%;padding:4px 1px;gap:2px;text-align:center;
+  }
+  .recommendation-list>.combo-card .combo-metadata dt{
+    margin:0;font-size:10px;line-height:1.2;white-space:normal;
+  }
+  .recommendation-list>.combo-card .combo-metadata dd{
+    margin:0;font-size:12px;line-height:1.2;min-width:0;max-width:100%;
+    white-space:normal;overflow-wrap:anywhere;
+  }
+  .recommendation-list>.combo-card .combo-open{
+    grid-column:1;grid-row:2;min-width:0;width:100%;padding:0;
+  }
+  .recommendation-list>.combo-card .combo-open .combo-toggle{
+    width:100%;min-width:0;padding:4px 2px;
+  }
+  .recommendation-list>.combo-card .combo-expansion{
+    grid-column:1/-1;grid-row:3;min-width:0;max-width:100%;
+  }
+  .recommendation-list>.combo-card:not(.stage3-combo-card){cursor:pointer;touch-action:manipulation}
+}
+
+
+/* Stage 4 mobile combos: hide the duplicate rarity card to keep video on the same row. */
+@media(max-width:760px){
+  .recommendation-list>.combo-card:not(.stage3-combo-card) .combo-metadata{
+    grid-template-columns:repeat(4,minmax(0,1fr));
+  }
+  .recommendation-list>.combo-card:not(.stage3-combo-card) .combo-metadata>div.combo-stars{
+    display:none!important;
+  }
+  .recommendation-list>.combo-card:not(.stage3-combo-card) .combo-metadata>div{
+    min-width:0;
+  }
+}
+
 /* All primary pages: keep the H1 at the same top edge even when day controls wrap. */
 .page-heading{
  align-items:flex-start;
@@ -1012,4 +1126,113 @@ form[data-form="v2-tactic"] #tactic-text{display:block;width:100%;min-width:0;mi
 }
 .page-heading>.page-heading-title>h1{
  margin:0;
+}
+
+
+/* Stage 4 mobile metadata: the video source fills an identically sized fourth box. */
+@media(max-width:760px){
+  .recommendation-list>.combo-card:not(.stage3-combo-card) .combo-metadata>.combo-link-cell{
+    box-sizing:border-box;
+    display:flex;
+    flex:1 1 auto;
+    align-items:stretch;
+    justify-content:stretch;
+    width:100%;
+    height:100%;
+    min-width:0;
+    min-height:38px;
+    padding:0;
+    border:1px solid #ded8ed;
+    border-radius:7px;
+    background:color-mix(in srgb,var(--surface) 85%,#d9ceef);
+    box-shadow:none;
+    overflow:hidden;
+    align-self:stretch;
+  }
+  .recommendation-list>.combo-card:not(.stage3-combo-card) .combo-metadata>.combo-link-cell>.combo-source-box{
+    box-sizing:border-box;
+    display:flex;
+    flex:1 1 auto;
+    align-items:center;
+    justify-content:center;
+    width:100%;
+    height:100%;
+    min-width:0;
+    min-height:0;
+    margin:0;
+    padding:0;
+    border:0;
+    border-radius:inherit;
+    background:transparent;
+    box-shadow:none;
+  }
+}
+
+
+/* Manual 3-attack comparison: compact, conditional, and touch-friendly. */
+.manual-plan{
+  margin:7px 0 11px;
+  padding:8px 10px;
+  border:1px solid var(--line);
+  border-left:3px solid var(--accent);
+  border-radius:8px;
+  background:color-mix(in srgb,var(--surface) 88%,var(--accent-wash));
+  min-width:0;
+  max-width:100%;
+}
+.manual-plan-warning{border-left-color:var(--red)}
+.manual-plan-line{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:5px 10px;
+  min-width:0;
+}
+.manual-plan-count{font-size:12px;font-weight:650;white-space:nowrap}
+.manual-plan-count strong{color:var(--accent);font-size:13px}
+.manual-plan-stat{font-size:12px;white-space:nowrap}
+.manual-plan-stat strong{font-size:13px;color:var(--text)}
+.manual-plan-status{
+  font-size:11px;
+  font-weight:650;
+  color:var(--green);
+  white-space:normal;
+  overflow-wrap:anywhere;
+}
+.manual-plan-actions{display:flex;flex-wrap:nowrap;align-items:center;gap:4px;margin-left:auto}
+.manual-plan-actions>.button{
+  min-width:0;
+  min-height:27px;
+  padding:3px 7px;
+  font-size:11px;
+  white-space:nowrap;
+}
+.manual-plan-note{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:4px 9px;
+  border-top:1px solid var(--line);
+  margin-top:7px;
+  padding-top:6px;
+  font-size:11px;
+  line-height:1.45;
+  min-width:0;
+  overflow-wrap:anywhere;
+}
+.manual-plan-conflicts{color:var(--red);font-weight:600}
+.manual-plan-support{color:var(--text);font-weight:600}
+.manual-plan-note>.button{min-height:25px;font-size:11px;padding:3px 7px}
+@media(max-width:760px){
+  .manual-plan{padding:7px 8px;margin:6px 0 9px}
+  .manual-plan-line{gap:5px 8px}
+  .manual-plan-count,.manual-plan-stat{font-size:11px}
+  .manual-plan-count strong,.manual-plan-stat strong{font-size:12px}
+  .manual-plan-status{font-size:10.5px}
+  .manual-plan-actions{gap:4px}
+  .manual-plan-actions>.button{min-height:29px;padding:4px 7px}
+  .manual-plan-note{margin-top:6px;padding-top:5px;gap:3px 7px}
+}
+@media(max-width:360px){
+  .manual-plan-actions{width:100%;justify-content:flex-end}
 }

@@ -23,7 +23,7 @@ function recordMonthTable(){
  return boardSection('월별 기록',rowTable(['월','참가','인게임 점수','클랜 순위','결과'],months.map(month=>{
   const imported=!data.seasons[month]&&oldResumeMeta(month),sum=imported?{rank:imported.rank,count:imported.count,gameTotal:imported.totals.game,sealed:true}:seasonSummary(month);
   const action=imported?'old-resume-open':'archive-detail';
-  return '<tr><td><button type="button" class="text-button" data-action="'+action+'" data-id="'+month+'">'+month.replace('-','.')+'</button></td><td class="center">'+(Number.isFinite(sum.count)?sum.count+'명':'—')+'</td><td class="right numeric">'+recordNumber(sum.gameTotal)+'</td><td class="center">'+recordRank(sum.rank,imported?.rankLabel)+'</td><td><span class="result-status '+(sum.sealed?'sealed':'')+'">'+(imported?recordState(imported):sum.sealed?'확정':'진행 중')+'</span></td></tr>';
+  return '<tr><td><button type="button" class="text-button record-month-button" data-action="'+action+'" data-id="'+month+'">'+month.replace('-','.')+'</button></td><td class="center">'+(Number.isFinite(sum.count)?sum.count+'명':'—')+'</td><td class="right numeric">'+recordNumber(sum.gameTotal)+'</td><td class="center">'+recordRank(sum.rank,imported?.rankLabel)+'</td><td><span class="result-status '+(sum.sealed?'sealed':'')+'">'+(imported?recordState(imported):sum.sealed?'확정':'진행 중')+'</span></td></tr>';
  }),'archive-month-table exact-table'));
 }
 const oldResumeLink=d=>!d.source?'':'<p class="field-help">Google 시트의 '+X(d.month.slice(0,4))+'년 원본 기록 · 읽기 전용 <a target="_blank" rel="noopener noreferrer" href="'+X(d.source)+'">'+(d.month==='2020-10'?'원본 배틀로그 보기':'원본 이력서 보기')+'</a></p>';
@@ -61,7 +61,7 @@ function oldResumeProfile(d){
  const stages=[...new Set(d.logs.map(l=>Number(l.stage)).filter(Boolean))].sort((a,b)=>a-b);
  const whole=d.logs.filter(l=>all||l.name===name),events=whole.filter(l=>(!oldResumeStage||l.stage===oldResumeStage)&&(!oldResumeProfileDay||l.day===oldResumeProfileDay));
  const score=key=>!oldResumeStage&&!oldResumeProfileDay?(all?d.totals[key]:p[key]):key==='game'?null:events.reduce((v,l)=>v+(key==='damage'?l.actual:l.contribution),0);
- const toolbar='<div class="toolbar profile-toolbar"><select id="full-profile-member" class="select-field" aria-label="기록 대상" data-input="old-resume-person"><option value="__clan__" '+(all?'selected':'')+'>'+recordScope(d)+'</option>'+d.members.map(m=>'<option value="'+X(m.name)+'" '+(!all&&m.name===name?'selected':'')+'>'+X(m.name)+'</option>').join('')+'</select><select class="select-field" aria-label="이력 단계" data-input="old-resume-stage"><option value="0" '+(!oldResumeStage?'selected':'')+'>전체 단계</option>'+stages.map(stage=>'<option value="'+stage+'" '+(stage===oldResumeStage?'selected':'')+'>'+stage+'단계</option>').join('')+'</select>'+simpleButton('PDF 보기','old-resume-pdf-preview','','primary')+simpleButton('PDF 저장','old-resume-pdf-download','','quiet')+simpleButton('인쇄','old-resume-print','','quiet')+'</div>';
+ const toolbar='<div class="toolbar profile-toolbar"><select id="full-profile-member" class="select-field" aria-label="기록 대상" data-input="old-resume-person"><option value="__clan__" '+(all?'selected':'')+'>'+recordScope(d)+'</option>'+d.members.map(m=>'<option value="'+X(m.name)+'" '+(!all&&m.name===name?'selected':'')+'>'+X(m.name)+'</option>').join('')+'</select><select class="select-field" aria-label="이력 단계" data-input="old-resume-stage"><option value="0" '+(!oldResumeStage?'selected':'')+'>전체 단계</option>'+stages.map(stage=>'<option value="'+stage+'" '+(stage===oldResumeStage?'selected':'')+'>'+stage+'단계</option>').join('')+'</select>'+profilePdfButton('old-resume-pdf-preview')+simpleButton('인쇄','old-resume-print','','quiet')+'</div>';
  const totals='<dl class="profile-totals">'+[['damage','피해량'],['contribution','기여도'],['game','인게임']].map(([key,label])=>'<div><dt>'+label+'</dt><dd>'+ (score(key)===null?'—':key==='contribution'?nf(Math.round(score(key))):nf(score(key)))+'</dd></div>').join('')+'</dl>';
  const pills='<div class="day-pills" role="group" aria-label="개인 이력 일차">'+[[0,'전체'],...Array.from({length:recordDays(d)},(_,i)=>[i+1,(i+1)+'일차'])].map(([day,label])=>'<button type="button" data-action="old-resume-profile-day" data-value="'+day+'" class="'+(oldResumeProfileDay===day?'active':'')+'" aria-pressed="'+(oldResumeProfileDay===day)+'">'+label+'</button>').join('')+'</div>';
  const metric='<div class="filter-group" role="group" aria-label="개인 이력 지표">'+[['damage','피해량'],['contribution','기여도']].map(([key,label])=>'<button type="button" data-action="old-resume-metric" data-value="'+key+'" class="'+(oldResumeMetric===key?'active':'')+'">'+label+'</button>').join('')+'</div>';
@@ -196,7 +196,7 @@ document.addEventListener('input',event=>{
 document.addEventListener('click',event=>{
  const button=event.target.closest('[data-action]');if(!button)return;
  const action=button.dataset.action;
- const supported=['old-resume-open','old-resume-person','old-resume-sort','old-resume-day','old-resume-page','old-resume-profile-day','old-resume-metric','old-resume-order','old-resume-csv','old-resume-pdf-preview','old-resume-pdf-download','old-resume-print'];
+ const supported=['old-resume-open','old-resume-person','old-resume-sort','old-resume-day','old-resume-page','old-resume-profile-day','old-resume-metric','old-resume-order','old-resume-csv','old-resume-pdf-preview','old-resume-print'];
  if(!supported.includes(action))return;
  event.preventDefault();event.stopImmediatePropagation();
  if(action==='old-resume-open'){oldResumeOpen(button.dataset.id);return;}
@@ -209,7 +209,7 @@ document.addEventListener('click',event=>{
  if(action==='old-resume-order'){oldResumeLogOrder=oldResumeLogOrder==='asc'?'desc':'asc';oldResumePage=1;render();return;}
  if(action==='old-resume-csv'){oldResumeCSV();return;}
  if(action==='old-resume-print'){if(adminMode())window.print();return;}
- if(action==='old-resume-pdf-preview'||action==='old-resume-pdf-download')void oldResumePDF(action==='old-resume-pdf-preview').catch(error=>{console.error(error);toast('PDF 생성 실패: '+error.message);});
+ if(action==='old-resume-pdf-preview')void openProfilePdf(button,()=>oldResumePDF(true));
 },true);
 async function oldResumeLoadIndex(){
  try{

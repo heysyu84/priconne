@@ -1,1 +1,52 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 78" role="img" aria-label="달리는 고양이"><style>.pose{opacity:0}.pose0{opacity:1}.cat-body{animation:bob .54s ease-in-out infinite}.tail{transform-origin:56px 38px;animation:tail .54s ease-in-out infinite}@keyframes bob{0%,100%{transform:translateY(-1px)}33%{transform:translateY(1px)}66%{transform:translateY(-2px)}}@keyframes tail{0%,100%{transform:rotate(-4deg)}50%{transform:rotate(6deg)}}.pose0{animation:pose0 .54s steps(1,end) infinite}@keyframes pose0{0%,16.665%{opacity:1}16.6667%,100%{opacity:0}}.pose1{animation:pose1 .54s steps(1,end) infinite}@keyframes pose1{0%,100%{opacity:0}16.6667%{opacity:1}33.3323%{opacity:1}33.3333%{opacity:0}}.pose2{animation:pose2 .54s steps(1,end) infinite}@keyframes pose2{0%,100%{opacity:0}33.3333%{opacity:1}49.9990%{opacity:1}50.0000%{opacity:0}}.pose3{animation:pose3 .54s steps(1,end) infinite}@keyframes pose3{0%,100%{opacity:0}50.0000%{opacity:1}66.6657%{opacity:1}66.6667%{opacity:0}}.pose4{animation:pose4 .54s steps(1,end) infinite}@keyframes pose4{0%,100%{opacity:0}66.6667%{opacity:1}83.3323%{opacity:1}83.3333%{opacity:0}}.pose5{animation:pose5 .54s steps(1,end) infinite}@keyframes pose5{0%,100%{opacity:0}83.3333%{opacity:1}99.9990%{opacity:1}100.0000%{opacity:0}}@media(prefers-reduced-motion:reduce){.pose,.cat-body,.tail{animation:none}.pose{opacity:0}.pose0{opacity:1}}</style><g class="cat-body" fill="#27262b"><path class="tail" d="M57 38 C40 42 30 34 19 27 C12 22 9 23 7 27" fill="none" stroke="#27262b" stroke-width="7" stroke-linecap="round"/><g class="pose pose0" fill="none" stroke="#27262b" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"><path d="M113 44 Q110 57 102 63 L99 67"/><path d="M67 44 Q70 52 78 58 L75 66"/><path d="M114 44 Q124 48 131 54 L146 57"/><path d="M67 43 Q58 50 47 55 L31 62"/></g><g class="pose pose1" fill="none" stroke="#27262b" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"><path d="M113 44 Q103 49 99 56 L108 58"/><path d="M66 43 Q79 46 87 52 L91 59"/><path d="M114 44 Q124 51 127 59 L135 66"/><path d="M67 43 Q59 48 56 57 L47 65"/></g><g class="pose pose2" fill="none" stroke="#27262b" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"><path d="M113 44 Q121 44 128 48 L137 51"/><path d="M65 43 Q62 52 55 61 L49 67"/><path d="M114 44 L119 63 L122 69"/><path d="M67 44 Q70 52 78 58 L75 66"/></g><g class="pose pose3" fill="none" stroke="#27262b" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"><path d="M114 44 Q124 48 131 54 L146 57"/><path d="M66 43 Q55 49 46 55 L35 59"/><path d="M113 44 Q110 57 102 63 L99 67"/><path d="M66 43 Q79 46 87 52 L91 59"/></g><g class="pose pose4" fill="none" stroke="#27262b" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"><path d="M114 44 Q124 51 127 59 L135 66"/><path d="M67 43 Q58 50 47 55 L31 62"/><path d="M113 44 Q103 49 99 56 L108 58"/><path d="M65 43 Q62 52 55 61 L49 67"/></g><g class="pose pose5" fill="none" stroke="#27262b" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"><path d="M114 44 L119 63 L122 69"/><path d="M67 43 Q59 48 56 57 L47 65"/><path d="M113 44 Q121 44 128 48 L137 51"/><path d="M66 43 Q55 49 46 55 L35 59"/></g><path d="M53 36 C60 25 78 28 94 34 C105 38 113 36 118 30 L117 15 Q117 12 120 15 L127 22 L135 16 Q138 14 138 19 L138 29 Q141 30 144 33 L151 36 Q153 39 147 41 L139 43 Q133 48 124 45 L117 47 C106 56 86 55 73 50 Q60 49 53 44 Z"/></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 80" role="img" aria-label="달리는 고양이">
+  <style>.rest{display:none}@media(prefers-reduced-motion:reduce){.gallop{display:none}.rest{display:inline}}</style>
+  <!--Six poses interpolate continuously: reach, land, support, gather, push and flight.-->
+  <defs>
+    <path id="cat-head" d="M113 30 C113 25 114 22 117 20 L116 10 Q116 8 118 10 L125 17 Q130 16 133 18 L138 12 Q140 10 140 13 L140 24 Q143 26 144 30 Q149 31 149 34 Q149 37 144 38 C142 44 132 46 124 43 L115 42 Z" />
+    <g id="rest-cat">
+      <g fill="#27262b" stroke="#27262b" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M61 38 C43 35 33 19 21 22 Q10 25 10 16" fill="none" stroke-width="5.5" />
+        <g fill="none" stroke-width="6.5" opacity=".72">
+          <path d="M109 40 Q119 46 130 53 L139 54" />
+          <path d="M65 41 Q58 51 45 56 L35 57" />
+        </g>
+        <path d="M52 39 C51 26 69 24 83 29 C94 32 105 29 117 29 Q125 35 120 44 C112 52 96 52 84 48 Q67 55 57 48 Q52 45 52 39 Z" stroke="none" />
+        <g fill="none" stroke-width="8">
+          <path d="M110 41 Q124 44 138 51 L148 53" />
+          <path d="M64 41 Q48 49 33 53 L22 53" />
+        </g>
+        <use href="#cat-head" stroke="none" transform="translate(0 0)" />
+      </g>
+    </g>
+  </defs>
+  <g class="gallop">
+    <g fill="#27262b" stroke="#27262b" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M61 38 C43 35 33 19 21 22 Q10 25 10 16" fill="none" stroke-width="5.5">
+        <animate attributeName="d" dur=".64s" repeatCount="indefinite" values="M61 38 C43 35 33 19 21 22 Q10 25 10 16;M63 39 C44 38 32 22 20 24 Q10 26 9 18;M66 36 C47 35 35 19 23 19 Q12 20 11 12;M68 33 C49 30 39 15 26 16 Q15 18 14 10;M65 34 C45 30 36 15 23 18 Q12 22 12 13;M61 36 C42 32 33 17 21 21 Q10 25 10 16;M61 38 C43 35 33 19 21 22 Q10 25 10 16" />
+      </path>
+      <g fill="none" stroke-width="6.5" opacity=".72">
+        <path d="M109 40 Q119 46 130 53 L139 54">
+          <animate attributeName="d" dur=".64s" repeatCount="indefinite" values="M109 40 Q119 46 130 53 L139 54;M110 42 Q119 54 118 64 L124 65;M110 41 Q104 52 98 57 L105 59;M109 39 Q108 45 117 47 L124 45;M109 38 Q122 38 133 42 L141 42;M109 38 Q121 41 133 47 L142 49;M109 40 Q119 46 130 53 L139 54" />
+        </path>
+        <path d="M65 41 Q58 51 45 56 L35 57">
+          <animate attributeName="d" dur=".64s" repeatCount="indefinite" values="M65 41 Q58 51 45 56 L35 57;M65 42 Q68 52 78 55 L73 59;M68 40 Q80 44 86 53 L81 59;M69 39 Q79 49 73 62 L67 65;M67 39 Q58 53 44 60 L34 61;M65 39 Q52 49 35 53 L25 53;M65 41 Q58 51 45 56 L35 57" />
+        </path>
+      </g>
+      <path d="M52 39 C51 26 69 24 83 29 C94 32 105 29 117 29 Q125 35 120 44 C112 52 96 52 84 48 Q67 55 57 48 Q52 45 52 39 Z" stroke="none">
+        <animate attributeName="d" dur=".64s" repeatCount="indefinite" values="M52 39 C51 26 69 24 83 29 C94 32 105 29 117 29 Q125 35 120 44 C112 52 96 52 84 48 Q67 55 57 48 Q52 45 52 39 Z;M54 40 C52 27 69 26 83 30 C96 34 107 31 118 31 Q126 37 120 46 C109 53 97 53 85 50 Q69 56 59 49 Q54 46 54 40 Z;M57 37 C55 25 71 21 85 26 C98 31 106 31 116 30 Q124 36 119 45 C107 51 99 50 87 47 Q72 53 62 47 Q57 43 57 37 Z;M59 35 C57 22 75 17 88 23 C99 28 106 29 115 28 Q123 34 119 43 C108 48 100 47 89 44 Q75 50 65 45 Q59 41 59 35 Z;M56 36 C54 23 71 21 85 26 C97 29 105 28 115 27 Q124 33 120 42 C109 49 96 49 85 45 Q70 52 60 46 Q55 42 56 36 Z;M52 37 C51 24 69 23 83 27 C95 30 105 27 117 27 Q125 33 120 42 C111 50 96 50 84 46 Q67 53 57 46 Q52 43 52 37 Z;M52 39 C51 26 69 24 83 29 C94 32 105 29 117 29 Q125 35 120 44 C112 52 96 52 84 48 Q67 55 57 48 Q52 45 52 39 Z" />
+      </path>
+      <g fill="none" stroke-width="8">
+        <path d="M110 41 Q124 44 138 51 L148 53">
+          <animate attributeName="d" dur=".64s" repeatCount="indefinite" values="M110 41 Q124 44 138 51 L148 53;M111 43 Q125 50 130 63 L137 65;M111 42 Q114 55 108 65 L115 65;M110 40 Q101 51 102 58 L110 60;M110 39 Q118 40 131 42 L141 42;M110 39 Q125 40 138 46 L148 49;M110 41 Q124 44 138 51 L148 53" />
+        </path>
+        <path d="M64 41 Q48 49 33 53 L22 53">
+          <animate attributeName="d" dur=".64s" repeatCount="indefinite" values="M64 41 Q48 49 33 53 L22 53;M65 43 Q55 53 55 60 L48 63;M68 41 Q74 47 84 53 L79 59;M69 39 Q85 44 87 56 L80 63;M67 40 Q70 52 59 63 L51 65;M64 40 Q50 51 37 57 L27 57;M64 41 Q48 49 33 53 L22 53" />
+        </path>
+      </g>
+      <use href="#cat-head" stroke="none" transform="translate(0 0)">
+        <animateTransform attributeName="transform" type="translate" dur=".64s" repeatCount="indefinite" values="0 0;1 2;0 1;-1 -1;-1 -2;0 -2;0 0" />
+      </use>
+    </g>
+  </g>
+  <use class="rest" href="#rest-cat" />
+</svg>

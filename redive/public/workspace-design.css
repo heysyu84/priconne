@@ -994,7 +994,7 @@ html[data-text-scale] .tactic-reference-head .tactic-specs > div:first-child dd 
   .workspace-restored .work-list-video .video-play path { fill: var(--surface); }
 }
 
-/* One shared guide at the end of the tactics navigation. */
+/* One shared guide at the start of the tactics navigation. */
 .tactics-subnav { display: flex; align-items: center; gap: 6px; min-width: 0; margin-bottom: 15px; }
 .content .tactics-subnav .page-tabs { flex: 1; min-width: 0; flex-wrap: nowrap; overflow-x: auto; margin: 0; scrollbar-width: none; }
 .tactics-subnav .page-tabs > button { flex: none; white-space: nowrap; }
@@ -1006,6 +1006,7 @@ html[data-text-scale] .tactic-reference-head .tactic-specs > div:first-child dd 
 .tactic-common-guide h3:first-child { margin-top: 0; }
 .tactic-common-guide p { margin: 5px 0; padding-left: 1em; text-indent: -1em; }
 .tactic-common-guide > .button { margin-top: 10px; }
+.clan-archive-source .archive-retirement-note { display: block; margin-top: 12px; color: var(--muted); font-size: .75rem; line-height: 1.6; }
 
 /* Selected lineups use their boss color in both list layouts. */
 .workspace-restored .work-list-row:has(> .work-item.active) {
