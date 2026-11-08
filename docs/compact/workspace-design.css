@@ -1015,7 +1015,7 @@ html[data-text-scale] .tactic-reference-head .tactic-specs > div:first-child dd 
 }
 @media (min-width: 761px) {
   html[data-text-scale] .workspace-restored .work-list-fields > .work-list-party {
-    font-size: calc(.875rem * var(--text-scale, 1) - 1px) !important;
+    font-size: calc(.875rem * var(--text-scale, 1) - 3px) !important;
   }
 }
 @media (max-width: 760px) {
