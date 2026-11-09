@@ -3,11 +3,16 @@ const simplePastedRows=pasteRows;
 pasteRows=(text,t)=>/^(?:[01oOxX⭕❌]\t){5}[01oOxX⭕❌]\t/m.test(text)?simplePastedRows(text,t):legacyTools.pastedRows(text,[],t.party,data.characters);
 tacticRows=t=>{if(!t.rows)t.rows=pasteRows(t.text||'',t);return t.rows;};
 subpageNames.overview.logs='배틀로그';
+function overviewNavigation(title,action=''){
+  return titleBar(title,action,{showDay:false})+
+    pageTabs([['bosses','상황판'],['members','대시보드'],['logs','배틀로그']])+
+    `<div class="overview-day-filter">${dayButtons()}</div>`;
+}
 fullOverview=()=>{
   if(ext.importMode&&adminMode())return batchImportPage();
   const tab=ui.tabs.overview,name=tab==='members'?'대시보드':tab==='logs'?'배틀로그':'클랜전';
   const action=tab==='logs'?simpleButton('이미지 등록','v2-import-images'):'';
-  const heading=titleBar(name,action)+pageTabs([['bosses','상황판'],['members','대시보드'],['logs','배틀로그']]);
+  const heading=overviewNavigation(name,action);
   if(tab==='members')return heading+operatingLine(false)+fullDashboard();
   if(tab==='logs')return heading+battleBossHealth()+battleLogContent();
   return heading+operatingLine(true)+bossStrip()+`<details class="fold optional-stats"><summary>전투 통계</summary>${overviewCharts()}</details>`;

@@ -47,7 +47,9 @@ function rowTable(headers,rows,cls=''){
 
 function simpleButton(text,action,id='',cls=''){if(/csv/i.test(action))return '';if(/print/i.test(action)&&!adminMode())return '';if(syncState.started&&writerActions.has(action)&&!data.settings.editable)return '';return `<button type="button" class="button ${cls}" data-action="${action}" ${id?`data-id="${X(id)}"`:''}>${text}</button>`;}
 function boardSection(title,body,actions=''){return `<section class="sheet"><div class="sheet-heading"><h2>${title}</h2><div class="sheet-actions">${actions}</div></div>${body}</section>`;}
-function titleBar(title,action=''){const showDay=['overview','battle'].includes(ui.section);return `<div class="page-heading workspace-heading"><div class="page-heading-title"><h1>${title}</h1></div><div class="heading-actions">${showDay?dayButtons():''}${action}</div></div>`;}
+function titleBar(title,action='',{showDay=['overview','battle'].includes(ui.section)}={}){
+ return `<div class="page-heading workspace-heading"><div class="page-heading-title"><h1>${title}</h1></div><div class="heading-actions">${showDay?dayButtons():''}${action}</div></div>`;
+}
 function portraitHtml(name,star){const c=data.characters.find(c=>c.name===name),base=GAME_ASSETS.characters[name],url=c?.images?.[star]||c?.images?.default||base?.[star]||base?.default;return url?`<img src="${X(url)}" alt="${X(name)}" width="128" height="128" loading="lazy">`:`<span aria-hidden="true">${X(name.slice(0,1))}</span>`;}
 function partyNameClasses(t,name,index){
  const character=characterReference(name),identity=character?.unitId||character?.name||name;

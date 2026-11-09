@@ -254,10 +254,9 @@ html[data-text-scale] .content .battle-health-value small { font-size: .69rem !i
   flex-wrap: wrap;
   justify-content: space-between;
   gap: 7px;
-  margin: 7px 0 0;
-  padding: 7px 0 0;
-  border-top: 1px solid var(--line);
+  margin: 0;
 }
+.tactic-controls .tactic-stage-toolbar + .workspace-toolbar { margin-top: 7px; }
 .tactic-controls:not(:has(.workspace-navigation)) {
   display: flex;
   flex-wrap: wrap;
@@ -958,9 +957,9 @@ html[data-text-scale] .tactic-reference-head .tactic-specs > div:first-child dd 
 .workspace-masthead .header-resource-button[data-resource]:hover { color: var(--accent); background: var(--accent-wash); }
 .content .button.danger { color: var(--red); border-color: color-mix(in srgb, var(--red) 30%, var(--line)); background: color-mix(in srgb, var(--red) 7%, var(--surface)); }
 
-/* Stable records navigation: day selection belongs below the middle-level tabs. */
-.records-day-filter { margin: 0 0 12px; }
-.records-day-filter .day-switch { width: max-content; max-width: 100%; }
+/* Keep day selection below the middle-level tabs. */
+:is(.records-day-filter, .overview-day-filter) { margin: 0 0 12px; }
+:is(.records-day-filter, .overview-day-filter) .day-switch { width: max-content; max-width: 100%; }
 .tactic-stage-toolbar .toolbar-left:empty { display: none; }
 .tactic-stage-toolbar:has(.toolbar-left:empty) { justify-content: flex-end; }
 /* One continuous focus frame across SET, AUTO and instruction cells. */
@@ -975,7 +974,7 @@ html[data-text-scale] .tactic-reference-head .tactic-specs > div:first-child dd 
   box-shadow: inset -2px 0 var(--accent), inset 0 2px var(--accent), inset 0 -2px var(--accent) !important;
 }
 @media (max-width: 760px) {
-  .records-day-filter .day-switch { width: 100%; }
+  :is(.records-day-filter, .overview-day-filter) .day-switch { width: 100%; }
   .workspace-restored .work-list-row { border-left: 3px solid var(--boss); background: var(--surface); }
   .workspace-restored .work-list-row > .work-item,
   .workspace-restored .work-list-row > .work-item:hover,

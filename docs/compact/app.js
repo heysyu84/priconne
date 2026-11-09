@@ -296,7 +296,9 @@ function rowTable(headers,rows,cls=''){
 
 function simpleButton(text,action,id='',cls=''){if(/csv/i.test(action))return '';if(/print/i.test(action)&&!adminMode())return '';if(syncState.started&&writerActions.has(action)&&!data.settings.editable)return '';return `<button type="button" class="button ${cls}" data-action="${action}" ${id?`data-id="${X(id)}"`:''}>${text}</button>`;}
 function boardSection(title,body,actions=''){return `<section class="sheet"><div class="sheet-heading"><h2>${title}</h2><div class="sheet-actions">${actions}</div></div>${body}</section>`;}
-function titleBar(title,action=''){const showDay=['overview','battle'].includes(ui.section);return `<div class="page-heading workspace-heading"><div class="page-heading-title"><h1>${title}</h1></div><div class="heading-actions">${showDay?dayButtons():''}${action}</div></div>`;}
+function titleBar(title,action='',{showDay=['overview','battle'].includes(ui.section)}={}){
+ return `<div class="page-heading workspace-heading"><div class="page-heading-title"><h1>${title}</h1></div><div class="heading-actions">${showDay?dayButtons():''}${action}</div></div>`;
+}
 function portraitHtml(name,star){const c=data.characters.find(c=>c.name===name),base=GAME_ASSETS.characters[name],url=c?.images?.[star]||c?.images?.default||base?.[star]||base?.default;return url?`<img src="${X(url)}" alt="${X(name)}" width="128" height="128" loading="lazy">`:`<span aria-hidden="true">${X(name.slice(0,1))}</span>`;}
 function partyNameClasses(t,name,index){
  const character=characterReference(name),identity=character?.unitId||character?.name||name;
@@ -2385,11 +2387,16 @@ const simplePastedRows=pasteRows;
 pasteRows=(text,t)=>/^(?:[01oOxX⭕❌]\t){5}[01oOxX⭕❌]\t/m.test(text)?simplePastedRows(text,t):legacyTools.pastedRows(text,[],t.party,data.characters);
 tacticRows=t=>{if(!t.rows)t.rows=pasteRows(t.text||'',t);return t.rows;};
 subpageNames.overview.logs='배틀로그';
+function overviewNavigation(title,action=''){
+  return titleBar(title,action,{showDay:false})+
+    pageTabs([['bosses','상황판'],['members','대시보드'],['logs','배틀로그']])+
+    `<div class="overview-day-filter">${dayButtons()}</div>`;
+}
 fullOverview=()=>{
   if(ext.importMode&&adminMode())return batchImportPage();
   const tab=ui.tabs.overview,name=tab==='members'?'대시보드':tab==='logs'?'배틀로그':'클랜전';
   const action=tab==='logs'?simpleButton('이미지 등록','v2-import-images'):'';
-  const heading=titleBar(name,action)+pageTabs([['bosses','상황판'],['members','대시보드'],['logs','배틀로그']]);
+  const heading=overviewNavigation(name,action);
   if(tab==='members')return heading+operatingLine(false)+fullDashboard();
   if(tab==='logs')return heading+battleBossHealth()+battleLogContent();
   return heading+operatingLine(true)+bossStrip()+`<details class="fold optional-stats"><summary>전투 통계</summary>${overviewCharts()}</details>`;
@@ -2622,7 +2629,7 @@ function situationHud(){
 const clanBattleWithoutHud=fullOverview;
 fullOverview=()=>{
   if(ui.tabs.overview!=='bosses'||ext.importMode)return clanBattleWithoutHud();
-  return titleBar('상황판')+pageTabs([['bosses','상황판'],['members','대시보드'],['logs','배틀로그']])+situationHud()+`<details id="overview-flow" class="fold optional-stats" ${ext.overviewFlowOpen?'open':''}><summary>일차별 흐름</summary>${overviewCharts()}</details>`;
+  return overviewNavigation('상황판')+situationHud()+`<details id="overview-flow" class="fold optional-stats" ${ext.overviewFlowOpen?'open':''}><summary>일차별 흐름</summary>${overviewCharts()}</details>`;
 };
 
 document.addEventListener('toggle',event=>{if(event.target.id==='overview-flow'&&event.target.isConnected)ext.overviewFlowOpen=event.target.open;},true);
