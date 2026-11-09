@@ -48,9 +48,16 @@ completeRanking=()=>{
  return `<div class="records-day-filter">${dayButtons()}</div><div class="toolbar"><span>${ui.day}일차까지 · ${rows.length}명</span>${simpleButton('CSV','v2-ranking-csv')}</div>${desktop}<div class="table-wrap mobile-ranking"><table class="data-table ranking-unified"><thead><tr><th class="center">순위</th><th>클랜원</th>${metrics.map(([key,label])=>`<th class="right" aria-sort="${metric===key?(direction<0?'descending':'ascending'):'none'}"><button data-action="ops-rank-sort" data-value="${key}">${label} <span aria-hidden="true">${metric===key?(direction<0?'↓':'↑'):'↕'}</span></button></th>`).join('')}</tr></thead><tbody>${rows.map(s=>`<tr><td class="center rank-cell">${ranks.get(s.member.id)}</td><td>${memberLink(s.member)}</td>${metrics.map(([key])=>`<td class="right numeric">${nf(Math.round(s[key]))}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
 };
 
+function membershipVerifiedPeriods(m){
+  const registered=ROSTER_REFERENCE.find(ref=>ref.uid&&ref.uid===m.uid);
+  // Preserve newer manual changes when the initial/final membership dates differ.
+  if(registered && registered.joined===m.joined && registered.left===m.left && registered.status===m.status)
+    return registered.periods;
+  return m.periods?.length?m.periods:[{from:m.joined,to:m.left||null}];
+}
 function memberTenure(m,asOf=new Date().toLocaleDateString('sv-SE',{timeZone:'Asia/Seoul'}).slice(0,7)){
   const index=s=>Number(s.slice(0,4))*12+Number(s.slice(5,7))-1;
-  const spans=(m.periods?.length?m.periods:[{from:m.joined,to:m.left}]).filter(p=>/^\d{4}-\d{2}/.test(p.from||'')).map(p=>[index(p.from),index(p.to||asOf)]).filter(([a,b])=>b>=a).sort((a,b)=>a[0]-b[0]);
+  const spans=membershipVerifiedPeriods(m).filter(p=>/^\d{4}-\d{2}/.test(p.from||'')).map(p=>[index(p.from),index(p.to||asOf)]).filter(([a,b])=>b>=a).sort((a,b)=>a[0]-b[0]);
   if(!spans.length)return null;let total=0,start=spans[0][0],end=spans[0][1];
   for(const[a,b]of spans.slice(1)){if(a<=end+1)end=Math.max(end,b);else{total+=end-start+1;start=a;end=b;}}return total+end-start+1;
 }
