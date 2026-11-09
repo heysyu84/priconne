@@ -61,7 +61,7 @@ function completeRates(){
  const meta=`<div class="table-tools"><span>피해량 단위 만 · 상위 ${data.rules.samples}건</span><span>기준 기여도 ${nf(data.rules.baseline/10000)}만</span></div>`;
  return boardSection('단계별 보스 기여도 배율',rowTable(['단계·회차',...data.bossSettings.map(b=>`${b.id}넴`)],factors,'coefficient-table'),simpleButton('보정률 '+Math.round(data.rules.factor*100)+'%','v2-factor'))+boardSection('4단계 상위 기록',meta+rowTable(['순위',...data.bossSettings.map(b=>`${b.id}넴`)],topRows,'top-damage-table'));
 }
-function membershipPeriod(m){return (m.periods||[{from:m.joined?.slice(0,7),to:m.left?.slice(0,7)||null}]).map(p=>`${p.from?.replace('-','.')||'미상'}–${p.to?.replace('-','.')||'현재'}`).join(' / ');}
+function membershipPeriod(m){return membershipVerifiedPeriods(m).map(p=>`${p.from?.replace('-','.')||'미상'}–${p.to?.replace('-','.')||'현재'}`).join(' / ');}
 function chosung(name){const chars='ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ';return [...name].map(c=>{const n=c.charCodeAt(0)-44032;return n>=0&&n<11172?chars[Math.floor(n/588)]:c;}).join('');}
 function matchName(m,query){const q=String(query).toLowerCase().replace(/\s/g,'');return [m.name,m.uid||'',chosung(m.name)].some(s=>s.toLowerCase().replace(/\s/g,'').includes(q));}
 function completeRoster(alumni=false){
