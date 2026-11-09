@@ -1236,3 +1236,45 @@ form[data-form="v2-tactic"] #tactic-text{display:block;width:100%;min-width:0;mi
 @media(max-width:360px){
   .manual-plan-actions{width:100%;justify-content:flex-end}
 }
+
+
+/* Clan roster: reserve more width for affiliation history and pair two periods per line. */
+.roster-complete.members-compact th:nth-child(1){width:18%}
+.roster-complete.members-compact th:nth-child(2){width:21%}
+.roster-complete.members-compact th:nth-child(3){width:12%}
+.roster-complete.members-compact th:nth-child(4){width:49%}
+.roster-complete.alumni-compact th:nth-child(1){width:21%}
+.roster-complete.alumni-compact th:nth-child(2){width:20%}
+.roster-complete.alumni-compact th:nth-child(3){width:59%}
+.roster-complete .tenure-cell .tenure-periods{
+  display:grid!important;
+  grid-template-columns:repeat(2,max-content);
+  column-gap:10px;
+  row-gap:2px;
+  align-content:start;
+  justify-content:start;
+  width:max-content;
+  max-width:none;
+  margin-top:3px;
+  white-space:normal!important;
+  line-height:1.35;
+}
+.roster-complete .tenure-periods .tenure-period{
+  display:block;
+  white-space:nowrap!important;
+  overflow-wrap:normal;
+  word-break:keep-all;
+  font-variant-numeric:tabular-nums;
+}
+@media(max-width:760px){
+  .roster-complete.members-compact{min-width:455px!important}
+  .roster-complete.alumni-compact{min-width:390px!important}
+  .roster-complete.members-compact th:nth-child(1),
+  .roster-complete.alumni-compact th:nth-child(1){width:68px}
+  .roster-complete.members-compact th:nth-child(2),
+  .roster-complete.alumni-compact th:nth-child(2){width:calc(12ch + 8px)}
+  .roster-complete.members-compact th:nth-child(3){width:calc(7ch + 6px)}
+  .roster-complete.members-compact th:nth-child(4),
+  .roster-complete.alumni-compact th:nth-child(3){width:auto}
+  .roster-complete .tenure-cell .tenure-periods{column-gap:7px;row-gap:1px}
+}
