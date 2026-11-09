@@ -3,6 +3,7 @@ import {convertForeignTactic,foreignSuggestions} from './tactic-parser.mjs?v=202
 import * as partyTools from './party-tools.mjs?v=20261026-log-keys01';
 import * as logOrder from './log-order.mjs';
 import * as legacyTools from './legacy-tools.mjs?v=20261108-clan-identity-cat03';
+import {verifiedMembershipMonths,verifiedMembershipPeriodLabel} from './membership-periods.mjs?v=20261110-tenure01';
 const ICONS={
  battle:'M4 3 14 13M3 3l1 5 4-4-5-1ZM10 15l-5 5M3 18l3 3M20 3 10 13M21 3l-1 5-4-4 5-1ZM14 15l5 5M18 21l3-3',
  strategy:'M8 3h8v3H8V3ZM7 4H4v18h16V4h-3M8 11h8M8 15h5M8 19h7',
@@ -430,7 +431,7 @@ function completeRates(){
  const meta=`<div class="table-tools"><span>피해량 단위 만 · 상위 ${data.rules.samples}건</span><span>기준 기여도 ${nf(data.rules.baseline/10000)}만</span></div>`;
  return boardSection('단계별 보스 기여도 배율',rowTable(['단계·회차',...data.bossSettings.map(b=>`${b.id}넴`)],factors,'coefficient-table'),simpleButton('보정률 '+Math.round(data.rules.factor*100)+'%','v2-factor'))+boardSection('4단계 상위 기록',meta+rowTable(['순위',...data.bossSettings.map(b=>`${b.id}넴`)],topRows,'top-damage-table'));
 }
-function membershipPeriod(m){return (m.periods||[{from:m.joined?.slice(0,7),to:m.left?.slice(0,7)||null}]).map(p=>`${p.from?.replace('-','.')||'미상'}–${p.to?.replace('-','.')||'현재'}`).join(' / ');}
+function membershipPeriod(m){return verifiedMembershipPeriodLabel(m);}
 function chosung(name){const chars='ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ';return [...name].map(c=>{const n=c.charCodeAt(0)-44032;return n>=0&&n<11172?chars[Math.floor(n/588)]:c;}).join('');}
 function matchName(m,query){const q=String(query).toLowerCase().replace(/\s/g,'');return [m.name,m.uid||'',chosung(m.name)].some(s=>s.toLowerCase().replace(/\s/g,'').includes(q));}
 function completeRoster(alumni=false){
@@ -1072,11 +1073,9 @@ completeRanking=()=>{
 };
 
 function memberTenure(m,asOf=new Date().toLocaleDateString('sv-SE',{timeZone:'Asia/Seoul'}).slice(0,7)){
-  const index=s=>Number(s.slice(0,4))*12+Number(s.slice(5,7))-1;
-  const spans=(m.periods?.length?m.periods:[{from:m.joined,to:m.left}]).filter(p=>/^\d{4}-\d{2}/.test(p.from||'')).map(p=>[index(p.from),index(p.to||asOf)]).filter(([a,b])=>b>=a).sort((a,b)=>a[0]-b[0]);
-  if(!spans.length)return null;let total=0,start=spans[0][0],end=spans[0][1];
-  for(const[a,b]of spans.slice(1)){if(a<=end+1)end=Math.max(end,b);else{total+=end-start+1;start=a;end=b;}}return total+end-start+1;
+  return verifiedMembershipMonths(m,asOf);
 }
+
 completeRoster=(alumni=false)=>{
   const rows=data.members.filter(m=>(alumni||m.status==='active')&&matchName(m,ext.rosterQuery)).sort((a,b)=>Number(b.status==='active')-Number(a.status==='active')||a.name.localeCompare(b.name,'ko'));
   return `<div class="toolbar"><div class="toolbar-left"><input class="search-input" id="roster-search" data-input="v2-roster-query" aria-label="클랜원 검색" placeholder="이름 · 초성 · UID" value="${X(ext.rosterQuery)}"><span>${rows.length}명</span></div>${simpleButton('추가','add-member')}</div>`+rowTable(['클랜원','UID','가입',...(alumni?['탈퇴']:[]),'소속 기간',''],rows.map(m=>`<tr class="${m.status==='active'?'roster-active':'graduated'}"><td>${memberLink(m)}</td><td class="numeric uid-cell">${X(m.uid||'미기재')}</td><td class="nowrap">${X(m.joined?.slice(0,7)||'미기재')}</td>${alumni?`<td class="nowrap">${m.status==='active'?'재적':X(m.left?.slice(0,7)||'미기재')}</td>`:''}<td class="tenure-cell"><strong>${memberTenure(m)===null?'미기재':memberTenure(m)+'개월'}</strong><small>${X(membershipPeriod(m))}</small></td><td>${simpleButton('정보','v3-member-info',m.id,'quiet')}</td></tr>`),'roster-complete dense-table');
@@ -1878,7 +1877,7 @@ settingsDisplay=()=>`<section class="settings-sheet"><div class="setting-row"><h
 
 completeRoster=(alumni=false)=>{
   const rows=data.members.filter(m=>(alumni||m.status==='active')&&matchName(m,ext.rosterQuery)).sort((a,b)=>Number(b.status==='active')-Number(a.status==='active')||a.name.localeCompare(b.name,'ko'));
-  return `<div class="toolbar"><div class="toolbar-left"><input class="search-input" id="roster-search" data-input="v2-roster-query" aria-label="클랜원 검색" placeholder="이름 · 초성 · UID" value="${X(ext.rosterQuery)}"><span>${rows.length}명</span></div>${simpleButton('추가','add-member')}</div>`+rowTable(['클랜원','UID',...(alumni?[]:['가입']),'소속 기간'],rows.map(m=>`<tr class="${m.status==='active'?'roster-active':'graduated'}"><td>${adminMode()?`<button class="text-button member-link" data-action="edit-member" data-id="${m.id}" title="클랜원 수정">${X(m.name)}</button>`:memberLink(m)}</td><td class="numeric uid-cell">${X(m.uid||'미기재')}</td>${alumni?'':`<td class="join-cell">${X(m.joined?.slice(0,7)||'미기재')}</td>`}<td class="tenure-cell"><strong>${memberTenure(m)===null?'미기재':memberTenure(m)+'개월'}</strong>${alumni?`<small>${X(membershipPeriod(m))}</small>`:''}</td></tr>`),`roster-complete dense-table ${alumni?'alumni-compact':'members-compact'}`);
+  return `<div class="toolbar"><div class="toolbar-left"><input class="search-input" id="roster-search" data-input="v2-roster-query" aria-label="클랜원 검색" placeholder="이름 · 초성 · UID" value="${X(ext.rosterQuery)}"><span>${rows.length}명</span></div>${simpleButton('추가','add-member')}</div>`+rowTable(['클랜원','UID',...(alumni?[]:['가입']),'소속 기간'],rows.map(m=>`<tr class="${m.status==='active'?'roster-active':'graduated'}"><td>${adminMode()?`<button class="text-button member-link" data-action="edit-member" data-id="${m.id}" title="클랜원 수정">${X(m.name)}</button>`:memberLink(m)}</td><td class="numeric uid-cell">${X(m.uid||'미기재')}</td>${alumni?'':`<td class="join-cell">${X(m.joined?.slice(0,7)||'미기재')}</td>`}<td class="tenure-cell"><strong>${memberTenure(m)===null?'미기재':memberTenure(m)+'개월'}</strong><small>${X(membershipPeriod(m))}</small></td></tr>`),`roster-complete dense-table ${alumni?'alumni-compact':'members-compact'}`);
 };
 completeRates=()=>{
   const levels=seasonLevels(data.rules).filter(l=>l.count),tops=data.bossSettings.map(b=>topStats(b.id));
@@ -2956,34 +2955,33 @@ const CLAN_ARCHIVE_EVENTS=[
 ];
 subpageNames.records.chronicle='아카이브';copyRegistry.add('아카이브');
 function clanRetirementEvents(){
- const month=value=>String(value||'').slice(0,7),valid=value=>/^\d{4}-(0[1-9]|1[0-2])$/.test(value);
+ const valid=value=>/^\d{4}-(0[1-9]|1[0-2])$/.test(String(value||'').slice(0,7));
  const recorded=new Set(CLAN_ARCHIVE_EVENTS.filter(event=>event[1]==='사람'&&event[2].endsWith(' 은퇴')).map(event=>event[0]+'|'+canonicalAwardName(event[2].slice(0,-3))));
  const seen=new Set(),groups=new Map();
  for(const member of data.members||[]){
-  const spans=(member.periods?.length?member.periods:[{from:member.joined,to:member.left}]).map(period=>({from:month(period.from),to:month(period.to)})).filter(period=>valid(period.from));
-  const dates=new Set(spans.map(period=>period.to).filter(valid));
-  if(member.status!=='active'&&valid(month(member.left)))dates.add(month(member.left));
-  const name=canonicalAwardName(member.name);
-  for(const date of dates){
+   // Only the FINAL departure is an archive retirement; temporary gaps are not.
+   if(member.status==='active')continue;
+   const date=String(member.left||'').slice(0,7),name=canonicalAwardName(member.name);
+   if(!valid(date))continue;
+   const months=memberTenure(member,date);
+   if(months===null||months<12)continue;
    const key=(member.uid||member.id||name)+'|'+date;
    if(seen.has(key)||recorded.has(date+'|'+name))continue;
-   const periods=spans.filter(period=>period.from<=date).map(period=>({from:period.from,to:valid(period.to)&&period.to<date?period.to:date}));
-   const months=memberTenure({...member,periods},date);
-   if(months===null||months<24)continue;
-   seen.add(key);if(!groups.has(date))groups.set(date,[]);groups.get(date).push({name,months});
-  }
+   seen.add(key);
+   if(!groups.has(date))groups.set(date,[]);
+   groups.get(date).push({name,months});
  }
  const tenure=months=>Math.floor(months/12)+'년'+(months%12?' '+months%12+'개월':'');
- return [...groups].sort(([a],[b])=>a.localeCompare(b)).map(([date,people])=>{
-  people.sort((a,b)=>a.name.localeCompare(b.name,'ko'));
-  return [date,'사람',people.map(person=>person.name).join(' · ')+' 은퇴',people.map(person=>person.name+' · '+tenure(person.months)+' 소속').join(' / ')];
+ return [...groups].sort(([x],[y])=>x.localeCompare(y)).map(([date,people])=>{
+   people.sort((x,y)=>x.name.localeCompare(y.name,'ko'));
+   return [date,'사람',people.map(person=>person.name).join(' · ')+' 은퇴',people.map(person=>person.name+' · '+tenure(person.months)+' 소속').join(' / ')];
  });
 }
 function clanArchiveEvents(){return [...CLAN_ARCHIVE_EVENTS,...clanRetirementEvents()].sort((a,b)=>a[0].localeCompare(b[0]));}
 function completeClanArchive(){
  const events=clanArchiveEvents(),years=[...new Set(events.map(e=>e[0].slice(0,4)))];
  const items=years.map(year=>'<section class="clan-archive-year" id="clan-archive-'+year+'" aria-labelledby="clan-archive-title-'+year+'"><h2 id="clan-archive-title-'+year+'">'+year+'<small>냥냥클랜의 기록</small></h2><ol>'+events.filter(e=>e[0].startsWith(year)).map(([date,tag,title,body])=>'<li class="'+(tag==='기록 갱신'?'is-milestone':'')+'"><div class="archive-event-date"><time datetime="'+date+'">'+date.replace('-','.')+'</time><span>'+X(tag)+'</span></div><div class="archive-event-copy"><h3>'+X(title)+'</h3><p>'+X(body)+'</p></div></li>').join('')+'</ol></section>').join('');
- return '<article class="clan-archive"><header class="clan-archive-intro"><div><span class="archive-eyebrow">NYANGNYANG CLAN · SINCE 2019</span><h2>다시 모여,<br>이어 온 이야기.</h2><p>결성과 동면, 두 번의 재결성.<br>함께 쌓아 온 냥냥클랜의 굵직한 순간들을 펼칩니다.</p></div><div class="archive-highlight"><span>기록으로 남은 최고 순위</span><strong>2<small>위</small></strong><time datetime="2025-10">2025년 10월 달성</time></div></header><nav class="archive-year-nav" aria-label="연혁 연도">'+years.map(year=>'<a href="#clan-archive-'+year+'" data-action="clan-archive-year" data-value="'+year+'">'+year+'</a>').join('')+'</nav><div class="clan-archive-timeline">'+items+'</div><footer class="clan-archive-source"><p>2019년부터 이어 온 냥냥클랜의 발자취.<br>함께 만드는 다음 이야기도 이곳에 이어집니다.</p><small class="archive-retirement-note">은퇴 이력은 2년 이상 소속된 클랜원만 기재했습니다.</small></footer></article>';
+ return '<article class="clan-archive"><header class="clan-archive-intro"><div><span class="archive-eyebrow">NYANGNYANG CLAN · SINCE 2019</span><h2>다시 모여,<br>이어 온 이야기.</h2><p>결성과 동면, 두 번의 재결성.<br>함께 쌓아 온 냥냥클랜의 굵직한 순간들을 펼칩니다.</p></div><div class="archive-highlight"><span>기록으로 남은 최고 순위</span><strong>2<small>위</small></strong><time datetime="2025-10">2025년 10월 달성</time></div></header><nav class="archive-year-nav" aria-label="연혁 연도">'+years.map(year=>'<a href="#clan-archive-'+year+'" data-action="clan-archive-year" data-value="'+year+'">'+year+'</a>').join('')+'</nav><div class="clan-archive-timeline">'+items+'</div><footer class="clan-archive-source"><p>2019년부터 이어 온 냥냥클랜의 발자취.<br>함께 만드는 다음 이야기도 이곳에 이어집니다.</p><small class="archive-retirement-note">은퇴자 자동 기록은 월별 자료를 대조한 소속 기간 합계가 1년 이상인 경우에 기재했습니다. 기록 유실월은 기존 명부를 따르며, 주요 은퇴·복귀 사건은 별도 기록합니다.</small></footer></article>';
 }
 document.addEventListener('click',event=>{const link=event.target.closest('[data-action="clan-archive-year"]');if(!link)return;event.preventDefault();event.stopImmediatePropagation();document.getElementById('clan-archive-'+link.dataset.value)?.scrollIntoView({behavior:'smooth',block:'start'});},true);
 
