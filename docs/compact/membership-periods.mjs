@@ -2,7 +2,7 @@
 // Months with lost source records (2020-03, 2020-05, early 2019) are NOT
 // assumed to be absences. Excluded intervals represent missing roster entries,
 // not independently proven dates of leaving the in-game clan.
-// 2020-01 is excluded for everyone because the clan was disbanded/dormant.
+// 2020-01 dormancy counts toward membership for members enrolled during that month.
 export const MEMBERSHIP_ROSTER_GAPS = {
   "119821969218": [
     [
@@ -188,7 +188,7 @@ const monthIndex = value => {
 const fromMonthIndex = index => String(Math.floor(index/12)).padStart(4,'0')+'-'+String(index%12+1).padStart(2,'0');
 export function verifiedMembershipPeriods(member) {
   const raw = Array.isArray(member.periods)&&member.periods.length ? member.periods : [{from:member.joined,to:member.left||null}];
-  const removed=[['2020-01','2020-01'],...(MEMBERSHIP_ROSTER_GAPS[String(member.uid||'').replace(/\D/g,'')]||[])].map(([start,end])=>[monthIndex(start),monthIndex(end)]);
+  const removed=(MEMBERSHIP_ROSTER_GAPS[String(member.uid||'').replace(/\D/g,'')]||[]).map(([start,end])=>[monthIndex(start),monthIndex(end)]);
   const spans=[];
   for(const p of raw){
     const start=monthIndex(p.from),end=monthIndex(p.to);
@@ -206,6 +206,13 @@ export function verifiedMembershipPeriods(member) {
       segments=next;
     }
     spans.push(...segments);
+  }
+  // Older synced records had this month wrongly removed; restore it without
+  // changing other recorded hiatuses.
+  const dormantMonth=monthIndex('2020-01');
+  const joined=monthIndex(member.joined),left=monthIndex(member.left);
+  if(joined!==null&&joined<=dormantMonth&&(left===null||left>=dormantMonth)){
+    spans.push([dormantMonth,dormantMonth]);
   }
   spans.sort((a,b)=>a[0]-b[0]);
   const merged=[];
