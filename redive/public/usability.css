@@ -1238,25 +1238,27 @@ form[data-form="v2-tactic"] #tactic-text{display:block;width:100%;min-width:0;mi
 }
 
 
-/* Clan roster: reserve more width for affiliation history and pair two periods per line. */
-.roster-complete.members-compact th:nth-child(1){width:18%}
-.roster-complete.members-compact th:nth-child(2){width:21%}
+/* Clan roster: wider names, PC one-line affiliation and mobile two-per-line. */
+.roster-complete.members-compact th:nth-child(1){width:26%}
+.roster-complete.members-compact th:nth-child(2){width:20%}
 .roster-complete.members-compact th:nth-child(3){width:12%}
-.roster-complete.members-compact th:nth-child(4){width:49%}
-.roster-complete.alumni-compact th:nth-child(1){width:21%}
-.roster-complete.alumni-compact th:nth-child(2){width:20%}
-.roster-complete.alumni-compact th:nth-child(3){width:59%}
+.roster-complete.members-compact th:nth-child(4){width:42%}
+.roster-complete.alumni-compact th:nth-child(1){width:29%}
+.roster-complete.alumni-compact th:nth-child(2){width:19%}
+.roster-complete.alumni-compact th:nth-child(3){width:52%}
+.roster-complete .tenure-cell{text-align:right!important}
+.roster-complete .tenure-cell strong{display:block;text-align:right}
 .roster-complete .tenure-cell .tenure-periods{
-  display:grid!important;
-  grid-template-columns:repeat(2,max-content);
-  column-gap:10px;
-  row-gap:2px;
-  align-content:start;
-  justify-content:start;
+  display:flex!important;
+  flex-wrap:nowrap!important;
+  gap:8px;
+  align-items:baseline;
+  justify-content:flex-end;
   width:max-content;
   max-width:none;
-  margin-top:3px;
-  white-space:normal!important;
+  margin:3px 0 0 auto;
+  text-align:right;
+  white-space:nowrap!important;
   line-height:1.35;
 }
 .roster-complete .tenure-periods .tenure-period{
@@ -1266,15 +1268,27 @@ form[data-form="v2-tactic"] #tactic-text{display:block;width:100%;min-width:0;mi
   word-break:keep-all;
   font-variant-numeric:tabular-nums;
 }
+@media(min-width:761px){
+  /* More membership intervals need a wider row instead of wrapping. */
+  .roster-complete:has(.tenure-period:nth-child(4)){min-width:1040px!important}
+  .roster-complete:has(.tenure-period:nth-child(5)){min-width:1230px!important}
+}
 @media(max-width:760px){
-  .roster-complete.members-compact{min-width:455px!important}
-  .roster-complete.alumni-compact{min-width:390px!important}
-  .roster-complete.members-compact th:nth-child(1),
-  .roster-complete.alumni-compact th:nth-child(1){width:68px}
+  .roster-complete.members-compact{min-width:660px!important}
+  .roster-complete.alumni-compact{min-width:560px!important}
+  .roster-complete.members-compact th:nth-child(1){width:126px}
+  .roster-complete.alumni-compact th:nth-child(1){width:132px}
   .roster-complete.members-compact th:nth-child(2),
   .roster-complete.alumni-compact th:nth-child(2){width:calc(12ch + 8px)}
   .roster-complete.members-compact th:nth-child(3){width:calc(7ch + 6px)}
   .roster-complete.members-compact th:nth-child(4),
   .roster-complete.alumni-compact th:nth-child(3){width:auto}
-  .roster-complete .tenure-cell .tenure-periods{column-gap:7px;row-gap:1px}
+  .roster-complete .tenure-cell .tenure-periods{
+    display:grid!important;
+    grid-template-columns:repeat(2,max-content);
+    column-gap:7px;
+    row-gap:1px;
+    justify-content:end;
+    white-space:normal!important;
+  }
 }
