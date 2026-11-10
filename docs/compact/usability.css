@@ -1262,6 +1262,7 @@ form[data-form="v2-tactic"] #tactic-text{display:block;width:100%;min-width:0;mi
   line-height:1.35;
   white-space:normal!important;
 }
+.roster-complete .tenure-period:last-child:nth-child(odd){grid-column:2}
 .roster-complete .tenure-periods .tenure-period{
   display:block;
   white-space:nowrap!important;
@@ -1270,14 +1271,24 @@ form[data-form="v2-tactic"] #tactic-text{display:block;width:100%;min-width:0;mi
   font-variant-numeric:tabular-nums;
 }
 @media(max-width:760px){
-  .roster-complete.members-compact{min-width:700px!important}
-  .roster-complete.alumni-compact{min-width:620px!important}
-  .roster-complete.members-compact th:nth-child(1){width:145px}
-  .roster-complete.alumni-compact th:nth-child(1){width:150px}
+  .roster-complete.members-compact th:nth-child(1){width:30%}
+  .roster-complete.alumni-compact th:nth-child(1){width:32%}
   .roster-complete.members-compact th:nth-child(2),
   .roster-complete.alumni-compact th:nth-child(2){width:calc(12ch + 8px)}
   .roster-complete.members-compact th:nth-child(3){width:calc(7ch + 6px)}
   .roster-complete.members-compact th:nth-child(4),
   .roster-complete.alumni-compact th:nth-child(3){width:auto}
-  .roster-complete .tenure-cell .tenure-periods{column-gap:7px;row-gap:2px}
+  .roster-complete .member-link{
+    white-space:normal!important;
+    overflow-wrap:anywhere;
+  }
+  .roster-complete .tenure-cell .tenure-periods{
+    display:flex!important;
+    flex-wrap:wrap;
+    gap:2px 7px;
+  }
+  .roster-complete .tenure-periods .tenure-period{
+    min-width:calc((100% - 7px) / 2);
+    max-width:100%;
+  }
 }
