@@ -1292,3 +1292,32 @@ form[data-form="v2-tactic"] #tactic-text{display:block;width:100%;min-width:0;mi
     max-width:100%;
   }
 }
+
+/* Monthly awards: keep column headings, ordinary months and missing-record months aligned.
+   Winner names 1st/2nd share one horizontal line at every screen width. */
+.data-table.history-table :is(thead th,tbody td):not(.no-rows){vertical-align:middle!important}
+.data-table.history-table thead th:first-child,
+.data-table.history-table tbody td:first-child:not(.no-rows){text-align:left!important}
+.data-table.history-table thead th:not(:first-child),
+.data-table.history-table tbody td:nth-child(2),
+.data-table.history-table tbody td:nth-child(3),
+.data-table.history-table tbody td.winner-cell,
+.data-table.history-table tbody td:last-child:not(.no-rows){text-align:center!important}
+.data-table.history-table tbody td:nth-child(2),
+.data-table.history-table tbody td:nth-child(3){font-variant-numeric:tabular-nums}
+.data-table.history-table tbody td.winner-cell{white-space:nowrap!important}
+.data-table.history-table tbody td.winner-cell .winner-person{
+  display:inline-flex!important;
+  align-items:baseline;
+  gap:4px;
+  margin:0 5px!important;
+  vertical-align:middle;
+  white-space:nowrap!important;
+  line-height:1.5;
+}
+.data-table.history-table tbody td.winner-cell .winner-person b{white-space:nowrap;flex:none}
+.data-table.history-table tbody tr.honors-no-award td.honors-note-cell{
+  text-align:center!important;
+  vertical-align:middle!important;
+  white-space:normal!important;
+}
