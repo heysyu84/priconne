@@ -24,6 +24,10 @@ assert(css.includes('tbody td.winner-cell .winner-person{'),'Winners must have a
 assert(css.includes('display:inline-flex!important;'),'1st and 2nd places must be horizontal');
 assert(css.includes('thead th:not(:first-child)'),'Headers must align with centered values');
 assert(css.includes('tbody tr.honors-no-award td.honors-note-cell'),'Spanning note must stay centered');
-const notes=['<td> month','<td> rank','<td> participation','<td colspan="3"> award note','<td> status'];
-assert.equal(1+1+1+3+1,7,'Missing-data month must cover the same seven columns');
+const noteRow=monthly.match(/return '<tr class="honors-no-award">[\\s\\S]*?<\\/tr>';/)?.[0];
+assert(noteRow,'Special-month row must be rendered');
+const noteCells=[...noteRow.matchAll(/<td([^>]*)>/g)].map(match=>match[1]);
+assert.equal(noteCells.length,5,'Special row must include month, rank, count, spanning note and result');
+assert.equal(noteCells.reduce((total,attrs)=>total+Number(attrs.match(/colspan="(\\d+)"/)?.[1]||1),0),7,
+  'Special-month cells must occupy the same seven-column grid as normal months');
 console.log('Monthly-awards structure and alignment: PASS');
