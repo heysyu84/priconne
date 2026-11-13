@@ -11,7 +11,7 @@ ensureRoster(seed,seed.rosterSeed);const original=seed.months['2026-09'].events.
 assert.equal(applySourceData(seed,source),true);const counts={roster:seed.roster.length,history:seed.clanHistory.length,hall:seed.hallOfFame.length};
 for(const r of source.roster){const p=seed.roster.find(p=>r.uid?p.uid===r.uid:p.name===r.name);assert.ok(p,r.name);assert.equal(p.joinedAt,r.joinedMonth);if(p.status==='left')assert.equal(p.leftAt,r.leftMonth);assert.equal(tenureMonths(p,'2026-10'),r.sourceMonths,p.name);}
 assert.equal(counts.history,87);assert.equal(counts.hall,41);assert.equal(seed.months['2026-10'].recommendations.length,18);
-assert.equal(seed.clanHistory.filter(h=>h.memberCount!==null).length,27);assert.equal(seed.clanHistory.filter(h=>h.archiveUrl).length,78);
+assert.equal(seed.clanHistory.filter(h=>h.memberCount!==null).length,source.monthlyHistory.filter(h=>h.memberCount!==null).length);assert.equal(seed.clanHistory.filter(h=>h.archiveUrl).length,78);
 const json=JSON.stringify(seed);assert.equal(applySourceData(seed,source),false);assert.equal(JSON.stringify(seed),json);
 // 3단계 추천 조합은 4단계 개방 이전에만 표시해야 한다.
 // 첫 3단계 보스의 격파 직후에는 4단계 공격 기록이 없어도 개방된 상태다.
@@ -82,7 +82,7 @@ month.dayBreaks.push({id:'d2',afterSeq:6,nextDay:2});month.events.push({id:'next
 assert.equal(dashboardDay(month,memberId,2).used,1);
 month.events=Array.from({length:12},(_,i)=>({id:'sample'+i,seq:i+1,stage:4,boss:1,damage:10000001+i*10000,actual:10000001+i*10000,memberId:'user'+(i%3),member:'유저'+(i%3)}));
 const top=bossTopStats(month,1);assert.equal(top.samples.length,10);assert.equal(top.mean,10065000);assert.equal(top.corrected,10065000*.95);
-console.log(`PASS: source 128 members, ${counts.history} months, ${counts.hall} hall members, 18 combos, 27 headcounts, tenure/rejoin periods, half-hit +5%, negative transcend bonuses, daily boundaries and 3+3 dashboard`);
+console.log(`PASS: source 128 members, ${counts.history} months, ${counts.hall} hall members, 18 combos, sourced headcounts, tenure/rejoin periods, half-hit +5%, negative transcend bonuses, daily boundaries and 3+3 dashboard`);
 
 month.events=month.events.slice(0,5);const partial=bossTopStats(month,1);assert.equal(partial.samples.length,5);assert.equal(partial.mean,10020000);
 const early=structuredClone(seed.months['2026-10']);early.options.autoContribution=true;early.levels=[{stage:4,start:1,end:999,count:999}];early.options.startStage=4;early.events=Array.from({length:5},(_,i)=>({id:'early'+i,seq:i+1,day:1,boss:1,memberId:'m'+i,member:'검증'+i,damage:10000001+i*10000,carry:false,bonus:0}));early.dayBreaks=[];replayMonth(early);assert.equal(early.bosses[0].contributionSampleCount,5);assert.equal(early.bosses[0].contribution[4],30000000/(10020000*.95));

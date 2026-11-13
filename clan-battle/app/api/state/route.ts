@@ -1,6 +1,7 @@
 import { env } from "cloudflare:workers";
 import { validateBattleNumbers } from "../../../public/engine.mjs";
 import { hasEditor } from "../../editor-access";
+import { readCorrectedClanState } from "../../member-reference-corrections.mjs";
 
 import { allowedOrigin, apiHeaders, preflight } from "../../api-access";
 type StateRow = { revision: number; payload: string; updated_at: string };
@@ -9,14 +10,11 @@ export async function GET(request: Request) {
   const headers = apiHeaders(request);
   if (!allowedOrigin(request)) return Response.json({ error: "허용되지 않은 요청입니다." }, { status: 403, headers });
   try {
+    const { row, data: original } = await readCorrectedClanState(env.DB!);
     const since = new URL(request.url).searchParams.get("since");
-    if(since !== null && /^\d+$/.test(since)){
-      const known = await env.DB!.prepare("SELECT revision FROM clan_state WHERE id = ?").bind("main").first<Pick<StateRow, "revision">>();
-      const knownRevision = known?.revision ?? 0;
-      if(knownRevision === Number(since))return Response.json({ revision:knownRevision, changed:false }, { headers });
+    if (since !== null && /^\d+$/.test(since) && (row?.revision ?? 0) === Number(since)) {
+      return Response.json({ revision: row?.revision ?? 0, changed: false }, { headers });
     }
-    const row = await env.DB!.prepare("SELECT revision, payload, updated_at FROM clan_state WHERE id = ?").bind("main").first<StateRow>();
-    const original = row ? JSON.parse(row.payload) : null;
     const compact = new URL(request.url).searchParams.get("compact") === "1";
     if (compact && original?.months) {
       const currentMonth = Object.keys(original.months).sort().at(-1);
@@ -79,12 +77,16 @@ export async function PUT(request: Request) {
     const write = body.revision === 0
       ? env.DB!.prepare("INSERT INTO clan_state (id, revision, payload, updated_at) VALUES (?, ?, ?, ?) ON CONFLICT(id) DO NOTHING").bind("main", revision, payload, now)
       : env.DB!.prepare("UPDATE clan_state SET revision = ?, payload = ?, updated_at = ? WHERE id = ? AND revision = ?").bind(revision, payload, now, "main", body.revision);
-    const archived = archiveEntries.map(([month, data])=>{
-      const json=JSON.stringify(data);
-      return body.restoreArchives===true
-        ? env.DB!.prepare("INSERT INTO clan_archive_months (month, payload, updated_at) VALUES (?, ?, ?) ON CONFLICT(month) DO UPDATE SET payload=excluded.payload, updated_at=excluded.updated_at").bind(month,json,now)
-        : env.DB!.prepare("INSERT OR IGNORE INTO clan_archive_months (month, payload, updated_at) VALUES (?, ?, ?)").bind(month,json,now);
-    });
+    // D1 batch statements share a transaction. Read changes() immediately after
+    // the revision-guarded write, in ONE statement for every archived month.
+    // A losing writer must not insert or replace any archive before returning 409.
+    const archived = archiveEntries.length ? [env.DB!.prepare(
+      "INSERT INTO clan_archive_months (month, payload, updated_at) " +
+      "SELECT json_extract(value, '$[0]'), json_extract(value, '$[1]'), ? FROM json_each(?) WHERE changes() = 1 " +
+      (body.restoreArchives===true
+        ? "ON CONFLICT(month) DO UPDATE SET payload=excluded.payload, updated_at=excluded.updated_at"
+        : "ON CONFLICT(month) DO NOTHING")
+    ).bind(now,JSON.stringify(archiveEntries.map(([month,data])=>[month,JSON.stringify(data)])))] : [];
     const result = await env.DB!.batch([
       write,
       ...archived,

@@ -7,6 +7,7 @@ import * as parser from '../public/tactic-parser.mjs';
 import * as partyTools from '../public/party-tools.mjs';
 import * as logOrder from '../public/log-order.mjs';
 import * as legacyTools from '../public/legacy-tools.mjs';
+import {verifiedMembershipMonths,verifiedMembershipPeriodLabel} from '../public/membership-periods.mjs';
 import {handleSharedState} from '../server/shared-store.mjs';
 import {initialState} from '../server/initial-state.mjs';
 
@@ -18,7 +19,7 @@ const node=()=>({innerHTML:'',value:'',open:false,dataset:{},classList:{toggle()
 let writes=0;
 async function client(isOwner,storage=new Map()){
   const elements={app:node(),drawer:node(),toast:node(),'shared-status':node()},timers=new Set(),clickHandlers=[];let disconnected=false;
-  const context={console,Date,Math,Number,String,Array,Object,Set,Map,JSON,RegExp,structuredClone,TextEncoder,AbortSignal,crypto,queueMicrotask,setTimeout(fn,ms){const t=setTimeout(()=>{timers.delete(t);fn();},ms);timers.add(t);return t;},clearTimeout(t){timers.delete(t);clearTimeout(t);},setInterval(){},localStorage:{getItem:k=>storage.get(k)||null,setItem:(k,v)=>storage.set(k,v),removeItem:k=>storage.delete(k)},document:{getElementById:id=>elements[id]||(elements[id]=node()),querySelector(){return null;},documentElement:node(),body:node(),addEventListener(type,handler,options){if(type==='click')clickHandlers.push({handler,capture:options===true||!!options?.capture});},hidden:false,activeElement:null},window:{addEventListener(){},scrollTo(){}},location:{hash:'',origin:'https://site.test'},history:{replaceState(){},pushState(){}},engineReplay:engine.replayMonth,engineProgress:engine.bossProgress,engineContribution:engine.contribution,engineEstimate:engine.estimateCarry,partyTools,logOrder,legacyTools,...parser};
+  const context={console,Date,Math,Number,String,Array,Object,Set,Map,JSON,RegExp,structuredClone,TextEncoder,AbortSignal,crypto,queueMicrotask,setTimeout(fn,ms){const t=setTimeout(()=>{timers.delete(t);fn();},ms);timers.add(t);return t;},clearTimeout(t){timers.delete(t);clearTimeout(t);},setInterval(){},localStorage:{getItem:k=>storage.get(k)||null,setItem:(k,v)=>storage.set(k,v),removeItem:k=>storage.delete(k)},document:{getElementById:id=>elements[id]||(elements[id]=node()),querySelector(){return null;},documentElement:node(),body:node(),addEventListener(type,handler,options){if(type==='click')clickHandlers.push({handler,capture:options===true||!!options?.capture});},hidden:false,activeElement:null},window:{addEventListener(){},scrollTo(){}},location:{hash:'',origin:'https://site.test'},history:{replaceState(){},pushState(){}},engineReplay:engine.replayMonth,engineProgress:engine.bossProgress,engineContribution:engine.contribution,engineEstimate:engine.estimateCarry,partyTools,logOrder,legacyTools,verifiedMembershipMonths,verifiedMembershipPeriodLabel,...parser};
   context.fetch=async(path,options={})=>{
     if(disconnected)throw new TypeError('Network unavailable');
     const headers=new Headers(options.headers);if(isOwner){headers.set('oai-authenticated-user-id','owner-site-id');headers.set('oai-authenticated-user-email','owner@site.test');}

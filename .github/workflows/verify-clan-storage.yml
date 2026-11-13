@@ -1,0 +1,34 @@
+name: Verify clan data protection
+on:
+  push:
+    paths:
+      - 'clan-battle/app/**'
+      - 'clan-battle/scripts/**'
+      - 'clan-battle/public/engine.mjs'
+      - 'redive/public/membership-periods.mjs'
+      - 'redive/scripts/test-membership-periods.mjs'
+      - 'redive/scripts/published-records.mjs'
+      - 'redive/scripts/test-published-records.mjs'
+      - 'redive/scripts/build*.mjs'
+      - '.github/workflows/verify-clan-storage.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Verify storage, input and preserved membership calculations
+        run: |
+          node clan-battle/scripts/test-api-storage.mjs
+          node clan-battle/scripts/test-public-entry.mjs
+          node clan-battle/scripts/test-editor.mjs
+          node redive/scripts/test-membership-periods.mjs
+          node redive/scripts/test-published-records.mjs
+          cd redive
+          node scripts/check-migration.mjs

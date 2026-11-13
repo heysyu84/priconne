@@ -4,8 +4,8 @@ import {registerHooks} from 'node:module';
 import fs from 'node:fs';
 const sqlite=new DatabaseSync(':memory:');
 const DB={prepare(sql){const statement=sqlite.prepare(sql);let args=[];const p={bind(...values){args=values;return p;},async first(){return statement.get(...args)||null;},async all(){return {results:statement.all(...args)};},async run(){const result=statement.run(...args);return {meta:{changes:Number(result.changes)}};}};return p;},async batch(statements){const out=[];for(const s of statements)out.push(await s.run());return out;}};
-globalThis.__editorTestDB=DB;
-registerHooks({resolve(specifier,context,next){if(specifier==='cloudflare:workers')return {url:'data:text/javascript,export const env={DB:globalThis.__editorTestDB}',shortCircuit:true};if((specifier.endsWith('/editor-access')||specifier.endsWith('/api-access')))return next(specifier+'.ts',context);return next(specifier,context);}});
+globalThis.__editorTestDB=DB;globalThis.__editorTestInitialPin='1122';
+registerHooks({resolve(specifier,context,next){if(specifier==='cloudflare:workers')return {url:'data:text/javascript,export const env={DB:globalThis.__editorTestDB,get CLAN_INITIAL_EDITOR_PIN(){return globalThis.__editorTestInitialPin}}',shortCircuit:true};if((specifier.endsWith('/editor-access')||specifier.endsWith('/api-access')))return next(specifier+'.ts',context);return next(specifier,context);}});
 const {editorAction,hasEditor}=await import('../app/editor-access.ts');
 const {PUT}=await import('../app/api/state/route.ts');
 const stateRoute=await import('../app/api/state/route.ts');
@@ -35,7 +35,7 @@ response=await editorAction(request({pin:'2211'}));const newCookie=response.head
 assert.equal(await hasEditor(new Request(url,{headers:{cookie:newCookie}})),true);
 assert.equal((await editorAction(request({action:'lock'},newCookie))).status,200);
 assert.equal(await hasEditor(new Request(url,{headers:{cookie:newCookie}})),false);
-console.log('PASS: server-side PIN gate, default unlock, HttpOnly session, rejected wrong PIN, authorized state save, revision conflict, exact HP validation, password change and session revocation');
+console.log('PASS: server-side PIN gate, configured initial unlock, HttpOnly session, rejected wrong PIN, authorized state save, revision conflict, exact HP validation, password change and session revocation');
 
 const pagesRequest=(body,token='',origin=PAGES_ORIGIN,path='/api/editor')=>new Request(url+path,{method:'POST',headers:{origin,'Content-Type':'application/json','X-Nyang-Client':'4',...(token?{authorization:`Bearer ${token}`}:{})},body:JSON.stringify(body)});
 for(const origin of [PAGES_ORIGIN,CLOUDFLARE_PAGES_ORIGIN]) for(const [route,method,path] of [[stateRoute,'PUT','state'],[editorRoute,'POST','editor'],[archiveRoute,'GET','archive']]) {
@@ -88,3 +88,10 @@ abort.abort();await response.body.cancel();
 assert.equal((await editorAction(pagesRequest({action:'lock'},cloudflareSession.token,CLOUDFLARE_PAGES_ORIGIN))).status,200);
 assert.equal(await hasEditor(pagesRequest({},cloudflareSession.token,CLOUDFLARE_PAGES_ORIGIN)),false);
 console.log('PASS: Cloudflare production origin shared reads, authenticated saves and live changes; unrelated origins, preview origins and unauthenticated writes rejected');
+
+// Empty databases must not acquire a publicly known default password.
+sqlite.exec('DELETE FROM editor_config; DELETE FROM editor_sessions; DELETE FROM editor_attempts;');
+globalThis.__editorTestInitialPin=undefined;
+assert.equal((await editorAction(request({pin:'1122'}))).status,503);
+assert.equal(sqlite.prepare('SELECT count(*) n FROM editor_config').get().n,0);
+console.log('PASS: an unconfigured new database remains locked without a default password');

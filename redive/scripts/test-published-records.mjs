@@ -1,0 +1,11 @@
+import assert from 'node:assert/strict';
+import {preservePublishedSeed,preservePublishedReferences} from './published-records.mjs';
+const old='<script id="seed-data" type="application/json">{"damage":123456789,"note":"existing"}</script>';
+const next='<header>updated</header><script id="seed-data" type="application/json">{"damage":1}</script>';
+assert.equal(preservePublishedSeed(next,old),'<header>updated</header>'+old);
+assert.equal(preservePublishedSeed(next,null),next);
+const published='const ROSTER_REFERENCE=[{"name":"retained","periods":[{"from":"2020-01","to":null}]}];\nfunction feature(){return "old";}';
+const fresh='const ROSTER_REFERENCE=[];\nfunction feature(){return "fixed";}';
+assert.equal(preservePublishedReferences(fresh,published),published.split('\n')[0]+'\nfunction feature(){return "fixed";}');
+assert.throws(()=>preservePublishedReferences(fresh,'const ROSTER_REFERENCE=invalid;'));
+console.log('PASS builds retain published battle and roster snapshots while updating UI code');

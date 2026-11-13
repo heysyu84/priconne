@@ -29,5 +29,5 @@ assert.ok(estimateCarry({hp:1.1,second:10}).error);
 let checked=0;
 for(const month of Object.values(seed.months)){replayMonth(month);for(const event of month.events){assert.ok(Number.isSafeInteger(event.before));assert.ok(Number.isSafeInteger(event.actual));assert.ok(Number.isSafeInteger(event.after));assert.equal(event.before-event.actual,event.after);checked++;}}
 const art=JSON.parse(fs.readFileSync(new URL('../public/bosses.json',import.meta.url),'utf8'));
-for(const [key,month] of Object.entries(seed.months))for(const boss of month.bosses){assert.equal(art[key][boss.id].name,boss.name);const bytes=fs.readFileSync(new URL('../public'+art[key][boss.id].portrait,import.meta.url));assert.equal(bytes.subarray(0,8).toString('hex'),'89504e470d0a1a0a');}
-console.log(`PASS: 1 HP remainder, exact decimal-unit parsing, kill/lap/edit cascade, carry ceiling, ${checked} archived attacks, 10 boss PNGs`);
+for(const [key,month] of Object.entries(seed.months))for(const boss of month.bosses){assert.equal(art[key][boss.id].name,boss.name);const portrait=art[key][boss.id].portrait;if(/^https:\/\//.test(portrait)){const url=new URL(portrait);assert.equal(url.hostname,'purikonekrsemi.github.io');assert.match(url.pathname,/\/images\/Boss\/[^/]+\.png$/);}else{const bytes=fs.readFileSync(new URL('../public'+portrait,import.meta.url));assert.equal(bytes.subarray(0,8).toString('hex'),'89504e470d0a1a0a');}}
+console.log(`PASS: 1 HP remainder, exact decimal-unit parsing, kill/lap/edit cascade, carry ceiling, ${checked} archived attacks, 10 boss portrait references`);

@@ -51,7 +51,7 @@ const empty={events:[],dayBreaks:[{id:'empty',afterSeq:0,nextDay:2}]};cancelDayC
 // Exercise the actual UI handlers, including the code gate and undo behavior.
 let listeners={},editor=false,saves=0,unlocks=0,answer=true;
 globalThis.document={addEventListener(type,fn){(listeners[type]||=[]).push(fn);},getElementById:()=>null,createElement:()=>({}),head:{append(){}},querySelector:()=>null,querySelectorAll:()=>[],activeElement:null};
-globalThis.window={addEventListener(){}};
+globalThis.window={addEventListener(){},matchMedia:()=>({matches:false,addEventListener(){}})};
 globalThis.confirm=()=>answer;
 function workflow() {
   listeners={};

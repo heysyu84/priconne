@@ -1,11 +1,20 @@
+/* Loading indicator: light is the site's default; dark follows actual page background. */
 .nyang-loading-indicator{
+  --nyang-loading-detail:#fff;
   position:fixed;right:max(15px,env(safe-area-inset-right));bottom:calc(17px + env(safe-area-inset-bottom));
   z-index:700;display:flex;align-items:center;gap:2px;pointer-events:none;
   padding:5px 9px 5px 3px;border-radius:12px;
-  background:rgba(14,20,34,.78);color:#fff;box-shadow:0 2px 14px rgba(0,0,0,.16);
+  background:rgba(255,255,255,.92);color:#28384e;border:1px solid rgba(105,120,145,.26);
+  box-shadow:0 3px 14px rgba(30,50,75,.12);
   max-width:calc(100vw - 24px);white-space:nowrap;
 }
+.nyang-loading-indicator.nyang-loading-dark{
+  --nyang-loading-detail:#111827;
+  background:rgba(14,20,34,.78);color:#fff;border-color:rgba(255,255,255,.13);
+  box-shadow:0 2px 14px rgba(0,0,0,.16);
+}
 .nyang-loading-indicator[hidden]{display:none!important}
+.nyang-loading-detail{fill:var(--nyang-loading-detail)}
 .nyang-loading-silhouette{width:46px;height:50px;flex:none;overflow:visible;animation:nyang-loader-bob .55s ease-in-out infinite alternate;transform-origin:50% 55%}
 .nyang-loading-letters{display:flex;align-items:baseline;font-size:16px;font-family:Arial,'Apple SD Gothic Neo',sans-serif;font-weight:500;letter-spacing:-.6px;line-height:1}
 .nyang-loading-char{display:inline-block;animation:nyang-loader-wave 1.3s ease-in-out infinite;animation-delay:calc(var(--i)*65ms)}

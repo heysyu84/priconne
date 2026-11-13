@@ -1,11 +1,12 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
+import {preservePublishedReferences} from './published-records.mjs';
 
 const root=fileURLToPath(new URL('..',import.meta.url));
 export const API_ORIGIN='https://nyang-clan-manager.heysyu457310.chatgpt.site';
 export const PUBLIC_ORIGIN='https://priconne.pages.dev';
-export const RELEASE='20261113-honors-horizontal01';
+export const RELEASE='20261113-storage-audit01';
 export function canonicalHead(legacy=false){
   const page=legacy?'/legacy.html':'/';
   return `<link rel="canonical" href="${PUBLIC_ORIGIN}${page}"><script>if(location.hostname==='heysyu84.github.io'&&!new URLSearchParams(location.search).has('github-preview')){location.replace('${PUBLIC_ORIGIN}'+(location.pathname.replace(/^\\/priconne(?=\\/|$)/,'')||'/')+location.search+location.hash)}</script>`;
@@ -14,6 +15,8 @@ export function activateVersionLink(html){
   return html.replace(/<a class="btn sm version-link"[^>]*>신버전 열기<\/a>/g,`<a class="btn sm version-link" href="${PUBLIC_ORIGIN}/" aria-label="냥냥클랜 새 화면 열기">간편 버전</a>`).replace(/<button[^>]*class="btn sm version-pending"[^>]*>간편 버전[\s\S]*?<\/button>/g,`<a class="btn sm version-link" href="${PUBLIC_ORIGIN}/">간편 버전</a>`);
 }
 export function buildRedivePages(output,{legacyHtml}={}){
+  const publishedFile=path.join(root,'../docs/compact/app.js');
+  const published=fs.existsSync(publishedFile)?fs.readFileSync(publishedFile,'utf8'):null;
   fs.mkdirSync(output,{recursive:true});
   const compact=path.join(output,'compact');
   fs.rmSync(compact,{recursive:true,force:true});
@@ -22,6 +25,7 @@ export function buildRedivePages(output,{legacyHtml}={}){
   // HTML image URLs resolve against the root page; JS imports and CSS URLs
   // already resolve against their own compact module/style URL.
   app=app.replaceAll('./assets/','./compact/assets/');
+  app=preservePublishedReferences(app,published);
   fs.writeFileSync(path.join(compact,'app.js'),app);
   let html=fs.readFileSync(path.join(root,'public/index.html'),'utf8');
   html=html.replace('<head>',`<head><meta name="nyang-legacy-api-origin" content="${API_ORIGIN}">${canonicalHead()}`);
@@ -32,6 +36,7 @@ export function buildRedivePages(output,{legacyHtml}={}){
   fs.writeFileSync(path.join(output,'index.html'),html);
   // Keep the original review link on the same reusable workspace as the admin tab.
   const lab=path.join(output,'aikurumi-lab');
+  fs.rmSync(lab,{recursive:true,force:true});
   fs.mkdirSync(lab,{recursive:true});
   const reviewFiles=fs.readdirSync(path.join(root,'public')).filter(name=>name.startsWith('aikurumi-')&&name!=='aikurumi-lab.html');
   for(const name of [...reviewFiles,'tactic-parser.mjs','tactic-set-state.mjs'])fs.copyFileSync(path.join(root,'public',name),path.join(lab,name));

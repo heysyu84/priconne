@@ -17,8 +17,11 @@ export async function accessDB() {
   ]);
   const row = await db.prepare("SELECT id FROM editor_config WHERE id='main'").first();
   if (!row) {
-    const salt = hex(crypto.getRandomValues(new Uint8Array(16)));
-    await db.prepare("INSERT OR IGNORE INTO editor_config(id,salt,pin_hash) VALUES('main',?,?)").bind(salt, await hash("1122", salt)).run();
+    const initialPin = env.CLAN_INITIAL_EDITOR_PIN;
+    if (typeof initialPin === "string" && initialPin.length >= 4 && initialPin.length <= 80) {
+      const salt = hex(crypto.getRandomValues(new Uint8Array(16)));
+      await db.prepare("INSERT OR IGNORE INTO editor_config(id,salt,pin_hash) VALUES('main',?,?)").bind(salt, await hash(initialPin, salt)).run();
+    }
   }
   return db;
 }
@@ -52,6 +55,7 @@ export async function editorAction(request: Request) {
   const attempt = await db.prepare("SELECT attempts,reset_at FROM editor_attempts WHERE id=?").bind(attemptID).first<{attempts:number;reset_at:number}>();
   if (attempt && attempt.reset_at > now && attempt.attempts >= 10) return reply({error:"입력이 여러 번 틀렸습니다. 5분 뒤 다시 시도하세요."},{status:429});
   const config = await db.prepare("SELECT salt,pin_hash FROM editor_config WHERE id='main'").first<{salt:string;pin_hash:string}>();
+  if (!config) return reply({error:"작성 비밀번호의 초기 설정이 필요합니다. 관리자에게 문의하세요."},{status:503});
   const actual = typeof data.pin === "string" && data.pin.length <= 80 ? await hash(data.pin,config!.salt) : "";
   let mismatch = actual.length ^ config!.pin_hash.length;
   for (let i=0;i<config!.pin_hash.length;i++) mismatch |= (actual.charCodeAt(i)||0)^config!.pin_hash.charCodeAt(i);

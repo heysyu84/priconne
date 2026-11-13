@@ -34,14 +34,20 @@
 
 Node.js 22.13 이상과 package.json에 지정된 pnpm을 사용합니다. pnpm install --frozen-lockfile 후 pnpm dev로 개발하고 pnpm build로 빌드합니다. 서버는 Cloudflare Workers/D1 기반의 Vinext 앱이며 데이터베이스 바인딩 이름은 DB입니다. 새 환경의 D1에는 drizzle/의 SQL을 먼저 적용해야 합니다.
 
-화면과 모든 초상화는 GitHub Pages에서 배포합니다. 공유 기록과 1122 작성 코드 검증은 기존 Cloudflare Workers/D1의 /api/state, /api/editor를 사용합니다. Pages 접속은 허용된 출처만 API에 연결할 수 있고, 수정 세션은 12시간 동안 해당 탭의 sessionStorage에 보관합니다. 작성 코드 자체는 브라우저에 저장하지 않습니다. 기존 주소의 HttpOnly 쿠키 인증도 유지합니다.
+운영 화면과 초상화는 Cloudflare Pages에서 배포하며 GitHub Pages 주소는 운영 주소로 이동합니다. 공유 기록과 작성 비밀번호 검증은 기존 Cloudflare Workers/D1의 /api/state, /api/editor를 사용합니다. Pages 접속은 허용된 출처만 API에 연결할 수 있고, 수정 세션은 12시간 동안 해당 탭의 sessionStorage에 보관합니다. 작성 코드 자체는 브라우저에 저장하지 않습니다. 기존 주소의 HttpOnly 쿠키 인증도 유지합니다.
 
-`node scripts/build-pages.mjs`는 `out/pages/`에 정적 배포 파일을 만듭니다. 이 결과를 GitHub 저장소 루트의 `docs/`로 올리고, Pages 소스를 `main` 브랜치의 `/docs`로 지정합니다. 원본 소스와 이미지는 계속 `clan-battle/`에 있습니다. 서버 DB와 관리자 세션은 저장소에 포함하지 않습니다.
+`node scripts/build-pages.mjs`는 `out/pages/`에 정적 배포 파일을 만듭니다. 저장소 루트에서 `node clan-battle/scripts/build-pages.mjs docs`를 실행해 `docs/`를 갱신합니다. 새 화면 소스도 먼저 번들하며, Cloudflare Pages의 기존 Git 연동이 이 배포본을 사용합니다. 원본 소스와 이미지는 계속 `clan-battle/`에 있습니다. 서버 DB와 관리자 세션은 저장소에 포함하지 않습니다.
 
 GitHub Pages만으로 공유 저장 서버를 대체할 수는 없습니다. 서버를 이전할 때는 scripts/build-pages.mjs의 공개 API 주소와 app/api-access.ts의 Pages 출처를 함께 수정하고 기존 DB를 이관해야 합니다.
 
+신규 DB의 작성 비밀번호는 서버 환경값 `CLAN_INITIAL_EDITOR_PIN`으로 한 번 초기화합니다. 값이 없으면 작성은 잠긴 상태를 유지합니다. 기존 DB에 저장된 비밀번호와 세션은 배포나 환경값 변경으로 덮어쓰지 않습니다. 이 값은 Git 저장소나 정적 파일에 넣지 않습니다.
+
+기존 화면의 일반 입력은 현재 월에 공격을 추가하는 용도입니다. 서버가 기본 타수·사용 가능한 이월·보스 잠금·참가 일차를 검증하며, 기존 기록 변경과 삭제는 작성 권한이 필요합니다.
+
 검증 명령:
 
+    node scripts/test-api-storage.mjs
+    node scripts/test-public-entry.mjs
     node scripts/test-exact-hp.mjs
     node scripts/test-workflow.mjs
     node scripts/test-day-closures.mjs

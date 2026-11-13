@@ -46,6 +46,8 @@ node scripts/compat/test-external-tactic-carry.mjs
 node scripts/compat/test-carry-sheet-converter.mjs
 ```
 
+가입 기간 보정은 `public/membership-periods.mjs`에서 관리합니다. 이 모듈과 번들을 소스에서 함께 생성하므로 재빌드해도 현재 표시 기준이 유지됩니다. 배포본 `docs/compact/`를 직접 수정하지 않습니다.
+
 공개 정적 빌드는 저장소 루트에서 `node clan-battle/scripts/build-pages.mjs docs`를 실행합니다. 기존 정적 자산과 API 설정을 유지하면서 `legacy.html`, 새 `index.html`, `compact/`를 생성합니다. `docs/future-bosses.json`은 기존 월말 자동 갱신을 그대로 사용합니다. GitHub 원본 주소의 화면은 Cloudflare 주소로 이동하며 두 버전 이동 버튼도 Cloudflare 주소를 사용합니다.
 
 마이그레이션 검사는 원래 API 라우트를 SQLite에서 실행해 인증 거부, 정확한 정수와 가산점, 삭제함, 양쪽 방향 저장, 과거 월 보존, 동시 저장 충돌을 확인합니다. 실서버 기록에는 시험 쓰기를 하지 않습니다. 이전 UI 검증은 모바일 320·360·390·430px와 웹 769·850px에서 헤더·명단 폭, 추천 분배·비우기, 링크 박스, 상세 기록 가로 스크롤, 행 앞 추가·이동, 피해량 Tab 이동을 브라우저로 확인했습니다. 표 직접 편집·제목 정렬·화면 순서 이동 수정은 사용자 요청에 따라 스크린샷 확인을 생략하고 회귀 검사로 검증했습니다. PDF는 실제 생성기로 A4 한 장을 만들어 렌더링했습니다. 실제 iOS 기기와 실제 게임 스크린샷 OCR의 판독 정확도는 별도 실사용 확인이 필요합니다.
@@ -61,3 +63,7 @@ node scripts/compat/test-carry-sheet-converter.mjs
 원본 확인 체크 후 적용하면 3단계는 추천 조합에, 4단계는 추천 조합과 택틱 작업실에 함께 반영됩니다. 같은 출처의 재적용은 기존 ID를 유지한 업데이트입니다. SET·AUTO 6개 상태, 기대딜, TP, 대여, 이월 및 출처 식별자를 운영 저장 경로에 보존하며, 저장 권한·리비전 충돌·확정 월 제한을 유지합니다. 새 월 생성은 적용 화면에서 선택한 경우에만 수행합니다.
 
 검사: `node --test scripts/test-aikurumi-*.mjs`, `node scripts/check-migration.mjs`, `node scripts/check-shared-client.mjs`. 마이그레이션 검사는 로컬 SQLite에서 실제 운영 API 라우트를 실행하며 실서버에 시험 기록을 쓰지 않습니다.
+
+전체 백업 파일명은 `냥냥클랜_전체_백업.json`입니다. 예전 시제품으로 되돌리는 초기화 기능과 사용하지 않는 템플릿 UI·예제는 제거했습니다. 과거 기록, 원본 추출 자료, 호환 모듈과 라이선스는 보존합니다.
+
+추가 검증: `node scripts/test-membership-periods.mjs`. YouTube 수집 설정은 [설정 문서](./YOUTUBE_API_SETUP.md)를 참고하세요.

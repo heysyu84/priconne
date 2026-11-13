@@ -761,6 +761,10 @@ html[data-text-scale] .combo-mini-note{font-size:max(var(--ui-font-min,0px),roun
 @container combo-card (max-width:305px){
 html[data-text-scale] .combo-mini-chip{font-size:max(var(--ui-font-min,0px),round(nearest,calc((11px) * var(--ui-text-scale,1)),1px))!important}
 }
+html[data-text-scale] .sidebar .nav .nav-count{font-size:max(var(--menu-font-min,0px),round(nearest,calc((11px) * var(--menu-text-scale,1)),1px))!important}
+html[data-text-scale] .mobile-nav button .nav-count{font-size:max(var(--menu-font-min,0px),round(nearest,calc((10px) * var(--menu-text-scale,1)),1px))!important}
+html[data-text-scale] .combo-planner-actions>.btn{font-size:max(var(--ui-font-min,0px),round(nearest,calc((12px) * var(--ui-text-scale,1)),1px))!important}
+html[data-text-scale] .combo-planner-help{font-size:max(var(--ui-font-min,0px),round(nearest,calc((12px) * var(--ui-text-scale,1)),1px))!important}
 /* presence.css */
 html[data-text-scale] .online-presence{font-size:max(var(--ui-font-min,0px),round(nearest,calc((11px) * var(--ui-text-scale,1)),1px))!important}
 html[data-text-scale] .online-presence strong{font-size:max(var(--ui-font-min,0px),round(nearest,calc((12px) * var(--ui-text-scale,1)),1px))!important}
@@ -965,4 +969,17 @@ html[data-text-scale] .display-copy-result{font-size:max(var(--ui-font-min,0px),
 @media(min-width:801px){
 html[data-text-scale][data-nav-layout="compact"] .mobile-nav button{font-size:max(var(--menu-font-min,0px),round(nearest,calc((max(var(--menu-font-min,16px),1em)) * var(--menu-text-scale,1)),1px))!important}
 html[data-text-scale][data-nav-layout="compact"] .mobile-nav button span{font-size:1.2em!important}
+}
+/* version-links.css */
+html[data-text-scale] .sidebar:not([data-nav-probe]) > .version-link{font-size:max(var(--ui-font-min,0px),round(nearest,calc((12px) * var(--ui-text-scale,1)),1px))!important}
+@media(max-width:800px){
+html[data-text-scale] .sidebar:not([data-nav-probe]) > .version-link{font-size:max(var(--ui-font-min,0px),round(nearest,calc((12px) * var(--ui-text-scale,1)),1px))!important}
+}
+@media(max-width:360px){
+html[data-text-scale] .sidebar:not([data-nav-probe]) > .version-link{font-size:max(var(--ui-font-min,0px),round(nearest,calc((11px) * var(--ui-text-scale,1)),1px))!important}
+}
+/* loading-indicator.css */
+html[data-text-scale] .nyang-loading-letters{font-size:max(var(--ui-font-min,0px),round(nearest,calc((16px) * var(--ui-text-scale,1)),1px))!important}
+@media(max-width:600px){
+html[data-text-scale] .nyang-loading-letters{font-size:max(var(--ui-font-min,0px),round(nearest,calc((14px) * var(--ui-text-scale,1)),1px))!important}
 }

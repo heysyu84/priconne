@@ -70,7 +70,7 @@ check('record entry arrows cross input boundaries while preserving cursor edits 
 });
 
 check('Enter on damage uses normal form validation and successful registration returns focus to the member field',()=>{
-  const app=runtimeFixture(),data=app.get(),keydown=entryKeys(app);data.logs=[];data.dayClosures=[];data.rules.levels=[{stage:4,count:9999}];data.rules.startStage=4;app.recalculateSeason();
+  const app=runtimeFixture(),data=app.get(),keydown=entryKeys(app);data.settings.editable=true;data.logs=[];data.dayClosures=[];data.rules.levels=[{stage:4,count:9999}];data.rules.startStage=4;app.recalculateSeason();
   const person=data.members.find(member=>data.memberships[member.id]);
   let nameFocused=0,damageFocused=0,submitted=0;
   app.elements['quick-member']={focus(){nameFocused++;}};app.elements['quick-damage']={focus(){damageFocused++;}};
@@ -82,7 +82,7 @@ check('Enter on damage uses normal form validation and successful registration r
 });
 
 function inlineFixture(){
-  const app=runtimeFixture(),data=app.get();data.logs=[];data.dayClosures=[];data.rules.levels=[{stage:4,count:9999}];data.rules.startStage=4;app.recalculateSeason();
+  const app=runtimeFixture(),data=app.get();data.settings.editable=true;data.logs=[];data.dayClosures=[];data.rules.levels=[{stage:4,count:9999}];data.rules.startStage=4;app.recalculateSeason();
   const person=data.members.find(member=>data.memberships[member.id]);
   assert.equal(app.saveCompleteLog({memberId:person.id,boss:'1',day:'1',unit:'1',damage:'250123456',bonus:'0'}),true);
   const id=data.logs[0].id,row={dataset:{inlineLog:id},querySelectorAll:()=>[],querySelector:()=>null};

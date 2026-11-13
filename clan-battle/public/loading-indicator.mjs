@@ -17,7 +17,7 @@ function syncAppearance(){
   const bg=getComputedStyle(document.body).backgroundColor;
   const rgb=bg.match(/[0-9]+(?:\.[0-9]+)?/g);
   if(!rgb){indicator.classList.remove('nyang-loading-dark');return;}
-  const [r,g,b]=rgb.slice(1,4).map(Number);
+  const [r,g,b]=rgb.slice(0,3).map(Number);
   const brightness=(0.2126*r+0.7152*g+0.0722*b)/255;
   indicator.classList.toggle('nyang-loading-dark',brightness<0.52);
 }

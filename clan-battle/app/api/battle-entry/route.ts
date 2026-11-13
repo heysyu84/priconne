@@ -23,7 +23,7 @@ export async function POST(request:Request){
     typeof clientId!=="string"||!/^[a-zA-Z0-9_-]{8,80}$/.test(clientId)||
     !Number.isSafeInteger(boss)||boss<1||boss>5||
     !Number.isSafeInteger(day)||day<1||day>10||
-    !Number.isSafeInteger(damage)||damage<0||
+    !Number.isSafeInteger(damage)||damage<0||(data.damageMode==="manual"&&damage===0)||
     !Number.isSafeInteger(bonus)||Math.abs(bonus)>1_000_000||
     !["manual","max"].includes(String(data.damageMode))||
     typeof data.carry!=="boolean"||typeof data.memo!=="string"||data.memo.length>240)
@@ -66,6 +66,7 @@ export async function POST(request:Request){
       replayMonth(record);
       const progress=bossProgress(record).find((v:any)=>Number(v.id)===boss);
       if(!progress)return apiJSON(request,{error:"보스 번호를 확인하세요."},{status:400});
+      if(progress.locked)return apiJSON(request,{error:progress.lockedReason||"아직 공격할 수 없는 보스입니다."},{status:400});
       if(data.damageMode==="max"){
         if(![2,3].includes(Number(progress.stage)))return apiJSON(request,{error:"4단계 피해량은 직접 입력해야 합니다."},{status:400});
         realDamage=Number(record.bosses.find((v:any)=>Number(v.id)===boss)?.hp?.[progress.stage]);
@@ -79,7 +80,12 @@ export async function POST(request:Request){
       memberId,member:memberLabel(person,state.roster),recordedName:person.name,
       damage:realDamage,damageMode:data.damageMode,carry:data.carry,bonus,memo:data.memo.trim()
     });
-    try{replayMonth(record)}catch{return apiJSON(request,{error:"공격 기록 검증에 실패했습니다."},{status:400})}
+    try{
+      // Older imported records may already contain warnings. Validate only the
+      // new attack so an invalid append cannot be saved or rewrite history.
+      const warning=replayMonth(record).find((entry:{id:string;message:string})=>entry.id===id);
+      if(warning)return apiJSON(request,{error:warning.message},{status:400});
+    }catch{return apiJSON(request,{error:"공격 기록 검증에 실패했습니다."},{status:400})}
     const payload=JSON.stringify(state);
     if(payload.length>1_800_000)return apiJSON(request,{error:"기록 저장 용량을 초과했습니다."},{status:413});
     const now=new Date().toISOString(),revision=row.revision+1;

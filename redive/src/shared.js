@@ -3,7 +3,7 @@
 const SYNC_PREFS='redive-ui-preferences-v1',SYNC_CACHE='redive-shared-cache-v1',SYNC_DRAFT='redive-shared-draft-v1';
 const syncState={started:false,ready:false,canEdit:false,authenticated:false,revision:0,baseline:'',pending:'',inFlight:false,status:'loading',error:'',timer:null,polling:false,updatedAt:null,remote:null};
 const writerActions=new Set(['add-log','edit-log','delete-log','confirm-delete-log','add-member','edit-member','add-tactic','edit-tactic','hide-tactic','duplicate-tactic','delete-tactic','confirm-delete-tactic','v2-new-month','v2-edit-grid','v2-member-status','v2-add-character','v2-edit-character','v2-import-images','v2-carry-import','v2-add-row','v2-delete-row','v2-row-undo','v2-row-redo','v2-grid-undo','v2-grid-redo','v2-restore-tactic','v2-close-day','v2-reopen-day','v2-undo','v2-notice','v2-history-rank','v2-confirm-restore','v2-confirm-import','v2-reset-confirm']);
-for(const action of ['new-tactic','v2-import-carry','v2-save-converted','v2-log-up','v2-log-down','v2-factor','v2-confirm-season','v2-seal-season','v2-commit-batch','v2-commit-carry','v2-commit-paste','v2-confirm-close-day','v2-delete-portrait','v2-reset-all'])writerActions.add(action);
+for(const action of ['new-tactic','v2-import-carry','v2-save-converted','v2-log-up','v2-log-down','v2-factor','v2-confirm-season','v2-seal-season','v2-commit-batch','v2-commit-carry','v2-commit-paste','v2-confirm-close-day','v2-delete-portrait'])writerActions.add(action);
 const browserSettings=completeSettings,browserSettingsDisplay=settingsDisplay,browserSettingsData=settingsData,browserSettingsAccess=settingsAccess;
 completeSettings=()=>{
   if(!syncState.started)return browserSettings();

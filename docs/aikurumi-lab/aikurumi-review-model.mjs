@@ -126,7 +126,7 @@ export function validateReviewDraft(item,draft){
  if(item.damage.ambiguous&&draft.damage==='')errors.push('이 택틱의 기대딜을 선택해 주세요.');
  if(draft.hands!==''&&(!Number.isInteger(Number(draft.hands))||Number(draft.hands)<0||Number(draft.hands)>200))errors.push('손컨 횟수를 확인해 주세요.');
  if(!['main','tabi','carry'].includes(draft.category))errors.push('택틱 분류를 확인해 주세요.');
- if(!Number.isInteger(Number(draft.support))||Number(draft.support)<-1||Number(draft.support)>4)errors.push('대여 캐릭터를 확인해 주세요.');
+ if(!Number.isInteger(Number(draft.support))||Number(draft.support)<-1||Number(draft.support)>4)errors.push('서포트 캐릭터를 확인해 주세요.');
  if(typeof draft.tp!=='string'||draft.tp.length>40||String(draft.note||'').length>12000)errors.push('조건과 메모 길이를 확인해 주세요.');
  if(!Array.isArray(draft.rows)||!lineupOnly&&!draft.rows.length||draft.rows.length>250||draft.rows.some(r=>!r.text?.trim()||r.text.length>2000||r.checked?.length!==6||r.checked.some(v=>typeof v!=='boolean')))
   errors.push('조작문과 SET 상태를 확인해 주세요.');
@@ -154,7 +154,7 @@ export function buildReviewedTactic(item,draft,{id,now=new Date().toISOString()}
   requiredSeconds:item.stage===3&&carry===item.carry&&item.carryDetail.status==='remaining-plus-bonus'
    ?90-item.carryDetail.remainingSeconds:null,
   remainingSeconds:item.stage===3?carry:null,recommendationOnly:item.stage===3,
-  hidden:false,deletedAt:null,video:safeUrl(item.link.link),links:[],note:String(draft.note||'').trim(),
+  hidden:false,deletedAt:null,video:item.stage===3?'':safeUrl(item.link.link),links:[],note:String(draft.note||'').trim(),
   text:rows.map(r=>r.text).join('\n'),rows,externalSource};
 }
 

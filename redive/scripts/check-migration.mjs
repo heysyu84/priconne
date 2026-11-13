@@ -63,6 +63,7 @@ function compile(name,source){const result=ts.transpileModule(source,{compilerOp
 compile('access.mjs',fs.readFileSync(path.join(legacy,'app/api-access.ts'),'utf8'));
 for(const [file,name]of [['app/api/state/route.ts','state.mjs'],['app/api/archive/route.ts','archive.mjs']]){
   let source=fs.readFileSync(path.join(legacy,file),'utf8').replace(/from\s+["']cloudflare:workers["']/g,"from './env.mjs'").replace(/from\s+["']\.\.\/\.\.\/api-access["']/g,"from './access.mjs'").replace(/from\s+["']\.\.\/\.\.\/editor-access["']/g,"from './editor.mjs'");
+  source=source.replace(/from\s+["']\.\.\/\.\.\/member-reference-corrections\.mjs["']/g,'from '+JSON.stringify(pathToFileURL(path.join(legacy,'app/member-reference-corrections.mjs')).href));
   source=source.replace(/from\s+["']\.\.\/\.\.\/\.\.\/public\/engine.mjs["']/g,'from '+JSON.stringify(pathToFileURL(path.join(legacy,'public/engine.mjs')).href));compile(name,source);
 }
 const stateRoute=await import(pathToFileURL(path.join(directory,'state.mjs')).href),archiveRoute=await import(pathToFileURL(path.join(directory,'archive.mjs')).href);

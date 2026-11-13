@@ -1,4 +1,4 @@
-import {buildReviewItems,reviewDraft,stage3LineupDraft,validateReviewDraft,damageLabel,floorDamage,findImportedTactic,safeUrl,isYouTube} from './aikurumi-review-model.mjs?v=20261030-except01';
+import {buildReviewItems,reviewDraft,stage3LineupDraft,validateReviewDraft,damageLabel,floorDamage,findImportedTactic,safeUrl,isYouTube} from './aikurumi-review-model.mjs?v=20261107-record-controls01';
 import {findNonOverlappingStage3} from './aikurumi-stage3-composer.mjs';
 import {recalculateSetRows} from './tactic-set-state.mjs?v=20261030-except02';
 import {previewAikurumiTactic} from './aikurumi-tactic-review.mjs?v=20261030-except01';
@@ -139,7 +139,7 @@ class ReviewWorkspace{
    +'<details class="review-fold"><summary>육성 조건·메모</summary><label class="review-field"><span>적용할 메모</span><textarea data-review-field="note" rows="3" placeholder="추가 조건">'+escape(draft.note)+'</textarea></label>'
    +(item.preview.notes?'<details><summary>조건 원문</summary><pre>'+escape(item.preview.notes)+'</pre></details>':'')+'</details></section>'
    +'<section class="review-timeline"><div class="review-section-heading"><div><h4>조작문</h4><span>'+sourceNotice+'</span></div><div>'
-   +(sourceUrl?'<a class="review-button" href="'+escape(sourceUrl)+'" target="_blank" rel="noopener noreferrer">원본 '+(isYouTube(sourceUrl)?'영상':'자료')+' ↗</a>':'')
+   +(sourceUrl&&item.stage!==3?'<a class="review-button" href="'+escape(sourceUrl)+'" target="_blank" rel="noopener noreferrer">원본 '+(isYouTube(sourceUrl)?'영상':'자료')+' ↗</a>':'')
    +button(editing?'수정 마침':'TL 수정','edit')+'</div></div>'
    +(item.problems.length?'<div class="review-findings">'+item.problems.map(p=>'<span>'+escape(p)+'</span>').join('')+'</div>':'')
    +this.timeline(item,draft,editing)
@@ -149,7 +149,7 @@ class ReviewWorkspace{
    +'<section class="review-apply"><div class="review-section-heading"><h4>사이트에 적용</h4><span>'+item.month.replace('-','.')+' · '+item.stage+'단계</span></div>'
    +(this.canApply()?'<div class="review-apply-options">'+(item.stage===4?'<label class="review-field"><span>분류</span><select data-review-field="category">'+[['main','택틱정리'],['tabi','타비비토'],['carry','이월 택틱']].map(([v,l])=>'<option value="'+v+'" '+(draft.category===v?'selected':'')+'>'+l+'</option>').join('')+'</select></label>':'')
     +(item.stage===4&&draft.category==='carry'?field('필요 이월 · 초','requiredCarrySeconds',draft.requiredCarrySeconds,'type="number" min="1" max="90" placeholder="입력"'):'')
-    +'<label class="review-field"><span>대여 캐릭터</span><select data-review-field="support"><option value="-1">미지정</option>'+item.party.map((n,i)=>'<option value="'+i+'" '+(Number(draft.support)===i?'selected':'')+'>'+escape(n)+'</option>').join('')+'</select></label></div>'
+    +'<label class="review-field"><span>서포트 캐릭터</span><select data-review-field="support"><option value="-1">미지정</option>'+item.party.map((n,i)=>'<option value="'+i+'" '+(Number(draft.support)===i?'selected':'')+'>'+escape(n)+'</option>').join('')+'</select></label></div>'
     +(!monthExists?'<label class="review-confirm"><input type="checkbox" data-review-field="createMonth" '+(draft.createMonth?'checked':'')+'> '+item.month.replace('-','.')+' 월을 새로 만들고 적용</label>':'')
     +'<label class="review-confirm"><input type="checkbox" data-review-field="confirmed" '+(draft.confirmed?'checked':'')+'> 원본의 조작·누락 구간과 조건을 확인했습니다.</label>'
     +(previous?'<p class="review-existing">같은 출처에서 적용한 택틱이 있습니다. 수정한 내용으로 업데이트합니다.</p>':'')
