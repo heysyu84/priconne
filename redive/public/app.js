@@ -437,7 +437,7 @@ function fullClan(){return titleBar(ui.tabs.clan==='settings'?'설정':'클랜 D
 
 
 function visibleTactics(){const source=ext.stage===3?[...new Map([...data.tactics.filter(t=>t.stage===3),...(data.recommendations||[])].map(t=>[t.id,t])).values()]:data.tactics;return source.filter(t=>!t.deletedAt&&!t.hidden&&t.boss>0&&t.category!=='carry'&&t.stage===ext.stage&&(!ui.boss||t.boss===ui.boss)).sort((a,b)=>a.boss-b.boss||b.damage-a.damage);}
-function completeBossFilter(){const values=[0,1,2,3,4,5,...(ui.section==='tactics'&&ui.tabs.tactics==='workspace'&&ext.stage===4?[-1]:[])];return `<div class="filter-group boss-filter" role="group" aria-label="보스 필터">${values.map(n=>`<button data-action="boss-filter" data-value="${n}" class="${ui.boss===n?'active':''}" style="${n>0?bossStyle(n):''}" aria-pressed="${ui.boss===n}">${n===0?'전체':n===-1?'미분류':n+'넴'}</button>`).join('')}</div>`;}
+function completeBossFilter(){const values=[0,1,2,3,4,5,...(ui.section==='tactics'&&['workspace','accordion'].includes(ui.tabs.tactics)&&ext.stage===4?[-1]:[])];return `<div class="filter-group boss-filter" role="group" aria-label="보스 필터">${values.map(n=>`<button data-action="boss-filter" data-value="${n}" class="${ui.boss===n?'active':''}" style="${n>0?bossStyle(n):''}" aria-pressed="${ui.boss===n}">${n===0?'전체':n===-1?'미분류':n+'넴'}</button>`).join('')}</div>`;}
 function parseDelimited(text,delimiter=','){const rows=[],row=[];let cell='',quoted=false;for(let i=0;i<text.length;i++){const c=text[i];if(c==='"'){if(quoted&&text[i+1]==='"'){cell+='"';i++;}else quoted=!quoted;}else if(c===delimiter&&!quoted){row.push(cell);cell='';}else if((c==='\n'||c==='\r')&&!quoted){if(c==='\r'&&text[i+1]==='\n')i++;row.push(cell);if(row.some(v=>String(v).trim()))rows.push([...row]);row.length=0;cell='';}else cell+=c;}row.push(cell);if(row.some(v=>String(v).trim()))rows.push(row);return rows;}
 function tacticStarString(t){return t.stars.map(n=>`<span class="${rarityClass(n)}">${n||'?'}</span>`).join('');}
 function tacticRows(t){if(!t.rows){let previous=Array(6).fill(false);t.rows=t.text.split('\n').filter(Boolean).map(text=>{const checked=inferChecked(text,previous,t);previous=checked;return {id:uid(),text,checked};});}return t.rows;}
@@ -480,14 +480,18 @@ function workspaceList(){
     &&(group!=='carry'||matchesCarryTimeRange(t)))
     .sort((a,b)=>a.boss-b.boss||b.damage-a.damage);
 }
-function completeWorkspace(archive=false){
+function workspaceNavigation(archive=false){
   normalizeWorkspace();
   const early=ext.stage===3;
   if(archive&&ext.workGroup==='hidden')ext.workGroup='main';
-  const list=workspaceList(),groups=early?[]:workspaceGroups(archive);
+  const groups=early?[]:workspaceGroups(archive);
   const tools=workspaceTools(archive);
   const navigation=early?(tools?`<div class="tactic-controls">${tools}</div>`:''):`<div class="tactic-controls">${tools}<div class="workspace-toolbar">${groups.length?`<div class="workspace-navigation" role="group" aria-label="택틱 분류">${groups.map(([key,name])=>`<button type="button" class="button ${ext.workGroup===key?'selected':''}" data-action="v2-work-group" data-value="${key}" aria-pressed="${ext.workGroup===key}">${name}<span class="count">${workspaceTactics(key).length}</span></button>`).join('')}</div>`:''}<div class="workspace-boss-filters">${bossFilter()}</div></div></div>`;
-  if(early)return navigation+stage3Lineups(list,archive);
+  return navigation;
+}
+function completeWorkspace(archive=false){
+  const navigation=workspaceNavigation(archive),list=workspaceList();
+  if(ext.stage===3)return navigation+stage3Lineups(list,archive);
   const t=list.find(t=>t.id===ui.selectedTactic)||list[0];
   if(t&&ui.selectedTactic!==t.id){ui.selectedTactic=t.id;ui.carry=defaultReceivedTime(t);}
   const emptyMessage=ext.workGroup==='carry'&&carryTimeRange()!=='all'?'해당 시간대의 이월 택틱이 없습니다.':'등록된 택틱이 없습니다.';
@@ -595,6 +599,23 @@ async function xlsxRows(file){const zip=await JSZip.loadAsync(file),parser=new D
 function parseCarrySheet(rows){const header=rows[0].map(v=>String(v||'').trim().replace(/\s/g,'')),index=names=>header.findIndex(h=>names.includes(h)),bossCol=index(['보스','네임드','넴']),partyCol=index(['편성','캐릭터','조합']),bodyCol=index(['본문','택틱','내용']);if(bossCol<0||partyCol<0||bodyCol<0)throw new Error('첫 행에 보스·편성·본문 열이 필요합니다.');const cell=(row,names)=>{const i=index(names);return i<0?'':String(row[i]||'');};return rows.slice(1).filter(row=>row[bodyCol]).map(row=>({boss:Number(String(row[bossCol]).replace(/\D/g,''))||0,party:String(row[partyCol]).split(/[,/·\s]+/).filter(Boolean).slice(0,5),text:String(row[bodyCol]),stars:cell(row,['성급']).replace(/\D/g,'').split('').slice(0,5).map(Number),damage:parseFloat(cell(row,['기대딜','피해량']))||0,hands:parseFloat(cell(row,['손컨','손컨횟수']))||0,tp:cell(row,['TP','TP조건']),duration:timeToSec(cell(row,['시간','원본시간','전투시간'])||'1:00'),video:cell(row,['영상','원본영상']),note:cell(row,['비고','메모'])}));}
 function carryImportDialog(){openDrawer('이월 시트 가져오기',`<div class="field"><label for="carry-sheet-file">Excel·CSV·TSV</label><input type="file" id="carry-sheet-file" accept=".xlsx,.csv,.tsv" data-input="v2-carry-sheet"></div><div class="field"><label for="carry-sheet-paste">또는 표 붙여넣기</label><textarea id="carry-sheet-paste" rows="8" placeholder="보스&#9;편성&#9;성급&#9;기대딜&#9;본문"></textarea></div><div id="carry-import-preview"></div>`,simpleButton('붙여넣기 확인','v2-preview-carry')+simpleButton('등록','v2-commit-carry','','primary'),'',true);}
 
+
+
+// This is another view of the workspace's tactics and selection, not a data copy.
+function accordionWorkspace(archive=false){
+  const navigation=workspaceNavigation(archive),list=workspaceList();
+  const selected=list.find(t=>t.id===ui.selectedTactic);
+  if(!selected)ext.accordionOpen=false;
+  const empty=ext.workGroup==='carry'&&carryTimeRange()!=='all'?'해당 시간대의 이월 택틱이 없습니다.':'등록된 택틱이 없습니다.';
+  return navigation+`<section class="tactic-accordion workspace-restored" aria-label="조합별 택틱"><div class="sheet-heading"><h2>택틱 목록 <small>${list.length}개</small></h2>${carryTimeFilter()}</div><div class="tactic-accordion-list">${list.map((t,index)=>tacticAccordionItem(t,index,!!ext.accordionOpen&&t.id===selected?.id,archive)).join('')||`<p class="no-rows">${empty}</p>`}</div></section>`;
+}
+function tacticAccordionItem(t,index,open,archive){
+  const trigger='tactic-accordion-trigger-'+index,panel='tactic-accordion-panel-'+index;
+  const needed=t.category==='carry'?minimumCarry(t):null;
+  const label=(t.boss?t.boss+'넴':'미분류')+' '+t.party.join(' ')+', 기대딜 '+tacticDamageLabel(t)+'억';
+  const characters=t.party.map((name,i)=>`<span class="tactic-accordion-unit ${i===t.support?'support':''}"><span class="unit-face star-${t.stars[i]}">${portraitHtml(name,t.stars[i])}</span><strong class="${partyNameClasses(t,name,i)}">${X(name)}</strong><small class="${rarityClass(t.stars[i])}">★${X(t.stars[i])}${i===t.support?' · 서포트':''}</small></span>`).join('');
+  return `<article class="tactic-accordion-item ${open?'is-open':''}" style="${t.boss?bossStyle(t.boss):'--boss:var(--muted);--boss-wash:var(--wash);--boss-ink:var(--text)'}" data-tactic-id="${X(t.id)}"><h3 class="tactic-accordion-heading"><button type="button" id="${trigger}" class="tactic-accordion-trigger" data-action="v2-accordion-tactic" data-id="${X(t.id)}" aria-expanded="${open}" aria-controls="${panel}" aria-label="${X(label)}"><span class="tactic-accordion-boss"><strong>${t.boss?X(t.boss+'넴 · '+bossBy(t.boss).name):'미분류'}</strong><small>${t.category==='carry'?(needed===null?'이월시간 미입력':needed+'초 이월'):t.stage+'단계'}</small></span><span class="tactic-accordion-party">${characters}</span><span class="tactic-accordion-stats"><span>기대딜 <b>${tacticDamageLabel(t)}<small>억</small></b></span><span>손컨 <b class="${t.hands?'danger':''}">${tacticHands(t)}</b> · TP <b class="${tacticTpClass(t.tp)}">${X(t.tp||'—')}</b></span></span><span class="tactic-accordion-chevron" aria-hidden="true">${icon('down')}</span></button></h3><div id="${panel}" class="tactic-accordion-panel work-editor" role="region" aria-labelledby="${trigger}" ${open?'':'hidden'}>${open?(archive?readOnlyWorkspaceTactic(t):workEditor(t)):''}</div></article>`;
+}
 
 
 function openCompleteLog(id=null,bossId=null){
@@ -1524,6 +1545,13 @@ document.addEventListener('click',async event=>{const button=event.target.closes
  if(action==='v2-settings'){ext.settingsPage='display';nav('clan','settings');return;}if(action==='v2-settings-page'){ext.settingsPage=value;render();return;}if(action==='v2-lock'){toggleWriter();return;}
  if(action==='v2-combo-stage'){const stage=Number(value);if(stage===ext.stage||!(stage===4||stage===3&&thirdStageVisible()))return;flushGrid();ext.stage=stage;ui.tabs.tactics=stage===3?'stage3':'workspace';ext.workGroup='main';ext.workEditing=false;if(ui.boss===-1)ui.boss=0;history.replaceState(null,'','#tactics/'+ui.tabs.tactics);render();return;}if(action==='v2-toggle-notice'){ext.noticeOpen=!ext.noticeOpen;render();return;}
  if(action==='v2-notice'){if(!ensureEdit())return;openDrawer('택틱 공통 안내',`<div class="field"><label for="combo-notice">안내</label><textarea id="combo-notice" name="notice" rows="10">${X(tacticGuideText())}</textarea></div>`,`<button type="submit" class="button primary">저장</button>`,'',true,'v2-notice');return;}
+ if(action==='v2-accordion-tactic'){
+  if(ui.section!=='tactics'||ui.tabs.tactics!=='accordion'||!workspaceList().some(t=>t.id===id))return;
+  flushGrid();const closing=ext.accordionOpen&&ui.selectedTactic===id;
+  if(ui.selectedTactic!==id){ui.selectedTactic=id;ui.carry=defaultReceivedTime(activeTactic());}
+  ext.accordionOpen=!closing;ext.workEditing=false;ext.rowUndo=[];ext.rowRedo=[];ext.rowSelection=null;
+  render();document.getElementById(button.id)?.focus({preventScroll:true});return;
+ }
  if(action==='v2-work-group'){flushGrid();ext.workGroup=value;ext.carryTimeRange='all';ext.workEditing=false;ui.carry=90;render();return;}if(action==='v2-select-tactic'){
   flushGrid();if(ui.selectedTactic!==id){ui.selectedTactic=id;ui.carry=defaultReceivedTime(activeTactic());}
   ext.workEditing=false;ext.rowUndo=[];ext.rowRedo=[];ext.rowSelection=null;render();return;
@@ -1805,15 +1833,16 @@ function fullTactics(){
   }
   ext.stage=ui.tabs.tactics==='stage3'?3:4;
   normalizeWorkspace();
-  const work=ui.tabs.tactics==='workspace';
+  const work=['workspace','accordion'].includes(ui.tabs.tactics);
   const workCount=workspaceTactics('all',4).length+(data.rules.carryVisible?workspaceTactics('carry',4).length:0);
-  const tabs=[...(thirdStageVisible()?[['stage3','3단계 분배',workspaceTactics('all',3).length]]:[]),['workspace','택틱 작업실',workCount],['external','이월 계산기'],...(adminMode()?[['review','외부 택틱'],['converter','택틱 변환기']]:[])];
+  const tabs=[...(thirdStageVisible()?[['stage3','3단계 분배',workspaceTactics('all',3).length]]:[]),['accordion','택틱 목록'],['workspace','택틱 작업실',workCount],['external','이월 계산기'],...(adminMode()?[['review','외부 택틱'],['converter','택틱 변환기']]:[])];
   const actions=work&&adminMode()?simpleButton('삭제함','v2-tactic-trash')+simpleButton('택틱 추가','new-tactic','','primary'):'';
-  const views={stage3:completeWorkspace,workspace:completeWorkspace,external:completeExternal,review:externalReviewPage,converter:completeConverter,trash:completeTrash};
+  const views={stage3:completeWorkspace,accordion:accordionWorkspace,workspace:completeWorkspace,external:completeExternal,review:externalReviewPage,converter:completeConverter,trash:completeTrash};
   const navigation=`<div class="tactics-subnav"><button type="button" class="button icon-button tactic-guide-toggle ${ext.noticeOpen?'active':''}" data-action="v2-toggle-notice" aria-label="택틱 공통 안내" title="택틱 안내" aria-expanded="${ext.noticeOpen}" aria-controls="tactic-common-guide">${icon('info')}</button>${pageTabs(tabs)}</div>`;
   return titleBar(ui.tabs.tactics==='stage3'?'3단계 분배':subpageNames.tactics[ui.tabs.tactics]||'택틱 작업실',actions)+navigation+tacticGuidePanel()+(views[ui.tabs.tactics]||completeWorkspace)();
 }
 subpageNames.tactics.stage3='3단계 분배';
+subpageNames.tactics.accordion='택틱 목록';
 
 fullClan=()=>{
   if(ui.tabs.clan==='characters'&&!adminMode())ui.tabs.clan='members';

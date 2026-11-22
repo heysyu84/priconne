@@ -1034,3 +1034,69 @@ html[data-text-scale] .tactic-reference-head .tactic-specs > div:first-child dd 
   .content .tactics-subnav .page-tabs button small { padding-inline: 2px; }
   .data-table.attack-dashboard .dashboard-attack { --attack-box-width: 22px; }
 }
+
+/* The accordion reuses the workspace's data, filters and one active editor. */
+.tactic-accordion > .sheet-heading { margin: 0 0 10px; gap: 8px; flex-wrap: wrap; }
+.tactic-accordion > .sheet-heading h2 { font-size: calc(.9rem * var(--text-scale, 1)); }
+.tactic-accordion > .sheet-heading h2 small { color: var(--muted); font-weight: 500; }
+.tactic-accordion-list { display: grid; gap: 10px; }
+.tactic-accordion-item {
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--boss);
+  border-radius: 11px;
+  background: var(--workspace-panel);
+  overflow: clip;
+}
+.tactic-accordion-heading { margin: 0; font-size: inherit; font-weight: inherit; }
+.tactic-accordion-trigger {
+  display: grid;
+  grid-template-columns: minmax(90px, .8fr) minmax(0, 2fr) max-content 18px;
+  align-items: center;
+  gap: 8px 12px;
+  width: 100%;
+  min-width: 0;
+  padding: 12px;
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  text-align: left;
+}
+.tactic-accordion-trigger:hover { background: var(--wash); }
+.tactic-accordion-item.is-open > .tactic-accordion-heading { background: var(--boss-wash, var(--accent-wash)); }
+.tactic-accordion-trigger:focus-visible { outline-offset: -3px !important; }
+.tactic-accordion-boss { display: grid; gap: 4px; min-width: 0; }
+.tactic-accordion-boss > strong { font-size: calc(.8rem * var(--text-scale, 1)); line-height: 1.4; overflow-wrap: anywhere; }
+.tactic-accordion-boss > small { color: var(--muted); font-size: calc(.68rem * var(--text-scale, 1)); }
+.tactic-accordion-party { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); align-items: start; gap: 5px; min-width: 0; }
+.tactic-accordion-unit { display: flex; flex-direction: column; align-items: center; min-width: 0; gap: 3px; }
+.tactic-accordion-unit .unit-face { width: 38px; height: 38px; margin: 0; }
+.tactic-accordion-unit > strong { max-width: 100%; font-size: calc(.7rem * var(--text-scale, 1)); font-weight: 550; line-height: 1.3; text-align: center; word-break: keep-all; overflow-wrap: anywhere; }
+.tactic-accordion-unit > small { color: var(--muted); font-size: calc(.65rem * var(--text-scale, 1)); font-weight: 500; line-height: 1.3; text-align: center; }
+.tactic-accordion-unit .booster { color: var(--red); }
+.tactic-accordion-unit .borrowed, .tactic-accordion-unit.support > strong { color: var(--blue); }
+.tactic-accordion-stats { display: grid; gap: 5px; color: var(--muted); font-size: calc(.7rem * var(--text-scale, 1)); font-weight: 500; text-align: right; white-space: nowrap; }
+.tactic-accordion-stats b { color: var(--text); font-weight: 750; }
+.tactic-accordion-stats > span:first-child b { font-size: calc(1rem * var(--text-scale, 1)); }
+.tactic-accordion-stats b small { margin-left: 2px; font-size: .75em; font-weight: 500; }
+.tactic-accordion-stats b.danger { color: var(--red); }
+.tactic-accordion-chevron { display: flex; align-items: center; color: var(--muted); }
+.tactic-accordion-chevron svg { width: 18px; height: 18px; }
+.tactic-accordion-item.is-open .tactic-accordion-chevron { transform: rotate(180deg); }
+.workspace-restored .tactic-accordion-panel.work-editor { padding: 12px; border: 0; border-top: 1px solid var(--line); border-radius: 0; }
+.tactic-accordion-panel[hidden] { display: none !important; }
+.tactic-accordion-panel .tactic-reference-top > .tactic-identity,
+.tactic-accordion-panel .tactic-header-party { display: none; }
+.tactic-accordion-panel .tactic-reference-top { gap: 8px; }
+@media (max-width: 760px) {
+  .content .tactics-subnav .page-tabs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); flex: 1; min-width: 0; gap: 3px; }
+  .content .tactics-subnav .page-tabs > button { min-width: 0; min-height: 36px; padding-inline: 5px; }
+  .content .tactics-subnav .page-tabs > button:last-child:nth-child(odd) { grid-column: 1 / -1; }
+  .tactic-accordion-trigger { grid-template-columns: minmax(0, 1fr) max-content 18px; gap: 10px 8px; padding: 10px; }
+  .tactic-accordion-boss { grid-column: 1; grid-row: 1; }
+  .tactic-accordion-stats { grid-column: 2; grid-row: 1; }
+  .tactic-accordion-party { grid-column: 1 / 3; grid-row: 2; gap: 4px; }
+  .tactic-accordion-chevron { grid-column: 3; grid-row: 1 / 3; }
+  .workspace-restored .tactic-accordion-panel.work-editor { padding: 9px; }
+}

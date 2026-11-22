@@ -43,15 +43,16 @@ function fullTactics(){
   }
   ext.stage=ui.tabs.tactics==='stage3'?3:4;
   normalizeWorkspace();
-  const work=ui.tabs.tactics==='workspace';
+  const work=['workspace','accordion'].includes(ui.tabs.tactics);
   const workCount=workspaceTactics('all',4).length+(data.rules.carryVisible?workspaceTactics('carry',4).length:0);
-  const tabs=[...(thirdStageVisible()?[['stage3','3단계 분배',workspaceTactics('all',3).length]]:[]),['workspace','택틱 작업실',workCount],['external','이월 계산기'],...(adminMode()?[['review','외부 택틱'],['converter','택틱 변환기']]:[])];
+  const tabs=[...(thirdStageVisible()?[['stage3','3단계 분배',workspaceTactics('all',3).length]]:[]),['accordion','택틱 목록'],['workspace','택틱 작업실',workCount],['external','이월 계산기'],...(adminMode()?[['review','외부 택틱'],['converter','택틱 변환기']]:[])];
   const actions=work&&adminMode()?simpleButton('삭제함','v2-tactic-trash')+simpleButton('택틱 추가','new-tactic','','primary'):'';
-  const views={stage3:completeWorkspace,workspace:completeWorkspace,external:completeExternal,review:externalReviewPage,converter:completeConverter,trash:completeTrash};
+  const views={stage3:completeWorkspace,accordion:accordionWorkspace,workspace:completeWorkspace,external:completeExternal,review:externalReviewPage,converter:completeConverter,trash:completeTrash};
   const navigation=`<div class="tactics-subnav"><button type="button" class="button icon-button tactic-guide-toggle ${ext.noticeOpen?'active':''}" data-action="v2-toggle-notice" aria-label="택틱 공통 안내" title="택틱 안내" aria-expanded="${ext.noticeOpen}" aria-controls="tactic-common-guide">${icon('info')}</button>${pageTabs(tabs)}</div>`;
   return titleBar(ui.tabs.tactics==='stage3'?'3단계 분배':subpageNames.tactics[ui.tabs.tactics]||'택틱 작업실',actions)+navigation+tacticGuidePanel()+(views[ui.tabs.tactics]||completeWorkspace)();
 }
 subpageNames.tactics.stage3='3단계 분배';
+subpageNames.tactics.accordion='택틱 목록';
 
 fullClan=()=>{
   if(ui.tabs.clan==='characters'&&!adminMode())ui.tabs.clan='members';

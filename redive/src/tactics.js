@@ -1,5 +1,5 @@
 function visibleTactics(){const source=ext.stage===3?[...new Map([...data.tactics.filter(t=>t.stage===3),...(data.recommendations||[])].map(t=>[t.id,t])).values()]:data.tactics;return source.filter(t=>!t.deletedAt&&!t.hidden&&t.boss>0&&t.category!=='carry'&&t.stage===ext.stage&&(!ui.boss||t.boss===ui.boss)).sort((a,b)=>a.boss-b.boss||b.damage-a.damage);}
-function completeBossFilter(){const values=[0,1,2,3,4,5,...(ui.section==='tactics'&&ui.tabs.tactics==='workspace'&&ext.stage===4?[-1]:[])];return `<div class="filter-group boss-filter" role="group" aria-label="보스 필터">${values.map(n=>`<button data-action="boss-filter" data-value="${n}" class="${ui.boss===n?'active':''}" style="${n>0?bossStyle(n):''}" aria-pressed="${ui.boss===n}">${n===0?'전체':n===-1?'미분류':n+'넴'}</button>`).join('')}</div>`;}
+function completeBossFilter(){const values=[0,1,2,3,4,5,...(ui.section==='tactics'&&['workspace','accordion'].includes(ui.tabs.tactics)&&ext.stage===4?[-1]:[])];return `<div class="filter-group boss-filter" role="group" aria-label="보스 필터">${values.map(n=>`<button data-action="boss-filter" data-value="${n}" class="${ui.boss===n?'active':''}" style="${n>0?bossStyle(n):''}" aria-pressed="${ui.boss===n}">${n===0?'전체':n===-1?'미분류':n+'넴'}</button>`).join('')}</div>`;}
 function parseDelimited(text,delimiter=','){const rows=[],row=[];let cell='',quoted=false;for(let i=0;i<text.length;i++){const c=text[i];if(c==='"'){if(quoted&&text[i+1]==='"'){cell+='"';i++;}else quoted=!quoted;}else if(c===delimiter&&!quoted){row.push(cell);cell='';}else if((c==='\n'||c==='\r')&&!quoted){if(c==='\r'&&text[i+1]==='\n')i++;row.push(cell);if(row.some(v=>String(v).trim()))rows.push([...row]);row.length=0;cell='';}else cell+=c;}row.push(cell);if(row.some(v=>String(v).trim()))rows.push(row);return rows;}
 function tacticStarString(t){return t.stars.map(n=>`<span class="${rarityClass(n)}">${n||'?'}</span>`).join('');}
 function tacticRows(t){if(!t.rows){let previous=Array(6).fill(false);t.rows=t.text.split('\n').filter(Boolean).map(text=>{const checked=inferChecked(text,previous,t);previous=checked;return {id:uid(),text,checked};});}return t.rows;}
@@ -42,14 +42,18 @@ function workspaceList(){
     &&(group!=='carry'||matchesCarryTimeRange(t)))
     .sort((a,b)=>a.boss-b.boss||b.damage-a.damage);
 }
-function completeWorkspace(archive=false){
+function workspaceNavigation(archive=false){
   normalizeWorkspace();
   const early=ext.stage===3;
   if(archive&&ext.workGroup==='hidden')ext.workGroup='main';
-  const list=workspaceList(),groups=early?[]:workspaceGroups(archive);
+  const groups=early?[]:workspaceGroups(archive);
   const tools=workspaceTools(archive);
   const navigation=early?(tools?`<div class="tactic-controls">${tools}</div>`:''):`<div class="tactic-controls">${tools}<div class="workspace-toolbar">${groups.length?`<div class="workspace-navigation" role="group" aria-label="택틱 분류">${groups.map(([key,name])=>`<button type="button" class="button ${ext.workGroup===key?'selected':''}" data-action="v2-work-group" data-value="${key}" aria-pressed="${ext.workGroup===key}">${name}<span class="count">${workspaceTactics(key).length}</span></button>`).join('')}</div>`:''}<div class="workspace-boss-filters">${bossFilter()}</div></div></div>`;
-  if(early)return navigation+stage3Lineups(list,archive);
+  return navigation;
+}
+function completeWorkspace(archive=false){
+  const navigation=workspaceNavigation(archive),list=workspaceList();
+  if(ext.stage===3)return navigation+stage3Lineups(list,archive);
   const t=list.find(t=>t.id===ui.selectedTactic)||list[0];
   if(t&&ui.selectedTactic!==t.id){ui.selectedTactic=t.id;ui.carry=defaultReceivedTime(t);}
   const emptyMessage=ext.workGroup==='carry'&&carryTimeRange()!=='all'?'해당 시간대의 이월 택틱이 없습니다.':'등록된 택틱이 없습니다.';

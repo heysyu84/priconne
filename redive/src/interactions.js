@@ -13,6 +13,13 @@ document.addEventListener('click',async event=>{const button=event.target.closes
  if(action==='v2-settings'){ext.settingsPage='display';nav('clan','settings');return;}if(action==='v2-settings-page'){ext.settingsPage=value;render();return;}if(action==='v2-lock'){toggleWriter();return;}
  if(action==='v2-combo-stage'){const stage=Number(value);if(stage===ext.stage||!(stage===4||stage===3&&thirdStageVisible()))return;flushGrid();ext.stage=stage;ui.tabs.tactics=stage===3?'stage3':'workspace';ext.workGroup='main';ext.workEditing=false;if(ui.boss===-1)ui.boss=0;history.replaceState(null,'','#tactics/'+ui.tabs.tactics);render();return;}if(action==='v2-toggle-notice'){ext.noticeOpen=!ext.noticeOpen;render();return;}
  if(action==='v2-notice'){if(!ensureEdit())return;openDrawer('택틱 공통 안내',`<div class="field"><label for="combo-notice">안내</label><textarea id="combo-notice" name="notice" rows="10">${X(tacticGuideText())}</textarea></div>`,`<button type="submit" class="button primary">저장</button>`,'',true,'v2-notice');return;}
+ if(action==='v2-accordion-tactic'){
+  if(ui.section!=='tactics'||ui.tabs.tactics!=='accordion'||!workspaceList().some(t=>t.id===id))return;
+  flushGrid();const closing=ext.accordionOpen&&ui.selectedTactic===id;
+  if(ui.selectedTactic!==id){ui.selectedTactic=id;ui.carry=defaultReceivedTime(activeTactic());}
+  ext.accordionOpen=!closing;ext.workEditing=false;ext.rowUndo=[];ext.rowRedo=[];ext.rowSelection=null;
+  render();document.getElementById(button.id)?.focus({preventScroll:true});return;
+ }
  if(action==='v2-work-group'){flushGrid();ext.workGroup=value;ext.carryTimeRange='all';ext.workEditing=false;ui.carry=90;render();return;}if(action==='v2-select-tactic'){
   flushGrid();if(ui.selectedTactic!==id){ui.selectedTactic=id;ui.carry=defaultReceivedTime(activeTactic());}
   ext.workEditing=false;ext.rowUndo=[];ext.rowRedo=[];ext.rowSelection=null;render();return;
