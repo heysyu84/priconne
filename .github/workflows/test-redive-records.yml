@@ -39,6 +39,7 @@ jobs:
           node redive/scripts/check-tactic-accordion.mjs
           node redive/scripts/check-historical-coefficients.mjs
           node redive/scripts/check-inline-logs.mjs
+          node redive/scripts/check-no-duplicate-entry-prompt.mjs
           node redive/scripts/check-ui-fixes.mjs
           node redive/scripts/check-usability.mjs
 
