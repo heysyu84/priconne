@@ -4,7 +4,7 @@ import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 
 const repoRoot=fileURLToPath(new URL('../..',import.meta.url));
-for(const pathname of ['redive/public/app.js','docs/compact/app.js']){
+for(const pathname of ['redive/src/admin.js','redive/src/log-tools.js','redive/public/app.js','docs/compact/app.js']){
   const app=fs.readFileSync(path.join(repoRoot,pathname),'utf8');
   assert(!app.includes('동일한 클랜원·보스·피해량의 공격이 오늘'),pathname+' still shows the standard duplicate prompt');
   assert(!app.includes('이미 같은 클랜원의 '),pathname+' still shows the quick-entry duplicate prompt');

@@ -15,9 +15,6 @@ function completeLogPreview(){
 }
 
 function saveCompleteLog(form){const fd=new FormData(form),id=String(fd.get('logId')||''),old=data.logs.find(e=>e.id===id),entry=attackEntryState(fd),damage=entry.damage,memberId=String(fd.get('memberId')),boss=Number(fd.get('boss')),day=Number(fd.get('day')),carry=fd.has('usesCarry'),bonus=numberValue(fd.get('bonus')||0);if(!Number.isSafeInteger(bonus)){toast('가산점은 양수 또는 음수의 정수로 입력하세요.');return false;}if(!Number.isSafeInteger(damage)||damage<=0){toast('피해량은 1 단위의 양의 정수로 입력하세요.');return false;}if(data.dayClosures.some(d=>d.day===day)){toast('마감을 취소한 뒤 수정하세요.');return false;}if(!old&&bossBy(boss).locked){toast(bossBy(boss).lockedReason);return false;}if(!memberSeasonActive(currentMember(memberId),day)){toast('참가 일차에 해당하지 않는 클랜원입니다.');return false;}const daily=data.logs.filter(e=>e.day===day&&e.memberId===memberId&&e.id!==id),used=daily.filter(e=>!e.carry).length,pending=daily.filter(e=>e.kill&&!e.carry&&!daily.some(c=>c.carryFrom===e.id)).length;if(!old&&!carry&&used>=data.rules.daily){toast('기본 타수를 모두 사용했습니다.');return false;}if(!old&&carry&&!pending){toast('사용할 이월이 없습니다.');return false;}const remaining=String(fd.get('remaining')||''),seconds=remaining?timeToSec(remaining):NaN;if(remaining&&!(seconds>=0&&seconds<=90)){toast('남은 시간을 확인하세요.');return false;}if(!old){
-  const time=String(fd.get('gameAt')||'').trim();
-  const suspect=data.logs.filter(e=>e.day===day&&e.memberId===memberId&&Number(e.boss)===boss&&Number(e.damage)===damage&&(!time||!e.gameAt||e.gameAt===time));
-  if(suspect.length&&!confirm('동일한 클랜원·보스·피해량의 공격이 오늘 '+suspect.length+'건 이미 기록돼 있습니다. 실제로 별도의 공격을 한 것이 맞나요?'))return false;
   if(form.dataset.logSubmitPending==='1')return false;
   form.dataset.logSubmitPending='1';
  }

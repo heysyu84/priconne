@@ -105,13 +105,8 @@ saveCompleteLog=(form,{carryVerified=false}={})=>{
   }
   const remaining=String(fd.get('remaining')||''),seconds=remaining?timeToSec(remaining):NaN;
   if(remaining&&!(seconds>=0&&seconds<=90)){toast('남은 시간을 확인하세요.');return false;}
-  // Effective insert / quick-entry path. Never silently create a duplicate attack:
-  // time may be absent in quick input, so confirmation is required, not a hard ban.
+  // Effective insert / quick-entry path. Guard rapid double submission, not past attacks.
   if(!old){
-    const enteredAt=String(fd.get('gameAt')||'').trim();
-    const duplicates=data.logs.filter(row=>row.day===day&&row.memberId===memberId&&Number(row.boss)===boss
-      &&Number(row.damage)===damage&&(!enteredAt||!row.gameAt||row.gameAt===enteredAt));
-    if(duplicates.length&&!confirm('이미 같은 클랜원의 '+boss+'넴 공격(동일 피해량)이 '+duplicates.length+'건 기록되어 있습니다. 실제로 별도의 공격이 맞나요?'))return false;
     if(form?.dataset?.logSubmitPending==='1')return false;
     if(form?.dataset)form.dataset.logSubmitPending='1';
   }
