@@ -19,7 +19,31 @@ function fixtureSeason(key,memberIds,currentDay=3){const rules=defaultRules();ru
 function snapshotSeason(){if(!data.seasons||!ui.month)return;data.seasons[ui.month]=Object.fromEntries(SEASON_KEYS.map(k=>[k,structuredClone(data[k])]));}
 function activateSeason(key){if(!data.seasons[key])return false;snapshotSeason();for(const k of SEASON_KEYS)data[k]=structuredClone(data.seasons[key][k]);ui.month=key;data.activeMonth=key;data.settings.days=data.rules.days;data.settings.daily=data.rules.daily;ui.day=defaultBattleDay();ui.page=1;ui.boss=0;ui.query='';ext.allDays=false;ui.selectedTactic=data.tactics.find(t=>!t.deletedAt&&!t.hidden)?.id;recalculateSeason();persist();return true;}
 function engineMonth(){return {events:data.logs,bosses:data.bossSettings,levels:seasonLevels(data.rules),options:{days:data.rules.days,dailyAttacks:data.rules.daily,startStage:data.rules.startStage,autoContribution:data.rules.autoContribution,preserveContributionCoefficients:data.rules.preserveContributionCoefficients,contributionFactor:data.rules.factor,contributionSamples:data.rules.samples,contributionBaseline:data.rules.baseline}};}
-function recalculateSeason(){const month=engineMonth();for(const e of data.logs){e.carry=e.usesCarry!==undefined?!!e.usesCarry:e.type==='carry';e.usesCarry=e.carry;e.bonus=Number(e.bonus)||0;}data.replayWarnings=engineReplay(month);for(const e of data.logs){e.type=e.kill?'kill':e.carry?'carry':'normal';e.game=e.actual*Number(data.bossSettings.find(b=>b.id===e.boss)?.game[e.stage]||1);e.contribution=engineContribution(e,month);}data.bosses=engineProgress(month);data.rates=[2,3,4].map(stage=>data.bossSettings.map(b=>b.contribution[stage]??0));data.settings.days=data.rules.days;data.settings.daily=data.rules.daily;return month;}
+// A transcend carry has a stored bonus adjustment; the contribution formula is unchanged.
+// Keep the original bonus to restore it if reordering removes the transcend condition.
+const TRANSCEND_CARRY_BONUS=-1350; // bonus is stored in units of 10,000 points
+function applyTranscendCarryBonuses(logs){
+  let changes=0;
+  for(const log of logs){
+    const current=Number(log.bonus)||0;
+    const marked=log.autoTranscendBonus===TRANSCEND_CARRY_BONUS;
+    if(log.role==='초월'&&!marked){
+      const base=current===TRANSCEND_CARRY_BONUS?0:current;
+      log.transcendBaseBonus=base;
+      log.autoTranscendBonus=TRANSCEND_CARRY_BONUS;
+      log.bonus=base+TRANSCEND_CARRY_BONUS;
+      changes++;
+    }else if(log.role!=='초월'&&marked){
+      const base=Number(log.transcendBaseBonus);
+      if(Number.isFinite(base)&&current===base+TRANSCEND_CARRY_BONUS)log.bonus=base;
+      delete log.autoTranscendBonus;
+      delete log.transcendBaseBonus;
+      changes++;
+    }
+  }
+  return changes;
+}
+function recalculateSeason(){const month=engineMonth();for(const e of data.logs){e.carry=e.usesCarry!==undefined?!!e.usesCarry:e.type==='carry';e.usesCarry=e.carry;e.bonus=Number(e.bonus)||0;}data.replayWarnings=engineReplay(month);if(ui.month>='2026-11'&&ui.month===Object.keys(data.seasons||{}).sort().at(-1))applyTranscendCarryBonuses(data.logs);for(const e of data.logs){e.type=e.kill?'kill':e.carry?'carry':'normal';e.game=e.actual*Number(data.bossSettings.find(b=>b.id===e.boss)?.game[e.stage]||1);e.contribution=engineContribution(e,month);}data.bosses=engineProgress(month);data.rates=[2,3,4].map(stage=>data.bossSettings.map(b=>b.contribution[stage]??0));data.settings.days=data.rules.days;data.settings.daily=data.rules.daily;return month;}
 function memberSeasonActive(m,day=ui.day){const p=data.memberships[m.id];return p&&day>=p.from&&day<=p.to;}
 function statsFor(m,day=ui.day){const logs=data.logs.filter(e=>e.memberId===m.id&&e.day<=day),daily=logs.filter(e=>e.day===day),basics=daily.filter(e=>!e.carry),sources=new Set(daily.filter(e=>e.carry).map(e=>e.carryFrom));const active=memberSeasonActive(m,day);const allowedDays=Array.from({length:day},(_,i)=>i+1).filter(d=>memberSeasonActive(m,d)).length;const contribution=logs.reduce((s,e)=>s+(Number.isFinite(e.contribution)?e.contribution:0),0);return {member:m,logs,damage:logs.reduce((s,e)=>s+e.actual,0),dayDamage:daily.reduce((s,e)=>s+e.actual,0),game:logs.reduce((s,e)=>s+e.game,0),contribution,dayContribution:daily.reduce((s,e)=>s+(e.contribution||0),0),average:logs.length?contribution/logs.length:0,used:basics.length,remaining:active?Math.max(0,data.rules.daily-basics.length):0,carry:basics.filter(e=>e.kill&&!sources.has(e.id)).length,shots:logs.length,basicShots:logs.filter(e=>!e.carry).length,missing:Math.max(0,allowedDays*data.rules.daily-logs.filter(e=>!e.carry).length),active,slots:basics.map(e=>({basic:e,carry:daily.find(c=>c.carry&&c.carryFrom===e.id),pending:e.kill&&!sources.has(e.id)}))};}
 function allSeasonStats(day=ui.day){const ids=new Set([...Object.keys(data.memberships),...data.logs.map(e=>e.memberId)]);return data.members.filter(m=>ids.has(m.id)).map(m=>statsFor(m,day));}

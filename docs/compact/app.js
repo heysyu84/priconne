@@ -263,7 +263,31 @@ function fixtureSeason(key,memberIds,currentDay=3){const rules=defaultRules();ru
 function snapshotSeason(){if(!data.seasons||!ui.month)return;data.seasons[ui.month]=Object.fromEntries(SEASON_KEYS.map(k=>[k,structuredClone(data[k])]));}
 function activateSeason(key){if(!data.seasons[key])return false;snapshotSeason();for(const k of SEASON_KEYS)data[k]=structuredClone(data.seasons[key][k]);ui.month=key;data.activeMonth=key;data.settings.days=data.rules.days;data.settings.daily=data.rules.daily;ui.day=defaultBattleDay();ui.page=1;ui.boss=0;ui.query='';ext.allDays=false;ui.selectedTactic=data.tactics.find(t=>!t.deletedAt&&!t.hidden)?.id;recalculateSeason();persist();return true;}
 function engineMonth(){return {events:data.logs,bosses:data.bossSettings,levels:seasonLevels(data.rules),options:{days:data.rules.days,dailyAttacks:data.rules.daily,startStage:data.rules.startStage,autoContribution:data.rules.autoContribution,preserveContributionCoefficients:data.rules.preserveContributionCoefficients,contributionFactor:data.rules.factor,contributionSamples:data.rules.samples,contributionBaseline:data.rules.baseline}};}
-function recalculateSeason(){const month=engineMonth();for(const e of data.logs){e.carry=e.usesCarry!==undefined?!!e.usesCarry:e.type==='carry';e.usesCarry=e.carry;e.bonus=Number(e.bonus)||0;}data.replayWarnings=engineReplay(month);for(const e of data.logs){e.type=e.kill?'kill':e.carry?'carry':'normal';e.game=e.actual*Number(data.bossSettings.find(b=>b.id===e.boss)?.game[e.stage]||1);e.contribution=engineContribution(e,month);}data.bosses=engineProgress(month);data.rates=[2,3,4].map(stage=>data.bossSettings.map(b=>b.contribution[stage]??0));data.settings.days=data.rules.days;data.settings.daily=data.rules.daily;return month;}
+// A transcend carry has a stored bonus adjustment; the contribution formula is unchanged.
+// Keep the original bonus to restore it if reordering removes the transcend condition.
+const TRANSCEND_CARRY_BONUS=-1350; // bonus is stored in units of 10,000 points
+function applyTranscendCarryBonuses(logs){
+  let changes=0;
+  for(const log of logs){
+    const current=Number(log.bonus)||0;
+    const marked=log.autoTranscendBonus===TRANSCEND_CARRY_BONUS;
+    if(log.role==='초월'&&!marked){
+      const base=current===TRANSCEND_CARRY_BONUS?0:current;
+      log.transcendBaseBonus=base;
+      log.autoTranscendBonus=TRANSCEND_CARRY_BONUS;
+      log.bonus=base+TRANSCEND_CARRY_BONUS;
+      changes++;
+    }else if(log.role!=='초월'&&marked){
+      const base=Number(log.transcendBaseBonus);
+      if(Number.isFinite(base)&&current===base+TRANSCEND_CARRY_BONUS)log.bonus=base;
+      delete log.autoTranscendBonus;
+      delete log.transcendBaseBonus;
+      changes++;
+    }
+  }
+  return changes;
+}
+function recalculateSeason(){const month=engineMonth();for(const e of data.logs){e.carry=e.usesCarry!==undefined?!!e.usesCarry:e.type==='carry';e.usesCarry=e.carry;e.bonus=Number(e.bonus)||0;}data.replayWarnings=engineReplay(month);if(ui.month>='2026-11'&&ui.month===Object.keys(data.seasons||{}).sort().at(-1))applyTranscendCarryBonuses(data.logs);for(const e of data.logs){e.type=e.kill?'kill':e.carry?'carry':'normal';e.game=e.actual*Number(data.bossSettings.find(b=>b.id===e.boss)?.game[e.stage]||1);e.contribution=engineContribution(e,month);}data.bosses=engineProgress(month);data.rates=[2,3,4].map(stage=>data.bossSettings.map(b=>b.contribution[stage]??0));data.settings.days=data.rules.days;data.settings.daily=data.rules.daily;return month;}
 function memberSeasonActive(m,day=ui.day){const p=data.memberships[m.id];return p&&day>=p.from&&day<=p.to;}
 function statsFor(m,day=ui.day){const logs=data.logs.filter(e=>e.memberId===m.id&&e.day<=day),daily=logs.filter(e=>e.day===day),basics=daily.filter(e=>!e.carry),sources=new Set(daily.filter(e=>e.carry).map(e=>e.carryFrom));const active=memberSeasonActive(m,day);const allowedDays=Array.from({length:day},(_,i)=>i+1).filter(d=>memberSeasonActive(m,d)).length;const contribution=logs.reduce((s,e)=>s+(Number.isFinite(e.contribution)?e.contribution:0),0);return {member:m,logs,damage:logs.reduce((s,e)=>s+e.actual,0),dayDamage:daily.reduce((s,e)=>s+e.actual,0),game:logs.reduce((s,e)=>s+e.game,0),contribution,dayContribution:daily.reduce((s,e)=>s+(e.contribution||0),0),average:logs.length?contribution/logs.length:0,used:basics.length,remaining:active?Math.max(0,data.rules.daily-basics.length):0,carry:basics.filter(e=>e.kill&&!sources.has(e.id)).length,shots:logs.length,basicShots:logs.filter(e=>!e.carry).length,missing:Math.max(0,allowedDays*data.rules.daily-logs.filter(e=>!e.carry).length),active,slots:basics.map(e=>({basic:e,carry:daily.find(c=>c.carry&&c.carryFrom===e.id),pending:e.kill&&!sources.has(e.id)}))};}
 function allSeasonStats(day=ui.day){const ids=new Set([...Object.keys(data.memberships),...data.logs.map(e=>e.memberId)]);return data.members.filter(m=>ids.has(m.id)).map(m=>statsFor(m,day));}
@@ -855,7 +879,7 @@ document.addEventListener('change',event=>{
 // Clan records are shared on the server. Only display preferences and unsent
 // drafts belong to this browser. The previous local-only store is left intact.
 const SYNC_PREFS='redive-ui-preferences-v1',SYNC_CACHE='redive-shared-cache-v1',SYNC_DRAFT='redive-shared-draft-v1';
-const syncState={started:false,ready:false,canEdit:false,authenticated:false,revision:0,baseline:'',pending:'',inFlight:false,status:'loading',error:'',timer:null,polling:false,updatedAt:null,remote:null};
+const syncState={started:false,ready:false,canEdit:false,authenticated:false,revision:0,baseline:'',pending:'',inFlight:false,status:'loading',error:'',timer:null,polling:false,updatedAt:null,remote:null,transcendBonusPending:false};
 const writerActions=new Set(['add-log','edit-log','delete-log','confirm-delete-log','add-member','edit-member','add-tactic','edit-tactic','hide-tactic','duplicate-tactic','delete-tactic','confirm-delete-tactic','v2-new-month','v2-edit-grid','v2-member-status','v2-add-character','v2-edit-character','v2-import-images','v2-carry-import','v2-add-row','v2-delete-row','v2-row-undo','v2-row-redo','v2-grid-undo','v2-grid-redo','v2-restore-tactic','v2-close-day','v2-reopen-day','v2-undo','v2-notice','v2-history-rank','v2-confirm-restore','v2-confirm-import','v2-reset-confirm']);
 for(const action of ['new-tactic','v2-import-carry','v2-save-converted','v2-log-up','v2-log-down','v2-factor','v2-confirm-season','v2-seal-season','v2-commit-batch','v2-commit-carry','v2-commit-paste','v2-confirm-close-day','v2-delete-portrait'])writerActions.add(action);
 const browserSettings=completeSettings,browserSettingsDisplay=settingsDisplay,browserSettingsData=settingsData,browserSettingsAccess=settingsAccess;
@@ -912,6 +936,11 @@ function applySharedDocument(document,{initial=false}={}){
   ui.month=month;data.activeMonth=month;data.pinHash=null;
   for(const key of SEASON_KEYS)data[key]=structuredClone(data.seasons[month][key]);
   applyGameScope();recalculateSeason();snapshotSeason();
+  const sourceBonuses=new Map((document.seasons[month]?.logs||[]).map(log=>[log.id,log]));
+  syncState.transcendBonusPending=month===latest&&data.logs.some(log=>{
+    const original=sourceBonuses.get(log.id);
+    return original&&(Number(original.bonus||0)!==log.bonus||original.autoTranscendBonus!==log.autoTranscendBonus||original.transcendBaseBonus!==log.transcendBaseBonus);
+  });
   ui.day=followLatest?defaultBattleDay():Math.min(ui.day,data.rules.days);
   if(ui.profile!=='__clan__'&&!data.members.some(m=>m.id===ui.profile))ui.profile='__clan__';
   if(!data.tactics.some(t=>t.id===ui.selectedTactic))ui.selectedTactic=data.tactics.find(t=>!t.hidden&&!t.deletedAt)?.id;
@@ -920,11 +949,11 @@ function applySharedDocument(document,{initial=false}={}){
   syncState.baseline=sharedText();
   writeBrowser(SYNC_CACHE,{document,revision:syncState.revision,updatedAt:syncState.updatedAt});
 }
-function persistShared(){
+function persistShared({autoTranscend=false}={}){
   writeBrowser(SYNC_PREFS,{theme:data.settings.theme,large:data.settings.large,compact:data.settings.compact,defaultDay:data.settings.defaultDay,defaultDayMode:data.settings.defaultDayMode||'auto'});
-  if(!syncState.ready||!syncState.canEdit||!data.settings.editable)return;
+  if(!syncState.ready||!syncState.canEdit||(!data.settings.editable&&!autoTranscend))return;
   const text=sharedText();
-  if(text===syncState.baseline&&!syncState.inFlight){if(syncState.pending){try{localStorage.removeItem(SYNC_DRAFT);}catch{}}syncState.pending='';refreshSharedStatus();return;}
+  if(text===syncState.baseline&&!syncState.transcendBonusPending&&!syncState.inFlight){if(syncState.pending){try{localStorage.removeItem(SYNC_DRAFT);}catch{}}syncState.pending='';refreshSharedStatus();return;}
   syncState.pending=text;
   writeBrowser(SYNC_DRAFT,{document:JSON.parse(text),revision:syncState.revision,savedAt:new Date().toISOString()});
   if(!['conflict','error'].includes(syncState.status))syncState.status='pending';
@@ -943,7 +972,7 @@ async function flushShared(){
   syncState.inFlight=true;syncState.status='saving';syncState.error='';refreshSharedStatus();
   try {
     const result=await stateRequest('/api/state',{method:'PUT',headers:{'Content-Type':'application/json','X-Redive-Request':'1'},body:JSON.stringify({revision,document:JSON.parse(sent)})});
-    syncState.revision=result.revision;syncState.updatedAt=result.updatedAt;syncState.baseline=sent;syncState.status='saved';
+    syncState.revision=result.revision;syncState.updatedAt=result.updatedAt;syncState.baseline=sent;syncState.transcendBonusPending=false;syncState.status='saved';
     writeBrowser(SYNC_CACHE,{document:JSON.parse(sent),revision:result.revision,updatedAt:result.updatedAt});
     if(syncState.pending===sent){syncState.pending='';try{localStorage.removeItem(SYNC_DRAFT);}catch{}}
     else writeBrowser(SYNC_DRAFT,{document:JSON.parse(syncState.pending),revision:result.revision,savedAt:new Date().toISOString()});
@@ -966,7 +995,7 @@ async function pollShared({force=false}={}){
       if(syncState.pending&&result.revision!==syncState.revision){syncState.status='conflict';syncState.remote=result;syncState.error='다른 창에서 먼저 저장한 변경이 있습니다. 내 변경을 보관한 뒤 최신 자료를 확인하세요.';}
       else if(syncState.pending){syncState.status='pending';syncState.error='';}
       else if(force||!syncState.ready||!(drawer.open||ext.workEditing||document.activeElement?.matches('input,textarea,select'))){
-        syncState.revision=result.revision;syncState.updatedAt=result.updatedAt;applySharedDocument(result.document,{initial:!syncState.ready});syncState.ready=true;syncState.status='saved';syncState.error='';render();
+        syncState.revision=result.revision;syncState.updatedAt=result.updatedAt;applySharedDocument(result.document,{initial:!syncState.ready});syncState.ready=true;syncState.status='saved';syncState.error='';if(syncState.canEdit&&syncState.transcendBonusPending)persistShared({autoTranscend:true});render();
       }
     }else if(!syncState.pending&&syncState.status==='offline'){syncState.status='saved';syncState.error='';}
     if(roleChanged)render();

@@ -1,7 +1,7 @@
 // Clan records are shared on the server. Only display preferences and unsent
 // drafts belong to this browser. The previous local-only store is left intact.
 const SYNC_PREFS='redive-ui-preferences-v1',SYNC_CACHE='redive-shared-cache-v1',SYNC_DRAFT='redive-shared-draft-v1';
-const syncState={started:false,ready:false,canEdit:false,authenticated:false,revision:0,baseline:'',pending:'',inFlight:false,status:'loading',error:'',timer:null,polling:false,updatedAt:null,remote:null};
+const syncState={started:false,ready:false,canEdit:false,authenticated:false,revision:0,baseline:'',pending:'',inFlight:false,status:'loading',error:'',timer:null,polling:false,updatedAt:null,remote:null,transcendBonusPending:false};
 const writerActions=new Set(['add-log','edit-log','delete-log','confirm-delete-log','add-member','edit-member','add-tactic','edit-tactic','hide-tactic','duplicate-tactic','delete-tactic','confirm-delete-tactic','v2-new-month','v2-edit-grid','v2-member-status','v2-add-character','v2-edit-character','v2-import-images','v2-carry-import','v2-add-row','v2-delete-row','v2-row-undo','v2-row-redo','v2-grid-undo','v2-grid-redo','v2-restore-tactic','v2-close-day','v2-reopen-day','v2-undo','v2-notice','v2-history-rank','v2-confirm-restore','v2-confirm-import','v2-reset-confirm']);
 for(const action of ['new-tactic','v2-import-carry','v2-save-converted','v2-log-up','v2-log-down','v2-factor','v2-confirm-season','v2-seal-season','v2-commit-batch','v2-commit-carry','v2-commit-paste','v2-confirm-close-day','v2-delete-portrait'])writerActions.add(action);
 const browserSettings=completeSettings,browserSettingsDisplay=settingsDisplay,browserSettingsData=settingsData,browserSettingsAccess=settingsAccess;
@@ -58,6 +58,11 @@ function applySharedDocument(document,{initial=false}={}){
   ui.month=month;data.activeMonth=month;data.pinHash=null;
   for(const key of SEASON_KEYS)data[key]=structuredClone(data.seasons[month][key]);
   applyGameScope();recalculateSeason();snapshotSeason();
+  const sourceBonuses=new Map((document.seasons[month]?.logs||[]).map(log=>[log.id,log]));
+  syncState.transcendBonusPending=month===latest&&data.logs.some(log=>{
+    const original=sourceBonuses.get(log.id);
+    return original&&(Number(original.bonus||0)!==log.bonus||original.autoTranscendBonus!==log.autoTranscendBonus||original.transcendBaseBonus!==log.transcendBaseBonus);
+  });
   ui.day=followLatest?defaultBattleDay():Math.min(ui.day,data.rules.days);
   if(ui.profile!=='__clan__'&&!data.members.some(m=>m.id===ui.profile))ui.profile='__clan__';
   if(!data.tactics.some(t=>t.id===ui.selectedTactic))ui.selectedTactic=data.tactics.find(t=>!t.hidden&&!t.deletedAt)?.id;
@@ -66,11 +71,11 @@ function applySharedDocument(document,{initial=false}={}){
   syncState.baseline=sharedText();
   writeBrowser(SYNC_CACHE,{document,revision:syncState.revision,updatedAt:syncState.updatedAt});
 }
-function persistShared(){
+function persistShared({autoTranscend=false}={}){
   writeBrowser(SYNC_PREFS,{theme:data.settings.theme,large:data.settings.large,compact:data.settings.compact,defaultDay:data.settings.defaultDay,defaultDayMode:data.settings.defaultDayMode||'auto'});
-  if(!syncState.ready||!syncState.canEdit||!data.settings.editable)return;
+  if(!syncState.ready||!syncState.canEdit||(!data.settings.editable&&!autoTranscend))return;
   const text=sharedText();
-  if(text===syncState.baseline&&!syncState.inFlight){if(syncState.pending){try{localStorage.removeItem(SYNC_DRAFT);}catch{}}syncState.pending='';refreshSharedStatus();return;}
+  if(text===syncState.baseline&&!syncState.transcendBonusPending&&!syncState.inFlight){if(syncState.pending){try{localStorage.removeItem(SYNC_DRAFT);}catch{}}syncState.pending='';refreshSharedStatus();return;}
   syncState.pending=text;
   writeBrowser(SYNC_DRAFT,{document:JSON.parse(text),revision:syncState.revision,savedAt:new Date().toISOString()});
   if(!['conflict','error'].includes(syncState.status))syncState.status='pending';
@@ -89,7 +94,7 @@ async function flushShared(){
   syncState.inFlight=true;syncState.status='saving';syncState.error='';refreshSharedStatus();
   try {
     const result=await stateRequest('/api/state',{method:'PUT',headers:{'Content-Type':'application/json','X-Redive-Request':'1'},body:JSON.stringify({revision,document:JSON.parse(sent)})});
-    syncState.revision=result.revision;syncState.updatedAt=result.updatedAt;syncState.baseline=sent;syncState.status='saved';
+    syncState.revision=result.revision;syncState.updatedAt=result.updatedAt;syncState.baseline=sent;syncState.transcendBonusPending=false;syncState.status='saved';
     writeBrowser(SYNC_CACHE,{document:JSON.parse(sent),revision:result.revision,updatedAt:result.updatedAt});
     if(syncState.pending===sent){syncState.pending='';try{localStorage.removeItem(SYNC_DRAFT);}catch{}}
     else writeBrowser(SYNC_DRAFT,{document:JSON.parse(syncState.pending),revision:result.revision,savedAt:new Date().toISOString()});
@@ -112,7 +117,7 @@ async function pollShared({force=false}={}){
       if(syncState.pending&&result.revision!==syncState.revision){syncState.status='conflict';syncState.remote=result;syncState.error='다른 창에서 먼저 저장한 변경이 있습니다. 내 변경을 보관한 뒤 최신 자료를 확인하세요.';}
       else if(syncState.pending){syncState.status='pending';syncState.error='';}
       else if(force||!syncState.ready||!(drawer.open||ext.workEditing||document.activeElement?.matches('input,textarea,select'))){
-        syncState.revision=result.revision;syncState.updatedAt=result.updatedAt;applySharedDocument(result.document,{initial:!syncState.ready});syncState.ready=true;syncState.status='saved';syncState.error='';render();
+        syncState.revision=result.revision;syncState.updatedAt=result.updatedAt;applySharedDocument(result.document,{initial:!syncState.ready});syncState.ready=true;syncState.status='saved';syncState.error='';if(syncState.canEdit&&syncState.transcendBonusPending)persistShared({autoTranscend:true});render();
       }
     }else if(!syncState.pending&&syncState.status==='offline'){syncState.status='saved';syncState.error='';}
     if(roleChanged)render();
