@@ -27,17 +27,39 @@ function shouldAutoUseCarry(memberId,day,records=data.logs){
   const daily=records.filter(e=>e.day===Number(day)&&e.memberId===memberId),basic=daily.filter(e=>!e.carry);
   return basic.length>=data.rules.daily&&basic.some(e=>e.kill&&!daily.some(c=>c.carryFrom===e.id));
 }
+function predictedTranscendEntryBonus(memberId,day,bossId,usesCarry,context=null){
+  if(!usesCarry||ui.month<'2026-11'||ui.month!==Object.keys(data.seasons||{}).sort().at(-1))return false;
+  const scope=context||{bosses:data.bosses,logs:data.logs};
+  if(scope.bosses.find(b=>b.id===Number(bossId))?.stage!==4)return false;
+  const daily=scope.logs.filter(log=>log.memberId===memberId&&Number(log.day)===Number(day)).sort((a,b)=>a.seq-b.seq);
+  const spent=new Set(daily.filter(log=>log.carry&&log.carryFrom).map(log=>log.carryFrom));
+  const source=daily.find(log=>log.kill&&!log.carry&&!spent.has(log.id));
+  return !!source&&[2,3].includes(Number(source.stage));
+}
+function syncTranscendEntryBonus(form){
+  if(!form||!['v2-quick-log','v2-log'].includes(form.dataset.form)||form.querySelector('[name="logId"]')?.value)return;
+  const field=form.querySelector('[name="bonus"]');
+  if(!field||field.dataset.transcendEdited==='1')return;
+  const fd=new FormData(form),context=entryLogContext(fd);
+  const predicted=predictedTranscendEntryBonus(String(fd.get('memberId')||''),Number(fd.get('day')),Number(fd.get('boss')),fd.has('usesCarry'),context);
+  if(field.dataset.autoTranscend==='1'||field.value.trim()===''||field.value.trim()==='0'){
+    field.value=predicted?'-13500000':'0';
+    field.dataset.autoTranscend=predicted?'1':'0';
+  }
+}
 function carryOnConfirmedMember(form,memberId){
   if(!form||!['v2-quick-log','v2-log'].includes(form.dataset.form)||form.querySelector('[name="logId"]')?.value)return;
   const checkbox=form.querySelector('[name="usesCarry"]');if(!checkbox)return;
   const fd=new FormData(form),day=Number(fd.get('day')),context=form.dataset.form==='v2-log'&&fd.get('insertAnchor')?entryLogContext(fd).logs:data.logs;
   checkbox.checked=shouldAutoUseCarry(memberId,day,context);
+  syncTranscendEntryBonus(form);
 }
 function chooseEntry(input,value){
  const picker=input.closest('.search-picker'),item=entryItems(input.dataset.entrySearch,picker).find(item=>String(item.value)===String(value));if(!item||item.disabled)return false;
  picker.querySelector('input[type=hidden]').value=item.value;picker.dataset.selected=item.value;input.value=item.label;input.setCustomValidity('');closeEntryResults(input);
  const form=input.form;if(input.dataset.entrySearch==='member')carryOnConfirmedMember(form,item.value);
  if(input.dataset.entrySearch==='boss'&&form){if(form.dataset.form==='v2-log')completeLogPreview();else syncAttackEntry(form);}
+ syncTranscendEntryBonus(form);
  return true;
 }
 function resolveEntry(input){
@@ -122,6 +144,7 @@ document.addEventListener('keydown',event=>{
  if(picked){picker.querySelector('input[type=hidden]').value=picked.value;picker.dataset.selected=picked.value;input.value=picked.label;input.setCustomValidity('');
   if(input.dataset.entrySearch==='member')carryOnConfirmedMember(input.form,picked.value);
   else if(input.form){if(input.form.dataset.form==='v2-log')completeLogPreview();else syncAttackEntry(input.form);}
+  syncTranscendEntryBonus(input.form);
  }
 },true);
 document.addEventListener('change',event=>{
@@ -129,10 +152,18 @@ document.addEventListener('change',event=>{
  if(field.name==='day'&&form?.dataset.form==='v2-log'&&!form.querySelector('[name="logId"]')?.value){
   carryOnConfirmedMember(form,form.querySelector('[name="memberId"]')?.value);
  }
+ if(field.name==='usesCarry')syncTranscendEntryBonus(form);
+},true);
+document.addEventListener('input',event=>{
+  if(event.target.name==='bonus'&&['v2-quick-log','v2-log'].includes(event.target.form?.dataset.form)){
+    event.target.dataset.transcendEdited='1';
+    event.target.dataset.autoTranscend='0';
+  }
 },true);
 document.addEventListener('submit',event=>{
  const form=event.target;if(!['v2-quick-log','v2-log'].includes(form.dataset.form))return;
  for(const input of form.querySelectorAll('[data-entry-search]'))if(!resolveEntry(input)){
   event.preventDefault();event.stopImmediatePropagation();input.setCustomValidity('검색 결과에서 '+(input.dataset.entrySearch==='member'?'클랜원':'보스')+'를 선택하세요.');input.reportValidity();input.focus();return;
  }
+ syncTranscendEntryBonus(form);
 },true);

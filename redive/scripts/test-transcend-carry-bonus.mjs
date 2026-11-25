@@ -37,3 +37,11 @@ assert(shared.includes('syncState.transcendBonusPending=month===latest'));
 assert(shared.includes('persistShared({autoTranscend:true})'));
 assert(!fs.readFileSync(root+'public/battle-engine.mjs','utf8').includes('TRANSCEND_CARRY_BONUS'));
 console.log('PASS: transcend carry bonus -13,500,000, idempotence, existing month and safe persistence');
+
+const entry=fs.readFileSync(root+'src/entry-controls.js','utf8');
+const operations=fs.readFileSync(root+'src/operations.js','utf8');
+assert(entry.includes('predictedTranscendEntryBonus('),'Entry must predict a stage-2/3 to 4 carry');
+assert(entry.includes("field.value=predicted?'-13500000':'0'"),'Visible bonus must be prefilled');
+assert(entry.includes("field.name==='usesCarry'"),'Carry checkbox must update suggested bonus');
+assert(entry.includes("field.dataset.transcendEdited==='1'"),'Manual bonus changes must be preserved');
+assert(operations.includes('data-auto-transcend='),'Quick form must prefill on first render');

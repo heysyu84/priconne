@@ -1081,8 +1081,8 @@ function battleBossHealth(){
 quickLogForm=()=>{
   const available=data.bosses.filter(b=>!b.locked),b=available.find(b=>b.id===(ui.boss||ext.entryBoss))||available[0]||data.bosses[0];
   const memberId=data.members.some(m=>m.id===ext.entryMember&&memberSeasonActive(m))?ext.entryMember:allSeasonStats().find(s=>s.active&&s.remaining)?.member.id;
-  const automatic=[2,3].includes(b.stage);
-  return `<section id="attack-entry" class="attack-entry"><div class="entry-title"><h2>기록 등록</h2><span class="entry-feedback" role="status">${X(ext.entryFeedback||'')}</span></div><form class="quick-log simple-entry" data-form="v2-quick-log"><input type="hidden" name="day" value="${ui.day}"><input type="hidden" name="unit" value="1"><div class="quick-field"><label for="quick-member">클랜원</label>${entrySearch('member','quick-member','memberId',memberId)}</div><div class="quick-field"><label for="quick-boss">보스</label>${entrySearch('boss','quick-boss','boss',b.id)}</div><div class="quick-field quick-damage"><label for="quick-damage">피해량</label><input id="quick-damage" name="damage" type="text" pattern="[0-9, ]+" required inputmode="numeric" placeholder="예: 350,000,000" value="${automatic?data.bossSettings.find(v=>v.id===b.id).hp[b.stage]:''}" data-was-auto="${automatic?'1':'0'}" ${automatic?'readonly':''}></div><div class="quick-field quick-bonus"><label for="quick-bonus">가산점</label><input id="quick-bonus" name="bonus" type="text" inputmode="decimal" placeholder="0" value="0" title="기여도에 더하거나 뺄 점수"></div><label class="early-auto" ${automatic?'':'hidden'}><input type="checkbox" name="autoDamage" data-input="v3-quick-auto" checked>2·3단계 HP 자동입력</label><label class="quick-carry"><input name="usesCarry" type="checkbox" ${shouldAutoUseCarry(memberId,ui.day)?'checked':''}>이월 사용</label><button class="button primary" type="submit">등록</button><details class="entry-extra"><summary>시간·메모</summary><div class="field"><label for="quick-remaining">격파 시 남은 시간</label><input id="quick-remaining" name="remaining" placeholder="0:30" inputmode="numeric"></div><div class="field"><label for="quick-note">메모</label><input id="quick-note" name="note"></div></details></form></section>`;
+  const automatic=[2,3].includes(b.stage),autoCarry=shouldAutoUseCarry(memberId,ui.day),bonusValue=predictedTranscendEntryBonus(memberId,ui.day,b.id,autoCarry)?'-13500000':'0';
+  return `<section id="attack-entry" class="attack-entry"><div class="entry-title"><h2>기록 등록</h2><span class="entry-feedback" role="status">${X(ext.entryFeedback||'')}</span></div><form class="quick-log simple-entry" data-form="v2-quick-log"><input type="hidden" name="day" value="${ui.day}"><input type="hidden" name="unit" value="1"><div class="quick-field"><label for="quick-member">클랜원</label>${entrySearch('member','quick-member','memberId',memberId)}</div><div class="quick-field"><label for="quick-boss">보스</label>${entrySearch('boss','quick-boss','boss',b.id)}</div><div class="quick-field quick-damage"><label for="quick-damage">피해량</label><input id="quick-damage" name="damage" type="text" pattern="[0-9, ]+" required inputmode="numeric" placeholder="예: 350,000,000" value="${automatic?data.bossSettings.find(v=>v.id===b.id).hp[b.stage]:''}" data-was-auto="${automatic?'1':'0'}" ${automatic?'readonly':''}></div><div class="quick-field quick-bonus"><label for="quick-bonus">가산점</label><input id="quick-bonus" name="bonus" type="text" inputmode="decimal" placeholder="0" value="${bonusValue}" data-auto-transcend="${bonusValue==='0'?'0':'1'}" title="기여도에 더하거나 뺄 점수"></div><label class="early-auto" ${automatic?'':'hidden'}><input type="checkbox" name="autoDamage" data-input="v3-quick-auto" checked>2·3단계 HP 자동입력</label><label class="quick-carry"><input name="usesCarry" type="checkbox" ${autoCarry?'checked':''}>이월 사용</label><button class="button primary" type="submit">등록</button><details class="entry-extra"><summary>시간·메모</summary><div class="field"><label for="quick-remaining">격파 시 남은 시간</label><input id="quick-remaining" name="remaining" placeholder="0:30" inputmode="numeric"></div><div class="field"><label for="quick-note">메모</label><input id="quick-note" name="note"></div></details></form></section>`;
 };
 function logPagination(count,size=50){
   const pages=Math.max(1,Math.ceil(count/size));ui.page=Math.min(Math.max(1,ui.page),pages);
@@ -1333,17 +1333,39 @@ function shouldAutoUseCarry(memberId,day,records=data.logs){
   const daily=records.filter(e=>e.day===Number(day)&&e.memberId===memberId),basic=daily.filter(e=>!e.carry);
   return basic.length>=data.rules.daily&&basic.some(e=>e.kill&&!daily.some(c=>c.carryFrom===e.id));
 }
+function predictedTranscendEntryBonus(memberId,day,bossId,usesCarry,context=null){
+  if(!usesCarry||ui.month<'2026-11'||ui.month!==Object.keys(data.seasons||{}).sort().at(-1))return false;
+  const scope=context||{bosses:data.bosses,logs:data.logs};
+  if(scope.bosses.find(b=>b.id===Number(bossId))?.stage!==4)return false;
+  const daily=scope.logs.filter(log=>log.memberId===memberId&&Number(log.day)===Number(day)).sort((a,b)=>a.seq-b.seq);
+  const spent=new Set(daily.filter(log=>log.carry&&log.carryFrom).map(log=>log.carryFrom));
+  const source=daily.find(log=>log.kill&&!log.carry&&!spent.has(log.id));
+  return !!source&&[2,3].includes(Number(source.stage));
+}
+function syncTranscendEntryBonus(form){
+  if(!form||!['v2-quick-log','v2-log'].includes(form.dataset.form)||form.querySelector('[name="logId"]')?.value)return;
+  const field=form.querySelector('[name="bonus"]');
+  if(!field||field.dataset.transcendEdited==='1')return;
+  const fd=new FormData(form),context=entryLogContext(fd);
+  const predicted=predictedTranscendEntryBonus(String(fd.get('memberId')||''),Number(fd.get('day')),Number(fd.get('boss')),fd.has('usesCarry'),context);
+  if(field.dataset.autoTranscend==='1'||field.value.trim()===''||field.value.trim()==='0'){
+    field.value=predicted?'-13500000':'0';
+    field.dataset.autoTranscend=predicted?'1':'0';
+  }
+}
 function carryOnConfirmedMember(form,memberId){
   if(!form||!['v2-quick-log','v2-log'].includes(form.dataset.form)||form.querySelector('[name="logId"]')?.value)return;
   const checkbox=form.querySelector('[name="usesCarry"]');if(!checkbox)return;
   const fd=new FormData(form),day=Number(fd.get('day')),context=form.dataset.form==='v2-log'&&fd.get('insertAnchor')?entryLogContext(fd).logs:data.logs;
   checkbox.checked=shouldAutoUseCarry(memberId,day,context);
+  syncTranscendEntryBonus(form);
 }
 function chooseEntry(input,value){
  const picker=input.closest('.search-picker'),item=entryItems(input.dataset.entrySearch,picker).find(item=>String(item.value)===String(value));if(!item||item.disabled)return false;
  picker.querySelector('input[type=hidden]').value=item.value;picker.dataset.selected=item.value;input.value=item.label;input.setCustomValidity('');closeEntryResults(input);
  const form=input.form;if(input.dataset.entrySearch==='member')carryOnConfirmedMember(form,item.value);
  if(input.dataset.entrySearch==='boss'&&form){if(form.dataset.form==='v2-log')completeLogPreview();else syncAttackEntry(form);}
+ syncTranscendEntryBonus(form);
  return true;
 }
 function resolveEntry(input){
@@ -1428,6 +1450,7 @@ document.addEventListener('keydown',event=>{
  if(picked){picker.querySelector('input[type=hidden]').value=picked.value;picker.dataset.selected=picked.value;input.value=picked.label;input.setCustomValidity('');
   if(input.dataset.entrySearch==='member')carryOnConfirmedMember(input.form,picked.value);
   else if(input.form){if(input.form.dataset.form==='v2-log')completeLogPreview();else syncAttackEntry(input.form);}
+  syncTranscendEntryBonus(input.form);
  }
 },true);
 document.addEventListener('change',event=>{
@@ -1435,12 +1458,20 @@ document.addEventListener('change',event=>{
  if(field.name==='day'&&form?.dataset.form==='v2-log'&&!form.querySelector('[name="logId"]')?.value){
   carryOnConfirmedMember(form,form.querySelector('[name="memberId"]')?.value);
  }
+ if(field.name==='usesCarry')syncTranscendEntryBonus(form);
+},true);
+document.addEventListener('input',event=>{
+  if(event.target.name==='bonus'&&['v2-quick-log','v2-log'].includes(event.target.form?.dataset.form)){
+    event.target.dataset.transcendEdited='1';
+    event.target.dataset.autoTranscend='0';
+  }
 },true);
 document.addEventListener('submit',event=>{
  const form=event.target;if(!['v2-quick-log','v2-log'].includes(form.dataset.form))return;
  for(const input of form.querySelectorAll('[data-entry-search]'))if(!resolveEntry(input)){
   event.preventDefault();event.stopImmediatePropagation();input.setCustomValidity('검색 결과에서 '+(input.dataset.entrySearch==='member'?'클랜원':'보스')+'를 선택하세요.');input.reportValidity();input.focus();return;
  }
+ syncTranscendEntryBonus(form);
 },true);
 
 
